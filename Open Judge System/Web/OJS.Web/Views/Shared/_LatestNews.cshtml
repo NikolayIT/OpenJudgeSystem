@@ -1,0 +1,23 @@
+﻿@model IEnumerable<OJS.Web.ViewModels.News.SelectedNewsViewModel>
+
+<div>
+    @if (!Model.Any())
+    {
+        <p>Няма актуални новини.</p>
+    }
+    else
+    {
+        <table class="table table-hover">
+            @foreach (var news in Model)
+            {
+                <tr>
+                    <td class="text-left">
+                        <a href="/News/Selected/@news.Id">@news.Title</a>
+                        <p class="text-right">@news.TimeCreated.ToString("dd/MM/yyyy")</p>
+                    </td>
+                </tr>
+            }
+        </table>
+        <p class="pull-right"><a class="btn btn-default" href="/News/All">Вижте още &raquo;</a></p>
+    }
+</div>

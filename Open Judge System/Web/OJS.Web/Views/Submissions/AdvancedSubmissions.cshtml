@@ -1,0 +1,82 @@
+﻿@model OJS.Web.ViewModels.Submission.SubmissionViewModel
+
+@{
+    ViewBag.Title = "Лог на публикациите";
+}
+
+<h2>@ViewBag.Title</h2>
+@(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
+    .Name("Submissions")
+    .Columns(columns =>
+        {
+            columns.Template(@<text></text>).ClientTemplate("<span class='indexColumn'></span>").Title("No").Width(50);
+            columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
+                "<div>" +
+                    "<strong><a href=\"/Users/Profile/#: ParticipantId #\">#: ParticipantName #</a></strong>" +
+                "</div>" +
+                "<div>" +
+                    "<small><span>#: kendo.toString(SubmitedOn, \"G\") #</span></small>" +
+                "</div>"
+                );
+            columns.Bound(s => s.ProblemName).Title("Задача").ClientTemplate(
+                    "<div>" +
+                        "<strong class=\"text-info\">#: ProblemName #</strong>" +
+                    "</div>" +
+                    "<div>" +
+                        "<small>#: Contest #</small>" +
+                    "</div>"
+                );
+            columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
+                    "<div>" +
+                            "<strong class =\"text-info\">#: Points # / #: ProblemMaximumPoints #</strong>" +
+                            "<small> #: MaxUsedMemory # KB | #= MaxUsedTime / 100 # sec.</small>" +
+                    "</div>" +
+                    "<div>" +
+                            "#= testResult(TestResults) #" +
+                    "</div>"
+                );
+        }
+    )
+    .Selectable(sel => sel.Mode(GridSelectionMode.Multiple))
+    .Events(ev => ev.DataBound("dataBound"))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        .Batch(false)
+        .Model(model => model.Id(x => x.Id))
+        .Sort(sort => sort.Add(x => x.SubmitedOn).Descending())
+        .Read(read => read.Type(HttpVerbs.Post).Action("ReadSubmissions", "Submissions"))
+        .PageSize(25)
+    )
+    .Pageable(page => page.ButtonCount(10).Refresh(true))
+)
+
+<script>
+    function dataBound(e) {
+        var page = this.dataSource.page() - 1;
+        var pageSize = this.dataSource.pageSize();
+
+        var counter = 1;
+        $(this.wrapper).find(".indexColumn").each(function (e) {
+            var index = (pageSize * page) + counter;
+            $(this).html(index);
+            counter++;
+        });
+    }
+
+    function testResult(tests) {
+        var result = '';
+
+        for (var i = 0; i < tests.length; i++) {
+            switch (tests[i].ExecutionResult) {
+                case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
+                case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
+                case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
+                case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
+                case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
+            }
+        }
+
+        return result;
+    };
+</script>

@@ -1,0 +1,186 @@
+﻿@using OJS.Web.Areas.Contests.ViewModels
+@using OJS.Data.Models;
+
+@model ContestProblemViewModel
+
+<h2>@Model.Name</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="notify-container-@(Model.ProblemId)">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="materials">
+            @foreach (var resource in Model.Resources)
+            {
+                var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
+                    Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId }) : resource.Link;
+
+                if (resource.ProblemType == ProblemResourceType.ProblemDescription)
+                {
+                    <span class="glyphicon glyphicon-list-alt resource-glyph"></span>
+                }
+                else if (resource.ProblemType == ProblemResourceType.AuthorsSolution)
+                {
+                    <span class="glyphicon glyphicon-thumbs-up resource-glyph"></span>
+                }
+                else if (resource.ProblemType == ProblemResourceType.Video)
+                {
+                    <span class="glyphicon glyphicon-facetime-video resource-glyph"></span>
+                }
+                else
+                {
+                    <span class="glyphicon  glyphicon-question-sign"></span>
+                }
+                <a href="@resourceLink" target="_blank" class="resource-link">@resource.Name</a>
+            }
+        </div>
+        <div class="submision">
+            @using (Ajax.BeginForm("Submit",
+                new { controller = ViewBag.CompeteType, id = Model.ContestId },
+                new AjaxOptions
+                {
+                    OnSuccess = "notifySuccess",
+                    OnFailure = "notifyFailure",
+                    OnBegin = "validateSubmit"
+                },
+                new { id = "problem_" + Model.ProblemId }))
+            {
+                @Html.HiddenFor(x => x.ProblemId)
+                <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
+                <div class="submit-container">
+                    @(Html.Kendo().DropDownList()
+                        .Name("SubmissionTypeId")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .DataSource(data =>
+                        {
+                            data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId });
+                        })
+                        .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId })
+                    )
+                    <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
+                </div>
+
+                <div class="clearfix"></div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        @(Html.Kendo().Grid<ProblemResultViewModel>()
+                .Name("ContestResults_" + Model.ProblemId)
+                .ToolBar(tool =>
+                {
+                    tool.Template("Резултати за задачата");
+                })
+                .Columns(col =>
+                {
+                    col.Bound(x => x.ParticipantName);
+                    col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#");
+                })
+                .DataSource(data =>
+                {
+                    data.Ajax()
+                        .Sort(sort => sort.Add("Result").Descending())
+                        .Read("GetResults", ViewBag.CompeteType, new { id = Model.ProblemId })
+                        .PageSize(8);
+                })
+                .Filterable(x => x.Enabled(false))
+                .Pageable(x =>
+                {
+                    x.Refresh(true);
+                    x.Info(false);
+                })
+                .HtmlAttributes(new { @class = "problem_submit_grid" })
+        )
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo()
+            .Grid<SubmissionResultViewModel>()
+            .Name("Submissions_" + Model.ProblemId)
+            .ToolBar(tool =>
+            {
+                tool.Template("Изпратени решения");
+            })
+            .Columns(col =>
+            {
+                col.Bound(model => model.SubmissionPoints).ClientTemplate("#=displayTestRuns(TestRuns)# <br /> #= IsCalculated ? SubmissionPoints.toString().concat(' / ').concat(MaximumPoints) : 'Моля изчакайте' #");
+                col.Template(@<text>@item.IsCalculated ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>).Title("Максимуми").ClientTemplate("#= IsCalculated ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
+                col.Bound(model => model.SubmissionDate).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <div class='view-submission-button btn btn-default' data-submission-id='#=SubmissionId#'>Виж решение</div>");
+            })
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                    .PageSize(10);
+            })
+            .Pageable(page =>
+            {
+                page.Info(false);
+                page.Refresh(true);
+            })
+            .ClientDetailTemplateId("testRunsTemplate")
+            .HtmlAttributes(new { @class = "problem_submit_grid" })
+        )
+    </div>
+</div>
+
+<script id="testRunsTemplate" type="text/kendo-templ">
+    <table class="table-striped">
+        <thead>
+            <tr>
+                <th>Резултат</th>
+                <th>Памет</th>
+                <th>Време</th>
+                <th>Коментар</th>
+            </tr>
+        </thead>
+        <tbody>
+            #for (var i = 0; i < TestRuns.length; i++) {#
+            <tr>
+                <td>
+                    # switch (TestRuns[i].ExecutionResult) {
+                    case 0: #
+                    <span class="glyphicon glyphicon-ok text-success" title="Правилен отговор"></span>
+                    Правилен отговор
+                    # break; #
+                    #case 1: #
+                    <span class="glyphicon glyphicon-remove text-danger" title="Грешен отговор"></span>
+                    Грешен отговор
+                    # break; #
+                    #case 2: #
+                    <span class="glyphicon glyphicon-time text-white" title="Лимит време"></span>
+                    Лимит време
+                    # break; #
+                    #case 3: #
+                    <span class="glyphicon glyphicon-hdd text-danger" title="Лимит памет"></span>
+                    Лимит памет
+                    # break; #
+                    #case 4: #
+                    <span class="glyphicon glyphicon-asterisk text-danger" title="Грешка при изпълнение"></span>
+                    Грешка при изпълнение
+                    #}#
+                </td>
+                <td>
+                    #=TestRuns[i].MemoryUsed#
+                </td>
+                <td>
+                    #=TestRuns[i].TimeUsed#
+                </td>
+                <td>
+                    #=TestRuns[i].ExecutionComment#
+                </td>
+            </tr>
+            #}#
+        </tbody>
+    </table>
+</script>

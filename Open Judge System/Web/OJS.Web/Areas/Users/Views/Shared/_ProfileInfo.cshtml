@@ -1,0 +1,84 @@
+﻿@model OJS.Data.Models.UserProfile
+
+<div class="container">
+    <h2>
+        Профил на @Model.UserName
+    </h2>
+    <div class="pull-left span6">
+        <span>
+            <strong>Потребителско име:</strong>
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserName)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.Email, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.Email)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.FirstName, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.FirstName)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.LastName, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.LastName)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.FacultyNumber, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.FacultyNumber)</strong>
+        </span>
+        <br />
+    </div>
+    <div class="pull-right span3">
+        <span>
+            @Html.LabelFor(m => m.UserSettings.City, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.City)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.Age, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.Age)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.EducationalInstitution, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.EducationalInstitution)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.Company, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.Company)</strong>
+        </span>
+        <br />
+        <span>
+            @Html.LabelFor(m => m.UserSettings.JobTitle, new { @class = "profile-info-label" }):
+        </span>
+        <span class="text-primary">
+            <strong>@Html.DisplayFor(m => m.UserSettings.JobTitle)</strong>
+        </span>
+    </div>
+</div>
+<br />
+<div class="container">
+    <a href="Settings/" class="btn btn-primary pull-right">Настройки</a>
+</div>

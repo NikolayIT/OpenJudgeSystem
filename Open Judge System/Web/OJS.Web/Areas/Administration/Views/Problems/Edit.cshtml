@@ -1,0 +1,199 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.DetailedProblemViewModel
+
+@{
+    ViewBag.Title = "Промяна на задача";
+}
+
+<h2>@ViewBag.Title към @Model.ContestName</h2>
+<div id="create-form" class="container">
+    @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <fieldset>
+            <legend>Основна информация</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.Name)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на заглавието на задачата" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.MaximumPoints)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.MaximumPoints)
+                    .Min(1)
+                    .Format("#")
+                    .Step(1)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                    @Html.ValidationMessageFor(m => m.MaximumPoints)
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на максималния брой точки, които състезателят може да получи от задачата" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.MaximumPoints)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.TimeLimit) (в ms)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.TimeLimit)
+                    .Min(1)
+                    .Format("#")
+                    .Step(1)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на максимално време в милисекунди, които състезателят може да достигне с решението си върху задачата" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.TimeLimit)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.MemoryLimit) (в B)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.MemoryLimit)
+                    .Format("#")
+                    .Min(1)
+                    .Step(1)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на максималнaта памет в байтове, която състезателят може да достигне с решението си върху задачата" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.MemoryLimit)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.SourceCodeSizeLimit) (в B)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    <input type="checkbox" id="enable-sclimit" />
+                    <strong>Да</strong>
+                    @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.SourceCodeSizeLimit)
+                    .Format("#")
+                    .Min(1)
+                    .Step(1)
+                    .Enable(false)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на максималния размер на сорс код в байтове, която състезателят може да изпрати като решение на задачата" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Настройки</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.Checker)
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    @(Html.Kendo()
+                    .DropDownListFor(m => m.Checker)
+                    .BindTo(Model.AvailableCheckers)
+                    .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
+                    @Html.ValidationMessageFor(m => m.Checker)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.OrderBy)
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.OrderBy)
+                    .Format("#")
+                    .Min(0)
+                    .Step(1)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Промяна на номер под ред на задачата в текущото състезание" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.OrderBy)
+                </div>
+            </div>
+        </fieldset>
+        <br />
+        <div class="row">
+            <div class="editor-label col-xs-5">
+                <button type="submit" class="btn btn-primary pull-right">Промяна</button>
+            </div>
+            <div class="editor-label col-xs-3">
+                <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+            </div>
+        </div>
+    }
+</div>
+
+@(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+
+<script type="text/x-kendo-template" id="checkers-template">
+    <div>
+        Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:
+    </div>
+    <ul>
+        <li>
+            <strong>Exact</strong> - системата проверява резултатите на състезателя с очаквания изход символ по символ;
+        </li>
+        <li>
+            <strong>Trim</strong> - системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;
+        </li>
+        <li>
+            <strong>Sort</strong> - системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;
+        </li>
+        <li>
+            <strong>Case-insensitive</strong> - системата не отчита разлика между главна и малка буква като сравнява символ по символ;
+        </li>
+        <li>
+            <strong>Precision N</strong> - само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.
+        </li>
+    </ul>
+</script>
+
+@section scripts {
+    <script src="~/Scripts/Administration/Problems/problems-edit.js"></script>
+}

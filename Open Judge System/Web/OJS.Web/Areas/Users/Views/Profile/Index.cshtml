@@ -1,0 +1,18 @@
+﻿@model OJS.Data.Models.UserProfile
+
+@{
+    ViewBag.Title = "Профил";
+}
+
+<div class="row">
+    @if (Model == null)
+    {
+        <div class="alert alert-info">
+            Грешка - невалиден профил.
+        </div>
+    }
+    else
+    {
+        @Html.Partial("_ProfileInfo", Model)
+    }
+</div>

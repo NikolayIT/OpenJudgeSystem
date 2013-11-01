@@ -1,0 +1,608 @@
+namespace OJS.Data.Migrations
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    using OJS.Common.Models;
+    using OJS.Data.Models;
+
+    public class DefaultMigrationConfiguration : DbMigrationsConfiguration<OjsDbContext>
+    {
+        public DefaultMigrationConfiguration()
+        {
+            this.AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationDataLossAllowed = true;
+        }
+
+        protected override void Seed(OjsDbContext context)
+        {
+            // this.SeedSubmissionsAndTestRuns(context);
+            // this.SeedRoles(context);
+            // this.SeedCheckers(context);
+            // this.SeedSubmissionTypes(context);
+            // this.SeedContests(context);
+            // this.SeedLongNews(context);
+            // this.SeedRandomContests(context);
+            // this.SeedProblem(context);
+            // this.SeedTest(context);
+            // this.SeedCategoryContestProblem(context);
+        }
+
+        // TODO: Add seed with .Any()
+
+        public void SeedRoles(OjsDbContext context)
+        {
+            foreach (var entity in context.Roles)
+            {
+                context.Roles.Remove(entity);
+            }
+
+            context.Roles.Add(new IdentityRole("Administrator"));
+        }
+
+        public void SeedCheckers(OjsDbContext context)
+        {
+            context.Checkers.AddOrUpdate(
+                x => x.Name,
+                new Checker
+                {
+                    Name = "Exact",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "ExactChecker",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Trim",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "TrimChecker",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Sort lines",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "SortLinesChecker",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Case-insensitive",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "CaseInsensitiveChecker",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Precision checker - 14",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "PrecisionChecker",
+                    Parameter = "14",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Precision checker - 7",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "PrecisionChecker",
+                    Parameter = "7",
+                    IsProblemSpecific = false,
+                },
+                new Checker
+                {
+                    Name = "Precision checker - 3",
+                    DllFile = "OJS.Workers.Checkers.dll",
+                    ClassName = "PrecisionChecker",
+                    Parameter = "3",
+                    IsProblemSpecific = false,
+                });
+
+            context.SaveChanges();
+        }
+
+        private void SeedCategoryContestProblem(OjsDbContext context)
+        {
+            foreach (var categoryToBeDeleted in context.ContestCategories)
+            {
+                context.ContestCategories.Remove(categoryToBeDeleted);
+            }
+
+            foreach (var contestToBeDeleted in context.Contests)
+            {
+                context.Contests.Remove(contestToBeDeleted);
+            }
+
+            foreach (var problemToBeDeleted in context.Problems)
+            {
+                context.Problems.Remove(problemToBeDeleted);
+            }
+
+            var category = new ContestCategory
+            {
+                Name = "Category",
+                OrderBy = 1,
+                IsVisible = true,
+                IsDeleted = false,
+            };
+
+            var otherCategory = new ContestCategory
+            {
+                Name = "Other Category",
+                OrderBy = 1,
+                IsVisible = true,
+                IsDeleted = false,
+            };
+
+            var contest = new Contest
+            {
+                Name = "Contest",
+                OrderBy = 1,
+                PracticeStartTime = DateTime.Now.AddDays(-2),
+                StartTime = DateTime.Now.AddDays(-2),
+                IsVisible = true,
+                IsDeleted = false,
+                Category = category
+            };
+
+            var otherContest = new Contest
+            {
+                Name = "Other Contest",
+                OrderBy = 2,
+                PracticeStartTime = DateTime.Now.AddDays(-2),
+                StartTime = DateTime.Now.AddDays(-2),
+                IsVisible = true,
+                IsDeleted = false,
+                Category = category
+            };
+
+            var problem = new Problem
+            {
+                Name = "Problem",
+                MaximumPoints = 100,
+                TimeLimit = 10,
+                MemoryLimit = 10,
+                OrderBy = 1,
+                ShowResults = true,
+                IsDeleted = false,
+                Contest = contest
+            };
+
+            var otherProblem = new Problem
+            {
+                Name = "Other Problem",
+                MaximumPoints = 100,
+                TimeLimit = 10,
+                MemoryLimit = 10,
+                OrderBy = 1,
+                ShowResults = true,
+                IsDeleted = false,
+                Contest = contest
+            };
+
+            var test = new Test
+            {
+                InputDataAsString = "Input",
+                OutputDataAsString = "Output",
+                OrderBy = 0,
+                IsTrialTest = false,
+                Problem = problem,
+            };
+
+            var user = new UserProfile
+            {
+                UserName = "Ifaka",
+                Email = "Nekav@nekav.com"
+            };
+
+            var participant = new Participant
+            {
+                Contest = contest,
+                IsOfficial = false,
+                User = user
+            };
+
+            var submission = new Submission
+            {
+                Problem = problem,
+                Participant = participant,
+                CreatedOn = DateTime.Now
+            };
+
+            for (int i = 0; i < 10; i++)
+            {
+                test.TestRuns.Add(new TestRun
+                {
+                    MemoryUsed = 100,
+                    TimeUsed = 100,
+                    CheckerComment = "Checked!",
+                    ExecutionComment = "Executed!",
+                    ResultType = TestRunResultType.CorrectAnswer,
+                    Submission = submission
+                });
+            }
+
+            context.Problems.Add(problem);
+            contest.Problems.Add(otherProblem);
+            context.Contests.Add(otherContest);
+            context.ContestCategories.Add(otherCategory);
+            context.Tests.Add(test);
+        }
+
+        private void SeedSubmissionsAndTestRuns(OjsDbContext context)
+        {
+            foreach (var submission in context.Submissions)
+            {
+                context.Submissions.Remove(submission);
+            }
+
+            foreach (var testRun in context.TestRuns)
+            {
+                context.TestRuns.Remove(testRun);
+            }
+
+            foreach (var participantToDelete in context.Participants)
+            {
+                context.Participants.Remove(participantToDelete);
+            }
+
+            Random random = new Random();
+
+            List<TestRun> testRuns = new List<TestRun>();
+
+            var test = new Test
+            {
+                IsTrialTest = false,
+                OrderBy = 1
+            };
+
+            for (int i = 0; i < 1000; i++)
+            {
+                testRuns.Add(new TestRun
+                    {
+                        TimeUsed = random.Next() % 10 + 1,
+                        MemoryUsed = random.Next() % 1500 + 200,
+                        ResultType = (TestRunResultType)(random.Next() % 5),
+                        Test = test
+                    });
+            }
+
+            var contest = new Contest
+            {
+                Name = "Contest batka 2",
+                StartTime = DateTime.Now.AddDays(1),
+                EndTime = DateTime.Now.AddDays(2),
+                IsDeleted = false,
+                IsVisible = true,
+                OrderBy = 1
+            };
+
+            var problem = new Problem
+            {
+                OldId = 0,
+                Contest = contest,
+                Name = "Problem",
+                MaximumPoints = 100,
+                MemoryLimit = 100,
+                OrderBy = 1
+            };
+
+            var user = new UserProfile
+            {
+                UserName = "Ifaka",
+                Email = "Nekav@nekav.com"
+            };
+
+            var participant = new Participant
+            {
+                Contest = contest,
+                IsOfficial = false,
+                User = user
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                var submission = new Submission
+                {
+                    Problem = problem,
+                    Participant = participant
+                };
+
+                for (int j = 0; j < random.Next() % 20 + 5; j++)
+                {
+                    submission.TestRuns.Add(testRuns[random.Next() % 1000]);
+                }
+
+                context.Submissions.Add(submission);
+            }
+        }
+
+        private void SeedContest(OjsDbContext context)
+        {
+            foreach (var entity in context.Contests)
+            {
+                context.Contests.Remove(entity);
+            }
+
+            context.Contests.Add(new Contest
+            {
+                Name = "Contest",
+            });
+
+            context.SaveChanges();
+        }
+
+        private void SeedProblem(OjsDbContext context)
+        {
+            foreach (var problem in context.Problems)
+            {
+                context.Problems.Remove(problem);
+            }
+
+            var contest = context.Contests.FirstOrDefault(x => x.Name == "Contest");
+
+            contest.Problems.Add(new Problem
+            {
+                Name = "Problem"
+            });
+
+            contest.Problems.Add(new Problem
+            {
+                Name = "Other problem"
+            });
+
+            context.SaveChanges();
+        }
+
+        private void SeedTest(OjsDbContext context)
+        {
+            foreach (var entity in context.Tests)
+            {
+                context.Tests.Remove(entity);
+            }
+
+            var selectedProblem = context.Problems.FirstOrDefault(x => x.Name == "Problem" && !x.IsDeleted);
+
+            selectedProblem.Tests.Add(new Test
+            {
+                InputDataAsString = "Trial input test 1",
+                OutputDataAsString = "Trial output test 1",
+                IsTrialTest = true
+            });
+
+            selectedProblem.Tests.Add(new Test
+            {
+                InputDataAsString = "Trial input test 2",
+                OutputDataAsString = "Trial output test 2",
+                IsTrialTest = true
+            });
+
+            for (int i = 0; i < 10; i++)
+            {
+                selectedProblem.Tests.Add(new Test
+                {
+                    InputDataAsString = i.ToString(),
+                    OutputDataAsString = (i + 1).ToString(),
+                    IsTrialTest = false
+                });
+            }
+
+            var otherProblem = context.Problems.FirstOrDefault(x => x.Name == "Other problem" && !x.IsDeleted);
+
+            otherProblem.Tests.Add(new Test
+            {
+                InputDataAsString = "Trial input test 1 other",
+                OutputDataAsString = "Trial output test 1 other",
+                IsTrialTest = true
+            });
+
+            otherProblem.Tests.Add(new Test
+            {
+                InputDataAsString = "Trial input test 2 other",
+                OutputDataAsString = "Trial output test 2 other",
+                IsTrialTest = true
+            });
+
+            for (int i = 0; i < 10; i++)
+            {
+                otherProblem.Tests.Add(new Test
+                {
+                    InputDataAsString = i.ToString() + "other",
+                    OutputDataAsString = (i + 1).ToString() + "other",
+                    IsTrialTest = false
+                });
+            }
+        }
+
+        public void SeedSubmissionTypes(OjsDbContext context)
+        {
+            foreach (var entity in context.SubmissionTypes)
+            {
+                context.SubmissionTypes.Remove(entity);
+            }
+
+            context.SaveChanges();
+
+            context.SubmissionTypes.AddOrUpdate(
+                x => x.Name,
+                new SubmissionType
+                    {
+                        Name = "C# code",
+                        CompilerType = CompilerType.CSharp,
+                        AdditionalCompilerArguments =
+                            "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
+                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                        IsSelectedByDefault = true,
+                    },
+                new SubmissionType
+                    {
+                        Name = "C++ code",
+                        CompilerType = CompilerType.CPlusPlus,
+                        AdditionalCompilerArguments =
+                            "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                        IsSelectedByDefault = false,
+                    },
+                new SubmissionType
+                    {
+                        Name = "JavaScript code (NodeJS)",
+                        CompilerType = CompilerType.None,
+                        AdditionalCompilerArguments = string.Empty,
+                        ExecutionStrategyType = ExecutionStrategyType.JsExecuteWithNodeJsAndCheck,
+                        IsSelectedByDefault = false,
+                    });
+
+            context.SaveChanges();
+        }
+
+        private void SeedLongNews(OjsDbContext context)
+        {
+            foreach (var news in context.News)
+            {
+                context.News.Remove(news);
+            }
+
+            for (int i = 1; i < 150; i++)
+            {
+                context.News.Add(
+                new News
+                {
+                    IsVisible = true,
+                    Author = "Author",
+                    Source = "Source",
+                    Title = "News " + i,
+                    Content = "Very Some long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long news",
+                });
+
+                context.News.Add(
+                    new News
+                    {
+                        Author = "Author",
+                        Source = "Source",
+                        IsVisible = false,
+                        Title = "This should not be visible!",
+                        Content = "Very Some long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long news",
+                    });
+            }
+        }
+
+        private void SeedRandomContests(OjsDbContext context)
+        {
+            foreach (var contest in context.Contests)
+            {
+                context.Contests.Remove(contest);
+            }
+
+            var category = new ContestCategory
+            {
+                Name = "Category",
+                OrderBy = 1,
+                IsVisible = true,
+                IsDeleted = false,
+            };
+
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "DSA future",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(10),
+                    EndTime = DateTime.Now.AddHours(19),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "DSA 2 out",
+                    IsVisible = false,
+                    StartTime = DateTime.Now.AddHours(10),
+                    EndTime = DateTime.Now.AddHours(19),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "DSA 3 past",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-10),
+                    EndTime = DateTime.Now.AddHours(-8),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "DSA 2 active",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-2),
+                    EndTime = DateTime.Now.AddHours(2),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps another active",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-2),
+                    EndTime = DateTime.Now.AddHours(2),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps another active 2",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-2),
+                    EndTime = DateTime.Now.AddHours(2),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps another active 3",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-2),
+                    EndTime = DateTime.Now.AddHours(2),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps 2 past",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-10),
+                    EndTime = DateTime.Now.AddHours(-8),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps 3 past",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(-10),
+                    EndTime = DateTime.Now.AddHours(-8),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps 3 past",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(10),
+                    EndTime = DateTime.Now.AddHours(18),
+                    Category = category,
+                });
+            context.Contests.Add(
+                new Contest
+                {
+                    Name = "JS Apps 3 past",
+                    IsVisible = true,
+                    StartTime = DateTime.Now.AddHours(10),
+                    EndTime = DateTime.Now.AddHours(18),
+                    Category = category,
+                });
+        }
+    }
+}

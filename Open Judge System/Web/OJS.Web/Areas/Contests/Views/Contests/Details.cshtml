@@ -1,0 +1,83 @@
+﻿@using OJS.Web.Areas.Contests.ViewModels
+@using OJS.Data.Models;
+@model ContestViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Детайли за състезанието</h3>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            @Model.Description
+        }
+        else
+        {
+            <div>Няма описание на избраното състезание.</div>
+        }
+        <h5>
+            Позволени езици:
+            @foreach (var submissionType in Model.AllowedSubmissionTypes)
+            {
+                <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name })</span>
+            }
+        </h5>
+    </div>
+    <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
+        <h3>Задачи: </h3>
+        @if (Model.CanBePracticed && !Model.HasPracticePassword)
+        {
+            foreach (var problem in Model.Problems)
+            {
+                <h4>@problem.Name</h4>
+                foreach (var resource in problem.Resources)
+                {
+                    var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
+                                        Url.Action("DownloadResource", new { controller = "Practice", id = resource.ResourceId }) : resource.Link;
+                    <p>
+                        @if (resource.ProblemType == ProblemResourceType.ProblemDescription)
+                        {
+                            <span class="glyphicon glyphicon-list-alt resource-glyph"></span>
+                        }
+                        else if (resource.ProblemType == ProblemResourceType.AuthorsSolution)
+                        {
+                            <span class="glyphicon glyphicon-thumbs-up resource-glyph"></span>
+                        }
+                        else if (resource.ProblemType == ProblemResourceType.Video)
+                        {
+                            <span class="glyphicon glyphicon-facetime-video resource-glyph"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon  glyphicon-question-sign"></span>
+                        }
+                        <a href="@resourceLink" target="_blank" class="resource-link">@resource.Name</a>
+                    </p>
+                }
+            }
+        }
+        else
+        {
+            <text>
+                <p>Задачите за това състезание не са публично достъпни.</p>
+            </text>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        @if (Model.CanBeCompeted)
+        {
+            @Html.ActionLink("Участвай в състезание", "Index", new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success" })
+        }
+        @if (Model.CanBePracticed)
+        {
+            @Html.ActionLink("Практикувай", "Index", new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+        }
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@model OJS.Data.Models.FeedbackReport
+
+@{
+    ViewBag.Title = "Обратна връзка изпратена";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+<div class="container">
+    @Html.ActionLink("Начало", "Index", "Home", new { area = string.Empty }, new { @class = "btn btn-primary" } )
+</div>
+

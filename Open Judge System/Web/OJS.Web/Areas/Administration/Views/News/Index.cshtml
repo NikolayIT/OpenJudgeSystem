@@ -1,0 +1,60 @@
+﻿@model OJS.Data.Models.News
+@{
+    ViewBag.Title = "Новини";
+    const string ControllerName = "News";
+}
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().Grid<OJS.Data.Models.News>()
+    .Name("DataGrid")
+    .Columns(columns =>
+        {
+            columns.Bound(x => x.Id);
+            columns.Bound(x => x.Title);
+            columns.Bound(x => x.IsVisible);
+            columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80);
+        })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create().Text("Създай");
+        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+    })
+    .Editable(editable =>
+    {
+        editable.Mode(GridEditMode.PopUp);
+        editable.Window(w => w.Title(ViewBag.Title));
+        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+    })
+    .ColumnMenu()
+    .Events(e => e.DataBound("onDataBound"))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+    /*.Groupable(x =>
+    {
+        x.Enabled(true);
+        x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+    })*/
+    .Reorderable(x => x.Columns(true))
+    .Resizable(x => x.Columns(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Model(model => model.Id(x => x.Id))
+        .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+        .Create(create => create.Action("Create", ControllerName))
+        .Read(read => read.Action("Read", ControllerName))
+        .Update(update => update.Action("Update", ControllerName))
+        .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+    )
+)
+
+<script type="text/javascript">
+    function onDataBound(e) {
+        CreateExportToExcelButton();
+    }
+</script>

@@ -1,0 +1,112 @@
+﻿@model OJS.Web.ViewModels.News.AllNewsViewModel
+
+@{
+    ViewBag.Title = "Последни новини";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (!Model.AllNews.Any())
+{
+    <p>Няма актуални новини.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <tr class="col-md-12">
+            <td>
+                <span class="col-md-4">Заглавие</span>
+                <span class="col-md-3">Автор</span>
+                <span class="col-md-3">Източник</span>
+                Дата
+            </td>
+        </tr>
+        @foreach (var news in Model.AllNews)
+        {
+            <tr class="col-md-12">
+                <td class="text-primary">
+                    <span class="col-md-4"><a href="/News/Selected/@news.Id">@news.Title</a></span>
+                    <span class="col-md-3">@news.Author</span>
+                    <span class="col-md-3">@news.Source</span>
+                    @news.TimeCreated.ToString("dd/MM/yyyy")
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="row text-center">
+        <div class="btn-group">
+
+            @{
+    if (Model.CurrentPage <= 1)
+    {
+        <span class="btn btn-primary" disabled="disabled"><<</span>
+                <span class="btn btn-primary" disabled="disabled"><</span>
+    }
+    else
+    {
+        @Html.ActionLink("<<", "All", new { id = 1 }, new { @class = "btn btn-primary" });
+                @Html.ActionLink("<", "All", new { id = Model.CurrentPage - 1 }, new { @class = "btn btn-primary" });
+    }
+            }
+
+            @{
+    int startPage = 1;
+    int endPage = Model.AllPages;
+
+    if (Model.AllPages > 10)
+    {
+        if (Model.CurrentPage > 5)
+        {
+            startPage = Model.CurrentPage - 5;
+        }
+
+        if (Model.CurrentPage + 5 < Model.AllPages)
+        {
+            endPage = Model.CurrentPage + 5;
+        }
+    }
+            }
+
+            @{
+    if (Model.CurrentPage - 5 > 1)
+    {
+        <span class="btn btn-primary" disabled="disabled">...</span>
+    }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                if (i != Model.CurrentPage)
+                {
+                    <a class="btn btn-primary" href="/News/All/@i">@i</a>
+                }
+                else
+                {
+                    <span class="btn btn-primary" disabled="disabled">@i</span>
+                }
+            }
+
+            @{
+    if (Model.CurrentPage + 5 < Model.AllPages)
+    {
+        <span class="btn btn-primary" disabled="disabled">...</span>
+    }
+            }
+
+            @{
+    if (Model.CurrentPage >= Model.AllPages)
+    {
+        <span class="btn btn-primary" disabled="disabled">></span>
+                <span class="btn btn-primary" disabled="disabled">>></span>
+    }
+    else
+    {
+        @Html.ActionLink(">", "All", new { id = Model.CurrentPage + 1 }, new { @class = "btn btn-primary" });
+                @Html.ActionLink(">>", "All", new { id = Model.AllPages }, new { @class = "btn btn-primary" });
+    }
+            }
+
+        </div>
+    </div>
+}

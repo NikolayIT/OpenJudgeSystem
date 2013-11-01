@@ -1,0 +1,15 @@
+@model OJS.Web.Areas.Administration.ViewModels.ContestViewModel
+
+@{
+    ViewBag.Title = "Изтриване на всички задачи";
+}
+
+<h2>@Model.Name</h2>
+<h3>@ViewBag.Title</h3>
+
+<p>
+    Сигурни ли сте, че искате да изтриете всички задачи на @Model.Name?
+</p>
+<a href="/Administration/Problems/ConfirmDeleteAll/@Model.Id" class="btn btn-primary">Потвърди</a>
+<a href="/Administration/Problems/Contest/@Model.Id" class="btn btn-primary">Назад</a>
+

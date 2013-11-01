@@ -1,0 +1,577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2EF4F1B-A694-4E52-935C-7872F6CAD37C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OJS.Web</RootNamespace>
+    <AssemblyName>OJS.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>true</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <WebGreaseLibPath>..\..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.AspNet, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Glimpse.AspNet.1.4.1\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\..\packages\Glimpse.1.6.1\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc4">
+      <HintPath>..\..\packages\Glimpse.Mvc4.1.3.3\lib\net40\Glimpse.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\External Libraries\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Kendo.Mvc">
+      <HintPath>..\..\External Libraries\Kendo.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.1.0.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.2.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.2.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.2.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.2.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Facebook.2.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Google.2.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.MicrosoftAccount.2.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.2.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Twitter.2.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Ninject.3.0.2-unstable-9038\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Ninject.Web.Common.3.0.2-unstable-9012\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=1.2.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NPOI.1.2.5\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Account\Account.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Global.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectControllerFactory.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
+    <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
+    <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ContestViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\DetailedProblemViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\FeedbackReportViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemResourceGridViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemResourceViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ShortContestViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\TestRunViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\TestViewModel.cs" />
+    <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
+    <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Areas\Contests\Controllers\ContestsController.cs" />
+    <Compile Include="Areas\Contests\Controllers\ListController.cs" />
+    <Compile Include="Areas\Contests\Helpers\ContestExtensions.cs" />
+    <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
+    <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
+    <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestProblemMaterialViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestProblemViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestResultsViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ParticipantViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ProblemResultPairViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ProblemResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\QuestionViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\SubmissionResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\SubmissionTypeViewModel.cs" />
+    <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
+    <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KendoGridAdministrationController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\SubmissionsController.cs" />
+    <Compile Include="App_Start\GlimpseSecurityPolicy.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Account\ExternalLoginConfirmationViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Account\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Account\ManageUserViewModel.cs" />
+    <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestCategoryViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ContestViewModel.cs" />
+    <Compile Include="ViewModels\Home\Index\IndexContestViewModel.cs" />
+    <Compile Include="ViewModels\Home\Index\IndexViewModel.cs" />
+    <Compile Include="ViewModels\News\AllNewsViewModel.cs" />
+    <Compile Include="ViewModels\News\NewsViewModel.cs" />
+    <Compile Include="ViewModels\News\SelectedViewModel.cs" />
+    <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
+    <Compile Include="ViewModels\Test Run\TestRunViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\bootstrap-theme-cyborg.css" />
+    <Content Include="Content\bootstrap\bootstrap-theme-cyborg.min.css" />
+    <Content Include="Content\bootstrap\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap\bootstrap.css" />
+    <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\CodeMirror\codemirror.css" />
+    <Content Include="Content\CodeMirror\theme\3024-day.css" />
+    <Content Include="Content\CodeMirror\theme\3024-night.css" />
+    <Content Include="Content\CodeMirror\theme\ambiance-mobile.css" />
+    <Content Include="Content\CodeMirror\theme\ambiance.css" />
+    <Content Include="Content\CodeMirror\theme\base16-dark.css" />
+    <Content Include="Content\CodeMirror\theme\base16-light.css" />
+    <Content Include="Content\CodeMirror\theme\blackboard.css" />
+    <Content Include="Content\CodeMirror\theme\cobalt.css" />
+    <Content Include="Content\CodeMirror\theme\eclipse.css" />
+    <Content Include="Content\CodeMirror\theme\elegant.css" />
+    <Content Include="Content\CodeMirror\theme\erlang-dark.css" />
+    <Content Include="Content\CodeMirror\theme\lesser-dark.css" />
+    <Content Include="Content\CodeMirror\theme\midnight.css" />
+    <Content Include="Content\CodeMirror\theme\monokai.css" />
+    <Content Include="Content\CodeMirror\theme\neat.css" />
+    <Content Include="Content\CodeMirror\theme\night.css" />
+    <Content Include="Content\CodeMirror\theme\rubyblue.css" />
+    <Content Include="Content\CodeMirror\theme\solarized.css" />
+    <Content Include="Content\CodeMirror\theme\tomorrow-night-eighties.css" />
+    <Content Include="Content\CodeMirror\theme\twilight.css" />
+    <Content Include="Content\CodeMirror\theme\vibrant-ink.css" />
+    <Content Include="Content\CodeMirror\theme\xq-dark.css" />
+    <Content Include="Content\CodeMirror\theme\xq-light.css" />
+    <Content Include="Content\Contests\results-page.css" />
+    <Content Include="Content\Contests\submission-page.css" />
+    <Content Include="Content\docs.css" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Fonts\glyphiconshalflings-regular.svg" />
+    <Content Include="Content\KendoUI\Black\editor.png" />
+    <Content Include="Content\KendoUI\Black\imagebrowser.png" />
+    <Content Include="Content\KendoUI\Black\loading-image.gif" />
+    <Content Include="Content\KendoUI\Black\loading.gif" />
+    <Content Include="Content\KendoUI\Black\loading_2x.gif" />
+    <Content Include="Content\KendoUI\Black\slider-h.gif" />
+    <Content Include="Content\KendoUI\Black\slider-v.gif" />
+    <Content Include="Content\KendoUI\Black\sprite.png" />
+    <Content Include="Content\KendoUI\Black\sprite_2x.png" />
+    <Content Include="Content\KendoUI\kendo.black.css" />
+    <Content Include="Content\KendoUI\kendo.common.css" />
+    <Content Include="Content\KendoUI\textures\brushed-metal.png" />
+    <Content Include="Content\KendoUI\textures\dots1.png" />
+    <Content Include="Content\KendoUI\textures\dots10.png" />
+    <Content Include="Content\KendoUI\textures\dots11.png" />
+    <Content Include="Content\KendoUI\textures\dots12.png" />
+    <Content Include="Content\KendoUI\textures\dots13.png" />
+    <Content Include="Content\KendoUI\textures\dots2.png" />
+    <Content Include="Content\KendoUI\textures\dots3.png" />
+    <Content Include="Content\KendoUI\textures\dots4.png" />
+    <Content Include="Content\KendoUI\textures\dots5.png" />
+    <Content Include="Content\KendoUI\textures\dots6.png" />
+    <Content Include="Content\KendoUI\textures\dots7.png" />
+    <Content Include="Content\KendoUI\textures\dots8.png" />
+    <Content Include="Content\KendoUI\textures\dots9.png" />
+    <Content Include="Content\KendoUI\textures\glass-lighter.png" />
+    <Content Include="Content\KendoUI\textures\glass.png" />
+    <Content Include="Content\KendoUI\textures\highlight.png" />
+    <Content Include="Content\KendoUI\textures\hsv-gradient.png" />
+    <Content Include="Content\KendoUI\textures\hue.png" />
+    <Content Include="Content\KendoUI\textures\leather1.png" />
+    <Content Include="Content\KendoUI\textures\leather2.png" />
+    <Content Include="Content\KendoUI\textures\noise.png" />
+    <Content Include="Content\KendoUI\textures\stripe1.png" />
+    <Content Include="Content\KendoUI\textures\stripe2.png" />
+    <Content Include="Content\KendoUI\textures\stripe3.png" />
+    <Content Include="Content\KendoUI\textures\stripe4.png" />
+    <Content Include="Content\KendoUI\textures\stripe5.png" />
+    <Content Include="Content\KendoUI\textures\stripe6.png" />
+    <Content Include="Content\KendoUI\textures\transparency.png" />
+    <Content Include="Content\KendoUI\textures\transtexture.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Areas\Administration\Views\Web.Config" />
+    <Content Include="Areas\Administration\Views\News\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Navigation\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\Index.cshtml" />
+    <Content Include="Scripts\Administration\Problems\problems-create.js" />
+    <Content Include="Scripts\Administration\Problems\problems-edit.js" />
+    <Content Include="Scripts\Administration\Problems\problems-index.js" />
+    <Content Include="Scripts\Administration\Resources\resources-create.js" />
+    <Content Include="Scripts\Administration\Resources\resources-edit.js" />
+    <Content Include="Scripts\Administration\Tests\tests-details.js" />
+    <Content Include="Scripts\Administration\Tests\tests-index.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CodeMirror\codemirror.js" />
+    <Content Include="Scripts\CodeMirror\mode\clike.js" />
+    <Content Include="Scripts\CodeMirror\mode\javascript.js" />
+    <Content Include="Scripts\Contests\submission-page.js" />
+    <Content Include="Scripts\Countdown\countdown.min.js" />
+    <Content Include="Scripts\global.js" />
+    <Content Include="Areas\Administration\Views\ContestCategories\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\ContestCategories\Hierarchy.cshtml" />
+    <Content Include="App_Code\ContestsHelper.cshtml" />
+    <Content Include="Areas\Administration\Views\Feedback\Index.cshtml" />
+    <Content Include="Areas\Users\Views\Web.Config" />
+    <Content Include="Areas\Users\Views\Profile\Index.cshtml" />
+    <Content Include="Areas\Users\Views\Shared\_ProfileInfo.cshtml" />
+    <Content Include="Areas\Users\Views\Settings\Index.cshtml" />
+    <Content Include="Areas\Contests\Views\Web.Config" />
+    <Content Include="Areas\Contests\Views\List\Index.cshtml" />
+    <Content Include="Areas\Contests\Views\List\ByCategory.cshtml" />
+    <Content Include="Areas\Contests\Views\Contests\Details.cshtml" />
+    <Content Include="Areas\Contests\Views\Compete\Index.cshtml" />
+    <Content Include="Areas\Contests\Views\Compete\Results.cshtml" />
+    <Content Include="Areas\Contests\Views\Compete\Register.cshtml" />
+    <Content Include="Areas\Contests\Views\Compete\FullResults.cshtml" />
+    <Content Include="Content\Fonts\glyphiconshalflings-regular.eot" />
+    <Content Include="Content\Fonts\glyphiconshalflings-regular.otf" />
+    <Content Include="Content\Fonts\glyphiconshalflings-regular.ttf" />
+    <Content Include="Content\Fonts\glyphiconshalflings-regular.woff" />
+    <Content Include="Areas\Administration\Views\Tests\Index.cshtml" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Administration\Views\Tests\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Tests\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Tests\Delete.cshtml" />
+    <Content Include="Areas\Administration\Views\Tests\DeleteAll.cshtml" />
+    <Content Include="Areas\Administration\Views\Tests\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\DeleteAll.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\Delete.cshtml" />
+    <Content Include="Areas\Contests\Views\Shared\_ProblemPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_QuickContestsGrid.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ProblemResourceForm.cshtml" />
+    <Content Include="Content\Demos\DemoTests.zip" />
+    <Content Include="Areas\Administration\Views\Resources\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
+    <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
+    <Content Include="JSLintNet.json" />
+    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\KendoUI\2013.2.716\cultures\kendo.culture.bg.js" />
+    <Content Include="Scripts\KendoUI\2013.2.716\cultures\kendo.culture.en-GB.js" />
+    <Content Include="Scripts\KendoUI\2013.2.716\kendo.all.js" />
+    <Content Include="Scripts\KendoUI\2013.2.716\kendo.aspnetmvc.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\_jquery-1.9.1.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Currency.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\GridForeignKey.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Integer.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Number.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
+    <Content Include="Views\News\Selected.cshtml" />
+    <Content Include="Views\Shared\_LatestNews.cshtml" />
+    <Content Include="_ViewStart.cshtml" />
+    <None Include="Settings.StyleCop" />
+    <Content Include="Views\Feedback\Index.cshtml" />
+    <Content Include="Views\Feedback\Submitted.cshtml" />
+    <Content Include="Views\News\All.cshtml" />
+    <Content Include="Views\Submissions\BasicSubmissions.cshtml" />
+    <Content Include="Views\Submissions\AdvancedSubmissions.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\QuestionViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Administration\Models\" />
+    <Folder Include="Areas\Users\Models\" />
+    <Folder Include="Scripts\CodeMirror\addon\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Global.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Account\Account.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Account.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
+      <Project>{8c4bf453-24ef-46f3-b947-31505fb905de}</Project>
+      <Name>OJS.Data.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+      <Project>{341ca732-d483-4487-923e-27ed2a6e9a4f}</Project>
+      <Name>OJS.Data.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data\OJS.Data.csproj">
+      <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
+      <Name>OJS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\OJS.Tools.OldDatabaseMigration\OJS.Tools.OldDatabaseMigration.csproj">
+      <Project>{c4144383-c1e4-4849-ba35-f063967314da}</Project>
+      <Name>OJS.Tools.OldDatabaseMigration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Web.Common\OJS.Web.Common.csproj">
+      <Project>{2e08e0af-0e51-47ca-947b-4c66086fa030}</Project>
+      <Name>OJS.Web.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1721</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:5414/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

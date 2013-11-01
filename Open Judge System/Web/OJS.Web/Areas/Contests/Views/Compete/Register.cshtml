@@ -1,0 +1,30 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.ContestRegistrationViewModel
+@{
+    ViewBag.Title = Model.ContestName;
+}
+<div class="row">
+    <div class="col-md-12">
+        <h1>@ViewBag.Title</h1>
+
+        <div>Has password: @Model.RequirePassword</div>
+        <div>Contest name: @Model.ContestName</div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    if (Model.RequirePassword)
+    {
+        <div class="editor-field">
+            <div class="editor-label">
+                @Html.LabelFor(x => x.Password)
+            </div>
+            @Html.PasswordFor(x => x.Password, new { @class = "k-textbox" })
+            @Html.ValidationMessageFor(x => x.Password)
+        </div>
+    }
+
+    @Html.EditorFor(x => x.Questions);
+
+    <input type="submit" value="Изпрати" />
+}

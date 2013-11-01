@@ -1,0 +1,15 @@
+@using OJS.Web.Areas.Administration.ViewModels
+@model IEnumerable<ShortContestViewModel>
+
+@(Html.Kendo()
+        .Grid(Model)
+        .Name("future-grid")
+        .Columns(col =>
+            {
+                col.Bound(m => m.Name);
+                col.Bound(m => m.CategoryName);
+                col.Template(@<text>
+                            <div id="contest_@item.Id" class="btn btn-sm btn-primary" data-id="@item.Id" data-clickable="grid-click">Преглед</div>  
+                            </text>);
+            }
+        ))

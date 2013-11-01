@@ -1,0 +1,66 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.DetailedProblemViewModel
+
+@{
+    ViewBag.Title = "Изтриване на задача";
+}
+<h2>@ViewBag.Title @Model.Name</h2>
+<div class="container">
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Name)
+    </div>
+    <div class="panel-body news-content editor-field">
+        @Model.Name
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.MaximumPoints)
+    </div>
+    <div class="panel-body news-content editor-field">
+        @Model.MaximumPoints
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.TimeLimit)
+    </div>
+    <div class="panel-body news-content editor-field">
+        @Model.TimeLimit
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.MemoryLimit)
+    </div>
+    <div class="panel-body news-content editor-field">
+        @Model.MemoryLimit
+    </div>
+    <br />
+    @if (Model.SourceCodeSizeLimit != null)
+    {
+        <div class="editor-label">
+        @Html.LabelFor(m => m.SourceCodeSizeLimit)
+        </div>
+        <div class="panel-body news-content editor-field">
+            @Model.SourceCodeSizeLimit
+        </div>
+        <br />
+    }
+    @if (Model.Checker != null)
+    {
+        <div class="editor-label">
+        @Html.LabelFor(m => m.Checker)
+        </div>
+        <div class="panel-body news-content editor-field">
+            @Model.Checker
+        </div>
+        <br />
+    }
+    <div class="editor-label">
+        @Html.LabelFor(m => m.OrderBy)
+    </div>
+    <div class="panel-body news-content editor-field">
+        @Model.OrderBy
+    </div>
+    <br />    
+    <a href="/Administration/Problems/ConfirmDelete/@Model.Id" class="btn btn-primary">Изтрий</a>
+    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+</div>
+

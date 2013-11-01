@@ -1,0 +1,85 @@
+﻿@model IList<OJS.Web.ViewModels.Submission.SubmissionViewModel>
+
+@{
+    ViewBag.Title = "Лог на публикациите";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-1 text-primary">
+                No
+            </th>
+            <th class="col-md-4 text-primary">
+                Изпратено от
+            </th>
+            <th class="col-md-3 text-primary">
+                Задача
+            </th>
+            <th class="col-md-4 text-primary">
+                Резултат
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>
+                    <strong>@(i + 1)</strong>
+                </td>
+                <td>
+                    <div>
+                        <strong><a href="/Users/Profile/@Model[i].ParticipantId">@Model[i].ParticipantName</a></strong>
+                    </div>
+                    <div>
+                        <small><span>@Model[i].SubmitedOn</span></small>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <strong class="text-primary">@Model[i].ProblemName</strong>
+                    </div>
+                    <div>
+                        <small>@Model[i].Contest</small>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
+                        <small>@Model[i].MaxUsedMemory KB | @(((decimal)Model[i].MaxUsedTime) / Model[i].ProblemMaximumPoints) sec.</small>
+                    </div>
+                    <div>
+                        @{
+                        var tests = Model[i].TestResults.ToList();
+
+                        for (int j = 0; j < tests.Count; j++)
+                        {
+                            switch (tests[j].ExecutionResult)
+                            {
+                                case OJS.Data.Models.TestRunResultType.CorrectAnswer:
+                                    <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
+                                    break;
+                                case OJS.Data.Models.TestRunResultType.WrongAnswer:
+                                <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
+                                    break;
+                                case OJS.Data.Models.TestRunResultType.TimeLimit:
+                                <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
+                                    break;
+                                case OJS.Data.Models.TestRunResultType.MemoryLimit:
+                                <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
+                                    break;
+                                case OJS.Data.Models.TestRunResultType.RuntimeError:
+                                <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
+                                    break;
+                            }
+                        }
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

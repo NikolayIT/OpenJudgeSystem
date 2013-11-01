@@ -1,0 +1,91 @@
+﻿body {
+    /* padding-top: 60px; */
+    padding-bottom: 40px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+ }
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* override bootstrap styles */
+.jumbotron {
+    padding: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px; /* its buggy without it */
+}
+    .jumbotron h1 {
+        color: #FFF;
+    }
+
+@media (max-width: 767px) {
+    .jumbotron h1 {
+        font-size: 48px;
+    }
+}
+
+.news-content {
+    background-color: #FFF;
+    border: 1px solid #000;
+    border-radius: 20px;
+    color: #000;
+    margin-top: 20px;
+}
+
+.profile-info-label {
+    display: inline;
+    cursor: none;
+}
+
+.k-upload {
+    display: inline-block;
+    width: auto;
+}
+
+.test-file-dropdown {
+    width: 100%;
+}
+
+.text-white {
+    color: white;
+}
+
+.drop-down-width {
+    width: 175px;
+}
+
+.full-editor {
+    width: 100%;
+    height: 30px;
+}
+
+.full-kendo-editor {
+    width: 100%;
+}
+
+.hidden-file-upload {
+    height: 0px;
+    width:0px;
+    overflow:hidden;
+}

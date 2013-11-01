@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Тестови файлове";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="container">
+    <div class="col-md-6">
+        <div>
+            <label for="search">Търсене по задача: </label>
+        </div>
+        <div>
+            @(@Html.Kendo().AutoComplete()
+            .Name("search")
+            .Placeholder("Въведи задача...")
+            .HtmlAttributes(new { @class = "test-file-dropdown" })
+            .DataTextField("Name")
+            .MinLength(3)
+            .DataSource(source =>
+            {
+                source
+                    .Read(read =>
+                    {
+                        read.Action("GetSearchedProblems", "Tests")
+                            .Data("onAdditionalData");
+                    })
+                    .ServerFiltering(true);
+            }
+            )
+            .Events(e => 
+                {
+                    e.Select("onSearchSelect");
+                }))
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-6">
+
+        <div>
+            <div>
+                <label for="categories">Категория: </label>
+            </div>
+            <div>
+                @(Html.Kendo().DropDownList()
+                .Name("categories")
+                .OptionLabel("Избери категория...")
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeCategories", "Tests");
+                    });
+                }))
+            </div>
+        </div>
+        <div>
+            <label for="contests">Състезание: </label>
+        </div>
+        <div>
+            @(Html.Kendo().DropDownList()
+            .Name("contests")
+            .OptionLabel("Избери състезание...")
+            .HtmlAttributes(new { @class = "test-file-dropdown" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetCascadeContests", "Tests")
+                        .Data("filterContests");
+                })
+                .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom("categories")
+            )
+        </div>
+        <div>
+            <label for="problems">Задача: </label>
+        </div>
+        <div>
+            @(Html.Kendo().DropDownList()
+            .Name("problems")
+            .OptionLabel("Избери проблем...")
+            .HtmlAttributes(new { @class = "test-file-dropdown" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetCascadeProblems", "Tests")
+                        .Data("filterProblems");
+                })
+                .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom("contests")
+            .Events(e => e.Change("onProblemSelect"))
+            )
+        </div>
+    </div>
+    <div id="controls">
+        @using (Html.BeginForm("Import", "Tests", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            
+            <div class="col-md-6 pull-right">
+                <div class="col-md-5">
+                    @if (ViewBag.ProblemId != null)
+                    {
+                        <input id="problemId" name="problemId" type="text" value="@ViewBag.ProblemId" />
+                    }
+                    else
+                    {
+                        <input id="problemId" name="problemId" type="text" />
+                    }
+                    @Html.Kendo().Upload().Name("file").Multiple(false).HtmlAttributes(new { @class = "kendo-upload" })
+                    <div>
+                        @Html.CheckBox("deleteOldFiles", true)
+                        @Html.Label("Изтриване на стари тестове", new { @for = "deleteOldFiles", style = "display: inline-block; " })
+                    </div>
+                </div>
+                <div class="col-md-4 pull-right">
+                    <p>
+                        <input class="btn btn-primary" type="submit" value="Импортиране" />
+                    </p>
+                    <p>
+                        <a class="btn btn-primary" id="export" href="#">Експортиране</a>
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<br />
+<div class="jumbotron text-center text-white" id="status">Тестовете се зареждат...</div>
+<div id="grid"></div>
+
+@section scripts{
+    <script src="~/Scripts/Administration/Tests/tests-index.js"></script>
+}

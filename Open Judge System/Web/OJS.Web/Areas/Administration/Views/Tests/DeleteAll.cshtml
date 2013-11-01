@@ -1,0 +1,14 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemViewModel
+
+@{
+    ViewBag.Title = "Изтриване на всички тестове";
+}
+
+<h2>@Model.Name</h2>
+<h3>@ViewBag.Title</h3>
+
+<p>
+    Сигурни ли сте, че искате да изтриете всички тестове на @Model.Name?
+</p>
+<a href="/Administration/Tests/ConfirmDeleteAll/@Model.Id" class="btn btn-primary">Потвърди</a>
+<a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">Назад</a>

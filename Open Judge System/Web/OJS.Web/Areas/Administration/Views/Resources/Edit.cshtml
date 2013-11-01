@@ -1,0 +1,113 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemResourceViewModel
+
+@{
+    ViewBag.Title = "Промяна";
+}
+
+<h2>@ViewBag.Title на @Model.Name</h2>
+<div id="create-form" class="container">
+    @using (Html.BeginForm("Edit", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken();
+
+        <div class="row">
+            <div class="editor-label col-xs-2">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.Name)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете име на ресурса" data-tooltip="true"></span>
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="editor-label col-xs-2">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.Type)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @(Html.Kendo()
+                    .DropDownListFor(m => m.Type)
+                    .BindTo(Model.AllTypes)
+                    .Events(ev => ev.Change("onEditResourceTypeSelect"))
+                    .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или видео към задачата" data-tooltip="true"></span>
+                @Html.ValidationMessageFor(m => m.Type)
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="editor-label col-xs-2">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.OrderBy)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.OrderBy)
+                    .Format("#")
+                    .Min(0)
+                    .Step(1)
+                    .Spinners(false)
+                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете подредба на ресурса" data-tooltip="true"></span>
+                @Html.ValidationMessageFor(m => m.OrderBy)
+            </div>
+        </div>
+        <br />
+        <div class="row" id="link-input">
+            <div class="editor-label col-xs-2">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.Link)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @Html.TextBoxFor(m => m.Link, new { @class = "form-control pull-left full-editor" })
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк към видеото" data-tooltip="true"></span>
+                @Html.ValidationMessage("Link")
+            </div>
+        </div>
+        <div class="row" id="file-select">
+            <div class="editor-label col-xs-2">
+                <strong class="pull-right">Файл</strong>
+            </div>
+            <div class="editor-field col-xs-4">
+                <div id="file-button-resource" class="btn btn-sm btn-primary full-editor">Избери файл</div>
+                <div class="hidden-file-upload">
+                    <input type="file" name="File" id="input-file-resource" />
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете файл за ресурса" data-tooltip="true"></span>
+                @Html.ValidationMessage("File")
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="editor-label col-xs-6">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-sm btn-primary">Промени</button>
+                    <a href="/Administration/Problems/Resource/@Model.ProblemId" class="btn btn-sm btn-primary">Назад</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+
+@section scripts {
+    <script src="~/Scripts/Administration/Resources/resources-edit.js"></script>
+}

@@ -1,0 +1,98 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.ParticipantViewModel
+@{
+    ViewBag.Title = Model.Contest.Name;
+}
+
+@section styles {
+    @Styles.Render("~/Content/CodeMirror/codemirror", "~/Content/Contests/submission-page")
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/codemirror")
+}
+
+<script src="/Scripts/Helpers/test-runs-glyphicons.js"></script>
+<script src="/Scripts/Countdown/countdown.min.js"></script>
+<script src="/Scripts/Contests/submission-page.js"></script>
+
+<h1>
+    <a href="@ContestsHelper.GetUrl(Model.Contest.Id, Model.Contest.Name)">@Model.Contest.Name</a>
+</h1>
+
+@{
+    var contestIsCompete = Model.Contest.EndTime > DateTime.Now && ViewBag.CompeteType == "Compete";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <h2>Изпратете решение</h2>
+    </div>
+    <div class="col-md-3" id="countdown-timer-container">
+        <div class="clearfix"></div>
+        <div class="pull-right">@Html.ActionLink("Резултати", "Results", new { controller = ViewBag.CompeteType, id = Model.Contest.Id })</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo().TabStrip()
+        .Name("SubmissionsTabStrip")
+        .Items(tabstrip =>
+        {
+            foreach (var problem in Model.Contest.Problems)
+            {
+                tabstrip.Add()
+                    .Text(problem.Name)
+                    .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
+            }
+        })
+        .SelectedIndex(0)
+        .Events(ev =>
+        {
+            ev.ContentLoad("createCodeMirrorForTextBox");
+        })
+        )
+    </div>
+</div>
+
+<script type="text/javascript">
+    var validateSubmit = (function () {
+        var submitTime;
+
+        @if(Model.LastSubmissionTime != null) {
+        <text>
+        submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+        </text>
+        };
+
+        var limitBetweenSubmissions = parseInt(@Model.Contest.LimitBetweenSubmissions);
+
+        function validateSubmit() {
+            var timeValidator = new submissionTimeValidator(submitTime, limitBetweenSubmissions);
+            var validationResult = validateSubmissionContent() && timeValidator.validate();
+
+            return validationResult;
+        }
+
+        return validateSubmit;
+    })();
+
+    @if (contestIsCompete)
+    {
+    <text>
+    $('#countdown-timer-container').prepend('<div id="countdown-timer">Оставащо време <span id="hours-remaining">' +
+        '</span> ч. <span id="minutes-remaining"></span> мин. и <span id="seconds-remaining"></span> сек.</div>');
+
+    var contestTimer = new countdownTimer({
+        year: "@Model.Contest.EndTime.Value.Year",
+        month: "@(Model.Contest.EndTime.Value.Month - 1)",
+        day: "@Model.Contest.EndTime.Value.Day",
+        hour: "@Model.Contest.EndTime.Value.Hour",
+        minute: "@Model.Contest.EndTime.Value.Minute",
+        second: "@Model.Contest.EndTime.Value.Second"
+    });
+
+    contestTimer.start();
+    </text>
+    }
+</script>

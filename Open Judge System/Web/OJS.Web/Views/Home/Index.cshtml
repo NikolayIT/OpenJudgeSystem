@@ -1,0 +1,101 @@
+﻿@model OJS.Web.ViewModels.Home.Index.IndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="pull-left col-md-6">
+            <h1>BGCoder</h1>
+            <p class="lead">Онлайн задачи по програмиране.</p>
+            @if (Model.ActiveContests.Any())
+            {
+                <div class="fb-like" data-href="http://bgcoder.com" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
+            }
+        </div>
+        <div class="pull-right col-md-5">
+            @if (Model.ActiveContests.Any())
+            {
+                <h2>Активни състезания</h2>
+                <table class="table table-hover">
+                    @if (Model.ActiveContests.Count() <= 3)
+                    {
+                        foreach (var contest in Model.ActiveContests)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
+                                    <small>Оставащо време: @((int)((contest.EndTime.Value - DateTime.Now)).TotalHours) час(а) и @((contest.EndTime.Value - DateTime.Now).Minutes) минути</small>
+                                </td>
+                                <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">Участвай</a></td>
+                            </tr>
+                        }
+                    } else {
+                        foreach (var contest in Model.ActiveContests)
+                        {
+                            <tr>
+                                <td class="">
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            }
+            else
+            {
+                <div class="fb-like" data-href="http://bgcoder.com" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Новини</h2>
+        @{Html.RenderAction("LatestNews", "News", new { newsCount = 3 });}
+    </div>
+    <div class="col-md-4">
+        <h2>Предишни състезания</h2>
+        @if (!Model.PastContests.Any())
+        {
+            <p>Няма предишни състезания.</p>
+        }
+        else
+        {
+            <table class="table table-hover">
+                @foreach (var contest in Model.PastContests)
+                {
+                    <tr>
+                        <td>
+                            <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
+                            <p class="text-right">Приключило на: @contest.EndTime.ToString()</p>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Предстоящи състезания</h2>
+        @if (!Model.FutureContests.Any())
+        {
+            <p>Няма предстоящи състезания.</p>
+        }
+        else
+        {
+            <table class="table table-hover">
+                @foreach (var contest in Model.FutureContests)
+                {
+                    <tr>
+                        <td>
+                            <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
+                            <p class="text-right">Започва на: @contest.StartTime.ToString()</p>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+    </div>
+</div>

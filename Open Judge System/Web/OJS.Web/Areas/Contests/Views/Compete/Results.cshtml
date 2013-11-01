@@ -1,0 +1,48 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.ContestResultsViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@section Styles { 
+    <link href="/Content/Contests/results-page.css" rel="stylesheet"/>
+}
+
+<h1>Резултати за @ViewBag.Title</h1>
+
+<table class="table-bordered table-striped text-white text-center">
+    <thead>
+        <tr>
+            <th>Потребител</th>
+            @foreach (var problem in Model.Problems)
+            {
+                <th>@problem.Name</th>
+            }
+            <th>Общо</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var participant in Model.Results)
+        {
+            <tr>
+                <td>@participant.ParticipantName</td>
+
+                @foreach (var problem in Model.Problems)
+                {
+                    var result = participant.ProblemResults.FirstOrDefault(x => x.Id == problem.ProblemId);
+
+                    if (result != null)
+                    {
+                        <td>@result.Result</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
+                }
+
+                <td>@participant.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>

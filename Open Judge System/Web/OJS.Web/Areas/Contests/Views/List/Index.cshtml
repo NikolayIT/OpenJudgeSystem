@@ -1,0 +1,43 @@
+﻿@using OJS.Web.Areas.Contests.ViewModels
+@model IEnumerable<ContestViewModel>
+@{
+    ViewBag.Title = "Архив състезания";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>@ViewBag.Title</h2>
+        @(Html.Kendo().TreeView()
+              .Name("contestsCategories")
+              .DataTextField("Name")
+              .DataSource(dataSource => dataSource
+                  .Read(read => read
+                      .Action("ReadCategories", "List", new { area = "Contests" })
+                  )
+              )
+              .Events(x => x.Select("categorySelected"))
+        )
+    </div>
+    <div class="col-md-9">
+        <div id="contestsList">
+            <h3>Изберете категория от списъка в ляво, за да видите състезанията в нея.</h3>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function categorySelected(e) {
+        $("#contestsList").html("");
+        $("#contestsList").addClass("k-loading");
+
+        this.expand(e.node);
+
+        var treeview = $("#contestsCategories").data("kendoTreeView");
+        var element = treeview.dataItem(e.node);
+
+        $("#contestsList").load("/Contests/List/ByCategory/" + element.id,
+            function () {
+                $("#contestsList").removeClass("k-loading");
+            });
+    }
+</script>

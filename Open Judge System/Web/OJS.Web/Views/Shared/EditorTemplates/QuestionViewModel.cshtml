@@ -1,0 +1,16 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.QuestionViewModel
+
+<div>
+    @Html.HiddenFor(x => x.QuestionId)
+
+    <div>
+        @Html.DisplayFor(x => x.Question)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Answer, Html.ValueFor(x => x.Question))
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Answer)
+        @Html.ValidationMessageFor(x => x.Answer)
+    </div>
+</div>

@@ -1,0 +1,185 @@
+﻿namespace OJS.Web.Areas.Contests.ViewModels
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+
+    using OJS.Data.Models;
+
+    public class ContestViewModel
+    {
+        public ContestViewModel()
+        {
+        }
+
+        public static Expression<Func<Contest, ContestViewModel>> FromContest
+        {
+            get
+            {
+                return
+                    contest =>
+                    new ContestViewModel
+                                  {
+                                      Id = contest.Id,
+                                      Name = contest.Name,
+                                      StartTime = contest.StartTime,
+                                      EndTime = contest.EndTime,
+                                      PracticeStartTime = contest.PracticeStartTime,
+                                      PracticeEndTime = contest.PracticeEndTime,
+                                      IsDeleted = contest.IsDeleted,
+                                      IsVisible = contest.IsVisible,
+                                      ContestPassword = contest.ContestPassword,
+                                      PracticePassword = contest.PracticePassword,
+                                      HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
+                                      HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
+                                      OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
+                                      PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
+                                      ProblemsCount = contest.Problems.Count(),
+                                      Problems = contest.Problems.AsQueryable().OrderBy(x => x.Name).Select(ContestProblemViewModel.FromProblem),
+                                      LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
+                                      Description = contest.Description,
+                                      AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType)
+                                  };
+            }
+        }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime? StartTime { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+        public DateTime? PracticeStartTime { get; set; }
+
+        public DateTime? PracticeEndTime { get; set; }
+
+        public int LimitBetweenSubmissions { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public bool IsVisible { get; set; }
+
+        public string ContestPassword { get; set; }
+
+        public string PracticePassword { get; set; }
+
+        public bool HasContestQuestions { get; set; }
+
+        public bool HasPracticeQuestions { get; set; }
+
+        public int OfficialParticipants { get; set; }
+
+        public int PracticeParticipants { get; set; }
+
+        public int ProblemsCount { get; set; }
+
+        public IEnumerable<SubmissionTypeViewModel> AllowedSubmissionTypes { get; set; }
+
+        public IEnumerable<ContestProblemViewModel> Problems { get; set; }
+
+        public bool CanBeCompeted
+        {
+            get
+            {
+                if (!this.IsVisible)
+                {
+                    return false;
+                }
+
+                if (this.IsDeleted)
+                {
+                    return false;
+                }
+
+                if (!this.StartTime.HasValue)
+                {
+                    // Cannot be competed
+                    return false;
+                }
+
+                if (!this.EndTime.HasValue)
+                {
+                    // Compete forever
+                    return this.StartTime <= DateTime.Now;
+                }
+
+                return this.StartTime <= DateTime.Now && DateTime.Now <= this.EndTime;
+            }
+        }
+
+        public bool CanBePracticed
+        {
+            get
+            {
+                if (!this.IsVisible)
+                {
+                    return false;
+                }
+
+                if (this.IsDeleted)
+                {
+                    return false;
+                }
+
+                if (!this.PracticeStartTime.HasValue)
+                {
+                    // Cannot be practiced
+                    return false;
+                }
+
+                if (!this.PracticeEndTime.HasValue)
+                {
+                    // Practice forever
+                    return this.PracticeStartTime <= DateTime.Now;
+                }
+
+                return this.PracticeStartTime <= DateTime.Now && DateTime.Now <= this.PracticeEndTime;
+            }
+        }
+
+        public bool ResultsArePubliclyVisible
+        {
+            get
+            {
+                if (!this.IsVisible)
+                {
+                    return false;
+                }
+
+                if (this.IsDeleted)
+                {
+                    return false;
+                }
+
+                if (!this.StartTime.HasValue)
+                {
+                    // Cannot be competed
+                    return false;
+                }
+
+                return this.EndTime.HasValue && this.EndTime.Value <= DateTime.Now;
+            }
+        }
+
+        public bool HasContestPassword
+        {
+            get
+            {
+                return this.ContestPassword != null;
+            }
+        }
+
+        public bool HasPracticePassword
+        {
+            get
+            {
+                return this.PracticePassword != null;
+            }
+        }
+    }
+}

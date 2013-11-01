@@ -1,0 +1,51 @@
+@model OJS.Web.Areas.Administration.ViewModels.TestViewModel
+
+@{
+    ViewBag.Title = "Създаване на тест";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.ProblemName</h3>
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="editor-label">
+            @Html.LabelFor(m => m.InputFull)
+        </div>
+        <div class="editor-field row">
+            @Html.TextAreaFor(m => m.InputFull, new { rows = 10, @class = "col-md-12 form-control" })
+            @Html.ValidationMessageFor(m => m.InputFull)
+        </div>
+        <br />
+        <div class="editor-label">
+            @Html.LabelFor(m => m.OutputFull)
+        </div>
+        <div class="editor-field row">
+            @Html.TextAreaFor(m => m.OutputFull, new { rows = 10, @class = "col-md-12 form-control" })
+            @Html.ValidationMessageFor(m => m.OutputFull)
+        </div>
+        <br />
+        <div class="row">
+            <div class="editor-label">
+                @Html.CheckBoxFor(m => m.IsTrialTest)
+                @Html.LabelFor(m => m.IsTrialTest)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.OrderBy)
+            </div>
+            <div class="editor-label">
+                @(Html.Kendo()
+                    .NumericTextBoxFor(m => m.OrderBy)
+                    .Format("#")
+                    .Step(1)
+                    .Spinners(false))
+                @Html.ValidationMessageFor(m => m.OrderBy)
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Създай</button>
+            <a href="/Administration/Tests/Problem/@ViewBag.ProblemId" class="btn btn-primary">Назад</a>
+        </div>
+    }
+</div>

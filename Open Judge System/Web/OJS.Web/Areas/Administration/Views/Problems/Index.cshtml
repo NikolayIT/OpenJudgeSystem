@@ -1,0 +1,127 @@
+@using OJS.Web.Areas.Administration.ViewModels
+@model ProblemViewModel
+
+@{
+    ViewBag.Title = "Задача";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <div class="col-md-6">
+        @if (ViewBag.ContestId != null)
+        {
+            <input id="contestId" name="contestId" type="hidden" value="@ViewBag.ContestId" />
+        }
+        @if (ViewBag.ProblemId != null)
+        {
+            <input id="problemId" name="problemId" type="hidden" value="@ViewBag.ProblemId" />
+        }
+        <div>
+            <label for="search">Търсене по състезание: </label>
+        </div>
+        <div>
+            @(@Html.Kendo().AutoComplete()
+                .Name("search")
+                .Placeholder("Въведи състезание...")
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .Filter("contains")
+                .MinLength(3)
+                .DataSource(source =>
+                {
+                    source
+                        .Read(read =>
+                        {
+                            read.Action("GetSearchedContests", "Problems")
+                                .Data("onAdditionalData");
+                        });
+                }
+                )
+                .Events(e =>
+                    {
+                        e.Select("onSearchSelect");
+                    }))
+        </div>
+        <div>
+            <div>
+                <label for="categories">Категория: </label>
+            </div>
+            <div>
+                @(Html.Kendo().DropDownList()
+                .Name("categories")
+                .OptionLabel("Избери категория...")
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeCategories", "Problems");
+                    });
+                }))
+            </div>
+        </div>
+        <div>
+            <label for="contests">Състезание: </label>
+        </div>
+        <div>
+            @(Html.Kendo().DropDownList()
+            .Name("contests")
+            .OptionLabel("Избери състезание...")
+            .HtmlAttributes(new { @class = "test-file-dropdown" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetCascadeContests", "Problems")
+                        .Data("filterContests");
+                })
+                .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom("categories")
+            .Events(e => e.Change("onContestSelect"))
+                )
+            </div>
+    </div>
+    <div class="col-md-6">
+        <div>
+            <strong>Бърз достъп до състезания:</strong>
+        </div>
+        @(Html.Kendo()
+        .TabStrip()
+        .Name("latest-courses")
+        .Items(tabstrip =>
+        {
+            tabstrip.Add()
+                .Text("Бъдещи")
+                .Selected(true)
+                .LoadContentFrom("GetFutureContests", "Contests");
+
+            tabstrip.Add()
+                .Text("Активни")
+                .LoadContentFrom("GetActiveContests", "Contests");
+
+            tabstrip.Add()
+                .Text("Последни")
+                .LoadContentFrom("GetLatestContests", "Contests");
+        })
+        .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
+        .HtmlAttributes(new { @class = "col-md-12" }))
+    </div>
+</div>
+
+<br />
+<div class="jumbotron text-center text-white" id="status">Задачите се зареждат...</div>
+<div id="problems-grid">
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>      
+}

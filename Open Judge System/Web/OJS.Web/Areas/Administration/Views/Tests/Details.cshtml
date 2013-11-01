@@ -1,0 +1,66 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.TestViewModel
+
+@{
+    ViewBag.Title = "Детайли";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="container">
+    <div class="editor-label">
+        @Html.LabelFor(m => m.ProblemName)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.ProblemName
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Input)
+    </div>
+    <div class="panel-body news-content editor-label">
+        <pre id="test-input">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0, 200) + "..." : Model.InputFull)</pre>
+
+        @if (Model.InputFull.Length > 200)
+        {
+            @Ajax.ActionLink("Вижте още", "FullInput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-input", InsertionMode = InsertionMode.Replace, OnComplete = "removeInputAjaxLink" }, new { id = "ajax-input-link" })
+        }
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Output)
+    </div>
+    <div class="panel-body news-content editor-label">
+        <pre id ="test-output">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
+        
+        @if (Model.OutputFull.Length > 200)
+        {
+            @Ajax.ActionLink("Вижте още", "FullOutput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-output", InsertionMode = InsertionMode.Replace, OnComplete = "removeOutputAjaxLink" }, new { id = "ajax-output-link" })
+        }
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.IsTrialTest)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.IsTrialTest
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.OrderBy)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.OrderBy
+    </div>
+    <br />    
+    <div id="test-runs-grid">
+
+    </div>
+    @Ajax.ActionLink("Покажи изпълненията", "GetTestRuns", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnComplete = "initilizeTestRuns" }, new { id = "test-runs-button", @class = "btn btn-primary" })
+    <br />    
+    <br />  
+    <a href="/Administration/Tests/Edit/@Model.Id" class="btn btn-primary">Промени</a>
+    <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">Назад</a>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/Administration/Tests/tests-details.js"></script>    
+}

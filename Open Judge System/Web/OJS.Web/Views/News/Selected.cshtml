@@ -1,0 +1,37 @@
+﻿@model OJS.Web.ViewModels.News.SelectedNewsViewModel
+
+@{
+    ViewBag.Title = "News";
+}
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-8">
+
+            <h1>@Model.Title</h1>
+            <h4>Автор: @Model.Author</h4>
+            @if (!string.IsNullOrEmpty(Model.Source))
+            {
+                <h4>Източник: @Model.Source</h4>
+            }
+            <span>@Model.TimeCreated.ToString("dd/MM/yyyy")</span>
+            
+            <br />
+
+            <div>
+                <a class="btn btn-primary pull-left" href="/News/Selected/@Model.PreviousId">Предишна</a>
+                <a class="btn btn-primary pull-right" href="/News/Selected/@Model.NextId">Следваща</a>
+            </div>
+            <br />
+            <br />
+            <div class="panel-body news-content">
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2>Последни новини</h2>
+            @{Html.RenderAction("LatestNews", new { newsCount = 5 });}
+        </div>
+    </div>
+}

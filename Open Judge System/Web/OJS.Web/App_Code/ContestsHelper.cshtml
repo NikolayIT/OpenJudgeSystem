@@ -1,0 +1,6 @@
+﻿@using OJS.Common.Extensions;
+
+@helper GetUrl(int contestId, string contestName)
+{
+<text>/Contests/@contestId/@contestName.ToUrl()</text>
+}

@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Администрация";
+}
+
+<h1>@ViewBag.Title</h1>
+@Html.ActionLink("Новини", "Index", "News", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Задачи", "Index", "Problems", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Състезания", "Index", "Contests", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Категории", "Index", "ContestCategories", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Обратна връзка", "Index", "Feedback", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Йерархия на категориите", "Hierarchy", "ContestCategories", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Тестови файлове", "Index", "Tests", new { area = "Administration" }, null)<br />

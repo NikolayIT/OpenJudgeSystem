@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Йерархия на категориите състезания";
+}
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().TreeView()
+    .Name("treeview")
+    .DragAndDrop(true)
+    .DataTextField("Name")
+    .DataSource(dataSource => dataSource
+        .Read(read => read
+            .Action("ReadCategories", "ContestCategories")
+        )
+    )
+    .Events(e => e.Drop("onDrop"))
+)
+
+<script>
+    function onDrop(e) {
+        var treeView = this,
+            sourceItem = treeView.dataItem(e.sourceNode),
+            destinationItem = treeView.dataItem(e.destinationNode),
+            parent = destinationItem;
+        if (e.dropPosition != "over") {
+            parent = parent.parentNode();
+        }
+
+        $.ajax({
+            url: '@Url.Action("MoveCategory", "ContestCategories")',
+            type: "POST",
+            data: {
+                id: sourceItem.id,
+                to: parent ? parent.id : null
+            }
+        });
+    }
+</script>

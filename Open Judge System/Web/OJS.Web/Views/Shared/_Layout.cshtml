@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGCoder - @ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/css")
+    @RenderSection("styles", required: false)
+    @Scripts.Render("~/bundles/modernizr", "~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=100628983422871";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!-- TODO: Google AdSense -->
+</head>
+<body>
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">BGCoder.com</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Начало</a></li>
+                    <li><a href="/Contests/">Състезания</a></li>
+                    <li><a href="/Feedback/">Обратна връзка</a></li>
+                    <li>@Html.ActionLink("Администрация", "Index", "Navigation", new { area = "Administration" }, null)</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @if (TempData.ContainsKey("InfoMessage"))
+        {
+            <div class="alert alert-success">
+                <b>@TempData["InfoMessage"]</b>
+            </div>
+        }
+        @if (TempData.ContainsKey("DangerMessage"))
+        {
+            <div class="alert alert-danger">
+                <b>@TempData["DangerMessage"]</b>
+            </div>
+        }
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @Resources.Global.SystemName @Resources.Global.SystemVersion - running on Windows. Open source project.</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

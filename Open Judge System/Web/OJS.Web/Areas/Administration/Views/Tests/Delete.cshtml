@@ -1,0 +1,28 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.TestViewModel
+
+@{
+    ViewBag.Title = "Изтриване на тест";
+}
+<h2>@ViewBag.Title</h2>
+<div class="container">
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Input)
+    </div>
+    <div class="panel-body news-content editor-field">
+        <pre>@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0,200) + "..." : Model.InputFull)</pre>
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Output)
+    </div>
+    <div class="panel-body news-content editor-field">
+        <pre>@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
+    </div>
+    <br />
+    <div class="editor-label">
+        <strong class="text-white">@Model.TrialTestName тест</strong>
+    </div>
+    <br />
+    <a href="/Administration/Tests/ConfirmDelete/@Model.Id" class="btn btn-primary">Изтрий</a>
+    <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">Назад</a>
+</div>
