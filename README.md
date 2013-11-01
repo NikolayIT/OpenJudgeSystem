@@ -1,4 +1,7 @@
-Telerik.OJS
+Open JudgeSystem
 ===========
 
-Telerik Academy Online Judge System
+Developed by:
+* Nikolay Kostov
+* Vasil Dininski
+* Ivaylo Kenov
