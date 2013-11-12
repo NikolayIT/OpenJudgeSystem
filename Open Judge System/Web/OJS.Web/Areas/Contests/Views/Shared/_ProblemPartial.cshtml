@@ -13,7 +13,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-lg-8">
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
@@ -70,8 +70,8 @@
             }
         </div>
     </div>
-
-    <div class="col-md-3">
+    
+    <div class="col-lg-4 problem-result-container">
         @(Html.Kendo().Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
                 .ToolBar(tool =>
@@ -80,8 +80,8 @@
                 })
                 .Columns(col =>
                 {
-                    col.Bound(x => x.ParticipantName);
-                    col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#");
+                    col.Bound(x => x.ParticipantName).Width(100);
+                    col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#").Width(80);
                 })
                 .DataSource(data =>
                 {
@@ -93,6 +93,7 @@
                 .Filterable(x => x.Enabled(false))
                 .Pageable(x =>
                 {
+                    x.ButtonCount(4);
                     x.Refresh(true);
                     x.Info(false);
                 })

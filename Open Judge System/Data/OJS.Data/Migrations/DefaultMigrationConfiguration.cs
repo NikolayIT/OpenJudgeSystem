@@ -41,7 +41,7 @@ namespace OJS.Data.Migrations
                 context.Roles.Remove(entity);
             }
 
-            context.Roles.Add(new IdentityRole("Administrator"));
+            context.Roles.AddOrUpdate(new IdentityRole("Administrator"));
         }
 
         public void SeedCheckers(OjsDbContext context)

@@ -1,6 +1,8 @@
-﻿@{
-    ViewBag.Title = "Login Failure";
+﻿@using Resource = Resources.Account.Views.ExternalLoginFailure
+
+@{
+    ViewBag.Title = Resource.Error;
 }
 
 <h2>@ViewBag.Title.</h2>
-<h3 class="text-error">Unsuccessful login with service.</h3>
+<h3 class="text-error">@Resource.Unsuccessful_login</h3>

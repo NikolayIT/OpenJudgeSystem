@@ -20,7 +20,7 @@
                 );
             columns.Bound(s => s.ProblemName).Title("Задача").ClientTemplate(
                     "<div>" +
-                        "<strong class=\"text-info\">#: ProblemName #</strong>" +
+                        "<strong class=\"text-primary\">#: ProblemName #</strong>" +
                     "</div>" +
                     "<div>" +
                         "<small>#: Contest #</small>" +
@@ -28,7 +28,7 @@
                 );
             columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
                     "<div>" +
-                            "<strong class =\"text-info\">#: Points # / #: ProblemMaximumPoints #</strong>" +
+                            "<strong class =\"text-primary\">#: Points # / #: ProblemMaximumPoints #</strong>" +
                             "<small> #: MaxUsedMemory # KB | #= MaxUsedTime / 100 # sec.</small>" +
                     "</div>" +
                     "<div>" +
@@ -67,13 +67,19 @@
     function testResult(tests) {
         var result = '';
 
+        if (tests.length == 0)
+        {
+            result += '<span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>';
+            result += '<strong class="text-danger"> Compilation failed!</strong>';
+        }
+
         for (var i = 0; i < tests.length; i++) {
             switch (tests[i].ExecutionResult) {
-                case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
-                case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
-                case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
-                case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
-                case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
+            case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
+            case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
+            case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
+            case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
+            case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
             }
         }
 

@@ -34,6 +34,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">Начало</a></li>
                     <li><a href="/Contests/">Състезания</a></li>
+                    <li><a href="/Submissions/">Лог</a></li>
                     <li><a href="/Feedback/">Обратна връзка</a></li>
                     <li>@Html.ActionLink("Администрация", "Index", "Navigation", new { area = "Administration" }, null)</li>
                 </ul>
@@ -57,7 +58,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - @Resources.Global.SystemName @Resources.Global.SystemVersion - running on Windows. Open source project.</p>
+            <p>&copy; @DateTime.Now.Year - @Resources.Global.SystemName @Resources.Global.SystemVersion - running on Windows. <a href="https://github.com/NikolayIT/OpenJudgeSystem" target="_blank">Open source project.</a></p>
         </footer>
     </div>
 

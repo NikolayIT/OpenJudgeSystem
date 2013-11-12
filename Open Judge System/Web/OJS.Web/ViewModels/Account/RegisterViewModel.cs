@@ -4,19 +4,48 @@
 
     public class RegisterViewModel
     {
-        [Required]
-        [Display(Name = "User name")]
+        [Required(
+                ErrorMessageResourceName = "Username_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(
+                Name = "Username",
+                ResourceType = typeof(Resources.Account.ViewModels))]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(
+                ErrorMessageResourceName = "Enter_password",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [StringLength(
+                100,
+                ErrorMessageResourceName = "Password_length_validation_message",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels),
+                MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(
+                Name = "Password",
+                ResourceType = typeof(Resources.Account.ViewModels))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(
+                Name = "Password_confirm",
+                ResourceType = typeof(Resources.Account.ViewModels))]
+        [Compare("Password",
+                ErrorMessageResourceName = "Passwords_dont_match",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string ConfirmPassword { get; set; }
+
+        [Required(
+                ErrorMessageResourceName = "Email_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(
+                ErrorMessage = null,
+                ErrorMessageResourceName = "Email_invalid",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(
+                Name = "Email",
+                ResourceType = typeof(Resources.Account.ViewModels))]
+        public string Email { get; set; }
     }
 }

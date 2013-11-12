@@ -9,6 +9,8 @@
     @using (Html.BeginForm("Create", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken();
+        @Html.HiddenFor(m => m.ProblemId);
+        @Html.HiddenFor(m => m.ProblemName);
         
         <div class="row">
             <div class="editor-label col-xs-2">

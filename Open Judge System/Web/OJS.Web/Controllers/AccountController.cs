@@ -61,7 +61,7 @@
                     return this.RedirectToLocal(returnUrl);
                 }
                 
-                this.ModelState.AddModelError(string.Empty, Account.Invalid_username_or_password);
+                this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Invalid_username_or_password);
             }
 
             // If we got this far, something failed, redisplay form
@@ -83,7 +83,7 @@
         {
             if (ModelState.IsValid)
             {
-                var user = new UserProfile { UserName = model.UserName };
+                var user = new UserProfile { UserName = model.UserName, Email = model.Email };
                 var result = await this.UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -123,12 +123,12 @@
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage = message == ManageMessageId.ChangePasswordSuccess
-                                        ? "Your password has been changed."
+                                        ? "Паролата ви беше сменена."
                                         : message == ManageMessageId.SetPasswordSuccess
-                                              ? "Your password has been set."
+                                              ? "Паролата беше запазена."
                                               : message == ManageMessageId.RemoveLoginSuccess
-                                                    ? "The external login was removed."
-                                                    : message == ManageMessageId.Error ? "An error has occurred." : string.Empty;
+                                                    ? "Външния логин беше премахнат."
+                                                    : message == ManageMessageId.Error ? "Възникна грешка." : string.Empty;
             ViewBag.HasLocalPassword = this.HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return this.View();

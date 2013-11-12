@@ -60,9 +60,9 @@
             // TODO: add language type
 
             var submissions = this.Data.Submissions.AllPublic()
+                .OrderByDescending(x => x.CreatedOn)
                 .Take(50)
                 .Select(SubmissionViewModel.FromSubmission)
-                .OrderByDescending(x => x.SubmitedOn)
                 .ToList();
 
             return submissions;

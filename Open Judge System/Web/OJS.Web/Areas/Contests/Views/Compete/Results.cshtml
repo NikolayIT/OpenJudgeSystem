@@ -4,8 +4,8 @@
     ViewBag.Title = Model.Name;
 }
 
-@section Styles { 
-    <link href="/Content/Contests/results-page.css" rel="stylesheet"/>
+@section Styles {
+    <link href="/Content/Contests/results-page.css" rel="stylesheet" />
 }
 
 <h1>Резултати за @ViewBag.Title</h1>
@@ -27,20 +27,10 @@
             <tr>
                 <td>@participant.ParticipantName</td>
 
-                @foreach (var problem in Model.Problems)
+                @foreach (var participantResult in participant.ProblemResults)
                 {
-                    var result = participant.ProblemResults.FirstOrDefault(x => x.Id == problem.ProblemId);
-
-                    if (result != null)
-                    {
-                        <td>@result.Result</td>
-                    }
-                    else
-                    {
-                        <td>0</td>
-                    }
+                    <td>@participantResult.Result</td>
                 }
-
                 <td>@participant.Total</td>
             </tr>
         }

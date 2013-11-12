@@ -47,3 +47,11 @@
     padding: 5px;
     margin: 0 5px;
 }
+
+.problem-result-container .k-grid td {
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}

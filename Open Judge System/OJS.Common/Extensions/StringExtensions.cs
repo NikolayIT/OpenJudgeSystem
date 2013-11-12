@@ -87,7 +87,7 @@
         // TODO: Test
         public static IEnumerable<string> GetStringsBetween(this string stringToParse, string beforeString, string afterString)
         {
-            var regEx = new Regex(Regex.Escape(beforeString) + "(.*?)" + Regex.Escape(afterString));
+            var regEx = new Regex(Regex.Escape(beforeString) + "(.*?)" + Regex.Escape(afterString), RegexOptions.Singleline | RegexOptions.Compiled);
             var matches = regEx.Matches(stringToParse);
             foreach (Match match in matches)
             {

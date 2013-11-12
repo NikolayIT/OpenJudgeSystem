@@ -5,6 +5,8 @@
     using OJS.Data;
     using OJS.Data.Models;
 
+    using Recaptcha;
+
     public class FeedbackController : BaseController
     {
         private const string FeedbackSubmitMessage = "Благодарим ви за обратната връзка. Ще се постараем да поправим проблема възможно най-скоро!";
@@ -21,8 +23,14 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FeedbackReport feedback)
+        [RecaptchaControlMvc.CaptchaValidator]
+        public ActionResult Index(FeedbackReport feedback, bool captchaValid)
         {
+            if (!captchaValid)
+            {
+                ModelState.AddModelError("Captcha", "Грешно въведен Captcha. Моля опитайте отново.");
+            }
+
             if (ModelState.IsValid)
             {
                 if (User.Identity.IsAuthenticated)

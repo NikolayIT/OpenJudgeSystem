@@ -58,7 +58,7 @@ using System.Linq.Expressions;
 
                 var allTests = TestResults.Count();
 
-                return (int)((correctTests / allTests) * this.ProblemMaximumPoints);
+                return allTests > 0 ? (int)((correctTests / allTests) * this.ProblemMaximumPoints) : 0;
             }
         }
 
@@ -66,7 +66,7 @@ using System.Linq.Expressions;
         {
             get
             {
-                return this.Points == 100 ? true : false;
+                return this.Points == this.ProblemMaximumPoints ? true : false;
             }
         }
 
@@ -74,9 +74,7 @@ using System.Linq.Expressions;
         {
             get
             {
-                return TestResults
-                    .Select(x => x.TimeUsed)
-                    .Max();
+                return TestResults.Count() > 0 ? TestResults.Select(x => x.TimeUsed).Max() : 0;
             }
         }
 
@@ -84,9 +82,7 @@ using System.Linq.Expressions;
         {
             get
             {
-                return TestResults
-                    .Select(x => x.MemoryUsed)
-                    .Max();
+                return TestResults.Count() > 0 ? TestResults.Select(x => x.MemoryUsed).Max() : 0;
             }
         }
     }

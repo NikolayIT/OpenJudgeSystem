@@ -4,7 +4,7 @@
     <h2>
         Профил на @Model.UserName
     </h2>
-    <div class="pull-left span6">
+    <div class="col-md-6">
         <span>
             <strong>Потребителско име:</strong>
         </span>
@@ -41,7 +41,7 @@
         </span>
         <br />
     </div>
-    <div class="pull-right span3">
+    <div class="col-md-offset-1 col-md-5">
         <span>
             @Html.LabelFor(m => m.UserSettings.City, new { @class = "profile-info-label" }):
         </span>

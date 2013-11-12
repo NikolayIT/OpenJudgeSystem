@@ -55,7 +55,7 @@
             var context = new ControllerContext(this.MockHttpContextBasePost(), new RouteData(), controller);
             controller.ControllerContext = context;
 
-            var result = controller.Index(feedback) as ViewResult;
+            var result = controller.Index(feedback, true) as ViewResult;
             var model = result.Model as FeedbackReport;
 
             Assert.AreEqual(model.Name, feedback.Name);

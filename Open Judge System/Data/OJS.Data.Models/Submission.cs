@@ -60,6 +60,11 @@
             set { this.testRuns = value; }
         }
 
+        /// <summary>
+        /// Cache field for submissions points (to speed-up some of the database queries)
+        /// </summary>
+        public int Points { get; set; }
+
         [NotMapped]
         public int CorrectTestRunsCount
         {

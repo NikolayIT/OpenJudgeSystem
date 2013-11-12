@@ -16,6 +16,7 @@
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "Имейла е задължителен")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage="Невалиден имейл адрес")]
         public string Email { get; set; }
 
         [Display(Name = "Съдържание")]

@@ -4,8 +4,12 @@
 
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
-        [Display(Name = "User name")]
+        [Required(
+                ErrorMessageResourceName = "Username_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(
+                Name = "Username",
+                ResourceType = typeof(Resources.Account.ViewModels))]
         public string UserName { get; set; }
     }
 }

@@ -427,7 +427,7 @@
 
             foreach (var resource in resources)
             {
-                if (resource.Type == ProblemResourceType.Video && resource.Link != null)
+                if (!string.IsNullOrEmpty(resource.Name) && resource.Type == ProblemResourceType.Video && resource.Link != null)
                 {
                     problem.Resources.Add(new ProblemResource
                     {
@@ -440,7 +440,7 @@
                     orderCount++;
                     continue;
                 }
-                else if (resource.Type != ProblemResourceType.Video && resource.File != null)
+                else if (!string.IsNullOrEmpty(resource.Name) && resource.Type != ProblemResourceType.Video && resource.File != null)
                 {
                     problem.Resources.Add(new ProblemResource
                     {

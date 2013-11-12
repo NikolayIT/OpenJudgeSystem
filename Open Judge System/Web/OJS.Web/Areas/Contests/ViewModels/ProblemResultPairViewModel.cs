@@ -5,5 +5,7 @@
         public int Id { get; set; }
 
         public int Result { get; set; }
+
+        public string ProblemName { get; set; }
     }
 }

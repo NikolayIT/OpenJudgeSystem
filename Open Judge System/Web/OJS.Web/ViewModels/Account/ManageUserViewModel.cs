@@ -4,20 +4,38 @@
 
     public class ManageUserViewModel
     {
-        [Required]
+        [Required(
+                ErrorMessageResourceName = "Enter_password_validation",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(
+                Name = "Current_password",
+                ResourceType = typeof(Resources.Account.ViewModels))]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(
+                ErrorMessageResourceName = "Enter_new_password_validation",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [StringLength(100,
+                ErrorMessageResourceName = "Password_length_validation_message",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels),
+                MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(
+                Name = "New_password",
+                ResourceType = typeof(Resources.Account.ViewModels))]
         public string NewPassword { get; set; }
 
+        [Required(
+                ErrorMessageResourceName = "Enter_new_password_confirmation",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(
+                Name = "New_password_confirmation",
+                ResourceType = typeof(Resources.Account.ViewModels))]
+        [Compare("NewPassword",
+                ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -29,7 +29,7 @@ function initilizeTestRuns(response) {
     grid = $('#test-runs-grid').kendoGrid({
         dataSource: new kendo.data.DataSource({
             data: response.responseJSON,
-            pageSize: 10,
+            pageSize: 25,
         }),
         pageable: true,
         scrollable: false,

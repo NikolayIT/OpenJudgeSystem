@@ -26,7 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Contracts", "Data\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{3003E3B3-84A6-48E8-8252-B532A5086EB1}"
 	ProjectSection(SolutionItems) = preProject
-		External Libraries\EntityFramework.dll = External Libraries\EntityFramework.dll
 		External Libraries\Ionic.Zip.dll = External Libraries\Ionic.Zip.dll
 		External Libraries\Ionic.Zip.xml = External Libraries\Ionic.Zip.xml
 		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
@@ -165,9 +164,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSubmissionResponder", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Common", "OJS.Common\OJS.Common.csproj", "{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.LocalWorker", "Workers\OJS.Workers.LocalWorker\OJS.Workers.LocalWorker.csproj", "{5D3361F8-F50B-415F-826A-724DCDAA4A89}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 24
+		SccNumberOfProjects = 25
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://academytfs2012/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -262,6 +263,10 @@ Global
 		SccProjectTopLevelParentUniqueName23 = Open\u0020Judge\u0020System.sln
 		SccProjectName23 = Tests/OJS.Workers.Executors.Tests
 		SccLocalPath23 = Tests\\OJS.Workers.Executors.Tests
+		SccProjectUniqueName24 = Workers\\OJS.Workers.LocalWorker\\OJS.Workers.LocalWorker.csproj
+		SccProjectTopLevelParentUniqueName24 = Open\u0020Judge\u0020System.sln
+		SccProjectName24 = Workers/OJS.Workers.LocalWorker
+		SccLocalPath24 = Workers\\OJS.Workers.LocalWorker
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -360,6 +365,10 @@ Global
 		{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -373,6 +382,7 @@ Global
 		{CE54BB68-B790-47F4-8412-58C2BAC900BD} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
+		{5D3361F8-F50B-415F-826A-724DCDAA4A89} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{28647C4A-BD4B-4E1B-B48D-A397740B805C} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{01CC0B02-529E-4D5F-B345-0B92F6920854} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{EA9D6519-EC81-4C8B-9385-455CF5C3544E} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}

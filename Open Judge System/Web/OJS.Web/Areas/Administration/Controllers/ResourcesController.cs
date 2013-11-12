@@ -38,7 +38,7 @@
 
             if (problem == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерене";
+                TempData["DangerMessage"] = "Задачата не е намерена";
                 return RedirectToAction("Index", "Problems");
             }
 
@@ -139,7 +139,7 @@
 
             if (existingResource == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерене";
+                TempData["DangerMessage"] = "Задачата не е намерена";
                 return RedirectToAction("Index", "Problems");
             }
 
@@ -158,15 +158,6 @@
                 return RedirectToAction("Index", "Problems");
             }
 
-            if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
-            {
-                ModelState.AddModelError("Link", "Линкът не може да бъде празен");
-            }
-            else if (resource.Type != ProblemResourceType.Video && (resource.File == null || resource.File.ContentLength == 0))
-            {
-                ModelState.AddModelError("File", "Файлът е задължителен");
-            }
-
             if (ModelState.IsValid)
             {
                 var existingResource = this.Data.Resources
@@ -183,11 +174,11 @@
                 existingResource.Type = resource.Type;
                 existingResource.OrderBy = resource.OrderBy;
 
-                if (existingResource.Type == ProblemResourceType.Video)
+                if (existingResource.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(resource.Link))
                 {
                     existingResource.Link = resource.Link;
                 }
-                else
+                else if (resource.Type != ProblemResourceType.Video && resource.File != null && resource.File.ContentLength > 0)
                 {
                     existingResource.File = resource.File.InputStream.ToByteArray();
                     existingResource.FileExtension = resource.FileExtension;
@@ -216,6 +207,10 @@
                 .All()
                 .FirstOrDefault(res => res.Id == id);
 
+            var problem = this.Data.Problems
+                .All()
+                .FirstOrDefault(pr => pr.Id == resource.ProblemId);
+
             if (resource == null)
             {
                 TempData["DangerMessage"] = "Ресурса не е намерен";
@@ -223,7 +218,7 @@
             }
 
             var fileResult = resource.File.ToStream();
-            var fileName = "Resource-" + resource.Name + "-" + resource.CreatedOn + "." + resource.FileExtension;
+            var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
 
             return File(fileResult, MediaTypeNames.Application.Octet, fileName);
         }

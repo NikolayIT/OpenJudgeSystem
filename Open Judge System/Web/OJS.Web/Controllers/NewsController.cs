@@ -143,7 +143,7 @@
             return this.PartialView("_LatestNews", latestNews);
         }
 
-        public ActionResult FetchNews()
+        public ActionResult Fetch()
         {
             var fetchedNews = new List<News>();
 
@@ -152,7 +152,8 @@
 
             PopulateDatabaseWithNews(fetchedNews);
 
-            return View();
+            TempData["InfoMessage"] = "Новините бяха добавени успешно";
+            return RedirectToAction("All");
         }
 
         private void PopulateDatabaseWithNews(List<News> fetchedNews)
@@ -376,7 +377,7 @@
             }
             catch (Exception)
             {
-                return DateTime.Now;
+                return new DateTime(2010, 1, 1);
             }
         }
     }

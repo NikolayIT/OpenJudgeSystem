@@ -52,29 +52,35 @@
                     </div>
                     <div>
                         @{
-                        var tests = Model[i].TestResults.ToList();
+            var tests = Model[i].TestResults.ToList();
 
-                        for (int j = 0; j < tests.Count; j++)
-                        {
-                            switch (tests[j].ExecutionResult)
-                            {
-                                case OJS.Data.Models.TestRunResultType.CorrectAnswer:
-                                    <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
-                                    break;
-                                case OJS.Data.Models.TestRunResultType.WrongAnswer:
-                                <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
-                                    break;
-                                case OJS.Data.Models.TestRunResultType.TimeLimit:
-                                <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
-                                    break;
-                                case OJS.Data.Models.TestRunResultType.MemoryLimit:
-                                <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
-                                    break;
-                                case OJS.Data.Models.TestRunResultType.RuntimeError:
-                                <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
-                                    break;
-                            }
-                        }
+            if (tests.Count == 0)
+            {
+                <span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>
+                <strong class="text-danger"> Compilation failed!</strong>
+            }
+
+            for (int j = 0; j < tests.Count; j++)
+            {
+                switch (tests[j].ExecutionResult)
+                {
+                    case OJS.Data.Models.TestRunResultType.CorrectAnswer:
+                        <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
+                        break;
+                    case OJS.Data.Models.TestRunResultType.WrongAnswer:
+                    <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
+                        break;
+                    case OJS.Data.Models.TestRunResultType.TimeLimit:
+                    <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
+                        break;
+                    case OJS.Data.Models.TestRunResultType.MemoryLimit:
+                    <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
+                        break;
+                    case OJS.Data.Models.TestRunResultType.RuntimeError:
+                    <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
+                        break;
+                }
+            }
                         }
                     </div>
                 </td>
@@ -82,4 +88,3 @@
         }
     </tbody>
 </table>
-

@@ -55,8 +55,8 @@ namespace OJS.Tools.OldDatabaseMigration
                                    new TasksCopier(),
                                    new UsersCopier(),
                                    new TestsCopier(),
-                                   //new ParticipantsCopier(),
-                                   //new SubmissionsCopier(),
+                                   new ParticipantsCopier(),
+                                   new SubmissionsCopier(),
                                };
         }
 

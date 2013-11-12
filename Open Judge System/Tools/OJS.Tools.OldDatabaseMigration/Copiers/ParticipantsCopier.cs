@@ -10,6 +10,7 @@
         public void Copy(OjsDbContext context, TelerikContestSystemEntities oldDb)
         {
             context.Configuration.AutoDetectChangesEnabled = false;
+            context.Configuration.ValidateOnSaveEnabled = false;
             var participants = oldDb.Participants.Select(x => 
                 new
                     {
@@ -65,6 +66,7 @@
 
             context.SaveChanges();
             context.Configuration.AutoDetectChangesEnabled = true;
+            context.Configuration.ValidateOnSaveEnabled = true;
         }
     }
 }

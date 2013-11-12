@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Owin.Security
+@using Resource = Resources.Account.Views.Partial.ExternalLoginsList
 
-<h4>Use another service to log in.</h4>
+<h4>@Resource.Alternate_login_method</h4>
 <hr />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
@@ -8,8 +9,7 @@
     {
         <div>
             <p>
-                There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
-                for details on setting up this ASP.NET application to support logging in via external services.
+                @Resource.External_login_unavailable
             </p>
         </div>
     }
@@ -24,7 +24,7 @@
                 <p>
                     @foreach (AuthenticationDescription p in loginProviders)
                     {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="@string.Format(Resource.External_login_message, p.Caption)">@p.AuthenticationType</button>
                     }
                 </p>
             </div>

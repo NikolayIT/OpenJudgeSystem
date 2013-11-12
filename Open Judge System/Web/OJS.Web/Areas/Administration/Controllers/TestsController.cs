@@ -449,7 +449,8 @@
         {
             var result = this.Data.Tests.All()
                 .Where(test => test.ProblemId == id)
-                .OrderBy(test => test.OrderBy)
+                .OrderByDescending(test => test.IsTrialTest)
+                .ThenBy(test => test.OrderBy)
                 .Select(TestViewModel.FromTest);
 
             return this.LargeJson(result);

@@ -10,7 +10,7 @@
 
 .field-validation-valid {
     display: none;
- }
+}
 
 input.input-validation-error {
     border: 1px solid #b94a48;
@@ -35,6 +35,7 @@ input[type="checkbox"].input-validation-error {
     padding-bottom: 20px;
     margin-top: 20px; /* its buggy without it */
 }
+
     .jumbotron h1 {
         color: #FFF;
     }
@@ -86,6 +87,14 @@ input[type="checkbox"].input-validation-error {
 
 .hidden-file-upload {
     height: 0px;
-    width:0px;
-    overflow:hidden;
+    width: 0px;
+    overflow: hidden;
 }
+
+.captcha-container {
+    margin-top: 10px;
+}
+
+    .captcha-container input {
+        line-height: normal !important;
+    }

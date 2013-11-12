@@ -9,6 +9,8 @@
     @using (Html.BeginForm("Edit", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken();
+        @Html.HiddenFor(m => m.ProblemId);
+        @Html.HiddenFor(m => m.ProblemName);
 
         <div class="row">
             <div class="editor-label col-xs-2">
@@ -35,6 +37,7 @@
                 @(Html.Kendo()
                     .DropDownListFor(m => m.Type)
                     .BindTo(Model.AllTypes)
+                    .SelectedIndex(Model.DropDownTypeIndex)
                     .Events(ev => ev.Change("onEditResourceTypeSelect"))
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
             </div>

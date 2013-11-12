@@ -1,8 +1,9 @@
 ﻿@model ICollection<Microsoft.AspNet.Identity.UserLoginInfo>
+@using Resource = Resources.Account.Views.Partial.RemoveAccount
 
 @if (Model.Count > 0)
 {
-    <h4>Registered Logins</h4>
+    <h4>@Resource.Registered_login_methods</h4>
     <table class="table">
         <tbody>
             @foreach (var account in Model)
@@ -18,7 +19,7 @@
                                 <div>
                                     @Html.Hidden("loginProvider", account.LoginProvider)
                                     @Html.Hidden("providerKey", account.ProviderKey)
-                                    <input type="submit" class="btn btn-default" value="Remove" title="Remove this @account.LoginProvider login from your account" />
+                                    <input type="submit" class="btn btn-default" value="@Resource.Remove_login_button" title="@string.Format(Resource.Remove_login_title, account.LoginProvider)" />
                                 </div>
                             }
                         }

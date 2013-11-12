@@ -1,20 +1,23 @@
 namespace OJS.Tools.OldDatabaseMigration.Copiers
 {
     using System;
-    using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
 
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
+    using System.Threading;
 
     internal sealed class SubmissionsCopier : ICopier
     {
         private readonly string contentHeader = new string('=', 115);
-        private readonly string contetnFooter = new string('-', 115);
+        private readonly string contentFooter = new string('-', 115);
 
         public void Copy(OjsDbContext context, TelerikContestSystemEntities oldDb)
         {
+            var tests = context.Tests.Select(x => new { x.Id, x.ProblemId, x.IsTrialTest, x.OrderBy }).ToList();
+
             var count = oldDb.Submissions.Count();
             const int ElementsByIteration = 1000;
             var iterations = Math.Ceiling((decimal)count / ElementsByIteration);
@@ -48,6 +51,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                              CreatedOn = oldSubmission.SubmittedOn,
                                              Problem = problem,
                                              Participant = participant,
+                                             Points = oldSubmission.Points
                                          };
 
                     switch (oldSubmission.Language)
@@ -82,7 +86,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                     {
                         // Some kind of exception (e.g. "not enough disk space")
                         var errorFragments = reportFragments[0].Split(
-                            new[] { contetnFooter },
+                            new[] { contentFooter },
                             StringSplitOptions.RemoveEmptyEntries);
                         submission.IsCompiledSuccessfully = false;
                         submission.CompilerComment = errorFragments[0];
@@ -110,12 +114,14 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                         submission.IsCompiledSuccessfully = true;
                         submission.CompilerComment = null;
 
-                        // TODO: Parse all tests
                         for (int j = 2; j < reportFragments.Length - 1; j++)
                         {
-                            var testRunText = reportFragments[j];
+                            var testRunText = reportFragments[j].Trim();
+                            var testRunTextParts = testRunText.Split(new[] { contentFooter }, StringSplitOptions.None);
+                            var testRunTitle = testRunTextParts[0].Trim();
+                            var testRunDescription = testRunTextParts[1].Trim() + Environment.NewLine;
                             bool isZeroTest;
-                            if (testRunText.StartsWith("Zero"))
+                            if (testRunTitle.StartsWith("Zero"))
                             {
                                 isZeroTest = true;
                             }
@@ -124,26 +130,108 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                 isZeroTest = false;
                             }
 
-                            var testOrderAsString = testRunText.GetStringBetween("¹", " ");
+                            var testOrderAsString = testRunTitle.GetStringBetween("¹", " ");
 
                             var testOrder = int.Parse(testOrderAsString);
 
                             var test =
-                                newDb.Tests.FirstOrDefault(
+                                tests.FirstOrDefault(
                                     x =>
-                                    x.ProblemId == problem.Id && x.IsTrialTest == isZeroTest
-                                    && x.OrderBy == testOrder);
+                                    x.ProblemId == problem.Id && x.IsTrialTest == isZeroTest && x.OrderBy == testOrder);
+
+                            if (test == null)
+                            {
+                                continue;
+                            }
 
                             var testRun = new TestRun
                                               {
-                                                  CheckerComment = string.Empty,
-                                                  ExecutionComment = string.Empty,
                                                   MemoryUsed = 0,
                                                   TimeUsed = 0,
-                                                  ResultType = new TestRunResultType(),
                                                   Submission = submission,
-                                                  Test = test,
+                                                  TestId = test.Id,
                                               };
+
+                            if (testRunDescription.StartsWith("Answer correct!!!"))
+                            {
+                                testRun.ResultType = TestRunResultType.CorrectAnswer;
+                                testRun.ExecutionComment = null;
+                                testRun.CheckerComment = null;
+
+                                var timeUsedAsString =
+                                    testRunDescription.GetStringBetween("Time used (in milliseconds): ", "Memory used");
+                                if (timeUsedAsString != null)
+                                {
+                                    double timeUsed;
+                                    if (double.TryParse(testRunDescription.Replace(",", ".").Trim(), out timeUsed))
+                                    {
+                                        testRun.TimeUsed = (int)timeUsed;
+                                    }
+                                }
+
+                                var memoryUsedAsString = testRunDescription.GetStringBetween(
+                                    "Memory used (in bytes): ",
+                                    Environment.NewLine);
+                                if (memoryUsedAsString != null)
+                                {
+                                    testRun.MemoryUsed = int.Parse(memoryUsedAsString.Trim());
+                                }
+                            }
+                            else if (testRunDescription.StartsWith("Answer incorrect!"))
+                            {
+                                testRun.ResultType = TestRunResultType.WrongAnswer;
+                                testRun.ExecutionComment = null;
+                                testRun.CheckerComment = testRunDescription.GetStringBetween(
+                                    "Answer incorrect!",
+                                    "Time used"); // Won't work with non-zero tests (will return null)
+                                if (testRun.CheckerComment != null)
+                                {
+                                    testRun.CheckerComment = testRun.CheckerComment.Trim();
+                                }
+
+                                var timeUsedAsString =
+                                    testRunDescription.GetStringBetween("Time used (in milliseconds): ", "Memory used");
+                                if (timeUsedAsString != null)
+                                {
+                                    double timeUsed;
+                                    if (double.TryParse(testRunDescription.Replace(",", ".").Trim(), out timeUsed))
+                                    {
+                                        testRun.TimeUsed = (int)timeUsed;
+                                    }
+                                }
+
+                                var memoryUsedAsString = testRunDescription.GetStringBetween(
+                                    "Memory used (in bytes): ",
+                                    Environment.NewLine);
+                                if (memoryUsedAsString != null)
+                                {
+                                    testRun.MemoryUsed = int.Parse(memoryUsedAsString.Trim());
+                                }
+                            }
+                            else if (testRunDescription.StartsWith("Runtime error:"))
+                            {
+                                testRun.ResultType = TestRunResultType.RuntimeError;
+                                testRun.ExecutionComment = testRunDescription.Replace("Runtime error:", "").Trim();
+                                testRun.CheckerComment = null;
+                                testRun.TimeUsed = 0;
+                                testRun.MemoryUsed = 0;
+                            }
+                            else if (testRunDescription.StartsWith("Time limit!"))
+                            {
+                                testRun.ResultType = TestRunResultType.TimeLimit;
+                                testRun.ExecutionComment = null;
+                                testRun.CheckerComment = null;
+                                testRun.TimeUsed = problem.TimeLimit;
+                                testRun.MemoryUsed = 0;
+                            }
+                            else
+                            {
+                                testRun.ResultType = TestRunResultType.RuntimeError;
+                                testRun.ExecutionComment = testRunDescription.Trim();
+                                testRun.CheckerComment = null;
+                                testRun.TimeUsed = 0;
+                                testRun.MemoryUsed = 0;
+                            }
 
                             newDb.TestRuns.Add(testRun);
                         }
