@@ -19,8 +19,8 @@
             var serviceInstaller = new ServiceInstaller
                                        {
                                            StartType = ServiceStartMode.Automatic,
-                                           DisplayName = "TOJS Controller Service",
-                                           ServiceName = "TOJS Controller Service",
+                                           DisplayName = "OJS Controller Service",
+                                           ServiceName = "OJS Controller Service",
                                            Description =
                                                "Remotely controls all agents that are connected to the controller. Manages the tasks between agents and act as a load-balancer between them.",
                                        };

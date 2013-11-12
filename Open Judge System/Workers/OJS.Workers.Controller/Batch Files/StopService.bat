@@ -1,2 +1,2 @@
-NET STOP "TOJS Controller Service"
+NET STOP "OJS Controller Service"
 pause

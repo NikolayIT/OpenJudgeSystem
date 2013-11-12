@@ -1,2 +1,2 @@
-NET STOP "TOJS Agent Service"
+NET STOP "OJS Agent Service"
 pause

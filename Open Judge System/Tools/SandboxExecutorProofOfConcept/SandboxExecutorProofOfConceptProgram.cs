@@ -1,8 +1,10 @@
 ﻿namespace SandboxExecutorProofOfConcept
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.IO;
     using System.Security.Principal;
     using System.Threading;
     using System.Threading.Tasks;
@@ -25,6 +27,10 @@
             // TODO: Agents should be run with ProcessPriorityClass.RealTime
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
             Console.WriteLine(Process.GetCurrentProcess().PriorityClass);
+
+            RunNodeJs();
+            // ThreadWork();
+            /*
             for (int i = 0; i < 1; i++)
             {
                 var thread = new Thread(ThreadWork);
@@ -32,7 +38,27 @@
                 Thread.Sleep(100);
             }
             //// ExecuteProcessWithDifferentUser(SandboxTargetExecutablePath, ("Ю".Repeat(1024) + "").Repeat(20 * 1024) + "\n", 2000, 256 * 1024 * 1024);
+             * */
+
             Console.ReadLine();
+        }
+
+        private static void RunNodeJs()
+        {
+            const string NodeJsExe = @"C:\Program Files\nodejs\node.exe";
+            const string JsFilePath = @"C:\Temp\code.js";
+            const string JsFileWorkingDirectory = @"C:\Temp";
+            File.WriteAllText(JsFilePath, GlobalConstants.SampleJavaScriptCode);
+
+            var process = new RestrictedProcess(NodeJsExe, JsFileWorkingDirectory, new List<string>() { JsFilePath });
+            process.StandardInput.WriteLine("Vasko" + Environment.NewLine + "Niki2" + Environment.NewLine + "Niki3");
+            process.Start(1000, 100 * 1024 * 1024);
+            process.StandardInput.Close();
+            var output = process.StandardOutput.ReadToEnd();
+            var error = process.StandardError.ReadToEnd();
+            Console.WriteLine(output);
+            Console.WriteLine(error);
+            Console.WriteLine(process.ExitCode);
         }
 
         private static void ThreadWork()

@@ -28,7 +28,7 @@ namespace OJS.Workers.Executors
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             var workingDirectory = new FileInfo(fileName).DirectoryName;
 
-            using (var restrictedProcess = new RestrictedProcess(fileName, workingDirectory, Math.Max(4096, (inputData.Length * 2) + 4)))
+            using (var restrictedProcess = new RestrictedProcess(fileName, workingDirectory, null, Math.Max(4096, (inputData.Length * 2) + 4)))
             {
                 // Write to standard input using another thread
                 restrictedProcess.StandardInput.WriteLineAsync(inputData).ContinueWith(

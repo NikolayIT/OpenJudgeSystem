@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.Executors.Process
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
@@ -19,7 +20,7 @@
         private JobObject jobObject;
         private int exitCode;
 
-        public RestrictedProcess(string fileName, string workingDirectory, int bufferSize = 4096)
+        public RestrictedProcess(string fileName, string workingDirectory, IEnumerable<string> arguments = null, int bufferSize = 4096)
         {
             // Initialize fields
             this.fileName = fileName;
@@ -48,10 +49,27 @@
                 CreateProcessFlags.CREATE_NO_WINDOW) |
                 (uint)ProcessPriorityClass.High;
 
+            string commandLine;
+            if (arguments != null)
+            {
+                var commandLineBuilder = new StringBuilder();
+                commandLineBuilder.AppendFormat("\"{0}\"", fileName);
+                foreach (var argument in arguments)
+                {
+                    commandLineBuilder.Append(' ');
+                    commandLineBuilder.Append(argument);
+                }
+                commandLine = commandLineBuilder.ToString();
+            }
+            else
+            {
+                commandLine = fileName;
+            }
+
             if (!NativeMethods.CreateProcessAsUser(
                     restrictedToken,
                     null,
-                    fileName,
+                    commandLine,
                     processSecurityAttributes,
                     threadSecurityAttributes,
                     true, // In order to standard input, output and error redirection work, the handles must be inheritable and the CreateProcess() API must specify that inheritable handles are to be inherited by the child process by specifying TRUE in the bInheritHandles parameter. 

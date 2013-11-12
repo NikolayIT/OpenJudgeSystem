@@ -1,25 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace OJS.Workers.LocalWorker
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.ServiceProcess;
+
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// The main entry point for the service.
         /// </summary>
-        static void Main()
+        private static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-            { 
-                new Service1() 
-            };
-            ServiceBase.Run(ServicesToRun);
+            try
+            {
+                // Explicitly set App.config file location to prevent confusion 
+                // ReSharper disable once AssignNullToNotNullAttribute
+                Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+                AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
+
+                // Run the service
+                var servicesToRun = new ServiceBase[] { new LocalWorkerService() };
+                ServiceBase.Run(servicesToRun);
+            }
+            catch (Exception exception)
+            {
+                const string Source = "OJS.Workers.LocalWorker";
+                if (!EventLog.SourceExists(Source))
+                {
+                    EventLog.CreateEventSource(Source, "Application");
+                }
+
+                EventLog.WriteEntry(Source, exception.ToString(), EventLogEntryType.Error);
+            }
         }
     }
 }
