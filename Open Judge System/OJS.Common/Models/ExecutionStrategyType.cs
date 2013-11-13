@@ -3,6 +3,5 @@
     public enum ExecutionStrategyType
     {
         CompileExecuteAndCheck = 1,
-        JsExecuteWithNodeJsAndCheck = 2,
     }
 }

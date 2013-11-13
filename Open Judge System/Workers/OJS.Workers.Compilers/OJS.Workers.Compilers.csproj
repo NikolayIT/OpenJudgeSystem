@@ -43,15 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCompiler.cs" />
+    <Compile Include="Compiler.cs" />
     <Compile Include="CPlusPlusCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
+    <Compile Include="JavaScriptFilePreprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7f714d0b-ce81-4dd7-b6b2-62080fe22cd8}</Project>
       <Name>OJS.Workers.Common</Name>

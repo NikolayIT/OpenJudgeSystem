@@ -1,11 +1,13 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels
 {
+    using OJS.Web.Areas.Administration.ViewModels.Common;
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class NewsViewModel
+    public class NewsViewModel : AuditInfoViewModel
     {
         [Display(Name = "№")]
+        [ScaffoldColumn(false)]
         public int Id { get; set; }
 
         [Display(Name = "Заглавие")]
@@ -26,14 +28,5 @@
 
         [Display(Name = "Видимост")]
         public bool IsVisible { get; set; }
-
-        [Display(Name = "Изтрит?")]
-        [Editable(false)]
-        public bool IsDeleted { get; set; }
-
-        [Display(Name = "Дата на изтриване")]
-        [Editable(false)]
-        [DataType(DataType.DateTime)]
-        public DateTime? DeletedOn { get; set; }
     }
 }

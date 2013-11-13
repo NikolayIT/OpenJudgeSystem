@@ -4,14 +4,32 @@
     using System.Diagnostics;
     using System.IO;
 
+    using OJS.Common.Models;
     using OJS.Workers.Common;
 
     /// <summary>
     /// Defines the base of the work with compilers algorithm and allow the subclasses to implement some of the algorithm parts.
     /// </summary>
     /// <remarks>Template method design pattern is used.</remarks>
-    public abstract class BaseCompiler : ICompiler
+    public abstract class Compiler : ICompiler
     {
+        public static ICompiler GetCompiler(CompilerType compilerType)
+        {
+            switch (compilerType)
+            {
+                case CompilerType.None:
+                    return null;
+                case CompilerType.CSharp:
+                    return new CSharpCompiler();
+                case CompilerType.CPlusPlus:
+                    return new CPlusPlusCompiler();
+                case CompilerType.JavaScript:
+                    return new JavaScriptFilePreprocessor();
+                default:
+                    throw new NotImplementedException("Unsupported compiler.");
+            }
+        }
+
         public CompileResult Compile(string compilerPath, string inputFile, string additionalArguments)
         {
             if (compilerPath == null)

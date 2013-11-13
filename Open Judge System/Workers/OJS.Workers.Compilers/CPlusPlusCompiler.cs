@@ -3,7 +3,7 @@
     using System.Diagnostics;
     using System.Text;
 
-    public class CPlusPlusCompiler : BaseCompiler
+    public class CPlusPlusCompiler : Compiler
     {
         public override string RenameInputFile(string inputFile)
         {

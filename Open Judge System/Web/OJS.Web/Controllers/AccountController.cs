@@ -1,5 +1,8 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -13,6 +16,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.Account;
+    using OJS.Web.Common.MailSender;
 
     [Authorize]
     public class AccountController : BaseController
@@ -60,7 +64,7 @@
                     await this.SignInAsync(user, model.RememberMe);
                     return this.RedirectToLocal(returnUrl);
                 }
-                
+
                 this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Invalid_username_or_password);
             }
 
@@ -81,6 +85,11 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (this.Data.Users.All().Any(x => x.Email == model.Email))
+            {
+                ModelState.AddModelError("Email", "This email has already been registered");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new UserProfile { UserName = model.UserName, Email = model.Email };
@@ -90,7 +99,7 @@
                     await this.SignInAsync(user, isPersistent: false);
                     return this.RedirectToAction("Index", "Home");
                 }
-                
+
                 this.AddErrors(result);
             }
 
@@ -129,6 +138,7 @@
                                               : message == ManageMessageId.RemoveLoginSuccess
                                                     ? "Външния логин беше премахнат."
                                                     : message == ManageMessageId.Error ? "Възникна грешка." : string.Empty;
+
             ViewBag.HasLocalPassword = this.HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return this.View();
@@ -153,7 +163,7 @@
                     {
                         return this.RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
-                    
+
                     this.AddErrors(result);
                 }
             }
@@ -174,7 +184,7 @@
                     {
                         return this.RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
-                    
+
                     this.AddErrors(result);
                 }
             }
@@ -313,6 +323,114 @@
             return this.PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
+        [AllowAnonymous]
+        public ActionResult ForgottenPassword()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ForgottenPassword(string email)
+        {
+            // using Where() because duplicate email addresses were allowed in the previous
+            // judge system
+            var usersWithEmail = this.Data.Users
+                                            .All()
+                                            .Where(x => x.Email == email);
+
+            var usersCount = usersWithEmail.Count();
+
+            if (usersCount == 0)
+            {
+                ViewBag.StatusMessage = "This email is not registered.";
+                return this.View();
+            }
+
+            if (usersCount != 1)
+            {
+                ViewBag.StatusMessage = "There is more than one user registered with this email address.";
+                return this.View();
+            }
+
+            var user = usersWithEmail.FirstOrDefault();
+
+            user.ForgottenPasswordToken = Guid.NewGuid();
+            this.Data.SaveChanges();
+
+            // TODO: create and localize the message for the forgot your password email.
+            var mailSender = MailSender.Instance;
+            mailSender.SendMail(user.Email, "Forgot your password", Url.Action("ChangePassword", new { token = user.ForgottenPasswordToken }));
+
+            // TODO: Redirect to the correct page
+            return this.RedirectToAction("Index", new { Model = string.Empty });
+        }
+
+        [AllowAnonymous]
+        public ActionResult ChangePassword(string token)
+        {
+            Guid guid;
+
+            if (!Guid.TryParse(token, out guid))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
+            }
+
+            var user = this.Data.Users.All().FirstOrDefault(x => x.ForgottenPasswordToken == guid);
+
+            if (user == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
+            }
+
+            var forgottenPasswordModel = new ForgottenPasswordViewModel
+            {
+                Token = guid
+            };
+
+            return this.View(forgottenPasswordModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChangePassword(ForgottenPasswordViewModel model)
+        {
+            var user = this.Data.Users.All()
+                .FirstOrDefault(x => x.ForgottenPasswordToken == model.Token);
+
+            if (user == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
+            }
+
+            if (ModelState.IsValid)
+            {
+                IdentityResult removePassword =
+                                        await
+                                        this.UserManager.RemovePasswordAsync(user.Id);
+                if (removePassword.Succeeded)
+                {
+                    IdentityResult changePassword =
+                                        await
+                                        this.UserManager.AddPasswordAsync(user.Id, model.Password);
+
+                    if (changePassword.Succeeded)
+                    {
+                        user.ForgottenPasswordToken = null;
+                        this.Data.SaveChanges();
+
+                        return this.RedirectToAction("Login", new { Message = ManageMessageId.ChangePasswordSuccess });
+                    }
+
+                    this.AddErrors(changePassword);
+                }
+
+                this.AddErrors(removePassword);
+            }
+
+            return this.View(model);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && this.UserManager != null)
@@ -371,7 +489,7 @@
             {
                 return this.Redirect(returnUrl);
             }
-            
+
             return this.RedirectToAction("Index", "Home");
         }
 

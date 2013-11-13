@@ -3,7 +3,7 @@
     using System.Diagnostics;
     using System.Text;
 
-    public class CSharpCompiler : BaseCompiler
+    public class CSharpCompiler : Compiler
     {
         public override string RenameInputFile(string inputFile)
         {

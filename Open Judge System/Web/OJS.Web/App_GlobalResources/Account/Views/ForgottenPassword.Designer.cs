@@ -22,14 +22,14 @@ namespace Resources.Account.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Login {
+    public class ForgottenPassword {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Login() {
+        internal ForgottenPassword() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Account.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Views.Login", typeof(Login).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Views.ForgottenPassword", typeof(ForgottenPassword).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,29 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgot your password?.
+        ///   Looks up a localized string similar to Please enter your email to reset your password..
         /// </summary>
-        public static string Forgotten_password {
+        public static string EnterYourEmail {
             get {
-                return ResourceManager.GetString("Forgotten_password", resourceCulture);
+                return ResourceManager.GetString("EnterYourEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to if you are not already registered..
+        ///   Looks up a localized string similar to Submit.
         /// </summary>
-        public static string If_not_already_registered {
+        public static string Submit {
             get {
-                return ResourceManager.GetString("If_not_already_registered", resourceCulture);
+                return ResourceManager.GetString("Submit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in.
+        ///   Looks up a localized string similar to Forgotten password.
         /// </summary>
-        public static string Log_in {
+        public static string Title {
             get {
-                return ResourceManager.GetString("Log_in", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log in using your username and password..
-        /// </summary>
-        public static string Login_using_username_and_password {
-            get {
-                return ResourceManager.GetString("Login_using_username_and_password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Register.
-        /// </summary>
-        public static string Register {
-            get {
-                return ResourceManager.GetString("Register", resourceCulture);
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }

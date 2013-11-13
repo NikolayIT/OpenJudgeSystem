@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MailSender\MailSender.cs" />
     <Compile Include="ZippedTestManipulator\ParseResult.cs" />
     <Compile Include="ZippedTestManipulator\ZippedTestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

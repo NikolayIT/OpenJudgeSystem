@@ -129,4 +129,7 @@
   <data name="Register" xml:space="preserve">
     <value>Регистрирай се</value>
   </data>
+  <data name="Forgotten_password" xml:space="preserve">
+    <value>Забравена парола</value>
+  </data>
 </root>

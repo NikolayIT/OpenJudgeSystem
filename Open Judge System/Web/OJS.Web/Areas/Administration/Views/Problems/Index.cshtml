@@ -1,8 +1,8 @@
-@using OJS.Web.Areas.Administration.ViewModels
+п»ї@using OJS.Web.Areas.Administration.ViewModels
 @model ProblemViewModel
 
 @{
-    ViewBag.Title = "Задача";
+    ViewBag.Title = "Р—Р°РґР°С‡Р°";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -18,12 +18,12 @@
             <input id="problemId" name="problemId" type="hidden" value="@ViewBag.ProblemId" />
         }
         <div>
-            <label for="search">Търсене по състезание: </label>
+            <label for="search">РўСЉСЂСЃРµРЅРµ РїРѕ СЃСЉСЃС‚РµР·Р°РЅРёРµ: </label>
         </div>
         <div>
             @(@Html.Kendo().AutoComplete()
                 .Name("search")
-                .Placeholder("Въведи състезание...")
+                .Placeholder("Р’СЉРІРµРґРё СЃСЉСЃС‚РµР·Р°РЅРёРµ...")
                 .HtmlAttributes(new { @class = "test-file-dropdown" })
                 .DataTextField("Name")
                 .Filter("contains")
@@ -45,12 +45,12 @@
         </div>
         <div>
             <div>
-                <label for="categories">Категория: </label>
+                <label for="categories">РљР°С‚РµРіРѕСЂРёСЏ: </label>
             </div>
             <div>
                 @(Html.Kendo().DropDownList()
                 .Name("categories")
-                .OptionLabel("Избери категория...")
+                .OptionLabel("РР·Р±РµСЂРё РєР°С‚РµРіРѕСЂРёСЏ...")
                 .HtmlAttributes(new { @class = "test-file-dropdown" })
                 .DataTextField("Name")
                 .DataValueField("Id")
@@ -64,12 +64,12 @@
             </div>
         </div>
         <div>
-            <label for="contests">Състезание: </label>
+            <label for="contests">РЎСЉСЃС‚РµР·Р°РЅРёРµ: </label>
         </div>
         <div>
             @(Html.Kendo().DropDownList()
             .Name("contests")
-            .OptionLabel("Избери състезание...")
+            .OptionLabel("РР·Р±РµСЂРё СЃСЉСЃС‚РµР·Р°РЅРёРµ...")
             .HtmlAttributes(new { @class = "test-file-dropdown" })
             .DataTextField("Name")
             .DataValueField("Id")
@@ -91,7 +91,7 @@
     </div>
     <div class="col-md-6">
         <div>
-            <strong>Бърз достъп до състезания:</strong>
+            <strong>Р‘СЉСЂР· РґРѕСЃС‚СЉРї РґРѕ СЃСЉСЃС‚РµР·Р°РЅРёСЏ:</strong>
         </div>
         @(Html.Kendo()
         .TabStrip()
@@ -99,16 +99,16 @@
         .Items(tabstrip =>
         {
             tabstrip.Add()
-                .Text("Бъдещи")
+                .Text("Р‘СЉРґРµС‰Рё")
                 .Selected(true)
                 .LoadContentFrom("GetFutureContests", "Contests");
 
             tabstrip.Add()
-                .Text("Активни")
+                .Text("РђРєС‚РёРІРЅРё")
                 .LoadContentFrom("GetActiveContests", "Contests");
 
             tabstrip.Add()
-                .Text("Последни")
+                .Text("РџРѕСЃР»РµРґРЅРё")
                 .LoadContentFrom("GetLatestContests", "Contests");
         })
         .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
@@ -117,7 +117,7 @@
 </div>
 
 <br />
-<div class="jumbotron text-center text-white" id="status">Задачите се зареждат...</div>
+<div class="jumbotron text-center text-white" id="status">Р—Р°РґР°С‡РёС‚Рµ СЃРµ Р·Р°СЂРµР¶РґР°С‚...</div>
 <div id="problems-grid">
 
 </div>

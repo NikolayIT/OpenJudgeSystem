@@ -26,7 +26,7 @@
             this.CreatedOn = DateTime.Now;
         }
 
-        // [Required]
+        [Required]
         [Display(Name = "E-mail")]
         [MaxLength(80)]
         [IsUnicode(false)]
@@ -42,6 +42,8 @@
         public int? OldId { get; set; }
 
         public UserSettings UserSettings { get; set; }
+
+        public Guid? ForgottenPasswordToken { get; set; }
         
         #region IDeletableEntity
         [Display(Name = "Изтрит?")]

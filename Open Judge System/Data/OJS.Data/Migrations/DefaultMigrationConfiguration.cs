@@ -449,9 +449,9 @@ namespace OJS.Data.Migrations
                 new SubmissionType
                     {
                         Name = "JavaScript code (NodeJS)",
-                        CompilerType = CompilerType.None,
+                        CompilerType = CompilerType.JavaScript,
                         AdditionalCompilerArguments = string.Empty,
-                        ExecutionStrategyType = ExecutionStrategyType.JsExecuteWithNodeJsAndCheck,
+                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                         IsSelectedByDefault = false,
                     });
 

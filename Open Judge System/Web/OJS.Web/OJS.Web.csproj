@@ -225,6 +225,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ViewModels.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.designer.cs">
+      <DependentUpon>ChangePasswordView.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangePasswordView.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChangePasswordView.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.bg.designer.cs">
       <DependentUpon>ExternalLoginConfirmation.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -244,6 +254,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExternalLoginFailure.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ForgottenPassword.bg.designer.cs">
+      <DependentUpon>ForgottenPassword.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ForgottenPassword.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForgottenPassword.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Account\Views\Login.bg.designer.cs">
       <DependentUpon>Login.bg.resx</DependentUpon>
@@ -334,6 +354,7 @@
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Common\AuditInfoViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReportViewModel.cs" />
@@ -383,6 +404,7 @@
     <Compile Include="ViewModels\Account\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Account\ForgottenPasswordViewModel.cs" />
     <Compile Include="ViewModels\Account\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\ManageUserViewModel.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
@@ -598,6 +620,9 @@
     <Content Include="Views\Submissions\AdvancedSubmissions.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\QuestionViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\ForgottenPassword.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -625,6 +650,16 @@
       <LastGenOutput>ViewModels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangePasswordView.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangePasswordView.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangePasswordView.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExternalLoginConfirmation.bg.designer.cs</LastGenOutput>
@@ -643,6 +678,16 @@
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginFailure.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExternalLoginFailure.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ForgottenPassword.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ForgottenPassword.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ForgottenPassword.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ForgottenPassword.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\Login.bg.resx">
