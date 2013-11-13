@@ -4,6 +4,7 @@
 
     using Moq;
 
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Contracts;
     using OJS.Data.Models;

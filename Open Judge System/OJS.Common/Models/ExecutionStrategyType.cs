@@ -3,5 +3,6 @@
     public enum ExecutionStrategyType
     {
         CompileExecuteAndCheck = 1,
+        NodeJsPreprocessExecuteAndCheck = 2,
     }
 }

@@ -1,20 +1,18 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Web.Mvc;
+
     using HtmlAgilityPack;
 
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
-    using System.Net;
-    using System.IO;
-    using System.Text;
-
-    using Kendo.Mvc;
-
     using OJS.Data;
-    using OJS.Web.ViewModels.News;
-    using System.Collections.Generic;
     using OJS.Data.Models;
+    using OJS.Web.ViewModels.News;
 
     public class NewsController : BaseController
     {
@@ -75,7 +73,7 @@
                 AllPages = pages
             };
 
-            return View(allNewsModel);
+            return this.View(allNewsModel);
         }
 
         public ActionResult Selected(int id = 1)
@@ -84,8 +82,8 @@
 
             if (currentNews == null || currentNews.IsDeleted)
             {
-                TempData.Add("InfoMessage", "Невалидна новина.");
-                return View();
+                this.TempData.Add("InfoMessage", "Невалидна новина.");
+                return this.View();
             }
 
             var previousNews = this.Data.News.All()
@@ -147,13 +145,13 @@
         {
             var fetchedNews = new List<News>();
 
-            fetchedNews.AddRange(FetchNewsFromInfoMan());
-            fetchedNews.AddRange(FetchNewsFromInfos());
+            fetchedNews.AddRange(this.FetchNewsFromInfoMan());
+            fetchedNews.AddRange(this.FetchNewsFromInfos());
 
-            PopulateDatabaseWithNews(fetchedNews);
+            this.PopulateDatabaseWithNews(fetchedNews);
 
-            TempData["InfoMessage"] = "Новините бяха добавени успешно";
-            return RedirectToAction("All");
+            this.TempData["InfoMessage"] = "Новините бяха добавени успешно";
+            return this.RedirectToAction("All");
         }
 
         private void PopulateDatabaseWithNews(List<News> fetchedNews)
@@ -190,26 +188,26 @@
 
         private List<News> FetchNewsFromInfoMan()
         {
-            var document = GetHtmlDocument(InfoManUrl);
+            var document = this.GetHtmlDocument(InfoManUrl);
 
             HtmlNode node = document.DocumentNode.SelectSingleNode("//body//table//tr[3]//td");
 
             var currentListOfNews = new List<News>();
 
-            GenerateNewsFromInfoMan(node, currentListOfNews);
+            this.GenerateNewsFromInfoMan(node, currentListOfNews);
 
             return currentListOfNews;
         }
 
         private List<News> FetchNewsFromInfos()
         {
-            var document = GetHtmlDocument(InfosUrl);
+            var document = this.GetHtmlDocument(InfosUrl);
 
             var currentListOfNews = new List<News>();
 
             HtmlNode node = document.DocumentNode.SelectSingleNode("//body//div//div//div[6]");
 
-            GenerateNewsFromInfos(node, currentListOfNews);
+            this.GenerateNewsFromInfos(node, currentListOfNews);
 
             return currentListOfNews;
         }
@@ -232,14 +230,14 @@
                     node = node.NextSibling;
                     continue;
                 }
-                else if (node.FirstChild.InnerText == "" && content.Length > 0)
+                else if (node.FirstChild.InnerText == string.Empty && content.Length > 0)
                 {
                     node = node.NextSibling;
                     continue;
                 }
-                else if (node.FirstChild.InnerText == "")
+                else if (node.FirstChild.InnerText == string.Empty)
                 {
-                    date = TryGetDate(node.PreviousSibling.PreviousSibling.FirstChild.InnerText);
+                    date = this.TryGetDate(node.PreviousSibling.PreviousSibling.FirstChild.InnerText);
                     node = node.NextSibling;
                     continue;
                 }
@@ -247,9 +245,9 @@
                 {
                     title += node.FirstChild.InnerText + " ";
                 }
-                else if(node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws14") && content.Length > 0)
+                else if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws14") && content.Length > 0)
                 {
-                    date = TryGetDate(content.ToString().Substring(0, 10));
+                    date = this.TryGetDate(content.ToString().Substring(0, 10));
 
                     fetchedNews.Add(new News
                     {
@@ -266,7 +264,7 @@
                     date = DateTime.Now;
                     content.Length = 0;
                 }
-                else if (node.FirstChild.Attributes.Any(x=> x.Name == "class" && x.Value == "ws12"))
+                else if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws12"))
                 {
                     content.Append(node.FirstChild.InnerHtml);
                 }
@@ -287,7 +285,7 @@
                 {
                     if (child.ChildNodes.Any(tag => tag.Name == "h5"))
                     {
-                        GenerateNewsFromInfoMan(child, fetchedNews);
+                        this.GenerateNewsFromInfoMan(child, fetchedNews);
                     }
 
                     if (child.Name == "h5" && title == string.Empty)
@@ -302,7 +300,7 @@
                             fetchedNews.Add(new News
                                 {
                                     Title = child.FirstChild.InnerText.Trim(),
-                                    CreatedOn = TryGetDate(child.FirstChild.NextSibling.InnerText),
+                                    CreatedOn = this.TryGetDate(child.FirstChild.NextSibling.InnerText),
                                     IsVisible = true,
                                     Author = "ИнфоМан",
                                     Source = "http://infoman.musala.com/",
@@ -326,7 +324,7 @@
                         fetchedNews.Add(new News
                         {
                             Title = title.Trim(),
-                            CreatedOn = TryGetDate(date),
+                            CreatedOn = this.TryGetDate(date),
                             IsVisible = true,
                             Author = "ИнфоМан",
                             Source = "http://infoman.musala.com/",
@@ -354,7 +352,7 @@
                     fetchedNews.Add(new News
                     {
                         Title = title.Trim(),
-                        CreatedOn = TryGetDate(date),
+                        CreatedOn = this.TryGetDate(date),
                         IsVisible = true,
                         Author = "ИнфоМан",
                         Source = "http://infoman.musala.com/",

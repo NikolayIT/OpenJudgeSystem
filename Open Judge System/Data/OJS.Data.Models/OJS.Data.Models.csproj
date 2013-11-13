@@ -70,7 +70,6 @@
     <Compile Include="SubmissionType.cs" />
     <Compile Include="Contest.cs" />
     <Compile Include="ContestCategory.cs" />
-    <Compile Include="ExecutionResult.cs" />
     <Compile Include="FeedbackReport.cs" />
     <Compile Include="Participant.cs" />
     <Compile Include="ContestQuestion.cs" />

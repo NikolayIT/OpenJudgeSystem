@@ -1,17 +1,19 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using Kendo.Mvc.UI;
-    using Kendo.Mvc.Extensions;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;
+
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
     using OJS.Common.Extensions;
     using OJS.Data;
-    using OJS.Web.Controllers;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Data.Models;
-    using System.Collections.Generic;
+    using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Controllers;
 
     public class ResourcesController : AdministrationController
     {
@@ -28,7 +30,7 @@
                 .OrderBy(res => res.OrderBy)
                 .Select(ProblemResourceGridViewModel.FromResource);
 
-            return Json(resources.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return this.Json(resources.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -38,8 +40,8 @@
 
             if (problem == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерена";
-                return RedirectToAction("Index", "Problems");
+                this.TempData["DangerMessage"] = "Задачата не е намерена";
+                return this.RedirectToAction("Index", "Problems");
             }
 
             int orderBy;
@@ -62,7 +64,7 @@
                 AllTypes = this.GetAllResourceTypes()
             };
 
-            return View(resource);
+            return this.View(resource);
         }
 
         [HttpPost]
@@ -71,8 +73,8 @@
         {
             if (resource == null)
             {
-                TempData["DangerMessage"] = "Ресурсът е невалиден";
-                return RedirectToAction("Resource", "Problems", new { id = id });
+                this.TempData["DangerMessage"] = "Ресурсът е невалиден";
+                return this.RedirectToAction("Resource", "Problems", new { id = id });
             }
 
             if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
@@ -92,8 +94,8 @@
 
                 if (problem == null)
                 {
-                    TempData["DangerMessage"] = "Задачата не е намерена";
-                    return RedirectToAction("Index", "Problems");
+                    this.TempData["DangerMessage"] = "Задачата не е намерена";
+                    return this.RedirectToAction("Index", "Problems");
                 }
 
                 var newResource = new ProblemResource
@@ -116,11 +118,11 @@
                 problem.Resources.Add(newResource);
                 this.Data.SaveChanges();
 
-                return RedirectToAction("Resource", "Problems", new { id = id });
+                return this.RedirectToAction("Resource", "Problems", new { id = id });
             }
 
             resource.AllTypes = this.GetAllResourceTypes();
-            return View(resource);
+            return this.View(resource);
         }
 
         [HttpGet]
@@ -128,8 +130,8 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерена";
-                return RedirectToAction("Index", "Problems");
+                this.TempData["DangerMessage"] = "Задачата не е намерена";
+                return this.RedirectToAction("Index", "Problems");
             }
 
             var existingResource = this.Data.Resources.All()
@@ -139,13 +141,13 @@
 
             if (existingResource == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерена";
-                return RedirectToAction("Index", "Problems");
+                this.TempData["DangerMessage"] = "Задачата не е намерена";
+                return this.RedirectToAction("Index", "Problems");
             }
 
             existingResource.AllTypes = this.GetAllResourceTypes();
 
-            return View(existingResource);
+            return this.View(existingResource);
         }
 
         [HttpPost]
@@ -154,8 +156,8 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Задачата не е намерена";
-                return RedirectToAction("Index", "Problems");
+                this.TempData["DangerMessage"] = "Задачата не е намерена";
+                return this.RedirectToAction("Index", "Problems");
             }
 
             if (ModelState.IsValid)
@@ -166,8 +168,8 @@
 
                 if (existingResource == null)
                 {
-                    TempData["DangerMessage"] = "Ресурсът не е намерен";
-                    return RedirectToAction("Index", "Problems");
+                    this.TempData["DangerMessage"] = "Ресурсът не е намерен";
+                    return this.RedirectToAction("Index", "Problems");
                 }
 
                 existingResource.Name = resource.Name;
@@ -186,11 +188,11 @@
 
                 this.Data.SaveChanges();
 
-                return RedirectToAction("Resource", "Problems", new { id = existingResource.ProblemId });
+                return this.RedirectToAction("Resource", "Problems", new { id = existingResource.ProblemId });
             }
 
             resource.AllTypes = this.GetAllResourceTypes();
-            return View(resource);
+            return this.View(resource);
         }
 
         public JsonResult Delete(ProblemResourceGridViewModel resource, [DataSourceRequest] DataSourceRequest request)
@@ -198,7 +200,7 @@
             this.Data.Resources.Delete(resource.Id);
             this.Data.SaveChanges();
 
-            return Json(new[] { resource }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return this.Json(new[] { resource }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Download(int id)
@@ -213,14 +215,14 @@
 
             if (resource == null)
             {
-                TempData["DangerMessage"] = "Ресурса не е намерен";
-                return Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
+                this.TempData["DangerMessage"] = "Ресурса не е намерен";
+                return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
             }
 
             var fileResult = resource.File.ToStream();
             var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
 
-            return File(fileResult, MediaTypeNames.Application.Octet, fileName);
+            return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
         }
 
         private IEnumerable<SelectListItem> GetAllResourceTypes()

@@ -3,6 +3,8 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
+
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
 using System.Linq.Expressions;

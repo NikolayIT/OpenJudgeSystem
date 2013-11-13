@@ -1,4 +1,4 @@
-﻿namespace OJS.Data.Models
+﻿namespace OJS.Common.Models
 {
     public enum TestRunResultType
     {
@@ -6,6 +6,6 @@
         WrongAnswer = 1,
         TimeLimit = 2,
         MemoryLimit = 3,
-        RuntimeError = 4,
+        RunTimeError = 4,
     }
 }

@@ -440,7 +440,7 @@ namespace OJS.Data.Migrations
                 new SubmissionType
                     {
                         Name = "C++ code",
-                        CompilerType = CompilerType.CPlusPlus,
+                        CompilerType = CompilerType.CPlusPlusGcc,
                         AdditionalCompilerArguments =
                             "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
                         ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
@@ -449,9 +449,9 @@ namespace OJS.Data.Migrations
                 new SubmissionType
                     {
                         Name = "JavaScript code (NodeJS)",
-                        CompilerType = CompilerType.JavaScript,
+                        CompilerType = CompilerType.None,
                         AdditionalCompilerArguments = string.Empty,
-                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                        ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
                         IsSelectedByDefault = false,
                     });
 

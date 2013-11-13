@@ -1,16 +1,16 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Moq.Protected;
     using System;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using OJS.Data.Models;
-    using OJS.Common.Extensions;
-    using System.IO;
+
     using Ionic.Zip;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     [TestClass]
     public class ImportActionTests : TestsControllerBaseTestsClass

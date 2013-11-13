@@ -166,9 +166,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Common", "OJS.Common\OJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.LocalWorker", "Workers\OJS.Workers.LocalWorker\OJS.Workers.LocalWorker.csproj", "{5D3361F8-F50B-415F-826A-724DCDAA4A89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.ExecutionStrategies", "Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj", "{69966098-E5B2-46CD-88E9-1F79B245ADE0}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://academytfs2012/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -267,6 +269,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Open\u0020Judge\u0020System.sln
 		SccProjectName24 = Workers/OJS.Workers.LocalWorker
 		SccLocalPath24 = Workers\\OJS.Workers.LocalWorker
+		SccProjectUniqueName25 = Workers\\OJS.Workers.ExecutionStrategies\\OJS.Workers.ExecutionStrategies.csproj
+		SccProjectTopLevelParentUniqueName25 = Open\u0020Judge\u0020System.sln
+		SccProjectName25 = Workers/OJS.Workers.ExecutionStrategies
+		SccLocalPath25 = Workers\\OJS.Workers.ExecutionStrategies
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -369,6 +375,10 @@ Global
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -383,6 +393,7 @@ Global
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{28647C4A-BD4B-4E1B-B48D-A397740B805C} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{01CC0B02-529E-4D5F-B345-0B92F6920854} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{EA9D6519-EC81-4C8B-9385-455CF5C3544E} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}

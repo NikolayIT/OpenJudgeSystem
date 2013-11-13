@@ -2,7 +2,7 @@
 {
     using OJS.Workers.Common;
 
-    public class TrimChecker : BaseChecker
+    public class TrimChecker : Checker
     {
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
         {

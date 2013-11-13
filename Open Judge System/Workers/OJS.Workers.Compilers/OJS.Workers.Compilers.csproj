@@ -46,7 +46,6 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="CPlusPlusCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
-    <Compile Include="JavaScriptFilePreprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

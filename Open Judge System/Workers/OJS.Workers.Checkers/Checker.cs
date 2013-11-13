@@ -5,8 +5,24 @@
 
     using OJS.Workers.Common;
 
-    public abstract class BaseChecker : IChecker
+    public abstract class Checker : IChecker
     {
+        public static IChecker CreateChecker(string assemblyName, string typeName, string parameter)
+        {
+            var checker = (IChecker)Activator.CreateInstance(assemblyName, typeName).Unwrap();
+            if (checker == null)
+            {
+                return null;
+            }
+
+            if (parameter != null)
+            {
+                checker.SetParameter(parameter);
+            }
+
+            return checker;
+        }
+
         public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput);
 
         public virtual void SetParameter(string parameter)

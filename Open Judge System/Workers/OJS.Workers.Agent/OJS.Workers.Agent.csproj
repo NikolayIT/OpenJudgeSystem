@@ -99,10 +99,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CodeJobWorker.cs" />
-    <Compile Include="ExecutionStrategies\CompileExecuteAndCheckStrategy.cs" />
-    <Compile Include="ExecutionStrategies\CSharpHighQualityCodeStrategy.cs" />
-    <Compile Include="ExecutionStrategies\ExecutionStrategyBase.cs" />
-    <Compile Include="ExecutionStrategies\JsExecuteWithNodeJsAndCheckStrategy.cs" />
     <Compile Include="IFileCache.cs" />
     <Compile Include="IJobWorker.cs" />
     <Compile Include="Program.cs" />

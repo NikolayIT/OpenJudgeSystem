@@ -1,23 +1,23 @@
-namespace OJS.Web.Areas.Administration.Controllers
+ï»¿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
     using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Controllers;
 
     using ModelType = OJS.Data.Models.Contest;
 
     public class ContestsController : KendoGridAdministrationController
     {
-        private const string NO_ACTIVE_CONTESTS = "Íÿìà àêòèâíè ñúñòåçàíèÿ";
-        private const string NO_FUTURE_CONTESTS = "Íÿìà áúäåùè ñúñòåçàíèÿ";
-        private const string NO_LATEST_CONTESTS = "Íÿìà ïîñëåäíè ñúñòåçàíèÿ";
+        private const string NO_ACTIVE_CONTESTS = "ÐÑÐ¼Ð° Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¸ ÑÑŠÑÑ‚ÐµÐ·Ð°Ð½Ð¸Ñ";
+        private const string NO_FUTURE_CONTESTS = "ÐÑÐ¼Ð° Ð±ÑŠÐ´ÐµÑ‰Ð¸ ÑÑŠÑÑ‚ÐµÐ·Ð°Ð½Ð¸Ñ";
+        private const string NO_LATEST_CONTESTS = "ÐÑÐ¼a Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸ ÑÑŠÑÑ‚ÐµÐ·aÐ½Ð¸Ñ";
 
         public ContestsController(IOjsData data)
             : base(data)
@@ -62,11 +62,11 @@ namespace OJS.Web.Areas.Administration.Controllers
 
             if (futureContests.Count() > 0)
             {
-                return PartialView("_QuickContestsGrid", futureContests);
+                return this.PartialView("_QuickContestsGrid", futureContests);
             }
             else
             {
-                return Content(NO_FUTURE_CONTESTS);
+                return this.Content(NO_FUTURE_CONTESTS);
             }
         }
 
@@ -80,11 +80,11 @@ namespace OJS.Web.Areas.Administration.Controllers
 
             if (activeContests.Count() > 0)
             {
-                return PartialView("_QuickContestsGrid", activeContests);
+                return this.PartialView("_QuickContestsGrid", activeContests);
             }
             else
             {
-                return Content(NO_ACTIVE_CONTESTS);
+                return this.Content(NO_ACTIVE_CONTESTS);
             }
         }
 
@@ -98,11 +98,11 @@ namespace OJS.Web.Areas.Administration.Controllers
 
             if (latestContests.Count() > 0)
             {
-                return PartialView("_QuickContestsGrid", latestContests);
+                return this.PartialView("_QuickContestsGrid", latestContests);
             }
             else
             {
-                return Content(NO_LATEST_CONTESTS);
+                return this.Content(NO_LATEST_CONTESTS);
             }
         }
     }

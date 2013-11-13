@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
 

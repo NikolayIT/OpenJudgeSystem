@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace OJS.Web.ViewModels.News
+﻿namespace OJS.Web.ViewModels.News
 {
+    using System.Collections.Generic;
+
     public class AllNewsViewModel
     {
         public IEnumerable<NewsViewModel> AllNews { get; set; }

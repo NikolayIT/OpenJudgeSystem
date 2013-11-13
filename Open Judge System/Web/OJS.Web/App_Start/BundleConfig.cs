@@ -41,7 +41,7 @@
             bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
                         "~/Scripts/CodeMirror/codemirror.js",
                         "~/Scripts/CodeMirror/mode/clike.js",
-                        "~/Scripts/CodeMirror/mode/javascript.js"));;
+                        "~/Scripts/CodeMirror/mode/javascript.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)

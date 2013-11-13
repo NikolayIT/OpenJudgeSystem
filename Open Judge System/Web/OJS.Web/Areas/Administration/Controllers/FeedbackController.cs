@@ -27,7 +27,7 @@ namespace OJS.Web.Areas.Administration.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]

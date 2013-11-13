@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web;
+
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using TestRunModel = OJS.Data.Models.TestRun;
 

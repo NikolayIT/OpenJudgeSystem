@@ -501,7 +501,6 @@
                                                                                                                             .FirstOrDefault()
                                                                                                     })
                                                                                                     .OrderBy(res => res.ProblemName)
-
                                                     })
                                                     .ToList()
                                                     .OrderByDescending(x => x.Total)

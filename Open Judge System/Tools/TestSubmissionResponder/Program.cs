@@ -1,16 +1,15 @@
 ﻿namespace TestSubmissionResponder
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
 
     public class Program
     {
-        public static string[] Comments = { "Ok", "Test comment", "Some other comment" };
+        private static string[] comments = { "Ok", "Test comment", "Some other comment" };
 
         public static void Main(string[] args)
         {
@@ -63,12 +62,11 @@
                                                         MemoryUsed = random.Next(),
                                                         ResultType = (TestRunResultType)random.Next(0, 5),
                                                         TimeUsed = random.Next(0, 400),
-                                                        CheckerComment = "Checker comment: " + Comments[random.Next(0, 3)],
-                                                        ExecutionComment = "Executioner comment: " + Comments[random.Next(0, 3)],
+                                                        CheckerComment = "Checker comment: " + comments[random.Next(0, 3)],
+                                                        ExecutionComment = "Executioner comment: " + comments[random.Next(0, 3)],
                                                         SubmissionId = submission.Id
                                                     });
                     }
-
                 }
 
                 data.SaveChanges();
@@ -82,7 +80,7 @@
         {
             var submissionsWithoutPoints = data.Submissions.All().Where(x => x.Points == 0).ToArray();
             var submissionPerIteration = 300;
-            Console.WriteLine("Total submission without result: {0}",submissionsWithoutPoints.Length);
+            Console.WriteLine("Total submission without result: {0}", submissionsWithoutPoints.Length);
 
             for (int i = 0; i < submissionsWithoutPoints.Length; i++)
             {

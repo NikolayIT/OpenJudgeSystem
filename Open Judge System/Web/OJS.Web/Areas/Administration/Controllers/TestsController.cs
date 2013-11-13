@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
@@ -15,7 +16,6 @@
     using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
-    using System.Net;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation

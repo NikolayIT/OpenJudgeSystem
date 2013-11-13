@@ -2,7 +2,7 @@
 {
     using OJS.Workers.Common;
 
-    public class CaseInsensitiveChecker : BaseChecker
+    public class CaseInsensitiveChecker : Checker
     {
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
         {

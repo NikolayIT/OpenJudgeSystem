@@ -5,6 +5,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
     using System.Linq;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using System.Threading;
@@ -210,7 +211,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             }
                             else if (testRunDescription.StartsWith("Runtime error:"))
                             {
-                                testRun.ResultType = TestRunResultType.RuntimeError;
+                                testRun.ResultType = TestRunResultType.RunTimeError;
                                 testRun.ExecutionComment = testRunDescription.Replace("Runtime error:", "").Trim();
                                 testRun.CheckerComment = null;
                                 testRun.TimeUsed = 0;
@@ -226,7 +227,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             }
                             else
                             {
-                                testRun.ResultType = TestRunResultType.RuntimeError;
+                                testRun.ResultType = TestRunResultType.RunTimeError;
                                 testRun.ExecutionComment = testRunDescription.Trim();
                                 testRun.CheckerComment = null;
                                 testRun.TimeUsed = 0;

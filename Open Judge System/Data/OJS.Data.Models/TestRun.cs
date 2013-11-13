@@ -1,5 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
+    using OJS.Common.Models;
+
     public class TestRun
     {
         public int Id { get; set; }

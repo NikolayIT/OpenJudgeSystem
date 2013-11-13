@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Common.ZippedTestManipulator
 {
-    using Ionic.Zip;
     using System;
     using System.IO;
     using System.Linq;
+
+    using Ionic.Zip;
+
     using OJS.Data.Models;
 
     public class ZippedTestsManipulator
@@ -63,7 +65,7 @@
 
         private static void ExcractInAndSolFiles(ZipFile zipFile, TestsParseResult result)
         {
-            //.in and .sol files
+            // .in and .sol files
             if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol"))
             {
                 var solOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol").ToList();
@@ -85,7 +87,7 @@
 
                         var input = inputFiles[0];
 
-                        //check zero test
+                        // check zero test
                         if (input.FileName.ToLower().Substring(input.FileName.Length - 5, 5) == "00.in"
                             && output.FileName.ToLower().Substring(output.FileName.Length - 6, 6) == "00.sol")
                         {
@@ -104,7 +106,7 @@
 
         private static void ExcractInAndOutFiles(ZipFile zipFile, TestsParseResult result)
         {
-            //.in and .out files
+            // .in and .out files
             if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out"))
             {
                 var outOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out").ToList();
@@ -126,7 +128,7 @@
 
                         var input = inputFiles[0];
 
-                        //check zero test
+                        // check zero test
                         if (input.FileName.ToLower().Substring(input.FileName.LastIndexOf('_') - 2, 2) == "et"
                             && output.FileName.ToLower().Substring(output.FileName.LastIndexOf('_') - 2, 2) == "et")
                         {
@@ -167,7 +169,7 @@
 
                         var input = inputFiles[0];
 
-                        //check zero test
+                        // check zero test
                         if (input.FileName.Contains(".000.")
                             && output.FileName.Contains(".000."))
                         {

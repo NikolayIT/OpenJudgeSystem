@@ -1,36 +1,35 @@
 ﻿namespace OJS.Web.Controllers
 {
-    using Kendo.Mvc.UI;
-    using Kendo.Mvc.Extensions;
-    using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
+
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
+    using Newtonsoft.Json;
+
     using OJS.Data;
-    using OJS.Web.ViewModels.Submission;
-    using OJS.Web.ViewModels.TestRun;
     using OJS.Data.Models;
+    using OJS.Web.ViewModels.Submission;
 
     public class SubmissionsController : BaseController
     {
         public SubmissionsController(IOjsData data)
             : base(data)
         {
-
         }
 
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View("AdvancedSubmissions");
+                return this.View("AdvancedSubmissions");
             }
             else
             {
-                IEnumerable<SubmissionViewModel> submissions = GetLastFiftySubmissions();
-                return View("BasicSubmissions", submissions);
+                IEnumerable<SubmissionViewModel> submissions = this.GetLastFiftySubmissions();
+                return this.View("BasicSubmissions", submissions);
             }
         }
 

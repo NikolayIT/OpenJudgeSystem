@@ -11,12 +11,12 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
 
-    using Resources;
-
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.ViewModels.Account;
     using OJS.Web.Common.MailSender;
+    using OJS.Web.ViewModels.Account;
+
+    using Resources;
 
     [Authorize]
     public class AccountController : BaseController

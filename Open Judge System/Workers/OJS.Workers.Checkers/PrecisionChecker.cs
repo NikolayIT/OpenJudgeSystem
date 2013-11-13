@@ -8,7 +8,7 @@
     /// <summary>
     /// Checks if each line of decimals are equal with certain precision (default is 14).
     /// </summary>
-    public class PrecisionChecker : BaseChecker
+    public class PrecisionChecker : Checker
     {
         private int precision = 14;
 

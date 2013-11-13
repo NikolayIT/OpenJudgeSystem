@@ -1,12 +1,13 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
-    using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using OJS.Web.Areas.Administration.ViewModels;
 
     [TestClass]
@@ -82,7 +83,7 @@
 
             var data = jsonResult.Data;
 
-            var contest =  data.GetType().GetProperty("Contest").GetValue(data, null);
+            var contest = data.GetType().GetProperty("Contest").GetValue(data, null);
             var category = data.GetType().GetProperty("Category").GetValue(data, null);
 
             Assert.AreEqual(1, contest);

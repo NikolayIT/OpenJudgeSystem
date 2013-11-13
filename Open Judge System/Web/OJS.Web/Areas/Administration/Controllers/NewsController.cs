@@ -10,7 +10,7 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Data.Models.News;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.NewsViewModel;
 
     public class NewsController : KendoGridAdministrationController
     {
@@ -21,7 +21,7 @@
 
         public override IEnumerable GetData()
         {
-            return this.Data.News.All().Where(x => !x.IsDeleted);
+            return this.Data.News.All().Where(x => !x.IsDeleted).Select(ModelType.ViewModel);
         }
 
         public ActionResult Index()

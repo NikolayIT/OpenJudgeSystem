@@ -55,7 +55,8 @@
 
             var anotherUser = new UserProfile
             {
-                UserName = "test user"
+                UserName = "test user",
+                Email = "testmail@testprovider.com"
             };
 
             this.EmptyOjsData.Users.Add(anotherUser);

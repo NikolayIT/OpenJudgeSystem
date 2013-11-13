@@ -2,7 +2,7 @@
 {
     using OJS.Workers.Common;
 
-    public class ExactChecker : BaseChecker
+    public class ExactChecker : Checker
     {
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
         {

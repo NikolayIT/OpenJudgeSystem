@@ -88,7 +88,6 @@
     <Compile Include="Process\RestrictedProcess.cs" />
     <Compile Include="DifferentUserProcessExecutor.cs" />
     <Compile Include="RestrictedProcessExecutor.cs" />
-    <Compile Include="StyleCopAnalyzer.cs" />
     <Compile Include="Impersonation\WrapperImpersonationContext.cs" />
   </ItemGroup>
   <ItemGroup>

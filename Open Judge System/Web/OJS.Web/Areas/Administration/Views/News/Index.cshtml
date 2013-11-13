@@ -5,15 +5,15 @@
 }
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Data.Models.News>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.NewsViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
         {
-            columns.Bound(x => x.Id);
-            columns.Bound(x => x.Title);
-            columns.Bound(x => x.IsVisible);
-            columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
-            columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(col => col.Id);
+            columns.Bound(col => col.Title);
+            columns.Bound(col => col.IsVisible);
+            columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
@@ -22,7 +22,7 @@
         toolbar.Create().Text("Създай");
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text("Изтегли новини").Action("Fetch", "News", new { Area = "" });
-        toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
@@ -45,7 +45,13 @@
     .DataSource(datasource => datasource
         .Ajax()
         .ServerOperation(true)
-        .Model(model => model.Id(x => x.Id))
+        .Model(model => 
+            {
+                model.Id(m => m.Id);
+                model.Field(m => m.Id).Editable(false);
+                model.Field(m => m.CreatedOn).Editable(false);
+                model.Field(m => m.ModifiedOn).Editable(false);
+            })
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
         .Create(create => create.Action("Create", ControllerName))
         .Read(read => read.Action("Read", ControllerName))

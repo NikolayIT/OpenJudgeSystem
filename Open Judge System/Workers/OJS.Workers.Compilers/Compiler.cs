@@ -13,7 +13,7 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
-        public static ICompiler GetCompiler(CompilerType compilerType)
+        public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
             {
@@ -21,12 +21,10 @@
                     return null;
                 case CompilerType.CSharp:
                     return new CSharpCompiler();
-                case CompilerType.CPlusPlus:
+                case CompilerType.CPlusPlusGcc:
                     return new CPlusPlusCompiler();
-                case CompilerType.JavaScript:
-                    return new JavaScriptFilePreprocessor();
                 default:
-                    throw new NotImplementedException("Unsupported compiler.");
+                    throw new ArgumentException("Unsupported compiler.");
             }
         }
 

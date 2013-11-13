@@ -1,13 +1,32 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels
 {
+    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq.Expressions;
 
     public class NewsViewModel : AuditInfoViewModel
     {
+        public static Expression<Func<News, NewsViewModel>> ViewModel
+        {
+            get
+            {
+                return news => new NewsViewModel
+                {
+                    Id = news.Id,
+                    Title = news.Title,
+                    Author = news.Author,
+                    Source = news.Source,
+                    Content = news.Content,
+                    IsVisible = news.IsVisible,
+                    CreatedOn = news.CreatedOn,
+                    ModifiedOn = news.ModifiedOn
+                };
+            }
+        }
+
         [Display(Name = "№")]
-        [ScaffoldColumn(false)]
         public int Id { get; set; }
 
         [Display(Name = "Заглавие")]

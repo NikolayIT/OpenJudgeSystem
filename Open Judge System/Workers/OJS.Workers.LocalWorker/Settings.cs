@@ -27,11 +27,11 @@ namespace OJS.Workers.LocalWorker
             }
         }
 
-        public static string CPlusPlusCompilerPath
+        public static string CPlusPlusGccCompilerPath
         {
             get
             {
-                return GetSetting("CPlusPlusCompilerPath");
+                return GetSetting("CPlusPlusGccCompilerPath");
             }
         }
 

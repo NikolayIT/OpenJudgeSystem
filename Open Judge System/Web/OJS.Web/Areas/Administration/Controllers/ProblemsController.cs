@@ -22,14 +22,14 @@
 
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult Contest(int? id)
         {
-            ViewBag.ContestId = id;
+            this.ViewBag.ContestId = id;
 
-            return View("Index");
+            return this.View("Index");
         }
 
         public ActionResult Resource(int? id)
@@ -40,14 +40,14 @@
 
             if (problem == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
-            ViewBag.ContestId = problem.ContestId;
-            ViewBag.ProblemId = problem.Id;
+            this.ViewBag.ContestId = problem.ContestId;
+            this.ViewBag.ProblemId = problem.Id;
 
-            return View("Index");
+            return this.View("Index");
         }
 
         [HttpGet]
@@ -55,16 +55,16 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
             var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
 
             if (contest == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
             var checkers = this.Data.Checkers.All()
@@ -90,7 +90,7 @@
                 ContestName = contest.Name,
             };
 
-            return View(problem);
+            return this.View(problem);
         }
 
         [HttpPost]
@@ -126,7 +126,7 @@
                     {
                         TempData.Add("DangerMessage", ex.Message);
                         problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-                        return View(problem);
+                        return this.View(problem);
                     }
                 }
 
@@ -134,11 +134,11 @@
                 this.Data.SaveChanges();
 
                 TempData.Add("InfoMessage", "Задачата беше добавена успешно");
-                return RedirectToAction("Contest", new { id = id });
+                return this.RedirectToAction("Contest", new { id = id });
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-            return View(problem);
+            return this.View(problem);
         }
 
         [HttpGet]
@@ -146,8 +146,8 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
             // TODO: Fix this query to use the static method from DetailedProblemViewModel
@@ -180,11 +180,11 @@
 
             if (selectedProblem == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
-            return View(selectedProblem);
+            return this.View(selectedProblem);
         }
 
         [HttpPost]
@@ -206,8 +206,8 @@
 
             this.Data.SaveChanges();
 
-            TempData["InfoMessage"] = "Задачата беше променена успешно";
-            return RedirectToAction("Contest", new { id = existingProblem.ContestId });
+            this.TempData["InfoMessage"] = "Задачата беше променена успешно";
+            return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
         }
 
         [HttpGet]
@@ -215,8 +215,8 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
             var selectedProblem = this.Data.Problems.All()
@@ -240,19 +240,19 @@
 
             if (selectedProblem == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
-            return View(selectedProblem);
+            return this.View(selectedProblem);
         }
 
         public ActionResult ConfirmDelete(int? id)
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
             var problem = this.Data.Problems.All()
@@ -260,8 +260,8 @@
 
             if (problem == null)
             {
-                TempData["DangerMessage"] = "Невалидна задача";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
             }
 
             // TODO: Add cascading deletion of submissions, tests, resources
@@ -269,8 +269,8 @@
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 
-            TempData["InfoMessage"] = "Задачата беше изтрита успешно";
-            return RedirectToAction("Contest", new { id = problem.ContestId });
+            this.TempData["InfoMessage"] = "Задачата беше изтрита успешно";
+            return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
         [HttpGet]
@@ -278,8 +278,8 @@
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
             var contest = this.Data.Contests.All()
@@ -287,22 +287,21 @@
                 .Select(ContestViewModel.FromContest)
                 .FirstOrDefault();
 
-
             if (contest == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
-            return View(contest);
+            return this.View(contest);
         }
 
         public ActionResult ConfirmDeleteAll(int? id)
         {
             if (id == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
             var contest = this.Data.Contests.All()
@@ -310,8 +309,8 @@
 
             if (contest == null)
             {
-                TempData["DangerMessage"] = "Невалидно състезание";
-                return RedirectToAction("Index");
+                this.TempData["DangerMessage"] = "Невалидно състезание";
+                return this.RedirectToAction("Index");
             }
 
             foreach (var problem in contest.Problems.ToList())
@@ -323,8 +322,8 @@
 
             this.Data.SaveChanges();
 
-            TempData["InfoMessage"] = "Задачите бяха изтрити успешно";
-            return RedirectToAction("Contest", new { id = id });
+            this.TempData["InfoMessage"] = "Задачите бяха изтрити успешно";
+            return this.RedirectToAction("Contest", new { id = id });
         }
 
         [HttpGet]
@@ -349,7 +348,7 @@
                     OrderBy = problem.OrderBy,
                 });
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -357,7 +356,7 @@
         {
             var result = this.Data.ContestCategories.All().Select(x => new { Id = x.Id, Name = x.Name });
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -374,14 +373,14 @@
 
             var result = contests.Select(x => new { Id = x.Id, Name = x.Name });
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetSearchedContests()
         {
             var result = this.Data.Contests.All().Select(x => new { Id = x.Id, Name = x.Name });
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -399,9 +398,8 @@
 
             var result = new { contest = contestId, category = categoryId };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
-
 
         // TODO: Transfer to ResourcesController
         public ActionResult AddResourceForm(int id)
@@ -418,7 +416,7 @@
                 })
             };
 
-            return PartialView("_ProblemResourceForm", resourceViewModel);
+            return this.PartialView("_ProblemResourceForm", resourceViewModel);
         }
 
         private void AddResourcesToProblem(Problem problem, IEnumerable<ProblemResourceViewModel> resources)
@@ -483,5 +481,5 @@
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
             }
         }
-	}
+    }
 }

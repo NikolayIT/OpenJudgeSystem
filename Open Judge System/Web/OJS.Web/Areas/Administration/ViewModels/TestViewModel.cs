@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web;
+
     using OJS.Common.Extensions;
     using OJS.Data.Models;
 
@@ -30,10 +31,6 @@
 
         public int Id { get; set; }
 
-        internal byte[] InputData { get; set; }
-
-        internal byte[] OutputData { get; set; }
-
         [Display(Name = "Задача")]
         public string ProblemName { get; set; }
 
@@ -53,6 +50,7 @@
                 var result = this.InputData.Decompress();
                 return result.Length > 20 ? result.Substring(0, 20) : result;
             }
+
             set
             {
                 this.InputData = value.Compress();
@@ -75,6 +73,7 @@
                 var result = this.InputData.Decompress();
                 return result;
             }
+
             set
             {
                 this.InputData = value.Compress();
@@ -97,6 +96,7 @@
                 var result = this.OutputData.Decompress();
                 return result.Length > 20 ? result.Substring(0, 20) : result;
             }
+
             set
             {
                 this.OutputData = value.Compress();
@@ -119,6 +119,7 @@
                 var result = this.OutputData.Decompress();
                 return result;
             }
+
             set
             {
                 this.OutputData = value.Compress();
@@ -147,5 +148,9 @@
 
         [Display(Name = "Брой изпълнения")]
         public int TestRunsCount { get; set; }
+
+        internal byte[] InputData { get; set; }
+
+        internal byte[] OutputData { get; set; }
     }
 }

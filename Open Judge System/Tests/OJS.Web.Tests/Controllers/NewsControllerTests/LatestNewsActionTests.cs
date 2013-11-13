@@ -1,23 +1,19 @@
 ﻿namespace OJS.Web.Tests.Contollers.NewsControllerTests
 {
-    using System.Data.Entity;
+    using System.Collections.Generic;
     using System.Linq;
-
-    using OJS.Data;
-    using OJS.Tests.Common;
-    using OJS.Web.Controllers;
     using System.Web.Mvc;
 
-    using OJS.Web.ViewModels.News;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using OJS.Data.Models;
-    using System.Collections.Generic;
+
+    using OJS.Web.Controllers;
+    using OJS.Web.ViewModels.News;
 
     [TestClass]
     public class LatestNewsActionTests : NewsTestBaseClass
     {
         public LatestNewsActionTests()
-            : base ()
+            : base()
         {
         }
 

@@ -1,11 +1,9 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.Linq;
     using System.Web.Mvc;
-    using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
+    
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using OJS.Web.Areas.Administration.ViewModels;
 
     [TestClass]

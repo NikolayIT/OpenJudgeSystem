@@ -7,7 +7,7 @@
 
     using OJS.Workers.Common;
 
-    public class SortChecker : BaseChecker
+    public class SortChecker : Checker
     {
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
         {

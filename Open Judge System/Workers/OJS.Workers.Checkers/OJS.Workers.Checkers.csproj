@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseChecker.cs" />
+    <Compile Include="Checker.cs" />
     <Compile Include="CaseInsensitiveChecker.cs" />
     <Compile Include="CSharpCodeChecker.cs" />
     <Compile Include="ExactChecker.cs" />

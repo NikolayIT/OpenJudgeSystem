@@ -83,7 +83,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\External Libraries\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="Kendo.Mvc">
+    <Reference Include="Kendo.Mvc, Version=2013.2.1111.340, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\External Libraries\Kendo.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

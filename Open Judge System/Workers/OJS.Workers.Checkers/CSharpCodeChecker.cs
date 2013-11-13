@@ -9,11 +9,11 @@
 
     using OJS.Workers.Common;
 
-    public class CSharpCodeChecker : IChecker
+    public class CSharpCodeChecker : Checker
     {
         private IChecker customChecker;
 
-        public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
         {
             if (this.customChecker == null)
             {
@@ -24,7 +24,7 @@
             return result;
         }
 
-        public void SetParameter(string parameter)
+        public override void SetParameter(string parameter)
         {
             var codeProvider = new CSharpCodeProvider();
             var compilerParameters = new CompilerParameters { GenerateInMemory = true, };
