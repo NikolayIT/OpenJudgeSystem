@@ -65,8 +65,8 @@
 
         [Display(Name = "Лимит на памет")]
         [Required(ErrorMessage = "Лимита на памет е задължителен!")]
-        [DefaultValue(16777216)]
-        public long MemoryLimit { get; set; }
+        [DefaultValue(32 * 1024 * 1024)]
+        public int MemoryLimit { get; set; }
         
         [Display(Name = "Чекер")]
         public string Checker { get; set; }

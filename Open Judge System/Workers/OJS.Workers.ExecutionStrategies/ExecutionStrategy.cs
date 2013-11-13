@@ -6,9 +6,9 @@
     using OJS.Common.Models;
     using OJS.Workers.Common;
 
-    public abstract class ExecutionStrategyBase : IExecutionStrategy
+    public abstract class ExecutionStrategy : IExecutionStrategy
     {
-        public abstract SubmissionsExecutorResult Execute(SubmissionsExecutorContext submission);
+        public abstract SubmissionsExecutorResult Execute(ExecutionContext executionContext);
 
         protected TestResult ExecuteAndCheckTest(TestContext test, ProcessExecutionResult processExecutionResult, IChecker checker, string receivedOutput)
         {

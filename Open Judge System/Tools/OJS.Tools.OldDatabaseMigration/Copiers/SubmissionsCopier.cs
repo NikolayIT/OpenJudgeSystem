@@ -21,7 +21,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
 
             var count = oldDb.Submissions.Count();
             const int ElementsByIteration = 1000;
-            var iterations = Math.Ceiling((decimal)count / ElementsByIteration);
+            var iterations = 10; // TODO: uncomment: Math.Ceiling((decimal)count / ElementsByIteration);
             for (int i = 0; i < iterations; i++)
             {
                 GC.Collect();
@@ -52,7 +52,8 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                              CreatedOn = oldSubmission.SubmittedOn,
                                              Problem = problem,
                                              Participant = participant,
-                                             Points = oldSubmission.Points
+                                             Points = oldSubmission.Points,
+                                             Processed = true,
                                          };
 
                     switch (oldSubmission.Language)

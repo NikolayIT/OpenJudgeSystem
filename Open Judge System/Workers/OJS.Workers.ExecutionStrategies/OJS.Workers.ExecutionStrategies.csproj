@@ -43,11 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExecutionStrategyBase.cs" />
+    <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
+    <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompileExecuteAndCheckExecutionStrategy.cs" />
-    <Compile Include="SubmissionsExecutorContext.cs" />
+    <Compile Include="ExecutionContext.cs" />
     <Compile Include="SubmissionsExecutorResult.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestResult.cs" />

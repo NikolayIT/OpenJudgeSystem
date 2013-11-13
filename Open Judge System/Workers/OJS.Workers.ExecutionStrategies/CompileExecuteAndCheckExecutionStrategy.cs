@@ -10,7 +10,7 @@
     using OJS.Workers.Compilers;
     using OJS.Workers.Executors;
 
-    public class CompileExecuteAndCheckExecutionStrategy : ExecutionStrategyBase
+    public class CompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
@@ -19,17 +19,17 @@
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
-        public override SubmissionsExecutorResult Execute(SubmissionsExecutorContext submission)
+        public override SubmissionsExecutorResult Execute(ExecutionContext executionContext)
         {
             var result = new SubmissionsExecutorResult();
 
             // 1. Save source to a file
-            var sourceCodeFilePath = this.SaveStringToTempFile(submission.Code);
+            var sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
 
             // 2. Compile the file
-            ICompiler compiler = Compiler.CreateCompiler(submission.CompilerType);
-            var compilerPath = this.getCompilerPathFunc(submission.CompilerType);
-            var compilerResult = compiler.Compile(compilerPath, sourceCodeFilePath, submission.AdditionalCompilerArguments);
+            ICompiler compiler = Compiler.CreateCompiler(executionContext.CompilerType);
+            var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = compiler.Compile(compilerPath, sourceCodeFilePath, executionContext.AdditionalCompilerArguments);
             File.Delete(sourceCodeFilePath);
             if (!compilerResult.IsCompiledSuccessfully)
             {
@@ -43,11 +43,11 @@
 
             // 3. Execute and check each test
             IExecutor executor = new RestrictedProcessExecutor();
-            IChecker checker = Checker.CreateChecker(submission.CheckerAssemblyName, submission.CheckerTypeName, submission.CheckerParameter);
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
             result.TestResults = new List<TestResult>();
-            foreach (var test in submission.Tests)
+            foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(outputFile, test.Input, submission.TimeLimit, submission.MemoryLimit);
+                var processExecutionResult = executor.Execute(outputFile, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit);
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
             }
@@ -57,27 +57,5 @@
 
             return result;
         }
-        
-        //private string GetCompilerPath(CompilerType type)
-        //{
-        //    throw new NotImplementedException();
-        //    //switch (type)
-        //    //{
-        //    //    case CompilerType.None:
-        //    //        return null;
-        //    //    case CompilerType.CSharp:
-        //    //        return Settings.CSharpCompilerPath;
-        //    //    case CompilerType.MsBuild:
-        //    //        throw new NotImplementedException("Compiler not supported.");
-        //    //    case CompilerType.CPlusPlus:
-        //    //        return Settings.CPlusPlusGccCompilerPath;
-        //    //    case CompilerType.JavaScript:
-        //    //        return null;
-        //    //    case CompilerType.Java:
-        //    //        throw new NotImplementedException("Compiler not supported.");
-        //    //    default:
-        //    //        throw new ArgumentOutOfRangeException("type");
-        //    //}
-        //}
     }
 }

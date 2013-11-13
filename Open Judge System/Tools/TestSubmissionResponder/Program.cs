@@ -1,101 +1,121 @@
 ﻿namespace TestSubmissionResponder
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
+    using System.Threading;
 
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Workers.ExecutionStrategies;
+
+    using ExecutionContext = OJS.Workers.ExecutionStrategies.ExecutionContext;
 
     public class Program
     {
-        private static string[] comments = { "Ok", "Test comment", "Some other comment" };
-
         public static void Main(string[] args)
         {
             var data = new OjsData();
-            var random = new Random();
-            var counter = 0;
 
             while (true)
             {
-                FillInPoints(data);
+                var dbSubmission =
+                    data.Submissions.All()
+                        .Where(x => !x.Processed)
+                        .OrderByDescending(x => x.Id)
+                        .Include(x => x.Problem)
+                        .Include(x => x.Problem.Checker)
+                        .Include(x => x.SubmissionType)
+                        .FirstOrDefault();
 
-                var submissions = data.Submissions.AllWithDeleted().Where(x => x.TestRuns.Count == 0);
-
-                var submissionCount = submissions.Count();
-                var submissionByIteration = 400;
-
-                if (submissionCount != 0)
+                if (dbSubmission == null)
                 {
-                    Console.WriteLine("Found {0} submissions.", submissionCount);
+                    Thread.Sleep(500);
+                    continue;
                 }
 
-                foreach (var submission in submissions)
+                IExecutionStrategy executionStrategy = CreateExecutionStrategy(dbSubmission.SubmissionType.ExecutionStrategyType);
+                var context = new ExecutionContext
+                                  {
+                                    AdditionalCompilerArguments  = dbSubmission.SubmissionType.AdditionalCompilerArguments,
+                                    CheckerAssemblyName = dbSubmission.Problem.Checker.DllFile,
+                                    CheckerParameter = dbSubmission.Problem.Checker.Parameter,
+                                    CheckerTypeName =  dbSubmission.Problem.Checker.ClassName,
+                                    Code = dbSubmission.ContentAsString,
+                                    CompilerType = dbSubmission.SubmissionType.CompilerType,
+                                    MemoryLimit = dbSubmission.Problem.MemoryLimit,
+                                    TimeLimit = dbSubmission.Problem.TimeLimit,
+                                  };
+
+                context.Tests = dbSubmission.Problem.Tests.ToList().Select(x => new TestContext
+                                                                                {
+                                                                                    Id = x.Id,
+                                                                                    Input = x.InputDataAsString,
+                                                                                    Output = x.OutputDataAsString,
+                                                                                });
+
+                var result = executionStrategy.Execute(context);
+                dbSubmission.Processed = true;
+                dbSubmission.TestRuns.Clear();
+                dbSubmission.IsCompiledSuccessfully = result.IsCompiledSuccessfully;
+                dbSubmission.CompilerComment = result.CompilerComment;
+                foreach (var testResult in result.TestResults)
                 {
-                    if (counter % submissionByIteration == 0)
-                    {
-                        GC.Collect();
-                        data.SaveChanges();
-                        Console.WriteLine("Saving {0} submissions", submissionByIteration);
-                    }
-
-                    counter++;
-                    var problem = submission.Problem;
-                    if (problem.Tests.Count == 0)
-                    {
-                        Console.WriteLine("Generating tests for problem.");
-                        for (int i = 0; i < random.Next(8, 25); i++)
-                        {
-                            problem.Tests.Add(new Test
-                            {
-                                IsTrialTest = random.Next() % 2 == 0 ? true : false,
-                                OrderBy = random.Next()
-                            });
-                        }
-                    }
-
-                    foreach (var test in problem.Tests)
-                    {
-                        test.TestRuns.Add(new TestRun
-                                                    {
-                                                        MemoryUsed = random.Next(),
-                                                        ResultType = (TestRunResultType)random.Next(0, 5),
-                                                        TimeUsed = random.Next(0, 400),
-                                                        CheckerComment = "Checker comment: " + comments[random.Next(0, 3)],
-                                                        ExecutionComment = "Executioner comment: " + comments[random.Next(0, 3)],
-                                                        SubmissionId = submission.Id
-                                                    });
-                    }
+                    var testRun = new TestRun
+                                      {
+                                          CheckerComment = testResult.CheckerComment,
+                                          ExecutionComment = testResult.ExecutionComment,
+                                          MemoryUsed = testResult.MemoryUsed,
+                                          ResultType = testResult.ResultType,
+                                          TestId = testResult.Id,
+                                          TimeUsed = testResult.TimeUsed,
+                                      };
+                    dbSubmission.TestRuns.Add(testRun);
                 }
+
+                // TODO: dbSubmission.Points
 
                 data.SaveChanges();
-
-                Console.WriteLine("Sleeping for 5s");
-                System.Threading.Thread.Sleep(5000);
+                Thread.Sleep(500);
             }
         }
 
-        public static void FillInPoints(OjsData data)
+        public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)
         {
-            var submissionsWithoutPoints = data.Submissions.All().Where(x => x.Points == 0).ToArray();
-            var submissionPerIteration = 300;
-            Console.WriteLine("Total submission without result: {0}", submissionsWithoutPoints.Length);
-
-            for (int i = 0; i < submissionsWithoutPoints.Length; i++)
+            IExecutionStrategy executionStrategy;
+            switch (type)
             {
-                var submission = submissionsWithoutPoints[i];
-                submission.Points = (int)Math.Round(((double)submission.CorrectTestRunsCount * submission.Problem.MaximumPoints) / submission.Problem.Tests.Count);
-
-                if (i % submissionPerIteration == 0)
-                {
-                    Console.WriteLine("Saved points for {0} submissions", submissionPerIteration);
-                    Console.WriteLine("Processed so far: {0}", i);
-                    data.SaveChanges();
-                }
+                case ExecutionStrategyType.CompileExecuteAndCheck:
+                    executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
+                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            data.SaveChanges();
+            return executionStrategy;
         }
+
+       public static string GetCompilerPath(CompilerType type)
+       {
+           switch (type)
+           {
+               case CompilerType.None:
+                   return null;
+               case CompilerType.CSharp:
+                   return Settings.CSharpCompilerPath;
+               case CompilerType.MsBuild:
+                   throw new NotImplementedException("Compiler not supported.");
+               case CompilerType.CPlusPlusGcc:
+                   return Settings.CPlusPlusGccCompilerPath;
+               case CompilerType.Java:
+                   throw new NotImplementedException("Compiler not supported.");
+               default:
+                   throw new ArgumentOutOfRangeException("type");
+           }
+       }
     }
 }

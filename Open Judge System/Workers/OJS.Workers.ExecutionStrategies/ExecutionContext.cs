@@ -4,7 +4,7 @@
 
     using OJS.Common.Models;
 
-    public class SubmissionsExecutorContext
+    public class ExecutionContext
     {
         public CompilerType CompilerType { get; set; }
 
@@ -12,7 +12,7 @@
 
         public string Code { get; set; }
 
-        public List<TestContext> Tests { get; set; }
+        public IEnumerable<TestContext> Tests { get; set; }
 
         public int TimeLimit { get; set; }
 

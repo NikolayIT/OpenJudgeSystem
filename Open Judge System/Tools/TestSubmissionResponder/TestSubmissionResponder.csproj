@@ -44,8 +44,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -77,6 +82,10 @@
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj">
+      <Project>{69966098-e5b2-46cd-88e9-1f79b245ade0}</Project>
+      <Name>OJS.Workers.ExecutionStrategies</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

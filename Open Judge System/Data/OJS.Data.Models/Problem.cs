@@ -31,14 +31,14 @@
         public short MaximumPoints { get; set; }
 
         /// <summary>
-        /// Time limit for the task. Measured in milliseconds.
+        /// Time limit for the problem. Measured in milliseconds.
         /// </summary>
         public int TimeLimit { get; set; }
 
         /// <summary>
-        /// Memory limit for the task. Measured in bytes.
+        /// Memory limit for the problem. Measured in bytes.
         /// </summary>
-        public long MemoryLimit { get; set; }
+        public int MemoryLimit { get; set; }
 
         /// <summary>
         /// Source code size limit (measured in bytes).

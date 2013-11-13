@@ -23,7 +23,7 @@
                                       Name = task.Name,
                                       MaximumPoints = (short)task.MaxPoints,
                                       TimeLimit = task.TimeLimit,
-                                      MemoryLimit = task.MemoryLimit,
+                                      MemoryLimit = (int)task.MemoryLimit,
                                       OrderBy = 0,
                                       ShowResults = task.Contest1.ShowResults,
                                       CreatedOn = task.AddedOn,

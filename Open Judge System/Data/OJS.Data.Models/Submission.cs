@@ -60,6 +60,8 @@
             set { this.testRuns = value; }
         }
 
+        public bool Processed { get; set; }
+
         /// <summary>
         /// Cache field for submissions points (to speed-up some of the database queries)
         /// </summary>
