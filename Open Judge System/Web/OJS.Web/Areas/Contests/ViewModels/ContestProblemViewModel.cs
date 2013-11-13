@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
+
     using OJS.Data.Models;
 
     public class ContestProblemViewModel
@@ -14,7 +14,7 @@
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
             this.ContestId = problem.ContestId;
-            this.Resources = problem.Resources.AsQueryable().Select(ContestProblemResourceViewModel.FromResource);
+            this.Resources = problem.Resources.AsQueryable().Where(x => !x.IsDeleted).Select(ContestProblemResourceViewModel.FromResource);
         }
 
         public ContestProblemViewModel()
@@ -31,7 +31,9 @@
                     Name = problem.Name,
                     ProblemId = problem.Id,
                     ContestId = problem.ContestId,
-                    Resources = problem.Resources.AsQueryable().Select(ContestProblemResourceViewModel.FromResource)
+                    Resources = problem.Resources.AsQueryable()
+                                                            .Where(x => !x.IsDeleted)
+                                                            .Select(ContestProblemResourceViewModel.FromResource)
                 };
             }
         }

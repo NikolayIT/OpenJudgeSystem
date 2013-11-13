@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        <strong class="text-info">Потребителско име</strong>
+                        <strong class="text-primary">Потребителско име</strong>
                     </div>
                     <div class="col-xs-7">
                         @User.Identity.Name
@@ -30,7 +30,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        <strong class="text-info">Парола</strong>
+                        <strong class="text-primary">Парола</strong>
                     </div>
                     <div class="col-xs-7">
                         @Html.ActionLink("Промяна на парола", "Manage", "Account", new { area = string.Empty }, null)
@@ -39,7 +39,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        <strong class="text-info">Email</strong>
+                        <strong class="text-primary">Email</strong>
                     </div>
                     <div class="col-xs-7">
                         <span>My email</span>
@@ -48,7 +48,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.FirstName, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.FirstName, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.FirstName)
@@ -58,7 +58,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.LastName, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.LastName, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.LastName)
@@ -68,7 +68,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.DateOfBirth, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.DateOfBirth, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @(Html.Kendo().DatePicker()
@@ -83,7 +83,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.City, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.City, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.City)
@@ -93,7 +93,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.EducationalInstitution, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.EducationalInstitution, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.EducationalInstitution)
@@ -103,7 +103,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.FacultyNumber, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.FacultyNumber, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.FacultyNumber)
@@ -113,7 +113,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.Company, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.Company, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.Company)
@@ -123,7 +123,7 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4 text-right">
-                        @Html.LabelFor(m => m.JobTitle, new { @class = "text-info loud" })
+                        @Html.LabelFor(m => m.JobTitle, new { @class = "text-primary loud" })
                     </div>
                     <div class="col-xs-7">
                         @Html.EditorFor(m => m.JobTitle)

@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Threading;
 
     using OJS.Common.Models;
     using OJS.Workers.Common;
@@ -73,6 +74,7 @@
             var processStartInfo = new ProcessStartInfo(compilerPath)
                                        {
                                            RedirectStandardError = true,
+                                           RedirectStandardOutput = true,
                                            UseShellExecute = false,
                                            WindowStyle = ProcessWindowStyle.Hidden,
                                            WorkingDirectory = directoryInfo.ToString(),

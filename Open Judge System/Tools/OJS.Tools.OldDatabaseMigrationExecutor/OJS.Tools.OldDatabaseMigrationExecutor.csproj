@@ -4,18 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5732ED66-BE03-453E-9041-F6C98A16FBBA}</ProjectGuid>
+    <ProjectGuid>{96C5F093-3A06-4D01-ACC6-3003D7111528}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestSubmissionResponder</RootNamespace>
-    <AssemblyName>TestSubmissionResponder</AssemblyName>
+    <RootNamespace>OJS.Tools.OldDatabaseMigrationExecutor</RootNamespace>
+    <AssemblyName>OJS.Tools.OldDatabaseMigrationExecutor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,12 +44,14 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,9 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="OldDatabaseMigrationExecutorProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -79,17 +80,9 @@
       <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
       <Name>OJS.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
-      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
-      <Name>OJS.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Workers\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">
-      <Project>{93ec1d66-2ce1-4682-ac09-c8c40178a9ad}</Project>
-      <Name>OJS.Workers.Checkers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj">
-      <Project>{69966098-e5b2-46cd-88e9-1f79b245ade0}</Project>
-      <Name>OJS.Workers.ExecutionStrategies</Name>
+    <ProjectReference Include="..\OJS.Tools.OldDatabaseMigration\OJS.Tools.OldDatabaseMigration.csproj">
+      <Project>{c4144383-c1e4-4849-ba35-f063967314da}</Project>
+      <Name>OJS.Tools.OldDatabaseMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

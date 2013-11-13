@@ -104,7 +104,6 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                 }
 
                 context.Contests.Add(contest);
-                Console.WriteLine(contest);
             }
 
             context.SaveChanges();

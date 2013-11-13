@@ -17,8 +17,9 @@
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
-                var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
-                    Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId }) : resource.Link;
+                // TODO: refactor
+                string resourceLink = resource.ProblemType == ProblemResourceType.Video ?
+                    resource.Link : Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId });
 
                 if (resource.ProblemType == ProblemResourceType.ProblemDescription)
                 {
@@ -115,7 +116,7 @@
             {
                 col.Bound(model => model.SubmissionPoints).ClientTemplate("#=displayTestRuns(TestRuns)# <br /> #= IsCalculated ? SubmissionPoints.toString().concat(' / ').concat(MaximumPoints) : 'Моля изчакайте' #");
                 col.Template(@<text>@item.IsCalculated ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>).Title("Максимуми").ClientTemplate("#= IsCalculated ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
-                col.Bound(model => model.SubmissionDate).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <div class='view-submission-button btn btn-default' data-submission-id='#=SubmissionId#'>Виж решение</div>");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <div class='view-submission-button btn btn-default pull-right' data-submission-id='#=SubmissionId#'>Виж решение</div>");
             })
             .DataSource(data =>
             {
@@ -149,6 +150,7 @@
             #for (var i = 0; i < TestRuns.length; i++) {#
             <tr>
                 <td>
+                    @* TODO: Refactor using the extracted methods in the JS files *@
                     # switch (TestRuns[i].ExecutionResult) {
                     case 0: #
                     <span class="glyphicon glyphicon-ok text-success" title="Правилен отговор"></span>

@@ -348,8 +348,7 @@
             var problemWithResource = this.Data.Problems
                                                     .All()
                                                     .FirstOrDefault(problem =>
-                                                            problem.Resources.Any(res =>
-                                                                res.Id == id));
+                                                            problem.Resources.Any(res => res.Id == id && !res.IsDeleted));
 
             if (problemWithResource == null)
             {

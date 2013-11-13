@@ -131,6 +131,7 @@
         // GET: /Account/Manage
         public ActionResult Manage(ManageMessageId? message)
         {
+            // TODO: remove parameter - use TempData instead
             ViewBag.StatusMessage = message == ManageMessageId.ChangePasswordSuccess
                                         ? "Паролата ви беше сменена."
                                         : message == ManageMessageId.SetPasswordSuccess

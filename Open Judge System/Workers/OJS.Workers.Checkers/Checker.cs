@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
 
     using OJS.Workers.Common;
 
@@ -9,11 +10,9 @@
     {
         public static IChecker CreateChecker(string assemblyName, string typeName, string parameter)
         {
-            var checker = (IChecker)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-            if (checker == null)
-            {
-                return null;
-            }
+            var assembly = Assembly.LoadFile(AppDomain.CurrentDomain.BaseDirectory + assemblyName);
+            var type = assembly.GetType(typeName);
+            var checker = (IChecker)Activator.CreateInstance(type);
 
             if (parameter != null)
             {

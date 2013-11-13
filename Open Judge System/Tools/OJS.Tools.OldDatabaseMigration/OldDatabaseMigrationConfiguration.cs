@@ -1,6 +1,8 @@
 namespace OJS.Tools.OldDatabaseMigration
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using OJS.Data;
@@ -73,9 +75,14 @@ namespace OJS.Tools.OldDatabaseMigration
             this.SeedRoles(context);
             this.SeedSubmissionTypes(context);
 
+            var stopwatch = new Stopwatch();
+
             foreach (var copier in this.copiers)
             {
+                stopwatch.Restart();
+                Console.Write("{0} started... ", copier.GetType().Name);
                 copier.Copy(context, this.oldDb);
+                Console.WriteLine("Done! Time elapsed: {0}", stopwatch.Elapsed);
                 context.SaveChanges(); // Prevents us from forgetting to call SaveChanges in this.XXXCopier().Copy() methods
             }
         }

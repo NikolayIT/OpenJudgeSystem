@@ -52,35 +52,35 @@ namespace OJS.Data.Migrations
                 {
                     Name = "Exact",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "ExactChecker",
+                    ClassName = "OJS.Workers.Checkers.ExactChecker",
                     IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Trim",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "TrimChecker",
+                    ClassName = "OJS.Workers.Checkers.TrimChecker",
                     IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Sort lines",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "SortLinesChecker",
+                    ClassName = "OJS.Workers.Checkers.SortLinesChecker",
                     IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Case-insensitive",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "CaseInsensitiveChecker",
+                    ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
                     IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Precision checker - 14",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "PrecisionChecker",
+                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "14",
                     IsProblemSpecific = false,
                 },
@@ -88,7 +88,7 @@ namespace OJS.Data.Migrations
                 {
                     Name = "Precision checker - 7",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "PrecisionChecker",
+                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "7",
                     IsProblemSpecific = false,
                 },
@@ -96,7 +96,7 @@ namespace OJS.Data.Migrations
                 {
                     Name = "Precision checker - 3",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "PrecisionChecker",
+                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "3",
                     IsProblemSpecific = false,
                 });
