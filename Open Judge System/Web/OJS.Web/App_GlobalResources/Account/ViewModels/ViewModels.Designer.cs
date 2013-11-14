@@ -79,6 +79,15 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This email has already been registered.
+        /// </summary>
+        public static string Email_already_registered {
+            get {
+                return ResourceManager.GetString("Email_already_registered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email address.
         /// </summary>
         public static string Email_invalid {
@@ -187,6 +196,15 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect password.
+        /// </summary>
+        public static string Password_incorrect {
+            get {
+                return ResourceManager.GetString("Password_incorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The password must be at least {2} characters long..
         /// </summary>
         public static string Password_length_validation_message {
@@ -214,6 +232,15 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This username is not available.
+        /// </summary>
+        public static string User_already_registered {
+            get {
+                return ResourceManager.GetString("User_already_registered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {
@@ -228,6 +255,15 @@ namespace Resources.Account {
         public static string Username_required {
             get {
                 return ResourceManager.GetString("Username_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username must be between {2} and {1} characters long.
+        /// </summary>
+        public static string Username_validation {
+            get {
+                return ResourceManager.GetString("Username_validation", resourceCulture);
             }
         }
     }

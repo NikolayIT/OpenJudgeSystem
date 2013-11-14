@@ -61,6 +61,33 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This email is not registered.
+        /// </summary>
+        public static string Email_not_registered {
+            get {
+                return ResourceManager.GetString("Email_not_registered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This email is registered more than once.
+        /// </summary>
+        public static string Email_registered_more_than_once {
+            get {
+                return ResourceManager.GetString("Email_registered_more_than_once", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your email.
+        /// </summary>
+        public static string Email_required {
+            get {
+                return ResourceManager.GetString("Email_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter your email to reset your password..
         /// </summary>
         public static string EnterYourEmail {

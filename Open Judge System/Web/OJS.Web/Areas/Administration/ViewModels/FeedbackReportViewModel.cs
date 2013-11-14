@@ -8,10 +8,6 @@
 
     public class FeedbackReportViewModel
     {
-        public FeedbackReportViewModel()
-        {
-        }
-
         public static Expression<Func<FeedbackReport, FeedbackReportViewModel>> FromFeedbackReport
         {
             get

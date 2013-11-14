@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class SubmissionsExecutorResult
+    public class ExecutionResult
     {
         public bool IsCompiledSuccessfully { get; set; }
 

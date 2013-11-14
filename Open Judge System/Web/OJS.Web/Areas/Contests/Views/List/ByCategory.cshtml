@@ -20,14 +20,14 @@
                         }
                         if (contest.HasContestQuestions)
                         {
-                            <div class="glyphicon glyphicon-question-sign text-white"></div>
+                            <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
                         }
-                        <div class="glyphicon glyphicon-user text-white"></div> <span>@contest.OfficialParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.OfficialParticipants</span>
                     }
                     @if (contest.ResultsArePubliclyVisible)
                     {
                         <a class="btn btn-sm" href="/Contests/Compete/Results/@contest.Id">Резултати</a>
-                        <div class="glyphicon glyphicon-user text-white"></div> <span>@contest.OfficialParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.OfficialParticipants</span>
                     }
                 </td>
                 <td>
@@ -36,17 +36,17 @@
                         @Html.RouteLink("Практикувай", "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
                         if (contest.HasPracticePassword)
                         {
-                            <div class="glyphicon glyphicon-lock text-white"></div>
+                            <div class="glyphicon glyphicon-lock text-white" title="Password protected"></div>
                         }
                         if (contest.HasPracticeQuestions)
                         {
-                            <div class="glyphicon glyphicon-question-sign text-white"></div>
+                            <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
                         }
-                        <div class="glyphicon glyphicon-user text-white"></div> <span>@contest.PracticeParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.PracticeParticipants</span>
                     }
                 </td>
                 <td>
-                    <div class="glyphicon glyphicon-file text-white"></div> <span>@contest.ProblemsCount</span>
+                    <div class="glyphicon glyphicon-file text-white" title="Number of problems"></div> <span>@contest.ProblemsCount</span>
                 </td>
             </tr>
         }

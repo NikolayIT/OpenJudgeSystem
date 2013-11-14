@@ -4,8 +4,11 @@
 
     public class RegisterViewModel
     {
-        // TODO: add error message
-        [StringLength(15, MinimumLength = 5)]
+        [StringLength(
+                15,
+                ErrorMessageResourceName = "Username_validation",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels),
+                MinimumLength = 5)]
         [Required(
                 ErrorMessageResourceName = "Username_required",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]

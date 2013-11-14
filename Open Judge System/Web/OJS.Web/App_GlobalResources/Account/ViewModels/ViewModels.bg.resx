@@ -174,4 +174,16 @@
   <data name="Username_required" xml:space="preserve">
     <value>Потребителското име е задължително</value>
   </data>
+  <data name="Username_validation" xml:space="preserve">
+    <value>Потребителското име трябва да бъде между {2} и {1} символа</value>
+  </data>
+  <data name="Email_already_registered" xml:space="preserve">
+    <value>Този имейл е вече регистриран</value>
+  </data>
+  <data name="User_already_registered" xml:space="preserve">
+    <value>Това потребителско име е заето</value>
+  </data>
+  <data name="Password_incorrect" xml:space="preserve">
+    <value>Грешна парола</value>
+  </data>
 </root>

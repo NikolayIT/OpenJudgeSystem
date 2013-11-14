@@ -8,7 +8,7 @@
 
     public abstract class ExecutionStrategy : IExecutionStrategy
     {
-        public abstract SubmissionsExecutorResult Execute(ExecutionContext executionContext);
+        public abstract ExecutionResult Execute(ExecutionContext executionContext);
 
         protected TestResult ExecuteAndCheckTest(TestContext test, ProcessExecutionResult processExecutionResult, IChecker checker, string receivedOutput)
         {

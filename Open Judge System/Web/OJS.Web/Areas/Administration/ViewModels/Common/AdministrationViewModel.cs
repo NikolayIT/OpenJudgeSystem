@@ -3,16 +3,16 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class AuditInfoViewModel
+    public class AdministrationViewModel
     {
         [Display(Name = "Дата на създаване")]
-        [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]
+        [UIHint("_NonEditable")]
         public DateTime CreatedOn { get; set; }
 
         [Display(Name = "Дата на промяна")]
-        [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]
+        [UIHint("_NonEditable")]
         public DateTime? ModifiedOn { get; set; }
     }
 }

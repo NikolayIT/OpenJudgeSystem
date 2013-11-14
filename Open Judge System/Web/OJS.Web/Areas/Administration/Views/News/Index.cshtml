@@ -1,11 +1,10 @@
-﻿@model OJS.Data.Models.News
-@{
+﻿@{
     ViewBag.Title = "Новини";
     const string ControllerName = "News";
 }
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.NewsViewModel>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
         {
@@ -48,9 +47,6 @@
         .Model(model => 
             {
                 model.Id(m => m.Id);
-                model.Field(m => m.Id).Editable(false);
-                model.Field(m => m.CreatedOn).Editable(false);
-                model.Field(m => m.ModifiedOn).Editable(false);
             })
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
         .Create(create => create.Action("Create", ControllerName))

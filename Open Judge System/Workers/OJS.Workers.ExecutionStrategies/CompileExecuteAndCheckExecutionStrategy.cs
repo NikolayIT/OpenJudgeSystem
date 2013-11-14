@@ -19,9 +19,9 @@
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
-        public override SubmissionsExecutorResult Execute(ExecutionContext executionContext)
+        public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            var result = new SubmissionsExecutorResult();
+            var result = new ExecutionResult();
 
             // 1. Save source to a file
             var sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
@@ -38,6 +38,8 @@
 
                 return result;
             }
+
+            result.IsCompiledSuccessfully = true;
 
             var outputFile = compilerResult.OutputFile;
 

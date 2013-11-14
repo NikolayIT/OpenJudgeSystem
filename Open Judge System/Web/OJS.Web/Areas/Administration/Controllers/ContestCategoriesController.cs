@@ -10,7 +10,7 @@
     using OJS.Data.Models;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Data.Models.ContestCategory;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategories.ContestCategoryAdministrationViewModel;
 
     public class ContestCategoriesController : KendoGridAdministrationController
     {
@@ -21,7 +21,10 @@
 
         public override IEnumerable GetData()
         {
-            return this.Data.ContestCategories.All().Where(x => !x.IsDeleted);
+            return this.Data.ContestCategories
+                .All()
+                .Where(cat => !cat.IsDeleted)
+                .Select(ModelType.ViewModel);
         }
 
         public ActionResult Index()
@@ -32,19 +35,19 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseCreate(request, model);
+            return this.BaseCreate(request, model.ToEntity);
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseUpdate(request, model);
+            return this.BaseUpdate(request, model.ToEntity);
         }
 
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model);
+            return this.BaseDestroy(request, model.ToEntity);
         }
 
         public ActionResult Hierarchy()

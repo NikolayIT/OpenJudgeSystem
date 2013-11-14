@@ -21,7 +21,10 @@
                     TestRuns = submission.TestRuns.AsQueryable().Select(TestRunViewModel.FromTestRun),
                     SubmissionDate = submission.CreatedOn,
                     MaximumPoints = submission.Problem.MaximumPoints,
-                    SubmissionId = submission.Id
+                    SubmissionId = submission.Id,
+                    IsCalculated = submission.Processed,
+                    SubmissionPoints = submission.Points,
+                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully
                 };
             }
         }
@@ -35,13 +38,7 @@
         [Display(Name = "Изпратено на")]
         public DateTime SubmissionDate { get; set; }
 
-        public bool IsCalculated
-        {
-            get
-            {
-                return this.TestRuns.Any();
-            }
-        }
+        public bool IsCalculated { get; set; }
 
         [Display(Name = "Макс. памет")]
         public long? MaximumMemoryUsed
@@ -72,18 +69,9 @@
         }
 
         [Display(Name = "Точки")]
-        public int? SubmissionPoints
-        {
-            get
-            {
-                if (this.TestRuns.Count() == 0)
-                {
-                    return null;
-                }
+        public int? SubmissionPoints { get; set; }
 
-                int points = (this.MaximumPoints * this.TestRuns.Count(x => x.ExecutionResult == TestRunResultType.CorrectAnswer)) / this.TestRuns.Count();
-                return points;
-            }
-        }
+        [Display(Name = "Успешно компилирана")]
+        public bool IsCompiledSuccessfully { get; set; }
     }
 }

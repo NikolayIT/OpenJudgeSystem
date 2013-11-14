@@ -33,7 +33,8 @@
         [Display(
                 Name = "New_password_confirmation",
                 ResourceType = typeof(Resources.Account.ViewModels))]
-        [Compare("NewPassword",
+        [Compare(
+                "NewPassword",
                 ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string ConfirmPassword { get; set; }

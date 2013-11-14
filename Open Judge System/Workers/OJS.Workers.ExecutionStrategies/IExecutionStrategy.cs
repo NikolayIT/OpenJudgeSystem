@@ -2,6 +2,6 @@
 {
     public interface IExecutionStrategy
     {
-        SubmissionsExecutorResult Execute(ExecutionContext executionContext);
+        ExecutionResult Execute(ExecutionContext executionContext);
     }
 }

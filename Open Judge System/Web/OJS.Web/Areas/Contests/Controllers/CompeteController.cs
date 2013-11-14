@@ -213,6 +213,7 @@
         public ActionResult Submit(SubmissionModel participantSubmission, int id, bool official)
         {
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
 
             if (participant == null)
             {
@@ -232,6 +233,11 @@
                 {
                     throw new HttpException((int)HttpStatusCode.ServiceUnavailable, "Submission was sent too soon!");
                 }
+            }
+
+            if (problem.SourceCodeSizeLimit > participantSubmission.Content.Length)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "The submitted code is too long.");
             }
 
             if (!ModelState.IsValid)

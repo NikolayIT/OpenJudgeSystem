@@ -103,7 +103,7 @@
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
-                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy();
+                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

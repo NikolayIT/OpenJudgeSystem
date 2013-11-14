@@ -87,7 +87,12 @@
         {
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
-                ModelState.AddModelError("Email", "This email has already been registered");
+                ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+            }
+
+            if (this.Data.Users.All().Any(x=>x.UserName == model.UserName))
+            {
+                ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
             }
 
             if (ModelState.IsValid)
@@ -165,7 +170,7 @@
                         return this.RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
 
-                    this.AddErrors(result);
+                    this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Password_incorrect);
                 }
             }
             else
@@ -334,6 +339,11 @@
         [AllowAnonymous]
         public ActionResult ForgottenPassword(string email)
         {
+            if (string.IsNullOrEmpty(email))
+            {
+                this.ModelState.AddModelError("Email", Resources.Account.Views.ForgottenPassword.Email_required);
+            }
+
             // using Where() because duplicate email addresses were allowed in the previous
             // judge system
             var usersWithEmail = this.Data.Users
@@ -344,13 +354,13 @@
 
             if (usersCount == 0)
             {
-                ViewBag.StatusMessage = "This email is not registered.";
+                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_not_registered;
                 return this.View();
             }
 
             if (usersCount != 1)
             {
-                ViewBag.StatusMessage = "There is more than one user registered with this email address.";
+                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_registered_more_than_once;
                 return this.View();
             }
 

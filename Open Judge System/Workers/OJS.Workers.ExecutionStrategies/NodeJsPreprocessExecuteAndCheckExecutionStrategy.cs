@@ -8,7 +8,12 @@ namespace OJS.Workers.ExecutionStrategies
 {
     public class NodeJsPreprocessExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        public override SubmissionsExecutorResult Execute(ExecutionContext executionContext)
+        public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             throw new NotImplementedException();
         }

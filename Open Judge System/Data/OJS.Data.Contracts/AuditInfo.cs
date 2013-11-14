@@ -6,9 +6,6 @@
 
     public abstract class AuditInfo : IAuditInfo
     {
-        [Display(Name = "Дата на създаване")]
-        [Editable(false)]
-        [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
         /// <summary>
@@ -17,9 +14,6 @@
         [NotMapped]
         public bool PreserveCreatedOn { get; set; }
 
-        [Display(Name = "Дата на промяна")]
-        [Editable(false)]
-        [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
     }
 }

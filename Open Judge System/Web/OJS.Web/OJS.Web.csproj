@@ -355,11 +355,12 @@
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Common\AuditInfoViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ContestCategories\ContestCategoryAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReportViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\NewsViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResourceViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemViewModel.cs" />
@@ -560,6 +561,10 @@
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
     <Content Include="JSLintNet.json" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_NonEditable.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_MultiLineText.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_SingleLineText.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_OrderBy.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

@@ -174,4 +174,16 @@
   <data name="Username_required" xml:space="preserve">
     <value>Username is required</value>
   </data>
+  <data name="Username_validation" xml:space="preserve">
+    <value>The username must be between {2} and {1} characters long</value>
+  </data>
+  <data name="Email_already_registered" xml:space="preserve">
+    <value>This email has already been registered</value>
+  </data>
+  <data name="User_already_registered" xml:space="preserve">
+    <value>This username is not available</value>
+  </data>
+  <data name="Password_incorrect" xml:space="preserve">
+    <value>Incorrect password</value>
+  </data>
 </root>

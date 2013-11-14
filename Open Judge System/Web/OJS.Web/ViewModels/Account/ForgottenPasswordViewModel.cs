@@ -11,6 +11,7 @@
         [Display(
                 Name = "Password",
                 ResourceType = typeof(Resources.Account.ViewModels))]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(
@@ -23,6 +24,7 @@
                 "Password",
                 ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [DataType(DataType.Password)]
         public string PasswordConfirmation { get; set; }
 
         public Guid Token { get; set; }
