@@ -22,7 +22,7 @@
                 DisplayName = "OJS Local Worker Service",
                 ServiceName = "OJS Local Worker Service",
                 Description =
-                    "Executes processes in a sandboxed environment. Processes are executed on the current machine.",
+                    "Evaluates submissions for the Open Judge System and executes processes in a sandboxed environment. Processes are executed on the current machine.",
             };
 
             this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });

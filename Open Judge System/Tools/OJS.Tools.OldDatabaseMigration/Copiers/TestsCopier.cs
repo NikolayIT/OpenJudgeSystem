@@ -40,6 +40,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                 }
 
                 newDb.SaveChanges();
+                Console.Write(".");
             }
         }
     }

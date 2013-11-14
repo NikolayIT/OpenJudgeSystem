@@ -20,7 +20,7 @@ namespace OJS.Workers.Executors
         public RestrictedProcessExecutor()
         {
             logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
-            logger.Info("Initialized.");
+            // logger.Info("Initialized.");
         }
 
         public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit)

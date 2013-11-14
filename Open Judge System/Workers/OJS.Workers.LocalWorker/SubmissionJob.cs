@@ -18,11 +18,10 @@
     {
         private bool stopping;
 
-        private readonly IOjsData data;
         private readonly ILog logger;
         private readonly SynchronizedHashtable processingSubmissionIds;
 
-        public SubmissionJob(string name, IOjsData data, SynchronizedHashtable processingSubmissionIds)
+        public SubmissionJob(string name, SynchronizedHashtable processingSubmissionIds)
         {
             this.Name = name;
 
@@ -30,7 +29,6 @@
             logger.Info("SubmissionJob initializing...");
 
             this.stopping = false;
-            this.data = data;
             this.processingSubmissionIds = processingSubmissionIds;
 
             logger.Info("SubmissionJob initialized.");
@@ -43,7 +41,18 @@
             logger.Info("SubmissionJob starting...");
             while (!this.stopping)
             {
-                var dbSubmission = data.Submissions.GetSubmissionForProcessing();
+                IOjsData data = new OjsData();
+                Submission dbSubmission;
+                try
+                {
+                    dbSubmission = data.Submissions.GetSubmissionForProcessing();
+                }
+                catch (Exception exception)
+                {
+                    logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
+                    throw;
+                }
+
                 if (dbSubmission == null)
                 {
                     // No submission available. Wait 1 second and try again.
@@ -74,7 +83,16 @@
                 data.SaveChanges();
 
                 this.ProcessSubmission(dbSubmission);
-                data.SaveChanges();
+                dbSubmission.Processed = true;
+                dbSubmission.Processing = false;
+                try
+                {
+                    data.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    logger.Error("Unable to save changes to the submission! Exception: {0}", exception);
+                }
 
                 processingSubmissionIds.Remove(dbSubmission.Id);
             }
@@ -115,12 +133,9 @@
             catch (Exception exception)
             {
                 logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
-                dbSubmission.Processed = true;
                 dbSubmission.ProcessingComment = string.Format("Exception in executionStrategy.Execute: {0}", exception.Message);
                 return;
             }
-
-            dbSubmission.Processed = true;
 
             dbSubmission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
             dbSubmission.CompilerComment = executionResult.CompilerComment;
@@ -151,8 +166,7 @@
 
             logger.InfoFormat("Work on submission №{0} ended.", dbSubmission.Id);
         }
-
-
+        
         public void Stop()
         {
             this.stopping = true;

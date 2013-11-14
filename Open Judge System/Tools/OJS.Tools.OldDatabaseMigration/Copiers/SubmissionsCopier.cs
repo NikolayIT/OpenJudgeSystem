@@ -21,7 +21,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
 
             var count = oldDb.Submissions.Count();
             const int ElementsByIteration = 1000;
-            var iterations = 10; // TODO: uncomment: Math.Ceiling((decimal)count / ElementsByIteration);
+            var iterations = Math.Ceiling((decimal)count / ElementsByIteration);
             for (int i = 0; i < iterations; i++)
             {
                 GC.Collect();
@@ -189,6 +189,10 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                 if (testRun.CheckerComment != null)
                                 {
                                     testRun.CheckerComment = testRun.CheckerComment.Trim();
+                                    if (string.IsNullOrWhiteSpace(testRun.CheckerComment))
+                                    {
+                                        testRun.CheckerComment = null;
+                                    }
                                 }
 
                                 var timeUsedAsString =
@@ -243,6 +247,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                 }
 
                 newDb.SaveChanges();
+                Console.Write(".");
             }
         }
     }

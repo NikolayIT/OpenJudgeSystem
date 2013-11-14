@@ -22,8 +22,7 @@
                     && ((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) || (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
                     && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted);
         }
-
-
+        
         public Submission GetSubmissionForProcessing()
         {
             var dbSubmission =

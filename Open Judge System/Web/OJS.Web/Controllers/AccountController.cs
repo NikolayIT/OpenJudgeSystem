@@ -16,6 +16,8 @@
     using OJS.Web.Common.MailSender;
     using OJS.Web.ViewModels.Account;
 
+    using Recaptcha;
+
     using Resources;
 
     [Authorize]
@@ -82,8 +84,9 @@
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
+        [RecaptchaControlMvc.CaptchaValidator]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, bool captchaValid)
         {
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
@@ -93,6 +96,11 @@
             if (this.Data.Users.All().Any(x=>x.UserName == model.UserName))
             {
                 ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
+            }
+
+            if (!captchaValid)
+            {
+                ModelState.AddModelError("Captcha", Resources.Account.Views.General.Captcha_invalid);
             }
 
             if (ModelState.IsValid)

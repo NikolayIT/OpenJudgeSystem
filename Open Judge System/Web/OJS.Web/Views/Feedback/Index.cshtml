@@ -30,7 +30,7 @@
         @Html.TextAreaFor(m => m.Content, new { @class = "k-textbox", rows = "8" })
         @Html.ValidationMessageFor(m => m.Content)
     </div>
-    <div class="captcha-container editor-field">
+    <div class="captcha-container editor-field small-margin-top">
         @Html.Raw(@Html.GenerateCaptcha())
         @Html.ValidationMessage("Captcha")
     </div>

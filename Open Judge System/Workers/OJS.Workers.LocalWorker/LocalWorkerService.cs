@@ -26,7 +26,7 @@
 
             for (int i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob(string.Format("Job №{0}", i), new OjsData(), processingSubmissionIds);
+                var job = new SubmissionJob(string.Format("Job №{0}", i), processingSubmissionIds);
                 var thread = new Thread(job.Start) { Name = string.Format("Thread №{0}", i) };
                 this.jobs.Add(job);
                 this.threads.Add(thread);
@@ -44,7 +44,7 @@
                 logger.InfoFormat("Starting {0}...", thread.Name);
                 thread.Start();
                 logger.InfoFormat("{0} started.", thread.Name);
-                Thread.Sleep(456);
+                Thread.Sleep(234);
             }
 
             logger.Info("LocalWorkerService started.");

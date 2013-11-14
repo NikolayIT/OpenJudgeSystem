@@ -266,6 +266,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForgottenPassword.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\General.bg.designer.cs">
+      <DependentUpon>General.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\General.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\Login.bg.designer.cs">
       <DependentUpon>Login.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -694,6 +704,16 @@
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ForgottenPassword.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ForgottenPassword.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\General.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>General.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\General.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>General.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\Login.bg.resx">

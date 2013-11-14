@@ -91,10 +91,10 @@ input[type="checkbox"].input-validation-error {
     overflow: hidden;
 }
 
-.captcha-container {
+.small-margin-top {
     margin-top: 10px;
 }
 
-    .captcha-container input {
-        line-height: normal !important;
-    }
+.captcha-container input {
+    line-height: normal !important;
+}
