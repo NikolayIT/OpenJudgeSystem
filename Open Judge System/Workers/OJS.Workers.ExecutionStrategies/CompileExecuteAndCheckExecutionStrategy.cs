@@ -31,15 +31,14 @@
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = compiler.Compile(compilerPath, sourceCodeFilePath, executionContext.AdditionalCompilerArguments);
             File.Delete(sourceCodeFilePath);
+
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+            result.CompilerComment = compilerResult.CompilerComment;
+
             if (!compilerResult.IsCompiledSuccessfully)
             {
-                result.IsCompiledSuccessfully = false;
-                result.CompilerComment = compilerResult.CompilerComment;
-
                 return result;
             }
-
-            result.IsCompiledSuccessfully = true;
 
             var outputFile = compilerResult.OutputFile;
 

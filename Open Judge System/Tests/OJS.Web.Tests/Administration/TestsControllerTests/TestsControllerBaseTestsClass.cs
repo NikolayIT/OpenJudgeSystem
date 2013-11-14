@@ -31,7 +31,7 @@
 
         protected Mock<IRepository<Test>> tests;
 
-        protected Mock<IRepository<TestRun>> testsRuns;
+        protected Mock<ITestRunsRepository> testsRuns;
 
         protected Mock<IContestsRepository> contests;
 
@@ -268,7 +268,7 @@
             this.data = new Mock<IOjsData>();
             this.problems = new Mock<IRepository<Problem>>();
             this.tests = new Mock<IRepository<Test>>();
-            this.testsRuns = new Mock<IRepository<TestRun>>();
+            this.testsRuns = new Mock<ITestRunsRepository>();
             this.categories = new Mock<IRepository<ContestCategory>>();
             this.contests = new Mock<IContestsRepository>();
 

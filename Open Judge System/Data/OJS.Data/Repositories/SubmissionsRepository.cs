@@ -1,6 +1,8 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
@@ -19,6 +21,22 @@
                 .Where(x => !(x.Problem.Contest.StartTime <= DateTime.Now && DateTime.Now <= x.Problem.Contest.EndTime)
                     && ((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) || (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
                     && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted);
+        }
+
+
+        public Submission GetSubmissionForProcessing()
+        {
+            var dbSubmission =
+                       this.All()
+                           .Where(x => !x.Processed && !x.Processing)
+                           .OrderBy(x => x.Id)
+                           .Include(x => x.Problem)
+                           .Include(x => x.Problem.Tests)
+                           .Include(x => x.Problem.Checker)
+                           .Include(x => x.SubmissionType)
+                           .FirstOrDefault();
+
+            return dbSubmission;
         }
     }
 }

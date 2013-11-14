@@ -43,6 +43,14 @@ namespace OJS.Workers.LocalWorker
             }
         }
 
+        public static int ThreadsCount
+        {
+            get
+            {
+                return GetSettingOrDefault("ThreadsCount", 2);
+            }
+        }
+
         private static string GetSetting(string settingName)
         {
             if (ConfigurationManager.AppSettings[settingName] == null)
@@ -52,6 +60,16 @@ namespace OJS.Workers.LocalWorker
             }
 
             return ConfigurationManager.AppSettings[settingName];
+        }
+
+        private static T GetSettingOrDefault<T>(string settingName, T defaultValue)
+        {
+            if (ConfigurationManager.AppSettings[settingName] == null)
+            {
+                return defaultValue;
+            }
+
+            return (T)Convert.ChangeType(ConfigurationManager.AppSettings[settingName], typeof(T));
         }
     }
 }

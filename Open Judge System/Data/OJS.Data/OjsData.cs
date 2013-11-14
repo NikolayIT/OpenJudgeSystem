@@ -73,11 +73,11 @@
             }
         }
 
-        public IRepository<TestRun> TestRuns
+        public ITestRunsRepository TestRuns
         {
             get
             {
-                return this.GetRepository<TestRun>();
+                return (TestRunsRepository)this.GetRepository<TestRun>();
             }
         }
 
@@ -171,6 +171,11 @@
                 if (typeof(T).IsAssignableFrom(typeof(Submission)))
                 {
                     type = typeof(SubmissionsRepository);
+                }
+
+                if (typeof(T).IsAssignableFrom(typeof(TestRun)))
+                {
+                    type = typeof(TestRunsRepository);
                 }
 
                 if (typeof(T).IsAssignableFrom(typeof(UserProfile)))

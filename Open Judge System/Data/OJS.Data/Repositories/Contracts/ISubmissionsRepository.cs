@@ -7,5 +7,7 @@
     public interface ISubmissionsRepository : IRepository<Submission>, IDeletableEntityRepository<Submission>
     {
         IQueryable<Submission> AllPublic();
+
+        Submission GetSubmissionForProcessing();
     }
 }

@@ -18,7 +18,7 @@
 
         IRepository<ContestCategory> ContestCategories { get; }
 
-        IRepository<TestRun> TestRuns { get; }
+        ITestRunsRepository TestRuns { get; }
 
         IRepository<FeedbackReport> FeedbackReports { get; }
 

@@ -165,7 +165,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                 if (timeUsedAsString != null)
                                 {
                                     double timeUsed;
-                                    if (double.TryParse(testRunDescription.Replace(",", ".").Trim(), out timeUsed))
+                                    if (double.TryParse(timeUsedAsString.Replace(",", ".").Trim(), out timeUsed))
                                     {
                                         testRun.TimeUsed = (int)timeUsed;
                                     }
@@ -196,7 +196,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                 if (timeUsedAsString != null)
                                 {
                                     double timeUsed;
-                                    if (double.TryParse(testRunDescription.Replace(",", ".").Trim(), out timeUsed))
+                                    if (double.TryParse(timeUsedAsString.Replace(",", ".").Trim(), out timeUsed))
                                     {
                                         testRun.TimeUsed = (int)timeUsed;
                                     }

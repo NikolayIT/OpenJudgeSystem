@@ -22,15 +22,7 @@
 
             while (true)
             {
-                var dbSubmission =
-                    data.Submissions.All()
-                        .Where(x => !x.Processed)
-                        .OrderBy(x => x.Id)
-                        .Include(x => x.Problem)
-                        .Include(x => x.Problem.Checker)
-                        .Include(x => x.SubmissionType)
-                        .FirstOrDefault();
-
+                var dbSubmission = data.Submissions.GetSubmissionForProcessing();
                 if (dbSubmission == null)
                 {
                     Thread.Sleep(500);
@@ -61,11 +53,7 @@
 
                 var result = executionStrategy.Execute(context);
 
-                foreach (var testRun in dbSubmission.TestRuns.ToList())
-                {
-                    data.TestRuns.Delete(testRun);
-                }
-
+                data.TestRuns.DeleteBySubmissionId(dbSubmission.Id);
                 data.SaveChanges();
 
                 dbSubmission.Processed = true;

@@ -62,6 +62,10 @@
 
         public bool Processed { get; set; }
 
+        public bool Processing { get; set; }
+
+        public string ProcessingComment { get; set; }
+
         /// <summary>
         /// Cache field for submissions points (to speed-up some of the database queries)
         /// </summary>
