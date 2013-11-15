@@ -11,7 +11,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
         {
             // Moving tests in iterations to prevent OutOfMemoryException
             var count = oldDb.Tests.Count();
-            const int ElementsByIteration = 10;
+            const int ElementsByIteration = 100;
             var iterations = Math.Ceiling((decimal)count / ElementsByIteration);
             for (int i = 0; i < iterations; i++)
             {

@@ -16,6 +16,8 @@
             var context = new OjsDbContext();
             var problemsCount = context.Problems.Count();
             Console.WriteLine("Done!");
+            Console.WriteLine("Press enter to exit...");
+            Console.ReadLine();
         }
     }
 }

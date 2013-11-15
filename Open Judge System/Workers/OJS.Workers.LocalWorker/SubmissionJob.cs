@@ -82,7 +82,16 @@
                 data.TestRuns.DeleteBySubmissionId(dbSubmission.Id);
                 data.SaveChanges();
 
-                this.ProcessSubmission(dbSubmission);
+                try
+                {
+                    this.ProcessSubmission(dbSubmission);
+                }
+                catch (Exception exception)
+                {
+                    logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
+                    dbSubmission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
+                }
+
                 dbSubmission.Processed = true;
                 dbSubmission.Processing = false;
                 try

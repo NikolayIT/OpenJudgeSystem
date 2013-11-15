@@ -13,7 +13,7 @@
 
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Common.MailSender;
+    using OJS.Common;
     using OJS.Web.ViewModels.Account;
 
     using Recaptcha;

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestSubmissionResponder")]
+[assembly: AssemblyTitle("OJS.Tools.SendMailToAllUsers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestSubmissionResponder")]
+[assembly: AssemblyProduct("OJS.Tools.SendMailToAllUsers")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("91cbee93-4941-47b0-8fe4-a7c226a2788b")]
+[assembly: Guid("15f2cd33-d35a-4c4b-a4a3-15ab768a7b8c")]
 
 // Version information for an assembly consists of the following four values:
 //

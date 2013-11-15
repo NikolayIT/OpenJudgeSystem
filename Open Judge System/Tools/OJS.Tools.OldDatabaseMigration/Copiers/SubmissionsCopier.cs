@@ -1,14 +1,12 @@
 namespace OJS.Tools.OldDatabaseMigration.Copiers
 {
     using System;
-    using System.Globalization;
     using System.Linq;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using System.Threading;
 
     internal sealed class SubmissionsCopier : ICopier
     {
@@ -54,6 +52,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                                              Participant = participant,
                                              Points = oldSubmission.Points,
                                              Processed = true,
+                                             Processing = false,
                                          };
 
                     switch (oldSubmission.Language)
