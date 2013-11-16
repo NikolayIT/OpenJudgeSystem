@@ -1,12 +1,10 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.FeedbackReportViewModel
-
-@{
+﻿@{
 		ViewBag.Title = "Обратна връзка";
 		const string ControllerName = "Feedback";
 }
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.FeedbackReportViewModel>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.FeedbackReport.FeedbackReportViewModel>()
 		.Name("DataGrid")
 		.Columns(columns =>
 			{
@@ -15,16 +13,16 @@
                 columns.Bound(x => x.Content);
                 columns.Bound(x => x.IsFixed);
                 columns.Bound(x => x.Username);
-				columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
-				columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
+                columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+                columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
 				columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
 				columns.Command(command => command.Destroy().Text(" ")).Width(80);
 			})
 		.ToolBar(toolbar =>
 		{
 			toolbar.Create().Text("Създай");
-			toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-			toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+            toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
 		})
 		.Editable(editable =>
 		{

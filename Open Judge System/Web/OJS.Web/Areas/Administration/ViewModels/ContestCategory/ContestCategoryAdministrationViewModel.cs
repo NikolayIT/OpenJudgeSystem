@@ -1,5 +1,6 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels.ContestCategories
+﻿namespace OJS.Web.Areas.Administration.ViewModels.ContestCategory
 {
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using System;
@@ -9,6 +10,7 @@
 
     public class ContestCategoryAdministrationViewModel : AdministrationViewModel
     {
+        [ExcludeFromExcelAttribute]
         public static Expression<Func<ContestCategory, ContestCategoryAdministrationViewModel>> ViewModel
         {
             get
@@ -25,6 +27,7 @@
             }
         }
 
+        [ExcludeFromExcelAttribute]
         public ContestCategory ToEntity
         {
             get
@@ -43,18 +46,18 @@
 
         [Display(Name = "№")]
         [DefaultValue(null)]
-        [UIHint("_NonEditable")]
+        [UIHint("NonEditable")]
         public int? Id { get; set; }
 
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
-        [UIHint("_SingleLineText")]
+        [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [Display(Name = "Подредба")]
         [Required(ErrorMessage = "Подредбата е задължителна!")]
-        [UIHint("_OrderBy")]
+        [UIHint("PositiveInteger")]
         public int OrderBy { get; set; }
 
         [Display(Name = "Видимост")]

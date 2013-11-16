@@ -10,7 +10,7 @@
     using OJS.Data.Models;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategories.ContestCategoryAdministrationViewModel;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel;
 
     public class ContestCategoriesController : KendoGridAdministrationController
     {

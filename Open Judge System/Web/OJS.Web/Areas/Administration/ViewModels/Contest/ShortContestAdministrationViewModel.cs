@@ -1,17 +1,17 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Contest
 {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using OJS.Data.Models;
 
-    public class ShortContestViewModel
+    public class ShortContestAdministrationViewModel
     {
-        public static Expression<Func<Contest, ShortContestViewModel>> FromContest
+        public static Expression<Func<Contest, ShortContestAdministrationViewModel>> FromContest
         {
             get
             {
-                return contest => new ShortContestViewModel
+                return contest => new ShortContestAdministrationViewModel
                 {
                     Id = contest.Id,
                     Name = contest.Name,

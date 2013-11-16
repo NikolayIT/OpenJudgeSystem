@@ -19,19 +19,19 @@
             indexViewModel.ActiveContests =
                 this.Data.Contests.AllActive()
                     .OrderByDescending(x => x.StartTime)
-                    .Select(IndexContestViewModel.FromContest)
+                    .Select(HomeContestViewModel.FromContest)
                     .ToList();
 
             indexViewModel.FutureContests =
                 this.Data.Contests.AllFuture()
                     .OrderByDescending(x => x.StartTime)
-                    .Select(IndexContestViewModel.FromContest)
+                    .Select(HomeContestViewModel.FromContest)
                     .ToList();
 
             indexViewModel.PastContests =
                 this.Data.Contests.AllPast()
                     .OrderByDescending(x => x.StartTime)
-                    .Select(IndexContestViewModel.FromContest)
+                    .Select(HomeContestViewModel.FromContest)
                     .Take(5)
                     .ToList();
 

@@ -1,13 +1,17 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.FeedbackReport
 {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
 
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.ViewModels.Common;
+    using System.ComponentModel;
+    using OJS.Common.DataAnnotations;
 
-    public class FeedbackReportViewModel
+    public class FeedbackReportViewModel : AdministrationViewModel
     {
+        [ExcludeFromExcelAttribute]
         public static Expression<Func<FeedbackReport, FeedbackReportViewModel>> FromFeedbackReport
         {
             get
@@ -26,27 +30,33 @@
             }
         }
 
-        public int Id { get; set; }
+        [Display(Name = "№")]
+        [DefaultValue(null)]
+        [UIHint("NonEditable")]
+        public int? Id { get; set; }
 
         [Display(Name = "Име")]
+        [Required(ErrorMessage = "Името е задължително")]
+        [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [Display(Name = "E-mail")]
+        [Required(ErrorMessage = "Имейла е задължителен")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Невалиден имейл адрес")]
         public string Email { get; set; }
 
         [Display(Name = "Съдържание")]
+        [Required(ErrorMessage = "Съдържанието е задължително")]
+        [DataType(DataType.MultilineText)]
+        [UIHint("MultiLineText")]
         public string Content { get; set; }
 
         [Display(Name = "Потребител")]
+        [UIHint("SingleLineText")]
         public string Username { get; set; }
 
         [Display(Name = "Поправен")]
         public bool IsFixed { get; set; }
-
-        [Display(Name = "Създаден на")]
-        public DateTime? CreatedOn { get; set; }
-
-        [Display(Name = "Променен на")]
-        public DateTime? ModifiedOn { get; set; }
     }
 }

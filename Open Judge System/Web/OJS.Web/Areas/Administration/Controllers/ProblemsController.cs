@@ -12,6 +12,7 @@
     using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
+    using OJS.Web.Areas.Administration.ViewModels.Contest;
 
     public class ProblemsController : AdministrationController
     {
@@ -284,7 +285,7 @@
 
             var contest = this.Data.Contests.All()
                 .Where(x => x.Id == id)
-                .Select(ContestViewModel.FromContest)
+                .Select(ContestAdministrationViewModel.ViewModel)
                 .FirstOrDefault();
 
             if (contest == null)

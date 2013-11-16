@@ -4,7 +4,7 @@
 }
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestCategories.ContestCategoryAdministrationViewModel>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
     {
@@ -12,8 +12,8 @@
         columns.Bound(x => x.Name);
         columns.Bound(x => x.IsVisible);
         columns.Bound(x => x.OrderBy);
-        columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
-        columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
+        columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+        columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
         columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
         columns.Command(command => command.Destroy().Text(" ")).Width(80);
     })
@@ -21,7 +21,7 @@
     {
         toolbar.Create().Text("Създай");
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {

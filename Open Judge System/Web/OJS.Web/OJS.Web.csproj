@@ -58,23 +58,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Ado">
-      <HintPath>..\..\packages\Glimpse.Ado.1.6.0\lib\net45\Glimpse.Ado.dll</HintPath>
-    </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Ado, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Glimpse.AspNet.1.5.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+      <HintPath>..\..\packages\Glimpse.Ado.1.7.0\lib\net45\Glimpse.Ado.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.AspNet, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Glimpse.1.7.0\lib\net45\Glimpse.Core.dll</HintPath>
+      <HintPath>..\..\packages\Glimpse.AspNet.1.6.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.EF6">
-      <HintPath>..\..\packages\Glimpse.EF6.1.5.0\lib\net45\Glimpse.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="Glimpse.Mvc4, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Core, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Glimpse.Mvc4.1.4.0\lib\net40\Glimpse.Mvc4.dll</HintPath>
+      <HintPath>..\..\packages\Glimpse.1.8.0\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.EF6, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Glimpse.EF6.1.6.0\lib\net45\Glimpse.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc4, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Glimpse.Mvc4.1.5.1\lib\net40\Glimpse.Mvc4.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -366,15 +368,15 @@
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ContestCategories\ContestCategoryAdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ContestViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ContestCategory\ContestCategoryAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\DetailedProblemViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\FeedbackReportViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResourceViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ShortContestViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ShortContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\TestRunViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\TestViewModel.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
@@ -428,7 +430,7 @@
     <Compile Include="ViewModels\News\NewsViewModel.cs" />
     <Compile Include="ViewModels\News\SelectedViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
-    <Compile Include="ViewModels\Test Run\TestRunViewModel.cs" />
+    <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.css" />
@@ -571,10 +573,12 @@
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
     <Content Include="JSLintNet.json" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_NonEditable.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_MultiLineText.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_SingleLineText.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_OrderBy.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\NonEditable.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\MultiLineText.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\SingleLineText.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DateAndTime.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownList.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

@@ -24,21 +24,16 @@
         }
 
         [Key]
-        [Display(Name = "№")]
         public int Id { get; set; }
 
         public int? OldId { get; set; }
 
         [MaxLength(100)]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Заглавието е задължително!")]
         public string Name { get; set; }
 
-        [Display(Name = "Видим")]
-        [Required(ErrorMessage = "Заглавието е задължително!")]
+        [Required]
         public bool IsVisible { get; set; }
 
-        // TODO: add attributes
         public int? CategoryId { get; set; }
 
         public virtual ContestCategory Category { get; set; }
@@ -46,13 +41,11 @@
         /// <remarks>
         /// If StartTime is null the contest cannot be competed.
         /// </remarks>
-        [Display(Name = "Начало")]
         public DateTime? StartTime { get; set; }
 
         /// <remarks>
         /// If EndTime is null the contest can be competed forever.
         /// </remarks>
-        [Display(Name = "Край")]
         public DateTime? EndTime { get; set; }
 
         /// <remarks>
@@ -72,24 +65,19 @@
         /// <remarks>
         /// If PracticeStartTime is null the contest cannot be practiced.
         /// </remarks>
-        [Display(Name = "Начало упражнение")]
         public DateTime? PracticeStartTime { get; set; }
 
         /// <remarks>
         /// If PracticeEndTime is null the contest can be practiced forever.
         /// </remarks>
-        [Display(Name = "Край упражнение")]
         public DateTime? PracticeEndTime { get; set; }
 
-        [Display(Name = "Лимит между изпращането на задачи")]
         [DefaultValue(0)]
         public int LimitBetweenSubmissions { get; set; }
 
-        [Display(Name = "Сортиране по")]
         [DefaultValue(0)]
         public int OrderBy { get; set; }
 
-        [Display(Name = "Описание")]
         public string Description { get; set; }
 
         public virtual ICollection<ContestQuestion> Questions

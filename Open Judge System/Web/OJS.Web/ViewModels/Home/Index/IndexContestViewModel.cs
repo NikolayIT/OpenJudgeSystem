@@ -4,18 +4,13 @@
     using System.Linq.Expressions;
     using OJS.Data.Models;
 
-    public class IndexContestViewModel
+    public class HomeContestViewModel
     {
-        public IndexContestViewModel()
-        {
-
-        }
-
-        public static Expression<Func<Contest, IndexContestViewModel>> FromContest
+        public static Expression<Func<Contest, HomeContestViewModel>> FromContest
         {
             get
             {
-                return contest => new IndexContestViewModel
+                return contest => new HomeContestViewModel
                 {
                     Id = contest.Id,
                     Name = contest.Name,
