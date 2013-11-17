@@ -385,6 +385,7 @@
     </Compile>
     <Compile Include="Areas\Contests\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Contests\Controllers\ListController.cs" />
+    <Compile Include="Areas\Contests\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Contests\Helpers\ContestExtensions.cs" />
     <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
@@ -399,6 +400,7 @@
     <Compile Include="Areas\Contests\ViewModels\QuestionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\ParticipantResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\SubmissionResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\SubmissionsDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
@@ -579,6 +581,7 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DateAndTime.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownList.cshtml" />
+    <Content Include="Areas\Contests\Views\Submissions\View.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

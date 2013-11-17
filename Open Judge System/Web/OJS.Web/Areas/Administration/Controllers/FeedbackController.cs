@@ -22,7 +22,9 @@ namespace OJS.Web.Areas.Administration.Controllers
 
         public override IEnumerable GetData()
         {
-            return this.Data.FeedbackReports.All().Select(FeedbackReportViewModel.FromFeedbackReport);
+            return this.Data.FeedbackReports
+                .All()
+                .Select(FeedbackReportViewModel.FromFeedbackReport);
         }
 
         public ActionResult Index()
@@ -33,19 +35,19 @@ namespace OJS.Web.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseCreate(request, model);
+            return this.BaseCreate(request, model.ToEntity);
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseUpdate(request, model);
+            return this.BaseUpdate(request, model.ToEntity);
         }
 
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model);
+            return this.BaseDestroy(request, model.ToEntity);
         }
     }
 }

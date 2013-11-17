@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Net;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -294,7 +295,9 @@
                     return this.View("ExternalLoginFailure");
                 }
 
-                var user = new UserProfile { UserName = model.UserName };
+                ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
+                var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
+                var user = new UserProfile { UserName = model.UserName, Email = email };
                 var result = await this.UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

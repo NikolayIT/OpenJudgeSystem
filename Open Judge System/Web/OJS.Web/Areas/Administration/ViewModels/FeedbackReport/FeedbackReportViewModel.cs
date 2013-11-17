@@ -30,6 +30,24 @@
             }
         }
 
+        [ExcludeFromExcel]
+        public FeedbackReport ToEntity
+        {
+            get
+            {
+                return new FeedbackReport
+                {
+                    Id = this.Id ?? default(int),
+                    Name = this.Name,
+                    Email = this.Email,
+                    Content = this.Content,
+                    IsFixed = this.IsFixed,
+                    CreatedOn = this.CreatedOn,
+                    ModifiedOn = this.ModifiedOn,
+                };
+            }
+        }
+
         [Display(Name = "№")]
         [DefaultValue(null)]
         [UIHint("NonEditable")]
@@ -53,7 +71,7 @@
         public string Content { get; set; }
 
         [Display(Name = "Потребител")]
-        [UIHint("SingleLineText")]
+        [UIHint("NonEditable")]
         public string Username { get; set; }
 
         [Display(Name = "Поправен")]
