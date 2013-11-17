@@ -19,6 +19,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using OJS.Data.Repositories.Contracts;
+    using OJS.Web.Areas.Administration.ViewModels.Test;
 
     [TestClass]
     public class TestsControllerBaseTestsClass : BaseWebTests

@@ -1,4 +1,4 @@
-﻿namespace OJS.Data.Models
+﻿namespace OJS.Common.Models
 {
     using System.ComponentModel;
 

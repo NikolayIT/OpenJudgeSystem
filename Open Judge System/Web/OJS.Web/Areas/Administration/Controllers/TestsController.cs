@@ -14,6 +14,9 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Areas.Administration.ViewModels.Problem;
+    using OJS.Web.Areas.Administration.ViewModels.Test;
+    using OJS.Web.Areas.Administration.ViewModels.TestRun;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
 
@@ -352,7 +355,6 @@
         public JsonResult GetTestRuns(int id)
         {
             // TODO: Add server side paging and sorting to test runs grid
-
             var result = this.Data.TestRuns.All()
                 .Where(tr => tr.TestId == id)
                 .OrderByDescending(tr => tr.Submission.CreatedOn)

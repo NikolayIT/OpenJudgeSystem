@@ -1,6 +1,6 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Problem
 {
-    using Antlr.Runtime.Misc;
+    using System;
     using System.Linq.Expressions;
     using OJS.Data.Models;
 

@@ -34,7 +34,7 @@
         [Display(Name = "Край")]
         public DateTime? EndTime { get; set; }
 
-        [Display(Name="Категория")]
+        [Display(Name = "Категория")]
         public string CategoryName { get; set; }
     }
 }

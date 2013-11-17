@@ -10,31 +10,25 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.User.UserAdministrationViewModel;
 
-    public class NewsController : KendoGridAdministrationController
+    public class UsersController : KendoGridAdministrationController
     {
-        public NewsController(IOjsData data)
+        public UsersController(IOjsData data)
             : base(data)
         {
         }
 
         public override IEnumerable GetData()
         {
-            return this.Data.News.All()
-                .Where(news => !news.IsDeleted)
+            return this.Data.Users
+                .All()
                 .Select(ModelType.ViewModel);
         }
 
         public ActionResult Index()
         {
             return this.View();
-        }
-
-        [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
-        {
-            return this.BaseCreate(request, model.ToEntity);
         }
 
         [HttpPost]
@@ -47,7 +41,9 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            this.Data.Users.Delete(model.ToEntity);
+
+            return this.Json(ModelState.ToDataSourceResult());
         }
     }
 }

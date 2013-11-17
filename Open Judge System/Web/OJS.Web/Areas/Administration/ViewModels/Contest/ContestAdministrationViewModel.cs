@@ -2,15 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using System.ComponentModel;
-    using OJS.Common.DataAnnotations;
 
     public class ContestAdministrationViewModel : AdministrationViewModel
     {

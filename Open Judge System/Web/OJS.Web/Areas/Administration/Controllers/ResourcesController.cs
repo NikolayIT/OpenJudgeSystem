@@ -9,10 +9,11 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common.Models;
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Controllers;
 
     public class ResourcesController : AdministrationController

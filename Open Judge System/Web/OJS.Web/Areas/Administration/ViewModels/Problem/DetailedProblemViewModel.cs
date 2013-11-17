@@ -1,6 +1,6 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Problem
 {
-    using Antlr.Runtime.Misc;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -8,6 +8,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
 
     public class DetailedProblemViewModel
     {

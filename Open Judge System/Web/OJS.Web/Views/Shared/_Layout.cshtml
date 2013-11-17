@@ -49,9 +49,13 @@
                             <li>@Html.ActionLink("Категории", "Index", "ContestCategories", new { area = "Administration" }, null)</li>
                             <li>@Html.ActionLink("Йерархия на категориите", "Hierarchy", "ContestCategories", new { area = "Administration" }, null)</li>
                             <li class="divider"></li>
+                            <li class="dropdown-header">Потребители</li>
+                            <li>@Html.ActionLink("Потребители", "Index", "Users", new { area = "Administration" }, null)</li>
+                            <li class="divider"></li>
                             <li class="dropdown-header">Други</li>
                             <li>@Html.ActionLink("Новини", "Index", "News", new { area = "Administration" }, null)</li>
                             <li>@Html.ActionLink("Обратна връзка", "Index", "Feedback", new { area = "Administration" }, null)</li>
+                            <li>@Html.ActionLink("Настройки", "Index", "Settings", new { area = "Administration" }, null)</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Всички администрации", "Index", "Navigation", new { area = "Administration" }, null)</li>
                         </ul>

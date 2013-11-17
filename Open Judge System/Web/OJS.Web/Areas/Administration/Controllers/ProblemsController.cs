@@ -6,13 +6,17 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+
+    using OJS.Common.Models;
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Administration.ViewModels.Problem;
+    using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
-    using OJS.Web.Areas.Administration.ViewModels.Contest;
 
     public class ProblemsController : AdministrationController
     {
@@ -152,7 +156,6 @@
             }
 
             // TODO: Fix this query to use the static method from DetailedProblemViewModel
-
             var selectedProblem = this.Data.Problems.All()
                 .Where(x => x.Id == id)
                 .Select(problem => new DetailedProblemViewModel
@@ -193,7 +196,6 @@
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
             // TODO: Add validation with ModelState.IsValid
-
             var existingProblem = this.Data.Problems.All()
                 .FirstOrDefault(x => x.Id == id);
 
@@ -266,7 +268,6 @@
             }
 
             // TODO: Add cascading deletion of submissions, tests, resources
-
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 
@@ -317,7 +318,6 @@
             foreach (var problem in contest.Problems.ToList())
             {
                 // TODO: Add cascading deletion of submissions, tests, resources
-
                 this.Data.Problems.Delete(problem.Id);
             }
 
@@ -331,7 +331,6 @@
         public JsonResult ByContest(int id)
         {
             // TODO: Select should use the static method from DetailedProblemViewModel
-
             var result = this.Data.Problems.All()
                 .Where(x => x.ContestId == id)
                 .OrderBy(x => x.OrderBy)
@@ -388,17 +387,13 @@
         public JsonResult GetContestInformation(string id)
         {
             // TODO: Add validation for Id
-
             var contestIdNumber = int.Parse(id);
-
             var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == contestIdNumber);
 
             var contestId = contestIdNumber;
-
             var categoryId = contest.CategoryId;
 
             var result = new { contest = contestId, category = categoryId };
-
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -406,7 +401,6 @@
         public ActionResult AddResourceForm(int id)
         {
             // TODO: Add validation for Id
-
             var resourceViewModel = new ProblemResourceViewModel
             {
                 Id = id,

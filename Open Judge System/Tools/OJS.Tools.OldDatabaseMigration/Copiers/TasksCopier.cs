@@ -7,6 +7,7 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Common.Models;
 
     internal sealed class TasksCopier : ICopier
     {

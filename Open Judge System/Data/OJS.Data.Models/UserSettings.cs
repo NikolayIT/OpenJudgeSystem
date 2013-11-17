@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Models
 {
+    using OJS.Common;
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -69,21 +70,7 @@
         {
             get
             {
-                if (!this.DateOfBirth.HasValue)
-                {
-                    return null;
-                }
-
-                var birthDate = this.DateOfBirth.Value;
-                var now = DateTime.Now;
-
-                var age = now.Year - birthDate.Year;
-                if (now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
-                {
-                    age--;
-                }
-
-                return (byte)age;
+                return Calculator.Age(this.DateOfBirth);
             }
         }
     }

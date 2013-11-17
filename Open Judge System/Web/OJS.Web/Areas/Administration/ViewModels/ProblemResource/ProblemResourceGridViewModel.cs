@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.ProblemResource
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,8 @@
     using System.Linq.Expressions;
     using System.Web;
     using System.Web.Mvc;
+
+    using OJS.Common.Models;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
 

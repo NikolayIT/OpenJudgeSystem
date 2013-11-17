@@ -8,16 +8,16 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Controllers;
 
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
     public class ContestsController : KendoGridAdministrationController
     {
-        private const string NO_ACTIVE_CONTESTS = "Няма активни състезания";
-        private const string NO_FUTURE_CONTESTS = "Няма бъдещи състезания";
-        private const string NO_LATEST_CONTESTS = "Нямa последни състезaния";
+        private const string NoActiveContests = "Няма активни състезания";
+        private const string NoFutureContests = "Няма бъдещи състезания";
+        private const string NoLatestContests = "Нямa последни състезaния";
 
         public ContestsController(IOjsData data)
             : base(data)
@@ -34,7 +34,7 @@
 
         public ActionResult Index()
         {
-            GenerateDropDownData();
+            this.GenerateDropDownData();
             return this.View();
         }
 
@@ -70,7 +70,7 @@
             }
             else
             {
-                return this.Content(NO_FUTURE_CONTESTS);
+                return this.Content(NoFutureContests);
             }
         }
 
@@ -88,7 +88,7 @@
             }
             else
             {
-                return this.Content(NO_ACTIVE_CONTESTS);
+                return this.Content(NoActiveContests);
             }
         }
 
@@ -106,7 +106,7 @@
             }
             else
             {
-                return this.Content(NO_LATEST_CONTESTS);
+                return this.Content(NoLatestContests);
             }
         }
 
@@ -122,7 +122,7 @@
                 });
 
             // TODO: Improve not to use ViewData
-            ViewData["DropDownData"] = dropDownData;
+            this.ViewData["DropDownData"] = dropDownData;
         }
     }
 }

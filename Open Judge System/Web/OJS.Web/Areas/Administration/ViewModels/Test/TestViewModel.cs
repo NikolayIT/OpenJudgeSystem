@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Test
 {
     using System;
     using System.ComponentModel.DataAnnotations;

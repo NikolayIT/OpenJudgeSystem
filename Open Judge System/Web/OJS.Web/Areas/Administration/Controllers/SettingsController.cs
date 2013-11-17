@@ -10,19 +10,19 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.Setting.SettingAdministrationViewModel;
 
-    public class NewsController : KendoGridAdministrationController
+    public class SettingsController : KendoGridAdministrationController
     {
-        public NewsController(IOjsData data)
+        public SettingsController(IOjsData data)
             : base(data)
         {
         }
 
         public override IEnumerable GetData()
         {
-            return this.Data.News.All()
-                .Where(news => !news.IsDeleted)
+            return this.Data.Settings
+                .All()
                 .Select(ModelType.ViewModel);
         }
 

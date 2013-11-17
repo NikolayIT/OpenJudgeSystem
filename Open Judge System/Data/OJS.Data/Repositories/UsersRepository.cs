@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Repositories
 {
+    using System;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -16,6 +17,11 @@
         public UserProfile GetByUsername(string username)
         {
             return this.All().FirstOrDefault(x => x.UserName == username);
+        }
+
+        public override void Delete(UserProfile entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

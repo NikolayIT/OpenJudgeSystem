@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Checker.cs" />
     <Compile Include="ProblemResource.cs" />
-    <Compile Include="ProblemResourceType.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SubmissionType.cs" />
     <Compile Include="Contest.cs" />

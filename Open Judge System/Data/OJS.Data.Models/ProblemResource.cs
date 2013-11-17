@@ -3,6 +3,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using OJS.Data.Contracts;
+    using OJS.Common.Models;
 
     public class ProblemResource : DeletableEntity, IOrderable
     {

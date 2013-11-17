@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgeCalculator.cs" />
     <Compile Include="Extensions\CompressStringExtensions.cs" />
     <Compile Include="DataAnnotations\ExcludeFromExcelAttribute.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Models\CompilerType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
     <Compile Include="Models\TestRunResultType.cs" />
+    <Compile Include="Models\ProblemResourceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="SynchronizedHashtable.cs" />

@@ -4,6 +4,7 @@
     using System.Linq.Expressions;
     
     using OJS.Data.Models;
+    using OJS.Common.Models;
     
     public class ContestProblemResourceViewModel
     {

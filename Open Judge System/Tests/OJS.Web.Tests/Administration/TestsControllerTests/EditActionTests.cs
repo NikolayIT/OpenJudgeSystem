@@ -5,6 +5,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Web.Mvc;
     using OJS.Web.Areas.Administration.ViewModels;
+    using OJS.Web.Areas.Administration.ViewModels.Test;
 
     [TestClass]
     public class EditActionTests : TestsControllerBaseTestsClass
