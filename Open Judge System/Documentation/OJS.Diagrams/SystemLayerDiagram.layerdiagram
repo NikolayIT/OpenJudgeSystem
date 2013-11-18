@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="121a3932-4099-4fff-8deb-b7220bf4e046" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="47e8953d-19bf-427c-8dd4-08322e0f5739" name="Controller&#xD;&#xA;">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="6745fbbd-c9c6-4e80-866f-839266d80ac6" direction="Forward">
+          <layerMoniker Id="e17dbc7b-2c8d-48be-97f2-c503dfcaec11" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="fd2039c8-6d34-4cf8-b2cf-6b95fa4b2138" direction="Forward">
+          <layerMoniker Id="c3e45ed0-ce50-4b50-8f8c-52d051493cc3" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="5f99ff82-efac-4f9e-8ec7-3ad56bb4994e" direction="Forward">
+          <layerMoniker Id="88437d7d-d0de-4eb9-9fca-2b47367a1ad5" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="c7bb7b0c-17a6-4617-b57e-240c931cef9e" direction="Forward">
+          <layerMoniker Id="8c0bace8-e1b7-46b9-92ed-e97b896aa91d" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+    </layer>
+    <layer Id="c3e45ed0-ce50-4b50-8f8c-52d051493cc3" name="Agent 1" />
+    <layer Id="88437d7d-d0de-4eb9-9fca-2b47367a1ad5" name="Agent 2" />
+    <layer Id="8c0bace8-e1b7-46b9-92ed-e97b896aa91d" name="Agent 3" />
+    <layer Id="e17dbc7b-2c8d-48be-97f2-c503dfcaec11" name="Database" />
+    <layer Id="defc4cda-4041-44fb-9fad-440f82841fd9" name="Web application">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="6cb9307c-1591-4aad-bffe-ca4c179ac3c7" direction="Forward">
+          <layerMoniker Id="e17dbc7b-2c8d-48be-97f2-c503dfcaec11" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+    </layer>
+  </layers>
+</layerModel>

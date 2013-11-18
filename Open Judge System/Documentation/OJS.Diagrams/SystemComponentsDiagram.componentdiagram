@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<componentModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" dslVersion="1.0.0.0" Id="239ddb96-e9a5-46d1-b6f0-920d3394c6f0" name="SystemComponentsDiagram" linkedPackageId="9254ef3d-3892-4faa-a75e-560d3906330f" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner">
+  <packagedElements>
+    <componentModelHasComponents>
+      <component Id="d4d0b908-ca3a-428a-8708-72cf2c6e9c68" name="OJS.Common" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="0c2045f9-a669-4d7f-aea1-29f7e74953a9" />
+      </component>
+    </componentModelHasComponents>
+    <componentModelHasComponents>
+      <component Id="f8dd3109-3c5d-4217-ba7a-9cae9b575a96" name="Controller Service" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="efd587b8-d7a7-476b-9efb-be3cc6e6571e" />
+        <suppliersInternal>
+          <dependency Id="66fd0926-d7cf-4073-a695-82750fde4584">
+            <componentMoniker Id="d4d0b908-ca3a-428a-8708-72cf2c6e9c68" LastKnownName="OJS.Common" />
+            <elementDefinition Id="92df16ef-15a8-4558-91a4-db755cdb01ab" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </componentModelHasComponents>
+  </packagedElements>
+  <package Id="9254ef3d-3892-4faa-a75e-560d3906330f" name="Telerik.OJS.Diagrams">
+    <elementDefinition Id="063c32d8-8f10-456d-a2ee-1bfa33b67968" />
+    <profileInstances>
+      <packageHasProfileInstances Id="f1b824cb-1e54-4737-853a-5e71b8867563">
+        <profileInstance Id="a0264eda-14d1-4aaf-8a47-646d18909c66" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="a6d10807-36d5-41e1-a383-eea0de7fcd8f">
+        <profileInstance Id="c15c13f3-ee0b-48b4-a7ed-b958507cbcef" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
+  </package>
+</componentModel>

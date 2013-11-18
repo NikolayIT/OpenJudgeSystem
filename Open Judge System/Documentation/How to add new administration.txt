@@ -1,0 +1,136 @@
+﻿Adding new Administration
+
+
+1. Go to Areas -> Administration -> Controller and create a controller for the new administration (Example: "ContestsController")
+
+2. Remove default usings and add these to your new controller:
+
+	using System.Collections;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
+    using OJS.Data;
+    using OJS.Web.Controllers;
+
+3. Enter the model you would like to use for your controller with this line:
+
+	using ModelType = OJS.Data.Models.{model};
+
+   For example if you want to add model for contests -> you enter:
+
+    using ModelType = OJS.Data.Models.Contest; 
+
+4. Your new controller should inherit "KendoGridAdministrationController" class instead of the default "Controller" class.
+
+5. Copy the following code to enable CRUD derivered from the base class. Make sure you fill the 
+   constructor with its proper name and override the correct data in GetData() method
+
+		public {name}Controller(IOjsData data)
+            : base(data)
+        {
+        }
+
+        public override IEnumerable GetData()
+        {
+            return this.Data.{model}.All().Where(x => !x.IsDeleted);
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        {
+            return this.BaseCreate(request, model);
+        }
+
+        [HttpPost]
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        {
+            return this.BaseUpdate(request, model);
+        }
+
+        [HttpPost]
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        {
+            return this.BaseDestroy(request, model);
+        }
+
+6. Your controller is now ready but it needs a view for rendering on browser. Go to Areas -> Administration -> Views and 
+   add folder named after your controller. For example "Contests".
+
+7. Add a new Empty View, name it Index and select a proper model for it. For example "OJS.Data.Models.Contest". Use empty layout.
+   Now your web application should be able to render the default view for this controller.
+
+8. Remove everything from the view and copy the following text which will render the Kendo UI Grid view 
+   (make sure you put correct names and options for columns). You can remove the commented part about the Groupable option if you need:
+
+	@model OJS.Data.Models.{model}
+	@{
+		ViewBag.Title = "{name}";
+		const string ControllerName = "{controller}";
+	}
+	<h1>@ViewBag.Title</h1>
+
+	@(Html.Kendo().Grid<OJS.Data.Models.{model}>()
+		.Name("DataGrid")
+		.Columns(columns =>
+			{
+				columns.Bound(x => x.Id);
+				columns.Bound(x => x.Title);
+				columns.Bound(x => x.IsVisible);
+				columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}");
+				columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}");
+				columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+				columns.Command(command => command.Destroy().Text(" ")).Width(80);
+			})
+		.ToolBar(toolbar =>
+		{
+			toolbar.Create().Text("Създай");
+			toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+			toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", "News", new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+		})
+		.Editable(editable =>
+		{
+			editable.Mode(GridEditMode.PopUp);
+			editable.Window(w => w.Title(ViewBag.Title));
+			editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента");
+		})
+		.ColumnMenu()
+		.Events(e => e.DataBound("onDataBound"))
+		.Pageable(x => x.Refresh(true))
+		.Sortable(x => x.Enabled(true).AllowUnsort(false))
+		.Filterable(x => x.Enabled(true))
+		/*.Groupable(x =>
+		{
+			x.Enabled(true);
+			x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+		})*/
+		.Reorderable(x => x.Columns(true))
+		.Resizable(x => x.Columns(true))
+		.DataSource(datasource => datasource
+			.Ajax()
+			.ServerOperation(false)
+			.Model(model => model.Id(x => x.Id))
+			.Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+			.Create(create => create.Action("Create", ControllerName))
+			.Read(read => read.Action("Read", ControllerName))
+			.Update(update => update.Action("Update", ControllerName))
+			.Destroy(destroy => destroy.Action("Destroy", ControllerName))
+		)
+	)
+
+	<script type="text/javascript">
+		function onDataBound(e) {
+			CreateExportToExcelButton();
+		}
+	</script>
+
+9. Go to the model and add needed attributes - DisplayName, Error Messages, Editable, etc.
+
+10. Your administration should be ready for use on {site}/Administration/{controller}

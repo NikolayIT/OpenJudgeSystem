@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<componentDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SystemComponentsDiagram">
+  <componentModelMoniker Id="239ddb96-e9a5-46d1-b6f0-920d3394c6f0" />
+  <nestedChildShapes>
+    <componentShape Id="77570d52-f007-4037-a2d1-f6dbf6e50b2b" absoluteBounds="3.75, 1.5, 2.229166666666667, 0.95" customColor="161, 199, 231" whiteBoxBoundsHeight="0" whiteBoxBoundsWidth="0" blackBoxBoundsHeight="0" blackBoxBoundsWidth="0" whiteBoxTopEdgeShapesCount="0" whiteBoxRightEdgeShapesCount="0" whiteBoxBottomEdgeShapesCount="0" whiteBoxLeftEdgeShapesCount="0" blackBoxTopEdgeShapesCount="0" blackBoxRightEdgeShapesCount="0" blackBoxBottomEdgeShapesCount="0" blackBoxLeftEdgeShapesCount="0">
+      <componentMoniker Id="d4d0b908-ca3a-428a-8708-72cf2c6e9c68" LastKnownName="OJS.Common" />
+    </componentShape>
+    <componentShape Id="91018750-dc92-4e49-abf9-69b0198d13bb" absoluteBounds="0.75, 1.5, 2.177083333333333, 0.95" customColor="161, 199, 231" whiteBoxBoundsHeight="0" whiteBoxBoundsWidth="0" blackBoxBoundsHeight="0" blackBoxBoundsWidth="0" whiteBoxTopEdgeShapesCount="0" whiteBoxRightEdgeShapesCount="0" whiteBoxBottomEdgeShapesCount="0" whiteBoxLeftEdgeShapesCount="0" blackBoxTopEdgeShapesCount="0" blackBoxRightEdgeShapesCount="0" blackBoxBottomEdgeShapesCount="0" blackBoxLeftEdgeShapesCount="0">
+      <componentMoniker Id="f8dd3109-3c5d-4217-ba7a-9cae9b575a96" LastKnownName="Controller Service" />
+    </componentShape>
+    <dependencyConnector edgePoints="[(2.92708333333333 : 1.975); (3.75 : 1.975)]" fixedFrom="Caller" fixedTo="Caller" customColor="Black">
+      <dependencyMoniker Id="66fd0926-d7cf-4073-a695-82750fde4584" />
+      <relativeChildShapes />
+      <nodes>
+        <componentShapeMoniker Id="91018750-dc92-4e49-abf9-69b0198d13bb" />
+        <componentShapeMoniker Id="77570d52-f007-4037-a2d1-f6dbf6e50b2b" />
+      </nodes>
+    </dependencyConnector>
+  </nestedChildShapes>
+</componentDiagram>
