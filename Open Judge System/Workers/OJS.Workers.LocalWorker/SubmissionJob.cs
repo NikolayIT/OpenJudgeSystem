@@ -149,6 +149,11 @@
             dbSubmission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
             dbSubmission.CompilerComment = executionResult.CompilerComment;
 
+            if (!executionResult.IsCompiledSuccessfully)
+            {
+                return;
+            }
+
             foreach (var testResult in executionResult.TestResults)
             {
                 var testRun = new TestRun

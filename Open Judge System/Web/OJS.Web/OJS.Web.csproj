@@ -383,7 +383,7 @@
     <Compile Include="Areas\Administration\ViewModels\Setting\SettingAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\TestRun\TestRunViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Test\TestViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\User\UserAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
     <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -590,6 +590,7 @@
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Date.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

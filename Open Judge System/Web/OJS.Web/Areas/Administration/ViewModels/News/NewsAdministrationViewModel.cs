@@ -52,7 +52,7 @@
 
         [Display(Name = "№")]
         [DefaultValue(null)]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
         [Display(Name = "Заглавие")]

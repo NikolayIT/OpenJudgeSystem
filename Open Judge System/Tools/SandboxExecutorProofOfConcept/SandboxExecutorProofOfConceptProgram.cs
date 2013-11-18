@@ -28,9 +28,8 @@
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
             Console.WriteLine(Process.GetCurrentProcess().PriorityClass);
 
-            RunNodeJs();
+            // RunNodeJs();
             // ThreadWork();
-            /*
             for (int i = 0; i < 1; i++)
             {
                 var thread = new Thread(ThreadWork);
@@ -38,7 +37,6 @@
                 Thread.Sleep(100);
             }
             //// ExecuteProcessWithDifferentUser(SandboxTargetExecutablePath, ("Ю".Repeat(1024) + "").Repeat(20 * 1024) + "\n", 2000, 256 * 1024 * 1024);
-             * */
 
             Console.ReadLine();
         }

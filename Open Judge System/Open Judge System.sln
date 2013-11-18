@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "Exter
 		External Libraries\Ionic.Zip.dll = External Libraries\Ionic.Zip.dll
 		External Libraries\Ionic.Zip.xml = External Libraries\Ionic.Zip.xml
 		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
+		External Libraries\Kendo.Mvc.README = External Libraries\Kendo.Mvc.README
 		External Libraries\Kendo.Mvc.xml = External Libraries\Kendo.Mvc.xml
 		External Libraries\TelerikContestSystem.DAL.dll = External Libraries\TelerikContestSystem.DAL.dll
 	EndProjectSection

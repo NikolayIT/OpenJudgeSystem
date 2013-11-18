@@ -54,9 +54,7 @@
         {
             get
             {
-                var correctTests = (decimal)TestResults
-                    .Where(x => x.ExecutionResult == TestRunResultType.CorrectAnswer)
-                    .Count();
+                var correctTests = (decimal)TestResults.Count(x => x.ExecutionResult == TestRunResultType.CorrectAnswer);
 
                 var allTests = TestResults.Count();
 

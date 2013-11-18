@@ -353,6 +353,7 @@
             if (string.IsNullOrEmpty(email))
             {
                 this.ModelState.AddModelError("Email", Resources.Account.Views.ForgottenPassword.Email_required);
+                return this.View();
             }
 
             // using Where() because duplicate email addresses were allowed in the previous

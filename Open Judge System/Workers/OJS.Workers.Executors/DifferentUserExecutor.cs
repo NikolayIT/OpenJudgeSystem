@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.Executors
 {
     using System;
+    using System.Collections.Generic;
 
     using OJS.Workers.Common;
 
@@ -10,7 +11,7 @@
         private const string UserName = @"testcode";
         private const string Password = @"testcode1234";
 
-        public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit)
+        public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null)
         {
             var process = new DifferentUserProcessExecutor(fileName, Environment.UserDomainName, UserName, Password);
             process.SetTextToWrite(inputData);

@@ -104,12 +104,12 @@
 </div>
 
 @{
-    var clientTemplate ="#= IsCompiledSuccessfully ? " +
-                            "IsCalculated ? " +
+    var clientTemplate = "#= IsCalculated ? " +
+                            "IsCompiledSuccessfully ? " +
                                 "displayTestRuns(TestRuns).concat(" +
-                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" + 
-                                        " : 'Моля изчакайте' " +
-                                            ": 'Неуспешна компилация' #";
+                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" +
+                                        " : 'Неуспешна компилация' " +
+                                            ": 'Моля изчакайте' #";
 }
 
 <div class="row">

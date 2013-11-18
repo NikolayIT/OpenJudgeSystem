@@ -8,6 +8,7 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using System.Web.Mvc;
 
     public class FeedbackReportViewModel : AdministrationViewModel
     {
@@ -50,7 +51,7 @@
 
         [Display(Name = "№")]
         [DefaultValue(null)]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
         [Display(Name = "Име")]
@@ -62,6 +63,7 @@
         [Required(ErrorMessage = "Имейла е задължителен")]
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Невалиден имейл адрес")]
+        [UIHint("SingleLineText")]
         public string Email { get; set; }
 
         [Display(Name = "Съдържание")]

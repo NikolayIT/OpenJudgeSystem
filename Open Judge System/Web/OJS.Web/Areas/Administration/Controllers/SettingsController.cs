@@ -38,7 +38,6 @@
         }
 
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
             return this.BaseUpdate(request, model.ToEntity);

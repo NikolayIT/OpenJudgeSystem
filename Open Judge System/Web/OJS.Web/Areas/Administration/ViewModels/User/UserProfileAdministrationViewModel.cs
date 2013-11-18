@@ -8,15 +8,16 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Common;
+using System.Web.Mvc;
 
-    public class UserAdministrationViewModel : AdministrationViewModel
+    public class UserProfileAdministrationViewModel : AdministrationViewModel
     {
         [ExcludeFromExcel]
-        public static Expression<Func<UserProfile, UserAdministrationViewModel>> ViewModel
+        public static Expression<Func<UserProfile, UserProfileAdministrationViewModel>> ViewModel
         {
             get
             {
-                return user => new UserAdministrationViewModel
+                return user => new UserProfileAdministrationViewModel
                 {
                     Id = user.Id,
                     UserName = user.UserName,
@@ -64,7 +65,7 @@
         }
 
         [Display(Name = "№")]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
 
         [Display(Name = "Потребителско име")]
@@ -78,7 +79,7 @@
         public string Email { get; set; }
 
         [Display(Name = "От старата система?")]
-        [UIHint("DisabledCheckbox")]
+        [HiddenInput(DisplayValue = false)]
         public bool IsGhostUser { get; set; }
 
         [Display(Name = "Име")]
@@ -114,7 +115,7 @@
         [Display(Name = "Дата на раждане")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [DataType(DataType.Date)]
-        [UIHint("DateAndTime")]
+        [UIHint("Date")]
         public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Месторабота")]

@@ -235,7 +235,7 @@
                 }
             }
 
-            if (problem.SourceCodeSizeLimit > participantSubmission.Content.Length)
+            if (problem.SourceCodeSizeLimit < participantSubmission.Content.Length)
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, "The submitted code is too long.");
             }

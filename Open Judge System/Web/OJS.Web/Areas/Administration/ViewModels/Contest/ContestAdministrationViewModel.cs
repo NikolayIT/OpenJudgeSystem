@@ -11,6 +11,7 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using System.Web.Mvc;
 
     public class ContestAdministrationViewModel : AdministrationViewModel
     {
@@ -67,8 +68,8 @@
         }
 
         [Display(Name = "№")]
-        [UIHint("NonEditable")]
         [DefaultValue(null)]
+        [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
         [Display(Name = "Име")]

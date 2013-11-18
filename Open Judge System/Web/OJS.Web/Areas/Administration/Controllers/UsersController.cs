@@ -1,6 +1,9 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -10,7 +13,7 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.User.UserAdministrationViewModel;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileAdministrationViewModel;
 
     public class UsersController : KendoGridAdministrationController
     {
@@ -32,18 +35,25 @@
         }
 
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            var list = new List<ModelType>();
+
+            if (model != null && ModelState.IsValid)
+            {
+                var itemForUpdating = this.Data.Context.Entry(model.ToEntity);
+                itemForUpdating.State = EntityState.Modified;
+                this.Data.SaveChanges();
+                list.Add(model);
+            }
+
+            return this.Json(list.ToDataSourceResult(request));
         }
 
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            this.Data.Users.Delete(model.ToEntity);
-
-            return this.Json(ModelState.ToDataSourceResult());
+            throw new NotImplementedException();
         }
     }
 }
