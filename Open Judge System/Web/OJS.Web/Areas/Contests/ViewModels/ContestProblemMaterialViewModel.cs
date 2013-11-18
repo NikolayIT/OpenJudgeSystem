@@ -2,9 +2,9 @@
 {
     using System;
     using System.Linq.Expressions;
-    
-    using OJS.Data.Models;
+
     using OJS.Common.Models;
+    using OJS.Data.Models;
     
     public class ContestProblemResourceViewModel
     {

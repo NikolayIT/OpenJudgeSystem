@@ -9,8 +9,8 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    using OJS.Common.Models;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;

@@ -1,10 +1,6 @@
-﻿using System;
-namespace OJS.Web.Areas.Contests.Models
+﻿namespace OJS.Web.Areas.Contests.Models
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Text;
 
     public class ContestQuestionAnswerModel
     {

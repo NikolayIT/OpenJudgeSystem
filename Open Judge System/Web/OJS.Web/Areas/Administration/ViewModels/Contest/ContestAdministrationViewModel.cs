@@ -1,17 +1,14 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Contest
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
+    using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using System.Web.Mvc;
 
     public class ContestAdministrationViewModel : AdministrationViewModel
     {

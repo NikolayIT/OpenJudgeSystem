@@ -12,15 +12,12 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Common;
     using OJS.Web.ViewModels.Account;
 
     using Recaptcha;
-
-    using Resources;
-    using System.Collections.Generic;
 
     [Authorize]
     public class AccountController : BaseController

@@ -1,11 +1,8 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
-    using System.Linq.Expressions;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;

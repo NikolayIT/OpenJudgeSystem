@@ -57,7 +57,6 @@
         private IEnumerable<SubmissionViewModel> GetLastFiftySubmissions()
         {
             // TODO: add language type
-
             var submissions = this.Data.Submissions.AllPublic()
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(50)

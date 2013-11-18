@@ -1,13 +1,13 @@
 ﻿namespace OJS.Web.ViewModels.Submission
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
 
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
-    using System.Linq.Expressions;
 
     public class SubmissionViewModel
     {
@@ -54,9 +54,9 @@
         {
             get
             {
-                var correctTests = (decimal)TestResults.Count(x => x.ExecutionResult == TestRunResultType.CorrectAnswer);
+                var correctTests = (decimal)this.TestResults.Count(x => x.ExecutionResult == TestRunResultType.CorrectAnswer);
 
-                var allTests = TestResults.Count();
+                var allTests = this.TestResults.Count();
 
                 return allTests > 0 ? (int)((correctTests / allTests) * this.ProblemMaximumPoints) : 0;
             }
@@ -66,7 +66,7 @@
         {
             get
             {
-                return this.Points == this.ProblemMaximumPoints ? true : false;
+                return this.Points == this.ProblemMaximumPoints;
             }
         }
 
@@ -74,7 +74,7 @@
         {
             get
             {
-                return TestResults.Count() > 0 ? TestResults.Select(x => x.TimeUsed).Max() : 0;
+                return this.TestResults.Any() ? this.TestResults.Select(x => x.TimeUsed).Max() : 0;
             }
         }
 
@@ -82,7 +82,7 @@
         {
             get
             {
-                return TestResults.Count() > 0 ? TestResults.Select(x => x.MemoryUsed).Max() : 0;
+                return this.TestResults.Any() ? this.TestResults.Select(x => x.MemoryUsed).Max() : 0;
             }
         }
     }

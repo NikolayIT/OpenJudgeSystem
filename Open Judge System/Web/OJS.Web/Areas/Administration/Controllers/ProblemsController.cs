@@ -7,11 +7,10 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Common.Models;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;

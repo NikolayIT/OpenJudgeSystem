@@ -67,7 +67,7 @@
         /// <returns>Returns a JSON as content result.</returns> 
         protected ContentResult LargeJson(object data)
         {
-            var serializer = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue, RecursionLimit = 100 };
+            var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 };
 
             return new ContentResult
             {

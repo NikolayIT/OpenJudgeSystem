@@ -8,15 +8,6 @@
 
     public class QuestionViewModel
     {
-        public int QuestionId { get; set; }
-
-        [Display(Name = "Въпрос")]
-        public string Question { get; set; }
-
-        [Required]
-        [StringLength(int.MaxValue, MinimumLength = 1)]
-        public string Answer { get; set; }
-
         public static Expression<Func<ContestQuestion, QuestionViewModel>> FromQuestion
         {
             get
@@ -28,5 +19,14 @@
                 };
             }
         }
+
+        public int QuestionId { get; set; }
+
+        [Display(Name = "Въпрос")]
+        public string Question { get; set; }
+
+        [Required]
+        [StringLength(int.MaxValue, MinimumLength = 1)]
+        public string Answer { get; set; }
     }
 }

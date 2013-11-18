@@ -6,10 +6,10 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using OJS.Common.DataAnnotations;
 
     public class SubmissionAdministrationViewModel : AdministrationViewModel
     {

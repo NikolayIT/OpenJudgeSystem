@@ -26,9 +26,7 @@
 
         public ActionResult All(int id = 1, int pageSize = 10)
         {
-            var newsCount = this.Data.News.All()
-                .Where(x => x.IsVisible)
-                .Count();
+            var newsCount = this.Data.News.All().Count(x => x.IsVisible);
 
             int pages = 0;
 
@@ -38,7 +36,7 @@
             }
             else
             {
-                pages = newsCount / pageSize + 1;
+                pages = (newsCount / pageSize) + 1;
             }
 
             if (id < 1)

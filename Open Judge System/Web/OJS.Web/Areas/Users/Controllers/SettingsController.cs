@@ -1,8 +1,5 @@
 ﻿namespace OJS.Web.Areas.Users.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using OJS.Data;
     using OJS.Data.Models;
@@ -14,7 +11,6 @@
         public SettingsController(IOjsData data)
             : base(data)
         {
-
         }
 
         [HttpGet]
@@ -24,7 +20,7 @@
 
             var profile = this.Data.Users.GetByUsername(currentUserName);
 
-            return View(profile.UserSettings);
+            return this.View(profile.UserSettings);
         }
 
         [HttpPost]
@@ -37,10 +33,10 @@
                 this.Data.SaveChanges();
 
                 TempData.Add("InfoMessage", "Настройките на профила ви са запазени!");
-                return Redirect("/Users/Profile");
+                return this.Redirect("/Users/Profile");
             }
 
-            return View(settings);
+            return this.View(settings);
         }
     }
 }

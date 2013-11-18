@@ -8,7 +8,7 @@ namespace OJS.Web
     {
         public void Configuration(IAppBuilder app) 
         {
-            ConfigureAuth(app);
+            this.ConfigureAuth(app);
         }
     }
 }

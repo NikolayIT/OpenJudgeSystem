@@ -51,7 +51,7 @@
         [HttpGet]
         public ActionResult Submitted()
         {
-            TempData["InfoMessage"] = FeedbackSubmitMessage;
+            this.TempData["InfoMessage"] = FeedbackSubmitMessage;
             return this.View();
         }
     }
