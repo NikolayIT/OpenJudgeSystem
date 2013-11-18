@@ -25,7 +25,7 @@
                     Contest = submission.Problem.Contest.Name,
                     ParticipantId = submission.ParticipantId,
                     ParticipantName = submission.Participant.User.UserName,
-                    TestResults = submission.TestRuns.AsQueryable().Select(TestRunViewModel.FromTestRun)
+                    TestResults = submission.TestRuns.AsQueryable().Where(x => !x.Test.IsTrialTest).Select(TestRunViewModel.FromTestRun)
                 };
             }
         }

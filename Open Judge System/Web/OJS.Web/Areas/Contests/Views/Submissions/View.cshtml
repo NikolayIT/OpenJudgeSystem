@@ -1,7 +1,140 @@
-﻿@model OJS.Web.Areas.Contests.ViewModels.SubmissionsDetailsViewModel
+﻿@using NPOI.SS.Formula.Functions
+@using OJS.Common.Extensions
+@using OJS.Common.Models
+@model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 @{
-    ViewBag.Title = "Submissions details";
+    ViewBag.Title = string.Format("Решение №{0} към задача {1}", Model.Id, Model.ProblemName);
 }
 
+@section styles {
+    @Styles.Render("~/Content/CodeMirror/codemirror")
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/codemirror")
+    <script type="text/javascript">
+        $(function() {
+            var textEditor = document.getElementById("code");
+            var editor = new CodeMirror.fromTextArea(textEditor, {
+                mode: "text/x-csharp",
+                lineNumbers: true,
+                matchBrackets: true,
+                theme: "tomorrow-night-eighties",
+                showCursorWhenSelecting: true,
+                undoDepth: 100,
+                lineWrapping: true,
+                readOnly: true,
+                autofocus: true,
+            });
+
+            editor.setSize('100%', '100%');
+        });
+    </script>
+}
+
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li><a href="/Submissions">Решения</a></li>
+    <li class="active">@Model.Id</li>
+</ol>
+
 <h1>@ViewBag.Title</h1>
-@Model.Code
+
+@if (Model.IsDeleted)
+{
+    <div class="alert alert-danger">Това решение е изтрито!!!</div>
+}
+
+@if (!Model.Processed)
+{
+    if (Model.Processing)
+    {
+        <div class="alert alert-info">Решението се изпълнява в момента... Моля бъдете търпеливи.</div>
+    }
+    else
+    {
+        <div class="alert alert-info">Решението е в опашката и скоро ще се изпълни. Моля бъдете търпеливи.</div>
+    }
+}
+else
+{
+    if (!Model.IsCompiledSuccessfully)
+    {
+         <div class="alert alert-danger">Възникнала е грешка по време на компилацията</div>
+     }
+     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
+     {
+         <h2>Резултат от компилацията:</h2>
+         <pre>@Model.CompilerComment</pre>
+     }
+}
+
+<textarea id="code">@Model.ContentAsString</textarea>
+
+@foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
+{
+    var className = string.Empty;
+    var testResultText = string.Empty;
+    if (testResult.ResultType == TestRunResultType.CorrectAnswer)
+    {
+        className = "text-success";
+        testResultText = "Верен отговор";
+    }
+    else if (testResult.ResultType == TestRunResultType.WrongAnswer)
+    {
+        className = "text-danger";
+        testResultText = "Грешен отговор";
+    }
+    else if (testResult.ResultType == TestRunResultType.MemoryLimit)
+    {
+        className = "text-danger";
+        testResultText = "Недостатъчна памет";
+    }
+    else if (testResult.ResultType == TestRunResultType.TimeLimit)
+    {
+        className = "text-danger";
+        testResultText = "Недостатъчно време";
+    }
+    else if (testResult.ResultType == TestRunResultType.RunTimeError)
+    {
+        className = "text-danger";
+        testResultText = "Грешка по време на изпълнение";
+    }
+
+    <h2 class="@className">
+        @if (testResult.IsTrialTest)
+        {
+            @:Нулев тест №@testResult.Order
+        }
+        else
+        {
+            @:Тест №@testResult.Order
+        }
+        (@testResultText)
+        @if (User.IsInRole("Administrator"))
+        {
+            <small>Run №@testResult.Id</small>
+        }
+    </h2>
+
+    if (testResult.IsTrialTest)
+    {
+        <div>Нулевите тестове не се броят в крайния резултат.</div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
+    {
+        <pre>@testResult.ExecutionComment.MaxLength(500)</pre>
+    }
+    
+    if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
+    {
+        if (testResult.IsTrialTest || User.IsInRole("Administrator"))
+        {
+            <pre>@testResult.CheckerComment</pre>
+        }
+    }
+    
+    <div>Използвано време (в милисекунди): @testResult.TimeUsed</div>
+    <div>Използванa памет (в bytes): @testResult.MemoryUsed</div>
+}

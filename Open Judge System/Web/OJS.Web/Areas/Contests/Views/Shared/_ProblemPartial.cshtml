@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    <div class="col-lg-4 problem-result-container">
+    <div class="col-lg-4 problem-result-container visible-lg">
         @(Html.Kendo().Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
                 .ToolBar(tool =>
@@ -124,23 +124,25 @@
             .Columns(col =>
             {
                 col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
-                col.Template(@<text>@item.IsCalculated ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>).Title("Максимуми").ClientTemplate("#= IsCalculated ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <div class='view-submission-button btn btn-default pull-right' data-submission-id='#=SubmissionId#'>Виж решение</div>");
+                col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
+                    .Title("Максимуми")
+                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
             })
-            .DataSource(data =>
-            {
-                data.Ajax()
-                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                    .PageSize(10);
-            })
-            .Pageable(page =>
-            {
-                page.Info(false);
-                page.Refresh(true);
-            })
-            .ClientDetailTemplateId("testRunsTemplate")
-            .HtmlAttributes(new { @class = "problem_submit_grid" })
+                                            .DataSource(data =>
+                                            {
+                                                data.Ajax()
+                                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                                                    .PageSize(10);
+                                            })
+                                            .Pageable(page =>
+                                            {
+                                                page.Info(false);
+                                                page.Refresh(true);
+                                            })
+                                            .ClientDetailTemplateId("testRunsTemplate")
+                                            .HtmlAttributes(new { @class = "problem_submit_grid" })
         )
     </div>
 </div>

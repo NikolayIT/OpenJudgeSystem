@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using CompareMvc = System.Web.Mvc.CompareAttribute;
+
     public class ForgottenPasswordViewModel
     {
         [Required(
@@ -20,7 +22,7 @@
         [Display(
                 Name = "Password_confirm",
                 ResourceType = typeof(Resources.Account.ViewModels))]
-        [Compare(
+        [CompareMvc(
                 "Password",
                 ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]

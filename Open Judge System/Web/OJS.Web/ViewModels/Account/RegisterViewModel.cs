@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using CompareMvc = System.Web.Mvc.CompareAttribute;
+
     public class RegisterViewModel
     {
         [StringLength(
@@ -35,7 +37,7 @@
         [Display(
                 Name = "Password_confirm",
                 ResourceType = typeof(Resources.Account.ViewModels))]
-        [Compare("Password",
+        [CompareMvc("Password",
                 ErrorMessageResourceName = "Passwords_dont_match",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string ConfirmPassword { get; set; }

@@ -30,7 +30,9 @@
                                 <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">Участвай</a></td>
                             </tr>
                         }
-                    } else {
+                    }
+                    else
+                    {
                         foreach (var contest in Model.ActiveContests)
                         {
                             <tr>

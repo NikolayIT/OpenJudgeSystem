@@ -36,6 +36,7 @@
 
                 if (!users.ContainsKey(oldParticipant.OldUserId))
                 {
+                    // User is no longer active
                     continue;
                 }
 

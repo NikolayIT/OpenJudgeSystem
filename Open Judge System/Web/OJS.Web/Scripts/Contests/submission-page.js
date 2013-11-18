@@ -128,16 +128,18 @@ $("#SubmissionsTabStrip").on("click", ".view-source-button", function () {
     });
 });
 
-$(document).on('click', '.view-submission-button', function () {
-    var submissionId = $(this).data("submission-id");
-
-    $.get("/Contests/Compete/GetSubmissionContent/" + submissionId, function (response) {
-        var codeMirrorInstance = getCodeMirrorInstance();
-        codeMirrorInstance.setValue(response);
-    }).fail(function (err) {
-        notifyFailure(err);
-    });
-});
+// Previously viewing a submission was loading the submission content in the 
+// code mirror box.
+// $(document).on('click', '.view-submission-button', function () {
+//     var submissionId = $(this).data("submission-id");
+   
+//     $.get("/Contests/Compete/GetSubmissionContent/" + submissionId, function (response) {
+//         var codeMirrorInstance = getCodeMirrorInstance();
+//         codeMirrorInstance.setValue(response);
+//     }).fail(function (err) {
+//         notifyFailure(err);
+//     });
+// });
 
 var displayMaximumValues = function (maxMemory, maxTime) {
     var result = "Памет: " + maxMemory + "<br />" + "Време: " + maxTime;

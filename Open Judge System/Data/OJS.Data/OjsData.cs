@@ -73,6 +73,14 @@
             }
         }
 
+        public IRepository<SubmissionType> SubmissionTypes
+        {
+            get
+            {
+                return this.GetRepository<SubmissionType>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get

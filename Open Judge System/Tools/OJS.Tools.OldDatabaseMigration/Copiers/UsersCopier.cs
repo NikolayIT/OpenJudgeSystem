@@ -19,11 +19,11 @@
                             x.aspnet_Users.UserName,
                             x.aspnet_Users.aspnet_Membership.Email,
                             Profile = x,
-                            HasAnyParticipations = x.Participants.Any(),
+                            HasAnyParticipationWithSubmissions = x.Participants.Any(y => y.Submissions.Any()),
                             CreatedOn = x.aspnet_Users.aspnet_Membership.CreateDate,
                             x.Id,
                         })
-                    .Where(x => x.HasAnyParticipations);
+                    .Where(x => x.HasAnyParticipationWithSubmissions);
                     //// .Where(x => !x.UserName.StartsWith("sample@email.tst"))
                     //// .Where(x => !x.Email.StartsWith("sample@email.tst"))
                     //// .Where(x => x.Profile.LastName != "111-222-1933email@address.com")

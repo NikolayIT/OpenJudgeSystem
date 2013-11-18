@@ -20,6 +20,7 @@
     using Recaptcha;
 
     using Resources;
+    using System.Collections.Generic;
 
     [Authorize]
     public class AccountController : BaseController
@@ -94,7 +95,7 @@
                 ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
             }
 
-            if (this.Data.Users.All().Any(x=>x.UserName == model.UserName))
+            if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
             {
                 ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
             }
@@ -348,45 +349,71 @@
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ForgottenPassword(string email)
+        public ActionResult ForgottenPassword(string emailOrUsername)
         {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(emailOrUsername))
             {
-                this.ModelState.AddModelError("Email", Resources.Account.Views.ForgottenPassword.Email_required);
+                this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_required);
                 return this.View();
+            }
+
+            var userByUsername = this.Data.Users.GetByUsername(emailOrUsername);
+
+            if (userByUsername != null)
+            {
+                userByUsername.ForgottenPasswordToken = Guid.NewGuid();
+                this.Data.SaveChanges();
+                this.SendForgottenPasswordToUser(userByUsername);
+                this.TempData["NotifyMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+                return this.RedirectToAction("ForgottenPassword");
             }
 
             // using Where() because duplicate email addresses were allowed in the previous
             // judge system
-            var usersWithEmail = this.Data.Users
-                                            .All()
-                                            .Where(x => x.Email == email);
+            var usersByEmail = this.Data.Users
+                                    .All()
+                                    .Where(x => x.Email == emailOrUsername);
 
-            var usersCount = usersWithEmail.Count();
+            var usersCount = usersByEmail.Count();
 
+            // notify the user if there are no users registered with this email or username
             if (usersCount == 0)
             {
                 ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_not_registered;
                 return this.View();
             }
 
-            if (usersCount != 1)
+            // if there are users registered with this email - send a forgotten password email
+            // to each one of them
+            foreach (var user in usersByEmail)
             {
-                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_registered_more_than_once;
-                return this.View();
+                user.ForgottenPasswordToken = Guid.NewGuid();
+                this.Data.SaveChanges();
+                this.SendForgottenPasswordToUser(user);
             }
 
-            var user = usersWithEmail.FirstOrDefault();
+            this.TempData["NotifyMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+            return this.RedirectToAction("ForgottenPassword");
+        }
 
-            user.ForgottenPasswordToken = Guid.NewGuid();
-            this.Data.SaveChanges();
-
-            // TODO: create and localize the message for the forgot your password email.
+        private void SendForgottenPasswordToUser(UserProfile user)
+        {
             var mailSender = MailSender.Instance;
-            mailSender.SendMail(user.Email, "Forgot your password", Url.Action("ChangePassword", new { token = user.ForgottenPasswordToken }));
 
-            // TODO: Redirect to the correct page
-            return this.RedirectToAction("Index", new { Model = string.Empty });
+            var forgottenPasswordEmailTitle = string.Format(
+                                                        Resources.Account.Emails.Forgotten_password_title,
+                                                        user.UserName);
+
+            var forgottenPasswordEmailBody = string.Format(
+                                                Resources.Account.Emails.Forgotten_password_body,
+                                                user.UserName,
+                                                Url.Action(
+                                                        "ChangePassword",
+                                                        "Account",
+                                                        new { token = user.ForgottenPasswordToken },
+                                                        Request.Url.Scheme));
+
+            mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }
 
         [AllowAnonymous]

@@ -34,7 +34,7 @@
 
         public ActionResult Index()
         {
-            this.GenerateDropDownData();
+            this.GenerateCategoryDropDownData();
             return this.View();
         }
 
@@ -110,7 +110,7 @@
             }
         }
 
-        private void GenerateDropDownData()
+        private void GenerateCategoryDropDownData()
         {
             var dropDownData = this.Data.ContestCategories
                 .All()
@@ -122,7 +122,7 @@
                 });
 
             // TODO: Improve not to use ViewData
-            this.ViewData["DropDownData"] = dropDownData;
+            this.ViewData["CategoryIdData"] = dropDownData;
         }
     }
 }

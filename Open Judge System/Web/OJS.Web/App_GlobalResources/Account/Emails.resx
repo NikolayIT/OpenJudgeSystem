@@ -117,28 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Email_not_registered" xml:space="preserve">
-    <value>This email is not registered</value>
+  <data name="Forgotten_password_body" xml:space="preserve">
+    <value>Hi &lt;strong&gt;{0}&lt;/strong&gt;, &lt;br/&gt;To reset your password please click &lt;a href="{1}"&gt;{1}&lt;/a&gt; or copy and paste the url in your browser.</value>
   </data>
-  <data name="Email_or_username_required" xml:space="preserve">
-    <value>Please enter your email or username</value>
-  </data>
-  <data name="Email_registered_more_than_once" xml:space="preserve">
-    <value>This email is registered more than once</value>
-  </data>
-  <data name="Email_sent" xml:space="preserve">
-    <value>Instructions on how to obtain your password were sent to your email address.</value>
-  </data>
-  <data name="EnterYourEmail" xml:space="preserve">
-    <value>Please enter your email to reset your password.</value>
-  </data>
-  <data name="Label" xml:space="preserve">
-    <value>Username or email</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Forgotten password</value>
+  <data name="Forgotten_password_title" xml:space="preserve">
+    <value>Forgotten password for {0}</value>
   </data>
 </root>

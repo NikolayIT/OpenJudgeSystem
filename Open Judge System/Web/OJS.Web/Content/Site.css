@@ -3,6 +3,11 @@
     padding-bottom: 40px;
 }
 
+pre {
+    background-color: #AAAAAA;
+    border-color: #AAAAAA;
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #b94a48;

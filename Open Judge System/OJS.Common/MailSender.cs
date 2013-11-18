@@ -14,13 +14,14 @@
         private readonly SmtpClient mailClient;
         const string SendFrom = "bgcoder.com@gmail.com";
         const string SendFromName = "BGCoder.com";
+        private const string Password = "__YOUR_PASSWORD_HERE__";
 
         private MailSender()
         {
             // TODO: Extract user, address and password as app.config settings
             mailClient = new SmtpClient
             {
-                Credentials = new NetworkCredential(SendFrom, "ENTER_PASSWORD_HERE"),
+                Credentials = new NetworkCredential(SendFrom, Password),
                 Port = 587,
                 Host = "smtp.gmail.com",
                 EnableSsl = true,

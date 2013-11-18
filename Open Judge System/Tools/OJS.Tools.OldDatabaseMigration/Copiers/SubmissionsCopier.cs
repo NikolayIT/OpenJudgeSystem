@@ -18,7 +18,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
             var tests = context.Tests.Select(x => new { x.Id, x.ProblemId, x.IsTrialTest, x.OrderBy }).ToList();
 
             var count = oldDb.Submissions.Count();
-            const int ElementsByIteration = 1000;
+            const int ElementsByIteration = 500;
             var iterations = Math.Ceiling((decimal)count / ElementsByIteration);
             for (int i = 0; i < iterations; i++)
             {

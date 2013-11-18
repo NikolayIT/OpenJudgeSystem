@@ -34,6 +34,8 @@
 
         ISubmissionsRepository Submissions { get; }
 
+        IRepository<SubmissionType> SubmissionTypes { get; }
+
         IOjsDbContext Context { get; }
 
         int SaveChanges();

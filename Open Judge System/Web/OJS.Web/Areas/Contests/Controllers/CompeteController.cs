@@ -434,6 +434,7 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam!");
             }
 
+            // TODO: Refactor
             var results = problem
                                 .Submissions
                                 .AsQueryable()

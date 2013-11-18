@@ -4,12 +4,17 @@
     ViewBag.Title = "Лог на публикациите";
 }
 
-<h2>@ViewBag.Title</h2>
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li class="active">Решения</li>
+</ol>
+
+<h1>@ViewBag.Title</h1>
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
     .Name("Submissions")
     .Columns(columns =>
         {
-            columns.Template(@<text></text>).ClientTemplate("<span class='indexColumn'></span>").Title("No").Width(50);
+            columns.Bound(s => s.Id).Title("№");
             columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
                 "<div>" +
                     "<strong><a href=\"/Users/Profile/#: ParticipantId #\">#: ParticipantName #</a></strong>" +
@@ -35,6 +40,10 @@
                             "#= testResult(TestResults) #" +
                     "</div>"
                 );
+            if (User.IsInRole("Administrator"))
+            {
+                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<a href='/Contests/Submissions/View/#:Id#'>View</a>");
+            }
         }
     )
     .Selectable(sel => sel.Mode(GridSelectionMode.Multiple))

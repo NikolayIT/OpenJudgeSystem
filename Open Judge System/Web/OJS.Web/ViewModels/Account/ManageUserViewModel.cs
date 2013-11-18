@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using CompareMvc = System.Web.Mvc.CompareAttribute;
+
     public class ManageUserViewModel
     {
         [Required(
@@ -33,7 +35,7 @@
         [Display(
                 Name = "New_password_confirmation",
                 ResourceType = typeof(Resources.Account.ViewModels))]
-        [Compare(
+        [CompareMvc(
                 "NewPassword",
                 ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
