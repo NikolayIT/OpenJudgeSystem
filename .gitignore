@@ -108,11 +108,10 @@ Backup*/
 UpgradeLog*.XML
 
 # Excluded for security reasons
-Open Judge System/Documentation/
-
-# Kendo Wrappers
-Open Judge System/External Libraries/Kendo.Mvc.dll
-Open Judge System/External Libraries/Kendo.Mvc.xml
+Open Judge System/Documentation/Executor.Security.Tests
+Open Judge System/Documentation/Other Judge Systems
+Open Judge System/Documentation/Requirements
+Open Judge System/Documentation/Sandbox
 
 # Old system source code
 --old--Telerik Contest System/
