@@ -153,7 +153,7 @@ function validateSubmissionContent() {
 
     if (!codeMirrorText || codeMirrorText.length < 5) {
         showMessage({
-            message: "Решението е прекалено кратко!",
+            message: "Решението трябва да съдържа поне 5 символа!",
             cssClass: "alert alert-warning"
         });
 

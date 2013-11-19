@@ -22,12 +22,12 @@
                         {
                             <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
                         }
-                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.OfficialParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
                     }
                     @if (contest.ResultsArePubliclyVisible)
                     {
                         <a class="btn btn-sm" href="/Contests/Compete/Results/@contest.Id">Резултати</a>
-                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.OfficialParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
                     }
                 </td>
                 <td>
@@ -36,18 +36,25 @@
                         @Html.RouteLink("Практикувай", "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
                         if (contest.HasPracticePassword)
                         {
-                            <div class="glyphicon glyphicon-lock text-white" title="Password protected"></div>
+                            <div class="glyphicon glyphicon-lock text-white" title="Състезанието е защитено с парола"></div>
                         }
                         if (contest.HasPracticeQuestions)
                         {
-                            <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
+                            <div class="glyphicon glyphicon-question-sign text-white" title="За да участвате в състезанието, трябва да отговорите на въпроси"></div>
                         }
-                        <div class="glyphicon glyphicon-user text-white" title="Total number of participants"></div> <span>@contest.PracticeParticipants</span>
+                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.PracticeParticipants</span>
                     }
                 </td>
                 <td>
-                    <div class="glyphicon glyphicon-file text-white" title="Number of problems"></div> <span>@contest.ProblemsCount</span>
+                    <div class="glyphicon glyphicon-file text-white" title="Брой задачи"></div> <span>@contest.ProblemsCount</span>
                 </td>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <td>
+                        <a href="/Administration/Problems/Contest/@contest.Id">[промяна - TODO!!!]</a>
+                        <a href="/Administration/Problems/Contest/@contest.Id">[задачи]</a>
+                    </td>
+                }
             </tr>
         }
     </table>

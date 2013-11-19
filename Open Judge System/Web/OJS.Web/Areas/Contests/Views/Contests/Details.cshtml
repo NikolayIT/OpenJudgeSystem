@@ -1,5 +1,6 @@
 ﻿@using OJS.Web.Areas.Contests.ViewModels
 @using OJS.Common.Models;
+
 @model ContestViewModel
 
 @{
@@ -79,5 +80,15 @@
         {
             @Html.ActionLink("Практикувай", "Index", new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
         }
+        @if (User.IsInRole("Administrator"))
+        {
+            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">Промяна (TODO!!!)</a>
+            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">Задачи</a>
+        }
     </div>
 </div>
+
+@if (this.User.Identity.IsAuthenticated)
+{
+    Html.RenderPartial("_AllContestSubmissionsByUser");
+}

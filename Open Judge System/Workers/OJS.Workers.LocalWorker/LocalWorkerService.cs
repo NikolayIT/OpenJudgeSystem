@@ -39,7 +39,7 @@
         {
             logger.Info("LocalWorkerService starting...");
 
-            foreach (var thread in threads)
+            foreach (var thread in this.threads)
             {
                 logger.InfoFormat("Starting {0}...", thread.Name);
                 thread.Start();
@@ -54,7 +54,7 @@
         {
             logger.Info("LocalWorkerService stopping...");
 
-            foreach (var job in jobs)
+            foreach (var job in this.jobs)
             {
                 job.Stop();
                 logger.InfoFormat("{0} stopped.", job.Name);
@@ -62,7 +62,7 @@
 
             Thread.Sleep(10000);
 
-            foreach (var thread in threads)
+            foreach (var thread in this.threads)
             {
                 thread.Abort();
                 logger.InfoFormat("{0} aborted.", thread.Name);

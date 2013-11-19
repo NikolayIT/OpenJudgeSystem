@@ -59,6 +59,7 @@
                     commandLineBuilder.Append(' ');
                     commandLineBuilder.Append(argument);
                 }
+
                 commandLine = commandLineBuilder.ToString();
             }
             else

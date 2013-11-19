@@ -40,6 +40,21 @@
 
 <h1>@ViewBag.Title</h1>
 
+@if (User.IsInRole("Administrator"))
+{
+    <a class="btn btn-sm btn-primary" href="/Contests/Submissions/View/@Model.Id">Промяна - TODO!!!</a>
+    <a class="btn btn-sm btn-primary" href="/Contests/Submissions/View/@Model.Id">Изтриване - TODO!!!</a>
+    <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">Тестове</a>
+    <a class="btn btn-sm btn-primary" href="/Contests/Submissions/View/@Model.Id">Ретест - TODO!!!</a>
+    <div class="clearfix"></div>
+    <br />
+    if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
+    {
+        <h2>Резултат от изпълнението:</h2>
+        <pre>@Model.ProcessingComment</pre>
+    }
+}
+
 @if (Model.IsDeleted)
 {
     <div class="alert alert-danger">Това решение е изтрито!!!</div>

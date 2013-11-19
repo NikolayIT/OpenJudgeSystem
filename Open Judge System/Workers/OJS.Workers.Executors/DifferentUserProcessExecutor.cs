@@ -84,7 +84,7 @@
         public void SetTextToWrite(string textToWrite)
         {
             this.charsToWrite = Encoding.ASCII.GetChars(Encoding.ASCII.GetBytes(textToWrite));
-            // TODO: Use utf8?
+            //// TODO: Use utf8?
         }
 
         public ProcessExecutionInfo Start(int timeLimit, int memoryLimit)

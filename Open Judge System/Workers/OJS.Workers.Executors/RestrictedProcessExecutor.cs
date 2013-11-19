@@ -21,7 +21,7 @@ namespace OJS.Workers.Executors
         public RestrictedProcessExecutor()
         {
             logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
-            // logger.Info("Initialized.");
+            //// logger.Info("Initialized.");
         }
 
         // TODO: double check and maybe change order of parameters

@@ -42,7 +42,7 @@
                 );
             if (User.IsInRole("Administrator"))
             {
-                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<a href='/Contests/Submissions/View/#:Id#'>View</a>");
+                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<a href='/Contests/Submissions/View/#:Id#'>[детайли]</a> <a href='/Contests/Submissions/View/#:Id#'>[промяна - TODO!!!]</a> <a href='/Contests/Submissions/View/#:Id#'>[изтриване - TODO!!!]</a> <a href='/Administration/Tests/Problem/#:ProblemId#'>[тестове]</a> <a href='/Administration/Tests/Problem/#:ProblemId#'>[ретест - TODO!!!]</a>");
             }
         }
     )

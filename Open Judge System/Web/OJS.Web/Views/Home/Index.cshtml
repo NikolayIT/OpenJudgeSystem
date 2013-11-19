@@ -22,10 +22,12 @@
                     {
                         foreach (var contest in Model.ActiveContests)
                         {
+                            var hoursRemaining = (int)((contest.EndTime.Value - DateTime.Now)).TotalHours;
+                            var minutesRemaining = (contest.EndTime.Value - DateTime.Now).Minutes;
                             <tr>
                                 <td>
                                     <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
-                                    <small>Оставащо време: @((int)((contest.EndTime.Value - DateTime.Now)).TotalHours) час(а) и @((contest.EndTime.Value - DateTime.Now).Minutes) минути</small>
+                                    <small>Оставащо време: @hoursRemaining час@(hoursRemaining != 1 ? "а" : "") и @minutesRemaining минути</small>
                                 </td>
                                 <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">Участвай</a></td>
                             </tr>

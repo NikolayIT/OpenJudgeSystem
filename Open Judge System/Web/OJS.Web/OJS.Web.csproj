@@ -617,6 +617,7 @@
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Index.cshtml" />
+    <Content Include="Areas\Contests\Views\Shared\_AllContestSubmissionsByUser.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

@@ -25,11 +25,11 @@
         public const uint TOKEN_ADJUST_GROUPS = 0x0040;
         public const uint TOKEN_ADJUST_DEFAULT = 0x0080;
         public const uint TOKEN_ADJUST_SESSIONID = 0x0100;
-        public const uint TOKEN_READ = (STANDARD_RIGHTS_READ | TOKEN_QUERY);
+        public const uint TOKEN_READ = STANDARD_RIGHTS_READ | TOKEN_QUERY;
         public const uint TOKEN_ALL_ACCESS =
-            (STANDARD_RIGHTS_REQUIRED | TOKEN_ASSIGN_PRIMARY | TOKEN_DUPLICATE | TOKEN_IMPERSONATE | TOKEN_QUERY
+            STANDARD_RIGHTS_REQUIRED | TOKEN_ASSIGN_PRIMARY | TOKEN_DUPLICATE | TOKEN_IMPERSONATE | TOKEN_QUERY
              | TOKEN_QUERY_SOURCE | TOKEN_ADJUST_PRIVILEGES | TOKEN_ADJUST_GROUPS | TOKEN_ADJUST_DEFAULT
-             | TOKEN_ADJUST_SESSIONID);
+             | TOKEN_ADJUST_SESSIONID;
 
         // Group related SID Attributes
         public const uint SE_GROUP_MANDATORY = 0x00000001;
@@ -41,10 +41,10 @@
         public const uint SE_GROUP_INTEGRITY_ENABLED = 0x00000040;
         public const uint SE_GROUP_LOGON_ID = 0xC0000000;
         public const uint SE_GROUP_RESOURCE = 0x20000000;
-        public const uint SE_GROUP_VALID_ATTRIBUTES = (SE_GROUP_MANDATORY |
+        public const uint SE_GROUP_VALID_ATTRIBUTES = SE_GROUP_MANDATORY |
             SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_ENABLED | SE_GROUP_OWNER |
             SE_GROUP_USE_FOR_DENY_ONLY | SE_GROUP_LOGON_ID | SE_GROUP_RESOURCE |
-            SE_GROUP_INTEGRITY | SE_GROUP_INTEGRITY_ENABLED);
+            SE_GROUP_INTEGRITY | SE_GROUP_INTEGRITY_ENABLED;
         
         public static SidIdentifierAuthority SECURITY_MANDATORY_LABEL_AUTHORITY =
             new SidIdentifierAuthority(new byte[] { 0, 0, 0, 0, 0, 16 });
@@ -114,8 +114,7 @@
             uint dwDesiredAccess,
             [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle,
             uint dwOptions);
-
-
+        
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.Machine)]
         public static extern bool TerminateProcess(SafeProcessHandle processHandle, int exitCode);
@@ -252,14 +251,13 @@
         public const int SAFER_LEVELID_FULLYTRUSTED = 0x40000;
 
         public const int SAFER_LEVEL_OPEN = 1;
-
-
+        
         [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [ResourceExposure(ResourceScope.None)]
         public static extern bool CloseHandle(IntPtr handle);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+        public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
     }
 }

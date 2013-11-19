@@ -33,7 +33,7 @@
                 decimal correctLineInNumber = decimal.Parse(correctLine, CultureInfo.InvariantCulture);
 
                 // TODO: Change with 1.0 / math.pow(10, xxx)
-                decimal precisionEpsilon = 1.0m / (decimal)Math.Pow(10, precision);
+                decimal precisionEpsilon = 1.0m / (decimal)Math.Pow(10, this.precision);
 
                 return Math.Abs(userLineInNumber - correctLineInNumber) < precisionEpsilon;
             }

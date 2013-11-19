@@ -60,7 +60,7 @@
                     continue;
                 }
 
-                if (!processingSubmissionIds.Add(dbSubmission.Id))
+                if (!this.processingSubmissionIds.Add(dbSubmission.Id))
                 {
                     // Other thread is processing the same submission. Wait the other thread to set Processing to true and then try again.
                     Thread.Sleep(100);
@@ -75,7 +75,7 @@
                 catch (Exception exception)
                 {
                     this.logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
-                    processingSubmissionIds.Remove(dbSubmission.Id);
+                    this.processingSubmissionIds.Remove(dbSubmission.Id);
                     throw;
                 }
 
@@ -88,7 +88,7 @@
                 }
                 catch (Exception exception)
                 {
-                    logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
+                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
                     dbSubmission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
                 }
 
@@ -100,19 +100,19 @@
                 }
                 catch (Exception exception)
                 {
-                    logger.Error("Unable to save changes to the submission! Exception: {0}", exception);
+                    this.logger.Error("Unable to save changes to the submission! Exception: {0}", exception);
                 }
 
-                processingSubmissionIds.Remove(dbSubmission.Id);
+                this.processingSubmissionIds.Remove(dbSubmission.Id);
             }
 
-            logger.Info("SubmissionJob stopped.");
+            this.logger.Info("SubmissionJob stopped.");
         }
 
         private void ProcessSubmission(Submission dbSubmission)
         {
             // TODO: Check for N+1 queries problem
-            logger.InfoFormat("Work on submission №{0} started.", dbSubmission.Id);
+            this.logger.InfoFormat("Work on submission №{0} started.", dbSubmission.Id);
 
             IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(dbSubmission.SubmissionType.ExecutionStrategyType);
             var context = new ExecutionContext
@@ -178,7 +178,7 @@
                 dbSubmission.Points = (dbSubmission.CorrectTestRunsCount * dbSubmission.Problem.MaximumPoints) / dbSubmission.Problem.Tests.Count;
             }
 
-            logger.InfoFormat("Work on submission №{0} ended.", dbSubmission.Id);
+            this.logger.InfoFormat("Work on submission №{0} ended.", dbSubmission.Id);
         }
         
         public void Stop()

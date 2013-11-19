@@ -20,11 +20,6 @@
 
         private WindowsImpersonationContext context;
 
-        protected bool IsInContext
-        {
-            get { return this.context != null; }
-        }
-
         public WrapperImpersonationContext(string domain, string username, string password)
         {
             this.domain = domain;
@@ -32,10 +27,19 @@
             this.password = password;
         }
 
+        protected bool IsInContext
+        {
+            get { return this.context != null; }
+        }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void Enter()
         {
-            if (this.IsInContext) return;
+            if (this.IsInContext)
+            {
+                return;
+            }
+
             this.token = new IntPtr(0);
             try
             {
@@ -65,10 +69,18 @@
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void Leave()
         {
-            if (this.IsInContext == false) return;
+            if (this.IsInContext == false)
+            {
+                return;
+            }
+
             this.context.Undo();
 
-            if (this.token != IntPtr.Zero)NativeMethods.CloseHandle(this.token);
+            if (this.token != IntPtr.Zero)
+            {
+                NativeMethods.CloseHandle(this.token);
+            }
+
             this.context = null;
         }
     }

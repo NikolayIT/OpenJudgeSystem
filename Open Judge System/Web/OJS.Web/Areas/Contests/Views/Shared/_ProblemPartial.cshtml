@@ -109,7 +109,7 @@
                                 "displayTestRuns(TestRuns).concat(" +
                                     " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" +
                                         " : 'Неуспешна компилация' " +
-                                            ": 'Моля изчакайте' #";
+                                            ": 'Все още не е обработено' #";
 }
 
 <div class="row">
@@ -128,75 +128,21 @@
                     .Title("Максимуми")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
+                //col.Command(x=>x.Custom("Show solution"));
             })
-                                            .DataSource(data =>
-                                            {
-                                                data.Ajax()
-                                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                                                    .PageSize(10);
-                                            })
-                                            .Pageable(page =>
-                                            {
-                                                page.Info(false);
-                                                page.Refresh(true);
-                                            })
-                                            .ClientDetailTemplateId("testRunsTemplate")
-                                            .HtmlAttributes(new { @class = "problem_submit_grid" })
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                    .PageSize(10);
+            })
+            .Pageable(page =>
+            {
+                page.Info(false);
+                page.Refresh(true);
+            })
+            .HtmlAttributes(new { @class = "problem_submit_grid" })
         )
     </div>
 </div>
-
-<script id="testRunsTemplate" type="text/kendo-templ">
-    <table class="table-striped">
-        <thead>
-            <tr>
-                <th>Резултат</th>
-                <th>Памет</th>
-                <th>Време</th>
-                <th>Коментар</th>
-            </tr>
-        </thead>
-        <tbody>
-            #for (var i = 0; i < TestRuns.length; i++) {#
-            <tr>
-                <td>
-                    @* TODO: Refactor using the extracted methods in the JS files *@
-                    # switch (TestRuns[i].ExecutionResult) {
-                    case 0: #
-                    <span class="glyphicon glyphicon-ok text-success" title="Правилен отговор"></span>
-                    Правилен отговор
-                    # break; #
-                    #case 1: #
-                    <span class="glyphicon glyphicon-remove text-danger" title="Грешен отговор"></span>
-                    Грешен отговор
-                    # break; #
-                    #case 2: #
-                    <span class="glyphicon glyphicon-time text-white" title="Лимит време"></span>
-                    Лимит време
-                    # break; #
-                    #case 3: #
-                    <span class="glyphicon glyphicon-hdd text-danger" title="Лимит памет"></span>
-                    Лимит памет
-                    # break; #
-                    #case 4: #
-                    <span class="glyphicon glyphicon-asterisk text-danger" title="Грешка при изпълнение"></span>
-                    Грешка при изпълнение
-                    #}#
-                </td>
-                <td>
-                    #=TestRuns[i].MemoryUsed#
-                </td>
-                <td>
-                    #=TestRuns[i].TimeUsed#
-                </td>
-                <td>
-                    # if(TestRuns[i].ExecutionComment) {
-                    console.log(TestRuns[i].ExecutionComment);
-                    }#
-                </td>
-            </tr>
-            #}#
-        </tbody>
-    </table>
-</script>

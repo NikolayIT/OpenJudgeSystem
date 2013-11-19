@@ -40,12 +40,6 @@
             logger.Info("ControllerService initialized.");
         }
 
-        private void ServerOnClientConnected(TcpClient tcpClient, EventArgs e)
-        {
-            var communicator = new ControllerCommunicator(tcpClient.GetStream(), logger);
-            // communicator.
-        }
-
         protected override void OnStart(string[] args)
         {
             logger.Info("ControllerService starting...");
@@ -63,6 +57,12 @@
             Thread.Sleep(10 * 1000); // Wait 10 seconds for the server to close connections before exit
 
             logger.Info("ControllerService stopped.");
+        }
+
+        private void ServerOnClientConnected(TcpClient tcpClient, EventArgs e)
+        {
+            var communicator = new ControllerCommunicator(tcpClient.GetStream(), logger);
+            //// communicator.
         }
     }
 }

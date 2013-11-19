@@ -24,12 +24,19 @@
                     SubmissionId = submission.Id,
                     IsCalculated = submission.Processed,
                     SubmissionPoints = submission.Points,
-                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully
+                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
+                    IsOfficial = submission.Participant.IsOfficial,
+                    ProblemId = submission.ProblemId
                 };
             }
         }
 
         public int SubmissionId { get; set; }
+
+        [Display(Name = "Задача")]
+        public int? ProblemId { get; set; }
+
+        public bool IsOfficial { get; set; }
 
         public short MaximumPoints { get; set; }
 

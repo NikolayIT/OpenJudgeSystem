@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OJS.Workers.LocalWorker
+﻿namespace OJS.Workers.LocalWorker
 {
+    using System;
     using System.Configuration;
 
     using log4net;
 
     public static class Settings
     {
-        private static readonly ILog logger;
+        private static readonly ILog Logger;
 
         static Settings()
         {
-            logger = LogManager.GetLogger("Settings");
+            Logger = LogManager.GetLogger("Settings");
         }
 
         public static string CSharpCompilerPath
@@ -55,7 +50,7 @@ namespace OJS.Workers.LocalWorker
         {
             if (ConfigurationManager.AppSettings[settingName] == null)
             {
-                logger.FatalFormat("{0} setting not found in App.config file!", settingName);
+                Logger.FatalFormat("{0} setting not found in App.config file!", settingName);
                 throw new Exception(string.Format("{0} setting not found in App.config file!", settingName));
             }
 

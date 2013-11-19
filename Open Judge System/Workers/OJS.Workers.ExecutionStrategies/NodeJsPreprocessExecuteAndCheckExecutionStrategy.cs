@@ -16,42 +16,6 @@
             this.nodeJsExecutablePath = nodeJsExecutablePath;
         }
 
-        public override ExecutionResult Execute(ExecutionContext executionContext)
-        {
-            var result = new ExecutionResult();
-
-            // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.jsCodeTemplate, executionContext.Code);
-
-            // Save the preprocessed submission which is ready for execution
-            var codeSavePath = this.SaveStringToTempFile(codeToExecute);
-
-            // Process the submission and check each test
-            IExecutor executor = new RestrictedProcessExecutor();
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
-
-            result.TestResults = new List<TestResult>();
-
-            foreach (var test in executionContext.Tests)
-            {
-                var processExecutionResult = executor.Execute(nodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new string[] { codeSavePath });
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
-                result.TestResults.Add(testResult);
-            }
-
-            // Clean up
-            File.Delete(codeSavePath);
-
-            return result;
-        }
-
-        private string PreprocessJsSubmission(string template, string code)
-        {
-            var processedCode = template.Replace(userInputPlaceholder, code);
-
-            return processedCode;
-        }
-
         private string jsCodeTemplate
         {
             get
@@ -142,6 +106,42 @@ var code = {
     run: " + userInputPlaceholder + @"
 };";
             }
+        }
+
+        public override ExecutionResult Execute(ExecutionContext executionContext)
+        {
+            var result = new ExecutionResult();
+
+            // Preprocess the user submission
+            var codeToExecute = this.PreprocessJsSubmission(this.jsCodeTemplate, executionContext.Code);
+
+            // Save the preprocessed submission which is ready for execution
+            var codeSavePath = this.SaveStringToTempFile(codeToExecute);
+
+            // Process the submission and check each test
+            IExecutor executor = new RestrictedProcessExecutor();
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+
+            result.TestResults = new List<TestResult>();
+
+            foreach (var test in executionContext.Tests)
+            {
+                var processExecutionResult = executor.Execute(this.nodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+                result.TestResults.Add(testResult);
+            }
+
+            // Clean up
+            File.Delete(codeSavePath);
+
+            return result;
+        }
+
+        private string PreprocessJsSubmission(string template, string code)
+        {
+            var processedCode = template.Replace(userInputPlaceholder, code);
+
+            return processedCode;
         }
 
         private const string userInputPlaceholder = "#userInput#";

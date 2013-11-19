@@ -1,0 +1,57 @@
+﻿@using OJS.Web.Areas.Contests.ViewModels
+
+@model OJS.Web.Areas.Contests.ViewModels.ContestViewModel
+
+<script src="/Scripts/Helpers/test-runs-glyphicons.js"></script>
+<script src="/Scripts/Contests/submission-page.js"></script>
+
+<h2>Вашите решения</h2>
+
+@{
+    var clientTemplate = "#= IsCalculated ? " +
+                            "IsCompiledSuccessfully ? " +
+                                "displayTestRuns(TestRuns).concat(" +
+                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" +
+                                        " : 'Неуспешна компилация' " +
+                                            ": 'Все още не е обработено' #";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo()
+            .Grid<SubmissionResultViewModel>()
+            .Name("UserSubmissionsGrid")
+            .Columns(col =>
+            {
+                col.ForeignKey("ProblemId", (IEnumerable<ContestProblemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
+                col.Bound(model => model.SubmissionPoints).Title("Резултат").ClientTemplate(clientTemplate);
+                col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
+                    .Title("Максимуми")
+                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
+                col.Bound(model => model.IsOfficial).Title("Тип").ClientTemplate("#: IsOfficial ? 'Състезание' : 'Практика'#");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
+            })
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                    .Read(read => read.Action("UserSubmissions", "Contests", new { contestId = Model.Id }))
+                    .PageSize(10);
+            })
+            .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+            .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+            .Pageable(page =>
+            {
+                page.Info(false);
+                page.Refresh(true);
+            })
+            .HtmlAttributes(new { @class = "problem_submit_grid" })
+        )
+    </div>
+</div>
