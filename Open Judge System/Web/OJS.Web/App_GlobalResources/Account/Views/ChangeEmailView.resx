@@ -117,91 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Current_password" xml:space="preserve">
-    <value>Парола</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Имейл адрес</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Email_invalid" xml:space="preserve">
-    <value>Невалиден имейл адрес</value>
-  </data>
-  <data name="Email_required" xml:space="preserve">
-    <value>Моля въвете имейл адрес</value>
-  </data>
-  <data name="Enter_new_password_confirmation" xml:space="preserve">
-    <value>Моля потвърдете новата си парола</value>
-  </data>
-  <data name="Enter_new_password_validation" xml:space="preserve">
-    <value>Моля въведете новата си парола</value>
-  </data>
-  <data name="Enter_password" xml:space="preserve">
-    <value>Моля въведете парола</value>
-  </data>
-  <data name="Enter_password_validation" xml:space="preserve">
-    <value>Моля въведете текущата си парола</value>
-  </data>
-  <data name="Invalid_username_or_password" xml:space="preserve">
-    <value>Невалидно име или парола</value>
-  </data>
-  <data name="New_password" xml:space="preserve">
-    <value>Нова парола</value>
-  </data>
-  <data name="New_password_confirmation" xml:space="preserve">
-    <value>Потвърдете новата парола</value>
-  </data>
-  <data name="New_password_confirm_password_not_matching_validation" xml:space="preserve">
-    <value>Новата парола не съвпада с потвърдената нова парола</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Парола</value>
-  </data>
-  <data name="Passwords_dont_match" xml:space="preserve">
-    <value>Паролите не съвпадат</value>
-  </data>
-  <data name="Password_confirm" xml:space="preserve">
-    <value>Потвърдете паролата</value>
-  </data>
-  <data name="Password_length_validation_message" xml:space="preserve">
-    <value>Паролата трябва да бъде поне {2} символа</value>
-  </data>
-  <data name="Remember_me" xml:space="preserve">
-    <value>Запомни ме</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Потребителско име</value>
-  </data>
-  <data name="Username_required" xml:space="preserve">
-    <value>Потребителското име е задължително</value>
-  </data>
-  <data name="Username_validation" xml:space="preserve">
-    <value>Потребителското име трябва да бъде между {2} и {1} символа</value>
-  </data>
-  <data name="Email_already_registered" xml:space="preserve">
-    <value>Този имейл е вече регистриран</value>
-  </data>
-  <data name="User_already_registered" xml:space="preserve">
-    <value>Това потребителско име е заето</value>
-  </data>
-  <data name="Password_incorrect" xml:space="preserve">
-    <value>Грешна парола</value>
-  </data>
-  <data name="Email_confirm" xml:space="preserve">
-    <value>Потвърди имейла</value>
-  </data>
-  <data name="Email_confirmation_invalid" xml:space="preserve">
-    <value>Моля проверете дали сте въвели правилно имейла си и в двете полета</value>
-  </data>
-  <data name="Email_confirmation_required" xml:space="preserve">
-    <value>Моля потвърдете имейла си</value>
-  </data>
-  <data name="Password_required" xml:space="preserve">
-    <value>Моля въвете паролата си</value>
-  </data>
-  <data name="Incorrect_password" xml:space="preserve">
-    <value>Грешна парола</value>
-  </data>
-  <data name="Username_regex_validation" xml:space="preserve">
-    <value>Потребителското име трябва да съдържа поне 1 буква</value>
+  <data name="Title" xml:space="preserve">
+    <value>Change your email address</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿@model OJS.Data.Models.UserSettings
+﻿@model OJS.Web.Areas.Users.ViewModels.UserProfileViewModel
 
 @{
     ViewBag.Title = "Настройки";
@@ -23,7 +23,7 @@
                     <div class="col-xs-4 text-right">
                         <strong class="text-primary">Потребителско име</strong>
                     </div>
-                    <div class="col-xs-7">
+                    <div class="col-xs-7 text-white">
                         @User.Identity.Name
                     </div>
                 </div>
@@ -42,7 +42,12 @@
                         <strong class="text-primary">Email</strong>
                     </div>
                     <div class="col-xs-7">
-                        <span>My email</span>
+                        <span class="text-white">
+                            @Model.Email
+                        </span>
+                        <span>
+                            @Html.ActionLink("Промяна на имейл", "ChangeEmail", "Account", new { area = string.Empty}, null)
+                        </span>
                     </div>
                 </div>
                 <br />

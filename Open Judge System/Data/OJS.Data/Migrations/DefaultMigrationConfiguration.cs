@@ -32,9 +32,9 @@ namespace OJS.Data.Migrations
             // this.SeedCategoryContestProblem(context);
         }
 
-        // TODO: Add seed with .Any()
+        //// TODO: Add seed with .Any()
 
-        public void SeedRoles(OjsDbContext context)
+        protected void SeedRoles(OjsDbContext context)
         {
             foreach (var entity in context.Roles)
             {
@@ -44,7 +44,7 @@ namespace OJS.Data.Migrations
             context.Roles.AddOrUpdate(new IdentityRole("Administrator"));
         }
 
-        public void SeedCheckers(OjsDbContext context)
+        protected void SeedCheckers(OjsDbContext context)
         {
             context.Checkers.AddOrUpdate(
                 x => x.Name,
@@ -99,6 +99,47 @@ namespace OJS.Data.Migrations
                     ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "3",
                     IsProblemSpecific = false,
+                });
+
+            context.SaveChanges();
+        }
+        
+        protected void SeedSubmissionTypes(OjsDbContext context)
+        {
+            foreach (var entity in context.SubmissionTypes)
+            {
+                context.SubmissionTypes.Remove(entity);
+            }
+
+            context.SaveChanges();
+
+            context.SubmissionTypes.AddOrUpdate(
+                x => x.Name,
+                new SubmissionType
+                {
+                    Name = "C# code",
+                    CompilerType = CompilerType.CSharp,
+                    AdditionalCompilerArguments =
+                        "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
+                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                    IsSelectedByDefault = true,
+                },
+                new SubmissionType
+                {
+                    Name = "C++ code",
+                    CompilerType = CompilerType.CPlusPlusGcc,
+                    AdditionalCompilerArguments =
+                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                },
+                new SubmissionType
+                {
+                    Name = "JavaScript code (NodeJS)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
+                    IsSelectedByDefault = false,
                 });
 
             context.SaveChanges();
@@ -263,8 +304,8 @@ namespace OJS.Data.Migrations
             {
                 testRuns.Add(new TestRun
                     {
-                        TimeUsed = random.Next() % 10 + 1,
-                        MemoryUsed = random.Next() % 1500 + 200,
+                        TimeUsed = (random.Next() % 10) + 1,
+                        MemoryUsed = (random.Next() % 1500) + 200,
                         ResultType = (TestRunResultType)(random.Next() % 5),
                         Test = test
                     });
@@ -311,7 +352,7 @@ namespace OJS.Data.Migrations
                     Participant = participant
                 };
 
-                for (int j = 0; j < random.Next() % 20 + 5; j++)
+                for (int j = 0; j < (random.Next() % 20) + 5; j++)
                 {
                     submission.TestRuns.Add(testRuns[random.Next() % 1000]);
                 }
@@ -415,47 +456,6 @@ namespace OJS.Data.Migrations
                     IsTrialTest = false
                 });
             }
-        }
-
-        public void SeedSubmissionTypes(OjsDbContext context)
-        {
-            foreach (var entity in context.SubmissionTypes)
-            {
-                context.SubmissionTypes.Remove(entity);
-            }
-
-            context.SaveChanges();
-
-            context.SubmissionTypes.AddOrUpdate(
-                x => x.Name,
-                new SubmissionType
-                    {
-                        Name = "C# code",
-                        CompilerType = CompilerType.CSharp,
-                        AdditionalCompilerArguments =
-                            "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
-                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
-                        IsSelectedByDefault = true,
-                    },
-                new SubmissionType
-                    {
-                        Name = "C++ code",
-                        CompilerType = CompilerType.CPlusPlusGcc,
-                        AdditionalCompilerArguments =
-                            "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
-                        ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
-                        IsSelectedByDefault = false,
-                    },
-                new SubmissionType
-                    {
-                        Name = "JavaScript code (NodeJS)",
-                        CompilerType = CompilerType.None,
-                        AdditionalCompilerArguments = string.Empty,
-                        ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
-                        IsSelectedByDefault = false,
-                    });
-
-            context.SaveChanges();
         }
 
         private void SeedLongNews(OjsDbContext context)

@@ -26,8 +26,8 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                 var newDb = new OjsDbContext();
                 newDb.Configuration.AutoDetectChangesEnabled = false;
                 newDb.Configuration.ValidateOnSaveEnabled = false;
-                var cSharpSubmissionType = newDb.SubmissionTypes.FirstOrDefault(x => x.Name == "C# code");
-                var cPlusPlusSubmissionType = newDb.SubmissionTypes.FirstOrDefault(x => x.Name == "C++ code");
+                var csharpSubmissionType = newDb.SubmissionTypes.FirstOrDefault(x => x.Name == "C# code");
+                var cplusPlusSubmissionType = newDb.SubmissionTypes.FirstOrDefault(x => x.Name == "C++ code");
                 var javaScriptSubmissionType =
                     newDb.SubmissionTypes.FirstOrDefault(x => x.Name == "JavaScript code (NodeJS)");
 
@@ -58,24 +58,24 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                     switch (oldSubmission.Language)
                     {
                         case "C# Code":
-                            submission.SubmissionType = cSharpSubmissionType;
+                            submission.SubmissionType = csharpSubmissionType;
                             break;
                         case "C++ Code":
-                            submission.SubmissionType = cPlusPlusSubmissionType;
+                            submission.SubmissionType = cplusPlusSubmissionType;
                             break;
                         case "JavaScript Code":
                             submission.SubmissionType = javaScriptSubmissionType;
                             break;
                         case "C + + код":
-                            submission.SubmissionType = cPlusPlusSubmissionType;
+                            submission.SubmissionType = cplusPlusSubmissionType;
                             break;
                         default:
-                            submission.SubmissionType = cSharpSubmissionType;
+                            submission.SubmissionType = csharpSubmissionType;
                             break;
                     }
 
                     var reportFragments = oldSubmission.FullReport.Split(
-                        new[] { contentHeader },
+                        new[] { this.contentHeader },
                             StringSplitOptions.RemoveEmptyEntries);
 
                     if (string.IsNullOrWhiteSpace(oldSubmission.FullReport) || !reportFragments.Any())
@@ -87,7 +87,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                     {
                         // Some kind of exception (e.g. "not enough disk space")
                         var errorFragments = reportFragments[0].Split(
-                            new[] { contentFooter },
+                            new[] { this.contentFooter },
                             StringSplitOptions.RemoveEmptyEntries);
                         submission.IsCompiledSuccessfully = false;
                         submission.CompilerComment = errorFragments[0];
@@ -118,7 +118,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                         for (int j = 2; j < reportFragments.Length - 1; j++)
                         {
                             var testRunText = reportFragments[j].Trim();
-                            var testRunTextParts = testRunText.Split(new[] { contentFooter }, StringSplitOptions.None);
+                            var testRunTextParts = testRunText.Split(new[] { this.contentFooter }, StringSplitOptions.None);
                             var testRunTitle = testRunTextParts[0].Trim();
                             var testRunDescription = testRunTextParts[1].Trim() + Environment.NewLine;
                             bool isZeroTest;
@@ -216,7 +216,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             else if (testRunDescription.StartsWith("Runtime error:"))
                             {
                                 testRun.ResultType = TestRunResultType.RunTimeError;
-                                testRun.ExecutionComment = testRunDescription.Replace("Runtime error:", "").Trim();
+                                testRun.ExecutionComment = testRunDescription.Replace("Runtime error:", string.Empty).Trim();
                                 testRun.CheckerComment = null;
                                 testRun.TimeUsed = 0;
                                 testRun.MemoryUsed = 0;

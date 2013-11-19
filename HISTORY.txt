@@ -1,0 +1,499 @@
+1721 | Vasil Dininski | 19.11.2013 | Updated the user registration - usernames must have at least one character now. Removed unnecessary message in the forgotter password page.
+1720 | Vasil Dininski | 19.11.2013 | Added the appropriate GetById method in the UsersRepository. Added UserProfileViewModel and now using it instead of the database model. Added the option for a user to change his email address. Added default password editor template. Added necessary localization for the change password functionality.
+1719 | Nikolay Kostov | 19.11.2013 | StyleCop violations fixed
+1718 | Nikolay Kostov | 19.11.2013 | Fixed StyleCop violoations in the projects located in the /Tools/ folder and OJS.Data.Models
+1717 | Nikolay Kostov | 19.11.2013 | Fixed StyleCop violation in OJS.Data project
+1716 | Nikolay Kostov | 19.11.2013 | Uploaded workers changes to the old Telerik Contest System (new executor integrated into the old system)
+1715 | Nikolay Kostov | 19.11.2013 | Improvements in the old systems workers
+1714 | Vasil Dininski | 19.11.2013 | Fixed a bug where a user can register using an existing email or username when logging in using an external login provider.
+1713 | Nikolay Kostov | 18.11.2013 | Administration area and links are now limited for administrators only
+1712 | Nikolay Kostov | 18.11.2013 | Version deployed
+1711 | Nikolay Kostov | 18.11.2013 | StyleCop suggestions fixed in OJS.Web
+1710 | Nikolay Kostov | 18.11.2013 | Implemented viewing details for submission Fixed bug with submission log (showing trial tests in the short report)
+1709 | Vasil Dininski | 18.11.2013 | Updated submissions partial view to correctly display the memory and time maximums when the submission was not correctly compiled.
+1708 | Vasil Dininski | 18.11.2013 | Added confirmation message in the Forgotten password page. Updated layout for submission page - now hiding the problem results for the current problem on lower resolutions.
+1707 | Ivaylo Kenov | 18.11.2013 | Submission Administration read method Repository for SubmissionType
+1706 | Nikolay Kostov | 18.11.2013 | Only users with submissions are copied to the new database Some work on submissions details
+1705 | Vasil Dininski | 18.11.2013 | Updated viewmodels to use the Compare attribute from System.Web.Mvc which is working, as the one in System.ComponentModel.DataAnnotations is not working correctly.
+1704 | Vasil Dininski | 18.11.2013 | View submission in the submissions page now opens a new window to a separate page which displays only the selected submission details.
+1703 | Vasil Dininski | 18.11.2013 | Updated and localized the forgot your password email.
+1702 | Nikolay Kostov | 18.11.2013 | Small refactoring in MailSender.cs Fixes in .gitignore
+1700 | Vasil Dininski | 18.11.2013 | Updated the Forgot your password feature to send a localized email to the user that requested the email for the forgotten pasword.
+1699 | Nikolay Kostov | 18.11.2013 | Included Kendo.Mvc readme file Changes in .gitignore file
+1698 | Asya Georgieva | 18.11.2013 | Updated check for submission size limit in the Compete controller.
+1696 | Ivaylo Kenov | 18.11.2013 | Users administration Administration EditorTemplates do not show CreatedOn, ModifiedOn and Id anymore
+1694 | Vasil Dininski | 18.11.2013 | Fixed a bug where the forgot your password form displays an incorrect validation message if the email field is left blank.
+1693 | Vasil Dininski | 18.11.2013 | Updated IExecutor interface to include passing execution parameters (null by default). Updated RestrictedProcessExecutor to close the input stream when the restricted process is disposed. Fixed a bug where the submission job would try to run tests for a submission that was not correctly compiled. Implemented the NodeJsPreprocessExecuteAndCheckExecutionStrategy.
+1692 | Vasil Dininski | 18.11.2013 | Updated submissions page so that the symbols "<" and ">" can be submitted as a part of the solution. Fixed a bug where the submission partial view was incorrectly displaying if the submission was correctly compiled or not yet processed.
+1691 | Ivaylo Kenov | 17.11.2013 | User administraion without Delete
+1690 | Ivaylo Kenov | 17.11.2013 | StyleCop on Administration area
+1689 | Ivaylo Kenov | 17.11.2013 | In Settings administration value is now multiline text
+1688 | Ivaylo Kenov | 17.11.2013 | ProblemResourceType moved to OJS.Common because of view annotatons needed and used by the web application Settings administration ViewModels moved into separate folders for Administration
+1687 | Nikolay Kostov | 17.11.2013 | Updated Microsoft.Owin* packages to the latest versions (2.0.1)
+1686 | Nikolay Kostov | 17.11.2013 | Added submissions controller in contests area External login with Google now works as expected and gets the users email
+1685 | Ivaylo Kenov | 17.11.2013 | Feedback administration now works with view model
+1683 | Nikolay Kostov | 15.11.2013 | Version deployed
+1682 | Ivaylo Kenov | 15.11.2013 | Fixed bug in export to Excel function and removed not needed properties from models to be exported
+1681 | Nikolay Kostov | 15.11.2013 | Updated Glimpse packages to the latest version
+1680 | Nikolay Kostov | 15.11.2013 | Version deployed
+1679 | Ivaylo Kenov | 15.11.2013 | Contest administration implemented to use ViewModel instead of model Editor templates for administration Contest model does not have view annotations any more AdministrationViewModel for CreatedOn and ModifiedOn
+1675 | Nikolay Kostov | 15.11.2013 | Fixed SubmissionCopier.cs file encoding
+1674 | Nikolay Kostov | 15.11.2013 | TestSubmissionResponder project deleted. The LocalWorker service is doing the same job.
+1673 | Nikolay Kostov | 15.11.2013 | Implemented MailSender Added OJS.Tools.SendMailToAllUsers project
+1672 | Nikolay Kostov | 15.11.2013 | Small changes in the data migration Version deployed
+1671 | Nikolay Kostov | 14.11.2013 | Small improvements in the data migration code
+1670 | Nikolay Kostov | 14.11.2013 | Fixed bug with one thread working with the same submission multiple times because of reusing the DbContext Added batch files for the LocalWorker service
+1669 | Nikolay Kostov | 14.11.2013 | Fixed bug with the used time in the submissions migration
+1668 | Nikolay Kostov | 14.11.2013 | Implemented SunchronizedHashtable Using SunchronizedHashtable in SubmissionJob to prevent executing the same submission multiple times
+166 | Nikolay Kostov | 14.11.2013 | Almost done implementing LocalWorkerService Added TestRunsRepository with delete test runs for submission Added method in submissions repository for getting latest non-processed submission Added two new properties in Submissions model: Processing and ProcessingComment Fixes in compilation information in CompileExecuteAndCheckStrategy
+1666 | Vasil Dininski | 14.11.2013 | Added captcha to registration page. Added localized notifications for the captcha.
+1665 | Nikolay Kostov | 14.11.2013 | IsCompiledSuccessfully is set to true when compilation is successfull in CompileExecuteAndCheckExecutionStrategy
+1664 | Vasil Dininski | 14.11.2013 | Updated location and validation messages for the accounts controller and its actions. Added title text for the glyph icons in the contests list.
+1662 | Ivaylo Kenov | 14.11.2013 | ContestCategory administration now uses ViewModel Editor template for OrderBy
+1661 | Ivaylo Kenov | 14.11.2013 | News administration now uses nice editor template and view model
+1660 | Vasil Dininski | 14.11.2013 | Updated the submission result viewmodel to read the result from the database. Added a check if the code has been compiled successfully. Added a check if the submitted code is within the allowed the code length in the submission page.
+1659 | Nikolay Kostov | 13.11.2013 | Renamed SubmissionsExecutorResult to ExecutionResult
+1658 | Nikolay Kostov | 13.11.2013 | Skeleton for the NodeJsPreprocessExecuteAndCheckExecutionStrategy
+1657 | Nikolay Kostov | 13.11.2013 | Added OldDatabaseMigrationExecutor console project Instantiating checkers fixes Compilers output redirection fixed TestSubmissionResponder should be working correctly now
+1656 | Vasil Dininski | 13.11.2013 | Updated the width of the login and register forms.
+1655 | Vasil Dininski | 13.11.2013 | Changed default colors in the user Settings view to a be more consistent with the general UI. Fixed a bug where deleted resources could be downloaded.
+1654 | Vasil Dininski | 13.11.2013 | Moved the view solution button in the Submissions page to the right for better UI experience.
+1653 | Vasil Dininski | 13.11.2013 | Fixed a bug where deleted resources are accessible in the submission page. Fixed a bug where if you change a resource type it is incorrectly displayed on the submission page.
+1652 | Nikolay Kostov | 13.11.2013 | Fixes in TestSubmissionResponder Tests copier items per iteration changed to 2 to prevent out of memory exception
+1651 | Nikolay Kostov | 13.11.2013 | Runtime exception introduced in the previous changeset fixed.
+1650 | Nikolay Kostov | 13.11.2013 | Implemented real TestSubmissionResponder (not tested yet) Model changes (Memory limit from long to int, new field Processed in Submissions) Some refactorings
+1649 | Nikolay Kostov | 13.11.2013 | Refactored the execution strategies
+1648 | Nikolay Kostov | 13.11.2013 | Removed useless files Implemented get checker method in CompileExecuteAndCheckExecutionStrategy
+1647 | Nikolay Kostov | 13.11.2013 | Created CompileExecuteAndCheck strategy. Removed javascript from CompilerTypes enumeration. Moved TestRunResultType to OJS.Common.Models. Updated ExecutionStrategyType enumeration to include NodeJsPreprocess strategy. Added TestRunResultType enumeration.
+1646 | Nikolay Kostov | 13.11.2013 | Updated Kendo UI MVC wrappers libraries to version 2013.2.1111.340
+1645 | Vasil Dininski | 13.11.2013 | Updated ZippedTestsParser and the mock submission responder to better follow the StyleCop rules.
+1644 | Vasil Dininski | 13.11.2013 | Updated Tests, News and Submissions controllers, and Test view model to better follow the StyleCop rules.
+1643 | Vasil Dininski | 13.11.2013 | Updated AjaxOperation, DeleteAction, ExportAction, LasterNews and DetailsAction test classes, the Controller Service, the Resources, Account and Compete controllers, the AllNews and FeedbackReport view models to better adhere to StyleCop rules.
+1642 | Vasil Dininski | 13.11.2013 | Updated contests, feedback and problems controller to adhere to StyleCop rules.
+1641 | Ivaylo Kenov | 13.11.2013 | Administration news view model Layout menu for administration
+1640 | Vasil Dininski | 13.11.2013 | Updated registration view model to correctly restrict the minimum and maximum username length.
+1639 | Vasil Dininski | 13.11.2013 | Updated the submission content action tests to correctly create a new user with an email address. Updated the Registration view model to check for the username length. Updated CreateActionTests to adhere to StyleCop rules.
+1638 | Vasil Dininski | 13.11.2013 | Added _ViewStart.html
+1637 | Nikolay Kostov | 13.11.2013 | Updated .tfignore to exclude __.git folder
+1636 | Ivaylo Kenov | 13.11.2013 | All econdings converted to UTF-8
+1635 | Vasil Dininski | 13.11.2013 | Updated the layout for the contest listing by submission type. Partially implemented the "Forgot your password" functionality and localized the messages. Added a Singleton MailSender for sending emails, but it is not implemented yet.
+1634 | Nikolay Kostov | 12.11.2013 | Work on LocalWorker service Moved ToSecureString to StringExtensions
+1632 | Nikolay Kostov | 12.11.2013 | Renamed TOJS to OJS in all services and service installers Initial code for the local submissions execution worker
+1631 | Nikolay Kostov | 12.11.2013 | Proof of concept for javascript code execution in nodejs using restricted process Restricted process now supports command line arguments for the executables Fixed parsing exception in the submissions copier
+1628 | Ivaylo Kenov | 12.11.2013 | NewsViewModel for administration All administrations now allow big file uploads (around 60 mb)
+1626 | Vasil Dininski | 12.11.2013 | Fixed bug with partial view, where exception is thrown when trying to access the partial view _ExternalLoginsListPartial.
+1625 | Ivaylo Kenov | 11.11.2013 | Fixed wrong redirrection in tasks and tests administration when administrator submits wrong information
+1624 | Ivaylo Kenov | 11.11.2013 | News administration now has option do fetch news from Infos and Infoman
+1623 | Nikolay Kostov | 11.11.2013 | Fixed null reference exception in the submissions copier
+1622 | Ivaylo Kenov | 11.11.2013 | Submissions UI enhanced to show Compilation error. Log link on main menu
+1621 | Nikolay Kostov | 11.11.2013 | Fixed GetStringBetween bug with multiline text
+1620 | Ivaylo Kenov | 11.11.2013 | Home page news now shows 4 news instead of three
+1618 | Nikolay Kostov | 11.11.2013 | Created OJS.Workers.LocalWorker service for evaluating submissions
+1617 | Vasil Dininski | 11.11.2013 | Added localization for the Accounts controller.
+1616 | Ivaylo Kenov | 11.11.2013 | Large (up to 60 mb) file uploads enabled for Tests administration. After 60 mb out of memory exception is thrown
+1615 | Ivaylo Kenov | 11.11.2013 | Fixed a bug when adding wrong resource redirrects to wrong address after clicking on back button
+1604 | Nikolay Kostov | 7.11.2013 | Added bulgarian version of Account resource file
+1603 | Ivaylo Kenov | 6.11.2013 | Edit problem resource type now is selected in the update page
+1602 | Vasil Dininski | 6.11.2013 | Updated bootstrap for user settings so that the elements don't get displaced on lower resolutions/certain devices.
+1601 | Vasil Dininski | 6.11.2013 | Updated _ProfileInfo partial view to Bootstrap 3
+1600 | Vasil Dininski | 6.11.2013 | Added reCaptcha mvc helpers to the project. Added reCaptcha when submitting feedback.
+1599 | Nikolay Kostov | 6.11.2013 | Removed useless file EntityFramework.dll
+1598 | Vasil Dininski | 6.11.2013 | Updated formatting of the Date of Birth label in the user settings page to match the formatting of the other elements.
+1597 | Ivaylo Kenov | 6.11.2013 | Fixed update resource bug requiring to upload again file when not needed Downloading resourse name now contains problem name
+1596 | Vasil Dininski | 6.11.2013 | Fixed bug where the link for changing the password in the user settings page was not redirecting to the correct page.
+1595 | Vasil Dininski | 6.11.2013 | Added mandatory email field to user registration.
+1592 | Vasil Dininski | 6.11.2013 | Updated submissions page - to remove incorrect behavior by the kendo grid with different resolutions.
+1588 | Vasil Dininski | 6.11.2013 | Added a caching field in the Submissions model to hold the submission points. Updated and optimized the contest results page. Updated the TestSubmissionResponder to populate the submission points field.
+1587 | Vasil Dininski | 5.11.2013 | Updated the dummy submissions responder. Not dummy test run generation is done in increments.
+1585 | Nikolay Kostov | 4.11.2013 | Installed SQL tab for Glimpse
+1581 | Ivaylo Kenov | 4.11.2013 | Fixed tests administration not showing tests in correct order - execution order
+1578 | Nikolay Kostov | 4.11.2013 | Added two more tests for the string extension method GetStringBetween Improvements in the submissions copier Updated "Microsoft.AspNet.Web.Optimization" to latest version 1.1.2
+1575 | Ivaylo Kenov | 4.11.2013 | Fixed submission page styling when user is logged in
+1573 | Ivaylo Kenov | 4.11.2013 | Fixed submission page sorting when user is not logged in
+1572 | Ivaylo Kenov | 4.11.2013 | Fixed hardcoded maximum point in SubmissionViewModel to be generic determined by problem options
+1571 | Ivaylo Kenov | 4.11.2013 | Fixed bug when not showing results if TestResults are zero
+1568 | Nikolay Kostov | 2.11.2013 | Fixed broken build because of missing glimpse configuration file
+1567 | Nikolay Kostov | 2.11.2013 | Added AUTHORS and LICENSE files Removed repositories.config file from the old solution folder
+1566 | Nikolay Kostov | 2.11.2013 | Improvements in test runs parsing Updated Glimpse packages to the latest versions Added README file
+1562 | Nikolay Kostov | 1.11.2013 | Removed "Telerik." from assembly titles Fixed 2 broken unit tests because of the renamings
+1561 | Nikolay Kostov | 1.11.2013 | Fixed project references after renaming
+1560 | Nikolay Kostov | 1.11.2013 | Removed "Telerik." from folder names Removed Kendo.Mvc source and replaced with binaries
+1559 | Nikolay Kostov | 1.11.2013 | Updated .gitignore
+1558 | Nikolay Kostov | 1.11.2013 | Renamed project folder to "Open Judge System"
+1557 | Nikolay Kostov | 1.11.2013 | Added two extension methods for string (GetStringsBetween and GetStringBetween) Improvements in submissions parsing
+1556 | Ivaylo Kenov | 1.11.2013 | Telerik namespace removed from DefaultMigrationConfiguration TestsController fully tested
+1554 | Vasil Dininski | 1.11.2013 | Updated assembly names and default namespaces in .csproj files.
+1553 | Vasil Dininski | 1.11.2013 | Updated default migration configuration namespaces.
+1552 | Vasil Dininski | 1.11.2013 | Updated namespaces for the entire project. Updated routes, views and kendo widgets to use the new namespaces correctly.
+1551 | Vasil Dininski | 1.11.2013 | Moved displaying contests by submission type to the ListController. Updated the route to display a nice url, including the name submission type. Fixed bug on the main page where the remaining hours for a contest were not displayed at all. Updated the main page layout - when there are more than three contests available now only lists the contests, without additional details.
+1549 | Ivaylo Kenov | 1.11.2013 | Unit tests for Import action in TestsController
+1547 | Nikolay Kostov | 31.10.2013 | Fixed OutOfMemoryException when copying submissions from the old database to the new one.
+1544 | Vasil Dininski | 31.10.2013 | Updated the submission validation in the submission page.
+1539 | Vasil Dininski | 30.10.2013 | Refactored the contests submission page and the results page - extracted the styles and most of the javascript logic in separate files. Created a new style bundle for the submission page.
+1535 | Vasil Dininski | 30.10.2013 | Added contests results page. Added units tests for the Details Action of the Contests controller.
+1534 | Ivaylo Kenov | 30.10.2013 | Fixed bug with adding invalid zip file by catching base Exception class
+1533 | Ivaylo Kenov | 30.10.2013 | Ajax operations tests for TestsController Small refactoring for better high quality code in TestsController and tests-index.js
+1529 | Nikolay Kostov | 29.10.2013 | Renamed "Telerik.OJS.Tools.OldDatabaseMigration" to "OJS.Tools.OldDatabaseMigration" Improvements in submissions copier
+1527 | Ivaylo Kenov | 29.10.2013 | Refactored TestsController to work with default model binder for int and not parse it from string
+1526 | Ivaylo Kenov | 29.10.2013 | Ajax operations tests for TestsController Small refactors
+1523 | Nikolay Kostov | 29.10.2013 | Submissions data migration improved Fixed out of memory problems with tests migration Improved the order of the data records in some of the migrations
+1520 | Vasil Dininski | 28.10.2013 | Updated contest details so that an exception will be thrown when an invalid contest id is provided. Fixed a bug where incorrect results were displayed in the problem results grid. Updated Kendo grid template on the submissions page.
+1519 | Vasil Dininski | 28.10.2013 | Updated the submission page layout to better show the user results.
+1518 | Ivaylo Kenov | 28.10.2013 | Details action tests for TestsController
+1517 | Ivaylo Kenov | 28.10.2013 | Delete action tests for TestsController TestsController refactor for better high quality code
+1516 | Vasil Dininski | 28.10.2013 | Updated the contest details page layout.
+1515 | Nikolay Kostov | 28.10.2013 | Added new table Settings (name-value pair for runtime settings)
+1512 | Vasil Dininski | 28.10.2013 | Minor update of the main submission page.
+1511 | Vasil Dininski | 28.10.2013 | Added a countdown timer to the submissions page. Updated the details view when opening checking a submission details in the submissions page. Updated EF references to the test submission responder.
+1506 | Vasil Dininski | 25.10.2013 | Updated submission page error handling. Updated contest description page.
+1499 | Nikolay Kostov | 25.10.2013 | Renamed "Telerik.OJS.Common" to "OJS.Common"
+1498 | Nikolay Kostov | 25.10.2013 | Moved TestSubmissionResponder to /Tools/ Deleted old CheatProgram
+1496 | Vasil Dininski | 25.10.2013 | Added submission model validation. Updated the Submit action in the Compete controller to throw an exception when an invalid submission is made. Renamed the Compete controller unit tests. Added unit tests for the ReadSubmissionResults and GetSubmissionContent actions.
+1483 | Nikolay Kostov | 24.10.2013 | Installed Glimpse.Mvc4 Updated Ninject
+1481 | Vasil Dininski | 23.10.2013 | Started unit tests for the Submit action in the Compete controller. Updated the compete controller to check if the contest can be practiced or competed before processing a submission.
+1480 | Nikolay Kostov | 23.10.2013 | Project renamed from "Telerik Online Judge System" to "Open Judge System"
+1477 | Nikolay Kostov | 22.10.2013 | Refactored AccountController Added resource file for AccountController and moved a string to it.
+1471 | Vasil Dininski | 21.10.2013 | Added more unit tests for the DownloadResource action in the Compete controller. Updated CompeteControllerBaseTestsClass.
+1470 | Nikolay Kostov | 21.10.2013 | Updated to the latest version of the ASP.NET Identity system (1.0.0). Fixed all issues with the new Identity system. Updated all NuGet packages Removed redundant class OjsIdentityStoreContext
+1467 | Nikolay Kostov | 21.10.2013 | Updated "Microsoft.jQuery.Unobtrusive.Ajax" to version 3.0.0 Updated "Microsoft.jQuery.Unobtrusive.Validation" to version 3.0.0 Updated "Microsoft.Owin" to version 2.0.0 Updated "Microsoft.Owin.*" to version 2.0.0
+1466 | Vasil Dininski | 21.10.2013 | Added ValidateContest unit tests. Started DownloadResource action unit tests. Updated ContestProblemViewModel.
+1465 | Nikolay Kostov | 21.10.2013 | Updated "Microsoft.AspNet.Mvc" to version 5.0.0 Updated "Microsoft.AspNet.Razor" to version 3.0.0 Updated "Microsoft.AspNet.WebPages" to version 3.0.0
+1460 | Vasil Dininski | 21.10.2013 | Added a SubmissionTypeViewModel. Now displaying the allowed submission types in the contest details page.
+1459 | Vasil Dininski | 21.10.2013 | Added more unit tests for the Problem action. Added unit test for the GetAllowedSubmissionTypes action. Updated the Compete controller to redirect to the registration page, when a user tries to download a problem for a contest that he is not registered for. Updated the namespace for the Compete controller tests.
+1456 | Vasil Dininski | 18.10.2013 | Updated Compete controller unit tests. Added unit tests for the Problem action. Refactored and updated the Problem action in the Compete controller.
+1454 | Vasil Dininski | 18.10.2013 | Updated unit tests for Index action in Compete controller.
+1453 | Nikolay Kostov | 17.10.2013 | Added missing packages file for Telerik.OJS.Workers.Executors
+1452 | Nikolay Kostov | 17.10.2013 | Updated "EntityFramework" to version 6.0.1 Updated "EntityFramework.SqlServerCompact" to version 6.0.1 Updated "Moq" to version 4.1.1309.1617
+1451 | Nikolay Kostov | 17.10.2013 | Updated "Newtonsoft.Json" to version 5.0.8 Updated "log4net" to version 2.0.2
+1450 | Nikolay Kostov | 17.10.2013 | Work on Controller-Agent communication
+1448 | Vasil Dininski | 17.10.2013 | Updated unit tests for the Compete controller. Added an additional modelstate check in the Register action of the Compete controller.
+1443 | Nikolay Kostov | 17.10.2013 | Custom error page is now working for any kind of exceptions that are thrown in actions Small refactorings in web unit tests
+1442 | Vasil Dininski | 17.10.2013 | Added Register POST action unit tests. Updated the ContestRegistrationViewModel to check if the provided value is null. Updated the ContestRegistrationModel to instantiate the questions in the constructor. Added an error message to the ContestQuestionAnswerModel. Refactored error and exception handling in the Compete Controller.
+1441 | Ivaylo Kenov | 17.10.2013 | Base class for Web tests - validation for ModelState
+1440 | Ivaylo Kenov | 17.10.2013 | Edit action unit tests implemented for TestsController
+1439 | Ivaylo Kenov | 16.10.2013 | Create tests action in TestsController unit tests written
+1434 | Ivaylo Kenov | 16.10.2013 | Resource delete action implemented. Resources CRUD operations now ready
+1433 | Vasil Dininski | 16.10.2013 | Added Registration action unit tests for the Compete controller. Refactored CompeteControllerBaseTestsClass. Removed unused usings is CompeteController.
+1432 | Ivaylo Kenov | 16.10.2013 | Edit scripts tranfered to separate file
+1431 | Ivaylo Kenov | 16.10.2013 | Edit command implemented for problem resources
+1429 | Ivaylo Kenov | 16.10.2013 | On create the page returns back to the corresponding expanded resource row
+1427 | Ivaylo Kenov | 16.10.2013 | Resources Create page implemented
+1426 | Vasil Dininski | 16.10.2013 | Updated and refactored the unit tests for the Index action in the Compete controller.
+1423 | Vasil Dininski | 16.10.2013 | Updated the Index action unit tests for the Compete controller and added more test cases. Minor refactoring of the Index action in the Compete controller to take advantage of the contest extension method ShouldShowRegistrationForm.
+1421 | Vasil Dininski | 16.10.2013 | Added unit tests for the Index action in the Compete controller
+1418 | Vasil Dininski | 15.10.2013 | Chained constructors in Participant model. Added Compete Controller base test class. Started unit testing the Compete controller.
+1416 | Vasil Dininski | 15.10.2013 | Updated check in contest registration page - added checks whether the contest has any questions, has a contest password and can be competed or has a practice password and can be practiced and handles participant registration. Updated TestsController to adhere to StyleCop rules.
+1412 | Vasil Dininski | 15.10.2013 | Added editor template for the EmailAddress data type.
+1411 | Vasil Dininski | 15.10.2013 | Added validation for the email address on registration. Added a check in the compete contoller if an invalid problem id is provided. When displaying problems in the submissions page they are sorted alphabetically.
+1410 | Nikolay Kostov | 15.10.2013 | Updated "Newtonsoft.Json" to version 5.0.7 and "Microsoft.AspNet.Web.Optimization" to version 1.1.1
+1409 | Ivaylo Kenov | 14.10.2013 | Resource Repository StreamExtensions for converting from byte array to MemoryStream and backwards Problem Resources now as detail template grid in Problems administration. Only read method implemented currently. JS files now have the controller as prefix in their name because otherwise VS crashes if two files has the same name.
+1406 | Nikolay Kostov | 14.10.2013 | Added constructor for CompeteController and BaseController for the UserProfile to be replacable during testing
+1400 | Vasil Dininski | 14.10.2013 | Added additional comments for the Compete controller.
+1399 | Ivaylo Kenov | 14.10.2013 | Changed Edit template to use the Create one. Fixed a bug with editing task about fetching all checkers for Kendo Dropdown.
+1398 | Vasil Dininski | 14.10.2013 | Added scores to the submission page, updated code formatting in feedback controller tests and home controller tests to pass stylecop check.
+1397 | Ivaylo Kenov | 14.10.2013 | Creating tasks implemented with validation
+1396 | Ivaylo Kenov | 13.10.2013 | StreamExtension ToByteArray added for easier resource addition Create problem resources adding implemented
+1395 | Nikolay Kostov | 11.10.2013 | Work on controller-agent communicaton
+1393 | Ivaylo Kenov | 11.10.2013 | Small refactoring in Administration/Tests/index.js for better high quality code Create operation for Problem in ProblemsController implemented
+1392 | Ivaylo Kenov | 11.10.2013 | ZippedTestsParser is now called ZippedTestsManipulator since it can add tests to problem, not only parse them from zip file
+1391 | Ivaylo Kenov | 11.10.2013 | Test importing from Zip file extracted from TestsController to separate project Telerik.OJS.Common under namespace ZippedTestsParser
+1390 | Ivaylo Kenov | 11.10.2013 | Moved all extension classes from Telerik.OJS.Common to a folder and namespace Telerik.OJS.Common.Extensions
+1388 | Ivaylo Kenov | 11.10.2013 | Added to model ProblemResource property Link - if type is video it should not have file Create task front end form is ready, server side needs more work
+1385 | Vasil Dininski | 11.10.2013 | Added a navigational property from a Problem to Submissions and a not-mapped property to the Submissions model, that returns the number of correct test runs for a submission. Updated the submission page to include the best results for the current problem so far and added navigation to the problem description. Updated the contest details view to be more used friendly and to correctly navigate to the contest registration.
+1379 | Ivaylo Kenov | 10.10.2013 | Description attribute for enum and extension method for friendly text visualization. Resources now can be added dynamically in Create task form, still no server logic implemented for them. Small css adjacements for task creation form.
+1378 | Vasil Dininski | 10.10.2013 | Updated ContestViewModel to include all necessary properties, minor code refactoring to adhere to StyleCop rules.
+1375 | Nikolay Kostov | 10.10.2013 | Fixed exception with the controller configuration file Classes that are used for communication between controller and agents are marked as serializable Changed the name of the controller log file to be more descriptive Fixed compilation warning
+1374 | Nikolay Kostov | 10.10.2013 | Added batch files for installing the controller service
+1373 | Nikolay Kostov | 10.10.2013 | Fixed installing services not working by making service installers public classes with [RunInstaller] attribute
+1372 | Vasil Dininski | 10.10.2013 | Updated contest details page to include the ability to practice or compete in contest if it can be practiced/competed
+1370 | Vasil Dininski | 10.10.2013 | Added contest details and the ability to download the contest materials if the contest can be practiced and has no password
+1369 | Nikolay Kostov | 10.10.2013 | Added bat files to install the agent service
+1367 | Ivaylo Kenov | 10.10.2013 | Problem Administration QuickBar for easy contest selection Tests for ProblemsController (not completed) Create task form - ready without resource adding and tests
+1365 | Vasil Dininski | 10.10.2013 | Added 'Description' field to the Contest model and ViewModel
+1362 | Nikolay Kostov | 10.10.2013 | Fixed exceptions when starting service
+1354 | Vasil Dininski | 9.10.2013 | Added server side and client side validation whether the submission was sent too soon.
+1352 | Vasil Dininski | 9.10.2013 | Added security checks when downloading problem resources, updated displaying of results.
+1350 | Vasil Dininski | 8.10.2013 | Updated submissions page
+1345 | Nikolay Kostov | 8.10.2013 | Added unit tests for string.MaxLength extension method
+1337 | Nikolay Kostov | 5.10.2013 | Old database migration performance improved.
+1336 | Vasil Dininski | 4.10.2013 | Updated submission page to include submission test results.
+1335 | Vasil Dininski | 4.10.2013 | Added contest registration, started working on contest submissions page
+1331 | Nikolay Kostov | 3.10.2013 | Work on agent service
+1318 | Ivaylo Kenov | 29.9.2013 | Refactored TestsController to validate Anti-forgery token and ModelState
+1303 | Nikolay Kostov | 26.9.2013 | Small changes in model
+1300 | Vasil Dininski | 26.9.2013 | Updated invalid cyrillic text due to incorrect encoding.
+1273 | Vasil Dininski | 25.9.2013 | Updated encodings and text in register, login and feedback views to display cyrillic text correctly.
+1203 | Ivaylo Kenov | 17.9.2013 | Delete for problem/task Administration
+1202 | Ivaylo Kenov | 17.9.2013 | Edit for tasks Administration
+1201 | Ivaylo Kenov | 17.9.2013 | Delete all tasks from Contest Small bug fixing in Kendo Grid for tests and problems
+1200 | Ivaylo Kenov | 17.9.2013 | Default Values added for DetailedProblemViewModel Navigation now has Tasks administration Small bugs fixed in Tests Administration views
+1198 | Ivaylo Kenov | 17.9.2013 | Adding Problem through administration. Currently uploading of description resource and zip file with tests does not work.
+1197 | Nikolay Kostov | 17.9.2013 | Some code refactoring in sandbox
+1194 | Ivaylo Kenov | 17.9.2013 | Checker is DeletableEntity Repository for Checker
+1193 | Ivaylo Kenov | 17.9.2013 | DetailedProblem View Model for more information on problems Controller for Problems DropDowns for Problem Selection by category and contest Web.Common library for common web logic
+1181 | Nikolay Kostov | 16.9.2013 | Small code refactorings
+1179 | Ivaylo Kenov | 16.9.2013 | Test runs on every Test detail is now shown as AJAX option on a Kendo Grid
+1178 | Ivaylo Kenov | 16.9.2013 | Ajax jQuery bundle added Tests now have details in them with AJAX fetching of full data CRUD operations fixed Back button to redirrect to correct page
+1171 | Ivaylo Kenov | 16.9.2013 | DeleteAll option for tests added. Now all problem tests can be deleted by clicking two buttons
+1165 | Ivaylo Kenov | 15.9.2013 | Kendo AutoComplete Search implemented for tests editing
+1163 | Ivaylo Kenov | 15.9.2013 | Administration navigation now has Test Files link Test files - dropdowns are easily populated by problemId
+1161 | Ivaylo Kenov | 15.9.2013 | Administration/Tests/Problem/Id now populates the grid with the correct tests. This allows us when doing CRUD operations on tests to return to the correct problem without selecting it again. Populating drop-downs does not work correctly currently.
+1152 | Ivaylo Kenov | 13.9.2013 | Fixed unit test for displaying latest news count. There was a change on the page - from 10 to 5.
+1149 | Nikolay Kostov | 13.9.2013 | Updated Glimpse packages to latest version Updated Antlr to latest version
+1142 | Nikolay Kostov | 12.9.2013 | Fixed process name property Small comment fixes
+1068 | Ivaylo Kenov | 9.9.2013 | Refactored View for Selected news. Looks better now - latest news is in the right part of the page
+1049 | Nikolay Kostov | 9.9.2013 | Fixed issue with running sandbox on 64-bit OS versions. This was caused by using short data type for some of the BasicLimitInfo properties instead of using int (uint) If something fails when starting restricted process we close the process
+1043 | Nikolay Kostov | 8.9.2013 | Increased pipes buffer size to improve console IO operations performance with the price of additional memory
+1042 | Nikolay Kostov | 8.9.2013 | RestrictedProcessExecutor: new time strategy: now we wait the process 1.5 time the time limit and then check consumed process time RestrictedProcessExecutor: Waiting for output and error tasks to complete Added log4net logging in RestrictedProcessExecutor
+1041 | Nikolay Kostov | 7.9.2013 | Added PrivilegedProcessorTime and UserProcessorTime properties in ProcessExecutionResult Added realistic case: JustDoSomeCpuWork in sandbox target program Added SourceCodeSizeLimit in problems model Added latest version of PC2 binaries Added source and links to spoj0 judge system
+1040 | Nikolay Kostov | 7.9.2013 | Proof of concept program now uses restricted process through RestrictedProcessExecutor facade Added debug assertion that the process we are executing is exited Web version deployed
+1034 | Nikolay Kostov | 6.9.2013 | Fixed test fails because of System.AggregateException (System.Threading.Tasks.TaskCanceledException)
+1032 | Nikolay Kostov | 6.9.2013 | Attempt to fix failing unit tests
+1030 | Nikolay Kostov | 6.9.2013 | RestrictedProcessExecutor now returns memory limit when consumed memory is more than the memory limit (added unit test to validate this) JobObject limits are now twise as big as the process limit (just for additional protection)
+1025 | Nikolay Kostov | 6.9.2013 | Memory consumption evaluation task now uses cancellation token and the task is waited 30ms before closed
+1021 | Nikolay Kostov | 6.9.2013 | Reading standard output and error streams is now made asynchronously to prevent standard buffer of 4096 bytes for the output which introduces process block (https://github.com/NikolayIT/Telerik.OJS/issues/109) Added Gacutil program for registering assemblies in GAC In POC program reading standard output and error is now asynchonously Improvements in SandboxTargetProgram
+1012 | Nikolay Kostov | 6.9.2013 | In old Telerik Contest System: Updated all projects to .NET 4.5 Updated EntityFramework to version 5.0 Added RestrictedProcessExecutor wapper for the future replacement of the current executor
+1011 | Nikolay Kostov | 5.9.2013 | Moved "Similar sites.txt" file to "Other Judge System" folder
+1010 | Nikolay Kostov | 5.9.2013 | Added PowerCollections binaries (both signed and not) as they are required for the system that will compile the C# code
+1008 | Nikolay Kostov | 5.9.2013 | Migrated old Telerik Contest System solution to Visual Studio 2013
+1007 | Nikolay Kostov | 5.9.2013 | Added old Telerik Contest System source code
+1006 | Nikolay Kostov | 5.9.2013 | Added few of the old Telerik Contest System files
+1005 | Nikolay Kostov | 5.9.2013 | Added other judge systems in documentation (PC2 and SMOC)
+1003 | Nikolay Kostov | 5.9.2013 | Added folder for the source of the old version of bgcoder.com
+992 | Nikolay Kostov | 5.9.2013 | Enabled Glimpse for the web project Glimpse now works with latest versions (RC) of EF and MVC
+991 | Nikolay Kostov | 4.9.2013 | RestrictedProcess is now run as a detached process Updated Glimpse.EF6 to latest version 1.4.0
+989 | Nikolay Kostov | 4.9.2013 | SandboxTarget now counts passed tests Win32 class and SafeNativeMethods class moved to NativeMethods class Implemented creating restricted token with safer* api calls SetTokenMandatoryLabel logic extracted in separate method
+988 | Nikolay Kostov | 4.9.2013 | In compilers: Remove outputFile parameter and let implementations to return it as a part of CompileResult
+987 | Nikolay Kostov | 4.9.2013 | Attempt to fix failed tests
+986 | Nikolay Kostov | 4.9.2013 | Added IsGhostUser property in UserProfile model to indicate whether the user is from the old system and not confirmed new registration Small refactoring and improvements
+976 | Nikolay Kostov | 3.9.2013 | Extracted AgentClient and ControllerServer classes
+973 | Nikolay Kostov | 2.9.2013 | Added LimitBetweenSubmissions property in Contest model Work on skeleton of Controller and Agent services
+972 | Nikolay Kostov | 2.9.2013 | Moved submission types list from problems to contests. Attempt to fix unit tests for sandbox functionality Fixed possible wrong values for memory consumpsion in RestrictedProcessExecutor class
+969 | Nikolay Kostov | 2.9.2013 | Added problem resources (model and relations) Improved tasks copier to copy checkers information and problem descriptions Added GetFileExtension string extension method with corresponding tests
+966 | Nikolay Kostov | 2.9.2013 | Attempt to fix 2 broken tests
+965 | Nikolay Kostov | 2.9.2013 | DifferentUserProcessExecutor now measures used memory for the process Added unit tests for DifferentUserProcess and Restricted process to validate that they measure memory used correctly Improved wait times for memory usage measure in RestrictedProcess
+964 | Nikolay Kostov | 2.9.2013 | Implemented PeakWorkingSetSize and PeakPagefileUsage information for the running restricted process Added name property for the process Fixed issues with early disposing process resources RestrictedProcessExecutor now sets MemoryUsed value in ProcessExecutionResult
+963 | Ivaylo Kenov | 1.9.2013 | Fetching news frm Infos implemented
+962 | Nikolay Kostov | 1.9.2013 | Attempt to find PeakMemoryUsed by a restricted process
+961 | Ivaylo Kenov | 1.9.2013 | Test Administration refactored to use external JavaScript file
+960 | Nikolay Kostov | 1.9.2013 | Made RestrictedProcess disposable (to close handles to process and main thread)
+955 | Nikolay Kostov | 30.8.2013 | Updated version number in web footer Version deployed
+953 | Ivaylo Kenov | 30.8.2013 | TestFiles CRUD operations through Kendo Grid implemented BaseController have LargeJson result method TestViewModel edited to have properties for bigger tests
+937 | Ivaylo Kenov | 30.8.2013 | Edit and Delete button for Tests Grid View
+936 | Ivaylo Kenov | 30.8.2013 | Grid added for TestFiles administration - Read operation over tests and displaying them
+935 | Ivaylo Kenov | 29.8.2013 | TestFilesViewModel added Parts of Ajax requests for grid view for problem tests added
+934 | Nikolay Kostov | 29.8.2013 | Included TimeWorked and MemoryUsed in ProcessExecutionResult ExecutionResult renamed to ProcessExecutionResult
+933 | Nikolay Kostov | 29.8.2013 | Tests for RestrictedProcess class added ExecutionResult improved to contain error output and execution result type (time limit, success, run-time error, memory limit) ProcessExecutionInfo class is now hiden in DifferentUserProcessExecutor
+931 | Nikolay Kostov | 29.8.2013 | Added security check in SandboxTarget for writing in %USER PROFILE%\AppData\LocalLow
+930 | Nikolay Kostov | 29.8.2013 | Small enchancements in unit tests and SidIdentifierAuthority class
+929 | Nikolay Kostov | 29.8.2013 | RestrictedProcess is now run under low integrity SID
+927 | Ivaylo Kenov | 29.8.2013 | Fetching of news from InfoMan implemented Views for News now show content as Raw HTML
+922 | Ivaylo Kenov | 29.8.2013 | Login and Register refactored a bit to look more color friendly
+921 | Ivaylo Kenov | 29.8.2013 | Profile link redirrects to Users/Profile and Change Password link to Account/Manage Small UI fixes for Bootstrap 3.0 on users profile, layout, changing password and settings
+915 | Ivaylo Kenov | 29.8.2013 | Fixed improper rendering of navbar login user menu
+914 | Ivaylo Kenov | 29.8.2013 | Fixed all non-working unit tests - they needed Author and Source in every News instance
+913 | Nikolay Kostov | 29.8.2013 | Fixed "access denied" exception when starting process with restricted token in RestrictedProcess class
+912 | Nikolay Kostov | 28.8.2013 | Started work on creating restricted token for process in restricted process class. Some refactoring in processes implementation
+911 | Ivaylo Kenov | 28.8.2013 | News now have Author and Source in Controller, Model, ViewModels and Views
+910 | Nikolay Kostov | 28.8.2013 | Created restricted process executor class Small refactorings Dropped IProcessExecutor interface since only one class will implement it and that class may not be publicly visible
+909 | Nikolay Kostov | 28.8.2013 | Refactored and relocated some of the files in Telerik.OJS.Workers.Executors Source code in executors unit test extracted as constants Added RecursivelyCheckFileSystemPermissions method in sandbox target
+907 | Nikolay Kostov | 27.8.2013 | Implemented StartTime, ExitTime, PriviledgedProcessorTime, UserProcessorTime and TotalProcessorTime properties for RestrictedProcess class
+906 | Nikolay Kostov | 27.8.2013 | Fixed bug with hanging when reading standard ouput and error streams in RestrictedProcess class
+901 | Nikolay Kostov | 27.8.2013 | Added new unit test in TestDifferentUserProcess Fixed unit test timings for tests in TestDifferentUserProcess to run on slow CI servers
+900 | Nikolay Kostov | 27.8.2013 | Timing of two unit tests in TestDifferentUserProcess fixed to work correctly on slower CI servers
+899 | Nikolay Kostov | 27.8.2013 | Implemented Kill() and WaitForExit() methods in RestrictedProcess class
+897 | Nikolay Kostov | 27.8.2013 | Work on RestrictedProcess methods WaitForExit() and Kill()
+896 | Nikolay Kostov | 26.8.2013 | Fixed bug with redirecting standard input, output and error handles when using RestrictedProcess class
+895 | Nikolay Kostov | 26.8.2013 | Fixed bug with creating pipes in RestrictedProcess 2 more unit tests added for different user process class Fixed compile error caused by missing reference to System.dll in BaseExecutorsTestClass
+894 | Nikolay Kostov | 25.8.2013 | Fixed account controller to work with the new ASP.NET identity Added 2 unit tests for DifferentUserProcess class
+893 | Nikolay Kostov | 25.8.2013 | Added Telerik.OJS.Workers.Executors.Tests and 2 unit tests for DifferentUserProcess class
+892 | Nikolay Kostov | 25.8.2013 | InfoType renamed to InfoClass and added all missing values Work on job object information extraction
+891 | Nikolay Kostov | 25.8.2013 | Time is now limited correctly in SandboxProcess Writing to processes in SandboxProcess is now async operation
+890 | Nikolay Kostov | 25.8.2013 | Work on native use of processes (not done yet) Improved information in Sandbox target program
+889 | Nikolay Kostov | 25.8.2013 | Fixed encodings to all view. Their encoding is now utf8
+885 | Nikolay Kostov | 25.8.2013 | Two more packages removed from source control system since they will be included during build Fixed compilation warning with Antlr packages
+884 | Nikolay Kostov | 25.8.2013 | Removed all packages from source control since nuget package restore is enabled for the solution
+883 | Nikolay Kostov | 25.8.2013 | Attempt to fix broken build
+882 | Nikolay Kostov | 25.8.2013 | Attempt to fix broken build
+881 | Nikolay Kostov | 25.8.2013 | Attempt to fix broken build
+880 | Nikolay Kostov | 25.8.2013 | 
+879 | Nikolay Kostov | 25.8.2013 | NuGet package resore enabled for the solution
+878 | Nikolay Kostov | 25.8.2013 | Implemented basic UI restrictions functionality in the sandbox (including restrict access to clipboard) WrapperImpersonationContext moved to Telerik.OJS.Workers.Executors Introduced new class PrepareJobObect to hold specific job object limitations for SandboxProcess Job object class now has 2 new methods SetExtendedLimitInformation and SetBasicUiRestrictions SandboxTarget program improved to work with clipboard ExecutionResult renamed to TestRunResultType
+877 | Nikolay Kostov | 24.8.2013 | Updated all nuget packages to latest versions AccountController is currently not working with the new asp.net identity
+876 | Nikolay Kostov | 24.8.2013 | Cheat program removed from \Tests\ folder because all of its funcionality is included in SandboxTarget console application Sandbox target now uses console output instead of log file
+875 | Nikolay Kostov | 23.8.2013 | Improvements in agent class method parameters
+874 | Nikolay Kostov | 23.8.2013 | Fixed missing file InfoType.cs to fix broken build
+873 | Nikolay Kostov | 23.8.2013 | Refactored SandboxProcess to not use Console for debugging. Debugging code is moved back to SandboxPocProgram
+872 | Nikolay Kostov | 23.8.2013 | Process sandbox logic extracted in SandboxProcess class
+871 | Nikolay Kostov | 23.8.2013 | Sandbox POC and target improvements
+870 | Nikolay Kostov | 23.8.2013 | Sanbox target console application refactored to reduce code duplicates Sandbox POC console application now shows process info after the process exited
+869 | Nikolay Kostov | 23.8.2013 | Job object improved to limit active processes to 1 (this solves security problem related to Process.Start capability when executing C# code) Refactoring in JobObjects classes Added Security limit flags and information class
+868 | Nikolay Kostov | 23.8.2013 | Fixed build break (renaming problems)
+867 | Nikolay Kostov | 23.8.2013 | Code refactoring in job object classes (each class is now in separate file)
+866 | Nikolay Kostov | 23.8.2013 | Started work on sandbox Created console application for sandbox proof of concept Added sandbox target to test the sandbox with Refactoring in job object classes
+862 | Nikolay Kostov | 22.8.2013 | Work on execution strategies
+861 | Nikolay Kostov | 22.8.2013 | Work on execution strategies
+860 | Nikolay Kostov | 22.8.2013 | C# compiler implemented (needs testing) C++ compiler implemented (needs testing) Base compiler logic implemented in BaseCompiler using template method design pattern
+859 | Ivaylo Kenov | 22.8.2013 | Further more Contest by category page adaptation to Bootstrap 3.0
+858 | Ivaylo Kenov | 22.8.2013 | Contest page adapted to Bootstrap 3.0
+857 | Nikolay Kostov | 22.8.2013 | Compiler model renamed to submission type Added execution strategy type Submission type data seed added
+856 | Ivaylo Kenov | 22.8.2013 | Test files View fixed for Bootstrap 3.0
+855 | Ivaylo Kenov | 22.8.2013 | HTML Agility Pack added as NuGet package Views updated to use Bootstrap 3.0 Translated Login and Register page
+854 | Nikolay Kostov | 22.8.2013 | Added compilers and compiler types to the model. Each submission now has selected compiler and each problem has list of allowed compilers
+853 | Ivaylo Kenov | 22.8.2013 | TestFiles now support Adding IOI tests
+852 | Nikolay Kostov | 22.8.2013 | Added 3 missing bootstrap files
+851 | Nikolay Kostov | 22.8.2013 | Bootstrap updated to version 3.0.0
+850 | Nikolay Kostov | 22.8.2013 | Updated 'Moq' from version '4.0.10827' to '4.1.1308.2120' in project 'Telerik.OJS.Web.Tests'
+849 | Nikolay Kostov | 22.8.2013 | Updated EntityFramework.SqlServerCompact from version 6.0.0-beta1 to version 6.0.0-rc1 All projects now use the same SqlServer Compact version (6.0.0-rc)
+848 | Nikolay Kostov | 22.8.2013 | EntityFramework updated from version 6.0.0-beta1 to 6.0.0-rc1 Fixed EF update issues related to attribute conventions Settings.StyleCop file excluded from compiled binaries in web project
+847 | Ivaylo Kenov | 22.8.2013 | Refactored TextFiles UI
+845 | Ivaylo Kenov | 21.8.2013 | Contest administration now uses ViewModel and do not fetch unneeded data
+844 | Ivaylo Kenov | 21.8.2013 | Profile Info Refactored Submissions now does not show contests with passwords All projections now use static methods from ViewModels
+843 | Ivaylo Kenov | 21.8.2013 | Submissions method is now AllPublic If contests has password -> it will not be shown in log
+842 | Ivaylo Kenov | 21.8.2013 | Contest has two passwords - Contest Password and Practise Password
+841 | Ivaylo Kenov | 21.8.2013 | SubmissionViewModel has ProblemMaximumPoints property and now calculates Points based on it Views updated to show correct information for Maximum Points
+840 | Nikolay Kostov | 21.8.2013 | Fixed bug #54 (Login returns invalid Username) by removing UserName property overriding
+839 | Ivaylo Kenov | 21.8.2013 | Submission log do not show active contests submissions Custom repository created for submissions
+838 | Nikolay Kostov | 21.8.2013 | Updated Newtonsoft.Json.4.5.11 to latest version 5.0.6 for all assemblies
+837 | Nikolay Kostov | 21.8.2013 | Refactored AdministrationRoutesTests to use RoutesTestsBase methods Data annotations moved to Telerik.OJS.Common
+836 | Nikolay Kostov | 21.8.2013 | Implemented #61 (Users should be accessed by username in URL) Added unit tests for users routes
+835 | Ivaylo Kenov | 21.8.2013 | News pagination do not show all pages if page count is more than 10 pages
+834 | Ivaylo Kenov | 21.8.2013 | Small refactor on submissions visualization Advanced submission is not sortable any more
+833 | Ivaylo Kenov | 21.8.2013 | Fixed diplaying no information in User Settings Age property when no date is given
+826 | Nikolay Kostov | 19.8.2013 | Fixed #57 (Refactor Kendo UI grids everywhere to use server side paging)
+825 | Nikolay Kostov | 19.8.2013 | Fixed #13 (Move all repositories to Telerik.OJS.Data.Repositories)
+824 | Nikolay Kostov | 19.8.2013 | Fixed #14 (Move all repository interfaces to Telerik.OJS.Data.Repositories.Contracts)
+823 | Nikolay Kostov | 19.8.2013 | TestRun should not be deletable entity since DeletableEntity will add 4 more columns to the table. TestRuns is expected to have millions of records so we should keep it as small as possible.
+822 | Ivaylo Kenov | 16.8.2013 | Import and Export for Test Files (Web form in administration) Changed css order - Kendo is now first, Site is second
+818 | Ivaylo Kenov | 15.8.2013 | Repositories for Test class. Importing of three kind of tests added: {name}.{testnumber}.{in|dol} {numberoftask}{ET|GT}_{testnumber}.{IN|OUT} test.{000|""}.{testnumber}.{in|out}.txt Danger (red) messages added to layout View added
+810 | Ivaylo Kenov | 12.8.2013 | Submission log for Logged Users added with Kendo UI Grid Needs to be refactored to work with server-side paging
+809 | Ivaylo Kenov | 12.8.2013 | Removed the My ASP.NET Application header and put BGCoder instead
+808 | Ivaylo Kenov | 10.8.2013 | Fixed padding bug by removing display fixed in theme (might be a bug) Will try to fix it in better way if there is one
+807 | Ivaylo Kenov | 10.8.2013 | Repository for TestRuns Updated bootstrap to 3.0 RC 1 Added in bundles Bootstrap icons Added fonts for Bootstrap icons Submission Controller implemented Submissions View Model (needs more work) TestRun View Model (needs more work) Fixed login and register routes to have no area Basic Submissions view implemented
+806 | Nikolay Kostov | 9.8.2013 | Added 2 new unit tests to assure exceptions are thrown in CSharpCodeChecker
+805 | Nikolay Kostov | 9.8.2013 | Glimpse updated to latest version (still not working with EF6) Ninject updated to latest version (3.0.2-unstable-9037) Added styles and JS files from Kendo.Mvc in "External Libraries" folder
+804 | Nikolay Kostov | 9.8.2013 | Changes in TestRun model
+803 | Ivaylo Kenov | 9.8.2013 | News module should be done. Unit tests for all Actions in NewsController Precision Checker fixed for Bulgarian Culture
+802 | Ivaylo Kenov | 9.8.2013 | News error message when such do not exists
+801 | Ivaylo Kenov | 9.8.2013 | Previous and Next buttons implemented in Selected News
+798 | Ivaylo Kenov | 8.8.2013 | All news listed controller view and viewmodel
+796 | Nikolay Kostov | 8.8.2013 | Implemented CSharpCodeChecker Web.config configured to use machine key for the web application that is different from other applications on the same web server
+795 | Nikolay Kostov | 7.8.2013 | Refactored checkers and their unit tests Changed checkers model (added properties Parameter and IsProblemSpecific) Other changes and refactorings
+793 | Nikolay Kostov | 7.8.2013 | Attempt to fix broken build because of Ionic.Zip.dll not referenced correctly
+792 | Nikolay Kostov | 7.8.2013 | Fix in Web.config for Ionic.Zip version
+791 | Ivaylo Kenov | 7.8.2013 | Another attempt to fix the missing build
+790 | Ivaylo Kenov | 7.8.2013 | Attempt to fix broken build (missing DotNetZip dll library)
+789 | Ivaylo Kenov | 7.8.2013 | Test File Controller has working Extract zip file method Unit test for Test File Controller
+788 | Ivaylo Kenov | 6.8.2013 | Small refactorings in Precision Checker unit tests
+787 | Ivaylo Kenov | 6.8.2013 | Precision checker added Unit tests for precision checker
+786 | Nikolay Kostov | 5.8.2013 | Installed DotNetZip version 1.9.1.8 Added empty TestFilesController for import/export tests logic
+785 | Nikolay Kostov | 5.8.2013 | Refactorings in CompeteController.Register Closed issue #19 (Extract show registration form logic in separate method)
+784 | Nikolay Kostov | 5.8.2013 | Contest registration logic implemented when registration form should not be displayed
+783 | Ivaylo Kenov | 5.8.2013 | Case insensitive checker added Unit tests for case insensitive checker
+782 | Nikolay Kostov | 5.8.2013 | Added Participants repository Added UserProfile property to BaseController Ninject updated to version 3.0.2-unstable-9035 Translated strings in _LoginPartial.cshtml Fixed issue #15 (exception when navigate to user profile from some area) Fixed issue #16 (exception when click log off deom some area page)
+781 | Ivaylo Kenov | 5.8.2013 | Small unit tests refactor for Trim Checker
+780 | Ivaylo Kenov | 5.8.2013 | Sort checker Unit tests Additional unit tests for Exact checker and Trim checker
+779 | Ivaylo Kenov | 5.8.2013 | Exact and Trim Checker added with abstract BaseChecker Class Exact and Trim checker Unit tests
+778 | Nikolay Kostov | 3.8.2013 | Added empty project Telerik.OJS.Workers.Compilers Added empty project Telerik.OJS.Workers.Executors Added "job objects" functionality (http://msdn.microsoft.com/en-us/library/ms684161%28v=vs.85%29.aspx) Added Win32 class in Telerik.OJS.Workers.Common with common win32 interop functions Moved GlimplseSecurityPolicy to /App_Start
+777 | Nikolay Kostov | 2.8.2013 | Added Glimpse packages Fixed typos in Home/Index.html
+776 | Nikolay Kostov | 2.8.2013 | Action GetByCategory renamed to ByCategory
+775 | Nikolay Kostov | 2.8.2013 | Added empty views and actions for contest compete functionality Contests routes unit tested Added .gitignore (for future git integration)
+774 | Nikolay Kostov | 2.8.2013 | Contests web logic moved to its own area Contests routes unit test improvements Added NetworkDataObject class to hold communication data between controller and agents
+773 | Nikolay Kostov | 2.8.2013 | Draft of controller and agent communication sequence diagram added
+772 | Nikolay Kostov | 1.8.2013 | Added navigation property to Participants in Contest model Added HasContestPassword and HasPracticePassword properties in Contest model ContestCategory now implements IOrderable In OldDatabaseMigration copiers refactored and cleaned Performance improvements in ParticipantsCopier Fixed N+1 problem in ContestViewModel projection Improved UI of contests list
+771 | Ivaylo Kenov | 1.8.2013 | User settings Age property unit tests String Extensions unit tests String Extensions bug for replacing C # and C++ fixed Exact Checker 100% code coverage by adding one more unit test
+770 | Ivaylo Kenov | 1.8.2013 | User settings and profiles added ToUrl method - excaped some symbols
+769 | Nikolay Kostov | 1.8.2013 | Fixed exception with registrations (CreatedOn property is always null when user is created from IdentityStore.CreateLocalUser)
+768 | Nikolay Kostov | 31.7.2013 | Added CodeMirror (javascript-based code editor component) Added ToUrl() string extension method Contest urls are now clearer
+767 | Nikolay Kostov | 31.7.2013 | Added ParticipantAnswersConfiguration for preventing potential cycles or multiple cascade paths problem Depend upon abstractions instead of concrete implementations for checking AuditInfo and DeletableEntity Added ParticipantAnswer model Moved user setting specific data to complex type called UserSettings User class now implements IDeletableEntity and IAuditInfo "Ninject.3.0.2 unstable 9" updated to "Ninject.3.0.2 unstable 9028" "Ninject.Web.Common.3.0.2 unstable 9" updated to "Ninject.Web.Common.3.0.2 unstable 9012" Added logic for mivong participants from old database Logic for moving users from the old database improved
+766 | Ivaylo Kenov | 31.7.2013 | Profile information Controller, View and ViewModel Partial View for profile information Tests for feedback controller Started settings page User settings started in UserProfile model
+765 | Ivaylo Kenov | 31.7.2013 | Tests for DeletedOn + users area
+764 | Nikolay Kostov | 31.7.2013 | Temporally fix for broken unit tests because of SQL Compact database not having "date" type
+763 | Nikolay Kostov | 31.7.2013 | Added new ef code first convention IsUnicodeAttributeConvention Added new properties in UserProfile model Work on UsersCopier for moving users from the old database Few small fixes
+760 | Ivaylo Kenov | 30.7.2013 | Feedback form + unit tests
+759 | Nikolay Kostov | 29.7.2013 | StyleCop settings file included in all projects Feedbacks renamed to FeedbackReports Code cleanups (using StyleCop suggestions)
+757 | Ivaylo Kenov | 29.7.2013 | Common folder for Telerik.OJS.Common
+756 | Ivaylo Kenov | 29.7.2013 | Unit tests performance boosts
+755 | Ivaylo Kenov | 29.7.2013 | Routes for Administration area Unit tests and Feedback repository and dbset.
+754 | Ivaylo Kenov | 29.7.2013 | InitializeEmptyOjsData method added to clear SQL Compact database for tests
+753 | Ivaylo Kenov | 29.7.2013 | merge and new unit tests for contest category
+752 | Nikolay Kostov | 28.7.2013 | Added method AllWithDeleted in DeletableEntityRepository ClearDatabase method now have hardcoded table names to prevent problems with foreign keys when deleting data Submission properties added: Problem relation, Content and ContentAsString Added string extensions in Telerik.OJS.Common Refactored OldDatabaseMigration. All migrations are now in separate classes Few more small refactorings
+751 | Nikolay Kostov | 28.7.2013 | Added StyleCop settings files
+750 | Nikolay Kostov | 28.7.2013 | Code cleanups and refactoring (StyleCop advices used)
+749 | Nikolay Kostov | 28.7.2013 | Added some classes for the controller<->agent communication
+748 | Nikolay Kostov | 28.7.2013 | Exact checker implemented (added unit tests to verify its behavior) Wrote some routes tests (added required web stubs for testing) Added Telerik.OJS.Workers.Controller - empty service Added Telerik.OJS.Workers.Agent - empty service
+747 | Nikolay Kostov | 26.7.2013 | Added test project for Telerik.OJS.Common library Added unit test for compression and decompression
+746 | Nikolay Kostov | 26.7.2013 | Tests migration implemented Changes in tests model: the tests data is now stored in compressed format (using deflate) Added Telerik.OJS.Common library for common system functionality
+744 | Nikolay Kostov | 26.7.2013 | Work on database model Added Telerik.OJS.Workers.Common Added Telerik.OJS.Workers.Checkers Contest questions migration and contest task migrations added (from old database to the new one) Updated WebGrease to version 1.5.2
+743 | Ivaylo Kenov | 26.7.2013 | Unit tests refactored for CanBePracticed and CanBeCompeted
+741 | Nikolay Kostov | 25.7.2013 | Fixed error "A circular reference was detected while serializing an object of type 'System.Data.Entity.DynamicProxies..." when using kendo grid administraton
+739 | Nikolay Kostov | 25.7.2013 | Kendo UI styles and javascripts updated to official version Q2 2013 (2013.2.716)
+738 | Nikolay Kostov | 25.7.2013 | Build error check
+737 | Nikolay Kostov | 24.7.2013 | Removed assembly signing in Kendo.Mvc.csproj to fix missing singing tool on build server
+736 | Nikolay Kostov | 24.7.2013 | Attempt to fix missing references in Kendo.Mvc project
+735 | Nikolay Kostov | 24.7.2013 | Kendo.Mvc source included in project and updated to latest stable version 2013.2.716 Contest questions implemented in model Contest password added IOrderable interface added
+734 | Nikolay Kostov | 24.7.2013 | Small UI fix in contests list
+732 | Nikolay Kostov | 24.7.2013 | Contest repository now returns only non-deleted objects by default Added contests helper to return contest url Small code refactorings
+731 | Nikolay Kostov | 23.7.2013 | Implemented contest listing by category Added navigation property to contests in ContestCategory model Added property ResultsArePubliclyVisible in contest model Contest category is now set for every contest in the OldDatabaseMigrationConfiguration Added routes for contest list and contest details Fixed AllVisibleInCategory showing deleted contests Fixed seed number in ClearDatabase method
+730 | Ivaylo Kenov | 23.7.2013 | AllVisible tests in Data Contests Repository
+729 | Ivaylo Kenov | 23.7.2013 | Unit tests for Data ContestsRepository - AllActive and AllFuture Contests has foreign key for CategoryId
+728 | Nikolay Kostov | 22.7.2013 | Administration navigation added Contest categories and hierarchy administration added Started work on contest archive page
+727 | Ivaylo Kenov | 22.7.2013 | Unit tests for News data properties - CreatedOn and ModifiedOn
+726 | Ivaylo Kenov | 22.7.2013 | Executor Security Tests documentation added
+725 | Ivaylo Kenov | 22.7.2013 | Unit tests added and separated for Contest data
+713 | Nikolay Kostov | 18.7.2013 | Added new model ContestCategory Updated jQuery to 2.0.3 KendoUI tree view with drag & drop support integrated with contest categories
+712 | Ivaylo Kenov | 18.7.2013 | Contest Data tests for validation, can be practiced, can be competed
+711 | Ivaylo Kenov | 18.7.2013 | Data tests added, ClearDatabase method
+707 | Ivaylo Kenov | 18.7.2013 | Added documentation for security tests Unit testing for new EF Mock
+706 | Nikolay Kostov | 17.7.2013 | Added contests list favicon changed Version deployed
+705 | Nikolay Kostov | 17.7.2013 | Fixed bug with ModifiedOn set on every new record Fixed bug with moving old contests to the new database Added CabBeCompeted and CanBePracticed properties in Contest model
+704 | Nikolay Kostov | 17.7.2013 | Added Telerik.OJS.Tools.OldDatabaseMigration to migrate old database data to the new one
+703 | Nikolay Kostov | 17.7.2013 | Tests fixes
+702 | Nikolay Kostov | 17.7.2013 | Extracted base test code in Telerik.OJS.Tests.Common Added project for data tests in Telerik.OJS.Data.Tests
+701 | Nikolay Kostov | 16.7.2013 | Unit tests will now use the sql server compact edition to mock real database
+700 | Nikolay Kostov | 16.7.2013 | A lot of abstractions implemented
+699 | Nikolay Kostov | 16.7.2013 | Test new build path
+698 | Nikolay Kostov | 16.7.2013 | Reverted WebGrease version to 1.3.0 Fixed broken build
+697 | Nikolay Kostov | 16.7.2013 | Moved resources to App_GlobalResources Installed WebGrease 1.5.1
+696 | Nikolay Kostov | 15.7.2013 | Enabled automatic migrations and set database initializer to MigrateDatabaseToLatestVersion
+692 | Nikolay Kostov | 11.7.2013 | Removed knockoutjs
+691 | Ivaylo Kenov | 10.7.2013 | Small fixes in naming Contest -> Contests
+690 | Ivaylo Kenov | 10.7.2013 | Contest administration added, documentation for new administration added
+689 | Ivaylo Kenov | 10.7.2013 | Small bug fixed with references
+688 | Ivaylo Kenov | 10.7.2013 | Unit tests for HomeController (visible and non-deleted contests)
+686 | Nikolay Kostov | 8.7.2013 | Using dependecy injection (Ninject) and rewrote most of the code to use it Included Moq for mocking Added 4 unit tests for HomeController Added few mock objects
+684 | Nikolay Kostov | 8.7.2013 | Added AuditInfo and DeletableEntity abstract classes to provide CreatedOn, ModifiedOn, DeletedOn and IsDeleted fields to entites Fixes in KendoGridAdministrationController
+683 | Nikolay Kostov | 8.7.2013 | Base code for each administration News administration improvements Problem with kendo culture temporally fixed
+682 | Nikolay Kostov | 8.7.2013 | Fixed bundling problem with KendoUI styles Small other fixes
+681 | Nikolay Kostov | 8.7.2013 | Try to fix broken build
+680 | Nikolay Kostov | 8.7.2013 | Few fixes in views encoding Fixed links in _Layout.cshtml Version deployed
+679 | Nikolay Kostov | 7.7.2013 | Fixed broken csproj file
+667 | Ivaylo Kenov | 5.7.2013 | Small fix in news
+666 | Ivaylo Kenov | 5.7.2013 | News controller and model added, Partial view for news on index and news page
+665 | Nikolay Kostov | 5.7.2013 | Added KendoUI Grid administration base code News administration implemented Telerik.OJS.Web MVC improvements
+664 | Nikolay Kostov | 4.7.2013 | Included KendoUI javascript, css and KendoUI MVC wrappers in Telerik.OJS.Web project
+660 | Nikolay Kostov | 4.7.2013 | Extended UserProfile table by using this approach: https://github.com/rustd/AspnetIdentitySample/blob/master/AspnetIdentitySample/Models/AppModel.cs Added "Adminitrator" role in database seed method Refactored OjsDbContext to use IdentityDbContext
+659 | Nikolay Kostov | 4.7.2013 | Updated all NuGet packages to latest versions Integrated new version of ASP.NET identity Updated to new ASP.NET beta2 template
+657 | Nikolay Kostov | 4.7.2013 | Deleted old and useless files Fixed encoding in _LoginPartial.cshtml
+655 | Ivaylo Kenov | 4.7.2013 | Removed some design styles which were not well done (no-color) in register and login. Added another contests for testing the visualization of the index page
+654 | Nikolay Kostov | 3.7.2013 | Database schema improved (added new fields) Index page almost ready
+653 | Nikolay Kostov | 3.7.2013 | Added two project diagrams (SystemComponents and SystemLayer) Few fixes in repository pattern files (GenericRepository and OjsData.cs)
+643 | Nikolay Kostov | 1.7.2013 | Another attempt to fix build error Included Setting.StyleCop files
+640 | Nikolay Kostov | 1.7.2013 | Added area administration
+639 | Nikolay Kostov | 30.6.2013 | Data model improvements UI improvements
+638 | Nikolay Kostov | 30.6.2013 | Fixes and improvements in accounts
+637 | Nikolay Kostov | 30.6.2013 | Moved user models in Telerik.OJS.Data.Models Enabled database migrations
+636 | Nikolay Kostov | 30.6.2013 | Work on data. Partially implemented repository pattern and unit of work.
+635 | Nikolay Kostov | 29.6.2013 | Small code changes in default MVC 5 project
+634 | Nikolay Kostov | 29.6.2013 | Reverted changes. Stable build.
+633 | Nikolay Kostov | 29.6.2013 | Reverted updates
+632 | Nikolay Kostov | 29.6.2013 | Updated all nuget packages with their latest prerelese versions
+631 | Nikolay Kostov | 29.6.2013 | Replaced Telerik.OJS.Web with new tempalte from VS 2013 (with ASP.NET MVC 5 beta) Added CheatProgram to test for security problems in the sandobxing
+629 | Nikolay Kostov | 28.6.2013 | Added deployment settings Added administration area Bootstrap design implemented
+628 | Nikolay Kostov | 28.6.2013 | Installed Twitter.Bootstrap as package and in Telerik.OJS.Web
+627 | Nikolay Kostov | 28.6.2013 | Added new project Telerik.OJS.Data.Models
+625 | Nikolay Kostov | 28.6.2013 | Added project Telerik.OJS.Web All NuGet packages updated
+624 | Nikolay Kostov | 28.6.2013 | Added few more NuGet packages
+623 | Nikolay Kostov | 28.6.2013 | Added folder structure Added NuGet packages: EF, jQuery and jQuery.Validation
+622 | Nikolay Kostov | 28.6.2013 | Added empty solution file
+621 | Nikolay Kostov | 28.6.2013 | Check-in the Lab default template

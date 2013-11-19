@@ -70,7 +70,7 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, "This submission is not yours!");
             }
 
-            return View(submission);
+            return this.View(submission);
         }
     }
 }

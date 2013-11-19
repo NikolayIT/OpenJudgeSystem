@@ -47,24 +47,24 @@
             return extendedLimitInformation;
         }
 
-        //    //The peak memory used by any process ever associated with the job. 
-        //IntPtr PeakProcessMemoryUsed
-        //{
-        //    get
-        //    {
-        //        ExtendedLimitInformation extendedLimitInformation =
-        //            QueryJobInformation<JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation>(_hJob);
-        //        return System::IntPtr((void*)extendedLimitInformation.PeakProcessMemoryUsed);
-        //    }
-        //}
+        //// // The peak memory used by any process ever associated with the job. 
+        //// IntPtr PeakProcessMemoryUsed
+        //// {
+        ////     get
+        ////     {
+        ////         ExtendedLimitInformation extendedLimitInformation =
+        ////             QueryJobInformation<JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation>(_hJob);
+        ////         return System::IntPtr((void*)extendedLimitInformation.PeakProcessMemoryUsed);
+        ////     }
+        //// }
     
-        ////The peak memory usage of all processes currently associated with the job.
-        //System::IntPtr JobObject::PeakJobMemoryUsed::get()
-        //{
-        //    JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedLimitInformation = 
-        //        QueryJobInformation<JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation>(_hJob);
-        //    return System::IntPtr((void *)extendedLimitInformation.PeakJobMemoryUsed);
-        //}
+        //// // The peak memory usage of all processes currently associated with the job.
+        //// System::IntPtr JobObject::PeakJobMemoryUsed::get()
+        //// {
+        ////     JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedLimitInformation = 
+        ////         QueryJobInformation<JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation>(_hJob);
+        ////     return System::IntPtr((void *)extendedLimitInformation.PeakJobMemoryUsed);
+        //// }
 
         public void Dispose()
         {

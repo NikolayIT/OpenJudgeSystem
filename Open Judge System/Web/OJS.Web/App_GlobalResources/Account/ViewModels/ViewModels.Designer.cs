@@ -88,6 +88,33 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm your email.
+        /// </summary>
+        public static string Email_confirm {
+            get {
+                return ResourceManager.GetString("Email_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please double check the email address that you entered.
+        /// </summary>
+        public static string Email_confirmation_invalid {
+            get {
+                return ResourceManager.GetString("Email_confirmation_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please confirm your email.
+        /// </summary>
+        public static string Email_confirmation_required {
+            get {
+                return ResourceManager.GetString("Email_confirmation_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email address.
         /// </summary>
         public static string Email_invalid {
@@ -142,6 +169,15 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect password.
+        /// </summary>
+        public static string Incorrect_password {
+            get {
+                return ResourceManager.GetString("Incorrect_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid username or password.
         /// </summary>
         public static string Invalid_username_or_password {
@@ -160,7 +196,7 @@ namespace Resources.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The new password and confirmation password do not match..
+        ///   Looks up a localized string similar to The new password and confirmation password do not match.
         /// </summary>
         public static string New_password_confirm_password_not_matching_validation {
             get {
@@ -214,6 +250,15 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter your password.
+        /// </summary>
+        public static string Password_required {
+            get {
+                return ResourceManager.GetString("Password_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The passwords don&apos;t match.
         /// </summary>
         public static string Passwords_dont_match {
@@ -246,6 +291,15 @@ namespace Resources.Account {
         public static string Username {
             get {
                 return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username must contain at least one character.
+        /// </summary>
+        public static string Username_regex_validation {
+            get {
+                return ResourceManager.GetString("Username_regex_validation", resourceCulture);
             }
         }
         

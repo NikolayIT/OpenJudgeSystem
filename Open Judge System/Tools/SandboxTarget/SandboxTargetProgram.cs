@@ -46,7 +46,16 @@
                                   new TryToExecuteParams(x => new TcpClient().Connect(x, 80), "open socket", "google.com"),
                                   new TryToExecuteParams(x => new WebClient().DownloadString(x), "access http resource", "http://google.com"),
                                   new TryToExecuteParams(x => Clipboard.SetText(x), "write to clipboard", "data"), // Unit tested
-                                  new TryToExecuteParams(x => { if (string.IsNullOrEmpty(Clipboard.GetText())) { throw new Exception("Clipboard empty!"); } }, "read from clipboard", null), // Unit tested
+                                  new TryToExecuteParams(
+                                      x =>
+                                          {
+                                              if (string.IsNullOrEmpty(Clipboard.GetText()))
+                                              {
+                                                  throw new Exception("Clipboard empty!");
+                                              }
+                                          },
+                                          "read from clipboard",
+                                          null), // Unit tested
                               };
 
             int tests = 0;

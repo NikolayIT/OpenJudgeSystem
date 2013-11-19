@@ -20,4 +20,8 @@
         </table>
         <p class="pull-right"><a class="btn btn-default" href="/News/All">Вижте още &raquo;</a></p>
     }
+    @if (User.IsInRole("Administrator"))
+    {
+        <p class="pull-left"><a class="btn btn-primary" href="/Administration/News">Администрация &raquo;</a></p>
+    }
 </div>

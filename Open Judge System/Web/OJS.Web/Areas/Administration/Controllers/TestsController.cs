@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
@@ -13,7 +12,6 @@
 
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;

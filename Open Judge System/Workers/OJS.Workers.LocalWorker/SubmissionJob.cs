@@ -25,20 +25,20 @@
         {
             this.Name = name;
 
-            logger = LogManager.GetLogger(name);
-            logger.Info("SubmissionJob initializing...");
+            this.logger = LogManager.GetLogger(name);
+            this.logger.Info("SubmissionJob initializing...");
 
             this.stopping = false;
             this.processingSubmissionIds = processingSubmissionIds;
 
-            logger.Info("SubmissionJob initialized.");
+            this.logger.Info("SubmissionJob initialized.");
         }
 
         public string Name { get; set; }
 
         public void Start()
         {
-            logger.Info("SubmissionJob starting...");
+            this.logger.Info("SubmissionJob starting...");
             while (!this.stopping)
             {
                 IOjsData data = new OjsData();
@@ -49,7 +49,7 @@
                 }
                 catch (Exception exception)
                 {
-                    logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
+                    this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
                     throw;
                 }
 
@@ -74,7 +74,7 @@
                 }
                 catch (Exception exception)
                 {
-                    logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
+                    this.logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
                     processingSubmissionIds.Remove(dbSubmission.Id);
                     throw;
                 }
@@ -141,7 +141,7 @@
             }
             catch (Exception exception)
             {
-                logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
+                this.logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
                 dbSubmission.ProcessingComment = string.Format("Exception in executionStrategy.Execute: {0}", exception.Message);
                 return;
             }

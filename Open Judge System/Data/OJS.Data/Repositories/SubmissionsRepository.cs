@@ -25,7 +25,7 @@
         
         public Submission GetSubmissionForProcessing()
         {
-            var dbSubmission =
+            var submission =
                        this.All()
                            .Where(x => !x.Processed && !x.Processing)
                            .OrderBy(x => x.Id)
@@ -35,7 +35,7 @@
                            .Include(x => x.SubmissionType)
                            .FirstOrDefault();
 
-            return dbSubmission;
+            return submission;
         }
     }
 }

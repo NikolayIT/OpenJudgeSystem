@@ -1,15 +1,15 @@
-﻿@model OJS.Data.Models.UserProfile
+﻿@model OJS.Web.Areas.Users.ViewModels.UserProfileViewModel
 
 <div class="container">
     <h2>
-        Профил на @Model.UserName
+        Профил на @Model.Username
     </h2>
     <div class="col-md-6">
         <span>
             <strong>Потребителско име:</strong>
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserName)</strong>
+            <strong>@Html.DisplayFor(m => m.Username)</strong>
         </span>
         <br />
         <span>
@@ -20,61 +20,61 @@
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.FirstName, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.FirstName, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.FirstName)</strong>
+            <strong>@Html.DisplayFor(m => m.FirstName)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.LastName, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.LastName, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.LastName)</strong>
+            <strong>@Html.DisplayFor(m => m.LastName)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.FacultyNumber, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.FacultyNumber, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.FacultyNumber)</strong>
+            <strong>@Html.DisplayFor(m => m.FacultyNumber)</strong>
         </span>
         <br />
     </div>
     <div class="col-md-offset-1 col-md-5">
         <span>
-            @Html.LabelFor(m => m.UserSettings.City, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.City, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.City)</strong>
+            <strong>@Html.DisplayFor(m => m.City)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.Age, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.Age, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.Age)</strong>
+            <strong>@Html.DisplayFor(m => m.Age)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.EducationalInstitution, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.EducationalInstitution, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.EducationalInstitution)</strong>
+            <strong>@Html.DisplayFor(m => m.EducationalInstitution)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.Company, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.Company, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.Company)</strong>
+            <strong>@Html.DisplayFor(m => m.Company)</strong>
         </span>
         <br />
         <span>
-            @Html.LabelFor(m => m.UserSettings.JobTitle, new { @class = "profile-info-label" }):
+            @Html.LabelFor(m => m.JobTitle, new { @class = "profile-info-label" }):
         </span>
         <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.UserSettings.JobTitle)</strong>
+            <strong>@Html.DisplayFor(m => m.JobTitle)</strong>
         </span>
     </div>
 </div>

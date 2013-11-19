@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Email_already_registered" xml:space="preserve">
+    <value>Your email has already been registered. Please use the forgot your details feature to obtain your login details.</value>
+  </data>
   <data name="Enter_username_and_register" xml:space="preserve">
-    <value>Моля въведете потребителско име за сайта и натиснете бутона "Регистрация" за да влезнете в системата.</value>
+    <value>Please enter a username and click on Register to log into the system</value>
   </data>
   <data name="Link_account" xml:space="preserve">
     <value>Link you account with your {0} account.</value>
@@ -127,6 +130,9 @@
     <value>Register</value>
   </data>
   <data name="Successfully_logged_in" xml:space="preserve">
-    <value>You have successfully logged in using</value>
+    <value>You will log in using</value>
+  </data>
+  <data name="User_already_registered" xml:space="preserve">
+    <value>This username is not available</value>
   </data>
 </root>

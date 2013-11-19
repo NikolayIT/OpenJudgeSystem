@@ -151,7 +151,7 @@
     <value>Confirm new password</value>
   </data>
   <data name="New_password_confirm_password_not_matching_validation" xml:space="preserve">
-    <value>The new password and confirmation password do not match.</value>
+    <value>The new password and confirmation password do not match</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -185,5 +185,23 @@
   </data>
   <data name="Password_incorrect" xml:space="preserve">
     <value>Incorrect password</value>
+  </data>
+  <data name="Email_confirm" xml:space="preserve">
+    <value>Confirm your email</value>
+  </data>
+  <data name="Email_confirmation_invalid" xml:space="preserve">
+    <value>Please double check the email address that you entered</value>
+  </data>
+  <data name="Email_confirmation_required" xml:space="preserve">
+    <value>Please confirm your email</value>
+  </data>
+  <data name="Password_required" xml:space="preserve">
+    <value>Please enter your password</value>
+  </data>
+  <data name="Incorrect_password" xml:space="preserve">
+    <value>Incorrect password</value>
+  </data>
+  <data name="Username_regex_validation" xml:space="preserve">
+    <value>The username must contain at least one character</value>
   </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿namespace SandboxExecutorProofOfConcept
 {
-    class GlobalConstants
+    internal class GlobalConstants
     {
         public const string SampleJavaScriptCode = @"
 var EOL = require('os').EOL;

@@ -61,7 +61,16 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Моля въведете потребителско име за сайта и натиснете бутона &quot;Регистрация&quot; за да влезнете в системата..
+        ///   Looks up a localized string similar to Your email has already been registered. Please use the forgot your details feature to obtain your login details..
+        /// </summary>
+        public static string Email_already_registered {
+            get {
+                return ResourceManager.GetString("Email_already_registered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a username and click on Register to log into the system.
         /// </summary>
         public static string Enter_username_and_register {
             get {
@@ -88,11 +97,20 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have successfully logged in using.
+        ///   Looks up a localized string similar to You will log in using.
         /// </summary>
         public static string Successfully_logged_in {
             get {
                 return ResourceManager.GetString("Successfully_logged_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This username is not available.
+        /// </summary>
+        public static string User_already_registered {
+            get {
+                return ResourceManager.GetString("User_already_registered", resourceCulture);
             }
         }
     }

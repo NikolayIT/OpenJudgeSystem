@@ -77,6 +77,10 @@
             </table>
         }
         <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+        @if (User.IsInRole("Administrator"))
+        {
+            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">Администрация &raquo;</a></p>
+        }
     </div>
     <div class="col-md-4">
         <h2>Предстоящи състезания</h2>
@@ -99,5 +103,9 @@
             </table>
         }
         <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+        @if (User.IsInRole("Administrator"))
+        {
+            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">Администрация &raquo;</a></p>
+        }
     </div>
 </div>

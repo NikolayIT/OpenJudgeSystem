@@ -5,9 +5,9 @@
     using System.Net;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Common.Models;
 
     internal sealed class TasksCopier : ICopier
     {
@@ -93,6 +93,7 @@
         }
     }
 }
+
 /*
 Useless properties "RequiresAllTests, RequiresZeroTests, AddedBy and JudgeNow (every problem will be judged immediately).
 */

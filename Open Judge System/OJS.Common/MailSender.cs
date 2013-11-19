@@ -7,19 +7,19 @@
 
     public sealed class MailSender
     {
-        private static MailSender instance;
+        // TODO: Extract user, address and password as app.config settings
+        private const string SendFrom = "bgcoder.com@gmail.com";
+        private const string SendFromName = "BGCoder.com";
+        private const string Password = "__YOUR_PASSWORD_HERE__";
 
         private static readonly object SyncRoot = new object();
 
+        private static MailSender instance;
         private readonly SmtpClient mailClient;
-        const string SendFrom = "bgcoder.com@gmail.com";
-        const string SendFromName = "BGCoder.com";
-        private const string Password = "__YOUR_PASSWORD_HERE__";
 
         private MailSender()
         {
-            // TODO: Extract user, address and password as app.config settings
-            mailClient = new SmtpClient
+            this.mailClient = new SmtpClient
             {
                 Credentials = new NetworkCredential(SendFrom, Password),
                 Port = 587,
@@ -47,6 +47,18 @@
             }
         }
 
+        public void SendMailAsync(string recipient, string subject, string messageBody, IEnumerable<string> bccRecipients = null)
+        {
+            var message = this.PrepareMessage(recipient, subject, messageBody, bccRecipients);
+            this.mailClient.SendAsync(message, null);
+        }
+
+        public void SendMail(string recipient, string subject, string messageBody, IEnumerable<string> bccRecipients = null)
+        {
+            var message = this.PrepareMessage(recipient, subject, messageBody, bccRecipients);
+            this.mailClient.Send(message);
+        }
+
         private MailMessage PrepareMessage(string recipient, string subject, string messageBody, IEnumerable<string> bccRecipients)
         {
             var mailTo = new MailAddress(recipient);
@@ -69,18 +81,6 @@
             }
 
             return message;
-        }
-
-        public void SendMailAsync(string recipient, string subject, string messageBody, IEnumerable<string> bccRecipients = null)
-        {
-            var message = this.PrepareMessage(recipient, subject, messageBody, bccRecipients);
-            mailClient.SendAsync(message, null);
-        }
-
-        public void SendMail(string recipient, string subject, string messageBody, IEnumerable<string> bccRecipients = null)
-        {
-            var message = this.PrepareMessage(recipient, subject, messageBody, bccRecipients);
-            mailClient.Send(message);
         }
     }
 }

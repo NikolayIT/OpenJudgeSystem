@@ -1,8 +1,11 @@
 namespace OJS.Web.Areas.Users.Controllers
 {
+    using System.Linq;
     using System.Web.Mvc;
+
     using OJS.Data;
     using OJS.Web.Controllers;
+    using OJS.Web.Areas.Users.ViewModels;
 
     public class ProfileController : BaseController
     {
@@ -20,7 +23,9 @@ namespace OJS.Web.Areas.Users.Controllers
 
             var profile = this.Data.Users.GetByUsername(id);
 
-            return this.View(profile);
+            var userSettingsViewModel = new UserProfileViewModel(profile);
+
+            return this.View(userSettingsViewModel);
         }
     }
 }

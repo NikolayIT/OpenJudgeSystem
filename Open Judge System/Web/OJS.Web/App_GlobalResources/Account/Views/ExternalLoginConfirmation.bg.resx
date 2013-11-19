@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Email_already_registered" xml:space="preserve">
+    <value>Вашият имейл е вече регистриран. Моля използвайте услугата "Забравена парола"</value>
+  </data>
   <data name="Enter_username_and_register" xml:space="preserve">
     <value>Моля въведете потребителско име за сайта и натиснете бутона "Регистрация" за да влезнете в системата.</value>
   </data>
@@ -127,6 +130,9 @@
     <value>Регистрация</value>
   </data>
   <data name="Successfully_logged_in" xml:space="preserve">
-    <value>Успешно влезнахте с</value>
+    <value>Ще влезете чрез</value>
+  </data>
+  <data name="User_already_registered" xml:space="preserve">
+    <value>Това потребителско име е заето</value>
   </data>
 </root>

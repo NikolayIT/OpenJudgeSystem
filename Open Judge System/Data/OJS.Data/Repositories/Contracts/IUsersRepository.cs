@@ -6,5 +6,7 @@
     public interface IUsersRepository : IRepository<UserProfile>
     {
         UserProfile GetByUsername(string username);
+
+        UserProfile GetById(string id);
     }
 }

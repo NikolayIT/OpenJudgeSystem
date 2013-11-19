@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Areas.Users.Controllers
 {
     using System.Web.Mvc;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Controllers;
+    using OJS.Web.Areas.Users.ViewModels;
 
     [Authorize]
     public class SettingsController : BaseController
@@ -19,8 +21,9 @@
             string currentUserName = this.User.Identity.Name;
 
             var profile = this.Data.Users.GetByUsername(currentUserName);
+            var userProfileViewModel = new UserProfileViewModel(profile);
 
-            return this.View(profile.UserSettings);
+            return this.View(userProfileViewModel);
         }
 
         [HttpPost]

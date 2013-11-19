@@ -72,13 +72,13 @@
 
                 foreach (var output in solOutputs)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in"))))
+                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")))
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
                     else
                     {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in"))).ToList();
+                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")).ToList();
 
                         if (inputFiles.Count > 1)
                         {
@@ -113,13 +113,13 @@
 
                 foreach (var output in outOutputs)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in"))))
+                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")))
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
                     else
                     {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in"))).ToList();
+                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")).ToList();
 
                         if (inputFiles.Count > 1)
                         {
@@ -154,13 +154,13 @@
 
                 foreach (var output in outOutputs)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt"))))
+                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")))
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
                     else
                     {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains((output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt"))).ToList();
+                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")).ToList();
 
                         if (inputFiles.Count > 1)
                         {

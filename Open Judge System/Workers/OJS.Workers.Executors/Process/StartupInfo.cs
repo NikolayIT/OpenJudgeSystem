@@ -53,28 +53,28 @@ namespace OJS.Workers.Executors.Process
 
         public StartupInfo()
         {
-            cb = Marshal.SizeOf(this);
+            this.cb = Marshal.SizeOf(this);
         }
 
         public void Dispose()
         {
             // close the handles created for child process
-            if (hStdInput != null && !hStdInput.IsInvalid)
+            if (this.hStdInput != null && !this.hStdInput.IsInvalid)
             {
-                hStdInput.Close();
-                hStdInput = null;
+                this.hStdInput.Close();
+                this.hStdInput = null;
             }
 
-            if (hStdOutput != null && !hStdOutput.IsInvalid)
+            if (this.hStdOutput != null && !this.hStdOutput.IsInvalid)
             {
-                hStdOutput.Close();
-                hStdOutput = null;
+                this.hStdOutput.Close();
+                this.hStdOutput = null;
             }
 
-            if (hStdError != null && !hStdError.IsInvalid)
+            if (this.hStdError != null && !this.hStdError.IsInvalid)
             {
-                hStdError.Close();
-                hStdError = null;
+                this.hStdError.Close();
+                this.hStdError = null;
             }
         }
     }

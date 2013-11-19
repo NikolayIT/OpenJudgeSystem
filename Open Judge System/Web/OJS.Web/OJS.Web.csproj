@@ -239,6 +239,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ViewModels.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangeEmailView.bg.designer.cs">
+      <DependentUpon>ChangeEmailView.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangeEmailView.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChangeEmailView.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.designer.cs">
       <DependentUpon>ChangePasswordView.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -422,6 +432,7 @@
     <Compile Include="Areas\Contests\ViewModels\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Users\ViewModels\UserProfileViewModel.cs" />
     <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
@@ -435,6 +446,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Account\ChangeEmailViewModel.cs" />
     <Compile Include="ViewModels\Account\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -669,6 +681,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangeEmail.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -704,6 +718,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ViewModels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeEmailView.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeEmailView.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeEmailView.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeEmailView.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

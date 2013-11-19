@@ -295,6 +295,22 @@
 
                 ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
                 var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
+
+                if (this.Data.Users.All().Any(x => x.Email == email))
+                {
+                    this.ModelState.AddModelError("Email", Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered);
+                }
+
+                if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
+                {
+                    this.ModelState.AddModelError("Username", Resources.Account.Views.ExternalLoginConfirmation.User_already_registered);
+                }
+
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(model);
+                }
+
                 var user = new UserProfile { UserName = model.UserName, Email = email };
                 var result = await this.UserManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -310,7 +326,7 @@
                 this.AddErrors(result);
             }
 
-            ViewBag.ReturnUrl = returnUrl;
+            this.ViewBag.ReturnUrl = returnUrl;
             return this.View(model);
         }
 
@@ -334,7 +350,7 @@
         public ActionResult RemoveAccountList()
         {
             var linkedAccounts = this.UserManager.GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
+            this.ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
             return this.PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
@@ -473,6 +489,40 @@
                 }
 
                 this.AddErrors(removePassword);
+            }
+
+            return this.View(model);
+        }
+
+        public ActionResult ChangeEmail()
+        {
+            return this.View();
+        }
+
+        // TODO: Check if password is correct
+        [HttpPost]
+        public ActionResult ChangeEmail(ChangeEmailViewModel model)
+        {
+            if (this.Data.Users.All().Any(x => x.Email == model.Email))
+            {
+                this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+            }
+
+            var passwordVerificationResult = this.UserManager.PasswordHasher.VerifyHashedPassword(this.UserProfile.PasswordHash, model.Password);
+
+            if (passwordVerificationResult != PasswordVerificationResult.Success)
+            {
+                this.ModelState.AddModelError("Password", Resources.Account.ViewModels.Incorrect_password);
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var currentUser = this.Data.Users.GetById(this.UserProfile.Id);
+
+                currentUser.Email = model.Email;
+                this.Data.SaveChanges();
+                this.TempData["Notify"] = "Success";
+                return this.RedirectToAction("Profile", new { controller = "Users", area = "" });
             }
 
             return this.View(model);
