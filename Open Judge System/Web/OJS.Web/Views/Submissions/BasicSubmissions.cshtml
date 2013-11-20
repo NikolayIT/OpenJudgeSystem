@@ -1,15 +1,20 @@
 ﻿@model IList<OJS.Web.ViewModels.Submission.SubmissionViewModel>
 
 @{
-    ViewBag.Title = "Лог на публикациите";
+    ViewBag.Title = "Последно изпратени решения";
 }
 
-<h2>@ViewBag.Title</h2>
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li class="active">Решения</li>
+</ol>
+
+<h1>@ViewBag.Title</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
             <th class="col-md-1 text-primary">
-                No
+                №
             </th>
             <th class="col-md-4 text-primary">
                 Изпратено от
@@ -27,11 +32,11 @@
         {
             <tr>
                 <td>
-                    <strong>@(i + 1)</strong>
+                    <strong>@Model[i].Id</strong>
                 </td>
                 <td>
                     <div>
-                        <strong><a href="/Users/Profile/@Model[i].ParticipantId">@Model[i].ParticipantName</a></strong>
+                        <strong><a href="/Users/@Model[i].ParticipantName">@Model[i].ParticipantName</a></strong>
                     </div>
                     <div>
                         <small><span>@Model[i].SubmitedOn</span></small>

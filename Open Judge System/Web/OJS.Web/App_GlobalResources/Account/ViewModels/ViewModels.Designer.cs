@@ -295,7 +295,7 @@ namespace Resources.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The username must contain at least one character.
+        ///   Looks up a localized string similar to The username can contain only latin characters, numbers and the symbols &apos;.&apos; or &apos;_&apos;. The username must start with a letter and end with a letter or number..
         /// </summary>
         public static string Username_regex_validation {
             get {

@@ -24,7 +24,7 @@
                                       Name = task.Name,
                                       MaximumPoints = (short)task.MaxPoints,
                                       TimeLimit = task.TimeLimit,
-                                      MemoryLimit = (int)task.MemoryLimit,
+                                      MemoryLimit = (int)task.MemoryLimit * 2, // Multiplying memory limit by 2 because the previous worker didn't respect the memory limit
                                       OrderBy = 0,
                                       ShowResults = task.Contest1.ShowResults,
                                       CreatedOn = task.AddedOn,

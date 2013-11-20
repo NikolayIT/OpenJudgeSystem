@@ -18,7 +18,7 @@
                 Name = "Username",
                 ResourceType = typeof(Resources.Account.ViewModels))]
         [RegularExpression(
-                @"^\d*[a-zA-Z][a-zA-Z0-9]*$",
+                @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$",
                 ErrorMessageResourceName = "Username_regex_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string UserName { get; set; }

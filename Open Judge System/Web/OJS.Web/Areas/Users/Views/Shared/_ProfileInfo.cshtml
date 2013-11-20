@@ -1,84 +1,75 @@
-﻿@model OJS.Web.Areas.Users.ViewModels.UserProfileViewModel
+﻿@using OJS.Web.Areas.Users.ViewModels
+
+@model UserProfileViewModel
 
 <div class="container">
     <h2>
         Профил на @Model.Username
+        @if (!string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.LastName))
+        {
+            <text>(@Model.FirstName @Model.LastName)</text>
+        }
     </h2>
+
     <div class="col-md-6">
-        <span>
-            <strong>Потребителско име:</strong>
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.Username)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.Email, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.Email)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.FirstName, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.FirstName)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.LastName, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.LastName)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.FacultyNumber, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.FacultyNumber)</strong>
-        </span>
-        <br />
+        @if (Model.Age != null)
+        {
+            <div class="text-white">
+                <span class="text-primary">Години: </span>
+                @Model.Age
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.City))
+        {
+            <div class="text-white">
+                <span class="text-primary">Град: </span>
+                @Model.City
+            </div>
+        }
     </div>
-    <div class="col-md-offset-1 col-md-5">
-        <span>
-            @Html.LabelFor(m => m.City, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.City)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.Age, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.Age)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.EducationalInstitution, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.EducationalInstitution)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.Company, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.Company)</strong>
-        </span>
-        <br />
-        <span>
-            @Html.LabelFor(m => m.JobTitle, new { @class = "profile-info-label" }):
-        </span>
-        <span class="text-primary">
-            <strong>@Html.DisplayFor(m => m.JobTitle)</strong>
-        </span>
-    </div>
+    @if (this.User.Identity.Name == Model.Username)
+    {
+        <div class="col-md-offset-4 col-md-2">
+            <a href="Settings/" class="btn btn-primary pull-right">Настройки</a>
+        </div>
+    }
 </div>
 <br />
-<div class="container">
-    <a href="Settings/" class="btn btn-primary pull-right">Настройки</a>
+<div class="col-md-12">
+    <h2>Участия</h2>
+    <table class="table table-responsive table-striped">
+        <thead class="text-white">
+            <tr>
+                <th>
+                    Състезание
+                </th>
+                <th>
+                    Тип участие
+                </th>
+                @if (this.User.Identity.Name == Model.Username)
+                {
+                    <th>Резултат</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (UserParticipationViewModel result in Model.Participations)
+            {
+                <tr>
+                    <td>
+                        <a href="@ContestsHelper.GetUrl(result.ContestId, result.ContestName)">
+                            @result.ContestName
+                        </a>
+                    </td>
+                    <td>@(result.IsOfficial ? "Състезание" : "Практика")</td>
+                    @if (this.User.Identity.Name == Model.Username)
+                    {
+                        <td>@result.ContestResult</td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
 </div>

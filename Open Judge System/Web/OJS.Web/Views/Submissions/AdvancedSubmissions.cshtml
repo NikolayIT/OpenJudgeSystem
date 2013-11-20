@@ -1,7 +1,7 @@
 ﻿@model OJS.Web.ViewModels.Submission.SubmissionViewModel
 
 @{
-    ViewBag.Title = "Лог на публикациите";
+    ViewBag.Title = "Последно изпратени решения";
 }
 
 <ol class="breadcrumb">
@@ -17,7 +17,7 @@
             columns.Bound(s => s.Id).Title("№");
             columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
                 "<div>" +
-                    "<strong><a href=\"/Users/Profile/#: ParticipantId #\">#: ParticipantName #</a></strong>" +
+                    "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
                 "</div>" +
                 "<div>" +
                     "<small><span>#: kendo.toString(SubmitedOn, \"G\") #</span></small>" +

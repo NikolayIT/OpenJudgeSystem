@@ -15,6 +15,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Common;
     using OJS.Web.ViewModels.Account;
 
     using Recaptcha;
@@ -23,7 +24,7 @@
     public class AccountController : BaseController
     {
         public AccountController(IOjsData data)
-            : this(data, new UserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
+            : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
         {
         }
 
@@ -77,6 +78,11 @@
         [AllowAnonymous]
         public ActionResult Register()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Manage");
+            }
+
             return this.View();
         }
 
@@ -298,7 +304,8 @@
 
                 if (this.Data.Users.All().Any(x => x.Email == email))
                 {
-                    this.ModelState.AddModelError("Email", Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered);
+                    this.TempData["NotifyMessage"] = "Your email has already been registered. Please use the forgot your details feature to obtain your login details";
+                    return this.RedirectToAction("ForgottenPassword");
                 }
 
                 if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
@@ -392,7 +399,7 @@
             // notify the user if there are no users registered with this email or username
             if (usersCount == 0)
             {
-                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_not_registered;
+                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered;
                 return this.View();
             }
 
@@ -499,30 +506,32 @@
             return this.View();
         }
 
-        // TODO: Check if password is correct
         [HttpPost]
         public ActionResult ChangeEmail(ChangeEmailViewModel model)
         {
-            if (this.Data.Users.All().Any(x => x.Email == model.Email))
-            {
-                this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
-            }
-
-            var passwordVerificationResult = this.UserManager.PasswordHasher.VerifyHashedPassword(this.UserProfile.PasswordHash, model.Password);
-
-            if (passwordVerificationResult != PasswordVerificationResult.Success)
-            {
-                this.ModelState.AddModelError("Password", Resources.Account.ViewModels.Incorrect_password);
-            }
-
             if (this.ModelState.IsValid)
             {
-                var currentUser = this.Data.Users.GetById(this.UserProfile.Id);
+                if (this.Data.Users.All().Any(x => x.Email == model.Email))
+                {
+                    this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+                }
 
-                currentUser.Email = model.Email;
-                this.Data.SaveChanges();
-                this.TempData["Notify"] = "Success";
-                return this.RedirectToAction("Profile", new { controller = "Users", area = "" });
+                var passwordVerificationResult = this.UserManager.PasswordHasher.VerifyHashedPassword(this.UserProfile.PasswordHash, model.Password);
+
+                if (passwordVerificationResult != PasswordVerificationResult.Success)
+                {
+                    this.ModelState.AddModelError("Password", Resources.Account.ViewModels.Incorrect_password);
+                }
+
+                if (this.ModelState.IsValid)
+                {
+                    var currentUser = this.Data.Users.GetById(this.UserProfile.Id);
+
+                    currentUser.Email = model.Email;
+                    this.Data.SaveChanges();
+                    this.TempData["NotifyMessage"] = "Success";
+                    return this.RedirectToAction("Profile", new { controller = "Users", area = string.Empty });
+                }
             }
 
             return this.View(model);

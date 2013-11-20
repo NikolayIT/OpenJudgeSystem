@@ -61,11 +61,11 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This email is not registered.
+        ///   Looks up a localized string similar to This email or username is not registered.
         /// </summary>
-        public static string Email_not_registered {
+        public static string Email_or_username_not_registered {
             get {
-                return ResourceManager.GetString("Email_not_registered", resourceCulture);
+                return ResourceManager.GetString("Email_or_username_not_registered", resourceCulture);
             }
         }
         

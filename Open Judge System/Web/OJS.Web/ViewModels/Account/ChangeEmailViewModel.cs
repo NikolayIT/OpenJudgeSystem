@@ -6,6 +6,11 @@
 
     public class ChangeEmailViewModel
     {
+        [StringLength(
+                int.MaxValue,
+                MinimumLength = 1,
+                ErrorMessageResourceName="Password_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [Required(
                 ErrorMessageResourceName = "Password_required",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
@@ -15,7 +20,9 @@
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(
+                ErrorMessageResourceName = "Email_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [DataType(DataType.EmailAddress)]
         [Display(
                 Name = "Email",
@@ -26,7 +33,9 @@
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string Email { get; set; }
 
-        [Required]
+        [Required(
+                ErrorMessageResourceName = "Email_confirmation_required",
+                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [DataType(DataType.EmailAddress)]
         [Display(
                 Name = "Email_confirm",

@@ -202,6 +202,6 @@
     <value>Incorrect password</value>
   </data>
   <data name="Username_regex_validation" xml:space="preserve">
-    <value>The username must contain at least one character</value>
+    <value>The username can contain only latin characters, numbers and the symbols '.' or '_'. The username must start with a letter and end with a letter or number.</value>
   </data>
 </root>

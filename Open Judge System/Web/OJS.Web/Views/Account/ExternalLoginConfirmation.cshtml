@@ -5,7 +5,7 @@
     ViewBag.Title = Resource.Register;
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @if (ViewBag.LoginProvider != null)
 {
@@ -22,8 +22,6 @@
                     new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-
-    <h4>Association Form</h4>
     <hr />
     @Html.ValidationSummary(true)
     if (ViewBag.LoginProvider != null)

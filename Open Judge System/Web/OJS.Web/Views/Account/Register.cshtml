@@ -5,14 +5,14 @@
     ViewBag.Title = Resource.Register_title;
 }
 
-<h2>@ViewBag.Title.</h2>
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    <div class="row">
+<div class="row">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
         @Html.AntiForgeryToken()
-        <hr />
         @Html.ValidationSummary()
         <div class="col-md-5">
+            <h4>@ViewBag.Title</h4>
+            <hr />
             <div class="form-group">
                 <div class="pull-left col-sm-4 col-xs-12">
                     @Html.LabelFor(m => m.UserName)
@@ -56,8 +56,13 @@
                 </div>
             </div>
         </div>
+    }
+    <div class="col-md-offset-1 col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+        </section>
     </div>
-}
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
