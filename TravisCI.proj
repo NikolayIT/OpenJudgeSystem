@@ -4,7 +4,7 @@
   <Target Name="CI" DependsOnTargets="Build" />
 
   <Target Name="Build">
-    <MSBuild Projects="Open Judge System/Open Judge System.sln" Properties="Configuration=Debug;Platform=x86" />
+    <MSBuild Projects="Open Judge System/Open Judge System.sln" Properties="Configuration=Release;Platform=Any" />
   </Target>
 
 </Project>
