@@ -107,7 +107,6 @@
         [TestMethod]
         public void RestrictedProcessShouldReturnCorrectAmountOfUsedMemory()
         {
-
             var exePath = this.CreateExe("Consuming50MbOfMemory.exe", Consuming50MbOfMemorySourceCode);
 
             var process = new RestrictedProcessExecutor();

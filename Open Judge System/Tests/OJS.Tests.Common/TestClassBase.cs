@@ -4,21 +4,22 @@
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Linq;
+
     using OJS.Data;
     using OJS.Tests.Common.DataFakes;
 
     public abstract class TestClassBase
     {
-        protected IOjsData EmptyOjsData;
-
-        protected IOjsData OjsData;
-
         protected TestClassBase()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FakeOjsDbContext, DatabaseConfiguration>());
-            OjsData = new OjsData(new FakeOjsDbContext());
-            InitializeEmptyOjsData();
+            this.OjsData = new OjsData(new FakeOjsDbContext());
+            this.InitializeEmptyOjsData();
         }
+
+        protected IOjsData EmptyOjsData { get; set; }
+
+        protected IOjsData OjsData { get; set; }
 
         protected void InitializeEmptyOjsData()
         {

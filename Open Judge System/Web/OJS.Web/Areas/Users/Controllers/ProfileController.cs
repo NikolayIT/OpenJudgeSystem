@@ -29,8 +29,7 @@ namespace OJS.Web.Areas.Users.Controllers
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, "This user does not exist!");
             }
-
-
+            
             var userSettingsViewModel = new UserProfileViewModel(profile);
             userSettingsViewModel.Participations =
                 this.Data.Participants.All()

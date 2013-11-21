@@ -7,19 +7,19 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     [TestClass]
     public class TestContestRepositoryAllVisible : TestContestRepositoryBaseData
     {
-        private IList<Contest> AllVisible { get; set; }
-
         public TestContestRepositoryAllVisible()
         {
-            base.PopulateEmptyDataBaseWithContests();
+            this.PopulateEmptyDataBaseWithContests();
             this.AllVisible = this.Repository.AllVisible().ToList();
         }
+
+        private IList<Contest> AllVisible { get; set; }
 
         [TestMethod]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()

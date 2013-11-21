@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
     
-    using OJS.Data.Models;
     using OJS.Common.Extensions;
+    using OJS.Data.Models;
 
     public class SubmissionDetailsViewModel
     {
@@ -36,7 +36,7 @@
             }
         }
 
-        public new IEnumerable<TestRunDetailsViewModel> TestRuns { get; set; }
+        public IEnumerable<TestRunDetailsViewModel> TestRuns { get; set; }
 
         public string UserId { get; set; }
 

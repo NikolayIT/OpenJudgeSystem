@@ -6,8 +6,8 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Web.Areas.Contests.Controllers;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Contests.Controllers;
 
     [TestClass]
     public class ValidateContestTests : CompeteControllerBaseTestsClass

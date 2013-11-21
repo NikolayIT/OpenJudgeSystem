@@ -16,10 +16,11 @@
 
     public class SubmissionJob : IJob
     {
-        private bool stopping;
-
         private readonly ILog logger;
+
         private readonly SynchronizedHashtable processingSubmissionIds;
+
+        private bool stopping;
 
         public SubmissionJob(string name, SynchronizedHashtable processingSubmissionIds)
         {
@@ -42,10 +43,10 @@
             while (!this.stopping)
             {
                 IOjsData data = new OjsData();
-                Submission dbSubmission;
+                Submission submission;
                 try
                 {
-                    dbSubmission = data.Submissions.GetSubmissionForProcessing();
+                    submission = data.Submissions.GetSubmissionForProcessing();
                 }
                 catch (Exception exception)
                 {
@@ -53,14 +54,14 @@
                     throw;
                 }
 
-                if (dbSubmission == null)
+                if (submission == null)
                 {
                     // No submission available. Wait 1 second and try again.
                     Thread.Sleep(1000);
                     continue;
                 }
 
-                if (!this.processingSubmissionIds.Add(dbSubmission.Id))
+                if (!this.processingSubmissionIds.Add(submission.Id))
                 {
                     // Other thread is processing the same submission. Wait the other thread to set Processing to true and then try again.
                     Thread.Sleep(100);
@@ -69,139 +70,49 @@
 
                 try
                 {
-                    dbSubmission.Processing = true;
+                    submission.Processing = true;
                     data.SaveChanges();
                 }
                 catch (Exception exception)
                 {
                     this.logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
-                    this.processingSubmissionIds.Remove(dbSubmission.Id);
+                    this.processingSubmissionIds.Remove(submission.Id);
                     throw;
                 }
 
-                data.TestRuns.DeleteBySubmissionId(dbSubmission.Id);
+                data.TestRuns.DeleteBySubmissionId(submission.Id);
                 data.SaveChanges();
 
                 try
                 {
-                    this.ProcessSubmission(dbSubmission);
+                    this.ProcessSubmission(submission);
                 }
                 catch (Exception exception)
                 {
-                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
-                    dbSubmission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
+                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
                 }
 
-                dbSubmission.Processed = true;
-                dbSubmission.Processing = false;
+                submission.Processed = true;
+                submission.Processing = false;
                 try
                 {
                     data.SaveChanges();
                 }
                 catch (Exception exception)
                 {
-                    this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", dbSubmission.Id, exception);
+                    this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
                 }
 
-                this.processingSubmissionIds.Remove(dbSubmission.Id);
+                this.processingSubmissionIds.Remove(submission.Id);
             }
 
             this.logger.Info("SubmissionJob stopped.");
         }
 
-        private void ProcessSubmission(Submission dbSubmission)
-        {
-            // TODO: Check for N+1 queries problem
-            this.logger.InfoFormat("Work on submission №{0} started.", dbSubmission.Id);
-
-            IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(dbSubmission.SubmissionType.ExecutionStrategyType);
-            var context = new ExecutionContext
-            {
-                AdditionalCompilerArguments = dbSubmission.SubmissionType.AdditionalCompilerArguments,
-                CheckerAssemblyName = dbSubmission.Problem.Checker.DllFile,
-                CheckerParameter = dbSubmission.Problem.Checker.Parameter,
-                CheckerTypeName = dbSubmission.Problem.Checker.ClassName,
-                Code = dbSubmission.ContentAsString,
-                CompilerType = dbSubmission.SubmissionType.CompilerType,
-                MemoryLimit = dbSubmission.Problem.MemoryLimit,
-                TimeLimit = dbSubmission.Problem.TimeLimit,
-            };
-
-            context.Tests = dbSubmission.Problem.Tests.ToList().Select(x => new TestContext
-            {
-                Id = x.Id,
-                Input = x.InputDataAsString,
-                Output = x.OutputDataAsString,
-            });
-
-            ExecutionResult executionResult;
-            try
-            {
-                executionResult = executionStrategy.Execute(context);
-            }
-            catch (Exception exception)
-            {
-                this.logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", dbSubmission.Id, exception);
-                dbSubmission.ProcessingComment = string.Format("Exception in executionStrategy.Execute: {0}", exception.Message);
-                return;
-            }
-
-            dbSubmission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
-            dbSubmission.CompilerComment = executionResult.CompilerComment;
-
-            if (!executionResult.IsCompiledSuccessfully)
-            {
-                return;
-            }
-
-            foreach (var testResult in executionResult.TestResults)
-            {
-                var testRun = new TestRun
-                {
-                    CheckerComment = testResult.CheckerComment,
-                    ExecutionComment = testResult.ExecutionComment,
-                    MemoryUsed = testResult.MemoryUsed,
-                    ResultType = testResult.ResultType,
-                    TestId = testResult.Id,
-                    TimeUsed = testResult.TimeUsed,
-                };
-                dbSubmission.TestRuns.Add(testRun);
-            }
-
-            // Internal joke: dbSubmission.Points = new Random().Next(0, dbSubmission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
-            if (dbSubmission.Problem.Tests.Count == 0)
-            {
-                dbSubmission.Points = 0;
-            }
-            else
-            {
-                dbSubmission.Points = (dbSubmission.CorrectTestRunsCount * dbSubmission.Problem.MaximumPoints) / dbSubmission.Problem.Tests.Count;
-            }
-
-            this.logger.InfoFormat("Work on submission №{0} ended.", dbSubmission.Id);
-        }
-        
         public void Stop()
         {
             this.stopping = true;
-        }
-
-        private IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)
-        {
-            IExecutionStrategy executionStrategy;
-            switch (type)
-            {
-                case ExecutionStrategyType.CompileExecuteAndCheck:
-                    executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
-                    break;
-                case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
-                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return executionStrategy;
         }
 
         private static string GetCompilerPath(CompilerType type)
@@ -221,6 +132,96 @@
                 default:
                     throw new ArgumentOutOfRangeException("type");
             }
+        }
+
+        private void ProcessSubmission(Submission submission)
+        {
+            // TODO: Check for N+1 queries problem
+            this.logger.InfoFormat("Work on submission №{0} started.", submission.Id);
+
+            IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
+            var context = new ExecutionContext
+            {
+                AdditionalCompilerArguments = submission.SubmissionType.AdditionalCompilerArguments,
+                CheckerAssemblyName = submission.Problem.Checker.DllFile,
+                CheckerParameter = submission.Problem.Checker.Parameter,
+                CheckerTypeName = submission.Problem.Checker.ClassName,
+                Code = submission.ContentAsString,
+                CompilerType = submission.SubmissionType.CompilerType,
+                MemoryLimit = submission.Problem.MemoryLimit,
+                TimeLimit = submission.Problem.TimeLimit,
+            };
+
+            context.Tests = submission.Problem.Tests.ToList().Select(x => new TestContext
+            {
+                Id = x.Id,
+                Input = x.InputDataAsString,
+                Output = x.OutputDataAsString,
+            });
+
+            ExecutionResult executionResult;
+            try
+            {
+                executionResult = executionStrategy.Execute(context);
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                submission.ProcessingComment = string.Format("Exception in executionStrategy.Execute: {0}", exception.Message);
+                return;
+            }
+
+            submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
+            submission.CompilerComment = executionResult.CompilerComment;
+
+            if (!executionResult.IsCompiledSuccessfully)
+            {
+                return;
+            }
+
+            foreach (var testResult in executionResult.TestResults)
+            {
+                var testRun = new TestRun
+                {
+                    CheckerComment = testResult.CheckerComment,
+                    ExecutionComment = testResult.ExecutionComment,
+                    MemoryUsed = testResult.MemoryUsed,
+                    ResultType = testResult.ResultType,
+                    TestId = testResult.Id,
+                    TimeUsed = testResult.TimeUsed,
+                };
+                submission.TestRuns.Add(testRun);
+            }
+
+            // Internal joke: dbSubmission.Points = new Random().Next(0, dbSubmission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
+            if (submission.Problem.Tests.Count == 0)
+            {
+                submission.Points = 0;
+            }
+            else
+            {
+                submission.Points = (submission.CorrectTestRunsCount * submission.Problem.MaximumPoints) / submission.Problem.Tests.Count;
+            }
+
+            this.logger.InfoFormat("Work on submission №{0} ended.", submission.Id);
+        }
+
+        private IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)
+        {
+            IExecutionStrategy executionStrategy;
+            switch (type)
+            {
+                case ExecutionStrategyType.CompileExecuteAndCheck:
+                    executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
+                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return executionStrategy;
         }
     }
 }

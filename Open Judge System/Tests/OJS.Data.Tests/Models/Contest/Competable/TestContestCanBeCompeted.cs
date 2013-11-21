@@ -5,17 +5,17 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     [TestClass]
     public class TestContestCanBeCompeted : TestContestBaseData
     {
-        //[TestInitialize]
-        //public void CleanDatabase()
-        //{
-        //    base.FullCleanDatabase();
-        //}
+        //// [TestInitialize]
+        //// public void CleanDatabase()
+        //// {
+        ////     base.FullCleanDatabase();
+        //// }
 
         [TestMethod]
         public void NonVisibleContestShouldNotBeCompeted()
@@ -54,7 +54,7 @@
         [TestMethod]
         public void ContestWithNoStartTimeShouldNotBeCompeted()
         {
-            var contest =new Contest
+            var contest = new Contest
             {
                 Name = "Contest",
                 IsVisible = true,

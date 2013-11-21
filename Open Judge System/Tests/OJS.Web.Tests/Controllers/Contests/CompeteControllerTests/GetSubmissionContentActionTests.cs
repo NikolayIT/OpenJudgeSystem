@@ -1,11 +1,12 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
     using System;
+    using System.Net;
+    using System.Web;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    
     using OJS.Data.Models;
-    using System.Web;
-    using System.Net;
 
     [TestClass]
     public class GetSubmissionContentActionTests : CompeteControllerBaseTestsClass

@@ -2,8 +2,10 @@
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Web.Mvc;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    
     using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 

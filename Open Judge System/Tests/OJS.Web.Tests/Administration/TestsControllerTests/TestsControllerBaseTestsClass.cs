@@ -1,5 +1,12 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;
@@ -8,19 +15,12 @@
     using OJS.Data;
     using OJS.Data.Contracts;
     using OJS.Data.Models;
+    using OJS.Data.Repositories.Contracts;
     using OJS.Tests.Common;
     using OJS.Web.Areas.Administration.Controllers;
     using OJS.Web.Areas.Administration.ViewModels;
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using OJS.Data.Repositories.Contracts;
     using OJS.Web.Areas.Administration.ViewModels.Test;
-
+    
     [TestClass]
     public class TestsControllerBaseTestsClass : BaseWebTests
     {
@@ -41,23 +41,6 @@
         protected ControllerContext controllerContext;
 
         protected TestViewModel testViewModel;
-
-        protected HttpContextBase MockHttpContestBase()
-        {
-            var mockHttpContext = new Mock<HttpContextBase>();
-            var mockRequest = new Mock<HttpRequestBase>();
-            mockHttpContext.SetupGet(x => x.Request).Returns(mockRequest.Object);
-
-            return mockHttpContext.Object;
-        }
-
-        protected IOjsData Data
-        {
-            get
-            {
-                return this.data.Object;
-            }
-        }
 
         public TestsControllerBaseTestsClass()
         {
@@ -277,7 +260,7 @@
 
             this.tests.Setup(x => x.All()).Returns(listsOfTests.AsQueryable());
             this.tests.Setup(x => x.Add(It.IsAny<Test>())).Callback((Test t) => { listsOfTests.Add(t); });
-            this.tests.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) => 
+            this.tests.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
             {
                 foreach (var currentTest in listsOfTests)
                 {
@@ -292,7 +275,7 @@
             this.testsRuns.Setup(x => x.All()).Returns(new List<TestRun>() { testRun }.AsQueryable());
             this.categories.Setup(x => x.All()).Returns(new List<ContestCategory>() { firstCategory, secondCategory, thirdCategory }.AsQueryable());
             this.contests.Setup(x => x.All()).Returns(new List<Contest>() { contest, otherContest }.AsQueryable());
-            
+
             this.data.SetupGet(x => x.Problems).Returns(this.problems.Object);
             this.data.SetupGet(x => x.Tests).Returns(this.tests.Object);
             this.data.SetupGet(x => x.TestRuns).Returns(this.testsRuns.Object);
@@ -302,6 +285,23 @@
             this.testsController = new TestsController(this.data.Object);
 
             this.controllerContext = new ControllerContext(this.MockHttpContestBase(), new RouteData(), this.testsController);
+        }
+        
+        protected IOjsData Data
+        {
+            get
+            {
+                return this.data.Object;
+            }
+        }
+
+        protected HttpContextBase MockHttpContestBase()
+        {
+            var mockHttpContext = new Mock<HttpContextBase>();
+            var mockRequest = new Mock<HttpRequestBase>();
+            mockHttpContext.SetupGet(x => x.Request).Returns(mockRequest.Object);
+
+            return mockHttpContext.Object;
         }
     }
 }

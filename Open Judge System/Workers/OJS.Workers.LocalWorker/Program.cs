@@ -7,7 +7,7 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the service.

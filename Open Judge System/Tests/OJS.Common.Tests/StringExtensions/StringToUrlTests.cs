@@ -105,6 +105,5 @@
 
             Assert.AreEqual(expected, result);
         }
-
     }
 }

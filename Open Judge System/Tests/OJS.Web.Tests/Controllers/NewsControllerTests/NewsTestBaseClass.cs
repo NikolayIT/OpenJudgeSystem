@@ -1,15 +1,8 @@
 ﻿namespace OJS.Web.Tests.Contollers.NewsControllerTests
 {
-    using System.Data.Entity;
     using System.Linq;
 
-    using OJS.Data;
     using OJS.Tests.Common;
-    using OJS.Web.Controllers;
-    using System.Web.Mvc;
-
-    using OJS.Web.ViewModels.News;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using OJS.Data.Models;
 
     public class NewsTestBaseClass : TestClassBase

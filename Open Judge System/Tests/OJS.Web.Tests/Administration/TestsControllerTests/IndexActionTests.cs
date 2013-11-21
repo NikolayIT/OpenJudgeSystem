@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using OJS.Web.Areas.Administration.Controllers;
     using System.Web.Mvc;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    
+    using OJS.Web.Areas.Administration.Controllers;
 
     [TestClass]
     public class IndexActionTests : TestsControllerBaseTestsClass

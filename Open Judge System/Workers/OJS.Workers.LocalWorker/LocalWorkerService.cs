@@ -11,9 +11,9 @@
 
     internal class LocalWorkerService : ServiceBase
     {
+        private static ILog logger;
         private readonly IList<Thread> threads;
         private readonly IList<IJob> jobs;
-        private static ILog logger;
 
         public LocalWorkerService()
         {

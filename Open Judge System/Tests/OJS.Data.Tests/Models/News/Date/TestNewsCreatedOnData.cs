@@ -4,16 +4,12 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Models;
-    using OJS.Data.Contracts;
-
     [TestClass]
     public class TestContestDateData : TestNewsBaseData
     {
         public TestContestDateData()
         {
-            base.PopulateEmptyDataBaseWithNews();
+            this.PopulateEmptyDataBaseWithNews();
         }
 
         [TestMethod]

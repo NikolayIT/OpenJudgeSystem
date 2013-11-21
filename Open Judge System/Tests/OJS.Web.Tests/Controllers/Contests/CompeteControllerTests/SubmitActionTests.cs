@@ -1,10 +1,11 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.ComponentModel.DataAnnotations;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
 

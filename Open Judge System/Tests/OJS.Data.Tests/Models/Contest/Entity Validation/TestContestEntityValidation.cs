@@ -5,8 +5,8 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     [TestClass]
     public class TestContestEntityValidation : TestContestBaseData
@@ -14,7 +14,7 @@
         [TestInitialize]
         public void CleanDatabase()
         {
-            base.FullCleanDatabase();
+            this.FullCleanDatabase();
         }
 
         [TestMethod]

@@ -2,11 +2,12 @@
 {
     using System;
     using System.Linq;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     [TestClass]
     public class TestContestCanBePracticed : TestContestBaseData

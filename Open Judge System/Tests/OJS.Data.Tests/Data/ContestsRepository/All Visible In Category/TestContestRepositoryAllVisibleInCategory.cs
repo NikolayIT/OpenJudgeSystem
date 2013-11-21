@@ -4,12 +4,12 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
-
+    using OJS.Data.Models;
     using OJS.Tests.Common.DataFakes;
 
     [TestClass]

@@ -58,7 +58,8 @@
 
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirror").Include(
                       "~/Content/CodeMirror/codemirror.css",
-                      "~/Content/CodeMirror/theme/tomorrow-night-eighties.css"));
+                      "~/Content/CodeMirror/theme/tomorrow-night-eighties.css",
+                      "~/Content/CodeMirror/theme/the-matrix.css"));
 
             bundles.Add(new StyleBundle("~/Content/Contests/submission-page").Include(
                 "~/Content/Contests/submission-page.css"));

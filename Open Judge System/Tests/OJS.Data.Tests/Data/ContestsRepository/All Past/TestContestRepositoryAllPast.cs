@@ -4,22 +4,23 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     [TestClass]
     public class TestContestRepositoryAllPast : TestContestRepositoryBaseData
     {
-        private IList<Contest> AllPast { get; set; }
-
         public TestContestRepositoryAllPast()
         {
-            base.PopulateEmptyDataBaseWithContests();
+            this.PopulateEmptyDataBaseWithContests();
             this.AllPast = this.Repository.AllPast().ToList();
         }
+
+        private IList<Contest> AllPast { get; set; }
 
         [TestMethod]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()

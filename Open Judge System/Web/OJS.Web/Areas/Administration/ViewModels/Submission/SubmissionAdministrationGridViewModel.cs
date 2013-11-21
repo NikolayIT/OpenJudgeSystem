@@ -1,15 +1,15 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Submission
 {
-    using OJS.Common.DataAnnotations;
-    using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels.Common;
-
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
+    using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.ViewModels.Common;
+    
     public class SubmissionAdministrationGridViewModel : AdministrationViewModel
     {
         [ExcludeFromExcel]

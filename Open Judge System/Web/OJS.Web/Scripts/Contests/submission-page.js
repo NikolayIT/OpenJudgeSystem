@@ -57,7 +57,7 @@ function createCodeMirrorForTextBox() {
             lineNumbers: true,
             matchBrackets: true,
             mode: "text/x-csharp",
-            theme: "tomorrow-night-eighties",
+            theme: "the-matrix",
             showCursorWhenSelecting: true,
             undoDepth: 100,
             lineWrapping: true,

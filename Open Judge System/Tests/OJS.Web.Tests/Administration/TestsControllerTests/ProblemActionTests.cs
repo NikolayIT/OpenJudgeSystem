@@ -1,10 +1,8 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.CSharp;
-    using OJS.Web.Areas.Administration.Controllers;
     using System.Web.Mvc;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class ProblemActionTests : TestsControllerBaseTestsClass

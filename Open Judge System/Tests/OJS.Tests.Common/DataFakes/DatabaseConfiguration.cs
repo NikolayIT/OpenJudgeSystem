@@ -20,7 +20,7 @@
         protected override void Seed(FakeOjsDbContext context)
         {
             context.ClearDatabase();
-            SeedContests(context);
+            this.SeedContests(context);
         }
 
         private void SeedContests(IOjsDbContext context)

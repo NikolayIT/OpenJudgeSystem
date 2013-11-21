@@ -9,8 +9,8 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Web.Areas.Administration.ViewModels;
-    using OJS.Web.Areas.Administration.ViewModels.TestRun;
     using OJS.Web.Areas.Administration.ViewModels.Test;
+    using OJS.Web.Areas.Administration.ViewModels.TestRun;
 
     [TestClass]
     public class AjaxOperationsTests : TestsControllerBaseTestsClass
@@ -131,7 +131,7 @@
             var contentResult = this.testsController.ProblemTests(1) as ContentResult;
             Assert.IsNotNull(contentResult);
 
-            var serializer = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue, RecursionLimit = 100 };
+            var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 };
 
             var data = serializer.Deserialize<List<TestViewModel>>(contentResult.Content);
 

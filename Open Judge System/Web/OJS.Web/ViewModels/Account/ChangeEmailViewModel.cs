@@ -9,7 +9,7 @@
         [StringLength(
                 int.MaxValue,
                 MinimumLength = 1,
-                ErrorMessageResourceName="Password_required",
+                ErrorMessageResourceName = "Password_required",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         [Required(
                 ErrorMessageResourceName = "Password_required",

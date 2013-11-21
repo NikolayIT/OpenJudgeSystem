@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -9,7 +10,7 @@
     {
         public TestNewsModifiedOndata()
         {
-            base.PopulateEmptyDataBaseWithNews();
+            this.PopulateEmptyDataBaseWithNews();
         }
 
         [TestMethod]

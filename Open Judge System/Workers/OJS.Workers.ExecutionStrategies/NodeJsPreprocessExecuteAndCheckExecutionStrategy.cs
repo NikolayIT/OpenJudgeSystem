@@ -10,6 +10,8 @@
 
     public class NodeJsPreprocessExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
+        private const string UserInputPlaceholder = "#userInput#";
+
         private readonly string nodeJsExecutablePath;
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath)
@@ -22,7 +24,7 @@
             this.nodeJsExecutablePath = nodeJsExecutablePath;
         }
 
-        private string jsCodeTemplate
+        private string JsCodeTemplate
         {
             get
             {
@@ -109,7 +111,7 @@ process.stdin.on('end', function() {
 });
 
 var code = {
-    run: " + userInputPlaceholder + @"
+    run: " + UserInputPlaceholder + @"
 };";
             }
         }
@@ -119,7 +121,7 @@ var code = {
             var result = new ExecutionResult();
 
             // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.jsCodeTemplate, executionContext.Code);
+            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code);
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = this.SaveStringToTempFile(codeToExecute);
@@ -145,11 +147,9 @@ var code = {
 
         private string PreprocessJsSubmission(string template, string code)
         {
-            var processedCode = template.Replace(userInputPlaceholder, code);
+            var processedCode = template.Replace(UserInputPlaceholder, code);
 
             return processedCode;
         }
-
-        private const string userInputPlaceholder = "#userInput#";
     }
 }

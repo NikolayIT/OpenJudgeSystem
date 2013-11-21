@@ -9,7 +9,7 @@
     {
         public TestContestModifiedOnData()
         {
-            base.PopulateEmptyDataBaseWithContest();
+            this.PopulateEmptyDataBaseWithContest();
         }
 
         [TestMethod]

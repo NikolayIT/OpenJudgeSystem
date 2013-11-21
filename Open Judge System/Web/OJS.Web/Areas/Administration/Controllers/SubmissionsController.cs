@@ -10,8 +10,8 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
 
     public class SubmissionsController : KendoGridAdministrationController
     {
@@ -40,7 +40,7 @@
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@
 
             if (submission == null)
             {
-                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
                 this.RedirectToAction("Index");
             }
 
@@ -102,7 +102,7 @@
 
             if (submission == null)
             {
-                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
                 this.RedirectToAction("Index");
             }
 
@@ -117,7 +117,7 @@
 
             if (submission == null)
             {
-                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
                 this.RedirectToAction("Index");
             }
 
@@ -143,7 +143,7 @@
                     Value = subm.Id.ToString(),
                 });
 
-            return Json(dropDownData, JsonRequestBehavior.AllowGet);
+            return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Retest(int id)
@@ -154,7 +154,7 @@
 
             if (submission == null)
             {
-                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
             }
             else
             {
@@ -162,7 +162,7 @@
                 submission.Processing = false;
                 this.Data.SaveChanges();
 
-                TempData["InfoMessage"] = RetestSuccessful;
+                this.TempData["InfoMessage"] = RetestSuccessful;
             }
 
             return this.RedirectToAction("View", "Submissions", new { area = "Contests", id = id });

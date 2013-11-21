@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data.Models;
@@ -11,13 +12,13 @@
     [TestClass]
     public class TestContestRepositoryAllFuture : TestContestRepositoryBaseData
     {
-        private IList<Contest> AllFuture { get; set; }
-
         public TestContestRepositoryAllFuture()
         {
             this.PopulateEmptyDataBaseWithContests();
             this.AllFuture = this.Repository.AllFuture().ToList();
         }
+
+        private IList<Contest> AllFuture { get; set; }
 
         [TestMethod]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()

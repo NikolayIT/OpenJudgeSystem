@@ -1,7 +1,9 @@
 ﻿namespace OJS.Workers.Checkers.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Text;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using OJS.Workers.Common;
 
     [TestClass]
@@ -396,7 +398,7 @@
         [TestMethod]
         public void TrimCheckerShouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLinesWithSpacing()
         {
-            string receivedOutput =    "Bar  \n   Foo ";
+            string receivedOutput = "Bar  \n   Foo ";
             string expectedOutput = " Bar       ";
             var checker = new TrimChecker();
 

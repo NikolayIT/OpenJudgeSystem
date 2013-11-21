@@ -2,18 +2,17 @@
 {
     using System;
     using System.Linq;
+    
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Data.Contracts;
 
     [TestClass]
     public class TestContestToStringMethod : TestContestBaseData
     {
         public TestContestToStringMethod()
         {
-            base.FullCleanDatabase();
+            this.FullCleanDatabase();
         }
 
         [TestMethod]
