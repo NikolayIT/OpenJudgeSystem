@@ -40,7 +40,7 @@
                     Name = this.Name,
                     OrderBy = this.OrderBy,
                     IsVisible = this.IsVisible,
-                    CreatedOn = this.CreatedOn,
+                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn
                 };
             }

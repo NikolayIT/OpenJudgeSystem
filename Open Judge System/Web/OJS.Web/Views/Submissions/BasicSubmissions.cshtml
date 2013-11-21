@@ -51,45 +51,56 @@
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
-                        <small>@Model[i].MaxUsedMemory KB | @(((decimal)Model[i].MaxUsedTime) / Model[i].ProblemMaximumPoints) sec.</small>
-                    </div>
-                    <div>
-                        @{
+                    @if (Model[i].Processed)
+                    {
+                        <div>
+                            <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
+                            <small>@(string.Format("{0:F2}", Model[i].MaxUsedMemory / 1024.0 / 1024.0)) MB | @(((decimal)Model[i].MaxUsedTime) / Model[i].ProblemMaximumPoints) sec.</small>
+                        </div>
+                    }
+                        <div>
+                    @{
             var tests = Model[i].TestResults.ToList();
 
-            if (tests.Count == 0)
+            if (!Model[i].Processed)
+            {
+                <span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>
+                                <strong class="text-primary"> Обработва се...</strong>
+            }
+            else if (tests.Count == 0 && Model[i].Processed)
             {
                 <span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>
-                <strong class="text-danger"> Compilation failed!</strong>
+                                <strong class="text-danger"> Compilation failed!</strong>
             }
-
-            for (int j = 0; j < tests.Count; j++)
+            else
             {
-                switch (tests[j].ExecutionResult)
+                for (int j = 0; j < tests.Count; j++)
                 {
-                    case OJS.Common.Models.TestRunResultType.CorrectAnswer:
-                        <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
-                        break;
-                    case OJS.Common.Models.TestRunResultType.WrongAnswer:
-                    <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
-                        break;
-                    case OJS.Common.Models.TestRunResultType.TimeLimit:
-                    <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
-                        break;
-                    case OJS.Common.Models.TestRunResultType.MemoryLimit:
-                    <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
-                        break;
-                    case OJS.Common.Models.TestRunResultType.RunTimeError:
-                    <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
-                        break;
+                    switch (tests[j].ExecutionResult)
+                    {
+                        case OJS.Common.Models.TestRunResultType.CorrectAnswer:
+                            <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
+                            break;
+                        case OJS.Common.Models.TestRunResultType.WrongAnswer:
+                        <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
+                            break;
+                        case OJS.Common.Models.TestRunResultType.TimeLimit:
+                        <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
+                            break;
+                        case OJS.Common.Models.TestRunResultType.MemoryLimit:
+                        <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
+                            break;
+                        case OJS.Common.Models.TestRunResultType.RunTimeError:
+                        <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
+                            break;
+                    }
                 }
             }
-                        }
-                    </div>
-                </td>
-            </tr>
+
+                            }
+                        </div>
+                    </td>
+                </tr>
         }
-    </tbody>
-</table>
+                </tbody>
+            </table>

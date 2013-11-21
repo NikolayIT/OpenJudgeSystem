@@ -4,7 +4,7 @@
 }
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
         {
@@ -16,19 +16,18 @@
             columns.Bound(model => model.Points);
             columns.Bound(model => model.CreatedOn).Hidden();
             columns.Bound(model => model.ModifiedOn).Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
-            columns.Command(command => command.Destroy().Text(" ")).Width(80);
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промяна</a>");
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтриване</a>");    
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>");
         })
     .ToolBar(toolbar =>
     {
-        toolbar.Create().Text("Създай");
+        toolbar.Custom().Text("Създай").Action("Create", ControllerName);
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
-        editable.Mode(GridEditMode.PopUp);
-        editable.Window(w => w.Title(ViewBag.Title));
         editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
     })
     .ColumnMenu()
@@ -51,9 +50,7 @@
                 model.Id(m => m.Id);
             })
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-        .Create(create => create.Action("Create", ControllerName))
         .Read(read => read.Action("Read", ControllerName))
-        .Update(update => update.Action("Update", ControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ControllerName))
     )
 )

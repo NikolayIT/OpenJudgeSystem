@@ -103,7 +103,7 @@ function populateDropDowns(problemIdAsString) {
                         return dataItem.Id === categoryId;
                     });
 
-                    // TODO: Improve by using success callback or promises, not setTimeout
+                    // TODO: Improve by using success callback or promises, not setTimeout - Cascade event on widgets might work too
 
                     window.setTimeout(function () {
 

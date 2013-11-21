@@ -25,6 +25,7 @@
                     Contest = submission.Problem.Contest.Name,
                     ParticipantId = submission.ParticipantId,
                     ParticipantName = submission.Participant.User.UserName,
+                    Processed = submission.Processed,
                     TestResults = submission.TestRuns.AsQueryable().Where(x => !x.Test.IsTrialTest).Select(TestRunViewModel.FromTestRun)
                 };
             }
@@ -49,6 +50,8 @@
         public string ProgrammingLanguage { get; set; }
 
         public IEnumerable<TestRunViewModel> TestResults { get; set; }
+
+        public bool Processed { get; set; }
 
         public int Points
         {

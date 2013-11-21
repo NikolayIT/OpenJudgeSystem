@@ -1,0 +1,21 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.EditorForModel()
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="editor-label col-xs-1">
+            <button type="submit" class="btn btn-primary">Запази</button>
+        </div>
+        <div class="editor-label col-xs-1">
+            <a href="/Administration/Submissions" class="btn btn-primary">Назад</a>
+        </div>
+    </div>
+}

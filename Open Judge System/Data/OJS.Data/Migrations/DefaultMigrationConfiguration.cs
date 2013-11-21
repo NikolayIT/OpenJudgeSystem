@@ -30,6 +30,7 @@ namespace OJS.Data.Migrations
             // this.SeedProblem(context);
             // this.SeedTest(context);
             // this.SeedCategoryContestProblem(context);
+            this.SeedAdministrators(context);
         }
 
         //// TODO: Add seed with .Any()
@@ -66,7 +67,7 @@ namespace OJS.Data.Migrations
                 {
                     Name = "Sort lines",
                     DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.SortLinesChecker",
+                    ClassName = "OJS.Workers.Checkers.SortChecker",
                     IsProblemSpecific = false,
                 },
                 new Checker
@@ -602,6 +603,24 @@ namespace OJS.Data.Migrations
                     StartTime = DateTime.Now.AddHours(10),
                     EndTime = DateTime.Now.AddHours(18),
                     Category = category,
+                });
+        }
+
+        private void SeedAdministrators(OjsDbContext context)
+        {
+            var user = context.Users.FirstOrDefault(us => us.UserName == "IvayloIT");
+
+            var role = context.Roles.FirstOrDefault(r => r.Name == "Administrator");
+
+            if (user == null || role == null)
+            {
+                return;
+            }
+
+            user.Roles.Add(new IdentityUserRole
+                {
+                    RoleId = role.Id,
+                    UserId = user.Id,
                 });
         }
     }

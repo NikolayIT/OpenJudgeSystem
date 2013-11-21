@@ -58,7 +58,7 @@
                         Company = this.Company,
                         JobTitle = this.JobTitle,
                     },
-                    CreatedOn = this.CreatedOn,
+                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn,
                 };
             }

@@ -44,7 +44,7 @@
                     Source = this.Source,
                     Content = this.Content,
                     IsVisible = this.IsVisible,
-                    CreatedOn = this.CreatedOn,
+                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn
                 };
             }

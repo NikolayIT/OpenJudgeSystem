@@ -7,6 +7,12 @@
     margin-bottom: 10px;
 }
 
+    .row .k-widget * {
+        -webkit-box-sizing: border-box !important;
+        -moz-box-sizing: border-box !important;
+        box-sizing: border-box !important;
+    }
+
 .resource-glyph {
     margin-right: 5px;
     padding-left: 5px;

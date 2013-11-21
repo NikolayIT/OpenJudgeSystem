@@ -1,11 +1,11 @@
 /*
-* Kendo UI Beta v2013.2.716 (http://kendoui.com)
+* Kendo UI Complete v2013.3.1119 (http://kendoui.com)
 * Copyright 2013 Telerik AD. All rights reserved.
 *
-* Kendo UI Beta license terms available at
-* http://www.kendoui.com/purchase/license-agreement/kendo-ui-beta.aspx
+* Kendo UI Complete commercial licenses may be obtained at
+* https://www.kendoui.com/purchase/license-agreement/kendo-ui-complete-commercial.aspx
+* If you do not own a commercial license, this file shall be governed by the trial license terms.
 */
-
 /* Widget Base Styles */
 /* Selects, Dropdowns */
 /* Inputs */
@@ -16,8 +16,8 @@
 /* Content */
 /* Widget States */
 /* Hover State */
-/*Focused State*/
 /* Selected State */
+/*Focused State*/
 /* Active State */
 /* Error State */
 /* Disabled State */
@@ -84,7 +84,7 @@
 .k-tiles,
 .k-toolbar,
 .k-tooltip,
-.k-editor-button .k-tool-icon,
+.k-button-group .k-tool,
 .k-upload-files {
   border-color: #2b2b2b;
 }
@@ -102,7 +102,8 @@
   background-color: #555555;
 }
 .k-grouping-row td,
-td.k-group-cell {
+td.k-group-cell,
+.k-resize-handle-inner {
   background-color: #1d1d1d;
 }
 .k-list-container {
@@ -165,6 +166,9 @@ textarea.k-textbox:hover,
 .k-dropdown .k-input {
   color: #ffffff;
 }
+.k-block {
+  color: #ffffff;
+}
 .k-link:link,
 .k-link:visited,
 .k-nav-current.k-state-hover .k-link {
@@ -187,15 +191,17 @@ textarea.k-textbox:hover,
 .k-pager-wrap,
 .k-textbox,
 .k-button,
+.k-progressbar,
 .k-draghandle,
 .k-autocomplete,
 .k-state-highlight,
-.k-tabstrip-items .k-item {
+.k-tabstrip-items .k-item,
+.km-pane-wrapper > .km-pane > .km-view > .km-content {
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
   background-position: 50% 50%;
   background-color: #1d1d1d;
 }
@@ -226,11 +232,28 @@ textarea.k-textbox:hover,
 .k-column-menu .k-sprite {
   opacity: 0.85;
 }
+.k-mobile-list .k-check:checked,
+.k-mobile-list .k-edit-field [type=checkbox]:checked,
+.k-mobile-list .k-edit-field [type=radio]:checked {
+  opacity: 0.85;
+}
+.k-tool {
+  border-color: transparent;
+}
 .k-icon,
 .k-tool-icon,
 .k-grouping-dropclue,
 .k-drop-hint,
-.k-column-menu .k-sprite {
+.k-column-menu .k-sprite,
+.k-grid-mobile .k-resize-handle-inner:before,
+.k-grid-mobile .k-resize-handle-inner:after {
+  background-image: url('Black/sprite.png');
+  border-color: transparent;
+}
+/* IE will ignore the above selectors if these are added too */
+.k-mobile-list .k-check:checked,
+.k-mobile-list .k-edit-field [type=checkbox]:checked,
+.k-mobile-list .k-edit-field [type=radio]:checked {
   background-image: url('Black/sprite.png');
   border-color: transparent;
 }
@@ -258,17 +281,11 @@ textarea.k-textbox:hover,
 .k-state-disabled .k-button,
 .k-state-disabled .k-button:hover,
 .k-button.k-state-disabled:hover,
-.k-state-disabled .k-button:hover,
-.k-button.k-state-disabled:active,
-.k-state-disabled .k-button:active {
+.k-state-disabled .k-button:active,
+.k-button.k-state-disabled:active {
   color: #7a7a7a;
   border-color: #2b2b2b;
-  background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-color: transparent;
+  background-color: #272727;
 }
 .k-draghandle {
   border-color: #2b2b2b;
@@ -283,7 +300,13 @@ textarea.k-textbox:hover,
   box-shadow: none;
 }
 /* Scheduler */
-.k-scheduler,
+.k-scheduler {
+  color: #ffffff;
+  background-color: #272727;
+}
+.k-scheduler-layout {
+  color: #ffffff;
+}
 .k-scheduler-datecolumn,
 .k-scheduler-groupcolumn {
   background-color: #272727;
@@ -297,6 +320,9 @@ textarea.k-textbox:hover,
 .k-scheduler-times {
   border-color: #444444;
 }
+.k-scheduler-table .k-nonwork-hour {
+  background-color: #363636;
+}
 .k-scheduler-table .k-today,
 .k-today > .k-scheduler-datecolumn,
 .k-today > .k-scheduler-groupcolumn {
@@ -309,9 +335,15 @@ textarea.k-textbox:hover,
   background-color: #ff0000;
 }
 .k-event {
-  border-color: rgba(0, 0, 0, 0.13);
+  border-color: #0167cc;
   background: #0167cc 0 -257px url('textures/highlight.png') repeat-x;
   color: #ffffff;
+}
+.k-event-inverse {
+  color: #272727;
+}
+.k-event.k-state-selected {
+  background-position: 0 0;
 }
 .k-ie7 .k-event .k-resize-handle,
 .k-event .k-resize-handle:after {
@@ -372,7 +404,8 @@ textarea.k-textbox:hover,
   text-decoration: none;
   background-color: #4d4d4d;
 }
-.k-calendar .k-footer .k-nav-today:hover {
+.k-calendar .k-footer .k-nav-today:hover,
+.k-calendar .k-footer .k-nav-today.k-state-hover {
   background-color: #4d4d4d;
   text-decoration: underline;
 }
@@ -388,7 +421,7 @@ textarea.k-textbox:hover,
   color: #ffffff;
 }
 .k-calendar .k-link.k-state-hover,
-.k-window .k-link {
+.k-window-titlebar .k-link {
   border-radius: 4px;
 }
 .k-calendar .k-footer .k-link {
@@ -424,7 +457,7 @@ textarea.k-textbox:hover,
 .k-listview > .k-state-focused,
 .k-grid-header th.k-state-focused,
 td.k-state-focused,
-.k-button:focus,
+.k-button:focus:not(.k-state-disabled):not([disabled]),
 .k-button.k-state-focused {
   -webkit-box-shadow: inset 0 0 3px 1px #2b2b2b;
   box-shadow: inset 0 0 3px 1px #2b2b2b;
@@ -433,7 +466,7 @@ td.k-state-focused,
 .k-list > .k-state-focused.k-state-selected,
 .k-listview > .k-state-focused.k-state-selected,
 td.k-state-focused.k-state-selected,
-.k-button:focus:active {
+.k-button:focus:active:not(.k-state-disabled):not([disabled]) {
   -webkit-box-shadow: inset 0 0 3px 1px #004080;
   box-shadow: inset 0 0 3px 1px #004080;
 }
@@ -442,6 +475,7 @@ td.k-state-focused.k-state-selected,
 .k-ie8 .k-listview > .k-state-focused,
 .k-ie8 .k-grid-header th.k-state-focused,
 .k-ie8 td.k-state-focused,
+.k-ie8 .k-tool.k-state-hover,
 .k-ie8 .k-button:focus,
 .k-ie8 .k-button.k-state-focused,
 .k-ie7 .k-panelbar span.k-state-focused,
@@ -449,6 +483,7 @@ td.k-state-focused.k-state-selected,
 .k-ie7 .k-listview > .k-state-focused,
 .k-ie7 .k-grid-header th.k-state-focused,
 .k-ie7 td.k-state-focused,
+.k-ie7 .k-tool.k-state-hover,
 .k-ie7 .k-button:focus,
 .k-ie7 .k-button.k-state-focused {
   background-color: #3d3d3d;
@@ -465,10 +500,10 @@ td.k-state-focused.k-state-selected,
 .k-button:active,
 .k-draghandle.k-state-selected:hover {
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
 }
 .k-button:active,
 .k-draghandle.k-state-selected:hover {
@@ -482,7 +517,12 @@ td.k-state-focused.k-state-selected,
 .k-scheduler .k-scheduler-toolbar ul li.k-state-hover,
 .k-pager-wrap .k-link:hover,
 .k-dropdown .k-state-focused,
-.k-imagebrowser-dropzone {
+.k-imagebrowser-dropzone,
+.k-mobile-list .k-item > .k-link:active,
+.k-mobile-list .k-item > .k-label:active,
+.k-mobile-list .k-edit-label.k-check:active,
+.k-mobile-list .k-scheduler-timezones .k-edit-field:nth-child(2):active,
+.k-mobile-list .k-recur-view .k-check:active {
   color: #ffffff;
   background-color: #3d3d3d;
   border-color: #2b2b2b;
@@ -502,10 +542,10 @@ td.k-state-focused.k-state-selected,
 div.k-imagebrowser-dropzone em,
 .k-draghandle:hover {
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
 }
 .k-pager-wrap {
   background-color: #1d1d1d;
@@ -525,23 +565,6 @@ div.k-imagebrowser-dropzone em,
 .k-tool-icon {
   background-image: url('Black/sprite.png');
 }
-.k-tool-icon.k-state-hover {
-  background-image: url('Black/sprite.png');
-  background-image: url('Black/sprite.png'), -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: url('Black/sprite.png'), -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: url('Black/sprite.png'), -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: url('Black/sprite.png'), linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-}
-.k-tool-icon.k-state-active,
-.k-tool-icon.k-state-active.k-state-hover,
-.k-tool-icon.k-state-selected,
-.k-tool-icon.k-state-selected.k-state-hover {
-  background-image: url('Black/sprite.png');
-  background-image: url('Black/sprite.png'), -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: url('Black/sprite.png'), -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: url('Black/sprite.png'), -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: url('Black/sprite.png'), linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-}
 .k-state-hover > .k-link,
 .k-other-month.k-state-hover .k-link,
 div.k-imagebrowser-dropzone em {
@@ -555,15 +578,18 @@ div.k-imagebrowser-dropzone em {
 .k-numeric-wrap.k-state-focused,
 .k-dropdown-wrap.k-state-hover,
 .k-dropdown-wrap.k-state-focused {
-  background-color: #3d3d3d;
+  background-color: #080808;
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
   background-position: 50% 50%;
   border-color: #2b2b2b;
 }
+.km-pane-wrapper .k-mobile-list input:not([type="checkbox"]):not([type="radio"]),
+.km-pane-wrapper .km-pane .k-mobile-list select:not([multiple]),
+.km-pane-wrapper .k-mobile-list textarea,
 .k-dropdown .k-state-focused .k-input {
   color: #ffffff;
 }
@@ -595,6 +621,14 @@ div.k-imagebrowser-dropzone em {
 .k-tile-empty strong,
 .k-slider .k-draghandle {
   color: #7a7a7a;
+}
+/* Progressbar */
+.k-progressbar-indeterminate {
+  background: url('Black/indeterminate.gif');
+}
+.k-progressbar-indeterminate .k-progress-status-wrap,
+.k-progressbar-indeterminate .k-state-selected {
+  display: none;
 }
 /* Slider */
 .k-slider-track {
@@ -717,8 +751,8 @@ div.k-imagebrowser-dropzone em {
 .k-dropdown-wrap.k-state-focused,
 .k-picker-wrap.k-state-focused,
 .k-numeric-wrap.k-state-focused {
-  -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 0 3px 0 #0066cc;
+  box-shadow: 0 0 3px 0 #0066cc;
 }
 .k-state-selected {
   -webkit-box-shadow: none;
@@ -746,6 +780,7 @@ div.k-imagebrowser-dropzone em {
   -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
 }
+/* Window */
 .k-window {
   border-color: rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 1px 1px 7px 1px rgba(128, 128, 128, 0.3);
@@ -756,6 +791,13 @@ div.k-imagebrowser-dropzone em {
   border-color: rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.3);
   box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.3);
+}
+.k-window.k-window-maximized,
+.k-window-maximized .k-window-titlebar,
+.k-window-maximized .k-window-content {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
 }
 .k-shadow {
   -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -815,17 +857,31 @@ div.k-imagebrowser-dropzone em {
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
-.k-group-start .k-tool-icon {
+.k-tool {
+  text-align: center;
+  vertical-align: middle;
+}
+.k-tool.k-group-start {
   -moz-border-radius: 4px 0 0 4px;
   -webkit-border-radius: 4px 0 0 4px;
   border-radius: 4px 0 0 4px;
 }
-.k-group-end .k-tool-icon {
+.k-rtl .k-tool.k-group-start {
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
 }
-.k-group-start.k-group-end .k-tool-icon {
+.k-tool.k-group-end {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+.k-rtl .k-tool.k-group-end {
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.k-group-start.k-group-end.k-tool {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -905,9 +961,9 @@ div.k-imagebrowser-dropzone em {
 .k-picker-wrap.k-state-border-down .k-input,
 .k-picker-wrap.k-state-border-down .k-selected-color,
 .k-numeric-wrap.k-state-border-down .k-input {
-  -moz-border-radius: 4px 0 0 0;
-  -webkit-border-radius: 4px 0 0 0;
-  border-radius: 4px 0 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
 }
 .k-numeric-wrap .k-link.k-state-selected {
   background-color: #0066cc;
@@ -969,12 +1025,24 @@ div.k-imagebrowser-dropzone em {
 }
 .k-scheduler-toolbar > ul li:first-child,
 .k-scheduler-toolbar > ul li:first-child .k-link {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 .k-rtl .k-scheduler-toolbar > ul li:first-child,
-.k-rtl .k-scheduler-toolbar > ul li:first-child .k-link {
+.k-rtl .k-scheduler-toolbar > ul li:first-child .k-link,
+.km-view.k-popup-edit-form .k-scheduler-toolbar > ul li:last-child,
+.km-view.k-popup-edit-form .k-scheduler-toolbar > ul li:last-child .k-link {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
+}
+.k-scheduler-mobile .k-scheduler-toolbar > ul li.k-nav-today,
+.k-scheduler-mobile .k-scheduler-toolbar > ul li.k-nav-today .k-link,
+.k-edit-field > .k-scheduler-navigation {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
 }
 .k-scheduler-toolbar .k-nav-next,
 .k-scheduler-toolbar ul + ul li:last-child,
@@ -1000,53 +1068,122 @@ div.k-imagebrowser-dropzone em {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+.k-scheduler-mobile .k-event {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+/* Adaptive Grid */
+.k-grid-mobile .k-column-active + th.k-header {
+  border-left-color: #ffffff;
+}
+.k-ie .km-pane-wrapper .k-widget,
+.k-ie .km-pane-wrapper .k-group,
+.k-ie .km-pane-wrapper .k-content,
+.k-ie .km-pane-wrapper .k-header,
+.k-ie .km-pane-wrapper .k-popup-edit-form .k-edit-field .k-button,
+.km-pane-wrapper .k-mobile-list .k-item,
+.km-pane-wrapper .k-mobile-list .k-edit-label,
+.km-pane-wrapper .k-mobile-list .k-edit-field {
+  color: #ffffff;
+}
+@media screen and (-ms-high-contrast: active) and (-ms-high-contrast: none) {
+  div.km-pane-wrapper a {
+    color: #ffffff;
+  }
+}
+.km-pane-wrapper .k-mobile-list .k-item,
+.km-pane-wrapper .k-mobile-list .k-edit-field,
+.km-pane-wrapper .k-mobile-list .k-recur-view > .k-edit-field .k-check {
+  background-color: #4d4d4d;
+  border-top: 1px solid #444444;
+}
+.km-pane-wrapper .k-mobile-list .k-recur-view > .k-edit-field .k-check:first-child {
+  border-top-color: transparent;
+}
+.km-pane-wrapper .k-mobile-list .k-item:last-child {
+  -webkit-box-shadow: inset 0 -1px 0 #444444;
+  box-shadow: inset 0 -1px 0 #444444;
+}
+.km-pane-wrapper .k-mobile-list > ul > li > .k-link,
+.km-pane-wrapper .k-mobile-list .k-recur-view > .k-edit-label:nth-child(3),
+.km-pane-wrapper #recurrence .km-scroll-container > .k-edit-label:first-child {
+  color: #000000;
+}
+.km-pane-wrapper .k-mobile-list > ul > li > .k-link {
+  border-bottom: 1px solid #444444;
+}
+.km-pane-wrapper .k-mobile-list .k-edit-field {
+  -webkit-box-shadow: 0 1px 1px #444444;
+  box-shadow: 0 1px 1px #444444;
+}
+.km-actionsheet .k-grid-delete,
+.km-actionsheet .k-scheduler-delete,
+.km-pane-wrapper .k-scheduler-delete,
+.km-pane-wrapper .k-filter-menu .k-button[type=reset] {
+  color: #fff;
+  border-color: #ff0000;
+  background-color: red;
+  background-image: -webkit-gradient(linear, 50% 0, 50% 100%, from(rgba(255,255,255,.3)), to(rgba(255,255,255,.15)));
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,.15));
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,.15));
+  background-image: -ms-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,.15));
+  background-image: linear-gradient(to bottom, rgba(255,255,255,.3), rgba(255,255,255,.15));
+}
+.km-actionsheet .k-grid-delete:active,
+.km-actionsheet .k-scheduler-delete:active,
+.km-pane-wrapper .k-scheduler-delete:active,
+.km-pane-wrapper .k-filter-menu .k-button[type=reset]:active {
+  background-color: #990000;
+}
+/* /Column Menu */
 .k-autocomplete.k-state-default,
 .k-picker-wrap.k-state-default,
 .k-numeric-wrap.k-state-default,
 .k-dropdown-wrap.k-state-default {
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
   background-position: 50% 50%;
-  background-color: #1d1d1d;
+  background-color: #272727;
   border-color: #2b2b2b;
 }
 .k-autocomplete.k-state-hover,
 .k-picker-wrap.k-state-hover,
 .k-numeric-wrap.k-state-hover,
 .k-dropdown-wrap.k-state-hover {
-  background-color: #3d3d3d;
+  background-color: #080808;
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
   background-position: 50% 50%;
-  border-color: #2b2b2b;
-}
-.k-autocomplete.k-state-focused,
-.k-picker-wrap.k-state-focused,
-.k-numeric-wrap.k-state-focused,
-.k-dropdown-wrap.k-state-focused {
-  background-color: #3d3d3d;
-  background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-position: 50% 50%;
-  border-color: #2b2b2b;
+  border-color: #080808;
 }
 .k-multiselect.k-header {
   border-color: #2b2b2b;
 }
 .k-multiselect.k-header.k-state-hover {
-  border-color: #2b2b2b;
+  border-color: #080808;
 }
+.k-autocomplete.k-state-focused,
+.k-picker-wrap.k-state-focused,
+.k-numeric-wrap.k-state-focused,
+.k-dropdown-wrap.k-state-focused,
 .k-multiselect.k-header.k-state-focused {
-  border-color: #2b2b2b;
+  background-color: #080808;
+  background-image: url('textures/glass.png');
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-position: 50% 50%;
+  border-color: #0066cc;
+  -webkit-box-shadow: 0 0 3px 0 #0066cc;
+  box-shadow: 0 0 3px 0 #0066cc;
 }
 .k-list-container {
   color: #ffffff;
@@ -1060,10 +1197,10 @@ div.k-imagebrowser-dropzone em {
   border-color: #2b2b2b;
 }
 .k-state-hover > .k-select {
-  border-color: #2b2b2b;
+  border-color: #080808;
 }
 .k-state-focused > .k-select {
-  border-color: #2b2b2b;
+  border-color: #0066cc;
 }
 .k-tabstrip-items .k-state-default .k-link,
 .k-panelbar > li.k-state-default > .k-link {
@@ -1073,13 +1210,21 @@ div.k-imagebrowser-dropzone em {
 .k-panelbar > li.k-state-hover > .k-link {
   color: #ffffff;
 }
-.k-tabstrip-items .k-state-default {
+.k-panelbar .k-state-focused.k-state-hover {
+  background: #3d3d3d;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.k-tabstrip-items .k-state-default,
+.k-ie7 .k-tabstrip-items .k-state-default .k-loading {
   border-color: #2b2b2b;
 }
-.k-tabstrip-items .k-state-hover {
+.k-tabstrip-items .k-state-hover,
+.k-ie7 .k-tabstrip-items .k-state-hover .k-loading {
   border-color: #2b2b2b;
 }
-.k-tabstrip-items .k-state-active {
+.k-tabstrip-items .k-state-active,
+.k-ie7 .k-tabstrip-items .k-state-active .k-loading {
   background-color: #4d4d4d;
   background-image: none;
   border-color: #020202;
@@ -1110,7 +1255,7 @@ div.k-imagebrowser-dropzone em {
   background-color: #1d1d1d;
   border-color: #2b2b2b;
 }
-.k-secondary .k-editor-button .k-tool-icon {
+.k-secondary .k-button-group .k-tool {
   border-color: #2b2b2b;
 }
 .k-secondary.k-splitbar {
@@ -1129,14 +1274,14 @@ div.k-imagebrowser-dropzone em {
 .k-secondary .k-picker-wrap.k-state-hover,
 .k-secondary .k-numeric-wrap.k-state-hover,
 .k-secondary .k-dropdown-wrap.k-state-hover {
-  background-color: #3d3d3d;
+  background-color: #080808;
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
   background-position: 50% 50%;
-  border-color: #2b2b2b;
+  border-color: #080808;
 }
 .k-secondary .k-autocomplete.k-state-focused,
 .k-secondary .k-picker-wrap.k-state-focused,
@@ -1144,12 +1289,21 @@ div.k-imagebrowser-dropzone em {
 .k-secondary .k-dropdown-wrap.k-state-focused {
   background-color: #2b2b2b;
   background-image: url('textures/glass.png');
-  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
-  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.07) 100%);
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
   background-position: 50% 50%;
   border-color: #2b2b2b;
+}
+.k-secondary .k-button-group .k-tool:focus {
+  background-color: #2b2b2b;
+  background-image: url('textures/glass.png');
+  background-image: none, -webkit-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -moz-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, -o-linear-gradient(top, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-image: none, linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.05) 51%, rgba(255,255,255,.0) 100%);
+  background-position: 50% 50%;
 }
 .k-secondary .k-button,
 .k-secondary.k-button {
@@ -1208,8 +1362,13 @@ div.k-imagebrowser-dropzone em {
 .k-grouping-header .k-group-indicator {
   border-color: #2b2b2b;
 }
+.k-pager-numbers .k-link,
+.k-treeview .k-in {
+  border-color: transparent;
+}
 .k-treeview .k-icon,
-.k-scheduler-table .k-icon {
+.k-scheduler-table .k-icon,
+.k-grid .k-hierarchy-cell .k-icon {
   background-color: transparent;
   border-radius: 4px;
 }
@@ -1222,12 +1381,15 @@ div.k-imagebrowser-dropzone em {
   .k-drop-hint,
   .k-callout,
   .k-tool-icon,
-  .k-tool-icon.k-state-hover,
-  .k-tool-icon.k-state-active,
-  .k-tool-icon.k-state-active.k-state-hover,
-  .k-tool-icon.k-state-selected,
-  .k-tool-icon.k-state-selected.k-state-hover,
-  .k-column-menu .k-sprite {
+  .k-state-hover .k-tool-icon,
+  .k-state-active .k-tool-icon,
+  .k-state-active.k-state-hover .k-tool-icon,
+  .k-state-selected .k-tool-icon,
+  .k-state-selected.k-state-hover .k-tool-icon,
+  .k-column-menu .k-sprite,
+  .k-mobile-list .k-check:checked,
+  .k-mobile-list .k-edit-field [type=checkbox]:checked,
+  .k-mobile-list .k-edit-field [type=radio]:checked {
     background-image: url('Black/sprite_2x.png');
     background-size: 340px 336px;
   }

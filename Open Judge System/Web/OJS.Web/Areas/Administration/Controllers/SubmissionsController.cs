@@ -11,9 +11,15 @@
     using OJS.Web.Controllers;
 
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
+    using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
 
     public class SubmissionsController : KendoGridAdministrationController
     {
+        private const string SuccessfulCreationMessage = "Решението беше добавено успешно!";
+        private const string SuccessfulEditMessage = "Решението беше променено успешно!";
+        private const string InvalidSubmissionMessage = "Невалидно решение!";
+        private const string RetestSuccessful = "Решението беше успешно пуснато за ретестване!";
+
         public SubmissionsController(IOjsData data)
             : base(data)
         {
@@ -23,51 +29,110 @@
         {
             return this.Data.Submissions
                 .All()
-                .Select(ModelType.ViewModel);
+                .Select(GridModelType.ViewModel);
         }
 
         public ActionResult Index()
         {
-            this.GenerateProblemsDropDownData();
-            this.GenerateParticipantsDropDownData();
-            this.GenerateSubmissionTypesDropDownData();
             return this.View();
         }
 
-        [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        [HttpGet]
+        public ActionResult Create()
         {
-            return this.BaseCreate(request, model.ToEntity);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            if (model != null && ModelState.IsValid)
+            {
+                this.BaseCreate(new DataSourceRequest(), model.ToEntity);
+
+                this.TempData["InfoMessage"] = SuccessfulCreationMessage;
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(model);
         }
 
-        [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        [HttpGet]
+        public ActionResult Update(int id)
         {
-            return this.BaseDestroy(request, model.ToEntity);
-        }
-
-        private void GenerateParticipantsDropDownData()
-        {
-            var dropDownData = this.Data.Users
+            var submission = this.Data.Submissions
                 .All()
-                .ToList()
-                .Select(user => new SelectListItem
-                {
-                    Text = user.UserName,
-                    Value = user.Id,
-                });
+                .Where(subm => subm.Id == id)
+                .Select(ModelType.ViewModel)
+                .FirstOrDefault();
 
-            // TODO: Improve not to use ViewData
-            this.ViewData["ParticipantIdData"] = dropDownData;
+            if (submission == null)
+            {
+                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.RedirectToAction("Index");
+            }
+
+            return this.View(submission);
         }
 
-        private void GenerateSubmissionTypesDropDownData()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(ModelType model)
+        {
+            if (model != null && ModelState.IsValid)
+            {
+                this.BaseUpdate(new DataSourceRequest(), model.ToEntity);
+
+                this.TempData["InfoMessage"] = SuccessfulEditMessage;
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var submission = this.Data.Submissions
+                .All()
+                .Where(subm => subm.Id == id)
+                .Select(GridModelType.ViewModel)
+                .FirstOrDefault();
+
+            if (submission == null)
+            {
+                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.RedirectToAction("Index");
+            }
+
+            return this.View(submission);
+        }
+         
+        public ActionResult ConfirmDelete(int id)
+        {
+            var submission = this.Data.Submissions
+                .All()
+                .FirstOrDefault(subm => subm.Id == id);
+
+            if (submission == null)
+            {
+                TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.RedirectToAction("Index");
+            }
+
+            foreach (var testRun in submission.TestRuns.ToList())
+            {
+                this.Data.TestRuns.Delete(testRun.Id);
+            }
+
+            this.Data.Submissions.Delete(id);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("Index");
+        }
+
+        public JsonResult GetSubmissionTypes()
         {
             var dropDownData = this.Data.SubmissionTypes
                 .All()
@@ -78,14 +143,41 @@
                     Value = subm.Id.ToString(),
                 });
 
-            // TODO: Improve not to use ViewData
-            this.ViewData["SubmissionTypeIdData"] = dropDownData;
+            return Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
-        private void GenerateProblemsDropDownData()
+        public ActionResult Retest(int id)
         {
-            var dropDownData = this.Data.Problems
+            var submission = this.Data.Submissions
                 .All()
+                .FirstOrDefault(subm => subm.Id == id);
+
+            if (submission == null)
+            {
+                TempData["DangerMessage"] = InvalidSubmissionMessage;
+            }
+            else
+            {
+                submission.Processed = false;
+                submission.Processing = false;
+                this.Data.SaveChanges();
+
+                TempData["InfoMessage"] = RetestSuccessful;
+            }
+
+            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id = id });
+        }
+
+        public JsonResult GetProblems(string text)
+        {
+            var dropDownData = this.Data.Problems.All();
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                dropDownData = dropDownData.Where(pr => pr.Name.ToLower().Contains(text.ToLower()));
+            }
+
+            var result = dropDownData
                 .ToList()
                 .Select(pr => new SelectListItem
                 {
@@ -93,8 +185,29 @@
                     Value = pr.Id.ToString(),
                 });
 
-            // TODO: Improve not to use ViewData
-            this.ViewData["ProblemIdData"] = dropDownData;
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetParticipants(string text, int problem)
+        {
+            var selectedProblem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == problem);
+
+            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ContestId);
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                dropDownData = dropDownData.Where(part => part.User.UserName.ToLower().Contains(text.ToLower()));
+            }
+
+            var result = dropDownData
+                .ToList()
+                .Select(part => new SelectListItem
+                {
+                    Text = part.User.UserName,
+                    Value = part.Id.ToString(),
+                });
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

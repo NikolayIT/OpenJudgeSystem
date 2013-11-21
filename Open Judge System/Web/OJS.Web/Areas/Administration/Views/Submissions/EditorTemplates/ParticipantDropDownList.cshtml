@@ -1,0 +1,39 @@
+﻿@model int?
+
+@(Html.Kendo()
+    .ComboBoxFor(m => m)
+    .Name("ParticipantId")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Filter(FilterType.Contains)
+    .MinLength(3)
+    .Placeholder("Изберете участник")
+    .CascadeFrom("ProblemId")
+    .Enable(false)
+    .Events(ev=> ev.Cascade(@<text> function () {
+            var element = $('#ParticipantId');
+
+            var comboBox = element.data('kendoComboBox');
+            var value = element.attr('value');
+            
+            if (value != null)
+            {
+                comboBox.dataSource.fetch(function () {
+                    comboBox.dataSource.read();
+
+                    comboBox.select(function (dataItem) {
+                        return dataItem.Value === value;
+                    });
+                });
+            }
+        }</text>))
+    .DataSource(data =>
+    {
+        data.ServerFiltering(true)
+            .Read(read =>
+            {
+                read.Action("GetParticipants", "Submissions")
+                    .Data(@<text> function () { return { text: $('#ParticipantId').data("kendoComboBox").input.val(), problem: $('#ProblemId').val() };} </text>);
+            });
+    })
+    .HtmlAttributes(new { style = "width: 100%;" }))

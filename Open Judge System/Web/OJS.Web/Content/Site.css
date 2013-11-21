@@ -90,6 +90,12 @@ input[type="checkbox"].input-validation-error {
     width: 100%;
 }
 
+.form-control {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 .hidden-file-upload {
     height: 0px;
     width: 0px;

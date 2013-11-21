@@ -5,6 +5,7 @@
 
     using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Compilers;
 
     public abstract class ExecutionStrategy : IExecutionStrategy
     {
@@ -61,6 +62,27 @@
             var tempFilePath = Path.GetTempFileName();
             File.WriteAllText(tempFilePath, code);
             return tempFilePath;
+        }
+
+        protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string code)
+        {
+            var sourceCodeFilePath = this.SaveStringToTempFile(code);
+
+            if (compilerType == CompilerType.None)
+            {
+                return new CompileResult(true, null) { OutputFile = sourceCodeFilePath };
+            }
+
+            if (!File.Exists(compilerPath))
+            {
+                throw new ArgumentException(string.Format("Compiler not found in: {0}", compilerPath), "compilerPath");
+            }
+
+            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compilerResult = compiler.Compile(compilerPath, sourceCodeFilePath, compilerArguments);
+            File.Delete(sourceCodeFilePath);
+
+            return compilerResult;
         }
     }
 }

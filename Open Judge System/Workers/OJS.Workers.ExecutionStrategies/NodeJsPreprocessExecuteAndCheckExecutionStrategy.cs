@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -13,6 +14,11 @@
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath)
         {
+            if (!File.Exists(nodeJsExecutablePath))
+            {
+                throw new ArgumentException(string.Format("NodeJS not found in: {0}", nodeJsExecutablePath), "nodeJsExecutablePath");
+            }
+
             this.nodeJsExecutablePath = nodeJsExecutablePath;
         }
 

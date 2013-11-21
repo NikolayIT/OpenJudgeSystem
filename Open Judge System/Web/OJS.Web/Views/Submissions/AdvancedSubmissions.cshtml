@@ -32,17 +32,19 @@
                     "</div>"
                 );
             columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
+                    "# if (Processed) { #" + 
+                        "<div>" +
+                                "<strong class =\"text-primary\">#: Points # / #: ProblemMaximumPoints #</strong>" +
+                                "<small> #= (MaxUsedMemory / 1024 / 1024).toFixed(2) # MB | #= MaxUsedTime / 100 # sec.</small>" +
+                        "</div> " + 
+                    "# } #" +
                     "<div>" +
-                            "<strong class =\"text-primary\">#: Points # / #: ProblemMaximumPoints #</strong>" +
-                            "<small> #: MaxUsedMemory # KB | #= MaxUsedTime / 100 # sec.</small>" +
-                    "</div>" +
-                    "<div>" +
-                            "#= testResult(TestResults) #" +
+                            "#= testResult(TestResults, Processed) #" +
                     "</div>"
-                );
+                ).Width("25%");
             if (User.IsInRole("Administrator"))
             {
-                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<a href='/Contests/Submissions/View/#:Id#'>[детайли]</a> <a href='/Contests/Submissions/View/#:Id#'>[промяна - TODO!!!]</a> <a href='/Contests/Submissions/View/#:Id#'>[изтриване - TODO!!!]</a> <a href='/Administration/Tests/Problem/#:ProblemId#'>[тестове]</a> <a href='/Administration/Tests/Problem/#:ProblemId#'>[ретест - TODO!!!]</a>");
+                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<div class='text-center'><a href='/Contests/Submissions/View/#:Id#'>[детайли]</a> <a href='/Administration/Submissions/Update/#:Id#'>[промяна]</a> <a href='/Administration/Submissions/Delete/#:Id#'>[изтриване]</a></div><div class='text-center'><a href='/Administration/Tests/Problem/#:ProblemId#'>[тестове]</a> <a href='/Administration/Submissions/Retest/#:Id#'>[ретест]</a></div>");
             }
         }
     )
@@ -73,22 +75,28 @@
         });
     }
 
-    function testResult(tests) {
+    function testResult(tests, processed) {
         var result = '';
-
-        if (tests.length == 0)
+        
+        if (!processed)
+        {
+            result += '<span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>';
+            result += '<strong class="text-primary"> Обработва се...</strong>';
+        }
+        else if (tests.length == 0 && processed)
         {
             result += '<span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>';
-            result += '<strong class="text-danger"> Compilation failed!</strong>';
+            result += '<strong class="text-danger"> Грешка в компилирането!</strong>';
         }
-
-        for (var i = 0; i < tests.length; i++) {
-            switch (tests[i].ExecutionResult) {
-            case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
-            case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
-            case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
-            case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
-            case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
+        else {
+            for (var i = 0; i < tests.length; i++) {
+                switch (tests[i].ExecutionResult) {
+                    case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
+                    case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
+                    case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
+                    case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
+                    case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
+                }
             }
         }
 

@@ -7,32 +7,45 @@
 <h1>@ViewBag.Title</h1>
 @using (Html.BeginForm())
 {
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Name)
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(m => m.Name, new { @class = "k-textbox" })
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
-    <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Email, "Email")
-    </div>
-    <div class="editor-field">
-        @Html.TextBoxFor(m => m.Email, new { @class = "k-textbox" })
-        @Html.ValidationMessageFor(m => m.Email)
+    <div class="row">
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
     </div>
     <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Content)
+    <div class="row">
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Email, "Email")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+        </div>
     </div>
-    <div class="editor-field">
-        @Html.TextAreaFor(m => m.Content, new { @class = "k-textbox", rows = "8" })
-        @Html.ValidationMessageFor(m => m.Content)
-    </div>
-    <div class="captcha-container editor-field small-margin-top">
-        @Html.Raw(@Html.GenerateCaptcha())
-        @Html.ValidationMessage("Captcha")
+    <br />
+    <div class="row">
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Content)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control", rows = "8" })
+                @Html.ValidationMessageFor(m => m.Content)
+            </div>
+            <div class="captcha-container editor-field small-margin-top">
+                <br />
+                @Html.Raw(@Html.GenerateCaptcha())
+                @Html.ValidationMessage("Captcha")
+            </div>
+        </div>
     </div>
     <br />
     <button class="btn btn-primary" type="submit">Изпрати</button>

@@ -9,7 +9,7 @@
         [Display(Name = "Дата на създаване")]
         [DataType(DataType.DateTime)]
         [HiddenInput(DisplayValue = false)]
-        public DateTime CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         [Display(Name = "Дата на промяна")]
         [DataType(DataType.DateTime)]

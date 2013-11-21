@@ -100,7 +100,7 @@
                 }
                 catch (Exception exception)
                 {
-                    this.logger.Error("Unable to save changes to the submission! Exception: {0}", exception);
+                    this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", dbSubmission.Id, exception);
                 }
 
                 this.processingSubmissionIds.Remove(dbSubmission.Id);

@@ -43,7 +43,7 @@
                     Email = this.Email,
                     Content = this.Content,
                     IsFixed = this.IsFixed,
-                    CreatedOn = this.CreatedOn,
+                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn,
                 };
             }

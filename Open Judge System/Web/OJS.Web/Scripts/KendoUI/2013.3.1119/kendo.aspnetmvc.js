@@ -1,11 +1,11 @@
 /*
-* Kendo UI Beta v2013.2.716 (http://kendoui.com)
+* Kendo UI Complete v2013.3.1119 (http://kendoui.com)
 * Copyright 2013 Telerik AD. All rights reserved.
 *
-* Kendo UI Beta license terms available at
-* http://www.kendoui.com/purchase/license-agreement/kendo-ui-beta.aspx
+* Kendo UI Complete commercial licenses may be obtained at
+* https://www.kendoui.com/purchase/license-agreement/kendo-ui-complete-commercial.aspx
+* If you do not own a commercial license, this file shall be governed by the trial license terms.
 */
-
 kendo_module({
     id: "aspnetmvc",
     name: "ASP.NET MVC",
@@ -17,9 +17,12 @@ kendo_module({
 (function ($, undefined) {
     var kendo = window.kendo,
         escapeQuoteRegExp = /'/ig,
-        extend = $.extend;
+        extend = $.extend,
+        isArray = $.isArray,
+        isPlainObject = $.isPlainObject,
+        POINT = ".";
 
-    function parameterMap(options, operation) {
+    function parameterMap(options, operation, encode, stringifyDates) {
        var result = {};
 
        if (options.sort) {
@@ -63,7 +66,7 @@ kendo_module({
        }
 
        if (options.filter) {
-           result[this.options.prefix + "filter"] = serializeFilter(options.filter);
+           result[this.options.prefix + "filter"] = serializeFilter(options.filter, encode);
 
            delete options.filter;
        } else {
@@ -73,14 +76,9 @@ kendo_module({
 
        if (operation != "read" ) {
            if (options.models) {
-               var prefix = "models",
-                   models = options.models;
-
-               for (var i = 0; i < models.length; i++) {
-                   serializeItem(result, models[i], prefix + "[" + i + "].");
-               }
+               serializeArray(result, options.models, "models", stringifyDates);
            } else if (options) {
-               serializeItem(result, options, "");
+               serializeItem(result, options, "", stringifyDates);
            }
 
            delete options.models;
@@ -89,80 +87,94 @@ kendo_module({
        delete options.take;
        delete options.skip;
 
-       return extend(result, options);
+       return extend({}, options, result);
     }
 
-    function serializeItem(result, item, prefix) {
-        var value,
-            key;
+    function convertNumber(value){
+        var separator = kendo.culture().numberFormat[POINT];
+        value = value.toString().replace(POINT, separator);
 
-        item = convert(item);
-
-        for (var member in item) {
-            key = prefix + member;
-            value = item[member];
-
-            if ($.isPlainObject(value)) {
-                flatten(result, value, key);
-            }
-            else {
-                result[key] = value;
-            }
-        }
+        return value;
     }
 
-    function convert(values) {
-        for (var key in values) {
-            var value = values[key];
-
-            if (value instanceof Date) {
-                values[key] = kendo.format("{0:G}", value);
-            }
-
-            if (typeof value === "number") {
-                value = value.toString();
-            }
-
-            if (value == null) {
-                delete values[key];
-            }
-
-            if ($.isPlainObject(value)) {
-                convert(value);
-            }
-        }
-        return values;
-    }
-
-    function flatten(result, value, prefix) {
-        for (var key in value) {
-            if ($.isPlainObject(value[key])) {
-                flatten(result, value[key], prefix ? prefix + "." + key : key);
+    function convert(value, stringifyDates) {
+        if (value instanceof Date) {
+            if (stringifyDates) {
+                value = kendo.stringify(value).replace(/"/g, "");
             } else {
-                result[prefix ? prefix + "." + key : key] = value[key];
+                value = kendo.format("{0:G}", value);
+            }
+        } else if (typeof value === "number") {
+            value = convertNumber(value);
+        }
+
+        return value;
+    }
+
+    function serialize(result, value, data, key, prefix, stringifyDates) {
+        if (isArray(value)) {
+            serializeArray(result, value, prefix, stringifyDates);
+        } else if (isPlainObject(value)) {
+            serializeItem(result, value, prefix, stringifyDates);
+        } else {
+            if (result[prefix] === undefined) {
+                result[prefix] = data[key]  = convert(value, stringifyDates);
             }
         }
     }
 
-    function serializeFilter(filter) {
+    function serializeItem(result, data, prefix, stringifyDates) {
+        for (var key in data) {
+            var valuePrefix = prefix ? prefix + "." + key : key,
+                value = data[key];
+            serialize(result, value, data, key, valuePrefix, stringifyDates);
+        }
+    }
+
+    function serializeArray(result, data, prefix, stringifyDates) {
+        for (var sourceIndex = 0, destinationIndex = 0; sourceIndex < data.length; sourceIndex++) {
+            var value = data[sourceIndex],
+                key = "[" + destinationIndex + "]",
+                valuePrefix = prefix + key;
+            serialize(result, value, data, key, valuePrefix, stringifyDates);
+
+            destinationIndex++;
+        }
+    }
+
+    function serializeFilter(filter, encode) {
        if (filter.filters) {
            return $.map(filter.filters, function(f) {
                var hasChildren = f.filters && f.filters.length > 1,
-                   result = hasChildren ? "(" : "";
+                   result = serializeFilter(f, encode);
 
-               result += serializeFilter(f);
-               return result + (hasChildren ? ")" : "");
+               if (result && hasChildren) {
+                   result = "(" + result + ")";
+               }
+
+               return result;
            }).join("~" + filter.logic + "~");
        }
-       return filter.field + "~" + filter.operator + "~" + encodeFilterValue(filter.value);
+
+       if (filter.field) {
+           return filter.field + "~" + filter.operator + "~" + encodeFilterValue(filter.value, encode);
+       } else {
+           return undefined;
+       }
     }
 
-    function encodeFilterValue(value) {
+    function encodeFilterValue(value, encode) {
        if (typeof value === "string") {
            if (value.indexOf('Date(') > -1) {
                value = new Date(parseInt(value.replace(/^\/Date\((.*?)\)\/$/, '$1'), 10));
            } else {
-               return "'" + value.replace(escapeQuoteRegExp, "''") + "'";
+               value = value.replace(escapeQuoteRegExp, "''");
+
+               if (encode) {
+                   value = encodeURIComponent(value);
+               }
+
+               return "'" + value + "'";
            }
        }
 
@@ -237,7 +249,16 @@ kendo_module({
         transports: {
             "aspnetmvc-ajax": kendo.data.RemoteTransport.extend({
                 init: function(options) {
-                    kendo.data.RemoteTransport.fn.init.call(this, $.extend(true, {}, this.options, options));
+                    var that = this;
+                    var stringifyDates = options.stringifyDates;
+
+                    kendo.data.RemoteTransport.fn.init.call(this,
+                        extend(true, {}, this.options, options, {
+                            parameterMap: function(options, operation) {
+                                return parameterMap.call(that, options, operation, false, stringifyDates);
+                            }
+                        })
+                    );
                 },
                 read: function(options) {
                     var data = this.options.data,
@@ -280,7 +301,15 @@ kendo_module({
         transports: {
             "aspnetmvc-server": kendo.data.RemoteTransport.extend({
                 init: function(options) {
-                    kendo.data.RemoteTransport.fn.init.call(this, extend(options, { parameterMap: $.proxy(parameterMap, this) } ));
+                    var that = this;
+
+                    kendo.data.RemoteTransport.fn.init.call(this,
+                        extend(options, {
+                            parameterMap: function(options, operation) {
+                                return parameterMap.call(that, options, operation, true);
+                            }
+                        }
+                    ));
                 },
                 read: function(options) {
                     var url,
@@ -305,6 +334,12 @@ kendo_module({
                     url = options.url;
 
                     if (url.indexOf("?") >= 0) {
+                        query = query.replace(/(.*?=.*?)&/g, function(match){
+                            if(url.indexOf(match.substr(0, match.indexOf("="))) >= 0){
+                               return "";
+                            }
+                            return match;
+                        });
                         url += "&" + query;
                     } else {
                         url += "?" + query;
@@ -363,7 +398,7 @@ kendo_module({
                     return data || [];
                 },
                 model: {
-                    id: "Name",
+                    id: "name",
                     fields: {
                         name: { field: "Name" },
                         size: { field: "Size" },
@@ -547,7 +582,7 @@ kendo_module({
 
             if (checkbox.length) {
                 name = checkbox[0].name.replace(nameSpecialCharRegExp, "\\$1");
-                var hidden = checkbox.next("input:hidden[name=" + name + "]");
+                var hidden = checkbox.next("input:hidden[name='" + name + "']");
                 if (hidden.length) {
                     value = hidden.val();
                 } else {
@@ -561,7 +596,10 @@ kendo_module({
             return input.val() === "" || kendo.parseFloat(input.val()) !== null;
         },
         regex: function (input, params) {
-            return patternMatcher(input.val(), params.pattern);
+            if (input.val() !== "") {
+                return patternMatcher(input.val(), params.pattern);
+            }
+            return true;
         },
         range: function(input, params) {
             if (input.val() !== "") {
@@ -585,8 +623,11 @@ kendo_module({
             return input.val() === "" || kendo.parseDate(input.val()) !== null;
         },
         length: function(input, params) {
-            var len = $.trim(input.val()).length;
-            return (!params.min || len >= (params.min || 0)) && (!params.max || len <= (params.max || 0));
+            if (input.val() !== "") {
+                var len = $.trim(input.val()).length;
+                return (!params.min || len >= (params.min || 0)) && (!params.max || len <= (params.max || 0));
+            }
+            return true;
         }
     };
 

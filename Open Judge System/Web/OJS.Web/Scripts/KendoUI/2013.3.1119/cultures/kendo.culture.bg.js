@@ -1,11 +1,11 @@
 /*
-* Kendo UI Beta v2013.2.716 (http://kendoui.com)
+* Kendo UI Complete v2013.3.1119 (http://kendoui.com)
 * Copyright 2013 Telerik AD. All rights reserved.
 *
-* Kendo UI Beta license terms available at
-* http://www.kendoui.com/purchase/license-agreement/kendo-ui-beta.aspx
+* Kendo UI Complete commercial licenses may be obtained at
+* https://www.kendoui.com/purchase/license-agreement/kendo-ui-complete-commercial.aspx
+* If you do not own a commercial license, this file shall be governed by the trial license terms.
 */
-
 ﻿(function( window, undefined ) {
     kendo.cultures["bg"] = {
         name: "bg",

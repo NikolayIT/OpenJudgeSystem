@@ -266,7 +266,17 @@
                 return this.RedirectToAction("Index");
             }
 
-            // TODO: Add cascading deletion of submissions, tests, resources
+            foreach (var resource in problem.Resources.ToList())
+            {
+                this.Data.Resources.Delete(resource.Id);
+            }
+
+            foreach (var submission in problem.Submissions.ToList())
+            {
+                this.Data.TestRuns.DeleteBySubmissionId(submission.Id);
+                this.Data.Submissions.Delete(submission.Id);
+            }
+            
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 

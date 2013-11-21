@@ -1,0 +1,16 @@
+﻿@model int?
+
+@(Html.Kendo()
+    .DropDownListFor(m => m)
+    .OptionLabel("Изберете тип събмисия")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .DataSource(data => 
+        {
+            data.ServerFiltering(true)
+                .Read(read =>
+                    {
+                        read.Action("GetSubmissionTypes", "Submissions");
+                    });
+        })
+    .HtmlAttributes(new { style = "width: 100%;" }))

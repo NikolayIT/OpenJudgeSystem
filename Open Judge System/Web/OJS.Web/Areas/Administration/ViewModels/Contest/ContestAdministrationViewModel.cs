@@ -58,7 +58,7 @@
                     Description = this.Description,
                     LimitBetweenSubmissions = this.LimitBetweenSubmissions,
                     OrderBy = this.OrderBy,
-                    CreatedOn = this.CreatedOn,
+                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn,
                 };
             }

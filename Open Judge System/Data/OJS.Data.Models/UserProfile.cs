@@ -27,7 +27,6 @@
         }
 
         [Required]
-        [Display(Name = "E-mail")]
         [MaxLength(80)]
         [IsUnicode(false)]
         [DataType(DataType.EmailAddress)]
@@ -46,19 +45,13 @@
         public Guid? ForgottenPasswordToken { get; set; }
         
         #region IDeletableEntity
-        [Display(Name = "Изтрит?")]
-        [Editable(false)]
         public bool IsDeleted { get; set; }
 
-        [Display(Name = "Дата на изтриване")]
-        [Editable(false)]
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
         #endregion
 
         #region IAuditInfo
-        [Display(Name = "Дата на създаване")]
-        [Editable(false)]
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
@@ -68,8 +61,6 @@
         [NotMapped]
         public bool PreserveCreatedOn { get; set; }
 
-        [Display(Name = "Дата на промяна")]
-        [Editable(false)]
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
         #endregion

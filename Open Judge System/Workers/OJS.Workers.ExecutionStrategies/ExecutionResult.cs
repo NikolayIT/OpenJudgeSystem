@@ -4,6 +4,11 @@
 
     public class ExecutionResult
     {
+        public ExecutionResult()
+        {
+            this.TestResults = new List<TestResult>();
+        }
+
         public bool IsCompiledSuccessfully { get; set; }
 
         public string CompilerComment { get; set; }
