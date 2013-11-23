@@ -36,7 +36,10 @@
                                       OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
                                       PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
                                       ProblemsCount = contest.Problems.Count(),
-                                      Problems = contest.Problems.AsQueryable().OrderBy(x => x.Name).Select(ContestProblemViewModel.FromProblem),
+                                      Problems = contest.Problems.AsQueryable()
+                                                                    .OrderBy(x => x.OrderBy)
+                                                                    .ThenBy(x => x.Name)
+                                                                    .Select(ContestProblemViewModel.FromProblem),
                                       LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                                       Description = contest.Description,
                                       AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType)

@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Роли";
+    const string ControllerName = "Roles";
+}
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel>()
+    .Name("DataGrid")
+    .Columns(columns =>
+        {
+            columns.Bound(col => col.Name);
+            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80);
+        })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create().Text("Създай");
+        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+    })
+    .Editable(editable =>
+    {
+        editable.Mode(GridEditMode.PopUp);
+        editable.Window(w => w.Title(ViewBag.Title));
+        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+    })
+    .ClientDetailTemplateId("users-in-role")
+    .ColumnMenu()
+    .Events(e => e.DataBound("onDataBound"))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+        /*.Groupable(x =>
+        {
+            x.Enabled(true);
+            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        })*/
+    .Reorderable(x => x.Columns(true))
+    .Resizable(x => x.Columns(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Model(model =>
+            {
+                model.Id(m => m.RoleId);
+            })
+        .Sort(sort => sort.Add(x => x.Name).Descending())
+        .Create(create => create.Action("Create", ControllerName))
+        .Read(read => read.Action("Read", ControllerName))
+        .Update(update => update.Action("Update", ControllerName))
+        .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+    )
+)
+
+<script type="text/javascript">
+    function onDataBound(e) {
+        CreateExportToExcelButton();
+    }
+</script>
+
+<script type="text/x-kendo-template" id="users-in-role">
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel>()
+        .Name("DetailGrid_#=Name#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.UserName);
+            columns.Bound(m => m.FirstName);
+            columns.Bound(m => m.LastName);
+            columns.Bound(m => m.Email);
+            columns.Command(com => com.Destroy().Text(" ")).Width(80);
+        })
+        .ToolBar(tool => 
+            {
+                tool.Create().Text("Добави потребител");
+            })
+        .Editable(edit => 
+            {
+                edit.Mode(GridEditMode.PopUp);
+                edit.Window(w => w.Title(ViewBag.Title));
+                // edit.AdditionalViewData(new { RoleId = "#= RoleId #" });
+                // TODO: Send to editor template the current RoleId so that users in current role cannot dublicate
+                edit.TemplateName("AddUserToRole");
+                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+            })
+        .DataSource(data => 
+        {
+            data.Ajax()
+            .ServerOperation(true)
+            .Model(model =>
+            {
+                model.Id(m => m.UserId);
+            })
+            .Sort(sort => sort.Add(field => field.UserName))
+            .Create(create => create.Action("AddUserToRole", ControllerName, new { id = "#= RoleId #" }))
+            .Read(read => read.Action("UsersInRole", ControllerName, new { id = "#= RoleId #" }))
+            .Destroy(destroy => destroy.Action("DeleteUserFromRole", ControllerName, new { id = "#= RoleId #" }));
+        })
+        .ToClientTemplate())
+</script>

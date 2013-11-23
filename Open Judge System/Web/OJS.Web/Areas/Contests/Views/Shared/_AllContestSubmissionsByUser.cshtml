@@ -23,7 +23,8 @@
             .Name("UserSubmissionsGrid")
             .Columns(col =>
             {
-                col.ForeignKey("ProblemId", (IEnumerable<ContestProblemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
+                // TODO: escape the '#' symbol, because it messes up the template when using a foreign key column.
+                col.ForeignKey("ProblemId", (IEnumerable<ProblemListItemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
                 col.Bound(model => model.SubmissionPoints).Title("Резултат").ClientTemplate(clientTemplate);
                 col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
                     .Title("Максимуми")

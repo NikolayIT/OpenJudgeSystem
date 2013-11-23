@@ -29,7 +29,7 @@
             else
             {
                 IEnumerable<SubmissionViewModel> submissions = this.GetLastFiftySubmissions();
-                return this.View("BasicSubmissions", submissions);
+                return this.View("BasicSubmissions", submissions.ToList());
             }
         }
 

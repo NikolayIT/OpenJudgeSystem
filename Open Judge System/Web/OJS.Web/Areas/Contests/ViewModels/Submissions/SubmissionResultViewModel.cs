@@ -12,6 +12,11 @@
 
     public class SubmissionResultViewModel
     {
+        public SubmissionResultViewModel()
+        {
+            this.TestRuns = new HashSet<TestRunViewModel>();
+        }
+
         public static Expression<Func<Submission, SubmissionResultViewModel>> FromSubmission
         {
             get

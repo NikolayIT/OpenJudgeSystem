@@ -100,7 +100,7 @@
             if (!string.IsNullOrWhiteSpace(compilerOutput))
             {
                 // Compile file is ready but the compiler has something on standard error (possibly compile warnings)
-                return new CompileResult(true, compilerOutput);
+                return new CompileResult(true, compilerOutput, outputFile);
             }
             
             // Compilation is ready without warnings

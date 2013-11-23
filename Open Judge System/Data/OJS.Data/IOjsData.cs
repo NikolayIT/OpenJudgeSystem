@@ -5,6 +5,7 @@
     using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     public interface IOjsData : IDisposable
     {
@@ -27,6 +28,8 @@
         IRepository<ProblemResource> Resources { get; }
 
         IUsersRepository Users { get; }
+
+        IRepository<IdentityRole> Roles { get; }
 
         IParticipantsRepository Participants { get; }
 

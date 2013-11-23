@@ -86,6 +86,17 @@
                 try
                 {
                     this.ProcessSubmission(submission);
+                    data.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
+                }
+
+                try
+                {
+                    this.CalculatePointsForSubmission(submission);
                 }
                 catch (Exception exception)
                 {
@@ -95,6 +106,7 @@
 
                 submission.Processed = true;
                 submission.Processing = false;
+
                 try
                 {
                     data.SaveChanges();
@@ -193,17 +205,20 @@
                 submission.TestRuns.Add(testRun);
             }
 
-            // Internal joke: dbSubmission.Points = new Random().Next(0, dbSubmission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
+            this.logger.InfoFormat("Work on submission №{0} ended.", submission.Id);
+        }
+
+        private void CalculatePointsForSubmission(Submission submission)
+        {
+            // Internal joke: submission.Points = new Random().Next(0, submission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;            
             if (submission.Problem.Tests.Count == 0)
             {
                 submission.Points = 0;
             }
             else
             {
-                submission.Points = (submission.CorrectTestRunsCount * submission.Problem.MaximumPoints) / submission.Problem.Tests.Count;
+                submission.Points = (submission.CorrectTestRunsWithoutTrialTestsCount * submission.Problem.MaximumPoints) / submission.TestsWithoutTrialTestsCount;
             }
-
-            this.logger.InfoFormat("Work on submission №{0} ended.", submission.Id);
         }
 
         private IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)

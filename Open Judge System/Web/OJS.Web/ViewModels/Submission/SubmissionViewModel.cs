@@ -25,7 +25,10 @@
                     Contest = submission.Problem.Contest.Name,
                     ParticipantId = submission.ParticipantId,
                     ParticipantName = submission.Participant.User.UserName,
+                    SubmissionType = submission.SubmissionType.Name,
                     Processed = submission.Processed,
+                    Points = submission.Points,
+                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
                     TestResults = submission.TestRuns.AsQueryable().Where(x => !x.Test.IsTrialTest).Select(TestRunViewModel.FromTestRun)
                 };
             }
@@ -49,21 +52,13 @@
 
         public string ProgrammingLanguage { get; set; }
 
+        public bool IsCompiledSuccessfully { get; set; }
+
         public IEnumerable<TestRunViewModel> TestResults { get; set; }
 
         public bool Processed { get; set; }
 
-        public int Points
-        {
-            get
-            {
-                var correctTests = (decimal)this.TestResults.Count(x => x.ExecutionResult == TestRunResultType.CorrectAnswer);
-
-                var allTests = this.TestResults.Count();
-
-                return allTests > 0 ? (int)((correctTests / allTests) * this.ProblemMaximumPoints) : 0;
-            }
-        }
+        public int Points { get; set; }
 
         public bool HasFullPoints
         {
@@ -88,5 +83,7 @@
                 return this.TestResults.Any() ? this.TestResults.Select(x => x.MemoryUsed).Max() : 0;
             }
         }
+
+        public string SubmissionType { get; set; }
     }
 }

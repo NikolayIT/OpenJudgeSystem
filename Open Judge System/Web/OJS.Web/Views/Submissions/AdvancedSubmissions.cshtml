@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Последно изпратени решения";
 }
+<script src="/Scripts/Helpers/test-runs-glyphicons.js"></script>
 
 <ol class="breadcrumb">
     <li><a href="/">Начало</a></li>
@@ -32,19 +33,20 @@
                     "</div>"
                 );
             columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
-                    "# if (Processed) { #" + 
                         "<div>" +
-                                "<strong class =\"text-primary\">#: Points # / #: ProblemMaximumPoints #</strong>" +
-                                "<small> #= (MaxUsedMemory / 1024 / 1024).toFixed(2) # MB | #= MaxUsedTime / 100 # sec.</small>" +
-                        "</div> " + 
-                    "# } #" +
-                    "<div>" +
-                            "#= testResult(TestResults, Processed) #" +
+                        "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully) #" +
                     "</div>"
                 ).Width("25%");
             if (User.IsInRole("Administrator"))
             {
-                columns.Bound(s => s.Id).Title("Admin").ClientTemplate("<div class='text-center'><a href='/Contests/Submissions/View/#:Id#'>[детайли]</a> <a href='/Administration/Submissions/Update/#:Id#'>[промяна]</a> <a href='/Administration/Submissions/Delete/#:Id#'>[изтриване]</a></div><div class='text-center'><a href='/Administration/Tests/Problem/#:ProblemId#'>[тестове]</a> <a href='/Administration/Submissions/Retest/#:Id#'>[ретест]</a></div>");
+                columns.Bound(s => s.Id).Title("Admin").ClientTemplate(@"
+                    <div class='text-center'>
+                        <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
+                        <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
+                        <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
+                        <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
+                        <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
+                    </div>");
             }
         }
     )
@@ -75,29 +77,21 @@
         });
     }
 
-    function testResult(tests, processed) {
+    function testResult(tests, points, problemMaximumPoints, maxUsedMemory, maxUsedTime, processed, isCompiledSuccessfully) {
         var result = '';
-        
-        if (!processed)
-        {
+
+        if (!processed) {
             result += '<span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>';
             result += '<strong class="text-primary"> Обработва се...</strong>';
         }
-        else if (tests.length == 0 && processed)
-        {
+        else if (!isCompiledSuccessfully) {
             result += '<span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>';
-            result += '<strong class="text-danger"> Грешка в компилирането!</strong>';
+            result += '<strong class="text-danger"> Грешка при компилация</strong>';
         }
         else {
-            for (var i = 0; i < tests.length; i++) {
-                switch (tests[i].ExecutionResult) {
-                    case 0: result += '<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>'; break;
-                    case 1: result += '<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>'; break;
-                    case 2: result += '<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>'; break;
-                    case 3: result += '<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>'; break;
-                    case 4: result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>'; break;
-                }
-            }
+            result += "<div><strong class ='text-primary'> " + points + " / " + problemMaximumPoints + "</strong>" +
+            "<small> " + (maxUsedMemory / 1024 / 1024).toFixed(2) + " MB | " + (maxUsedTime / 1000).toFixed(2) + " sec.</small></div> ";
+            result += displayTestRuns(tests);
         }
 
         return result;

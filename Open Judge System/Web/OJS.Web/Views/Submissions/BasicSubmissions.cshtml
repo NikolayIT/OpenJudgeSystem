@@ -10,7 +10,7 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover"> @* TODO: Vertical center rows *@
     <thead>
         <tr>
             <th class="col-md-1 text-primary">
@@ -51,56 +51,58 @@
                     </div>
                 </td>
                 <td>
-                    @if (Model[i].Processed)
-                    {
                         <div>
-                            <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
-                            <small>@(string.Format("{0:F2}", Model[i].MaxUsedMemory / 1024.0 / 1024.0)) MB | @(((decimal)Model[i].MaxUsedTime) / Model[i].ProblemMaximumPoints) sec.</small>
-                        </div>
-                    }
-                        <div>
-                    @{
-            var tests = Model[i].TestResults.ToList();
+                        @{
+                            var tests = Model[i].TestResults.ToList();
 
-            if (!Model[i].Processed)
-            {
-                <span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>
+                            if (!Model[i].Processed)
+                            {
+                                <span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>
                                 <strong class="text-primary"> Обработва се...</strong>
-            }
-            else if (tests.Count == 0 && Model[i].Processed)
-            {
-                <span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>
-                                <strong class="text-danger"> Compilation failed!</strong>
-            }
-            else
-            {
-                for (int j = 0; j < tests.Count; j++)
-                {
-                    switch (tests[j].ExecutionResult)
-                    {
-                        case OJS.Common.Models.TestRunResultType.CorrectAnswer:
-                            <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
-                            break;
-                        case OJS.Common.Models.TestRunResultType.WrongAnswer:
-                        <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
-                            break;
-                        case OJS.Common.Models.TestRunResultType.TimeLimit:
-                        <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
-                            break;
-                        case OJS.Common.Models.TestRunResultType.MemoryLimit:
-                        <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
-                            break;
-                        case OJS.Common.Models.TestRunResultType.RunTimeError:
-                        <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
-                            break;
-                    }
-                }
-            }
-
                             }
-                        </div>
-                    </td>
-                </tr>
+                            else if (!Model[i].IsCompiledSuccessfully)
+                            {
+                                <span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>
+                                <strong class="text-danger"> Compilation failed!</strong>
+                            }
+                            else
+                            {
+                                <div>
+                                    <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
+                                    <small>@string.Format("{0:F2} MB", Model[i].MaxUsedMemory / 1024.0 / 1024.0) | @string.Format("{0:F2} sec.", (decimal)Model[i].MaxUsedTime / 1000)</small>
+                                </div>
+                                for (int j = 0; j < tests.Count; j++)
+                                {
+                    if (tests[j].IsTrialTest)
+                    {
+                        continue;
+                    }
+                    
+                                    switch (tests[j].ExecutionResult)
+                                    {
+                                        case OJS.Common.Models.TestRunResultType.CorrectAnswer:
+                                            <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
+                                            break;
+                                        case OJS.Common.Models.TestRunResultType.WrongAnswer:
+                                            <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
+                                            break;
+                                        case OJS.Common.Models.TestRunResultType.TimeLimit:
+                                            <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
+                                            break;
+                                        case OJS.Common.Models.TestRunResultType.MemoryLimit:
+                                            <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
+                                            break;
+                                        case OJS.Common.Models.TestRunResultType.RunTimeError:
+                                            <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
+                                            break;
+                                    }
+                                }
+                            }
+
+                        }
+                    </div>
+                </td>
+            </tr>
         }
-                </tbody>
-            </table>
+    </tbody>
+</table>

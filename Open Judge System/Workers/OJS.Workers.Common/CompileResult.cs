@@ -8,10 +8,11 @@
             this.OutputFile = outputFile;
         }
 
-        public CompileResult(bool isCompiledSuccessfully, string compilerComment)
+        public CompileResult(bool isCompiledSuccessfully, string compilerComment, string outputFile = null)
         {
             this.IsCompiledSuccessfully = isCompiledSuccessfully;
             this.CompilerComment = compilerComment;
+            this.OutputFile = outputFile;
         }
 
         public bool IsCompiledSuccessfully { get; set; }

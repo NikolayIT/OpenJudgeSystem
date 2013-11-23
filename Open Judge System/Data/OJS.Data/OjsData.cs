@@ -8,6 +8,7 @@
     using OJS.Data.Repositories;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
+using Microsoft.AspNet.Identity.EntityFramework;
 
     public class OjsData : IOjsData
     {
@@ -134,6 +135,14 @@
             get
             {
                 return (UsersRepository)this.GetRepository<UserProfile>();
+            }
+        }
+
+        public IRepository<IdentityRole> Roles
+        {
+            get
+            {
+                return this.GetRepository<IdentityRole>();
             }
         }
 

@@ -2,7 +2,7 @@
 @using OJS.Common.Models
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 @{
-    ViewBag.Title = string.Format("Решение №{0} към задача {1}", Model.Id, Model.ProblemName);
+    ViewBag.Title = string.Format("Решение №{0} от {1} към задача {2}", Model.Id, Model.UserName, Model.ProblemName);
 }
 
 @section styles {
@@ -44,6 +44,7 @@
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">Промяна</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">Изтриване</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">Тестове</a>
+    <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">Профил на автора</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">Ретест</a>
     <div class="clearfix"></div>
     <br />
@@ -85,70 +86,73 @@ else
 
 <textarea id="code">@Model.ContentAsString</textarea>
 
-@foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
+@if (Model.Processed)
 {
-    var className = string.Empty;
-    var testResultText = string.Empty;
-    if (testResult.ResultType == TestRunResultType.CorrectAnswer)
+    foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
     {
-        className = "text-success";
-        testResultText = "Верен отговор";
-    }
-    else if (testResult.ResultType == TestRunResultType.WrongAnswer)
-    {
-        className = "text-danger";
-        testResultText = "Грешен отговор";
-    }
-    else if (testResult.ResultType == TestRunResultType.MemoryLimit)
-    {
-        className = "text-danger";
-        testResultText = "Недостатъчна памет";
-    }
-    else if (testResult.ResultType == TestRunResultType.TimeLimit)
-    {
-        className = "text-danger";
-        testResultText = "Недостатъчно време";
-    }
-    else if (testResult.ResultType == TestRunResultType.RunTimeError)
-    {
-        className = "text-danger";
-        testResultText = "Грешка по време на изпълнение";
-    }
+        var className = string.Empty;
+        var testResultText = string.Empty;
+        if (testResult.ResultType == TestRunResultType.CorrectAnswer)
+        {
+            className = "text-success";
+            testResultText = "Верен отговор";
+        }
+        else if (testResult.ResultType == TestRunResultType.WrongAnswer)
+        {
+            className = "text-danger";
+            testResultText = "Грешен отговор";
+        }
+        else if (testResult.ResultType == TestRunResultType.MemoryLimit)
+        {
+            className = "text-danger";
+            testResultText = "Недостатъчна памет";
+        }
+        else if (testResult.ResultType == TestRunResultType.TimeLimit)
+        {
+            className = "text-danger";
+            testResultText = "Недостатъчно време";
+        }
+        else if (testResult.ResultType == TestRunResultType.RunTimeError)
+        {
+            className = "text-danger";
+            testResultText = "Грешка по време на изпълнение";
+        }
 
-    <h2 class="@className">
-        @if (testResult.IsTrialTest)
-        {
-            @:Нулев тест №@testResult.Order
-        }
-        else
-        {
-            @:Тест №@testResult.Order
-        }
-        (@testResultText)
-        @if (User.IsInRole("Administrator"))
-        {
-            <small>Run №@testResult.Id</small>
-        }
-    </h2>
+        <h2 class="@className">
+            @if (testResult.IsTrialTest)
+            {
+                @:Нулев тест №@testResult.Order
+            }
+            else
+            {
+                @:Тест №@testResult.Order
+            }
+            (@testResultText)
+            @if (User.IsInRole("Administrator"))
+            {
+                <small>Run №@testResult.Id</small>
+            }
+        </h2>
 
-    if (testResult.IsTrialTest)
-    {
-        <div>Нулевите тестове не се броят в крайния резултат.</div>
-    }
-
-    if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
-    {
-        <pre>@testResult.ExecutionComment.MaxLength(500)</pre>
-    }
-    
-    if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
-    {
-        if (testResult.IsTrialTest || User.IsInRole("Administrator"))
+        if (testResult.IsTrialTest)
         {
-            <pre>@testResult.CheckerComment</pre>
+            <div>Нулевите тестове не се броят в крайния резултат.</div>
         }
+
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
+        {
+            <pre>@testResult.ExecutionComment.MaxLength(500)</pre>
+        }
+
+        if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
+        {
+            if (testResult.IsTrialTest || User.IsInRole("Administrator"))
+            {
+                <pre>@testResult.CheckerComment</pre>
+            }
+        }
+
+        <div>Използвано време (в милисекунди): @testResult.TimeUsed</div>
+        <div>Използванa памет (в bytes): @testResult.MemoryUsed</div>
     }
-    
-    <div>Използвано време (в милисекунди): @testResult.TimeUsed</div>
-    <div>Използванa памет (в bytes): @testResult.MemoryUsed</div>
 }

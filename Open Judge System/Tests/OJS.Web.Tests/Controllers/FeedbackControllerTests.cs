@@ -12,6 +12,7 @@
     using OJS.Data.Models;
     using OJS.Tests.Common;
     using OJS.Web.Controllers;
+    using System;
 
     [TestClass]
     public class FeedbackControllerTests : TestClassBase
@@ -31,7 +32,7 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DbEntityValidationException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void IndexActionShouldReturnTheModelIfPostIsNotValid()
         {
             var feedback = new FeedbackReport

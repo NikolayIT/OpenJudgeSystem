@@ -8,11 +8,10 @@
 
     using OJS.Common.Models;
     using OJS.Data.Models;
-    using TestRunModel = OJS.Data.Models.TestRun;
 
     public class TestRunViewModel
     {
-        public static Expression<Func<TestRunModel, TestRunViewModel>> FromTestRun
+        public static Expression<Func<TestRun, TestRunViewModel>> FromTestRun
         {
             get
             {
@@ -22,7 +21,8 @@
                     ExecutionResult = testRun.ResultType,
                     MemoryUsed = testRun.MemoryUsed,
                     TimeUsed = testRun.TimeUsed,
-                    ExecutionComment = testRun.ExecutionComment
+                    ExecutionComment = testRun.ExecutionComment,
+                    IsTrialTest = testRun.Test.IsTrialTest
                 };
             }
         }
@@ -36,5 +36,7 @@
         public TestRunResultType ExecutionResult { get; set; }
 
         public string ExecutionComment { get; set; }
+
+        public bool IsTrialTest { get; set; }
     }
 }

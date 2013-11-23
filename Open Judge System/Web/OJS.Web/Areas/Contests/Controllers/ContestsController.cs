@@ -31,7 +31,9 @@ namespace OJS.Web.Areas.Contests.Controllers
                 throw new HttpException((int)HttpStatusCode.NotFound, "Could not find a contest with this id.");
             }
 
-            this.ViewBag.ContestProblems = contestViewModel.Problems;
+            this.ViewBag.ContestProblems = this.Data.Problems.All().Where(x => x.ContestId == id)
+                .Select(ProblemListItemViewModel.FromProblem);
+
             return this.View(contestViewModel);
         }
 
@@ -46,15 +48,12 @@ namespace OJS.Web.Areas.Contests.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult UserSubmissions([DataSourceRequest]DataSourceRequest request, int contestId)
         {
-            var userSubmissions = this.Data.Contests.All()
-                                                    .FirstOrDefault(x => x.Id == contestId)
-                                                    .Participants
-                                                    .Where(x => x.UserId == this.UserProfile.Id)
-                                                    .SelectMany(x => x.Submissions
-                                                                            .AsQueryable()
-                                                                            .Select(SubmissionResultViewModel.FromSubmission));
+            var userSubmissions = this.Data.Submissions.All()
+                                                        .Where(x => x.Participant.UserId == this.UserProfile.Id && x.Problem.ContestId == contestId)
+                                                        .Select(SubmissionResultViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }

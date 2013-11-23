@@ -53,7 +53,7 @@
             {
                 @Html.HiddenFor(x => x.ProblemId)
                 <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
-                <div class="submit-container">
+                <div class="submit-container pull-right">
                     @(Html.Kendo().DropDownList()
                         .Name("SubmissionTypeId")
                         .DataTextField("Text")
@@ -128,21 +128,20 @@
                     .Title("Максимуми")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
-                //col.Command(x=>x.Custom("Show solution"));
             })
-            .DataSource(data =>
-            {
-                data.Ajax()
-                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                    .PageSize(10);
-            })
-            .Pageable(page =>
-            {
-                page.Info(false);
-                page.Refresh(true);
-            })
-            .HtmlAttributes(new { @class = "problem_submit_grid" })
+                            .DataSource(data =>
+                            {
+                                data.Ajax()
+                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                                    .PageSize(10);
+                            })
+                            .Pageable(page =>
+                            {
+                                page.Info(false);
+                                page.Refresh(true);
+                            })
+                            .HtmlAttributes(new { @class = "problem_submit_grid" })
         )
     </div>
 </div>

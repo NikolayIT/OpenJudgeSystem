@@ -79,5 +79,23 @@
                 return this.TestRuns.Count(x => x.ResultType == TestRunResultType.CorrectAnswer);
             }
         }
+
+        [NotMapped]
+        public int CorrectTestRunsWithoutTrialTestsCount
+        {
+            get
+            {
+                return this.TestRuns.Count(x => x.ResultType == TestRunResultType.CorrectAnswer && !x.Test.IsTrialTest);
+            }
+        }
+
+        [NotMapped]
+        public int TestsWithoutTrialTestsCount
+        {
+            get
+            {
+                return this.Problem.Tests.Where(x => !x.IsTrialTest).Count();
+            }
+        }
     }
 }
