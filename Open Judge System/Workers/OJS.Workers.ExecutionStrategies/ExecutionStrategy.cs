@@ -4,12 +4,44 @@
     using System.IO;
 
     using OJS.Common.Models;
+    using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
 
     public abstract class ExecutionStrategy : IExecutionStrategy
     {
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
+
+        protected ExecutionResult CompileExecuteAndCheck(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, IExecutor executor)
+        {
+            var result = new ExecutionResult();
+
+            // Compile the file
+            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, executionContext.Code);
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+            result.CompilerComment = compilerResult.CompilerComment;
+            if (!compilerResult.IsCompiledSuccessfully)
+            {
+                return result;
+            }
+
+            var outputFile = compilerResult.OutputFile;
+
+            // Execute and check each test
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+            foreach (var test in executionContext.Tests)
+            {
+                var processExecutionResult = executor.Execute(outputFile, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit);
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+                result.TestResults.Add(testResult);
+            }
+
+            // Clean our mess
+            File.Delete(outputFile);
+
+            return result;
+        }
 
         protected TestResult ExecuteAndCheckTest(TestContext test, ProcessExecutionResult processExecutionResult, IChecker checker, string receivedOutput)
         {

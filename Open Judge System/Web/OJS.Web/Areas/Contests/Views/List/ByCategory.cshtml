@@ -51,8 +51,8 @@
                 @if (User.IsInRole("Administrator"))
                 {
                     <td>
-                        <a href="/Administration/Problems/Contest/@contest.Id">[промяна - TODO!!!]</a>
-                        <a href="/Administration/Problems/Contest/@contest.Id">[задачи]</a>
+                        <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
+                        <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='Tasks'></span></a>
                     </td>
                 }
             </tr>
