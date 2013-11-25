@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OjsUserManager.cs" />
+    <Compile Include="SystemMessage.cs" />
+    <Compile Include="SystemMessageCollection.cs" />
+    <Compile Include="SystemMessageType.cs" />
     <Compile Include="ZippedTestManipulator\ParseResult.cs" />
     <Compile Include="ZippedTestManipulator\ZippedTestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

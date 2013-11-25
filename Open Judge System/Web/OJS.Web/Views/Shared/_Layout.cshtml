@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using OJS.Web.Common
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -73,18 +74,28 @@
         </div>
     </div>
     <div class="container">
-        @if (TempData.ContainsKey("InfoMessage"))
+        @foreach (var message in (SystemMessageCollection)ViewBag.SystemMessages)
         {
-            <div class="alert alert-success">
-                <b>@TempData["InfoMessage"]</b>
-            </div>
+            string messageClass = "alert alert-success";
+            switch (message.Type)
+            {
+                case SystemMessageType.Informational:
+                    messageClass = "alert alert-info";
+                    break;
+                case SystemMessageType.Success:
+                    messageClass = "alert alert-success";
+                    break;
+                case SystemMessageType.Warning:
+                    messageClass = "alert alert-warning";
+                    break;
+                case SystemMessageType.Error:
+                    messageClass = "alert alert-danger";
+                    break;
+            }
+            
+            @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
         }
-        @if (TempData.ContainsKey("DangerMessage"))
-        {
-            <div class="alert alert-danger">
-                <b>@TempData["DangerMessage"]</b>
-            </div>
-        }
+
         @RenderBody()
         <hr />
         <footer>
