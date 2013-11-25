@@ -15,6 +15,8 @@
             this.Name = problem.Name;
             this.ContestId = problem.ContestId;
             this.Resources = problem.Resources.AsQueryable().Where(x => !x.IsDeleted).Select(ContestProblemResourceViewModel.FromResource);
+            this.TimeLimit = problem.TimeLimit;
+            this.MemoryLimit = problem.MemoryLimit;
         }
 
         public ContestProblemViewModel()
@@ -31,6 +33,8 @@
                     Name = problem.Name,
                     ProblemId = problem.Id,
                     ContestId = problem.ContestId,
+                    MemoryLimit = problem.MemoryLimit,
+                    TimeLimit = problem.TimeLimit,
                     Resources = problem.Resources.AsQueryable()
                                                             .Where(x => !x.IsDeleted)
                                                             .Select(ContestProblemResourceViewModel.FromResource)
@@ -43,6 +47,10 @@
         public int ProblemId { get; set; }
 
         public string Name { get; set; }
+
+        public int MemoryLimit { get; set; }
+
+        public int TimeLimit { get; set; }
 
         public IEnumerable<ContestProblemResourceViewModel> Resources { get; set; }
     }

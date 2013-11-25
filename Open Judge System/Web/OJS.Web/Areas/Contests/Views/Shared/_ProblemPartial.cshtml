@@ -53,8 +53,14 @@
             {
                 @Html.HiddenFor(x => x.ProblemId)
                 <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
-                <div class="submit-container pull-right">
-                    @(Html.Kendo().DropDownList()
+                <div class="col-md-12">
+                    <div class="pull-left submit-container">
+                        <strong>Позволена памет (в bytes): </strong>@Model.MemoryLimit
+                        <br />
+                        <strong>Позволено време (в милисекунди): </strong>@Model.TimeLimit
+                    </div>
+                    <div class="submit-container pull-right">
+                        @(Html.Kendo().DropDownList()
                         .Name("SubmissionTypeId")
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -63,10 +69,10 @@
                             data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId });
                         })
                         .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId })
-                    )
-                    <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
+                        )
+                        <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
+                    </div>
                 </div>
-
                 <div class="clearfix"></div>
             }
         </div>
@@ -127,21 +133,21 @@
                 col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
                     .Title("Максимуми")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
             })
-                            .DataSource(data =>
-                            {
-                                data.Ajax()
-                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                                    .PageSize(10);
-                            })
-                            .Pageable(page =>
-                            {
-                                page.Info(false);
-                                page.Refresh(true);
-                            })
-                            .HtmlAttributes(new { @class = "problem_submit_grid" })
+                                                                                            .DataSource(data =>
+                                                                                            {
+                                                                                                data.Ajax()
+                                                                                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                                                                                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                                                                                                    .PageSize(10);
+                                                                                            })
+                                                                                            .Pageable(page =>
+                                                                                            {
+                                                                                                page.Info(false);
+                                                                                                page.Refresh(true);
+                                                                                            })
+                                                                                            .HtmlAttributes(new { @class = "problem_submit_grid" })
         )
     </div>
 </div>

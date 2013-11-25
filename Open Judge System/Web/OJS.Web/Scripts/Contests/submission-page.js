@@ -142,7 +142,7 @@ $("#SubmissionsTabStrip").on("click", ".view-source-button", function () {
 // });
 
 var displayMaximumValues = function (maxMemory, maxTime) {
-    var result = "Памет: " + maxMemory + "<br />" + "Време: " + maxTime;
+    var result = "Памет: " + maxMemory + " b <br />" + "Време: " + maxTime + " ms";
     return result;
 }
 

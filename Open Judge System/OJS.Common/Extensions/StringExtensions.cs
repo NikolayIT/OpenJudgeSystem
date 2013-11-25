@@ -80,7 +80,7 @@
             {
                 return stringToTrim;
             }
-            
+
             return stringToTrim.Substring(0, maxLength);
         }
 
@@ -117,6 +117,22 @@
             }
 
             return secureString;
+        }
+
+        // TODO: Test
+        public static string ToUrlSafeString(this string input)
+        {
+            input = input.Replace("+", "Plus");
+            input = input.Replace("#", "Sharp");
+            return input;
+        }
+
+        // TODO: Test
+        public static string FromUrlSafeString(this string input)
+        {
+            input = input.Replace("Plus", "+");
+            input = input.Replace("Sharp", "#");
+            return input;
         }
     }
 }

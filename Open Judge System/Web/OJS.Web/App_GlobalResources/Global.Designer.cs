@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.1.2696.20131122.
+        ///   Looks up a localized string similar to 0.1.2718.20131125.
         /// </summary>
         internal static string SystemVersion {
             get {

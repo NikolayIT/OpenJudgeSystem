@@ -7,6 +7,9 @@
     @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/css")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr", "~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
+    <!-- TODO: Google Analytics -->
+</head>
+<body>
     <div id="fb-root"></div>
     <script>
         (function (d, s, id) {
@@ -17,9 +20,6 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-    <!-- TODO: Google AdSense -->
-</head>
-<body>
     <div class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">

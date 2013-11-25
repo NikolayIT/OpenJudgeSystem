@@ -37,6 +37,7 @@
                                       PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
                                       ProblemsCount = contest.Problems.Count(),
                                       Problems = contest.Problems.AsQueryable()
+                                                                    .Where(x => !x.IsDeleted)
                                                                     .OrderBy(x => x.OrderBy)
                                                                     .ThenBy(x => x.Name)
                                                                     .Select(ContestProblemViewModel.FromProblem),

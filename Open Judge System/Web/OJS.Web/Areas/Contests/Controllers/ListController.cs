@@ -4,6 +4,7 @@ namespace OJS.Web.Areas.Contests.Controllers
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Common.Extensions;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
 
@@ -19,7 +20,7 @@ namespace OJS.Web.Areas.Contests.Controllers
             var contests = this.Data.Contests.All().Select(ContestViewModel.FromContest).ToList();
             return this.View(contests);
         }
-        
+
         public ActionResult ReadCategories(int? id)
         {
             var categories =
@@ -37,6 +38,7 @@ namespace OJS.Web.Areas.Contests.Controllers
             var contestCategory =
                 this.Data.ContestCategories.All()
                     .Where(x => x.Id == id)
+                    .OrderBy(x => x.OrderBy)
                     .Select(ContestCategoryViewModel.FromContestCategory)
                     .FirstOrDefault();
 
@@ -50,12 +52,16 @@ namespace OJS.Web.Areas.Contests.Controllers
 
         public ActionResult BySubmissionType(string submissionType)
         {
-            ViewBag.SubmissionType = submissionType;
+            var submissionName = submissionType.FromUrlSafeString();
+            this.ViewBag.SubmissionType = submissionName;
 
             var contests =
                 this.Data.Contests
                                 .All()
-                                .Where(c => c.SubmissionTypes.Any(s => s.Name == submissionType))
+                                .Where(c => !c.IsDeleted && 
+                                            c.IsVisible && 
+                                            c.SubmissionTypes.Any(s => s.Name == submissionName))
+                                .OrderBy(x => x.OrderBy)
                                 .Select(ContestViewModel.FromContest);
 
             return this.View(contests);

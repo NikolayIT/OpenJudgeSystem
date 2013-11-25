@@ -1,13 +1,19 @@
 ﻿$(document).ready(function () {
+    var numericTextBox = $("#SourceCodeSizeLimit").data("kendoNumericTextBox");
+    var checkbox = $('#enable-sclimit');
 
-    $('#enable-sclimit').change(function () {
-        var numericTextBox = $("#SourceCodeSizeLimit").data("kendoNumericTextBox");
+    if (numericTextBox.value() != null && numericTextBox.value() != 0)
+    {
+        checkbox.attr('checked', true);
+        numericTextBox.enable(true);
+    }
+
+    checkbox.change(function () {
 
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
         }
         else {
-            numericTextBox.value(null)
             numericTextBox.enable(false);
         }
     });

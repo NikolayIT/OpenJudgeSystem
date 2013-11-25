@@ -196,6 +196,7 @@
             return this.View(resource);
         }
 
+        [HttpGet]
         public JsonResult Delete(ProblemResourceGridViewModel resource, [DataSourceRequest] DataSourceRequest request)
         {
             this.Data.Resources.Delete(resource.Id);
