@@ -32,7 +32,7 @@
         public int? Id { get; set; }
 
         [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Името на ресурса е задължително!", AllowEmptyStrings = false)]
         [MinLength(3)]
         [MaxLength(50)]
         [DefaultValue("Име")]

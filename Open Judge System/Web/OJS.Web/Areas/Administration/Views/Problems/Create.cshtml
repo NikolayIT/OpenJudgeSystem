@@ -9,7 +9,8 @@
     @using (Html.BeginForm("Create", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-
+        @Html.ValidationSummary()
+        
         <fieldset>
             <legend>Основна информация</legend>
             <div class="row">

@@ -101,6 +101,20 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, HttpPostedFileBase testArchive, DetailedProblemViewModel problem)
         {
+            if (problem.Resources != null && problem.Resources.Count() > 0)
+            {
+                var validResources = problem.Resources
+                .All(res => !string.IsNullOrEmpty(res.Name) &&
+                    ((res.Type == ProblemResourceType.AuthorsSolution && res.File != null && res.File.ContentLength > 0) ||
+                    (res.Type == ProblemResourceType.ProblemDescription && res.File != null && res.File.ContentLength > 0) ||
+                    (res.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(res.Link))));
+
+                if (!validResources)
+                {
+                    ModelState.AddModelError("Resources", "Ресурсите трябва да бъдат попълнени изцяло!");
+                }
+            }
+
             if (problem != null && ModelState.IsValid)
             {
                 var newProblem = new Problem
@@ -342,7 +356,7 @@
             // TODO: Select should use the static method from DetailedProblemViewModel
             var result = this.Data.Problems.All()
                 .Where(x => x.ContestId == id)
-                .OrderBy(x => x.OrderBy)
+                .OrderBy(x => x.Name)
                 .Select(problem => new DetailedProblemViewModel
                 {
                     Id = problem.Id,

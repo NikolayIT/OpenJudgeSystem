@@ -44,9 +44,10 @@ $(document).ready(function () {
 
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
+            numericTextBox.value(1024);
         }
         else {
-            numericTextBox.value(null)
+            numericTextBox.value(null);
             numericTextBox.enable(false);
         }
     });
