@@ -29,9 +29,9 @@
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
-            var result = base.BeginExecute(requestContext, callback, state);
-
             this.UserProfile = this.Data.Users.GetByUsername(requestContext.HttpContext.User.Identity.Name);
+
+            var result = base.BeginExecute(requestContext, callback, state);
 
             var systemMessages = this.PrepareSystemMessages();
             ViewBag.SystemMessages = systemMessages;

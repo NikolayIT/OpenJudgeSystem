@@ -50,7 +50,6 @@
             }
         }
     )
-    .Selectable(sel => sel.Mode(GridSelectionMode.Multiple))
     .Events(ev => ev.DataBound("dataBound"))
     .DataSource(dataSource => dataSource
         .Ajax()
