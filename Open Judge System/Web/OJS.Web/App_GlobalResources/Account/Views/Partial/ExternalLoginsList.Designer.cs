@@ -61,7 +61,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use another method to log in..
+        ///   Looks up a localized string similar to Use another method to log in.
         /// </summary>
         public static string Alternate_login_method {
             get {
@@ -70,7 +70,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in with your {0} account..
+        ///   Looks up a localized string similar to Log in with your {0} account.
         /// </summary>
         public static string External_login_message {
             get {
@@ -79,7 +79,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External login services are currently unavailable..
+        ///   Looks up a localized string similar to External login services are currently unavailable.
         /// </summary>
         public static string External_login_unavailable {
             get {

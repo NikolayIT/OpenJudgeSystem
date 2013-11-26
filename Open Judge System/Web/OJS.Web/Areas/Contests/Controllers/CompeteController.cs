@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
@@ -17,6 +16,7 @@
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
+    using OJS.Web.ViewModels.Submission;
 
     public class CompeteController : BaseController
     {

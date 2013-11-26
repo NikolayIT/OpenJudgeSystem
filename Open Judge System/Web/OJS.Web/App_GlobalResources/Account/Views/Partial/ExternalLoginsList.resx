@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alternate_login_method" xml:space="preserve">
-    <value>Use another method to log in.</value>
+    <value>Use another method to log in</value>
   </data>
   <data name="External_login_message" xml:space="preserve">
-    <value>Log in with your {0} account.</value>
+    <value>Log in with your {0} account</value>
   </data>
   <data name="External_login_unavailable" xml:space="preserve">
-    <value>External login services are currently unavailable.</value>
+    <value>External login services are currently unavailable</value>
   </data>
 </root>

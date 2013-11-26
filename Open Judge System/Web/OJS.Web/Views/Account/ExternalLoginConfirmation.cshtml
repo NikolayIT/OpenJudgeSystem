@@ -23,6 +23,7 @@
 {
     @Html.AntiForgeryToken()
     <hr />
+    @Html.HiddenFor(x => x.Email)
     @Html.ValidationSummary(true)
     if (ViewBag.LoginProvider != null)
     {
@@ -31,7 +32,7 @@
             @Resource.Enter_username_and_register
         </p>
     }
-    
+
     <div class="form-group">
         @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
         <div class="col-md-5">

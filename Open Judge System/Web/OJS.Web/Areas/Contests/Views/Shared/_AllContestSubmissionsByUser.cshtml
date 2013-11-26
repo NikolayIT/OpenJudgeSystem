@@ -2,7 +2,7 @@
 
 @model OJS.Web.Areas.Contests.ViewModels.ContestViewModel
 
-<script src="/Scripts/Helpers/test-runs-glyphicons.js"></script>
+<script src="/Scripts/Helpers/test-results.js"></script>
 <script src="/Scripts/Contests/submission-page.js"></script>
 
 <h2>Вашите решения</h2>
@@ -23,7 +23,6 @@
             .Name("UserSubmissionsGrid")
             .Columns(col =>
             {
-                // TODO: escape the '#' symbol, because it messes up the template when using a foreign key column.
                 col.ForeignKey("ProblemId", (IEnumerable<ProblemListItemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
                 col.Bound(model => model.SubmissionPoints).Title("Резултат").ClientTemplate(clientTemplate);
                 col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)

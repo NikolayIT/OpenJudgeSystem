@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Registered_login_methods" xml:space="preserve">
-    <value>Registered login methods.</value>
+    <value>Registered login methods</value>
   </data>
   <data name="Remove_login_button" xml:space="preserve">
     <value>Remove</value>

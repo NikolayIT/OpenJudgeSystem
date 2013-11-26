@@ -642,7 +642,7 @@
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\EditorTemplates\AddUserToRole.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
-    <Content Include="Scripts\Helpers\test-runs-glyphicons.js" />
+    <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />

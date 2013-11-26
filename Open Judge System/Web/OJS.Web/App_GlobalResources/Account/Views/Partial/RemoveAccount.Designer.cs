@@ -61,7 +61,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registered login methods..
+        ///   Looks up a localized string similar to Registered login methods.
         /// </summary>
         public static string Registered_login_methods {
             get {

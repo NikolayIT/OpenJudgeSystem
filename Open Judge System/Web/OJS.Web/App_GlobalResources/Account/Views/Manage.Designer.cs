@@ -61,7 +61,7 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change your password..
+        ///   Looks up a localized string similar to Change your password.
         /// </summary>
         public static string Change_password {
             get {

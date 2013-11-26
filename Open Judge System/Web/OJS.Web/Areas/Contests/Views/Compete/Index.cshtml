@@ -11,7 +11,7 @@
     @Scripts.Render("~/bundles/codemirror")
 }
 
-<script src="/Scripts/Helpers/test-runs-glyphicons.js"></script>
+<script src="/Scripts/Helpers/test-results.js"></script>
 <script src="/Scripts/Countdown/countdown.min.js"></script>
 <script src="/Scripts/Contests/submission-page.js"></script>
 
@@ -61,7 +61,7 @@
 
         @if(Model.LastSubmissionTime != null) {
         <text>
-        submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+            submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
         </text>
         };
 

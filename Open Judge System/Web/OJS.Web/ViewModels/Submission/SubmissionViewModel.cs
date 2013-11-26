@@ -8,6 +8,7 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
+    using System.ComponentModel.DataAnnotations;
 
     public class SubmissionViewModel
     {
@@ -40,8 +41,10 @@
 
         public string ParticipantName { get; set; }
 
+        [Display(Name = "Изпратено на")]
         public DateTime SubmitedOn { get; set; }
 
+        [Display(Name = "Задача")]
         public int? ProblemId { get; set; }
 
         public string ProblemName { get; set; }

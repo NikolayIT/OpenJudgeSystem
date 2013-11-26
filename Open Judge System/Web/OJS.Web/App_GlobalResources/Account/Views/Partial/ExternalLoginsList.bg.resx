@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alternate_login_method" xml:space="preserve">
-    <value>Използвай друг начин за вход.</value>
+    <value>Използвай друг начин за вход</value>
   </data>
   <data name="External_login_message" xml:space="preserve">
-    <value>Вход с вашия {0} акаунт.</value>
+    <value>Вход с вашия {0} акаунт</value>
   </data>
   <data name="External_login_unavailable" xml:space="preserve">
-    <value>В момента не може да се влезне с външни услуги.</value>
+    <value>В момента не може да се влезне с външни услуги</value>
   </data>
 </root>

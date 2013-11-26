@@ -20,5 +20,10 @@
                 ErrorMessageResourceName = "Username_regex_validation",
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string UserName { get; set; }
+
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
     }
 }

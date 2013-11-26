@@ -9,6 +9,10 @@
 
     public class ContestProblemViewModel
     {
+        private int memoryLimitInBytes;
+
+        private int timeLimitInMs;
+
         public ContestProblemViewModel(Problem problem)
         {
             this.ProblemId = problem.Id;
@@ -48,9 +52,31 @@
 
         public string Name { get; set; }
 
-        public int MemoryLimit { get; set; }
+        public double MemoryLimit
+        {
+            get
+            {
+                return (double)this.memoryLimitInBytes / 1024 / 1024;
+            }
 
-        public int TimeLimit { get; set; }
+            set
+            {
+                this.memoryLimitInBytes = (int)value;
+            }
+        }
+
+        public double TimeLimit
+        {
+            get
+            {
+                return this.timeLimitInMs / 1000.00;
+            }
+
+            set
+            {
+                this.timeLimitInMs = (int)value;
+            }
+        }
 
         public IEnumerable<ContestProblemResourceViewModel> Resources { get; set; }
     }

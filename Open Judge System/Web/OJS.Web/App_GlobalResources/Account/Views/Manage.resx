@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Change_password" xml:space="preserve">
-    <value>Change your password.</value>
+    <value>Change your password</value>
   </data>
 </root>

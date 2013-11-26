@@ -128,21 +128,10 @@ $("#SubmissionsTabStrip").on("click", ".view-source-button", function () {
     });
 });
 
-// Previously viewing a submission was loading the submission content in the 
-// code mirror box.
-// $(document).on('click', '.view-submission-button', function () {
-//     var submissionId = $(this).data("submission-id");
-   
-//     $.get("/Contests/Compete/GetSubmissionContent/" + submissionId, function (response) {
-//         var codeMirrorInstance = getCodeMirrorInstance();
-//         codeMirrorInstance.setValue(response);
-//     }).fail(function (err) {
-//         notifyFailure(err);
-//     });
-// });
-
 var displayMaximumValues = function (maxMemory, maxTime) {
-    var result = "Памет: " + maxMemory + " b <br />" + "Време: " + maxTime + " ms";
+    var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
+    var maxTimeInSeconds = (maxTime / 1000).toFixed(2);
+    var result = "Памет: " + memoryInMb + " Mb <br />" + "Време: " + maxTimeInSeconds + " s";
     return result;
 }
 

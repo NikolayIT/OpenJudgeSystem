@@ -9,6 +9,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;
+    using System.Text.RegularExpressions;
 
     public class BaseController : Controller
     {
@@ -36,36 +37,9 @@
             var result = base.BeginExecute(requestContext, callback, state);
 
             var systemMessages = this.PrepareSystemMessages();
-            ViewBag.SystemMessages = systemMessages;
+            this.ViewBag.SystemMessages = systemMessages;
 
             return result;
-        }
-
-        private SystemMessageCollection PrepareSystemMessages()
-        {
-            // Warning: always escape data to prevent XSS
-            var messages = new SystemMessageCollection();
-            
-            if (TempData.ContainsKey("InfoMessage"))
-            {
-                messages.Add(this.TempData["InfoMessage"].ToString(), SystemMessageType.Success, 1000);
-            }
-
-            if (TempData.ContainsKey("DangerMessage"))
-            {
-                messages.Add(this.TempData["DangerMessage"].ToString(), SystemMessageType.Error, 1000);
-            }
-
-            if (this.UserProfile != null)
-            {
-                if (this.UserProfile.PasswordHash == null)
-                {
-                    messages.Add("Нямате парола за вход в сайта. Моля сложете си парола от <a href=\"/Account/Manage\">този линк</a>.", SystemMessageType.Warning, 0);
-                }
-
-            }
-
-            return messages;
         }
 
         protected override void OnException(ExceptionContext filterContext)
@@ -75,7 +49,7 @@
                 return;
             }
 
-            if (Request.IsAjaxRequest())
+            if (this.Request.IsAjaxRequest())
             {
                 var exception = filterContext.Exception as HttpException;
 
@@ -109,6 +83,37 @@
                 Content = serializer.Serialize(data),
                 ContentType = "application/json",
             };
+        }
+
+        private SystemMessageCollection PrepareSystemMessages()
+        {
+            // Warning: always escape data to prevent XSS
+            var messages = new SystemMessageCollection();
+
+            if (this.TempData.ContainsKey("InfoMessage"))
+            {
+                messages.Add(this.TempData["InfoMessage"].ToString(), SystemMessageType.Success, 1000);
+            }
+
+            if (this.TempData.ContainsKey("DangerMessage"))
+            {
+                messages.Add(this.TempData["DangerMessage"].ToString(), SystemMessageType.Error, 1000);
+            }
+
+            if (this.UserProfile != null)
+            {
+                if (this.UserProfile.PasswordHash == null)
+                {
+                    messages.Add("Нямате парола за вход в сайта. Моля сложете си парола от <a href=\"/Account/Manage\">този линк</a>.", SystemMessageType.Warning, 0);
+                }
+
+                if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
+                {
+                    messages.Add("Вашето потребителско име съдържа непозволени символи. Моля свържете с администратор за да бъде променено.", SystemMessageType.Warning, 0);
+                }
+            }
+
+            return messages;
         }
     }
 }

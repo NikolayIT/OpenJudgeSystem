@@ -61,7 +61,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create an account..
+        ///   Looks up a localized string similar to Create an account.
         /// </summary>
         public static string Create_account {
             get {
@@ -70,7 +70,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You do not have a username and password for the website. Please add a username and password so that you can log in..
+        ///   Looks up a localized string similar to You do not have a password for the website. Please add a password for added security..
         /// </summary>
         public static string No_username_or_password {
             get {
@@ -79,7 +79,7 @@ namespace Resources.Account.Views.Partial {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save password..
+        ///   Looks up a localized string similar to Save password.
         /// </summary>
         public static string Save_password {
             get {

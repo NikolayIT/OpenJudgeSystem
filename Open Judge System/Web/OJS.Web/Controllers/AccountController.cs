@@ -40,7 +40,7 @@
         {
             get
             {
-                return HttpContext.GetOwinContext().Authentication;
+                return this.HttpContext.GetOwinContext().Authentication;
             }
         }
 
@@ -48,7 +48,7 @@
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            this.ViewBag.ReturnUrl = returnUrl;
             return this.View();
         }
 
@@ -95,20 +95,20 @@
         {
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
-                ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+                this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
             }
 
             if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
             {
-                ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
+                this.ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
             }
 
             if (!captchaValid)
             {
-                ModelState.AddModelError("Captcha", Resources.Account.Views.General.Captcha_invalid);
+                this.ModelState.AddModelError("Captcha", Resources.Account.Views.General.Captcha_invalid);
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var user = new UserProfile { UserName = model.UserName, Email = model.Email };
                 var result = await this.UserManager.CreateAsync(user, model.Password);
@@ -130,36 +130,26 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            ManageMessageId? message;
             IdentityResult result =
                 await
                 this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                message = ManageMessageId.RemoveLoginSuccess;
+                this.TempData["InfoMessage"] = "Външния логин беше премахнат.";
             }
             else
             {
-                message = ManageMessageId.Error;
+                this.TempData["DangerMessage"] = "Възникна грешка.";
             }
 
-            return this.RedirectToAction("Manage", new { Message = message });
+            return this.RedirectToAction("Manage");
         }
 
         // GET: /Account/Manage
-        public ActionResult Manage(ManageMessageId? message)
+        public ActionResult Manage()
         {
-            // TODO: remove parameter - use TempData instead
-            ViewBag.StatusMessage = message == ManageMessageId.ChangePasswordSuccess
-                                        ? "Паролата ви беше сменена."
-                                        : message == ManageMessageId.SetPasswordSuccess
-                                              ? "Паролата беше запазена."
-                                              : message == ManageMessageId.RemoveLoginSuccess
-                                                    ? "Външния логин беше премахнат."
-                                                    : message == ManageMessageId.Error ? "Възникна грешка." : string.Empty;
-
-            ViewBag.HasLocalPassword = this.HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            this.ViewBag.HasLocalPassword = this.HasPassword();
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
             return this.View();
         }
 
@@ -169,18 +159,19 @@
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
             bool hasPassword = this.HasPassword();
-            ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            this.ViewBag.HasLocalPassword = hasPassword;
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
             {
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
                     IdentityResult result =
                         await
                         this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return this.RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
+                        return this.RedirectToAction("Manage");
                     }
 
                     this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Password_incorrect);
@@ -195,13 +186,14 @@
                     state.Errors.Clear();
                 }
 
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
                     IdentityResult result =
                         await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return this.RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
+                        return this.RedirectToAction("Manage");
                     }
 
                     this.AddErrors(result);
@@ -242,12 +234,22 @@
                 return this.RedirectToLocal(returnUrl);
             }
 
+            // If a user account was not found - check if he has already registered his email.
+            ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
+            var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
+            if (this.Data.Users.All().Any(x=>x.Email == email))
+            {
+                this.TempData["DangerMessage"] = "You have already registered with this email address. Please log in or use the forgotten password feature.";
+                return this.RedirectToAction("Login");
+            }
+
             // If the user does not have an account, then prompt the user to create an account
-            ViewBag.ReturnUrl = returnUrl;
-            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            this.ViewBag.ReturnUrl = returnUrl;
+            this.ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+
             return this.View(
                 "ExternalLoginConfirmation",
-                new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName });
+                new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName, Email = email });
         }
 
         // POST: /Account/LinkLogin
@@ -263,18 +265,17 @@
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-            if (loginInfo == null)
+            if (loginInfo != null)
             {
-                return this.RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+                var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+                if (result.Succeeded)
+                {
+                    return this.RedirectToAction("Manage");
+                }
             }
 
-            var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            if (result.Succeeded)
-            {
-                return this.RedirectToAction("Manage");
-            }
-
-            return this.RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            this.TempData["DangerMessage"] = "Възникна грешка.";
+            return this.RedirectToAction("Manage");
         }
 
         // POST: /Account/ExternalLoginConfirmation
@@ -299,12 +300,9 @@
                     return this.View("ExternalLoginFailure");
                 }
 
-                ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
-                var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
-
-                if (this.Data.Users.All().Any(x => x.Email == email))
+                if (this.Data.Users.All().Any(x => x.Email == model.Email))
                 {
-                    this.TempData["NotifyMessage"] = "Your email has already been registered. Please use the forgot your details feature to obtain your login details";
+                    this.TempData["DangerMessage"] = "Your email has already been registered. Please use the forgot your details feature to obtain your login details";
                     return this.RedirectToAction("ForgottenPassword");
                 }
 
@@ -318,7 +316,7 @@
                     return this.View(model);
                 }
 
-                var user = new UserProfile { UserName = model.UserName, Email = email };
+                var user = new UserProfile { UserName = model.UserName, Email = model.Email };
                 var result = await this.UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -384,7 +382,7 @@
                 userByUsername.ForgottenPasswordToken = Guid.NewGuid();
                 this.Data.SaveChanges();
                 this.SendForgottenPasswordToUser(userByUsername);
-                this.TempData["NotifyMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+                this.TempData["InfoMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
                 return this.RedirectToAction("ForgottenPassword");
             }
 
@@ -399,7 +397,7 @@
             // notify the user if there are no users registered with this email or username
             if (usersCount == 0)
             {
-                ViewBag.StatusMessage = Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered;
+                this.TempData["DangerMessage"] = Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered;
                 return this.View();
             }
 
@@ -412,7 +410,7 @@
                 this.SendForgottenPasswordToUser(user);
             }
 
-            this.TempData["NotifyMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+            this.TempData["InfoMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
             return this.RedirectToAction("ForgottenPassword");
         }
 
@@ -458,6 +456,7 @@
                 Token = guid
             };
 
+            this.TempData["InfoMessage"] = "Password changed successfully - you can now log in using your new password.";
             return this.View(forgottenPasswordModel);
         }
 
@@ -489,7 +488,8 @@
                         user.ForgottenPasswordToken = null;
                         this.Data.SaveChanges();
 
-                        return this.RedirectToAction("Login", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
+                        return this.RedirectToAction("Login");
                     }
 
                     this.AddErrors(changePassword);
@@ -529,7 +529,7 @@
 
                     currentUser.Email = model.Email;
                     this.Data.SaveChanges();
-                    this.TempData["NotifyMessage"] = "Success";
+                    this.TempData["InfoMessage"] = "Success";
                     return this.RedirectToAction("Profile", new { controller = "Users", area = string.Empty });
                 }
             }
@@ -576,17 +576,6 @@
             }
 
             return false;
-        }
-
-        public enum ManageMessageId
-        {
-            ChangePasswordSuccess,
-
-            SetPasswordSuccess,
-
-            RemoveLoginSuccess,
-
-            Error
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
