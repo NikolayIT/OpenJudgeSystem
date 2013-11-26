@@ -105,7 +105,7 @@
         [DllImport("kernel32.dll")]
         private static extern bool QueryInformationJobObject(
             IntPtr hJob,
-            InfoClass JobObjectInformationClass,
+            InfoClass jobObjectInformationClass,
             out IntPtr lpJobObjectInfo,
             uint cbJobObjectInfoLength,
             IntPtr lpReturnLength);

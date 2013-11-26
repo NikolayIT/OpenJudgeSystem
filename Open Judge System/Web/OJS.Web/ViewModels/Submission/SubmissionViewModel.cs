@@ -2,13 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
 
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
-    using System.ComponentModel.DataAnnotations;
 
     public class SubmissionViewModel
     {

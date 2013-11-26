@@ -4,8 +4,8 @@
 
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Controllers;
     using OJS.Web.Areas.Users.ViewModels;
+    using OJS.Web.Controllers;
 
     [Authorize]
     public class SettingsController : BaseController

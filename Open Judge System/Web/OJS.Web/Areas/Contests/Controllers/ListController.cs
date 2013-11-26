@@ -3,8 +3,8 @@ namespace OJS.Web.Areas.Contests.Controllers
     using System.Linq;
     using System.Web.Mvc;
 
-    using OJS.Data;
     using OJS.Common.Extensions;
+    using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
 

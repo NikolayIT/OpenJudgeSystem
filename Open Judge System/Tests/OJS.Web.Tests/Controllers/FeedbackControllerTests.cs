@@ -1,6 +1,6 @@
 ﻿namespace OJS.Web.Tests.Contollers
 {
-    using System.Data.Entity.Validation;
+    using System;
     using System.Security.Principal;
     using System.Web;
     using System.Web.Mvc;
@@ -12,7 +12,6 @@
     using OJS.Data.Models;
     using OJS.Tests.Common;
     using OJS.Web.Controllers;
-    using System;
 
     [TestClass]
     public class FeedbackControllerTests : TestClassBase

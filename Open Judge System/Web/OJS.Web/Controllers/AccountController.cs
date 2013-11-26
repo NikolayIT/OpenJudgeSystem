@@ -23,6 +23,9 @@
     [Authorize]
     public class AccountController : BaseController
     {
+        // Used for XSRF protection when adding external logins
+        private const string XsrfKey = "XsrfId";
+
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
         {
@@ -237,7 +240,7 @@
             // If a user account was not found - check if he has already registered his email.
             ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
             var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
-            if (this.Data.Users.All().Any(x=>x.Email == email))
+            if (this.Data.Users.All().Any(x => x.Email == email))
             {
                 this.TempData["DangerMessage"] = "You have already registered with this email address. Please log in or use the forgotten password feature.";
                 return this.RedirectToAction("Login");
@@ -414,26 +417,6 @@
             return this.RedirectToAction("ForgottenPassword");
         }
 
-        private void SendForgottenPasswordToUser(UserProfile user)
-        {
-            var mailSender = MailSender.Instance;
-
-            var forgottenPasswordEmailTitle = string.Format(
-                                                        Resources.Account.Emails.Forgotten_password_title,
-                                                        user.UserName);
-
-            var forgottenPasswordEmailBody = string.Format(
-                                                Resources.Account.Emails.Forgotten_password_body,
-                                                user.UserName,
-                                                Url.Action(
-                                                        "ChangePassword",
-                                                        "Account",
-                                                        new { token = user.ForgottenPasswordToken },
-                                                        Request.Url.Scheme));
-
-            mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
-        }
-
         [AllowAnonymous]
         public ActionResult ChangePassword(string token)
         {
@@ -548,10 +531,27 @@
             base.Dispose(disposing);
         }
 
-        #region Helpers
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
+        private void SendForgottenPasswordToUser(UserProfile user)
+        {
+            var mailSender = MailSender.Instance;
 
+            var forgottenPasswordEmailTitle = string.Format(
+                                                        Resources.Account.Emails.Forgotten_password_title,
+                                                        user.UserName);
+
+            var forgottenPasswordEmailBody = string.Format(
+                                                Resources.Account.Emails.Forgotten_password_body,
+                                                user.UserName,
+                                                Url.Action(
+                                                        "ChangePassword",
+                                                        "Account",
+                                                        new { token = user.ForgottenPasswordToken },
+                                                        Request.Url.Scheme));
+
+            mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
+        }
+
+        #region Helpers
         private async Task SignInAsync(UserProfile user, bool isPersistent)
         {
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -608,7 +608,7 @@
                 var properties = new AuthenticationProperties { RedirectUri = this.RedirectUri };
                 if (this.UserId != null)
                 {
-                    properties.Dictionary[XsrfKey] = this.UserId;
+                    properties.Dictionary[AccountController.XsrfKey] = this.UserId;
                 }
 
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, this.LoginProvider);

@@ -10,8 +10,8 @@
 
     public class WrapperImpersonationContext
     {
-        private const int LOGON32_PROVIDER_DEFAULT = 0;
-        private const int LOGON32_LOGON_INTERACTIVE = 2;
+        private const int Logon32ProviderDefault = 0;
+        private const int Logon32LogonInteractive = 2;
 
         private readonly string domain;
         private readonly string password;
@@ -48,8 +48,8 @@
                    this.username, 
                    this.domain, 
                    this.password, 
-                   LOGON32_LOGON_INTERACTIVE, 
-                   LOGON32_PROVIDER_DEFAULT, 
+                   Logon32LogonInteractive, 
+                   Logon32ProviderDefault, 
                    ref this.token);
                 if (logonSuccessfull == false)
                 {

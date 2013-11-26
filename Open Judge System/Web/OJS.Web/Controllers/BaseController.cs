@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -9,7 +10,6 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;
-    using System.Text.RegularExpressions;
 
     public class BaseController : Controller
     {

@@ -1,20 +1,21 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.ViewModels.Roles;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel;
-    using System;
-    using OJS.Web.Areas.Administration.ViewModels.Roles;
-    using Microsoft.AspNet.Identity.EntityFramework;
+    using ModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
 
     public class RolesController : KendoGridAdministrationController
     {
@@ -63,7 +64,7 @@
                 .Where(u => u.Roles.Any(r => r.RoleId == id))
                 .Select(DetailModelType.ViewModel);
 
-            return Json(users.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return this.Json(users.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AvailableUsersForRole(string text)
@@ -104,7 +105,7 @@
                 Email = user.Email
             };
 
-            return Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -116,7 +117,7 @@
             user.Roles.Remove(role);
             this.Data.SaveChanges();
 
-            return Json(ModelState.ToDataSourceResult());
+            return this.Json(ModelState.ToDataSourceResult());
         }
     }
 }

@@ -6,8 +6,8 @@ namespace OJS.Web.Areas.Users.Controllers
     using System.Web.Mvc;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
     using OJS.Web.Areas.Users.ViewModels;
+    using OJS.Web.Controllers;
 
     public class ProfileController : BaseController
     {

@@ -2,8 +2,8 @@
 {
     using System.Linq;
 
-    using OJS.Tests.Common;
     using OJS.Data.Models;
+    using OJS.Tests.Common;
 
     public class NewsTestBaseClass : TestClassBase
     {

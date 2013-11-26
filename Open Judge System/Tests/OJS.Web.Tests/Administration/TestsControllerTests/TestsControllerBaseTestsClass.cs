@@ -16,9 +16,7 @@
     using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
-    using OJS.Tests.Common;
     using OJS.Web.Areas.Administration.Controllers;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     
     [TestClass]
@@ -245,7 +243,7 @@
                 ProblemId = 1,
             };
 
-            // TODO: get these mocks in base class for reuse
+            //// TODO: get these mocks in base class for reuse
 
             var listsOfTests = new List<Test>(selectedProblem.Tests);
 

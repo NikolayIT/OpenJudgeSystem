@@ -1,12 +1,13 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Roles
 {
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using OJS.Common.DataAnnotations;
     using System;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
+
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    using OJS.Common.DataAnnotations;
 
     public class RoleAdministrationViewModel
     {

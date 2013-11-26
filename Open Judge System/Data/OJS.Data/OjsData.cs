@@ -3,12 +3,13 @@
     using System;
     using System.Collections.Generic;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Data.Repositories;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
-using Microsoft.AspNet.Identity.EntityFramework;
 
     public class OjsData : IOjsData
     {

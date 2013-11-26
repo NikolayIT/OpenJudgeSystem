@@ -18,7 +18,7 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             IExecutor executor = new RestrictedProcessExecutor();
-            var result = this.CompileExecuteAndCheck(executionContext, getCompilerPathFunc, executor);
+            var result = this.CompileExecuteAndCheck(executionContext, this.getCompilerPathFunc, executor);
             return result;
         }
     }

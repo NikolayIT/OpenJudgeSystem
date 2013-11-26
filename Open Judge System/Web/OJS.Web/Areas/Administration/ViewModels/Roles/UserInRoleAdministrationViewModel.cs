@@ -1,10 +1,11 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Roles
 {
-    using OJS.Common.DataAnnotations;
-    using OJS.Data.Models;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+
+    using OJS.Common.DataAnnotations;
+    using OJS.Data.Models;
 
     public class UserInRoleAdministrationViewModel
     {

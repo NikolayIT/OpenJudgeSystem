@@ -2,10 +2,11 @@
 {
     using System;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
-    using Microsoft.AspNet.Identity.EntityFramework;
 
     public interface IOjsData : IDisposable
     {

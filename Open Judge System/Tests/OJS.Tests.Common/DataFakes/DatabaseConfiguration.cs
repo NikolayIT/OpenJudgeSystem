@@ -184,6 +184,7 @@
             {
                 context.Contests.Add(contest);
             }
+
             context.SaveChanges();
         }
     }
