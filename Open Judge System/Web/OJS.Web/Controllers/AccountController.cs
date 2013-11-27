@@ -536,7 +536,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeUsername(UsernameViewModel model)
+        public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
             if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
             {
@@ -556,7 +556,7 @@
 
                 this.TempData["InfoMessage"] = "Username was successfully changed. Please log in using your new username.";
                 this.AuthenticationManager.SignOut();
-                return this.RedirectToAction("Index", new { controller = "Home", area = string.Empty });
+                return this.RedirectToAction("Login", new { controller = "Account", area = string.Empty });
             }
 
             return this.View(model);

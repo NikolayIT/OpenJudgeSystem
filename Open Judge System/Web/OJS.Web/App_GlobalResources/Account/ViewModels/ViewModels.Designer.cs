@@ -295,6 +295,24 @@ namespace Resources.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm the new username.
+        /// </summary>
+        public static string Username_confirmation {
+            get {
+                return ResourceManager.GetString("Username_confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The usernames do not match.
+        /// </summary>
+        public static string Username_confirmation_incorrect {
+            get {
+                return ResourceManager.GetString("Username_confirmation_incorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The username can contain only latin characters, numbers and the symbols &apos;.&apos; or &apos;_&apos;. The username must start with a letter and end with a letter or number..
         /// </summary>
         public static string Username_regex_validation {

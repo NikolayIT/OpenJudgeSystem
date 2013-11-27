@@ -41,6 +41,7 @@
                     TimeLimit = problem.TimeLimit,
                     Resources = problem.Resources.AsQueryable()
                                                             .Where(x => !x.IsDeleted)
+                                                            .OrderBy(x => x.OrderBy)
                                                             .Select(ContestProblemResourceViewModel.FromResource)
                 };
             }

@@ -361,33 +361,44 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, "Invalid problem!");
             }
 
-            ValidateContest(problemWithResource.Contest, official);
+            var contest = problemWithResource.Contest;
+            bool userCanDownloadResource = false;
 
-            // TODO: Fix security error when user is able to download resource when contest can be practiced and has practice password
-            if (!problemWithResource.Contest.CanBePracticed ||
-                problemWithResource.Contest.HasPracticePassword)
+            if (this.UserProfile == null)
             {
-                if (this.UserProfile == null)
-                {
-                    return this.RedirectToAction("Login", "Account", new { area = string.Empty });
-                }
-
-                var participant = this.Data.Participants.GetWithContest(problemWithResource.ContestId, this.UserProfile.Id, official);
-
-                if (participant == null)
-                {
-                    return this.RedirectToAction("Register", new { id = problemWithResource.ContestId, official });
-                }
+                ValidateContest(contest, official);
+            }
+            else if (!this.User.IsInRole("Administrator"))
+            {
+                ValidateContest(contest, official);
+                userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);
+            }
+            else
+            {
+                // If the user is an administrator he can download the resource at any time.
+                userCanDownloadResource = true;
             }
 
-            var resource = problemWithResource.Resources.FirstOrDefault(res => res.Id == id);
-
-            if (string.IsNullOrWhiteSpace(resource.FileExtension) || resource.File == null || resource.File.Length == 0)
+            if (userCanDownloadResource ||
+                (contest.CanBeCompeted && !contest.HasContestPassword) ||
+                (contest.CanBePracticed && !contest.HasPracticePassword))
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
+                var resource = problemWithResource.Resources.FirstOrDefault(res => res.Id == id);
+
+                if (string.IsNullOrWhiteSpace(resource.FileExtension) || resource.File == null || resource.File.Length == 0)
+                {
+                    throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
+                }
+
+                return this.File(resource.File, "application/octet-stream", string.Format("{0}.{1}", resource.Problem.Name, resource.FileExtension));
             }
 
-            return this.File(resource.File, "application/octet-stream", string.Format("{0}.{1}", resource.Problem.Name, resource.FileExtension));
+            if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))
+            {
+                return this.RedirectToAction("Register", new { official = official, id = contest.Id });
+            }
+
+            throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
         }
 
         /// <summary>

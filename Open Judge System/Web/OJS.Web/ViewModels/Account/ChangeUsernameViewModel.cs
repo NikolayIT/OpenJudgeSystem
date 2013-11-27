@@ -1,9 +1,9 @@
-﻿namespace OJS.Web.Areas.Users.ViewModels
+﻿namespace OJS.Web.ViewModels.Account
 {
     using System.ComponentModel.DataAnnotations;
     using CompareMvc = System.Web.Mvc.CompareAttribute;
 
-    public class UsernameViewModel
+    public class ChangeUsernameViewModel
     {
         [StringLength(
         15,
@@ -22,7 +22,13 @@
                 ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
         public string Username { get; set; }
 
-        [CompareMvc("Username")]
+        [CompareMvc(
+            "Username",
+            ErrorMessageResourceName = "Username_confirmation_incorrect",
+            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(
+            Name = "Username_confirmation",
+            ResourceType = typeof(Resources.Account.ViewModels))]
         public string UsernameConfirmation { get; set; }
     }
 }
