@@ -4,6 +4,11 @@
     ViewBag.Title = "Профил";
 }
 
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
 <div class="row">
     @if (Model == null)
     {

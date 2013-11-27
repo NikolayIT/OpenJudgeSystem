@@ -416,6 +416,7 @@
     </Compile>
     <Compile Include="Areas\Contests\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Contests\Controllers\ListController.cs" />
+    <Compile Include="Areas\Contests\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Contests\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Contests\Helpers\ContestExtensions.cs" />
     <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
@@ -437,6 +438,7 @@
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Users\ViewModels\UsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserProfileViewModel.cs" />
@@ -590,9 +592,8 @@
     <Content Include="Areas\Contests\Views\List\ByCategory.cshtml" />
     <Content Include="Areas\Contests\Views\Contests\Details.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\Index.cshtml" />
-    <Content Include="Areas\Contests\Views\Compete\Results.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\Simple.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\Register.cshtml" />
-    <Content Include="Areas\Contests\Views\Compete\FullResults.cshtml" />
     <Content Include="Content\Fonts\glyphiconshalflings-regular.eot" />
     <Content Include="Content\Fonts\glyphiconshalflings-regular.otf" />
     <Content Include="Content\Fonts\glyphiconshalflings-regular.ttf" />
@@ -641,6 +642,8 @@
     <Content Include="Areas\Administration\Views\Submissions\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\EditorTemplates\AddUserToRole.cshtml" />
+    <Content Include="Views\Account\ChangeUsername.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

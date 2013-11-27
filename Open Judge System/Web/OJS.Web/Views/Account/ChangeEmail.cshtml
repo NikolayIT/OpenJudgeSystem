@@ -4,6 +4,13 @@
     ViewBag.Title = Resources.Account.Views.ChangeEmailView.Title;
 }
 
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li>@Html.ActionLink("Профил", "Index", new { controller = "Profile", area = "Users" })</li>
+    <li>@Html.ActionLink("Настройки", "Index", new { controller = "Settings", area = "Users" })</li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
 <h3>@ViewBag.Title</h3>
 
 @using (Html.BeginForm())
@@ -41,7 +48,11 @@
         <br />
         <div class="row">
             <div class="col-xs-4 text-right">
-                <a href="/Users/Profile" class="btn btn-primary">@Resources.Account.Views.ChangeEmailView.Cancel</a>
+                @Html.ActionLink(
+                Resources.Account.Views.ChangeEmailView.Cancel,
+                "Index",
+                new { controller = "Settings", area = "Users" },
+                new { @class = "btn btn-primary" })
             </div>
             <div class="col-md-7 text-left">
                 <button class="btn btn-success" type="submit">@Resources.Account.Views.ChangeEmailView.Save</button>

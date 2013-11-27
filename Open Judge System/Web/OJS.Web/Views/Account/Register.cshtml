@@ -5,6 +5,11 @@
     ViewBag.Title = Resource.Register_title;
 }
 
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
 <div class="row">
     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {

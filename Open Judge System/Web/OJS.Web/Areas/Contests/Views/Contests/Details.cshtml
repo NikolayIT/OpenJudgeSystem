@@ -8,6 +8,12 @@
     ViewBag.Title = Model.Name;
 }
 
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li>@Html.ActionLink("Състезания", "Index", "List")</li>
+    <li class="active">@Model.Name</li>
+</ol>
+
 <h1 class="text-center">@ViewBag.Title</h1>
 
 <div class="row">

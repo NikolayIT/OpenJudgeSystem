@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "Обратна връзка";
 }
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
 
 <h1>@ViewBag.Title</h1>
 @using (Html.BeginForm())

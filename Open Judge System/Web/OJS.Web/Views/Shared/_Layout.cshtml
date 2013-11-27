@@ -74,26 +74,29 @@
         </div>
     </div>
     <div class="container">
-        @foreach (var message in (SystemMessageCollection)ViewBag.SystemMessages)
+        @if (ViewBag.SystemMessages != null)
         {
-            string messageClass = "alert alert-success";
-            switch (message.Type)
+            foreach (var message in (SystemMessageCollection)ViewBag.SystemMessages)
             {
-                case SystemMessageType.Informational:
-                    messageClass = "alert alert-info";
-                    break;
-                case SystemMessageType.Success:
-                    messageClass = "alert alert-success";
-                    break;
-                case SystemMessageType.Warning:
-                    messageClass = "alert alert-warning";
-                    break;
-                case SystemMessageType.Error:
-                    messageClass = "alert alert-danger";
-                    break;
-            }
-            
-            @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
+                string messageClass = "alert alert-success";
+                switch (message.Type)
+                {
+                    case SystemMessageType.Informational:
+                        messageClass = "alert alert-info";
+                        break;
+                    case SystemMessageType.Success:
+                        messageClass = "alert alert-success";
+                        break;
+                    case SystemMessageType.Warning:
+                        messageClass = "alert alert-warning";
+                        break;
+                    case SystemMessageType.Error:
+                        messageClass = "alert alert-danger";
+                        break;
+                }
+
+                @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
+        }
         }
 
         @RenderBody()

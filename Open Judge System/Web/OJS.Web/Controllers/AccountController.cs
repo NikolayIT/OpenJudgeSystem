@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Net;
     using System.Security.Claims;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -15,6 +16,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Common;
     using OJS.Web.ViewModels.Account;
 
@@ -518,6 +520,47 @@
             }
 
             return this.View(model);
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult ChangeUsername()
+        {
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
+            {
+                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
+            }
+
+            return this.View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeUsername(UsernameViewModel model)
+        {
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
+            {
+                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                if (this.Data.Users.All().Any(x => x.UserName == model.Username))
+                {
+                    this.ModelState.AddModelError("Username", "This username is not available");
+                    return this.View(model);
+                }
+
+                this.UserProfile.UserName = model.Username;
+                this.Data.SaveChanges();
+
+                this.TempData["InfoMessage"] = "Username was successfully changed. Please log in using your new username.";
+                this.AuthenticationManager.SignOut();
+                return this.RedirectToAction("Index", new { controller = "Home", area = string.Empty });
+            }
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

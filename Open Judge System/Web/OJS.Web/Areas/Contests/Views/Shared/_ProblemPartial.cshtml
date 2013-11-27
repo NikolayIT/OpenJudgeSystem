@@ -65,10 +65,7 @@
                         .Name("SubmissionTypeId")
                         .DataTextField("Text")
                         .DataValueField("Value")
-                        .DataSource(data =>
-                        {
-                            data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId });
-                        })
+                        .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
                         .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId })
                         )
                         <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
@@ -82,22 +79,16 @@
     <div class="col-lg-4 problem-result-container visible-lg">
         @(Html.Kendo().Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
-                .ToolBar(tool =>
-                {
-                    tool.Template("Резултати за задачата");
-                })
+                .ToolBar(tool => tool.Template("Резултати за задачата"))
                 .Columns(col =>
                 {
                     col.Bound(x => x.ParticipantName).Width(100);
                     col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#").Width(80);
                 })
-                .DataSource(data =>
-                {
-                    data.Ajax()
-                        .Sort(sort => sort.Add("Result").Descending())
-                        .Read("GetResults", ViewBag.CompeteType, new { id = Model.ProblemId })
-                        .PageSize(8);
-                })
+                .DataSource(data => data.Ajax()
+                                        .Sort(sort => sort.Add("Result").Descending())
+                                        .Read(string.Format("/Contests/{0}/ByProblem/{1}", ViewBag.CompeteType, Model.ProblemId))
+                                        .PageSize(8))
                 .Filterable(x => x.Enabled(false))
                 .Pageable(x =>
                 {
@@ -132,7 +123,7 @@
             {
                 col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
                 col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
-                    .Title("Максимуми")
+                    .Title("Време и памет")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
             })

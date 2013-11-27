@@ -4,6 +4,12 @@
     ViewBag.Title = "Настройки";
 }
 
+<ol class="breadcrumb">
+    <li><a href="/">Начало</a></li>
+    <li>@Html.ActionLink("Профил", "Index" , "Profile")</li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
 <div class="container">
     @if (Model == null)
     {

@@ -1,0 +1,34 @@
+﻿@model OJS.Web.Areas.Users.ViewModels.UsernameViewModel
+
+@{
+    ViewBag.Title = "Change username";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-7">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.Username, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.UsernameConfirmation, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.UsernameConfirmation, new { @class = "form-control" })
+                </div>
+            </div>
+            <input type="submit" class="btn btn-default pull-right" value="Промени" />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

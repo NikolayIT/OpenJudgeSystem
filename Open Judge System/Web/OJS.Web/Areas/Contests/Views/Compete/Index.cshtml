@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-3" id="countdown-timer-container">
         <div class="clearfix"></div>
-        <div class="pull-right">@Html.ActionLink("Резултати", "Results", new { controller = ViewBag.CompeteType, id = Model.Contest.Id })</div>
+        <div class="pull-right"><a href="@(string.Format("/Contests/{0}/Results/Simple/{1}", ViewBag.CompeteType, Model.Contest.Id))">Резултати</a></div>
     </div>
 </div>
 

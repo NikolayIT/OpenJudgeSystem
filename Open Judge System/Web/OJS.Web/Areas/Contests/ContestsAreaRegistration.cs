@@ -35,6 +35,16 @@ namespace OJS.Web.Areas.Contests
                 new[] { "OJS.Web.Areas.Contests.Controllers" });
 
             context.MapRoute(
+               "Contests_results_compete",
+               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.CompeteUrl),
+               new { controller = "Results", action = "Simple", official = true, id = UrlParameter.Optional });
+
+            context.MapRoute(
+               "Contests_results_practice",
+               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.PracticeUrl),
+               new { controller = "Results", action = "Simple", official = false, id = UrlParameter.Optional });
+
+            context.MapRoute(
                "Contests_compete",
                string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.CompeteUrl),
                new { controller = "Compete", action = "Index", official = true, id = UrlParameter.Optional });

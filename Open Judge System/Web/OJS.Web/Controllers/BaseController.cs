@@ -109,7 +109,7 @@
 
                 if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
                 {
-                    messages.Add("Вашето потребителско име съдържа непозволени символи. Моля свържете с администратор за да бъде променено.", SystemMessageType.Warning, 0);
+                    messages.Add("Вашето потребителско име съдържа непозволени символи. Можете да я смените от <a href=\"/Account/ChangeUsername\">този линк</a>.", SystemMessageType.Warning, 0);
                 }
             }
 

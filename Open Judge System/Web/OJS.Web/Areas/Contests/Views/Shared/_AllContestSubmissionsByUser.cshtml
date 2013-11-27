@@ -26,7 +26,7 @@
                 col.ForeignKey("ProblemId", (IEnumerable<ProblemListItemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
                 col.Bound(model => model.SubmissionPoints).Title("Резултат").ClientTemplate(clientTemplate);
                 col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
-                    .Title("Максимуми")
+                    .Title("Време и памет")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.IsOfficial).Title("Тип").ClientTemplate("#: IsOfficial ? 'Състезание' : 'Практика'#");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
