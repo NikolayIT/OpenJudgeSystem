@@ -425,13 +425,13 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Contests\ContestResultsViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Problems\ProblemListItemViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Problems\ProblemResultPairViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Problems\ProblemResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultPairViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\QuestionViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ParticipantResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />

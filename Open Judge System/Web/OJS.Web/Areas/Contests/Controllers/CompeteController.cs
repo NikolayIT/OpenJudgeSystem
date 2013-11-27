@@ -16,7 +16,6 @@
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
-    using OJS.Web.ViewModels.Submission;
 
     public class CompeteController : BaseController
     {

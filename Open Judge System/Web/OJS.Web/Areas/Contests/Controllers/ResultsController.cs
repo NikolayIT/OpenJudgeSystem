@@ -10,6 +10,7 @@
 
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Controllers;
 
     public class ResultsController : BaseController
@@ -112,12 +113,17 @@
             return this.View(contestModel);
         }
 
-        // TODO: [Authorize(Roles = "Administrator")]
         // TODO: Implement
         // TODO: Unit test
+        [Authorize(Roles = "Administrator")]
         public ActionResult Full(int id, bool official)
         {
             var contest = this.Data.Contests.GetById(id);
+
+            if (contest == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid contest Id was provided.");
+            }
 
             return this.View(contest);
         }

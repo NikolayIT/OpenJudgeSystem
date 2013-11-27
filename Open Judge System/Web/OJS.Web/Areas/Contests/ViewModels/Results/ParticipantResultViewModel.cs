@@ -1,11 +1,7 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-
-    using OJS.Data.Models;
 
     public class ParticipantResultViewModel
     {
