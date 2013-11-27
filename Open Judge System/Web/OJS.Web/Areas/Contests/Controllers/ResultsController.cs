@@ -38,20 +38,21 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam!");
             }
 
-            // TODO: Refactor
-            var results = problem
-                                .Submissions
-                                .AsQueryable()
-                                .Where(x => x.Participant.IsOfficial == official)
-                                .GroupBy(x => x.Participant)
-                                .Select(submissionGrouping => new ProblemResultViewModel
-                                {
-                                    ProblemId = id,
-                                    ParticipantName = submissionGrouping.Key.User.UserName,
-                                    MaximumPoints = problem.MaximumPoints,
-                                    Result = submissionGrouping.Where(x => x.ProblemId == id).Max(x => x.Points)
-                                })
-                                .OrderByDescending(x => x.Result);
+            var results =
+                this.Data.Submissions.All()
+                    .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
+                    .GroupBy(x => x.Participant)
+                    .Select(
+                        submissionGrouping =>
+                        new ProblemResultViewModel
+                            {
+                                ProblemId = problem.Id,
+                                ParticipantName = submissionGrouping.Key.User.UserName,
+                                MaximumPoints = problem.MaximumPoints,
+                                Result =
+                                    submissionGrouping.Where(x => x.ProblemId == problem.Id)
+                                    .Max(x => x.Points)
+                            });
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }

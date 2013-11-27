@@ -267,6 +267,7 @@
         [Authorize]
         public ActionResult Problem(int id, bool official)
         {
+            this.ViewBag.IsOfficial = official;
             this.ViewBag.CompeteType = official ? CompeteUrl : PracticeUrl;
 
             var problem = this.Data.Problems.GetById(id);
