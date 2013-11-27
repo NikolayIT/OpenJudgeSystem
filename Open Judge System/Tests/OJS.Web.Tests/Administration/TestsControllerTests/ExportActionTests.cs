@@ -264,21 +264,14 @@
 
         private string ExtractFileFromStream(ZipEntry entry)
         {
-            MemoryStream reader = new MemoryStream();
-
+            var reader = new MemoryStream();
             entry.Extract(reader);
+            reader = new MemoryStream(reader.ToArray());
 
-            string text;
+            var streamReader = new StreamReader(reader);
 
-            using (reader)
-            {
-                reader.Position = 0;
-
-                StreamReader sr = new StreamReader(reader);
-
-                text = sr.ReadToEnd();
-            }
-
+            var text = streamReader.ReadToEnd();
+            reader.Dispose();
             return text;
         }
     }
