@@ -8,6 +8,8 @@
     
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Web.Common.ZippedTestManipulator;
+
     [TestClass]
     public class ExportActionTests : TestsControllerBaseTestsClass
     {
@@ -123,10 +125,10 @@
 
             var zipFile = ZipFile.Read(result.FileStream);
 
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Trial input test 1");
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Trial output test 1");
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.in.txt").FirstOrDefault()), "Trial input test 2");
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.out.txt").FirstOrDefault()), "Trial output test 2");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Trial input test 1");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Trial output test 1");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.in.txt").FirstOrDefault()), "Trial input test 2");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.out.txt").FirstOrDefault()), "Trial output test 2");
         }
 
         [TestMethod]
@@ -141,8 +143,8 @@
 
             for (int i = 0; i < 10; i++)
             {
-                Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), i.ToString());
-                Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), (i + 1).ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), (i + 1).ToString());
             }
         }
 
@@ -197,8 +199,8 @@
 
             var zipFile = ZipFile.Read(result.FileStream);
 
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second line");
-            Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second lint output");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second line");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second lint output");
         }
 
         [TestMethod]
@@ -257,22 +259,9 @@
 
             for (int i = 0; i < 10; i++)
             {
-                Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), "Only normal tests " + i.ToString());
-                Assert.AreEqual(this.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), "Only normal tests output" + i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), "Only normal tests " + i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), "Only normal tests output" + i.ToString());
             }
-        }
-
-        private string ExtractFileFromStream(ZipEntry entry)
-        {
-            var reader = new MemoryStream();
-            entry.Extract(reader);
-            reader = new MemoryStream(reader.ToArray());
-
-            var streamReader = new StreamReader(reader);
-
-            var text = streamReader.ReadToEnd();
-            reader.Dispose();
-            return text;
         }
     }
 }

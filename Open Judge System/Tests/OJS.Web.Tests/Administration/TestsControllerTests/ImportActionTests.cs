@@ -159,7 +159,7 @@
 
             var zipStream = new MemoryStream();
             zipFile.Save(zipStream);
-            zipStream.Position = 0;
+            zipStream = new MemoryStream(zipStream.ToArray());
 
             this.File.Setup(x => x.ContentLength).Returns(1);
             this.File.Setup(x => x.FileName).Returns("file.zip");

@@ -514,7 +514,7 @@
                 file.InputStream.CopyTo(memory);
                 memory.Position = 0;
 
-                var parsedTests = new TestsParseResult();
+                TestsParseResult parsedTests;
 
                 try
                 {

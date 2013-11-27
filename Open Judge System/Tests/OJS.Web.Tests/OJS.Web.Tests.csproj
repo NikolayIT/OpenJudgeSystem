@@ -180,6 +180,10 @@
       <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Web\OJS.Web.Common\OJS.Web.Common.csproj">
+      <Project>{2E08E0AF-0E51-47CA-947B-4C66086FA030}</Project>
+      <Name>OJS.Web.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\OJS.Web\OJS.Web.csproj">
       <Project>{c2ef4f1b-a694-4e52-935c-7872f6cad37c}</Project>
       <Name>OJS.Web</Name>
