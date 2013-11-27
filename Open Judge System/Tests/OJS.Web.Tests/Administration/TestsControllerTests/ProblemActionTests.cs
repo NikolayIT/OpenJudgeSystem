@@ -10,7 +10,7 @@
         [TestMethod]
         public void ProblemActionShouldReturnViewWithNullModel()
         {
-            var result = this.testsController.Problem(null) as ViewResult;
+            var result = this.TestsController.Problem(null) as ViewResult;
             var model = result.Model;
 
             Assert.IsNull(model);
@@ -19,7 +19,7 @@
         [TestMethod]
         public void ProblemActionShouldReturnNullViewBagIfIdIsNotDefined()
         {
-            var view = this.testsController.Problem(null) as ViewResult;
+            var view = this.TestsController.Problem(null) as ViewResult;
             var viewBagProblem = view.ViewBag.ProblemId;
 
             Assert.IsNull(viewBagProblem);
@@ -28,7 +28,7 @@
         [TestMethod]
         public void ProblemActionShouldReturnValueInViewBagIfIdDefined()
         {
-            var view = this.testsController.Problem(10) as ViewResult;
+            var view = this.TestsController.Problem(10) as ViewResult;
             var viewBagProblem = view.ViewBag.ProblemId;
 
             Assert.AreEqual(10, viewBagProblem);

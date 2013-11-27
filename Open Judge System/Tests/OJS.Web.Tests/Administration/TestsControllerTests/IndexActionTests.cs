@@ -13,7 +13,7 @@
         [TestMethod]
         public void IndexActionShouldReturnViewWithNullModel()
         {
-            var result = this.testsController.Index() as ViewResult;
+            var result = this.TestsController.Index() as ViewResult;
             var model = result.Model;
 
             Assert.IsNull(model);

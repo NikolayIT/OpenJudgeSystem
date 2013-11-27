@@ -16,7 +16,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -29,7 +29,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -42,7 +42,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -55,7 +55,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -73,7 +73,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -87,7 +87,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -104,7 +104,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -118,7 +118,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -134,7 +134,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -151,7 +151,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -164,7 +164,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -178,7 +178,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -192,7 +192,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -206,7 +206,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -219,7 +219,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -236,7 +236,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -250,7 +250,7 @@
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
 
-            var result = testsController
+            var result = TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);

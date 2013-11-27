@@ -14,7 +14,7 @@
         [TestMethod]
         public void DeleteActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Delete(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Delete(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -23,20 +23,20 @@
         [TestMethod]
         public void DeleteActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Delete(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Delete(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void DeleteActionShouldReturnProperRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.Delete(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Delete(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -45,20 +45,20 @@
         [TestMethod]
         public void DeleteActionShouldReturnProperMessageWhenTestIsNull()
         {
-            var redirectResult = this.testsController.Delete(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Delete(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void DeleteActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
-            var viewResult = this.testsController.Delete(1) as ViewResult;
+            var viewResult = this.TestsController.Delete(1) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as TestViewModel;
@@ -74,7 +74,7 @@
         [TestMethod]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDelete(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDelete(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -83,20 +83,20 @@
         [TestMethod]
         public void ConfirmDeleteActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDelete(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDelete(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDelete(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDelete(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -105,35 +105,35 @@
         [TestMethod]
         public void ConfirmDeleteActionShouldReturnProperMessageWhenTestIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDelete(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDelete(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenTestIsCorrect()
         {
-            var redirectResult = this.testsController.ConfirmDelete(1) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDelete(1) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
             Assert.AreEqual("Теста беше изтрит успешно", tempDataMessage);
         }
 
         [TestMethod]
         public void DeleteAllActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.DeleteAll(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.DeleteAll(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -142,20 +142,20 @@
         [TestMethod]
         public void DeleteAllActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.DeleteAll(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.DeleteAll(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void DeleteAllActionShouldReturnProperRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.DeleteAll(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.DeleteAll(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -164,20 +164,20 @@
         [TestMethod]
         public void DeleteAllActionShouldReturnProperMessageWhenTestIsNull()
         {
-            var redirectResult = this.testsController.DeleteAll(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.DeleteAll(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void DeleteAllActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
-            var viewResult = this.testsController.DeleteAll(1) as ViewResult;
+            var viewResult = this.TestsController.DeleteAll(1) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as ProblemViewModel;
@@ -191,7 +191,7 @@
         [TestMethod]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -200,20 +200,20 @@
         [TestMethod]
         public void ConfirmDeleteAllActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -222,28 +222,28 @@
         [TestMethod]
         public void ConfirmDeleteAllActionShouldReturnProperMessageWhenTestIsNull()
         {
-            var redirectResult = this.testsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenTestIsCorrect()
         {
-            var redirectResult = this.testsController.ConfirmDeleteAll(1) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.ConfirmDeleteAll(1) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
             Assert.AreEqual("Тестовете бяха изтрити успешно", tempDataMessage);
         }
     }

@@ -13,7 +13,7 @@
         [TestMethod]
         public void DetailsActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Details(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -22,20 +22,20 @@
         [TestMethod]
         public void DetailsActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Details(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void DetailsActionShouldReturnProperRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.Details(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -44,20 +44,20 @@
         [TestMethod]
         public void DetailsActionShouldReturnProperMessageWhenTestIsNull()
         {
-            var redirectResult = this.testsController.Details(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void DetailsActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
-            var viewResult = this.testsController.Details(1) as ViewResult;
+            var viewResult = this.TestsController.Details(1) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as TestViewModel;

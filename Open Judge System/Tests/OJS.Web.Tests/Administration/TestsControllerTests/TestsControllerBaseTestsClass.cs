@@ -22,23 +22,7 @@
     [TestClass]
     public class TestsControllerBaseTestsClass : BaseWebTests
     {
-        protected Mock<IOjsData> data;
-
-        protected Mock<IRepository<ContestCategory>> categories;
-
-        protected Mock<IRepository<Problem>> problems;
-
-        protected Mock<IRepository<Test>> tests;
-
-        protected Mock<ITestRunsRepository> testsRuns;
-
-        protected Mock<IContestsRepository> contests;
-
-        protected TestsController testsController;
-
-        protected ControllerContext controllerContext;
-
-        protected TestViewModel testViewModel;
+        private readonly Mock<IOjsData> data;
 
         public TestsControllerBaseTestsClass()
         {
@@ -233,7 +217,7 @@
             contest.Problems.Add(problemWithOnlyTrialTests);
             contest.Problems.Add(problemWithOnlyNormalTests);
 
-            this.testViewModel = new TestViewModel
+            this.TestViewModel = new TestViewModel
             {
                 Id = 1,
                 InputFull = "Input test",
@@ -248,17 +232,17 @@
             var listsOfTests = new List<Test>(selectedProblem.Tests);
 
             this.data = new Mock<IOjsData>();
-            this.problems = new Mock<IRepository<Problem>>();
-            this.tests = new Mock<IRepository<Test>>();
-            this.testsRuns = new Mock<ITestRunsRepository>();
-            this.categories = new Mock<IRepository<ContestCategory>>();
-            this.contests = new Mock<IContestsRepository>();
+            this.Problems = new Mock<IRepository<Problem>>();
+            this.Tests = new Mock<IRepository<Test>>();
+            this.TestsRuns = new Mock<ITestRunsRepository>();
+            this.Categories = new Mock<IRepository<ContestCategory>>();
+            this.Contests = new Mock<IContestsRepository>();
 
-            this.problems.Setup(x => x.All()).Returns((new List<Problem>() { selectedProblem, otherProblem, problemWithOnlyTrialTests, problemWithOnlyNormalTests }).AsQueryable());
+            this.Problems.Setup(x => x.All()).Returns((new List<Problem>() { selectedProblem, otherProblem, problemWithOnlyTrialTests, problemWithOnlyNormalTests }).AsQueryable());
 
-            this.tests.Setup(x => x.All()).Returns(listsOfTests.AsQueryable());
-            this.tests.Setup(x => x.Add(It.IsAny<Test>())).Callback((Test t) => { listsOfTests.Add(t); });
-            this.tests.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
+            this.Tests.Setup(x => x.All()).Returns(listsOfTests.AsQueryable());
+            this.Tests.Setup(x => x.Add(It.IsAny<Test>())).Callback((Test t) => { listsOfTests.Add(t); });
+            this.Tests.Setup(x => x.Delete(It.IsAny<int>())).Callback((int id) =>
             {
                 foreach (var currentTest in listsOfTests)
                 {
@@ -270,21 +254,37 @@
                 }
             });
 
-            this.testsRuns.Setup(x => x.All()).Returns(new List<TestRun>() { testRun }.AsQueryable());
-            this.categories.Setup(x => x.All()).Returns(new List<ContestCategory>() { firstCategory, secondCategory, thirdCategory }.AsQueryable());
-            this.contests.Setup(x => x.All()).Returns(new List<Contest>() { contest, otherContest }.AsQueryable());
+            this.TestsRuns.Setup(x => x.All()).Returns(new List<TestRun>() { testRun }.AsQueryable());
+            this.Categories.Setup(x => x.All()).Returns(new List<ContestCategory>() { firstCategory, secondCategory, thirdCategory }.AsQueryable());
+            this.Contests.Setup(x => x.All()).Returns(new List<Contest>() { contest, otherContest }.AsQueryable());
 
-            this.data.SetupGet(x => x.Problems).Returns(this.problems.Object);
-            this.data.SetupGet(x => x.Tests).Returns(this.tests.Object);
-            this.data.SetupGet(x => x.TestRuns).Returns(this.testsRuns.Object);
-            this.data.SetupGet(x => x.ContestCategories).Returns(this.categories.Object);
-            this.data.SetupGet(x => x.Contests).Returns(this.contests.Object);
+            this.data.SetupGet(x => x.Problems).Returns(this.Problems.Object);
+            this.data.SetupGet(x => x.Tests).Returns(this.Tests.Object);
+            this.data.SetupGet(x => x.TestRuns).Returns(this.TestsRuns.Object);
+            this.data.SetupGet(x => x.ContestCategories).Returns(this.Categories.Object);
+            this.data.SetupGet(x => x.Contests).Returns(this.Contests.Object);
 
-            this.testsController = new TestsController(this.data.Object);
+            this.TestsController = new TestsController(this.data.Object);
 
-            this.controllerContext = new ControllerContext(this.MockHttpContestBase(), new RouteData(), this.testsController);
+            this.ControllerContext = new ControllerContext(this.MockHttpContestBase(), new RouteData(), this.TestsController);
         }
         
+        protected Mock<IRepository<ContestCategory>> Categories { get; set; }
+
+        protected Mock<IRepository<Problem>> Problems { get; set; }
+
+        protected Mock<IRepository<Test>> Tests { get; set; }
+
+        protected Mock<ITestRunsRepository> TestsRuns { get; set; }
+
+        protected Mock<IContestsRepository> Contests { get; set; }
+
+        protected TestsController TestsController { get; set; }
+
+        protected ControllerContext ControllerContext { get; set; }
+
+        protected TestViewModel TestViewModel { get; set; }
+
         protected IOjsData Data
         {
             get

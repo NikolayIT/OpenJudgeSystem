@@ -15,21 +15,21 @@
         [TestMethod]
         public void EditGetActionShouldReturnProperMessageAndRedirectWhenTestIsNull()
         {
-            var redirectResult = this.testsController.Edit(2) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Edit(2) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void EditGetActionShouldReturnProperViewModelWhenTestIsValid()
         {
-            var viewResult = this.testsController.Edit(1) as ViewResult;
+            var viewResult = this.TestsController.Edit(1) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as TestViewModel;
@@ -46,21 +46,21 @@
         [TestMethod]
         public void EditPostActionShouldReturnProperMessageAndRedirectWhenTestDoesNotExist()
         {
-            var redirectResult = this.testsController.Edit(2, null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Edit(2, null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
         [TestMethod]
         public void EditPostActionShouldReturnViewWithNullModelWhenPostedTestViewModelIsNull()
         {
-            var viewResult = this.testsController.Edit(1, null) as ViewResult;
+            var viewResult = this.TestsController.Edit(1, null) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as TestViewModel;
@@ -70,15 +70,15 @@
         [TestMethod]
         public void EditPostActionShouldReturnProperRedirectAndMessageWhenPostedTestIsValid()
         {
-            var redirectResult = this.testsController.Edit(1, this.testViewModel) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Edit(1, this.TestViewModel) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
             Assert.AreEqual("Теста беше променен успешно", tempDataMessage);
         }
     }

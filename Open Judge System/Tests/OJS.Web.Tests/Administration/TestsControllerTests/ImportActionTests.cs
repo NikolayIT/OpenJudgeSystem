@@ -15,101 +15,101 @@
     [TestClass]
     public class ImportActionTests : TestsControllerBaseTestsClass
     {
-        protected Mock<HttpPostedFileBase> file;
-
         public ImportActionTests()
         {
-            this.file = new Mock<HttpPostedFileBase>();
+            this.File = new Mock<HttpPostedFileBase>();
         }
+
+        protected Mock<HttpPostedFileBase> File { get; set; }
 
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWithIncorrectProblemId()
         {
-            var redirectResult = this.testsController.Import("invalid", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("invalid", null, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenProblemDoesNotExist()
         {
-            var redirectResult = this.testsController.Import("100", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("100", null, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileIsNull()
         {
-            var redirectResult = this.testsController.Import("1", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", null, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileContentIsZero()
         {
-            this.file.Setup(x => x.ContentLength).Returns(0);
+            this.File.Setup(x => x.ContentLength).Returns(0);
 
-            var redirectResult = this.testsController.Import("1", this.file.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileIsNotZip()
         {
-            this.file.Setup(x => x.ContentLength).Returns(1);
-            this.file.Setup(x => x.FileName).Returns("filename.invalid");
+            this.File.Setup(x => x.ContentLength).Returns(1);
+            this.File.Setup(x => x.FileName).Returns("filename.invalid");
 
-            var redirectResult = this.testsController.Import("1", this.file.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Файлът трябва да бъде .ZIP файл", tempDataMessage);
         }
 
         [TestMethod]
         public void ImportActionShouldDeleteAllPreviousTestsIfSettingsAreSetToTrue()
         {
-            this.file.Setup(x => x.ContentLength).Returns(1);
-            this.file.Setup(x => x.FileName).Returns("filename.zip");
+            this.File.Setup(x => x.ContentLength).Returns(1);
+            this.File.Setup(x => x.FileName).Returns("filename.zip");
 
             var remainingTests = this.Data.Tests.All().Where(test => test.ProblemId == 1).Count();
 
@@ -117,7 +117,7 @@
 
             try
             {
-                this.testsController.Import("1", this.file.Object, true);
+                this.TestsController.Import("1", this.File.Object, true);
             }
             catch (Exception)
             {
@@ -129,20 +129,20 @@
         [TestMethod]
         public void ImportActionShouldReturnProperRedirectAndMessageIfZipFileIsNotValid()
         {
-            this.file.Setup(x => x.ContentLength).Returns(1);
-            this.file.Setup(x => x.FileName).Returns("filename.zip");
-            this.file.Setup(x => x.InputStream).Returns(new MemoryStream());
+            this.File.Setup(x => x.ContentLength).Returns(1);
+            this.File.Setup(x => x.FileName).Returns("filename.zip");
+            this.File.Setup(x => x.InputStream).Returns(new MemoryStream());
 
-            var redirectResult = this.testsController.Import("1", this.file.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Zip файлът е повреден", tempDataMessage);
         }
 
@@ -161,11 +161,11 @@
             zipFile.Save(zipStream);
             zipStream.Position = 0;
 
-            this.file.Setup(x => x.ContentLength).Returns(1);
-            this.file.Setup(x => x.FileName).Returns("file.zip");
-            this.file.Setup(x => x.InputStream).Returns(zipStream);
+            this.File.Setup(x => x.ContentLength).Returns(1);
+            this.File.Setup(x => x.FileName).Returns("file.zip");
+            this.File.Setup(x => x.InputStream).Returns(zipStream);
 
-            var redirectResult = this.testsController.Import("1", this.file.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
@@ -174,10 +174,10 @@
             var tests = this.Data.Problems.All().First(pr => pr.Id == 1).Tests.Count;
             Assert.AreEqual(14, tests);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
             Assert.AreEqual("Тестовете са добавени към задачата", tempDataMessage);
         }
     }

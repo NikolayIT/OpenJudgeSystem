@@ -390,13 +390,13 @@
             return this.File(resource.File, "application/octet-stream", string.Format("{0}.{1}", resource.Problem.Name, resource.FileExtension));
         }
 
-        // TODO: Remove if not used
         /// <summary>
         /// Gets the content of a participant submission for a particular problem.
         /// </summary>
         /// <param name="id">The submission id.</param>
         /// <param name="official">A flag checking if the submission was for practice or for a competition.</param>
         /// <returns>Returns a JSON with the submission content.</returns>
+        //// TODO: Remove if not used
         [Authorize]
         public ActionResult GetSubmissionContent(int id)
         {

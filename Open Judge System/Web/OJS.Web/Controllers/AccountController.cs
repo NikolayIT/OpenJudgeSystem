@@ -522,7 +522,6 @@
             return this.View(model);
         }
 
-
         [Authorize]
         [HttpGet]
         public ActionResult ChangeUsername()
@@ -560,7 +559,7 @@
                 return this.RedirectToAction("Index", new { controller = "Home", area = string.Empty });
             }
 
-            return View(model);
+            return this.View(model);
         }
 
         protected override void Dispose(bool disposing)

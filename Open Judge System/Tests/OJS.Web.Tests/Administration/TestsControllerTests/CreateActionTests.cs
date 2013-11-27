@@ -16,7 +16,7 @@
         [TestMethod]
         public void CreateGetActionShouldReturnProperRedirectWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Create(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -25,20 +25,20 @@
         [TestMethod]
         public void CreateGetActionShouldReturnProperMessageWhenIdIsNull()
         {
-            var redirectResult = this.testsController.Create(null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void CreateGetActionShouldReturnProperRedirectWhenProblemIsNull()
         {
-            var redirectResult = this.testsController.Create(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
@@ -47,20 +47,20 @@
         [TestMethod]
         public void CreateGetActionShouldReturnProperMessageWhenProblemIsNull()
         {
-            var redirectResult = this.testsController.Create(100) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void CreateGetActionShouldContainProperViewBagEntriesOnCorrectProblem()
         {
-            var viewResult = this.testsController.Create(1) as ViewResult;
+            var viewResult = this.TestsController.Create(1) as ViewResult;
             Assert.IsNotNull(viewResult);
 
             var viewBagProblemId = viewResult.ViewBag.ProblemId;
@@ -75,20 +75,20 @@
         [TestMethod]
         public void CreatePostActionShouldReturnProperRedirectAndMessageWhenProblemDoesNotExist()
         {
-            var redirectResult = this.testsController.Create(100, null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Create(100, null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
         [TestMethod]
         public void CreatePostActionShouldReturnViewWhenPostedProblemIsNull()
         {
-            var viewResult = this.testsController.Create(1, null) as ViewResult;
+            var viewResult = this.TestsController.Create(1, null) as ViewResult;
             Assert.IsNotNull(viewResult);
             Assert.IsNull(viewResult.Model);
         }
@@ -96,20 +96,20 @@
         [TestMethod]
         public void CreatePostActionShouldReturnProperMessageWhenModelStateIsValid()
         {
-            var viewResult = this.testsController.Create(1, this.testViewModel) as RedirectToRouteResult;
+            var viewResult = this.TestsController.Create(1, this.TestViewModel) as RedirectToRouteResult;
             Assert.IsNotNull(viewResult);
 
-            var tempDataHasKey = this.testsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.testsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
             Assert.AreEqual("Теста беше добавен успешно", tempDataMessage);
         }
 
         [TestMethod]
         public void CreatePostActionShouldReturnProperRedirectWhenModelStateIsValid()
         {
-            var viewResult = this.testsController.Create(1, this.testViewModel) as RedirectToRouteResult;
+            var viewResult = this.TestsController.Create(1, this.TestViewModel) as RedirectToRouteResult;
             Assert.IsNotNull(viewResult);
 
             var routeAction = viewResult.RouteValues["action"];
@@ -124,14 +124,14 @@
         [TestMethod]
         public void CreatePostActionShouldNotAddTestIfInputIsNullOrEmpty()
         {
-            this.testsController.ViewData.ModelState.Clear();
+            this.TestsController.ViewData.ModelState.Clear();
 
-            this.testViewModel.InputFull = string.Empty;
-            this.TryValidateModel(this.testViewModel, this.testsController);
-            var viewResult = this.testsController.Create(1, this.testViewModel) as ViewResult;
-            this.testViewModel.InputFull = "Input test";
+            this.TestViewModel.InputFull = string.Empty;
+            this.TryValidateModel(this.TestViewModel, this.TestsController);
+            var viewResult = this.TestsController.Create(1, this.TestViewModel) as ViewResult;
+            this.TestViewModel.InputFull = "Input test";
 
-            var modelState = this.testsController.ViewData.ModelState;
+            var modelState = this.TestsController.ViewData.ModelState;
 
             Assert.IsNotNull(viewResult);
             Assert.IsTrue(modelState.Count == 2);
@@ -144,14 +144,14 @@
         [TestMethod]
         public void CreatePostActionShouldNotAddTestIfOutputIsNullOrEmpty()
         {
-            this.testsController.ViewData.ModelState.Clear();
+            this.TestsController.ViewData.ModelState.Clear();
 
-            this.testViewModel.OutputFull = string.Empty;
-            this.TryValidateModel(this.testViewModel, this.testsController);
-            var viewResult = this.testsController.Create(1, this.testViewModel) as ViewResult;
-            this.testViewModel.OutputFull = "Output test";
+            this.TestViewModel.OutputFull = string.Empty;
+            this.TryValidateModel(this.TestViewModel, this.TestsController);
+            var viewResult = this.TestsController.Create(1, this.TestViewModel) as ViewResult;
+            this.TestViewModel.OutputFull = "Output test";
 
-            var modelState = this.testsController.ViewData.ModelState;
+            var modelState = this.TestsController.ViewData.ModelState;
 
             Assert.IsNotNull(viewResult);
             Assert.IsTrue(modelState.Count == 2);
