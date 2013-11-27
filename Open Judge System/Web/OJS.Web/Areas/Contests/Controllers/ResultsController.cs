@@ -88,26 +88,26 @@
                 Name = contest.Name,
                 Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
                 Results = this.Data.Participants.All()
-                                                    .Where(x => x.ContestId == contest.Id && x.IsOfficial == official)
-                                                    .Select(x => new ParticipantResultViewModel
-                                                    {
-                                                        ParticipantName = x.User.UserName,
-                                                        ProblemResults = x.Contest.Problems
-                                                                                    .Select(problem =>
-                                                                                                    new ProblemResultPairViewModel
-                                                                                                    {
-                                                                                                        Id = problem.Id,
-                                                                                                        ProblemName = problem.Name,
-                                                                                                        Result = problem.Submissions
-                                                                                                                            .Where(z => z.ParticipantId == x.Id)
-                                                                                                                            .Select(z => z.Points)
-                                                                                                                            .OrderByDescending(z => z)
-                                                                                                                            .FirstOrDefault()
-                                                                                                    })
-                                                                                                    .OrderBy(res => res.ProblemName)
-                                                    })
-                                                    .ToList()
-                                                    .OrderByDescending(x => x.Total)
+                    .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
+                    .Select(participant => new ParticipantResultViewModel
+                    {
+                        ParticipantName = participant.User.UserName,
+                        ProblemResults = participant.Contest.Problems
+                            .Select(problem =>
+                                new ProblemResultPairViewModel
+                                {
+                                    Id = problem.Id,
+                                    ProblemName = problem.Name,
+                                    Result = problem.Submissions
+                                                        .Where(z => z.ParticipantId == participant.Id)
+                                                        .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
+                                                        .Select(z => z.Points)
+                                                        .FirstOrDefault()
+                                })
+                                .OrderBy(res => res.ProblemName)
+                    })
+                    .ToList()
+                    .OrderByDescending(x => x.Total)
             };
 
             return this.View(contestModel);
@@ -125,7 +125,32 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, "Invalid contest Id was provided.");
             }
 
-            return this.View(contest);
+            var model = new ContestFullResultsViewModel
+                {
+                    Name = contest.Name,
+                    Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                    Results = this.Data.Participants.All()
+                        .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
+                        .Select(participant => new ParticipantFullResultViewModel
+                        {
+                            ParticipantName = participant.User.UserName,
+                            ProblemResults = participant.Contest.Problems
+                                .Select(problem =>
+                                    new ProblemFullResultViewModel
+                                    {
+                                        Id = problem.Id,
+                                        ProblemName = problem.Name,
+                                        BestSubmission = problem.Submissions.AsQueryable()
+                                                            .Where(submission => submission.ParticipantId == participant.Id)
+                                                            .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
+                                                            .Select(SubmissionFullResultsViewModel.FromSubmission)
+                                                            .FirstOrDefault(),
+                                    })
+                                    .OrderBy(res => res.ProblemName)
+                        })
+                };
+
+            return this.View(model);
         }
     }
 }

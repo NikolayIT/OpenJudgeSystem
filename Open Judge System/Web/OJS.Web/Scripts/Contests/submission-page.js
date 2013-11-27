@@ -1,4 +1,4 @@
-﻿var countdownTimer = function (endingTime) {
+﻿var countdownTimer = function(endingTime) {
     "use strict";
 
     var endTime = new Date(
@@ -17,10 +17,10 @@
     var secondsContainer = $('#seconds-remaining');
     var countdownTimer = $('#countdown-timer');
 
-    var start = function () {
+    var start = function() {
         updateCountdown();
 
-        var timerId = window.setInterval(function () {
+        var timerId = window.setInterval(function() {
             if (ts.hours === 0 && ts.minutes <= 4) {
                 if (!countdownTimer.hasClass('countdown-warning')) {
                     countdownTimer.addClass('countdown-warning');
@@ -35,7 +35,7 @@
             updateCountdown();
             ts = countdown(null, endTime, countdown.HOURS | countdown.MINUTES | countdown.SECONDS);
         }, 1000);
-    }
+    };
 
     function updateCountdown() {
         hoursContainer.text(ts.hours);
@@ -46,8 +46,8 @@
 
     return {
         start: start
-    }
-}
+    };
+};
 
 function createCodeMirrorForTextBox() {
     var element = $('.code-for-problem:visible')[0];

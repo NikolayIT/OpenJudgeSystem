@@ -1,6 +1,50 @@
-﻿@model OJS.Data.Models.Contest
+﻿@using OJS.Common.Models
+@model OJS.Web.Areas.Contests.ViewModels.Results.ContestFullResultsViewModel
 @{
     ViewBag.Title = Model.Name;
 }
 
 <h1>@ViewBag.Title</h1>
+<script src="/Scripts/Helpers/test-results.js"></script>
+<table class="table table-striped">
+    <tr>
+        <th>User</th>
+        @foreach (var problem in Model.Problems)
+        {
+            <th>@problem.Name</th>
+        }
+        <th>Total</th>
+    </tr>
+    @foreach (var participant in Model.Results)
+    {
+        <tr>
+            <td>@participant.ParticipantName</td>
+            @foreach (var problemResult in participant.ProblemResults)
+            {
+                <td>
+                    @if (problemResult.BestSubmission == null)
+                    {
+                        <span>No solution</span>
+                    }
+                    else
+                    {
+                        @:@problemResult.BestSubmission.Points
+                        <br />
+                        foreach (var testRun in problemResult.BestSubmission.TestRuns)
+                        {
+                            switch (testRun.ResultType)
+                            {
+                                case TestRunResultType.CorrectAnswer:<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>break;
+                                case TestRunResultType.WrongAnswer:<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>break;
+                                case TestRunResultType.TimeLimit:<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>break;
+                                case TestRunResultType.MemoryLimit:<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>break;
+                                case TestRunResultType.RunTimeError:<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>break;
+                            }
+                        }
+                    }
+                </td>
+            }
+            <td>@participant.Total</td>
+        </tr>
+    }
+</table>

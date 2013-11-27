@@ -249,6 +249,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChangeEmailView.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangeUsernameView.bg.designer.cs">
+      <DependentUpon>ChangeUsernameView.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ChangeUsernameView.designer.cs">
+      <DependentUpon>ChangeUsernameView.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.designer.cs">
       <DependentUpon>ChangePasswordView.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -425,20 +435,25 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Problems\ProblemListItemViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ParticipantFullResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\ProblemFullResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultPairViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\QuestionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ParticipantResultViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\SubmissionFullResultsViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\TestRunFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
-    <Compile Include="Areas\Users\ViewModels\UsernameViewModel.cs" />
+    <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserProfileViewModel.cs" />
@@ -754,6 +769,16 @@
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeEmailView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ChangeEmailView.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeUsernameView.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeUsernameView.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeUsernameView.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeUsernameView.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangePasswordView.bg.resx">

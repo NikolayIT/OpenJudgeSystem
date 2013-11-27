@@ -1,4 +1,5 @@
-﻿@model IList<OJS.Web.ViewModels.Submission.SubmissionViewModel>
+﻿@using OJS.Common.Models
+@model IList<OJS.Web.ViewModels.Submission.SubmissionViewModel>
 
 @{
     ViewBag.Title = "Последно изпратени решения";
@@ -73,28 +74,18 @@
                                 </div>
                                 for (int j = 0; j < tests.Count; j++)
                                 {
-                    if (tests[j].IsTrialTest)
-                    {
-                        continue;
-                    }
+                                    if (tests[j].IsTrialTest)
+                                    {
+                                        continue;
+                                    }
                     
                                     switch (tests[j].ExecutionResult)
                                     {
-                                        case OJS.Common.Models.TestRunResultType.CorrectAnswer:
-                                            <span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>
-                                            break;
-                                        case OJS.Common.Models.TestRunResultType.WrongAnswer:
-                                            <span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>
-                                            break;
-                                        case OJS.Common.Models.TestRunResultType.TimeLimit:
-                                            <span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>
-                                            break;
-                                        case OJS.Common.Models.TestRunResultType.MemoryLimit:
-                                            <span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>
-                                            break;
-                                        case OJS.Common.Models.TestRunResultType.RunTimeError:
-                                            <span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>
-                                            break;
+                                        case TestRunResultType.CorrectAnswer:<span class="glyphicon glyphicon-ok text-success" title="Correct answer"></span>break;
+                                        case TestRunResultType.WrongAnswer:<span class="glyphicon glyphicon-remove text-danger" title="Wrong answer"></span>break;
+                                        case TestRunResultType.TimeLimit:<span class="glyphicon glyphicon-time text-danger" title="Time limit"></span>break;
+                                        case TestRunResultType.MemoryLimit:<span class="glyphicon glyphicon-hdd text-danger" title="Memory limit"></span>break;
+                                        case TestRunResultType.RunTimeError:<span class="glyphicon glyphicon-asterisk text-danger" title="Run-time error"></span>break;
                                     }
                                 }
                             }
