@@ -18,10 +18,15 @@
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
-                string resourceLink =
-                    resource.ProblemType == ProblemResourceType.Video ?
-                        resource.Link :
-                            Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId });
+                string resourceLink;
+                if (resource.ProblemType == ProblemResourceType.Video)
+                {
+                    resourceLink = resource.Link;
+                }
+                else
+                {
+                    resourceLink = Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId });
+                }
 
                 if (resource.ProblemType == ProblemResourceType.ProblemDescription)
                 {
@@ -63,12 +68,11 @@
                     </div>
                     <div class="submit-container pull-right">
                         @(Html.Kendo().DropDownList()
-                        .Name("SubmissionTypeId")
-                        .DataTextField("Text")
-                        .DataValueField("Value")
-                        .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
-                        .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId })
-                        )
+                                .Name("SubmissionTypeId")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
+                                .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
                         <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
                     </div>
                 </div>
@@ -86,14 +90,17 @@
                     col.Bound(x => x.ParticipantName).Width(100);
                     col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#").Width(80);
                 })
-                .DataSource(data => data.Ajax()
-                                        .Sort(sort =>
-                                            {
-                                                sort.Add(x => x.Result).Descending();
-                                                sort.Add(x => x.ParticipantName).Ascending();
-                                            })
-                                        .Read("ByProblem", "Results", new { official = ViewBag.IsOfficial, id = Model.ProblemId })
-                                        .PageSize(8))
+                .DataSource(data =>
+                {
+                    data.Ajax()
+                        .Sort(sort =>
+                            {
+                                sort.Add(x => x.Result).Descending();
+                                sort.Add(x => x.ParticipantName).Ascending();
+                            })
+                        .Read("ByProblem", "Results", new { official = ViewBag.IsOfficial, id = Model.ProblemId })
+                        .PageSize(8);
+                })
                 .Filterable(x => x.Enabled(false))
                 .Pageable(x =>
                 {
@@ -124,6 +131,18 @@
             {
                 tool.Template("Изпратени решения");
             })
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                    .PageSize(10);
+            })
+            .Pageable(page =>
+            {
+                page.Info(false);
+                page.Refresh(true);
+            })
             .Columns(col =>
             {
                 col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
@@ -131,20 +150,7 @@
                     .Title("Време и памет")
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
-            })
-                                                                            .DataSource(data =>
-                                                                            {
-                                                                                data.Ajax()
-                                                                                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                                                                                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                                                                                    .PageSize(10);
-                                                                            })
-                                                                            .Pageable(page =>
-                                                                            {
-                                                                                page.Info(false);
-                                                                                page.Refresh(true);
-                                                                            })
-                                                                            .HtmlAttributes(new { @class = "problem_submit_grid" })
+            }).HtmlAttributes(new { @class = "problem_submit_grid" })
         )
     </div>
 </div>

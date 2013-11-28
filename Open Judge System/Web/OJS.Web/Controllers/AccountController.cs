@@ -175,8 +175,8 @@
                         this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
-                        return this.RedirectToAction("Manage");
+                        this.TempData["InfoMessage"] = "Паролата беше сменена.";
+                        return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
                     }
 
                     this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Password_incorrect);
@@ -197,8 +197,8 @@
                         await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
-                        return this.RedirectToAction("Manage");
+                        this.TempData["InfoMessage"] = "Паролата беше запазена.";
+                        return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
                     }
 
                     this.AddErrors(result);

@@ -18,7 +18,10 @@
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
             this.ContestId = problem.ContestId;
-            this.Resources = problem.Resources.AsQueryable().Where(x => !x.IsDeleted).Select(ContestProblemResourceViewModel.FromResource);
+            this.Resources = problem.Resources.AsQueryable()
+                                                .OrderBy(x => x.OrderBy)
+                                                .Where(x => !x.IsDeleted)
+                                                .Select(ContestProblemResourceViewModel.FromResource);
             this.TimeLimit = problem.TimeLimit;
             this.MemoryLimit = problem.MemoryLimit;
         }

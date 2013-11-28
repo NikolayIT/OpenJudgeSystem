@@ -10,7 +10,7 @@
         // TODO: Extract user, address and password as app.config settings
         private const string SendFrom = "bgcoder.com@gmail.com";
         private const string SendFromName = "BGCoder.com";
-        private const string Password = "__PASS_HERE__";
+        private const string Password = "nwcneonwcneo";
 
         private static readonly object SyncRoot = new object();
 

@@ -368,7 +368,7 @@
             {
                 ValidateContest(contest, official);
             }
-            else if (!this.User.IsInRole("Administrator"))
+            else if (this.User != null && !this.User.IsInRole("Administrator")) // TODO: add unit tests
             {
                 ValidateContest(contest, official);
                 userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);

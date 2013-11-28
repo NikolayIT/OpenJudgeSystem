@@ -64,8 +64,9 @@
             var controller = new CompeteController(this.EmptyOjsData, null);
             var result = controller.DownloadResource(resource.Id, this.IsPractice) as RedirectToRouteResult;
 
-            Assert.AreEqual("Login", result.RouteValues["action"]);
-            Assert.AreEqual("Account", result.RouteValues["controller"]);
+            Assert.AreEqual("Register", result.RouteValues["action"]);
+            Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
+            Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
 
         [TestMethod]

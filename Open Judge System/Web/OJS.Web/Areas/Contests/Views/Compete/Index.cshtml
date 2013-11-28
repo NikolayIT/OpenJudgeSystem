@@ -56,20 +56,23 @@
 </div>
 
 <script type="text/javascript">
+    var timeValidator = new submissionTimeValidator();
+
     var validateSubmit = (function () {
         var submitTime;
 
         @if(Model.LastSubmissionTime != null) {
         <text>
-            submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+        submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
         </text>
         };
+
+        var serverTime = new Date(Date.parse("@DateTime.Now.ToString("dd MMM yyyy HH:mm:ss")"));
 
         var limitBetweenSubmissions = parseInt(@Model.Contest.LimitBetweenSubmissions);
 
         function validateSubmit() {
-            var timeValidator = new submissionTimeValidator(submitTime, limitBetweenSubmissions);
-            var validationResult = validateSubmissionContent() && timeValidator.validate();
+            var validationResult = validateSubmissionContent() && timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
 
             return validationResult;
         }

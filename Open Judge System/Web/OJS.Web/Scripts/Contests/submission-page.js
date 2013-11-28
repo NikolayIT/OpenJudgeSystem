@@ -152,23 +152,30 @@ function validateSubmissionContent() {
     return true;
 }
 
-var lastSubmissionTime;
-
 // validate the submission time
-var submissionTimeValidator = function (lastSubmit, limitBetweenSubmissions) {
+var submissionTimeValidator = function () {
+    var lastSubmissionTime;
+    var currentServerTime;
 
-    if (!lastSubmissionTime) {
-        lastSubmissionTime = lastSubmit;
-    }
+    function validate(lastSubmit, limitBetweenSubmissions, serverTime) {
 
-    var limitBetweenSubmissions = limitBetweenSubmissions;
+        if (!lastSubmissionTime) {
+            lastSubmissionTime = lastSubmit;
+        }
 
-    function validate() {
-        var currentTime = new Date();
+        if (!currentServerTime) {
+            currentServerTime = serverTime;
+            setInterval(function () {
+                currentServerTime = new Date(currentServerTime.getTime() + 1000);
+            }, 1000)
+        }
+
+        var limitBetweenSubmissions = limitBetweenSubmissions;
+        var currentTime = currentServerTime;
         var secondsForLastSubmission = (currentTime - lastSubmissionTime) / 1000;
 
         if (!lastSubmissionTime) {
-            lastSubmissionTime = new Date();
+            lastSubmissionTime = currentServerTime;
             return true;
         }
 
@@ -183,7 +190,7 @@ var submissionTimeValidator = function (lastSubmit, limitBetweenSubmissions) {
             return false;
         }
 
-        lastSubmissionTime = new Date();
+        lastSubmissionTime = currentServerTime;
         return true;
     }
 
