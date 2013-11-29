@@ -120,4 +120,7 @@
   <data name="Change_password" xml:space="preserve">
     <value>Промени паролата</value>
   </data>
+  <data name="Password_updated" xml:space="preserve">
+    <value>Паролата беше обновена</value>
+  </data>
 </root>

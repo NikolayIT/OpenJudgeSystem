@@ -104,12 +104,12 @@
             {
                 if (this.UserProfile.PasswordHash == null)
                 {
-                    messages.Add("Нямате парола за вход в сайта. Моля сложете си парола от <a href=\"/Account/Manage\">този линк</a>.", SystemMessageType.Warning, 0);
+                    messages.Add(Resources.Base.Password_not_set, SystemMessageType.Warning, 0);
                 }
 
                 if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
                 {
-                    messages.Add("Вашето потребителско име съдържа непозволени символи. Можете да я смените от <a href=\"/Account/ChangeUsername\">този линк</a>.", SystemMessageType.Warning, 0);
+                    messages.Add(Resources.Base.Username_in_invalid_format, SystemMessageType.Warning, 0);
                 }
             }
 

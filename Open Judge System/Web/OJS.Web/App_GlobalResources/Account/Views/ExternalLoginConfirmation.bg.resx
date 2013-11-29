@@ -123,6 +123,9 @@
   <data name="Enter_username_and_register" xml:space="preserve">
     <value>Моля въведете потребителско име за сайта и натиснете бутона "Регистрация" за да влезнете в системата.</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Възникна грешка</value>
+  </data>
   <data name="Link_account" xml:space="preserve">
     <value>Свържете акаунта си, използвайки своя {0} акаунт.</value>
   </data>

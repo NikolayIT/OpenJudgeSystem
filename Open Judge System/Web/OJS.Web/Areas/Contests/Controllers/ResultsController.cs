@@ -140,6 +140,7 @@
                                     {
                                         Id = problem.Id,
                                         ProblemName = problem.Name,
+                                        MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
                                                             .Where(submission => submission.ParticipantId == participant.Id)
                                                             .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
@@ -148,6 +149,8 @@
                                     })
                                     .OrderBy(res => res.ProblemName)
                         })
+                        .ToList()
+                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantName)
                 };
 
             return this.View(model);

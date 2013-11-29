@@ -120,4 +120,7 @@
   <data name="Change_password" xml:space="preserve">
     <value>Change your password</value>
   </data>
+  <data name="Password_updated" xml:space="preserve">
+    <value>The password was updated</value>
+  </data>
 </root>

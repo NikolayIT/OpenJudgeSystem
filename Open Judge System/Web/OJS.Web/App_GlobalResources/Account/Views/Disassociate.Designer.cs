@@ -22,14 +22,14 @@ namespace Resources.Account.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ChangePasswordView {
+    public class Disassociate {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ChangePasswordView() {
+        internal Disassociate() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Account.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Views.ChangePasswordView", typeof(ChangePasswordView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Views.Disassociate", typeof(Disassociate).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password updated successfully..
+        ///   Looks up a localized string similar to An error occured.
         /// </summary>
-        public static string Password_updated {
+        public static string Error {
             get {
-                return ResourceManager.GetString("Password_updated", resourceCulture);
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to The external login was removed.
         /// </summary>
-        public static string Submit {
+        public static string External_login_removed {
             get {
-                return ResourceManager.GetString("Submit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update your password.
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("External_login_removed", resourceCulture);
             }
         }
     }

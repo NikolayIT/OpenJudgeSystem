@@ -123,6 +123,9 @@
   <data name="Enter_username_and_register" xml:space="preserve">
     <value>Please enter a username and click on Register to log into the system</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>An error occured</value>
+  </data>
   <data name="Link_account" xml:space="preserve">
     <value>Link you account with your {0} account.</value>
   </data>

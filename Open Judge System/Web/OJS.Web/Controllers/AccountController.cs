@@ -140,11 +140,11 @@
                 this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                this.TempData["InfoMessage"] = "Външния логин беше премахнат.";
+                this.TempData["InfoMessage"] = Resources.Account.Views.Disassociate.External_login_removed;
             }
             else
             {
-                this.TempData["DangerMessage"] = "Възникна грешка.";
+                this.TempData["DangerMessage"] = Resources.Account.Views.Disassociate.Error;
             }
 
             return this.RedirectToAction("Manage");
@@ -175,7 +175,7 @@
                         this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = "Паролата беше сменена.";
+                        this.TempData["InfoMessage"] = Resources.Account.Views.Manage.Password_updated;
                         return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
                     }
 
@@ -197,7 +197,7 @@
                         await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = "Паролата беше запазена.";
+                        this.TempData["InfoMessage"] = Resources.Account.Views.Manage.Password_updated;
                         return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
                     }
 
@@ -242,9 +242,10 @@
             // If a user account was not found - check if he has already registered his email.
             ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
             var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
+
             if (this.Data.Users.All().Any(x => x.Email == email))
             {
-                this.TempData["DangerMessage"] = "You have already registered with this email address. Please log in or use the forgotten password feature.";
+                this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginCallback.Email_already_registered;
                 return this.RedirectToAction("Login");
             }
 
@@ -279,7 +280,7 @@
                 }
             }
 
-            this.TempData["DangerMessage"] = "Възникна грешка.";
+            this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginConfirmation.Error;
             return this.RedirectToAction("Manage");
         }
 
@@ -307,7 +308,7 @@
 
                 if (this.Data.Users.All().Any(x => x.Email == model.Email))
                 {
-                    this.TempData["DangerMessage"] = "Your email has already been registered. Please use the forgot your details feature to obtain your login details";
+                    this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered;
                     return this.RedirectToAction("ForgottenPassword");
                 }
 
@@ -441,7 +442,7 @@
                 Token = guid
             };
 
-            this.TempData["InfoMessage"] = "Password changed successfully - you can now log in using your new password.";
+            this.TempData["InfoMessage"] = Resources.Account.Views.ChangePasswordView.Password_updated;
             return this.View(forgottenPasswordModel);
         }
 
@@ -473,7 +474,7 @@
                         user.ForgottenPasswordToken = null;
                         this.Data.SaveChanges();
 
-                        this.TempData["InfoMessage"] = "Паролата ви беше сменена.";
+                        this.TempData["InfoMessage"] = Resources.Account.Views.ChangePasswordView.Password_updated;
                         return this.RedirectToAction("Login");
                     }
 
@@ -554,7 +555,7 @@
                 this.UserProfile.UserName = model.Username;
                 this.Data.SaveChanges();
 
-                this.TempData["InfoMessage"] = "Username was successfully changed. Please log in using your new username.";
+                this.TempData["InfoMessage"] = Resources.Account.Views.ChangeUsernameView.Username_changed;
                 this.AuthenticationManager.SignOut();
                 return this.RedirectToAction("Login", new { controller = "Account", area = string.Empty });
             }

@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SystemName" xml:space="preserve">
-    <value>Open Judge System (OJS)</value>
+  <data name="Error" xml:space="preserve">
+    <value>Възникна грешка</value>
   </data>
-  <data name="SystemVersion" xml:space="preserve">
-    <value>0.1.2771.20131129</value>
+  <data name="External_login_removed" xml:space="preserve">
+    <value>Външния логин беше премахнат</value>
   </data>
 </root>

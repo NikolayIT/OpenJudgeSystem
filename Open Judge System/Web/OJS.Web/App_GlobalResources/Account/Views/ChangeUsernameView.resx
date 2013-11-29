@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Update" xml:space="preserve">
-    <value>Update</value>
+    <value>Update username</value>
+  </data>
+  <data name="Username_changed" xml:space="preserve">
+    <value>Username was successfully changed. Please log in using your new username.</value>
+  </data>
+  <data name="Username_not_available" xml:space="preserve">
+    <value>This username is not available</value>
   </data>
 </root>

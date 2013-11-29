@@ -7,5 +7,7 @@
         public string ProblemName { get; set; }
 
         public SubmissionFullResultsViewModel BestSubmission { get; set; }
+
+        public int MaximumPoints { get; set; }
     }
 }

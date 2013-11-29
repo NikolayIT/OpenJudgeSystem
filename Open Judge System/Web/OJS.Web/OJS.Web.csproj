@@ -269,15 +269,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChangePasswordView.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\Disassociate.bg.designer.cs">
+      <DependentUpon>Disassociate.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ExternalLoginCallback.bg.designer.cs">
+      <DependentUpon>ExternalLoginCallback.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.designer.cs">
+      <DependentUpon>ExternalLoginConfirmation.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.bg.designer.cs">
       <DependentUpon>ExternalLoginConfirmation.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.Designer.cs">
+    <Compile Include="App_GlobalResources\Account\Views\Disassociate.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ExternalLoginConfirmation.resx</DependentUpon>
+      <DependentUpon>Disassociate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ExternalLoginCallback.designer.cs">
+      <DependentUpon>ExternalLoginCallback.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ExternalLoginFailure.bg.designer.cs">
       <DependentUpon>ExternalLoginFailure.bg.resx</DependentUpon>
@@ -378,6 +398,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Base.bg.designer.cs">
+      <DependentUpon>Base.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Base.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Base.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -791,14 +821,34 @@
       <LastGenOutput>ChangePasswordView.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginCallback.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExternalLoginCallback.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExternalLoginConfirmation.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\Disassociate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Disassociate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExternalLoginConfirmation.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginConfirmation.resx">
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\Disassociate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExternalLoginConfirmation.Designer.cs</LastGenOutput>
+      <LastGenOutput>Disassociate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginCallback.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExternalLoginCallback.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalLoginFailure.bg.resx">
@@ -900,6 +950,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Base.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Base.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Base.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Base.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

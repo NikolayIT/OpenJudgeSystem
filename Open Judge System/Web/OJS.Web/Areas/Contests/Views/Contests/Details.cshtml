@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>Задачи: </h3>
-        @if (Model.CanBePracticed && !Model.HasPracticePassword)
+        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword))
         {
             foreach (var problem in Model.Problems)
             {

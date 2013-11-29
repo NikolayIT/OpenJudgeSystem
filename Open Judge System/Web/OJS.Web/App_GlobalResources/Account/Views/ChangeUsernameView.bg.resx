@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Update" xml:space="preserve">
-    <value>Промени</value>
+    <value>Промени потребителско име</value>
+  </data>
+  <data name="Username_changed" xml:space="preserve">
+    <value>Потребителското име беше променено. Моля, влезте с новото потребителско име.</value>
+  </data>
+  <data name="Username_not_available" xml:space="preserve">
+    <value>Това потребителско име е заето</value>
   </data>
 </root>

@@ -79,6 +79,15 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link you account with your {0} account..
         /// </summary>
         public static string Link_account {

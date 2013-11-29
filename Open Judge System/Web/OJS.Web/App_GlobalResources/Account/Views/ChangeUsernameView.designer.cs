@@ -61,11 +61,29 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update.
+        ///   Looks up a localized string similar to Update username.
         /// </summary>
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username was successfully changed. Please log in using your new username..
+        /// </summary>
+        public static string Username_changed {
+            get {
+                return ResourceManager.GetString("Username_changed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This username is not available.
+        /// </summary>
+        public static string Username_not_available {
+            get {
+                return ResourceManager.GetString("Username_not_available", resourceCulture);
             }
         }
     }

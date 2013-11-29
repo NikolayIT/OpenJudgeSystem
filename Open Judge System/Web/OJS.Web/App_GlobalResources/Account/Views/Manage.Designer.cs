@@ -68,5 +68,14 @@ namespace Resources.Account.Views {
                 return ResourceManager.GetString("Change_password", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password was updated.
+        /// </summary>
+        public static string Password_updated {
+            get {
+                return ResourceManager.GetString("Password_updated", resourceCulture);
+            }
+        }
     }
 }

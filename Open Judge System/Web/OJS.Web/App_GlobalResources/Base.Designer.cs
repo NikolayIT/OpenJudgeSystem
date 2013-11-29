@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Account.Views {
+namespace Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Account.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ChangePasswordView {
+    public class Base {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ChangePasswordView() {
+        internal Base() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Account.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Views.ChangePasswordView", typeof(ChangePasswordView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Base", typeof(Base).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password updated successfully..
+        ///   Looks up a localized string similar to You have not set a password for your profile. Please set your password using &lt;a href=\&quot;/Account/Manage\&quot;&gt;this link&lt;/a&gt;..
         /// </summary>
-        public static string Password_updated {
+        public static string Password_not_set {
             get {
-                return ResourceManager.GetString("Password_updated", resourceCulture);
+                return ResourceManager.GetString("Password_not_set", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Your username contains symbols that are not allowed. You can change it using &lt;a href=\&quot;/Account/ChangeUsername\&quot;&gt;this link&lt;/a&gt;..
         /// </summary>
-        public static string Submit {
+        public static string Username_in_invalid_format {
             get {
-                return ResourceManager.GetString("Submit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update your password.
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Username_in_invalid_format", resourceCulture);
             }
         }
     }
