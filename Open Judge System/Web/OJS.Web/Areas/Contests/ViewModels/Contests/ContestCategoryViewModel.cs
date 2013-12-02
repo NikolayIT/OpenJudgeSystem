@@ -17,7 +17,7 @@
                     new ContestCategoryViewModel
                     {
                         CategoryName = contestCategory.Name,
-                        Contests = contestCategory.Contests.AsQueryable().OrderBy(x => x.OrderBy).Select(ContestViewModel.FromContest),
+                        Contests = contestCategory.Contests.AsQueryable().Where(x => x.IsVisible && !x.IsDeleted).OrderBy(x => x.OrderBy).Select(ContestViewModel.FromContest),
                     };
             }
         }

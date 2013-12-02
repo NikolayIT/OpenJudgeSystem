@@ -19,6 +19,16 @@
 <div class="row">
     <div class="col-md-8">
         <h3>Детайли за състезанието</h3>
+        @if (Model.CanBeCompeted && Model.EndTime != null)
+        {
+            <h5>
+                Състезанието е активно до: @Model.EndTime.Value.ToString("hh:mm d.M.yyy")
+            </h5>
+        }
+        @if (Model.CanBePracticed && Model.PracticeEndTime != null)
+        {
+            <h5>Практикуването е позволено до: @Model.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</h5>
+        }
         @if (!string.IsNullOrEmpty(Model.Description))
         {
             @Model.Description

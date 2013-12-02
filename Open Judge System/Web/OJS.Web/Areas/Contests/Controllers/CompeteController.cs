@@ -89,7 +89,7 @@
             }
 
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
-            var participantViewModel = new ParticipantViewModel(participant);
+            var participantViewModel = new ParticipantViewModel(participant, official);
 
             this.ViewBag.CompeteType = official ? CompeteUrl : PracticeUrl;
 
@@ -149,13 +149,13 @@
             ValidateContest(contest, official);
 
             // check if the contest is official, has a password and if the user entered the correct password
-            if (official && contest.HasContestPassword && !contest.ContestPassword.Equals(registrationData.Password))
+            if (official && contest.HasContestPassword && (contest.ContestPassword != registrationData.Password))
             {
                 this.ModelState.AddModelError("Password", "Incorrect password!");
             }
 
             // check if the contest is practice, has a password and if the user entered the correct password
-            if (!official && contest.HasPracticePassword && !contest.PracticePassword.Equals(registrationData.Password))
+            if (!official && contest.HasPracticePassword && (contest.PracticePassword != registrationData.Password))
             {
                 this.ModelState.AddModelError("Password", "Incorrect password!");
             }
@@ -368,15 +368,15 @@
             {
                 ValidateContest(contest, official);
             }
-            else if (this.User != null && !this.User.IsInRole("Administrator")) // TODO: add unit tests
-            {
-                ValidateContest(contest, official);
-                userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);
-            }
-            else
+            else if (this.User != null && this.User.IsInRole("Administrator")) // TODO: add unit tests
             {
                 // If the user is an administrator he can download the resource at any time.
                 userCanDownloadResource = true;
+            }
+            else
+            {
+                ValidateContest(contest, official);
+                userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);
             }
 
             if (userCanDownloadResource ||

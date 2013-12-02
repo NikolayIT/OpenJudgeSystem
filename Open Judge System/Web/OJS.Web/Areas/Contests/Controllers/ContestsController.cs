@@ -22,7 +22,7 @@ namespace OJS.Web.Areas.Contests.Controllers
         public ActionResult Details(int id)
         {
             var contestViewModel = this.Data.Contests.All()
-                                                .Where(x => x.Id == id)
+                                                .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
                                                 .Select(ContestViewModel.FromContest)
                                                 .FirstOrDefault();
 
@@ -41,7 +41,7 @@ namespace OJS.Web.Areas.Contests.Controllers
         {
             var contests = this.Data.Contests
                                             .All()
-                                            .Where(x => x.SubmissionTypes.Any(s => s.Id == id))
+                                            .Where(x => x.SubmissionTypes.Any(s => s.Id == id) && !x.IsDeleted && x.IsVisible)
                                             .Select(ContestViewModel.FromContest);
 
             return this.View(contests);

@@ -37,7 +37,7 @@ namespace OJS.Web.Areas.Contests.Controllers
         {
             var contestCategory =
                 this.Data.ContestCategories.All()
-                    .Where(x => x.Id == id)
+                    .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
                     .OrderBy(x => x.OrderBy)
                     .Select(ContestCategoryViewModel.FromContestCategory)
                     .FirstOrDefault();
@@ -58,8 +58,8 @@ namespace OJS.Web.Areas.Contests.Controllers
             var contests =
                 this.Data.Contests
                                 .All()
-                                .Where(c => !c.IsDeleted && 
-                                            c.IsVisible && 
+                                .Where(c => !c.IsDeleted &&
+                                            c.IsVisible &&
                                             c.SubmissionTypes.Any(s => s.Name == submissionName))
                                 .OrderBy(x => x.OrderBy)
                                 .Select(ContestViewModel.FromContest);

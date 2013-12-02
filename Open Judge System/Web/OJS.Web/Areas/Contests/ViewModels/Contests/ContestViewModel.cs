@@ -68,9 +68,9 @@
 
         public bool IsVisible { get; set; }
 
-        public string ContestPassword { get; set; }
+        public string ContestPassword { private get; set; }
 
-        public string PracticePassword { get; set; }
+        public string PracticePassword { private get; set; }
 
         public bool HasContestQuestions { get; set; }
 

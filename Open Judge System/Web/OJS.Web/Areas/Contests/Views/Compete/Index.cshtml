@@ -20,14 +20,19 @@
 </h1>
 
 @{
-    var contestIsCompete = Model.Contest.EndTime > DateTime.Now && ViewBag.CompeteType == "Compete";
+    var contestIsCompete = Model.ContestIsCompete && Model.Contest.EndTime.HasValue && Model.Contest.EndTime.Value > DateTime.Now;
+    var contestIsPractice = !Model.ContestIsCompete && Model.Contest.PracticeEndTime.HasValue && Model.Contest.PracticeEndTime > DateTime.Now;
 }
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         <h2>Изпратете решение</h2>
     </div>
-    <div class="col-md-3" id="countdown-timer-container">
+    <div class="col-md-4 text-right" id="countdown-timer-container">
+        @if (contestIsPractice)
+        {
+            <div>Може да се упражнява до: @Model.Contest.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</div>
+        }
         <div class="clearfix"></div>
         <div class="pull-right"><a href="@(string.Format("/Contests/{0}/Results/Simple/{1}", ViewBag.CompeteType, Model.Contest.Id))">Резултати</a></div>
     </div>
