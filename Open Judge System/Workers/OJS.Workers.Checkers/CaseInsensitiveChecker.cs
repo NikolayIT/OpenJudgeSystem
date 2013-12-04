@@ -4,9 +4,9 @@
 
     public class CaseInsensitiveChecker : Checker
     {
-        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isZeroTest)
         {
-            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualCaseInsensitiveLines);
+            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualCaseInsensitiveLines, isZeroTest);
             return result;
         }
     }

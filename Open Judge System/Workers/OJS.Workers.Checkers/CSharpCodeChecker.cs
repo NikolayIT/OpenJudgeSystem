@@ -13,14 +13,14 @@
     {
         private IChecker customChecker;
 
-        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
             if (this.customChecker == null)
             {
                 throw new InvalidOperationException("Please call SetParameter first with non-null string.");
             }
 
-            var result = this.customChecker.Check(inputData, receivedOutput, expectedOutput);
+            var result = this.customChecker.Check(inputData, receivedOutput, expectedOutput, isTrialTest);
             return result;
         }
 

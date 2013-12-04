@@ -67,7 +67,7 @@
             }
             else if (processExecutionResult.Type == ProcessExecutionResultType.Success)
             {
-                var checkerResult = checker.Check(test.Input, receivedOutput, test.Output);
+                var checkerResult = checker.Check(test.Input, receivedOutput, test.Output, test.IsTrialTest);
                 if (checkerResult.IsCorrect)
                 {
                     testResult.ResultType = TestRunResultType.CorrectAnswer;

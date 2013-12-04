@@ -12,9 +12,9 @@
     {
         private int precision = 14;
 
-        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
-            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualWithPrecision);
+            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualWithPrecision, isTrialTest);
             return result;
         }
 

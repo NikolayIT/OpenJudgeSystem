@@ -22,14 +22,14 @@
             return checker;
         }
 
-        public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput);
+        public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest);
 
         public virtual void SetParameter(string parameter)
         {
             throw new InvalidOperationException("This checker doesn't support parameters");
         }
 
-        protected CheckerResult CheckLineByLine(string inputData, string receivedOutput, string expectedOutput, Func<string, string, bool> areEqual)
+        protected CheckerResult CheckLineByLine(string inputData, string receivedOutput, string expectedOutput, Func<string, string, bool> areEqual, bool isTrialTest)
         {
             this.NormalizeEndLines(ref receivedOutput);
             this.NormalizeEndLines(ref expectedOutput);

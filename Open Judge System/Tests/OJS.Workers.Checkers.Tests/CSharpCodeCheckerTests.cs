@@ -12,7 +12,7 @@
         public void CallingCheckMethodBeforeSetParameterShouldThrowAnException()
         {
             var checker = new CSharpCodeChecker();
-            checker.Check(string.Empty, string.Empty, string.Empty);
+            checker.Check(string.Empty, string.Empty, string.Empty, false);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@
                     }
                 }");
 
-            var checkerResult = checker.Check(string.Empty, string.Empty, string.Empty);
+            var checkerResult = checker.Check(string.Empty, string.Empty, string.Empty, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -127,7 +127,7 @@
                     }
                 }");
 
-            var checkerResult = checker.Check("One", "Two", "Three");
+            var checkerResult = checker.Check("One", "Two", "Three", false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);

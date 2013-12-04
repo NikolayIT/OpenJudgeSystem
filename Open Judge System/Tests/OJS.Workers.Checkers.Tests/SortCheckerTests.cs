@@ -16,7 +16,7 @@
             string expectedOutput = "Ивайло";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -30,7 +30,7 @@
             string expectedOutput = "Ивайло";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -44,7 +44,7 @@
             string expectedOutput = "Ивайло\nFoo\nBar";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -58,7 +58,7 @@
             string expectedOutput = "Ивайло\nFoo\nBar\n";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -72,7 +72,7 @@
             string expectedOutput = "ивайло";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -86,7 +86,7 @@
             string expectedOutput = "1.1";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -100,7 +100,7 @@
             string expectedOutput = "Bar";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -114,7 +114,7 @@
             string expectedOutput = "Bar";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -128,7 +128,7 @@
             string expectedOutput = "Bar\nFoo";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -142,7 +142,7 @@
             string expectedOutput = "Bar\nFoo";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -156,7 +156,7 @@
             string expectedOutput = "\n\nBar\nFoo";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -182,7 +182,7 @@
 
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -208,7 +208,7 @@
 
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -234,7 +234,7 @@
 
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -260,7 +260,7 @@
 
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -274,7 +274,7 @@
             string expectedOutput = "Ивайло\nBar\nFoo";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -288,7 +288,7 @@
             string expectedOutput = "2\n3\n1";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -302,7 +302,7 @@
             string expectedOutput = "1\n2\n3";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -316,7 +316,7 @@
             string expectedOutput = "3\n1\n2";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -330,7 +330,7 @@
             string expectedOutput = "1\n2\n3\n4\n6\n5\n7\n8\n9";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -344,7 +344,7 @@
             string expectedOutput = "1\n2\n3\n4\n5\n6\n7\n8\n9";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -358,7 +358,7 @@
             string expectedOutput = "1\n6\n3\n9\n5\n2\n8\n7\n4";
             var checker = new SortChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);

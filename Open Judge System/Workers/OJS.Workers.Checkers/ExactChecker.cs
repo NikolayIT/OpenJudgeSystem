@@ -4,9 +4,9 @@
 
     public class ExactChecker : Checker
     {
-        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+        public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
-            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualExactLines);
+            var result = this.CheckLineByLine(inputData, receivedOutput, expectedOutput, this.AreEqualExactLines, isTrialTest);
             return result;
         }
     }

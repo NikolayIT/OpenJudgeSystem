@@ -7,5 +7,7 @@
         public string Input { get; set; }
 
         public string Output { get; set; }
+
+        public bool IsTrialTest { get; set; }
     }
 }

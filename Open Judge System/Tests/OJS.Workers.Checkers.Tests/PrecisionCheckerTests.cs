@@ -17,7 +17,7 @@
             string expectedOutput = "1.11111111111111111111111112";
             var checker = new PrecisionChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -32,7 +32,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("5");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -47,7 +47,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("6");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -62,7 +62,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("6");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -77,7 +77,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("2");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -92,7 +92,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("2");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -107,7 +107,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("2");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -122,7 +122,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("2");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -137,7 +137,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("15");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -152,7 +152,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("1");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -169,7 +169,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -184,7 +184,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -198,7 +198,7 @@
             string expectedOutput = "1.1";
             var checker = new PrecisionChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -213,7 +213,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -228,7 +228,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -243,7 +243,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -258,7 +258,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -273,7 +273,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -300,7 +300,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -329,7 +329,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -358,7 +358,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -383,7 +383,7 @@
             var checker = new PrecisionChecker();
             checker.SetParameter("4");
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);

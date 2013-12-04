@@ -169,6 +169,7 @@
                 Id = x.Id,
                 Input = x.InputDataAsString,
                 Output = x.OutputDataAsString,
+                IsTrialTest = x.IsTrialTest
             });
 
             ExecutionResult executionResult;

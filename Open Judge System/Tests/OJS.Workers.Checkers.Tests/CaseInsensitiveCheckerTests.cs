@@ -16,7 +16,7 @@
             string expectedOutput = "НикОлай";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -30,7 +30,7 @@
             string expectedOutput = "ниКолай";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -44,7 +44,7 @@
             string expectedOutput = "николай\nFoO\nBar";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -58,7 +58,7 @@
             string expectedOutput = "Николай\nFoo\nBAr\n";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -72,7 +72,7 @@
             string expectedOutput = "николай";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -86,7 +86,7 @@
             string expectedOutput = "1.1";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -100,7 +100,7 @@
             string expectedOutput = "Bar";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -114,7 +114,7 @@
             string expectedOutput = "Bar";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -128,7 +128,7 @@
             string expectedOutput = "Bar\nFoo";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -142,7 +142,7 @@
             string expectedOutput = "Bar\nFoo";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -156,7 +156,7 @@
             string expectedOutput = "\n\nBar\nFOo";
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput);
+            var checkerResult = checker.Check(string.Empty, receivedOutput, expectedOutput, false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -182,7 +182,7 @@
 
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
@@ -208,7 +208,7 @@
 
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -234,7 +234,7 @@
 
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -264,7 +264,7 @@
 
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsFalse(checkerResult.IsCorrect);
@@ -290,7 +290,7 @@
 
             var checker = new CaseInsensitiveChecker();
 
-            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString());
+            var checkerResult = checker.Check(string.Empty, receivedOutput.ToString(), expectedOutput.ToString(), false);
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
