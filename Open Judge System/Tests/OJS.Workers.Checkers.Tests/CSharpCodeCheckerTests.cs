@@ -78,7 +78,7 @@
                 using OJS.Workers.Common;
                 public class MyChecker : IChecker
                 {
-                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
                     {
                         return new CheckerResult
                                     {
@@ -107,7 +107,7 @@
                 using OJS.Workers.Common;
                 public class MyChecker : IChecker
                 {
-                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
                     {
                         bool isCorrect = true;
 

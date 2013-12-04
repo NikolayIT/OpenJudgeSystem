@@ -4,6 +4,7 @@
     using System.IO;
     using System.Reflection;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public abstract class Checker : IChecker
@@ -39,6 +40,8 @@
 
             CheckerResultType resultType;
 
+            string adminCheckerDetails = null;
+            int lineNumber = 0;
             using (userFileReader)
             {
                 using (correctFileReader)
@@ -58,6 +61,26 @@
                         if (userLine == null || correctLine == null)
                         {
                             // One of the two streams is already empty
+                            adminCheckerDetails = string.Format(
+                                "Invalid number of lines on line {0}{1}",
+                                lineNumber,
+                                Environment.NewLine);
+                            if (userLine != null)
+                            {
+                                adminCheckerDetails += string.Format(
+                                    "Next user line:{1}{0}{1}",
+                                    userLine.MaxLength(256),
+                                    Environment.NewLine);
+                            }
+
+                            if (correctLine != null)
+                            {
+                                adminCheckerDetails += string.Format(
+                                    "Next correct line:{1}{0}{1}",
+                                    correctLine.MaxLength(256),
+                                    Environment.NewLine);
+                            }
+
                             resultType = CheckerResultType.InvalidNumberOfLines;
                             break;
                         }
@@ -65,19 +88,43 @@
                         if (!areEqual(userLine, correctLine))
                         {
                             // Lines are different => wrong answer
+                            adminCheckerDetails = string.Format(
+                                "Line {1} is different.{0}Expected line:{0}{2}{0}User line{0}{3}{0}",
+                                Environment.NewLine,
+                                lineNumber,
+                                correctLine.MaxLength(256),
+                                userLine.MaxLength(256));
+
                             resultType = CheckerResultType.WrongAnswer;
                             break;
                         }
+
+                        lineNumber++;
                     }
                 }
+            }
+
+            string checkerDetails;
+            if (isTrialTest)
+            {
+                // Full test report for user
+                checkerDetails = string.Format(
+                    "Expected output:{0}{1}{0}Your output:{0}{2}{0}",
+                    Environment.NewLine,
+                    expectedOutput.MaxLength(2048),
+                    receivedOutput.MaxLength(2048));
+            }
+            else
+            {
+                // Test report for admins
+                checkerDetails = adminCheckerDetails;
             }
 
             return new CheckerResult
             {
                 IsCorrect = resultType == CheckerResultType.Ok,
                 ResultType = resultType,
-                //// TODO: Include line numbers difference
-                CheckerDetails = string.Empty
+                CheckerDetails = checkerDetails
             };
         }
 

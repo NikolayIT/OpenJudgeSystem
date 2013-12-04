@@ -9,6 +9,7 @@
 
     public class SortChecker : Checker
     {
+        // TODO: CheckerDetails
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
             this.NormalizeEndLines(ref receivedOutput);
