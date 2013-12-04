@@ -63,6 +63,19 @@
             }
         }
 
+        public static string ExtractFileFromStream(ZipEntry entry)
+        {
+            var reader = new MemoryStream();
+            entry.Extract(reader);
+            reader = new MemoryStream(reader.ToArray());
+
+            var streamReader = new StreamReader(reader);
+
+            var text = streamReader.ReadToEnd();
+            reader.Dispose();
+            return text;
+        }
+
         private static void ExcractInAndSolFiles(ZipFile zipFile, TestsParseResult result)
         {
             // .in and .sol files
@@ -216,19 +229,6 @@
                     }
                 }
             }
-        }
-
-        public static string ExtractFileFromStream(ZipEntry entry)
-        {
-            var reader = new MemoryStream();
-            entry.Extract(reader);
-            reader = new MemoryStream(reader.ToArray());
-
-            var streamReader = new StreamReader(reader);
-
-            var text = streamReader.ReadToEnd();
-            reader.Dispose();
-            return text;
         }
     }
 }

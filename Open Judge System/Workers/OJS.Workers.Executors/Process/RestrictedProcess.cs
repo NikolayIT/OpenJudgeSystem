@@ -83,7 +83,7 @@
                 throw new Win32Exception();
             }
 
-            this.safeProcessHandle = new SafeProcessHandle(this.processInformation.hProcess);
+            this.safeProcessHandle = new SafeProcessHandle(this.processInformation.Process);
             
             // This is a very important line! Without disposing the startupInfo handles, reading the standard output (or error) will hang forever.
             // Same problem described here: http://social.msdn.microsoft.com/Forums/vstudio/en-US/3c25a2e8-b1ea-4fc4-927b-cb865d435147/how-does-processstart-work-in-getting-output
@@ -102,7 +102,7 @@
         {
             get
             {
-                return this.processInformation.dwProcessId;
+                return this.processInformation.ProcessId;
             }
         }
 
@@ -110,7 +110,7 @@
         {
             get
             {
-                return this.processInformation.dwThreadId;
+                return this.processInformation.ThreadId;
             }
         }
 
@@ -118,7 +118,7 @@
         {
             get
             {
-                return this.processInformation.hProcess;
+                return this.processInformation.Process;
             }
         }
 
@@ -126,7 +126,7 @@
         {
             get
             {
-                return this.processInformation.hThread;
+                return this.processInformation.Thread;
             }
         }
 
@@ -270,9 +270,9 @@
                 this.jobObject = new JobObject();
                 this.jobObject.SetExtendedLimitInformation(PrepareJobObject.GetExtendedLimitInformation(timeLimit * 2, memoryLimit * 2));
                 this.jobObject.SetBasicUiRestrictions(PrepareJobObject.GetUiRestrictions());
-                this.jobObject.AddProcess(this.processInformation.hProcess);
+                this.jobObject.AddProcess(this.processInformation.Process);
 
-                NativeMethods.ResumeThread(this.processInformation.hThread);
+                NativeMethods.ResumeThread(this.processInformation.Thread);
             }
             catch (Win32Exception)
             {
@@ -290,7 +290,7 @@
 
         public bool WaitForExit(int milliseconds)
         {
-            var result = NativeMethods.WaitForSingleObject(this.processInformation.hProcess, (uint)milliseconds);
+            var result = NativeMethods.WaitForSingleObject(this.processInformation.Process, (uint)milliseconds);
             return result != 258; // TODO: Extract as constant and check all cases (http://msdn.microsoft.com/en-us/library/windows/desktop/ms687032%28v=vs.85%29.aspx)
         }
 
@@ -298,7 +298,7 @@
         {
             this.IsDisposed = true;
             this.safeProcessHandle.Dispose();
-            NativeMethods.CloseHandle(this.processInformation.hThread);
+            NativeMethods.CloseHandle(this.processInformation.Thread);
 
             // Disposing these object causes "System.InvalidOperationException: The stream is currently in use by a previous operation on the stream."
             // this.StandardInput.Dispose();

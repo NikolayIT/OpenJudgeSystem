@@ -9,9 +9,9 @@ namespace OJS.Workers.Executors.Process
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessInformation
     {
-        public IntPtr hProcess;
-        public IntPtr hThread;
-        public int dwProcessId;
-        public int dwThreadId;
+        public IntPtr Process;
+        public IntPtr Thread;
+        public int ProcessId;
+        public int ThreadId;
     }
 }

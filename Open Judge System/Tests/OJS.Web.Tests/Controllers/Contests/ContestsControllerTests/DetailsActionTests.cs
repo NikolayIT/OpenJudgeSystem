@@ -36,11 +36,35 @@
         }
 
         [TestMethod]
+        public void DetailsActionWhenContestIsNotVisibleShouldThrowException()
+        {
+            try
+            {
+                var contest = new Contest
+                {
+                    Name = "test contest",
+                    IsVisible = false
+                };
+
+                this.EmptyOjsData.Contests.Add(contest);
+                this.EmptyOjsData.SaveChanges();
+
+                var result = this.contestsController.Details(contest.Id) as ViewResult;
+            }
+            catch (HttpException ex)
+            {
+                Assert.AreEqual((int)HttpStatusCode.NotFound, ex.GetHttpCode());
+            }
+        }
+
+        [TestMethod]
         public void DetailsActionWhenValidContestIdIsProvidedShouldReturnContest()
         {
             var contest = new Contest
             {
-                Name = "test contest"
+                Name = "test contest",
+                IsVisible = true,
+                IsDeleted = false
             };
 
             this.EmptyOjsData.Contests.Add(contest);

@@ -368,8 +368,9 @@
             {
                 ValidateContest(contest, official);
             }
-            else if (this.User != null && this.User.IsInRole("Administrator")) // TODO: add unit tests
+            else if (this.User != null && this.User.IsInRole("Administrator"))
             {
+                // TODO: add unit tests
                 // If the user is an administrator he can download the resource at any time.
                 userCanDownloadResource = true;
             }
