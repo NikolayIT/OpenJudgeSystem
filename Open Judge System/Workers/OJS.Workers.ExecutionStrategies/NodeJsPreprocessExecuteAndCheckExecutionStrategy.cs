@@ -119,6 +119,10 @@ var code = {
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
+            
+            // setting the IsCompiledSuccessfully variable to true as in the NodeJS
+            // execution strategy there is no compilation
+            result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code);

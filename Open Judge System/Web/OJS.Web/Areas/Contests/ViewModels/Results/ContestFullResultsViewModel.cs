@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace OJS.Web.Areas.Contests.ViewModels.Results
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
+    using System.Collections.Generic;
+
     // TODO: Refactor to reuse same logic with ContestResultsViewModel
     public class ContestFullResultsViewModel
     {

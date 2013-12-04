@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OJS.Web.Areas.Contests.ViewModels.Results
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    
     public class ParticipantFullResultViewModel
     {
         public string ParticipantName { get; set; }
