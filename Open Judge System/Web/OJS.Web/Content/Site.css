@@ -122,3 +122,7 @@ input[type="checkbox"].input-validation-error {
 .k-state-selected {
     background-color: initial;
 }
+
+.width100percent {
+    width: 100%;
+}

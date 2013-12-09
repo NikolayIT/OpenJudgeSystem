@@ -130,7 +130,7 @@ $("#SubmissionsTabStrip").on("click", ".view-source-button", function () {
 
 var displayMaximumValues = function (maxMemory, maxTime) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
-    var maxTimeInSeconds = (maxTime / 1000).toFixed(2);
+    var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
     var result = "Памет: " + memoryInMb + " Mb <br />" + "Време: " + maxTimeInSeconds + " s";
     return result;
 }

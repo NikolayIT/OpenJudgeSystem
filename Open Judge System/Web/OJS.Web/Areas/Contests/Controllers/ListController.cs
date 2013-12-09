@@ -7,6 +7,7 @@ namespace OJS.Web.Areas.Contests.Controllers
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
+    using System.Collections.Generic;
 
     public class ListController : BaseController
     {
@@ -28,9 +29,28 @@ namespace OJS.Web.Areas.Contests.Controllers
                     .Where(x => x.IsVisible)
                     .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
                     .OrderBy(x => x.OrderBy)
-                    .Select(x => new { id = x.Id, hasChildren = x.Children.Any(), x.Name });
+                    .Select(ContestCategoryListViewModel.FromCategory);
 
             return this.Json(categories, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetParents(int id)
+        {
+            var categoryIds = new List<int>();
+            var category = this.Data.ContestCategories.GetById(id);
+
+            categoryIds.Add(category.Id);
+            var parent = category.Parent;
+
+            while (parent != null)
+            {
+                categoryIds.Add(parent.Id);
+                parent = parent.Parent;
+            }
+
+            categoryIds.Reverse();
+
+            return this.Json(categoryIds, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ByCategory(int id)

@@ -423,6 +423,7 @@
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
+    <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
@@ -462,6 +463,7 @@
     <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
@@ -621,6 +623,7 @@
     <Content Include="Scripts\CodeMirror\codemirror.js" />
     <Content Include="Scripts\CodeMirror\mode\clike.js" />
     <Content Include="Scripts\CodeMirror\mode\javascript.js" />
+    <Content Include="Scripts\Contests\list-categories-page.js" />
     <Content Include="Scripts\Contests\submission-page.js" />
     <Content Include="Scripts\Countdown\countdown.min.js" />
     <Content Include="Scripts\global.js" />
@@ -758,6 +761,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Scripts\CodeMirror\addon\" />
   </ItemGroup>

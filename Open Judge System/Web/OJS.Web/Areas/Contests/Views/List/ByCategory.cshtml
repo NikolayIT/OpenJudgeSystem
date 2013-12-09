@@ -1,65 +1,75 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.ContestCategoryViewModel
 
 <h3>@Model.CategoryName</h3>
-@if (Model.Contests.Any())
-{
-    <table class="table table-striped">
-        @foreach (var contest in Model.Contests)
-        {
-            <tr>
-                <td>
-                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                </td>
-                <td>
-                    @if (contest.CanBeCompeted)
-                    {
-                        @Html.RouteLink("Участвай", "Contests_compete", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-success" })
-                        if (contest.HasContestPassword)
-                        {
-                            <div class="glyphicon glyphicon-lock text-white"></div>
-                        }
-                        if (contest.HasContestQuestions)
-                        {
-                            <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
-                        }
-                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
-                    }
-                    @if (contest.ResultsArePubliclyVisible)
-                    {
-                        <a class="btn btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">Резултати</a>
-                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
-                    }
-                </td>
-                <td>
-                    @if (contest.CanBePracticed)
-                    {
-                        @Html.RouteLink("Практикувай", "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
-                        if (contest.HasPracticePassword)
-                        {
-                            <div class="glyphicon glyphicon-lock text-white" title="Състезанието е защитено с парола"></div>
-                        }
-                        if (contest.HasPracticeQuestions)
-                        {
-                            <div class="glyphicon glyphicon-question-sign text-white" title="За да участвате в състезанието, трябва да отговорите на въпроси"></div>
-                        }
-                        <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.PracticeParticipants</span>
-                    }
-                </td>
-                <td>
-                    <div class="glyphicon glyphicon-file text-white" title="Брой задачи"></div> <span>@contest.ProblemsCount</span>
-                </td>
-                @if (User.IsInRole("Administrator"))
-                {
+<div>
+    @if (Model.Contests.Any())
+    {
+        <table class="table table-striped">
+            @foreach (var contest in Model.Contests)
+            {
+                <tr>
                     <td>
-                        <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
-                        <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='Tasks'></span></a>
+                        <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
                     </td>
-                }
-            </tr>
+                    <td>
+                        @if (contest.CanBeCompeted)
+                        {
+                            @Html.RouteLink("Участвай", "Contests_compete", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-success" })
+                            if (contest.HasContestPassword)
+                            {
+                                <div class="glyphicon glyphicon-lock text-white"></div>
+                            }
+                            if (contest.HasContestQuestions)
+                            {
+                                <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
+                            }
+                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
+                        }
+                        @if (contest.ResultsArePubliclyVisible)
+                        {
+                            <a class="btn btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">Резултати</a>
+                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
+                        }
+                    </td>
+                    <td>
+                        @if (contest.CanBePracticed)
+                        {
+                            @Html.RouteLink("Практикувай", "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
+                            if (contest.HasPracticePassword)
+                            {
+                                <div class="glyphicon glyphicon-lock text-white" title="Състезанието е защитено с парола"></div>
+                            }
+                            if (contest.HasPracticeQuestions)
+                            {
+                                <div class="glyphicon glyphicon-question-sign text-white" title="За да участвате в състезанието, трябва да отговорите на въпроси"></div>
+                            }
+                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.PracticeParticipants</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="glyphicon glyphicon-file text-white" title="Брой задачи"></div> <span>@contest.ProblemsCount</span>
+                    </td>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <td>
+                            <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
+                            <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='Tasks'></span></a>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        if (Model.SubCategories.Count() != 0)
+        {
+            foreach (var subCategory in Model.SubCategories)
+            {
+                <a href="#" class='subcategory lead' data-id="@subCategory.Id">@subCategory.Name</a>
+            }
+        } else {
+            <p class="lead text-warning">Няма подкатегории или състезания в избраната категория.</p>
         }
-    </table>
-}
-else
-{
-    <p class="lead text-warning">Съжаляваме, но няма състезания в избраната категория.</p>
-}
+    }
+</div>

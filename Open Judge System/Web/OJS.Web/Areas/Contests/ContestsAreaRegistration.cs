@@ -28,6 +28,11 @@ namespace OJS.Web.Areas.Contests
                 new { controller = "List", action = "BySubmissionType", submissionType = UrlParameter.Optional });
 
             context.MapRoute(
+                "Contests_by_category",
+                "Contests/List/ByCategory/{id}/{category}",
+                new { controller = "List", action = "ByCategory", id = UrlParameter.Optional, category = UrlParameter.Optional });
+
+            context.MapRoute(
                 "Contests_details",
                 "Contests/{id}/{name}",
                 new { controller = "Contests", action = "Details", id = UrlParameter.Optional, name = UrlParameter.Optional },

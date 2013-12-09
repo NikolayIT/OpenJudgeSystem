@@ -27,6 +27,8 @@
 
         public string AdditionalCompilerArguments { get; set; }
 
+        public string Description { get; set; }
+
         public virtual ICollection<Contest> Contests
         {
             get { return this.contests; }

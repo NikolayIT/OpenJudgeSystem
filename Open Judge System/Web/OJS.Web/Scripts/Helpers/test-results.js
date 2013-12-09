@@ -45,7 +45,7 @@ function testResult(tests, points, problemMaximumPoints, maxUsedMemory, maxUsedT
     }
     else {
         result += "<div><strong class ='text-primary'> " + points + " / " + problemMaximumPoints + "</strong>" +
-        "<small> " + (maxUsedMemory / 1024 / 1024).toFixed(2) + " MB | " + (maxUsedTime / 1000).toFixed(2) + " sec.</small></div> ";
+        "<small> " + (maxUsedMemory / 1024 / 1024).toFixed(2) + " MB | " + (maxUsedTime / 1000).toFixed(3) + " sec.</small></div> ";
         result += displayTestRuns(tests);
     }
 

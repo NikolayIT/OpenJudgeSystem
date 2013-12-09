@@ -85,6 +85,7 @@
 
             var contestModel = new ContestResultsViewModel
             {
+                Id = contest.Id,
                 Name = contest.Name,
                 Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
                 Results = this.Data.Participants.All()
@@ -110,6 +111,8 @@
                     .OrderByDescending(x => x.Total)
             };
 
+            this.ViewBag.IsOfficial = official;
+
             return this.View(contestModel);
         }
 
@@ -127,6 +130,7 @@
 
             var model = new ContestFullResultsViewModel
                 {
+                    Id = contest.Id,
                     Name = contest.Name,
                     Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
                     Results = this.Data.Participants.All()
@@ -152,6 +156,8 @@
                         .ToList()
                         .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantName)
                 };
+
+            this.ViewBag.IsOfficial = official;
 
             return this.View(model);
         }

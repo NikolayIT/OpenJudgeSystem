@@ -17,7 +17,12 @@
                     new ContestCategoryViewModel
                     {
                         CategoryName = contestCategory.Name,
-                        Contests = contestCategory.Contests.AsQueryable().Where(x => x.IsVisible && !x.IsDeleted).OrderBy(x => x.OrderBy).Select(ContestViewModel.FromContest),
+                        Contests = contestCategory.Contests.AsQueryable()
+                                                                .Where(x => x.IsVisible && !x.IsDeleted)
+                                                                .OrderBy(x => x.OrderBy)
+                                                                .Select(ContestViewModel.FromContest),
+                        SubCategories = contestCategory.Children.AsQueryable()
+                                                                .Select(ContestCategoryListViewModel.FromCategory)
                     };
             }
         }
@@ -25,5 +30,7 @@
         public string CategoryName { get; set; }
 
         public IEnumerable<ContestViewModel> Contests { get; set; }
+
+        public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; }
     }
 }

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
 
     using OJS.Workers.Common;
 
@@ -21,6 +20,7 @@
             var userLines = new List<string>();
             var correctLines = new List<string>();
 
+            int lineNumber = 0;
             using (userFileReader)
             {
                 using (correctFileReader)
@@ -35,6 +35,8 @@
 
                         correctLine = correctFileReader.ReadLine();
                         userLine = userFileReader.ReadLine();
+
+                        lineNumber++;
                     }
 
                     if (userLine != correctLine)
@@ -56,9 +58,13 @@
 
             var resultType = CheckerResultType.Ok;
 
-            if (userLines.Where((t, i) => !t.Equals(correctLines[i], StringComparison.InvariantCulture)).Any())
+            for (int i = 0; i < userLines.Count; i++)
             {
-                resultType = CheckerResultType.WrongAnswer;
+                if (!this.AreEqualExactLines(userLines[i], correctLines[i]))
+                {
+                    resultType = CheckerResultType.WrongAnswer;
+                    break;
+                }
             }
 
             return new CheckerResult

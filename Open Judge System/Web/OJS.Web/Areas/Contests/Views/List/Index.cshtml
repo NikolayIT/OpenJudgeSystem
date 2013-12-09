@@ -9,6 +9,10 @@
     <li class="active">Състезания</li>
 </ol>
 
+@section Scripts {
+    <script src="/Scripts/Contests/list-categories-page.js"></script>
+}
+
 <div class="row">
     <div class="col-md-3">
         <h2>@ViewBag.Title</h2>
@@ -16,11 +20,20 @@
               .Name("contestsCategories")
               .DataTextField("Name")
               .DataSource(dataSource => dataSource
-                  .Read(read => read
-                      .Action("ReadCategories", "List", new { area = "Contests" })
+                          .Model(x =>
+                          {
+                              x.Id("Id");
+                              x.HasChildren("HasChildren");
+                          })
+                          .Read(read => read
+                              .Action("ReadCategories", "List", new { area = "Contests" })
                   )
               )
-              .Events(x => x.Select("categorySelected"))
+              .Events(x =>
+              {
+                  x.Select("categorySelected");
+                  x.DataBound("onDataBound");
+              })
         )
         @if (User.IsInRole("Administrator"))
         {
@@ -36,20 +49,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    function categorySelected(e) {
-        $("#contestsList").html("");
-        $("#contestsList").addClass("k-loading");
-
-        this.expand(e.node);
-
-        var treeview = $("#contestsCategories").data("kendoTreeView");
-        var element = treeview.dataItem(e.node);
-
-        $("#contestsList").load("/Contests/List/ByCategory/" + element.id,
-            function () {
-                $("#contestsList").removeClass("k-loading");
-            });
-    }
-</script>
