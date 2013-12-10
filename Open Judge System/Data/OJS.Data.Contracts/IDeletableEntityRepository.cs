@@ -1,4 +1,4 @@
-﻿namespace OJS.Data.Repositories.Contracts
+﻿namespace OJS.Data.Contracts
 {
     using System.Linq;
 

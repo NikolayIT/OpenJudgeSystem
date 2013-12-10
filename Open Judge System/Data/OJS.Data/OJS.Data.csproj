@@ -72,7 +72,6 @@
     <Compile Include="Repositories\Base\DeletableEntityRepository.cs" />
     <Compile Include="Repositories\Base\GenericRepository.cs" />
     <Compile Include="Repositories\Contracts\IContestsRepository.cs" />
-    <Compile Include="Repositories\Contracts\IDeletableEntityRepository.cs" />
     <Compile Include="IOjsData.cs" />
     <Compile Include="IOjsDbContext.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsRepository.cs" />
