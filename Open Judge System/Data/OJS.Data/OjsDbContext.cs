@@ -125,14 +125,16 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
-
             modelBuilder.Conventions.Add(new IsUnicodeAttributeConvention());
 
             modelBuilder.Configurations.Add(new ContestConfiguration());
             modelBuilder.Configurations.Add(new TestRunConfiguration());
             modelBuilder.Configurations.Add(new ParticipantAnswersConfiguration());
             modelBuilder.Configurations.Add(new UserProfileConfiguration());
+            modelBuilder.Configurations.Add(new ProblemConfiguration());
+            modelBuilder.Configurations.Add(new CheckerConfiguration());
+
+            base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
         }
 
         private void ApplyAuditInfoRules()

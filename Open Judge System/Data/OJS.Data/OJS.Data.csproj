@@ -62,8 +62,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\CheckerConfiguration.cs" />
     <Compile Include="Configurations\ContestConfiguration.cs" />
     <Compile Include="Configurations\ParticipantAnswersConfiguration.cs" />
+    <Compile Include="Configurations\ProblemConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
     <Compile Include="Repositories\ContestsRepository.cs" />

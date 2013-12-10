@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Data.Contracts;
 
@@ -45,6 +46,7 @@
         /// </summary>
         public int? SourceCodeSizeLimit { get; set; }
 
+        [ForeignKey("Checker")]
         public int? CheckerId { get; set; }
 
         public virtual Checker Checker { get; set; }

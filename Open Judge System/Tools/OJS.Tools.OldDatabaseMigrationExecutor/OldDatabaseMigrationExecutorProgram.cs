@@ -5,6 +5,7 @@
     using System.Linq;
 
     using OJS.Data;
+    using OJS.Data.Migrations;
     using OJS.Tools.OldDatabaseMigration;
 
     internal class OldDatabaseMigrationExecutorProgram
@@ -13,6 +14,7 @@
         {
             Console.WriteLine("Starting migration...");
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, OldDatabaseMigrationConfiguration>());
+            //// Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
             var context = new OjsDbContext();
             var problemsCount = context.Problems.Count();
             Console.WriteLine("Done!");
