@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Checker.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="ProblemResource.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SubmissionType.cs" />
