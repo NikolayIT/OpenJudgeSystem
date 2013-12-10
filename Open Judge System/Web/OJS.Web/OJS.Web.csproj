@@ -414,6 +414,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Home\Views\Index.designer.cs">
+      <DependentUpon>Index.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Home\Views\Index.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectControllerFactory.cs" />
@@ -761,6 +771,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Scripts\CodeMirror\addon\" />
@@ -964,6 +975,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Base.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Home\Views\Index.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Index.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Home.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Home\Views\Index.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Index.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Home.Views</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

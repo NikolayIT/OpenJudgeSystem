@@ -1,4 +1,7 @@
-﻿@model OJS.Web.ViewModels.Home.Index.IndexViewModel
+﻿@using Resource = Resources.Home.Views.Index
+
+@model OJS.Web.ViewModels.Home.Index.IndexViewModel
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -6,8 +9,8 @@
 <div class="jumbotron">
     <div class="row">
         <div class="pull-left col-md-6">
-            <h1>BGCoder</h1>
-            <p class="lead">Онлайн задачи по програмиране.</p>
+            <h1>@Resource.Project_title</h1>
+            <p class="lead">@Resource.Project_subtitle</p>
             @if (Model.ActiveContests.Any())
             {
                 <div class="fb-like" data-href="http://bgcoder.com" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
@@ -16,7 +19,7 @@
         <div class="pull-right col-md-5">
             @if (Model.ActiveContests.Any())
             {
-                <h2>Активни състезания</h2>
+                <h2>@Resource.Active_contests</h2>
                 <table class="table table-hover">
                     @if (Model.ActiveContests.Count() <= 3)
                     {
