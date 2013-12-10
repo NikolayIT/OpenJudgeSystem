@@ -20,9 +20,6 @@
 
         public string Parameter { get; set; }
 
-        [DefaultValue(true)]
-        public bool IsProblemSpecific { get; set; }
-
         /* TODO:
         [ForeignKey("Problem")]
         public int? ProblemId { get; set; }

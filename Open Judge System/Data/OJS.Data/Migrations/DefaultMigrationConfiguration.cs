@@ -54,28 +54,24 @@ namespace OJS.Data.Migrations
                     Name = "Exact",
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.ExactChecker",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Trim",
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.TrimChecker",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Sort lines",
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.SortChecker",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
                     Name = "Case-insensitive",
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
@@ -83,7 +79,6 @@ namespace OJS.Data.Migrations
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "14",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
@@ -91,7 +86,6 @@ namespace OJS.Data.Migrations
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "7",
-                    IsProblemSpecific = false,
                 },
                 new Checker
                 {
@@ -99,7 +93,6 @@ namespace OJS.Data.Migrations
                     DllFile = "OJS.Workers.Checkers.dll",
                     ClassName = "OJS.Workers.Checkers.PrecisionChecker",
                     Parameter = "3",
-                    IsProblemSpecific = false,
                 });
 
             context.SaveChanges();
