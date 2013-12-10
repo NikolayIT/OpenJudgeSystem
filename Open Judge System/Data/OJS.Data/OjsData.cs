@@ -59,6 +59,14 @@
             }
         }
 
+        public IRepository<Event> Events
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Event>();
+            }
+        }
+
         public IRepository<ContestCategory> ContestCategories
         {
             get

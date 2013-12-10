@@ -18,6 +18,8 @@
 
         IRepository<News> News { get; }
 
+        IRepository<Event> Events { get; }
+
         IRepository<ContestCategory> ContestCategories { get; }
 
         ITestRunsRepository TestRuns { get; }

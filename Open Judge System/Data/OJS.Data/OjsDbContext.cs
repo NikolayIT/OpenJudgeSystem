@@ -34,6 +34,8 @@
 
         public virtual IDbSet<News> News { get; set; }
 
+        public virtual IDbSet<Event> Events { get; set; }
+
         public virtual IDbSet<Participant> Participants { get; set; }
 
         public virtual IDbSet<ContestCategory> ContestCategories { get; set; }
@@ -89,6 +91,7 @@
                         "AspNetUserLogins",
                         "AspNetUserClaims",
                         "News",
+                        "Events",
                         "TestRuns",
                         "Submissions",
                         "Participants",

@@ -16,6 +16,8 @@
 
         IDbSet<News> News { get; }
 
+        IDbSet<Event> Events { get; }
+
         IDbSet<Participant> Participants { get; }
 
         IDbSet<ContestCategory> ContestCategories { get; set; }
