@@ -399,15 +399,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Base.bg.designer.cs">
-      <DependentUpon>Base.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Base\Main.bg.Designer.cs">
+      <DependentUpon>Main.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Base.Designer.cs">
+    <Compile Include="App_GlobalResources\Base\Main.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Base.resx</DependentUpon>
+      <DependentUpon>Main.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -966,15 +966,15 @@
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Base.resx">
+    <EmbeddedResource Include="App_GlobalResources\Base\Main.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Base.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources</CustomToolNamespace>
+      <LastGenOutput>Main.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Base</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Base.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Base\Main.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Base.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources</CustomToolNamespace>
+      <LastGenOutput>Main.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Base</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Home\Views\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
