@@ -1,5 +1,6 @@
 namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -7,7 +8,6 @@ namespace OJS.Web.Areas.Contests.Controllers
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
-    using System.Collections.Generic;
 
     public class ListController : BaseController
     {
