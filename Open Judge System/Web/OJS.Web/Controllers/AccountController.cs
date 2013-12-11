@@ -16,7 +16,6 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Common;
     using OJS.Web.ViewModels.Account;
 

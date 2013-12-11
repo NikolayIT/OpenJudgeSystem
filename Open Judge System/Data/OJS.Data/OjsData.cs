@@ -91,6 +91,14 @@
             }
         }
 
+        public IDeletableEntityRepository<SourceCode> SourceCodes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<SourceCode>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get
@@ -220,7 +228,7 @@
             return (IRepository<T>)this.repositories[typeof(T)];
         }
 
-        private IRepository<T> GetDeletableEntityRepository<T>() where T : class, IDeletableEntity
+        private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IDeletableEntity
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {
@@ -228,7 +236,7 @@
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
             }
 
-            return (IRepository<T>)this.repositories[typeof(T)];
+            return (IDeletableEntityRepository<T>)this.repositories[typeof(T)];
         }
     }
 }

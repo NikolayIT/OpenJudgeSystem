@@ -30,6 +30,8 @@
 
         IDbSet<SubmissionType> SubmissionTypes { get; set; }
 
+        IDbSet<SourceCode> SourceCodes { get; set; }
+
         IDbSet<FeedbackReport> FeedbackReports { get; set; }
 
         IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }

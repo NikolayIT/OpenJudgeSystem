@@ -44,9 +44,11 @@
 
         public virtual IDbSet<Test> Tests { get; set; }
 
+        public virtual IDbSet<Submission> Submissions { get; set; }
+
         public virtual IDbSet<SubmissionType> SubmissionTypes { get; set; }
 
-        public virtual IDbSet<Submission> Submissions { get; set; }
+        public virtual IDbSet<SourceCode> SourceCodes { get; set; }
 
         public virtual IDbSet<TestRun> TestRuns { get; set; }
 

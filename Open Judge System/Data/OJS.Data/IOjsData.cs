@@ -42,6 +42,8 @@
 
         IRepository<SubmissionType> SubmissionTypes { get; }
 
+        IDeletableEntityRepository<SourceCode> SourceCodes { get; }
+
         IOjsDbContext Context { get; }
 
         int SaveChanges();
