@@ -14,7 +14,7 @@
         protected void Application_Start()
         {
             //// Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
+            //// Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
             //// Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, OldDatabaseMigrationConfiguration>());
 
             AreaRegistration.RegisterAllAreas();

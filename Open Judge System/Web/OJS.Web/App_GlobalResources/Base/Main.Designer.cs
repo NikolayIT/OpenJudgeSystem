@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources {
+namespace Resources.Base {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Base {
+    public class Main {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Base() {
+        internal Main() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Base", typeof(Base).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Base.Main", typeof(Main).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have not set a password for your profile. Please set your password using &lt;a href=\&quot;/Account/Manage\&quot;&gt;this link&lt;/a&gt;..
+        ///   Looks up a localized string similar to You have not set a password for your profile. Please set your password using &lt;a href=&quot;/Account/Manage&quot;&gt;this link&lt;/a&gt;..
         /// </summary>
         public static string Password_not_set {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your username contains symbols that are not allowed. You can change it using &lt;a href=\&quot;/Account/ChangeUsername\&quot;&gt;this link&lt;/a&gt;..
+        ///   Looks up a localized string similar to Your username contains symbols that are not allowed. You can change it using &lt;a href=&quot;/Account/ChangeUsername&quot;&gt;this link&lt;/a&gt;..
         /// </summary>
         public static string Username_in_invalid_format {
             get {

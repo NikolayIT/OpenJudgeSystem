@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Password_not_set" xml:space="preserve">
-    <value>"Нямате парола за вход в сайта. Моля сложете си парола от &lt;a href=\"/Account/Manage\"&gt;този линк&lt;/a&gt;."</value>
+    <value>Нямате парола за вход в сайта. Моля сложете си парола от &lt;a href="/Account/Manage"&gt;този линк&lt;/a&gt;.</value>
   </data>
   <data name="Username_in_invalid_format" xml:space="preserve">
-    <value>"Вашето потребителско име съдържа непозволени символи. Можете да го смените от &lt;a href=\"/Account/ChangeUsername\"&gt;този линк&lt;/a&gt;."</value>
+    <value>Вашето потребителско име съдържа непозволени символи. Можете да го смените от &lt;a href="/Account/ChangeUsername"&gt;този линк&lt;/a&gt;.</value>
   </data>
 </root>

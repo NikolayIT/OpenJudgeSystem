@@ -104,12 +104,12 @@
             {
                 if (this.UserProfile.PasswordHash == null)
                 {
-                    messages.Add(Resources.Base.Password_not_set, SystemMessageType.Warning, 0);
+                    messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
 
                 if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
                 {
-                    messages.Add(Resources.Base.Username_in_invalid_format, SystemMessageType.Warning, 0);
+                    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
                 }
             }
 
