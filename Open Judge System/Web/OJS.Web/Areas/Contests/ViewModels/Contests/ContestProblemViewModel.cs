@@ -18,6 +18,7 @@
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
             this.ContestId = problem.ContestId;
+            this.ShowResults = problem.ShowResults;
             this.Resources = problem.Resources.AsQueryable()
                                                 .OrderBy(x => x.OrderBy)
                                                 .Where(x => !x.IsDeleted)
@@ -42,6 +43,7 @@
                     ContestId = problem.ContestId,
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
+                    ShowResults = problem.ShowResults,
                     Resources = problem.Resources.AsQueryable()
                                                             .Where(x => !x.IsDeleted)
                                                             .OrderBy(x => x.OrderBy)
@@ -55,6 +57,8 @@
         public int ProblemId { get; set; }
 
         public string Name { get; set; }
+
+        public bool ShowResults { get; set; }
 
         public double MemoryLimit
         {

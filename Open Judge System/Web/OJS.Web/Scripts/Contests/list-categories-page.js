@@ -50,38 +50,42 @@ function categorySelected(e) {
 }
 
 function onDataBound() {
-    var hash = window.location.hash;
-    var contestId = hash.split('/')[3];
+    var categoryId = getCategoryIdFromHash();
 
     var treeview = $("#contestsCategories").data("kendoTreeView");
-    var element = treeview.dataSource.get(contestId);
+    var element = treeview.dataSource.get(categoryId);
 
     var nodeToSelect = {
-        elementId: contestId,
+        elementId: categoryId,
         elementName: element !== undefined ? element.NameUrl : null,
         uid: element !== undefined ? element.uid : null
     };
 
-    if (contestId) {
+    if (categoryId) {
         treeview.trigger('select', nodeToSelect);
     }
 }
 
+// TODO: refactor and add documentation
 function CategoryExpander(categoriesArray, treeview, treeviewSelector, grid) {
     var data = categoriesArray;
+    var currentlySelectedId = data[data.length - 1];
+    var self = this;
 
     var expandSubcategories = function () {
-        var i;
-        for (i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             var el = treeview.dataSource.get(data[i]);
             var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
-            if (!treeview._expanded(element)) {
-                if (i == data.length - 1) {
-                    element.find('.k-in:first').addClass('k-state-selected');
+            if (i !== data.length - 1) {
+                if (!treeview._expanded(element)) {
+                    treeview.expand(element);
+                    break;
                 }
-
+            } else if (data.length > 0) {
                 treeview.expand(element);
-                break;
+                var id = data[i];
+                data = [];
+                this.select(id);
             }
         }
     }
@@ -89,26 +93,38 @@ function CategoryExpander(categoriesArray, treeview, treeviewSelector, grid) {
     var select = function (id) {
         var el = treeview.dataSource.get(id);
         var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
-        $('.k-state-selected').removeClass('k-state-selected');
-        element.find('.k-in:first').addClass('k-state-selected');
 
-        categorySelected({ elementId: id });
+        currentId = id;
+        var nodeToSelect = {
+            elementId: id
+        }
+
+        treeview.select(element);
+        treeview.trigger('select', nodeToSelect);
+    }
+
+    var currentId = function () {
+        return currentlySelectedId;
     }
 
     return {
         expandSubcategories: expandSubcategories,
-        select: select
+        select: select,
+        currentId: currentId
     };
 }
 
+function getCategoryIdFromHash() {
+    var hash = window.location.hash;
+    var categoryId = hash.split('/')[3];
+    return categoryId;
+}
+
 $(document).ready(function () {
-    $('#contestsList').on('click', '.subcategory', function (ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        var id = $(this).data('id');
-        if (expander) {
-            console.log(id);
-            expander.select(id);
+    $(window).on("hashchange", function (ev) {
+        var categoryId = getCategoryIdFromHash();
+        if (expander && categoryId !== expander.currentId()) {
+            expander.select(categoryId);
         }
-    })
+    });
 })

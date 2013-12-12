@@ -232,10 +232,10 @@
             var listsOfTests = new List<Test>(selectedProblem.Tests);
 
             this.data = new Mock<IOjsData>();
-            this.Problems = new Mock<IRepository<Problem>>();
+            this.Problems = new Mock<IDeletableEntityRepository<Problem>>();
             this.Tests = new Mock<IRepository<Test>>();
             this.TestsRuns = new Mock<ITestRunsRepository>();
-            this.Categories = new Mock<IRepository<ContestCategory>>();
+            this.Categories = new Mock<IDeletableEntityRepository<ContestCategory>>();
             this.Contests = new Mock<IContestsRepository>();
 
             this.Problems.Setup(x => x.All()).Returns((new List<Problem>() { selectedProblem, otherProblem, problemWithOnlyTrialTests, problemWithOnlyNormalTests }).AsQueryable());
@@ -268,10 +268,10 @@
 
             this.ControllerContext = new ControllerContext(this.MockHttpContestBase(), new RouteData(), this.TestsController);
         }
-        
-        protected Mock<IRepository<ContestCategory>> Categories { get; set; }
 
-        protected Mock<IRepository<Problem>> Problems { get; set; }
+        protected Mock<IDeletableEntityRepository<ContestCategory>> Categories { get; set; }
+
+        protected Mock<IDeletableEntityRepository<Problem>> Problems { get; set; }
 
         protected Mock<IRepository<Test>> Tests { get; set; }
 

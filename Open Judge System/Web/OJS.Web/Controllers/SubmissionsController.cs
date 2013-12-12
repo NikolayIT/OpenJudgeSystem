@@ -44,20 +44,21 @@
             }
             else
             {
-                data = this.Data.Submissions.AllPublic();
+                data = this.Data.Submissions.AllPublic().Where(x => x.Problem.ShowResults);
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             string json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
-            return this.Content(json, "application/json"); 
+            return this.Content(json, "application/json");
         }
 
         private IEnumerable<SubmissionViewModel> GetLastFiftySubmissions()
         {
             // TODO: add language type
             var submissions = this.Data.Submissions.AllPublic()
+                .Where(x => x.Problem.ShowResults)
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(50)
                 .Select(SubmissionViewModel.FromSubmission)

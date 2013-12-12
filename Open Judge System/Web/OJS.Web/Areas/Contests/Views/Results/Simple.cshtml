@@ -21,7 +21,10 @@
             <th>Потребител</th>
             @foreach (var problem in Model.Problems)
             {
-                <th>@problem.Name</th>
+                if (problem.ShowResults)
+                {
+                    <th>@problem.Name</th>
+                }
             }
             <th>Общо</th>
         </tr>
@@ -34,7 +37,10 @@
 
                 @foreach (var participantResult in participant.ProblemResults)
                 {
-                    <td>@participantResult.Result</td>
+                    if (participantResult.ShowResult)
+                    {
+                        <td>@participantResult.Result</td>
+                    }
                 }
                 <td>@participant.Total</td>
             </tr>

@@ -441,7 +441,6 @@
                 Token = guid
             };
 
-            this.TempData["InfoMessage"] = Resources.Account.Views.ChangePasswordView.Password_updated;
             return this.View(forgottenPasswordModel);
         }
 

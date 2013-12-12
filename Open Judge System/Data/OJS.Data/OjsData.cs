@@ -35,7 +35,7 @@
             }
         }
 
-        public IRepository<Problem> Problems
+        public IDeletableEntityRepository<Problem> Problems
         {
             get
             {
@@ -51,7 +51,7 @@
             }
         }
 
-        public IRepository<News> News
+        public IDeletableEntityRepository<News> News
         {
             get
             {
@@ -59,7 +59,7 @@
             }
         }
 
-        public IRepository<Event> Events
+        public IDeletableEntityRepository<Event> Events
         {
             get
             {
@@ -67,7 +67,7 @@
             }
         }
 
-        public IRepository<ContestCategory> ContestCategories
+        public IDeletableEntityRepository<ContestCategory> ContestCategories
         {
             get
             {
@@ -115,7 +115,7 @@
             }
         }
 
-        public IRepository<FeedbackReport> FeedbackReports
+        public IDeletableEntityRepository<FeedbackReport> FeedbackReports
         {
             get
             {
@@ -123,7 +123,7 @@
             }
         }
 
-        public IRepository<Checker> Checkers
+        public IDeletableEntityRepository<Checker> Checkers
         {
             get
             {
@@ -131,7 +131,7 @@
             }
         }
 
-        public IRepository<ProblemResource> Resources
+        public IDeletableEntityRepository<ProblemResource> Resources
         {
             get
             {

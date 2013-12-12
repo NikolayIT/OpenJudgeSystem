@@ -305,6 +305,11 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam");
             }
 
+            if (!problem.ShowResults)
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this problem are not available");
+            }
+
             var userSubmissions = this.Data.Submissions.All()
                                                         .Where(x =>
                                                                 x.ProblemId == id &&

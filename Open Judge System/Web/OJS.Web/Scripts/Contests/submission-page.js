@@ -106,7 +106,9 @@ function showMessage(data) {
 
     if (data.response) {
         var grid = $('#Submissions_' + data.response).getKendoGrid();
-        grid.dataSource.read();
+        if (grid) {
+            grid.dataSource.read();
+        }
     }
 
     setTimeout(function () {

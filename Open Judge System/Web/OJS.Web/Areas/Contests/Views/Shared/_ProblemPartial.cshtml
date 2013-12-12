@@ -13,8 +13,19 @@
     </div>
 </div>
 
+@{
+    string className;
+    if (Model.ShowResults)
+    {
+        className = "col-lg-8";
+    }
+    else {
+        className = "col-lg-12";
+    }
+}
+
 <div class="row">
-    <div class="col-lg-8">
+    <div class=@className>
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
@@ -81,8 +92,10 @@
         </div>
     </div>
 
-    <div class="col-lg-4 problem-result-container visible-lg">
-        @(Html.Kendo().Grid<ProblemResultViewModel>()
+    @if (Model.ShowResults)
+    {
+        <div class="col-lg-4 problem-result-container visible-lg">
+            @(Html.Kendo().Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
                 .ToolBar(tool => tool.Template("Резултати за задачата"))
                 .Columns(col =>
@@ -109,8 +122,9 @@
                     x.Info(false);
                 })
                 .HtmlAttributes(new { @class = "problem_submit_grid" })
-        )
-    </div>
+            )
+        </div>
+    }
 </div>
 
 @{
@@ -122,9 +136,11 @@
                                             ": 'Все още не е обработено' #";
 }
 
-<div class="row">
-    <div class="col-md-12">
-        @(Html.Kendo()
+@if (Model.ShowResults)
+{
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Kendo()
             .Grid<SubmissionResultViewModel>()
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
@@ -151,6 +167,7 @@
                     .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
             }).HtmlAttributes(new { @class = "problem_submit_grid" })
-        )
+            )
+        </div>
     </div>
-</div>
+}

@@ -66,9 +66,11 @@
         {
             foreach (var subCategory in Model.SubCategories)
             {
-                <a href="#" class='subcategory lead' data-id="@subCategory.Id">@subCategory.Name</a>
+                <a href="#!/List/ByCategory/@subCategory.Id/@subCategory.NameUrl" class='subcategory lead' data-id="@subCategory.Id">@subCategory.Name</a>
             }
-        } else {
+        }
+        else
+        {
             <p class="lead text-warning">Съжаляваме, но избраната категория е празна.</p>
         }
     }

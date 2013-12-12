@@ -12,23 +12,23 @@
     {
         IContestsRepository Contests { get; }
 
-        IRepository<Problem> Problems { get; }
+        IDeletableEntityRepository<Problem> Problems { get; }
 
         IRepository<Test> Tests { get; }
 
-        IRepository<News> News { get; }
+        IDeletableEntityRepository<News> News { get; }
 
-        IRepository<Event> Events { get; }
+        IDeletableEntityRepository<Event> Events { get; }
 
-        IRepository<ContestCategory> ContestCategories { get; }
+        IDeletableEntityRepository<ContestCategory> ContestCategories { get; }
 
         ITestRunsRepository TestRuns { get; }
 
-        IRepository<FeedbackReport> FeedbackReports { get; }
+        IDeletableEntityRepository<FeedbackReport> FeedbackReports { get; }
 
-        IRepository<Checker> Checkers { get; }
+        IDeletableEntityRepository<Checker> Checkers { get; }
 
-        IRepository<ProblemResource> Resources { get; }
+        IDeletableEntityRepository<ProblemResource> Resources { get; }
 
         IUsersRepository Users { get; }
 

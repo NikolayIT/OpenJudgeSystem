@@ -39,6 +39,11 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam!");
             }
 
+            if (!problem.ShowResults)
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this problem are not available.");
+            }
+
             var results =
                 this.Data.Submissions.All()
                     .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
@@ -99,6 +104,7 @@
                                 {
                                     Id = problem.Id,
                                     ProblemName = problem.Name,
+                                    ShowResult = problem.ShowResults,
                                     Result = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id)
                                                         .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
