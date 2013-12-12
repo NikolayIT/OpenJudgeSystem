@@ -131,6 +131,7 @@ else
             @if (User.IsInRole("Administrator"))
             {
                 <small>Run №@testResult.Id</small>
+                <small><a href="/Administration/Tests/Details/@testResult.TestId">Test №@testResult.TestId</a></small>
             }
         </h2>
 

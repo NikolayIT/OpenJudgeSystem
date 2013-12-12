@@ -21,7 +21,8 @@
                                                               ResultType = test.ResultType,
                                                               TimeUsed = test.TimeUsed,
                                                               MemoryUsed = test.MemoryUsed,
-                                                              Id = test.Id
+                                                              Id = test.Id,
+                                                              TestId = test.TestId,
                                                           };
             }
         }
@@ -41,5 +42,7 @@
         public long MemoryUsed { get; set; }
 
         public int Id { get; set; }
+
+        public int TestId { get; set; }
     }
 }
