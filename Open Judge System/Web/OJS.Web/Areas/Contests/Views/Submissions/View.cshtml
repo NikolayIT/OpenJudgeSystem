@@ -60,6 +60,8 @@
     <div class="alert alert-danger">Това решение е изтрито!!!</div>
 }
 
+<textarea id="code">@Model.ContentAsString</textarea>
+
 @if (!Model.Processed)
 {
     if (Model.Processing)
@@ -75,18 +77,21 @@ else
 {
     if (!Model.IsCompiledSuccessfully)
     {
-         <div class="alert alert-danger">Възникнала е грешка по време на компилацията</div>
-     }
-     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
-     {
-         <h2>Резултат от компилацията:</h2>
-         <pre>@Model.CompilerComment</pre>
-     }
+        <div class="alert alert-danger">Възникнала е грешка по време на компилацията</div>
+    }
+    else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
+    {
+        <h2 class="text-success">Успешна компилация.</h2>
+    }
+    
+    if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
+    {
+        <h2>Резултат от компилацията:</h2>
+        <pre>@Model.CompilerComment</pre>
+    }
 }
 
-<textarea id="code">@Model.ContentAsString</textarea>
-
-@if (Model.Processed)
+@if (Model.Processed && (Model.ShowResults || User.IsInRole("Administrator")))
 {
     foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
     {

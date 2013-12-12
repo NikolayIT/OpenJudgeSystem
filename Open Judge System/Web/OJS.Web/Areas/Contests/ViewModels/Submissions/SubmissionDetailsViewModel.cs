@@ -14,24 +14,25 @@
         {
             get
             {
-                return sub => new SubmissionDetailsViewModel
+                return submission => new SubmissionDetailsViewModel
                 {
-                    Id = sub.Id,
-                    UserId = sub.Participant.UserId,
-                    UserName = sub.Participant.User.UserName,
-                    CompilerComment = sub.CompilerComment,
-                    Content = sub.Content,
-                    CreatedOn = sub.CreatedOn,
-                    IsCompiledSuccessfully = sub.IsCompiledSuccessfully,
-                    IsDeleted = sub.IsDeleted,
-                    Points = sub.Points,
-                    Processed = sub.Processed,
-                    Processing = sub.Processing,
-                    ProblemId = sub.ProblemId,
-                    ProblemName = sub.Problem.Name,
-                    ProcessingComment = sub.ProcessingComment,
-                    SubmissionType = sub.SubmissionType,
-                    TestRuns = sub.TestRuns.AsQueryable().Select(TestRunDetailsViewModel.FromTestRun)
+                    Id = submission.Id,
+                    UserId = submission.Participant.UserId,
+                    UserName = submission.Participant.User.UserName,
+                    CompilerComment = submission.CompilerComment,
+                    Content = submission.Content,
+                    CreatedOn = submission.CreatedOn,
+                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
+                    IsDeleted = submission.IsDeleted,
+                    Points = submission.Points,
+                    Processed = submission.Processed,
+                    Processing = submission.Processing,
+                    ProblemId = submission.ProblemId,
+                    ProblemName = submission.Problem.Name,
+                    ProcessingComment = submission.ProcessingComment,
+                    SubmissionType = submission.SubmissionType,
+                    TestRuns = submission.TestRuns.AsQueryable().Select(TestRunDetailsViewModel.FromTestRun),
+                    ShowResults = submission.Problem.ShowResults,
                 };
             }
         }
@@ -75,5 +76,7 @@
         public string ProcessingComment { get; set; }
 
         public SubmissionType SubmissionType { get; set; }
+
+        public bool ShowResults { get; set; }
     }
 }
