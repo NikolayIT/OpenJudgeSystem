@@ -42,7 +42,11 @@
         public void ReadSubmissionResultsWhenParticipantHasNoSubmissionShouldReturnNoResults()
         {
             var contest = this.CreateAndSaveContest("contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
-            var problem = new Problem();
+            var problem = new Problem
+            {
+                ShowResults = true
+            };
+
             var submissionType = new SubmissionType();
             contest.Problems.Add(problem);
             contest.SubmissionTypes.Add(submissionType);
@@ -61,7 +65,11 @@
         {
             var contest = this.CreateAndSaveContest("contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
 
-            var problem = new Problem();
+            var problem = new Problem
+            {
+                ShowResults = true
+            };
+
             contest.Problems.Add(problem);
 
             var submissionType = new SubmissionType();

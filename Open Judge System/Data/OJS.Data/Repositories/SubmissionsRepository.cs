@@ -20,7 +20,8 @@
                 .Where(x =>
                     ((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
                      (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
-                    && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted);
+                    && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
+                    && x.Problem.ShowResults);
         }
         
         public Submission GetSubmissionForProcessing()

@@ -1,10 +1,8 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
 
     using OJS.Common.Extensions;
     using OJS.Data.Models;
@@ -15,11 +13,11 @@
         {
             get
             {
-                return cat => new ContestCategoryListViewModel
+                return category => new ContestCategoryListViewModel
                 {
-                    Id = cat.Id,
-                    Name = cat.Name,
-                    HasChildren = cat.Children.Any(x => x.IsVisible && !x.IsDeleted)
+                    Id = category.Id,
+                    Name = category.Name,
+                    HasChildren = category.Children.Any(x => x.IsVisible && !x.IsDeleted)
                 };
             }
         }

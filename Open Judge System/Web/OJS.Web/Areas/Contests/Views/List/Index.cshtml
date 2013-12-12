@@ -31,8 +31,8 @@
               )
               .Events(x =>
               {
-                  x.Select("categorySelected");
-                  x.DataBound("onDataBound");
+                  x.Select("expander.categorySelected");
+                  x.DataBound("expander.onDataBound");
               })
         )
         @if (User.IsInRole("Administrator"))
@@ -45,7 +45,13 @@
     </div>
     <div class="col-md-9">
         <div id="contestsList">
-            <h3>Изберете категория от списъка в ляво, за да видите състезанията в нея.</h3>
         </div>
     </div>
 </div>
+
+<script>
+    var contestsList = $('#contestsList');
+    $.get('/Contests/List/ByCategory/', null, function (data) {
+        contestsList.append(data);
+    });
+</script>

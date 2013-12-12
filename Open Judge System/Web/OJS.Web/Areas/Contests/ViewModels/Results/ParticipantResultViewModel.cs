@@ -13,7 +13,7 @@
         {
             get
             {
-                return this.ProblemResults.Sum(x => x.Result);
+                return this.ProblemResults.Where(x => x.ShowResult).Sum(x => x.Result);
             }
         }
     }

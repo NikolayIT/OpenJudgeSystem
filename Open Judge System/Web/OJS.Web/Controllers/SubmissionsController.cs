@@ -44,7 +44,7 @@
             }
             else
             {
-                data = this.Data.Submissions.AllPublic().Where(x => x.Problem.ShowResults);
+                data = this.Data.Submissions.AllPublic();
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);
@@ -58,7 +58,6 @@
         {
             // TODO: add language type
             var submissions = this.Data.Submissions.AllPublic()
-                .Where(x => x.Problem.ShowResults)
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(50)
                 .Select(SubmissionViewModel.FromSubmission)

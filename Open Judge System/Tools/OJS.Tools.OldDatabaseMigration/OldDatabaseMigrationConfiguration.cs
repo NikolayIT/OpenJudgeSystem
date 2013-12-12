@@ -32,7 +32,7 @@ namespace OJS.Tools.OldDatabaseMigration
     /// * News -> News will not be copied since they are not relevant.
     /// * Participants -> Participants will be copied to the table "Participants".
     /// * Settings -> Settings will not be copied since they are not relevant to the new system. Anyway a table "Settings" will be available for the runtime settings of the new system.
-    /// * Submissions -> ------------- TODO -------------
+    /// * Submissions -> Submissions will be copied ot the table "Submissions".
     /// * Tasks -> Tasks will be copied to the table "Problems".
     /// * Tests -> Tests will be copied to the table "Tests".
     /// * Users -> Users will be copied to the table "AspNetUsers".

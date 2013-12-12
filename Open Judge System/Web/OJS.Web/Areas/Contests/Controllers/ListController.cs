@@ -53,20 +53,37 @@ namespace OJS.Web.Areas.Contests.Controllers
             return this.Json(categoryIds, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ByCategory(int id)
+        public ActionResult ByCategory(int? id)
         {
-            var contestCategory =
-                this.Data.ContestCategories.All()
-                    .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
-                    .OrderBy(x => x.OrderBy)
-                    .Select(ContestCategoryViewModel.FromContestCategory)
-                    .FirstOrDefault();
+            ContestCategoryViewModel contestCategory;
+            if (id.HasValue)
+            {
+                contestCategory =
+                    this.Data.ContestCategories.All()
+                        .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
+                        .OrderBy(x => x.OrderBy)
+                        .Select(ContestCategoryViewModel.FromContestCategory)
+                        .FirstOrDefault();
+            }
+            else
+            {
+                contestCategory = new ContestCategoryViewModel
+                {
+                    CategoryName = "Main categories",
+                    Contests = new HashSet<ContestViewModel>(),
+                    SubCategories = this.Data.ContestCategories.All()
+                                        .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
+                                        .Select(ContestCategoryListViewModel.FromCategory)
+                };
+            }
 
             if (this.Request.IsAjaxRequest())
             {
+                this.ViewBag.IsAjax = true;
                 return this.PartialView(contestCategory);
             }
 
+            this.ViewBag.IsAjax = false;
             return this.View(contestCategory);
         }
 

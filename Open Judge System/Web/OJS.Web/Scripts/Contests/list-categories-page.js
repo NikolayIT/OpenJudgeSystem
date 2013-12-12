@@ -1,106 +1,116 @@
-﻿var categoryHierarchy;
+﻿var expander = new CategoryExpander();
 
-var expander;
+// TODO: Fix nesting problem
+function CategoryExpander() {
+    var treeview, treeviewSelector, currentlySelectedId;
+    var data = [];
+    var firstLoad = true;
 
-function categorySelected(e) {
-    $("#contestsList").html("");
-    $("#contestsList").addClass("k-loading");
+    var self;
 
-    var elementId;
-    var elementName;
+    var init = function (treeView, treeViewSelector) {
+        treeview = treeView;
+        treeviewSelector = treeViewSelector;
+        self = this;
+    }
 
-    var treeviewSelector = $("#contestsCategories");
-    var treeview = treeviewSelector.data("kendoTreeView");
-
-    if (e.elementId) {
-        elementId = parseInt(e.elementId);
-        elementName = e.elementName;
-        var parentsUrl = "/Contests/List/GetParents/" + elementId;
-
-        if (!expander) {
-            $.ajax({
-                url: parentsUrl,
-                success: function (data) {
-                    if (!expander) {
-                        expander = new CategoryExpander(data, treeview, treeviewSelector);
-                    }
-
-                    expander.expandSubcategories();
-                }
-            });
+    function onDataBound() {
+        var categoryId;
+        if (firstLoad && window.location.hash) {
+            categoryId = getCategoryIdFromHash();
+            expander.select(categoryId);
+            firstLoad = false;
         } else {
-            expander.expandSubcategories();
+            categoryId = currentlySelectedId;
         }
 
-    } else {
-        treeview.expand(e.node);
-        var element = treeview.dataItem(e.node);
-        elementId = element.Id;
-        elementName = element.NameUrl;
+        var element = treeview.dataSource.get(categoryId);
+
+        var nodeToSelect = {
+            elementId: categoryId,
+            elementName: element !== undefined ? element.NameUrl : null,
+            uid: element !== undefined ? element.uid : null
+        };
+
+        if (categoryId) {
+            treeview.trigger('select', nodeToSelect);
+        }
     }
 
-    if (window.location.hash !== undefined && elementName) {
-        window.location.hash = '!/List/ByCategory/' + elementId + '/' + elementName;
+    var categorySelected = function (e) {
+        $("#contestsList").html("");
+        $("#contestsList").addClass("k-loading");
+
+        var elementId;
+        var elementName;
+        var elementNode;
+
+        if (e.elementId) {
+            elementId = parseInt(e.elementId);
+            elementName = e.elementName;
+            var el = treeview.dataSource.get(elementId);
+            if (el) {
+                elementNode = treeviewSelector.find('[data-uid=' + el.uid + ']');
+            }
+        } else {
+            elementNode = e.node;
+            var element = treeview.dataItem(elementNode);
+            elementId = element.Id;
+            elementName = element.NameUrl;
+        }
+
+        if (elementNode) {
+            treeview.expand(elementNode);
+        }
+
+        if (window.location.hash !== undefined && elementName) {
+            window.location.hash = '!/List/ByCategory/' + elementId + '/' + elementName;
+        }
+
+        var ajaxUrl = "/Contests/List/ByCategory/" + elementId;
+        $("#contestsList").load(ajaxUrl, function () {
+            $("#contestsList").removeClass("k-loading");
+        });
     }
 
-    var ajaxUrl = "/Contests/List/ByCategory/" + elementId;
-    $("#contestsList").load(ajaxUrl, function () {
-        $("#contestsList").removeClass("k-loading");
-    });
-}
-
-function onDataBound() {
-    var categoryId = getCategoryIdFromHash();
-
-    var treeview = $("#contestsCategories").data("kendoTreeView");
-    var element = treeview.dataSource.get(categoryId);
-
-    var nodeToSelect = {
-        elementId: categoryId,
-        elementName: element !== undefined ? element.NameUrl : null,
-        uid: element !== undefined ? element.uid : null
-    };
-
-    if (categoryId) {
-        treeview.trigger('select', nodeToSelect);
+    var setNestingData = function (categoriesArray) {
+        if (categoriesArray) {
+            data = categoriesArray;
+        }
     }
-}
-
-// TODO: refactor and add documentation
-function CategoryExpander(categoriesArray, treeview, treeviewSelector, grid) {
-    var data = categoriesArray;
-    var currentlySelectedId = data[data.length - 1];
-    var self = this;
 
     var expandSubcategories = function () {
         for (var i = 0; i < data.length; i++) {
-            var el = treeview.dataSource.get(data[i]);
-            var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
-            if (i !== data.length - 1) {
-                if (!treeview._expanded(element)) {
-                    treeview.expand(element);
-                    break;
-                }
-            } else if (data.length > 0) {
-                treeview.expand(element);
-                var id = data[i];
-                data = [];
-                this.select(id);
-            }
+            var id = data[i];
+            self.select(id);
         }
     }
 
     var select = function (id) {
+        currentlySelectedId = id;
+        
         var el = treeview.dataSource.get(id);
-        var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
+        if (!el && data.indexOf(id) < 0) {
+            var parentsUrl = "/Contests/List/GetParents/" + id;
 
-        currentId = id;
-        var nodeToSelect = {
-            elementId: id
+            $.ajax({
+                url: parentsUrl,
+                success: function (data) {
+                    self.setNestingData(data);
+                    self.expandSubcategories();
+                }
+            });
+        } else if (el) {
+            var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
+            
+            var elementObj = {
+                elementId: id
+            }
+
+            treeview.trigger('select', elementObj);
+            treeview.expand(element);
+            treeview.select(element);
         }
-
-        treeview.select(element);
-        treeview.trigger('select', nodeToSelect);
     }
 
     var currentId = function () {
@@ -110,7 +120,11 @@ function CategoryExpander(categoriesArray, treeview, treeviewSelector, grid) {
     return {
         expandSubcategories: expandSubcategories,
         select: select,
-        currentId: currentId
+        currentId: currentId,
+        setNestingData: setNestingData,
+        onDataBound: onDataBound,
+        categorySelected: categorySelected,
+        init: init
     };
 }
 
@@ -127,4 +141,8 @@ $(document).ready(function () {
             expander.select(categoryId);
         }
     });
+
+    var treeviewSelector = $("#contestsCategories");
+    var treeview = treeviewSelector.data("kendoTreeView");
+    expander.init(treeview, treeviewSelector);
 })

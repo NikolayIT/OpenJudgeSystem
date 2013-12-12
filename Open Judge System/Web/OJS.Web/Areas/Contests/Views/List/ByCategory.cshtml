@@ -64,10 +64,25 @@
     {
         if (Model.SubCategories.Count() != 0)
         {
-            foreach (var subCategory in Model.SubCategories)
-            {
-                <a href="#!/List/ByCategory/@subCategory.Id/@subCategory.NameUrl" class='subcategory lead' data-id="@subCategory.Id">@subCategory.Name</a>
-            }
+            <table class="table table-striped">
+                @foreach (var subCategory in Model.SubCategories)
+                {
+                    string url;
+                    if (ViewBag.IsAjax)
+                    {
+                        url = string.Format("#!/List/ByCategory/{0}/{1}", subCategory.Id, subCategory.NameUrl);
+                    }
+                    else
+                    {
+                        url = string.Format("/Contests/List/ByCategory/{0}/{1}", subCategory.Id, subCategory.NameUrl);
+                    }
+                    <tr>
+                        <td>
+                            <a href="@url" class='subcategory' data-id="@subCategory.Id">@subCategory.Name</a>
+                        </td>
+                    </tr>
+                }
+            </table>
         }
         else
         {
