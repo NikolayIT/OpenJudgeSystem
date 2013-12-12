@@ -62,7 +62,7 @@
                         {
                             // One of the two streams is already empty
                             adminCheckerDetails = string.Format(
-                                "Invalid number of lines on line {0}{1}",
+                                "Invalid number of lines on line {0}{1}{1}",
                                 lineNumber,
                                 Environment.NewLine);
                             if (userLine != null)
@@ -89,7 +89,7 @@
                         {
                             // Lines are different => wrong answer
                             adminCheckerDetails = string.Format(
-                                "Line {1} is different.{0}Expected line:{0}{2}{0}User line{0}{3}{0}",
+                                "Line {1} is different.{0}{0}Expected line:{0}{2}{0}{0}User line:{0}{3}{0}",
                                 Environment.NewLine,
                                 lineNumber,
                                 correctLine.MaxLength(256),
@@ -109,7 +109,7 @@
             {
                 // Full test report for user
                 checkerDetails = string.Format(
-                    "Expected output:{0}{1}{0}Your output:{0}{2}{0}",
+                    "Expected output:{0}{1}{0}{0}Your output:{0}{2}{0}",
                     Environment.NewLine,
                     expectedOutput.MaxLength(2048),
                     receivedOutput.MaxLength(2048));
