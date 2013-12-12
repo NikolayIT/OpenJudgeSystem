@@ -3,6 +3,7 @@
     using System;
     using System.IO;
 
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
@@ -55,7 +56,7 @@
             if (processExecutionResult.Type == ProcessExecutionResultType.RunTimeError)
             {
                 testResult.ResultType = TestRunResultType.RunTimeError;
-                testResult.ExecutionComment = processExecutionResult.ErrorOutput;
+                testResult.ExecutionComment = processExecutionResult.ErrorOutput.MaxLength(2048); // Trimming long error texts
             }
             else if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit)
             {

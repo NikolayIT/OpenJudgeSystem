@@ -147,7 +147,29 @@ else
 
         if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
         {
-            <pre>@testResult.ExecutionComment.MaxLength(500)</pre>
+            var executionComment = testResult.ExecutionComment;
+            if (!User.IsInRole("Administrator"))
+            {
+                if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
+                {
+                    // The following code will hide the exception message from user when the code is written in C#
+                    var errorParts = executionComment.Split(':');
+                    if (errorParts.Length >= 2)
+                    {
+                        executionComment = errorParts[0] + ":" + errorParts[1];
+                    }
+                    else
+                    {
+                        executionComment = executionComment.MaxLengthWithEllipsis(37);
+                    }
+                }
+                else // Other language
+                {
+                    executionComment = executionComment.MaxLengthWithEllipsis(64);
+                }
+            }
+
+            <pre>@executionComment</pre>
         }
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))

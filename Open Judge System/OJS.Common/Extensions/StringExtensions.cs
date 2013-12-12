@@ -84,6 +84,17 @@
             return stringToTrim.Substring(0, maxLength);
         }
 
+        // TODO: Unit test
+        public static string MaxLengthWithEllipsis(this string stringToTrim, int maxLength)
+        {
+            if (stringToTrim == null || stringToTrim.Length <= maxLength)
+            {
+                return stringToTrim;
+            }
+
+            return stringToTrim.Substring(0, maxLength) + "...";
+        }
+
         // TODO: Test
         public static IEnumerable<string> GetStringsBetween(this string stringToParse, string beforeString, string afterString)
         {
