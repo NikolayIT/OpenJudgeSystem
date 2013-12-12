@@ -522,6 +522,7 @@
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestViewModel.cs" />
+    <Compile Include="ViewModels\CategoryMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexContestViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexViewModel.cs" />
     <Compile Include="ViewModels\News\AllNewsViewModel.cs" />

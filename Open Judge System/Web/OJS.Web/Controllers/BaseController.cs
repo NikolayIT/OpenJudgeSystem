@@ -1,15 +1,19 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
+    using Kendo.Mvc.Extensions;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;
+    using OJS.Web.ViewModels;
 
     public class BaseController : Controller
     {
@@ -32,6 +36,11 @@
         {
             // Work with data before BeginExecute to prevent "NotSupportedException: A second operation started on this context before a previous asynchronous operation completed."
             this.UserProfile = this.Data.Users.GetByUsername(requestContext.HttpContext.User.Identity.Name);
+
+            this.ViewBag.MainCategories =
+                this.Data.ContestCategories.All()
+                    .Where(x => x.IsVisible && !x.ParentId.HasValue)
+                    .Select(CategoryMenuItemViewModel.FromCategory);
 
             // Calling BeginExecute before PrepareSystemMessages for the TempData to has values
             var result = base.BeginExecute(requestContext, callback, state);
