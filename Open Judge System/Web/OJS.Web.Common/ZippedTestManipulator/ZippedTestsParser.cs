@@ -26,12 +26,12 @@
 
         public static void AddTestsToProblem(Problem problem, TestsParseResult tests)
         {
-            var lastTest = problem.Tests.OrderByDescending(x => x.OrderBy).FirstOrDefault();
-            int count = 1;
+            var lastTrialTest = problem.Tests.Where(x => x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
+            int zeroTestsOrder = 1;
 
-            if (lastTest != null)
+            if (lastTrialTest != null)
             {
-                count = lastTest.OrderBy + 1;
+                zeroTestsOrder = lastTrialTest.OrderBy + 1;
             }
 
             for (int i = 0; i < tests.ZeroInputs.Count; i++)
@@ -39,13 +39,21 @@
                 problem.Tests.Add(new Test
                 {
                     IsTrialTest = true,
-                    OrderBy = count,
+                    OrderBy = zeroTestsOrder,
                     Problem = problem,
                     InputDataAsString = tests.ZeroInputs[i],
                     OutputDataAsString = tests.ZeroOutputs[i],
                 });
 
-                count++;
+                zeroTestsOrder++;
+            }
+
+            var lastTest = problem.Tests.Where(x => !x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
+            int count = 1;
+
+            if (lastTest != null)
+            {
+                count = lastTest.OrderBy + 1;
             }
 
             for (int i = 0; i < tests.Inputs.Count; i++)
