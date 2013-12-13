@@ -124,7 +124,7 @@
             else
             {
                 // User is not logged-in
-                messages.Add("Добре дошли в новата версия на системата BGCoder.com!<br />Всички данни (с изключение на потребителските пароли) са прехвърлени от старата версия.<br />Ако имате потребителско име в старта система, трябва да използвате модула \"<a href=\"/Account/ForgottenPassword\">забравена парола</a>\", за да активирате акаунта си в новата система.", SystemMessageType.Informational, 2000);
+                messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
             }
 
             return messages;

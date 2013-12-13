@@ -77,5 +77,14 @@ namespace Resources.Base {
                 return ResourceManager.GetString("Username_in_invalid_format", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to the new version of the BGCoder.com system!&lt;br /&gt;All data (except user passwords) were transferred from the old version of the system to the new one.&lt;br /&gt;If you had an account in the old system you should use the &quot;&lt;a href=&quot;/Account/ForgottenPassword&quot;&gt;forgotten password&lt;/a&gt;&quot; link to activate your account in the new system..
+        /// </summary>
+        public static string Welcome_to_the_new_bgcoder_and_change_password {
+            get {
+                return ResourceManager.GetString("Welcome_to_the_new_bgcoder_and_change_password", resourceCulture);
+            }
+        }
     }
 }
