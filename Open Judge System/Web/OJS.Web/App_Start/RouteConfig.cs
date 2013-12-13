@@ -9,6 +9,9 @@
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // TODO: Unit test this route
+            routes.MapRoute("robots.txt", "robots.txt", new { controller = "Home", action = "RobotsTxt" }, new[] { "OJS.Web.Controllers" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
