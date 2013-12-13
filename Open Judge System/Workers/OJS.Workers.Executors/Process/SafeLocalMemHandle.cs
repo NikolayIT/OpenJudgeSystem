@@ -34,6 +34,6 @@
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [DllImport("kernel32.dll")]
-        private static extern IntPtr LocalFree(IntPtr hMem);
+        private static extern IntPtr LocalFree(IntPtr memoryHandler);
     }
 }

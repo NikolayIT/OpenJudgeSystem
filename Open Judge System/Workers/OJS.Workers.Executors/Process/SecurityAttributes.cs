@@ -6,10 +6,10 @@ namespace OJS.Workers.Executors.Process
     [StructLayout(LayoutKind.Sequential)]
     public class SecurityAttributes
     {
-        public int length = 12;
+        public const int Length = 12;
 
-        public SafeLocalMemHandle lpSecurityDescriptor = new SafeLocalMemHandle(IntPtr.Zero, false);
+        public readonly SafeLocalMemHandle SecurityDescriptor = new SafeLocalMemHandle(IntPtr.Zero, false);
 
-        public bool bInheritHandle = false;
+        public bool InheritHandle = false;
     }
 }

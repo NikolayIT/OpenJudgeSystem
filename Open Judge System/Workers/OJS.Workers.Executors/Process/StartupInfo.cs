@@ -41,9 +41,9 @@ namespace OJS.Workers.Executors.Process
         /// </summary>
         public short ShowWindow = 0;
 
-        public short cbReserved2 = 0;
+        public short Reserved2 = 0;
 
-        public IntPtr Reserved2 = IntPtr.Zero;
+        public IntPtr Reserved2Pointer = IntPtr.Zero;
 
         public SafeFileHandle StandardInputHandle = new SafeFileHandle(IntPtr.Zero, false);
 

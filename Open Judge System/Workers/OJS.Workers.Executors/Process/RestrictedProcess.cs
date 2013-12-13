@@ -359,7 +359,7 @@
         [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
         private void CreatePipe(out SafeFileHandle parentHandle, out SafeFileHandle childHandle, bool parentInputs, int bufferSize)
         {
-            var securityAttributesParent = new SecurityAttributes { bInheritHandle = true };
+            var securityAttributesParent = new SecurityAttributes { InheritHandle = true };
 
             SafeFileHandle tempHandle = null;
             try
