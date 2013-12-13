@@ -81,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Problem.cs" />
     <Compile Include="Submission.cs" />
+    <Compile Include="Tag.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestRun.cs" />
     <Compile Include="UserProfile.cs" />

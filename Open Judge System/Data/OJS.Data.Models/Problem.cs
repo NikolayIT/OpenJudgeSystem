@@ -11,12 +11,14 @@
         private ICollection<Test> tests;
         private ICollection<ProblemResource> resources;
         private ICollection<Submission> submissions;
+        private ICollection<Tag> tags;
 
         public Problem()
         {
             this.tests = new HashSet<Test>();
             this.resources = new HashSet<ProblemResource>();
             this.submissions = new HashSet<Submission>();
+            this.tags = new HashSet<Tag>();
         }
 
         public int Id { get; set; }
@@ -72,6 +74,12 @@
         {
             get { return this.submissions; }
             set { this.submissions = value; }
+        }
+
+        public virtual ICollection<Tag> Tags
+        {
+            get { return this.tags; }
+            set { this.tags = value; }
         }
     }
 }
