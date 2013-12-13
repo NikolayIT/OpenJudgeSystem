@@ -45,11 +45,11 @@ namespace OJS.Workers.Executors.Process
 
         public IntPtr lpReserved2 = IntPtr.Zero;
 
-        public SafeFileHandle hStdInput = new SafeFileHandle(IntPtr.Zero, false);
+        public SafeFileHandle standardInputHandle = new SafeFileHandle(IntPtr.Zero, false);
 
-        public SafeFileHandle hStdOutput = new SafeFileHandle(IntPtr.Zero, false);
+        public SafeFileHandle standardOutputHandle = new SafeFileHandle(IntPtr.Zero, false);
 
-        public SafeFileHandle hStdError = new SafeFileHandle(IntPtr.Zero, false);
+        public SafeFileHandle standardErrorHandle = new SafeFileHandle(IntPtr.Zero, false);
 
         public StartupInfo()
         {
@@ -59,22 +59,22 @@ namespace OJS.Workers.Executors.Process
         public void Dispose()
         {
             // close the handles created for child process
-            if (this.hStdInput != null && !this.hStdInput.IsInvalid)
+            if (this.standardInputHandle != null && !this.standardInputHandle.IsInvalid)
             {
-                this.hStdInput.Close();
-                this.hStdInput = null;
+                this.standardInputHandle.Close();
+                this.standardInputHandle = null;
             }
 
-            if (this.hStdOutput != null && !this.hStdOutput.IsInvalid)
+            if (this.standardOutputHandle != null && !this.standardOutputHandle.IsInvalid)
             {
-                this.hStdOutput.Close();
-                this.hStdOutput = null;
+                this.standardOutputHandle.Close();
+                this.standardOutputHandle = null;
             }
 
-            if (this.hStdError != null && !this.hStdError.IsInvalid)
+            if (this.standardErrorHandle != null && !this.standardErrorHandle.IsInvalid)
             {
-                this.hStdError.Close();
-                this.hStdError = null;
+                this.standardErrorHandle.Close();
+                this.standardErrorHandle = null;
             }
         }
     }

@@ -39,7 +39,6 @@
             return this.View(indexViewModel);
         }
 
-
         /// <summary>
         /// Gets the robots.txt file.
         /// </summary>

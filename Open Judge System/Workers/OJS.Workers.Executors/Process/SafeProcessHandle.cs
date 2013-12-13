@@ -11,7 +11,7 @@
     [SuppressUnmanagedCodeSecurity]
     public sealed class SafeProcessHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        internal static SafeProcessHandle InvalidHandle = new SafeProcessHandle(IntPtr.Zero);
+        private static SafeProcessHandle invalidHandle = new SafeProcessHandle(IntPtr.Zero);
 
         // Note that OpenProcess returns 0 on failure 
         internal SafeProcessHandle()
@@ -25,10 +25,6 @@
             this.SetHandle(handle);
         }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [ResourceExposure(ResourceScope.Machine)]
-        internal static extern SafeProcessHandle OpenProcess(int access, bool inherit, int processId);
-
         internal void InitialSetHandle(IntPtr h)
         {
             Debug.Assert(this.IsInvalid, "Safe handle should only be set once");
@@ -39,5 +35,9 @@
         {
             return NativeMethods.CloseHandle(this.handle);
         }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [ResourceExposure(ResourceScope.Machine)]
+        private static extern SafeProcessHandle OpenProcess(int access, bool inherit, int processId);
     } 
 }
