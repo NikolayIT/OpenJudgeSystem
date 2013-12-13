@@ -31,6 +31,5 @@
                 return this.Name.ToUrl();
             }
         }
-
     }
 }

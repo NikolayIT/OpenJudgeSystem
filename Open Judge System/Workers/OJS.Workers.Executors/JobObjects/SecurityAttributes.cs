@@ -6,8 +6,8 @@
     [StructLayout(LayoutKind.Sequential)]
     public struct SecurityAttributes
     {
-        public int nLength;
-        public IntPtr lpSecurityDescriptor;
-        public int bInheritHandle;
+        public int Length;
+        public IntPtr SecurityDescriptor;
+        public int InheritHandle;
     }
 }

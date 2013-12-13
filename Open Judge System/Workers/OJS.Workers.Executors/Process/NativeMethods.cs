@@ -45,6 +45,17 @@
             SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_ENABLED | SE_GROUP_OWNER |
             SE_GROUP_USE_FOR_DENY_ONLY | SE_GROUP_LOGON_ID | SE_GROUP_RESOURCE |
             SE_GROUP_INTEGRITY | SE_GROUP_INTEGRITY_ENABLED;
+
+        public const int SAFER_SCOPEID_MACHINE = 1;
+        public const int SAFER_SCOPEID_USER = 2;
+
+        public const int SAFER_LEVELID_DISALLOWED = 0x00000;
+        public const int SAFER_LEVELID_UNTRUSTED = 0x1000;
+        public const int SAFER_LEVELID_CONSTRAINED = 0x10000;
+        public const int SAFER_LEVELID_NORMALUSER = 0x20000;
+        public const int SAFER_LEVELID_FULLYTRUSTED = 0x40000;
+
+        public const int SAFER_LEVEL_OPEN = 1;
         
         public static SidIdentifierAuthority SECURITY_MANDATORY_LABEL_AUTHORITY =
             new SidIdentifierAuthority(new byte[] { 0, 0, 0, 0, 0, 16 });
@@ -240,17 +251,6 @@
 
         [DllImport("advapi32.dll", SetLastError = true)]
         public static extern bool SaferComputeTokenFromLevel(IntPtr LevelHandle, IntPtr InAccessToken, out IntPtr OutAccessToken, int dwFlags, IntPtr lpReserved);
-
-        public const int SAFER_SCOPEID_MACHINE = 1;
-        public const int SAFER_SCOPEID_USER = 2;
-
-        public const int SAFER_LEVELID_DISALLOWED = 0x00000;
-        public const int SAFER_LEVELID_UNTRUSTED = 0x1000;
-        public const int SAFER_LEVELID_CONSTRAINED = 0x10000;
-        public const int SAFER_LEVELID_NORMALUSER = 0x20000;
-        public const int SAFER_LEVELID_FULLYTRUSTED = 0x40000;
-
-        public const int SAFER_LEVEL_OPEN = 1;
         
         [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
