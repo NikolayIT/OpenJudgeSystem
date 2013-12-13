@@ -318,10 +318,10 @@
             // HANDLE hStdInput - Standard input handle of the child process.
             // HANDLE hStdOutput - Standard output handle of the child process.
             // HANDLE hStdError - Standard error handle of the child process.
-            startupInfo.dwFlags = (int)StartupInfoFlags.STARTF_USESTDHANDLES;
-            this.CreatePipe(out standardInputWritePipeHandle, out startupInfo.standardInputHandle, true, bufferSize);
-            this.CreatePipe(out standardOutputReadPipeHandle, out startupInfo.standardOutputHandle, false, bufferSize);
-            this.CreatePipe(out standardErrorReadPipeHandle, out startupInfo.standardErrorHandle, false, 4096);
+            startupInfo.Flags = (int)StartupInfoFlags.STARTF_USESTDHANDLES;
+            this.CreatePipe(out standardInputWritePipeHandle, out startupInfo.StandardInputHandle, true, bufferSize);
+            this.CreatePipe(out standardOutputReadPipeHandle, out startupInfo.StandardOutputHandle, false, bufferSize);
+            this.CreatePipe(out standardErrorReadPipeHandle, out startupInfo.StandardErrorHandle, false, 4096);
 
             this.StandardInput = new StreamWriter(new FileStream(standardInputWritePipeHandle, FileAccess.Write, bufferSize, false), Encoding.Default, bufferSize)
                                      {
