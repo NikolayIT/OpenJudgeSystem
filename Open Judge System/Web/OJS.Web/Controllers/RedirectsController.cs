@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
 
     using OJS.Data;
@@ -25,6 +26,12 @@
         public RedirectResult Index(int id)
         {
             return RedirectPermanent(OldSystemRedirects[id].Value);
+        }
+
+        public RedirectResult UserProfile(int id)
+        {
+            var username = this.Data.Users.All().Where(x => x.OldId == id).Select(x => x.UserName).FirstOrDefault();
+            return RedirectPermanent(string.Format("/Users/{0}", username));
         }
     }
 }

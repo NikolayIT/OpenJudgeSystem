@@ -34,6 +34,12 @@
                     defaults: new { controller = "Redirects", action = "Index", id = i },
                     namespaces: new[] { "OJS.Web.Controllers" });
             }
+
+            routes.MapRoute(
+                "RedirectOldSystemUrl_Account_ProfileView",
+                "Account/ProfileView/{id}",
+                new { controller = "Redirects", action = "UserProfile", id = UrlParameter.Optional },
+                new[] { "OJS.Web.Controllers" });
         }
     }
 }

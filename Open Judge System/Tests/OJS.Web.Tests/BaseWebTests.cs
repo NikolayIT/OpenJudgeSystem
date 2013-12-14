@@ -27,8 +27,9 @@
 
         protected HttpContextBase MockHttpContextBase()
         {
-            var mockHttpContext = new Mock<HttpContextBase>();
             var mockRequest = new Mock<HttpRequestBase>();
+
+            var mockHttpContext = new Mock<HttpContextBase>();
             mockHttpContext.SetupGet(x => x.Request).Returns(mockRequest.Object);
 
             return mockHttpContext.Object;
