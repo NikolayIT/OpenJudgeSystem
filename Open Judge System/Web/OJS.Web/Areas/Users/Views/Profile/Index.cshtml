@@ -1,7 +1,7 @@
 ﻿@model OJS.Web.Areas.Users.ViewModels.UserProfileViewModel
 
 @{
-    ViewBag.Title = "Профил";
+    ViewBag.Title = string.Format("Профил на {0}", Model.Username);
 }
 
 <ol class="breadcrumb">
@@ -10,14 +10,5 @@
 </ol>
 
 <div class="row">
-    @if (Model == null)
-    {
-        <div class="alert alert-info">
-            Грешка - невалиден профил.
-        </div>
-    }
-    else
-    {
-        @Html.Partial("_ProfileInfo", Model)
-    }
+    @Html.Partial("_ProfileInfo", Model)
 </div>
