@@ -23,7 +23,7 @@
 
         public int Id { get; set; }
 
-        public int OldId { get; set; }
+        public int? OldId { get; set; }
 
         public int ContestId { get; set; }
 

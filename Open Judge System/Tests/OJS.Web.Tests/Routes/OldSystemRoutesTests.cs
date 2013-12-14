@@ -5,6 +5,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Controllers;
 
@@ -16,22 +17,70 @@
         {
             foreach (var oldSystemRedirect in RedirectsController.OldSystemRedirects)
             {
-                VerifyUrlRedirection(string.Format("~/{0}", oldSystemRedirect.Key), oldSystemRedirect.Value);
+                this.VerifyUrlRedirection(string.Format("~/{0}", oldSystemRedirect.Key), oldSystemRedirect.Value);
             }
+        }
+
+        [TestMethod]
+        public void ContestCompeteLinkShouldNavigateProperly()
+        {
+            var contest = new Contest { OldId = 1337, };
+            this.EmptyOjsData.Contests.Add(contest);
+            this.EmptyOjsData.SaveChanges();
+
+            this.VerifyUrlRedirection("~/Contest/Compete/1337", string.Format("/Contests/Compete/Index/{0}", contest.Id));
+        }
+
+        [TestMethod]
+        public void ContestPracticeLinkShouldNavigateProperly()
+        {
+            var contest = new Contest { OldId = 1338, };
+            this.EmptyOjsData.Contests.Add(contest);
+            this.EmptyOjsData.SaveChanges();
+
+            this.VerifyUrlRedirection("~/Contest/Practice/1338", string.Format("/Contests/Practice/Index/{0}", contest.Id));
+        }
+
+        [TestMethod]
+        public void ContestResultsLinkShouldNavigateProperly()
+        {
+            var contest = new Contest { OldId = 1339, };
+            this.EmptyOjsData.Contests.Add(contest);
+            this.EmptyOjsData.SaveChanges();
+
+            this.VerifyUrlRedirection("~/Contest/ContestResults/1339", string.Format("/Contests/Compete/Results/Simple/{0}", contest.Id));
+        }
+
+        [TestMethod]
+        public void PracticeResultsLinkShouldNavigateProperly()
+        {
+            var contest = new Contest { OldId = 1340, };
+            this.EmptyOjsData.Contests.Add(contest);
+            this.EmptyOjsData.SaveChanges();
+
+            this.VerifyUrlRedirection("~/Contest/ContestResults/1340", string.Format("/Contests/Compete/Results/Simple/{0}", contest.Id));
         }
 
         [TestMethod]
         public void AccountProfileViewLinkShouldNavigateProperly()
         {
-            this.EmptyOjsData.Users.Add(new UserProfile
-                                            {
-                                                UserName = "Nikolay.IT",
-                                                Email = "1337@bgcoder.com",
-                                                OldId = 1337,
-                                            });
+            this.EmptyOjsData.Users.Add(
+                new UserProfile { UserName = "Nikolay.IT", Email = "1337@bgcoder.com", OldId = 1337, });
             this.EmptyOjsData.SaveChanges();
 
-            VerifyUrlRedirection("~/Account/ProfileView/1337", "/Users/Nikolay.IT");
+            this.VerifyUrlRedirection("~/Account/ProfileView/1337", "/Users/Nikolay.IT");
+        }
+
+        [TestMethod]
+        public void DownloadTaskLinkShouldNavigateProperly()
+        {
+            var contest = new Contest { Name = "1337", };
+            var problem = new Problem { Contest = contest, Name = "1337", OldId = 1337 };
+            var resource = new ProblemResource { Problem = problem, Type = ProblemResourceType.ProblemDescription };
+            this.EmptyOjsData.Resources.Add(resource);
+            this.EmptyOjsData.SaveChanges();
+
+            this.VerifyUrlRedirection("~/Contest/DownloadTask/1337", string.Format("/Contests/Practice/DownloadResource/{0}", resource.Id));
         }
 
         private void VerifyUrlRedirection(string oldUrl, string newUrl)

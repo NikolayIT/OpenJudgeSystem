@@ -33,7 +33,5 @@
             int actual = Input.ToInteger();
             Assert.AreEqual(Expected, actual);
         }
-
-
     }
 }

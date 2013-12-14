@@ -7,6 +7,7 @@
 
     public class ProblemResource : DeletableEntity, IOrderable
     {
+        [Key]
         public int Id { get; set; }
 
         public int ProblemId { get; set; }
