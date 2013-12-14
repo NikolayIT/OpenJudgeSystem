@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
@@ -305,18 +306,33 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam");
             }
 
-            if (!problem.ShowResults)
+            var userSubmissions = this.Data.Submissions.All()
+                                                            .Where(x =>
+                                                                    x.ProblemId == id &&
+                                                                    x.ParticipantId == participant.Id)
+                                                            .Select(SubmissionResultViewModel.FromSubmission);
+            
+            return this.Json(userSubmissions.ToDataSourceResult(request));
+        }
+
+        [Authorize]
+        public ActionResult ReadSubmissionResultsAreCompiled([DataSourceRequest]DataSourceRequest request, int id, bool official)
+        {
+            var problem = this.Data.Problems.GetById(id);
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+
+            if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this problem are not available");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam");
             }
 
             var userSubmissions = this.Data.Submissions.All()
-                                                        .Where(x =>
-                                                                x.ProblemId == id &&
-                                                                x.ParticipantId == participant.Id)
-                                                        .Select(SubmissionResultViewModel.FromSubmission);
+                                                            .Where(x =>
+                                                                    x.ProblemId == id &&
+                                                                    x.ParticipantId == participant.Id)
+                                                            .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
 
-            return this.Json(userSubmissions.ToDataSourceResult(request));
+            return this.Json(userSubmissions.ToDataSourceResult(request));  
         }
 
         /// <summary>

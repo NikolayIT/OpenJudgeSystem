@@ -170,4 +170,34 @@
             )
         </div>
     </div>
+} else {
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Kendo()
+            .Grid<SubmissionResultIsCompiledViewModel>()
+            .Name("Submissions_" + Model.ProblemId)
+            .ToolBar(tool =>
+            {
+                tool.Template("Изпратени решения");
+            })
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Sort(sort => sort.Add("SubmissionDate").Descending())
+                    .Read(read => read.Action("ReadSubmissionResultsAreCompiled", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                    .PageSize(10);
+            })
+            .Pageable(page =>
+            {
+                page.Info(false);
+                page.Refresh(true);
+            })
+            .Columns(col =>
+            {
+                col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? 'Успешна компилация' : 'Неуспешна компилация' : 'Обработва се' #");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
+            }).HtmlAttributes(new { @class = "problem_submit_grid" })
+            )
+        </div>
+    </div>
 }

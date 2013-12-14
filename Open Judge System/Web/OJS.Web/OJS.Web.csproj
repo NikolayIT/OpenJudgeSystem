@@ -489,6 +489,7 @@
     <Compile Include="Areas\Contests\ViewModels\Results\ParticipantResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\SubmissionFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\TestRunFullResultsViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\SubmissionResultIsCompiledViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />

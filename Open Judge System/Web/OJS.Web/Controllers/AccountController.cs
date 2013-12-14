@@ -395,7 +395,7 @@
             // judge system
             var usersByEmail = this.Data.Users
                                     .All()
-                                    .Where(x => x.Email == emailOrUsername);
+                                    .Where(x => x.Email == emailOrUsername).ToList();
 
             var usersCount = usersByEmail.Count();
 
