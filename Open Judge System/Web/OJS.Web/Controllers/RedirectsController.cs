@@ -18,7 +18,7 @@
         {
         }
 
-        public ActionResult Index(int id)
+        public RedirectResult Index(int id)
         {
             return RedirectPermanent(OldSystemRedirects[id].Value);
         }

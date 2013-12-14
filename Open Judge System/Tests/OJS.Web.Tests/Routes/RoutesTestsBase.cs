@@ -5,7 +5,7 @@
 
     using OJS.Tests.Common.WebStubs;
 
-    public class RoutesTestsBase
+    public class RoutesTestsBase : BaseWebTests
     {
         public RouteData GetRouteData(string url)
         {
