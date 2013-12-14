@@ -60,6 +60,7 @@
     <Compile Include="StringExtensions\GetStringBetweenTests.cs" />
     <Compile Include="StringExtensions\MaxLengthTests.cs" />
     <Compile Include="StringExtensions\StringToUrlTests.cs" />
+    <Compile Include="StringExtensions\ToInteger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />

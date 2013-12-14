@@ -21,6 +21,13 @@
             return encoding.GetString(bytes);
         }
 
+        public static int ToInteger(this string input)
+        {
+            int integerValue;
+            int.TryParse(input, out integerValue);
+            return integerValue;
+        }
+
         public static string ToUrl(this string uglyString)
         {
             var resultString = new StringBuilder(uglyString.Length);
