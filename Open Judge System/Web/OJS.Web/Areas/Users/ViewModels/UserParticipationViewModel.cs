@@ -6,7 +6,7 @@
 
         public string ContestName { get; set; }
 
-        public int ContestResult { get; set; }
+        public int? ContestResult { get; set; }
 
         public bool IsOfficial { get; set; }
     }

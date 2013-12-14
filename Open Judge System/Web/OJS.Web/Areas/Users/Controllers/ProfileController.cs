@@ -18,7 +18,7 @@ namespace OJS.Web.Areas.Users.Controllers
 
         public ActionResult Index(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 id = this.User.Identity.Name;
             }
@@ -29,18 +29,22 @@ namespace OJS.Web.Areas.Users.Controllers
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, "This user does not exist!");
             }
-            
+
             var userSettingsViewModel = new UserProfileViewModel(profile);
-            userSettingsViewModel.Participations =
-                this.Data.Participants.All()
-                .Where(x => x.UserId == profile.Id)
-                .Select(p => new UserParticipationViewModel
-                {
-                    ContestId = p.ContestId,
-                    ContestName = p.Contest.Name,
-                    IsOfficial = p.IsOfficial,
-                    ContestResult = p.Submissions.GroupBy(s => s.ProblemId).Sum(x => x.Max(z => z.Points))
-                });
+
+            userSettingsViewModel.Participations = this.Data.Participants.All()
+                                                    .AsQueryable()
+                                                    .Where(x => x.UserId == profile.Id)
+                                                    .Select(p => new UserParticipationViewModel
+                                                    {
+                                                        ContestId = p.ContestId,
+                                                        ContestName = p.Contest.Name,
+                                                        IsOfficial = p.IsOfficial,
+                                                        ContestResult = p.Submissions
+                                                                            .Where(x => !x.IsDeleted)
+                                                                            .GroupBy(s => s.ProblemId)
+                                                                            .Sum(x => x.Max(z => z.Points))
+                                                    });
 
             return this.View(userSettingsViewModel);
         }
