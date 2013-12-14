@@ -11,6 +11,10 @@
             new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Contest/List", "/Contests"),
+                new KeyValuePair<string, string>("Home/SubmissionLog", "/Submissions"),
+                new KeyValuePair<string, string>("Home/ReportBug", "/Feedback"),
+                new KeyValuePair<string, string>("Home/SendBugReport", "/Feedback"),
+                new KeyValuePair<string, string>("Account/LogOn", "/Account/Login"),
             };
 
         public RedirectsController(IOjsData data)

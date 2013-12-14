@@ -48,7 +48,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">Начало</a></li>
                     <li class="dropdown">
-                        <a href="/Contests/" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="/Contests" class="dropdown-toggle" data-toggle="dropdown">
                             Състезания
                             <strong class="caret"></strong>
                         </a>
@@ -58,11 +58,11 @@
                                 <li><a href="@string.Format("/Contests/#!/List/ByCategory/{0}/{1}", category.Id, category.NameUrl)">@category.Name</a></li>
                             }
                             <li class="divider"></li>
-                            <li><a href="/Contests/">Всички</a></li>
+                            <li><a href="/Contests">Всички</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Submissions/">Лог</a></li>
-                    <li><a href="/Feedback/">Обратна връзка</a></li>
+                    <li><a href="/Submissions">Лог</a></li>
+                    <li><a href="/Feedback">Обратна връзка</a></li>
                     @if (User.IsInRole("Administrator"))
                     {
                         <li class="dropdown">
