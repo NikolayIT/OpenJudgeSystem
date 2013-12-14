@@ -40,6 +40,7 @@
             this.ViewBag.MainCategories =
                 this.Data.ContestCategories.All()
                     .Where(x => x.IsVisible && !x.ParentId.HasValue)
+                    .OrderBy(x => x.OrderBy)
                     .Select(CategoryMenuItemViewModel.FromCategory);
 
             // Calling BeginExecute before PrepareSystemMessages for the TempData to has values
