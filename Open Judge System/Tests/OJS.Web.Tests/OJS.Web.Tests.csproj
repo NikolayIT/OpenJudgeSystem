@@ -160,6 +160,7 @@
     <Compile Include="Routes\ContestsRoutesTests.cs" />
     <Compile Include="Routes\AdministrationRoutesTests.cs" />
     <Compile Include="Routes\FeedbackReportsRoutesTests.cs" />
+    <Compile Include="Routes\OldSystemRoutesTests.cs" />
     <Compile Include="Routes\RoutesTestsBase.cs" />
     <Compile Include="Routes\UsersRoutesTests.cs" />
   </ItemGroup>
