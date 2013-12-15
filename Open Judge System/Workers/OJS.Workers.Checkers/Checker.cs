@@ -23,14 +23,23 @@
             return checker;
         }
 
-        public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest);
+        public abstract CheckerResult Check(
+            string inputData,
+            string receivedOutput,
+            string expectedOutput,
+            bool isTrialTest);
 
         public virtual void SetParameter(string parameter)
         {
             throw new InvalidOperationException("This checker doesn't support parameters");
         }
 
-        protected CheckerResult CheckLineByLine(string inputData, string receivedOutput, string expectedOutput, Func<string, string, bool> areEqual, bool isTrialTest)
+        protected CheckerResult CheckLineByLine(
+            string inputData,
+            string receivedOutput,
+            string expectedOutput,
+            Func<string, string, bool> areEqual,
+            bool isTrialTest)
         {
             this.NormalizeEndLines(ref receivedOutput);
             this.NormalizeEndLines(ref expectedOutput);
@@ -61,26 +70,10 @@
                         if (userLine == null || correctLine == null)
                         {
                             // One of the two streams is already empty
-                            adminCheckerDetails = string.Format(
-                                "Invalid number of lines on line {0}{1}{1}",
+                            adminCheckerDetails = this.PrepareAdminCheckerDetailsForInvalidNumberOfLines(
                                 lineNumber,
-                                Environment.NewLine);
-                            if (userLine != null)
-                            {
-                                adminCheckerDetails += string.Format(
-                                    "Next user line:{1}{0}{1}",
-                                    userLine.MaxLength(256),
-                                    Environment.NewLine);
-                            }
-
-                            if (correctLine != null)
-                            {
-                                adminCheckerDetails += string.Format(
-                                    "Next correct line:{1}{0}{1}",
-                                    correctLine.MaxLength(256),
-                                    Environment.NewLine);
-                            }
-
+                                userLine,
+                                correctLine);
                             resultType = CheckerResultType.InvalidNumberOfLines;
                             break;
                         }
@@ -88,13 +81,10 @@
                         if (!areEqual(userLine, correctLine))
                         {
                             // Lines are different => wrong answer
-                            adminCheckerDetails = string.Format(
-                                "Line {1} is different.{0}{0}Expected line:{0}{2}{0}{0}User line:{0}{3}{0}",
-                                Environment.NewLine,
+                            adminCheckerDetails = this.PrepareAdminCheckerDetailsForDifferentLines(
                                 lineNumber,
-                                correctLine.MaxLength(256),
-                                userLine.MaxLength(256));
-
+                                correctLine,
+                                userLine);
                             resultType = CheckerResultType.WrongAnswer;
                             break;
                         }
@@ -104,28 +94,18 @@
                 }
             }
 
-            string checkerDetails;
-            if (isTrialTest)
+            string checkerDetails = null;
+            if (resultType != CheckerResultType.Ok)
             {
-                // Full test report for user
-                checkerDetails = string.Format(
-                    "Expected output:{0}{1}{0}{0}Your output:{0}{2}{0}",
-                    Environment.NewLine,
-                    expectedOutput.MaxLength(2048),
-                    receivedOutput.MaxLength(2048));
-            }
-            else
-            {
-                // Test report for admins
-                checkerDetails = adminCheckerDetails;
+                checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
             }
 
             return new CheckerResult
-            {
-                IsCorrect = resultType == CheckerResultType.Ok,
-                ResultType = resultType,
-                CheckerDetails = checkerDetails
-            };
+                       {
+                           IsCorrect = resultType == CheckerResultType.Ok,
+                           ResultType = resultType,
+                           CheckerDetails = checkerDetails
+                       };
         }
 
         protected void NormalizeEndLines(ref string output)
@@ -149,6 +129,74 @@
         protected bool AreEqualCaseInsensitiveLines(string userLine, string correctLine)
         {
             return userLine.ToLower().Equals(correctLine.ToLower(), StringComparison.InvariantCulture);
+        }
+
+        protected virtual string PrepareAdminCheckerDetailsForDifferentLines(
+            int lineNumber,
+            string correctLine,
+            string userLine)
+        {
+            string adminCheckerDetails =
+                string.Format(
+                    "Line {1} is different.{0}{0}Expected line:{0}{2}{0}{0}User line:{0}{3}{0}",
+                    Environment.NewLine,
+                    lineNumber,
+                    correctLine.MaxLength(256),
+                    userLine.MaxLength(256));
+            return adminCheckerDetails;
+        }
+
+        protected virtual string PrepareAdminCheckerDetailsForInvalidNumberOfLines(
+            int lineNumber,
+            string userLine,
+            string correctLine)
+        {
+            string adminCheckerDetails = string.Format(
+                "Invalid number of lines on line {0}{1}{1}",
+                lineNumber,
+                Environment.NewLine);
+            if (userLine != null)
+            {
+                adminCheckerDetails += string.Format(
+                    "Next user line:{1}{0}{1}",
+                    userLine.MaxLength(256),
+                    Environment.NewLine);
+            }
+
+            if (correctLine != null)
+            {
+                adminCheckerDetails += string.Format(
+                    "Next correct line:{1}{0}{1}",
+                    correctLine.MaxLength(256),
+                    Environment.NewLine);
+            }
+
+            return adminCheckerDetails;
+        }
+
+        protected virtual string PrepareCheckerDetails(
+            string receivedOutput,
+            string expectedOutput,
+            bool isTrialTest,
+            string adminCheckerDetails)
+        {
+            string checkerDetails;
+            if (isTrialTest)
+            {
+                // Full test report for user
+                checkerDetails = string.Format(
+                    "Expected output:{0}{1}{0}Your output:{0}{2}",
+                    Environment.NewLine,
+                    expectedOutput.MaxLength(8192),
+                    receivedOutput.MaxLength(8192));
+            }
+            else
+            {
+                // Test report for admins
+                checkerDetails = adminCheckerDetails;
+            }
+
+            return checkerDetails;
         }
     }
 }

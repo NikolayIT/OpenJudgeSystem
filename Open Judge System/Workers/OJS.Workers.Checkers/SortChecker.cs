@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.Checkers
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -8,7 +7,6 @@
 
     public class SortChecker : Checker
     {
-        // TODO: CheckerDetails
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
             this.NormalizeEndLines(ref receivedOutput);
@@ -20,6 +18,9 @@
             var userLines = new List<string>();
             var correctLines = new List<string>();
 
+            var resultType = CheckerResultType.Ok;
+
+            string adminCheckerDetails = null;
             int lineNumber = 0;
             using (userFileReader)
             {
@@ -42,13 +43,8 @@
                     if (userLine != correctLine)
                     {
                         // one of the streams still has lines
-                        return new CheckerResult
-                        {
-                            IsCorrect = false,
-                            ResultType = CheckerResultType.InvalidNumberOfLines,
-                            //// TODO: Include line numbers difference
-                            CheckerDetails = string.Empty
-                        };
+                        adminCheckerDetails = this.PrepareAdminCheckerDetailsForInvalidNumberOfLines(lineNumber, userLine, correctLine);
+                        resultType = CheckerResultType.InvalidNumberOfLines;
                     }
                 }
             }
@@ -56,23 +52,33 @@
             userLines.Sort();
             correctLines.Sort();
 
-            var resultType = CheckerResultType.Ok;
-
-            for (int i = 0; i < userLines.Count; i++)
+            if (resultType == CheckerResultType.Ok)
             {
-                if (!this.AreEqualExactLines(userLines[i], correctLines[i]))
+                for (int i = 0; i < userLines.Count; i++)
                 {
-                    resultType = CheckerResultType.WrongAnswer;
-                    break;
+                    if (!this.AreEqualExactLines(userLines[i], correctLines[i]))
+                    {
+                        adminCheckerDetails = this.PrepareAdminCheckerDetailsForDifferentLines(
+                            i,
+                            correctLines[i],
+                            userLines[i]);
+                        resultType = CheckerResultType.WrongAnswer;
+                        break;
+                    }
                 }
+            }
+
+            string checkerDetails = null;
+            if (resultType != CheckerResultType.Ok)
+            {
+                checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
             }
 
             return new CheckerResult
             {
                 IsCorrect = resultType == CheckerResultType.Ok,
                 ResultType = resultType,
-                //// TODO: Include line numbers difference
-                CheckerDetails = string.Empty
+                CheckerDetails = checkerDetails
             };
         }
     }
