@@ -113,7 +113,19 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                     else
                     {
                         submission.IsCompiledSuccessfully = true;
-                        submission.CompilerComment = null;
+                        var compilerParts = reportFragments[0].Split(
+                            new[] { "\r\n" },
+                            3,
+                            StringSplitOptions.RemoveEmptyEntries);
+                        if (compilerParts.Count() > 2)
+                        {
+                            submission.CompilerComment = compilerParts[2].Trim(
+                                new[] { ' ', '\n', '\r', '\t', '-', '=' });
+                        }
+                        else
+                        {
+                            submission.CompilerComment = null;
+                        }
 
                         for (int j = 2; j < reportFragments.Length - 1; j++)
                         {
