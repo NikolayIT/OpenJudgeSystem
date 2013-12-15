@@ -143,8 +143,9 @@
         {
             var fetchedNews = new List<News>();
 
-            fetchedNews.AddRange(this.FetchNewsFromInfoMan());
             fetchedNews.AddRange(this.FetchNewsFromInfos());
+            // TODO: Rework fetching news from infoman.musala.com (they changed their site)
+            // fetchedNews.AddRange(this.FetchNewsFromInfoMan());
 
             this.PopulateDatabaseWithNews(fetchedNews);
 
@@ -152,7 +153,7 @@
             return this.RedirectToAction("All");
         }
 
-        private void PopulateDatabaseWithNews(List<News> fetchedNews)
+        private void PopulateDatabaseWithNews(IEnumerable<News> fetchedNews)
         {
             foreach (var news in fetchedNews)
             {
@@ -165,6 +166,8 @@
             }
         }
 
+        // TODO: Refactor! This code should ne in two separate classes (for each site) and each class should implement an interface
+        #region Fetching news
         private HtmlDocument GetHtmlDocument(string url)
         {
             var document = new HtmlDocument();
@@ -184,7 +187,7 @@
             return document;
         }
 
-        private List<News> FetchNewsFromInfoMan()
+        private IEnumerable<News> FetchNewsFromInfoMan()
         {
             var document = this.GetHtmlDocument(InfoManUrl);
 
@@ -197,7 +200,7 @@
             return currentListOfNews;
         }
 
-        private List<News> FetchNewsFromInfos()
+        private IEnumerable<News> FetchNewsFromInfos()
         {
             var document = this.GetHtmlDocument(InfosUrl);
 
@@ -364,7 +367,9 @@
                 return;
             }
         }
+        #endregion
 
+        // TODO: May be move to string extensions and unit test it
         private DateTime TryGetDate(string date)
         {
             try
