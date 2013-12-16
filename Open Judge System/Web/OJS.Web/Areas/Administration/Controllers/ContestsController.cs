@@ -1,10 +1,10 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -64,14 +64,12 @@
                 .Take(3)
                 .Select(ShortContestAdministrationViewModel.FromContest);
 
-            if (futureContests.Count() > 0)
-            {
-                return this.PartialView("_QuickContestsGrid", futureContests);
-            }
-            else
+            if (!futureContests.Any())
             {
                 return this.Content(NoFutureContests);
             }
+
+            return this.PartialView("_QuickContestsGrid", futureContests);
         }
 
         public ActionResult GetActiveContests([DataSourceRequest]DataSourceRequest request)
@@ -82,14 +80,12 @@
                 .Take(3)
                 .Select(ShortContestAdministrationViewModel.FromContest);
 
-            if (activeContests.Count() > 0)
-            {
-                return this.PartialView("_QuickContestsGrid", activeContests);
-            }
-            else
+            if (!activeContests.Any())
             {
                 return this.Content(NoActiveContests);
             }
+
+            return this.PartialView("_QuickContestsGrid", activeContests);
         }
 
         public ActionResult GetLatestContests([DataSourceRequest]DataSourceRequest request)
@@ -100,14 +96,12 @@
                 .Take(3)
                 .Select(ShortContestAdministrationViewModel.FromContest);
 
-            if (latestContests.Count() > 0)
-            {
-                return this.PartialView("_QuickContestsGrid", latestContests);
-            }
-            else
+            if (!latestContests.Any())
             {
                 return this.Content(NoLatestContests);
             }
+
+            return this.PartialView("_QuickContestsGrid", latestContests);
         }
 
         private void GenerateCategoryDropDownData()
@@ -118,7 +112,7 @@
                 .Select(cat => new SelectListItem
                 {
                     Text = cat.Name,
-                    Value = cat.Id.ToString(),
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
                 });
 
             // TODO: Improve not to use ViewData
