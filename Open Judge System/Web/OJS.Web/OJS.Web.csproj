@@ -624,6 +624,7 @@
     <Content Include="Areas\Administration\Views\News\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Navigation\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Index.cshtml" />
+    <Content Include="google95e631afa25e7960.html" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
