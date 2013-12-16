@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Security;
     using System.Text;
@@ -151,6 +152,32 @@
             input = input.Replace("Plus", "+");
             input = input.Replace("Sharp", "#");
             return input;
+        }
+
+        // TODO: Test
+        public static string ToValidFileName(this string input)
+        {
+            var invalidCharacters = Path.GetInvalidFileNameChars();
+            var fixedString = new StringBuilder(input);
+            foreach (var ch in invalidCharacters)
+            {
+                fixedString.Replace(ch, '_');
+            }
+
+            return fixedString.ToString();
+        }
+
+        // TODO: Test
+        public static string ToValidFilePath(this string input)
+        {
+            var invalidCharacters = Path.GetInvalidPathChars();
+            var fixedString = new StringBuilder(input);
+            foreach (var ch in invalidCharacters)
+            {
+                fixedString.Replace(ch, '_');
+            }
+
+            return fixedString.ToString();
         }
     }
 }
