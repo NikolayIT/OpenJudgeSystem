@@ -88,6 +88,7 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this contest are not available");
             }
 
+            // TODO: Extract choosing the best submission logic to separate repository method?
             var contestModel = new ContestResultsViewModel
             {
                 Id = contest.Id,
@@ -107,7 +108,7 @@
                                     ShowResult = problem.ShowResults,
                                     Result = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id)
-                                                        .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
+                                                        .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                         .Select(z => z.Points)
                                                         .FirstOrDefault()
                                 })
@@ -153,7 +154,7 @@
                                         MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
                                                             .Where(submission => submission.ParticipantId == participant.Id)
-                                                            .OrderByDescending(z => z.Points).ThenBy(z => z.Id)
+                                                            .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                             .Select(SubmissionFullResultsViewModel.FromSubmission)
                                                             .FirstOrDefault(),
                                     })
