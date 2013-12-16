@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeCalculator.cs" />
+    <Compile Include="Extensions\CompilerTypeExtensions.cs" />
     <Compile Include="Extensions\CompressStringExtensions.cs" />
     <Compile Include="DataAnnotations\ExcludeFromExcelAttribute.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ExecutionStrategyTypeExtensions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="MailSender.cs" />
