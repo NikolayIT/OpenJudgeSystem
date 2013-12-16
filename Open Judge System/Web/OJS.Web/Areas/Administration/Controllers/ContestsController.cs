@@ -103,7 +103,7 @@
             {
                 // Create directory with the participants name
                 var directoryName =
-                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName.Trim(), participant.LastName.Trim())
+                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
                         .ToValidFilePath();
                 var directory = file.AddDirectoryByName(directoryName);
 
