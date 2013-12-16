@@ -13,3 +13,5 @@ Developed by:
 * Nikolay Kostov
 * Ivaylo Kenov
 * Vasil Dininski
+
+The system is licensed under MIT License
