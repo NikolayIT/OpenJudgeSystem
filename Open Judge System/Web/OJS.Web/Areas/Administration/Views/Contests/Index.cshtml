@@ -17,8 +17,9 @@
             columns.Bound(x => x.IsVisible);
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText("Промени").CancelText("Отказ")).Width(80);
-            columns.Command(command => command.Destroy().Text(" ")).Width(80);
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=true'>Export contest solutions</a><br /><a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=false'>Export practical solutions</a>").Title("Export").Width(200);
+            columns.Command(command => command.Edit().Text(" ").UpdateText("Промени").CancelText("Отказ")).Title("Edit").Width(80);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Delete");
         })
     .ToolBar(toolbar =>
     {
@@ -57,7 +58,7 @@
 )
 
 <script type="text/javascript">
-    function onDataBound(e) {
+    function onDataBound() {
         CreateExportToExcelButton();
     }
 </script>
