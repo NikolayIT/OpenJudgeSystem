@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
 
     public class SubmissionType
@@ -33,6 +35,18 @@
         {
             get { return this.contests; }
             set { this.contests = value; }
+        }
+        
+        [NotMapped]
+        public string FileNameExtension
+        {
+            get
+            {
+                string extension = (this.ExecutionStrategyType.GetFileExtension()
+                                    ?? this.CompilerType.GetFileExtension()) ?? string.Empty;
+
+                return extension;
+            }
         }
     }
 }

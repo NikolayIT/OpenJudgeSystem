@@ -94,7 +94,7 @@
         {
             get
             {
-                return this.Problem.Tests.Where(x => !x.IsTrialTest).Count();
+                return this.Problem.Tests.Count(x => !x.IsTrialTest);
             }
         }
     }
