@@ -120,10 +120,52 @@
   <data name="Active_contests" xml:space="preserve">
     <value>Активни състезания</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Администрация</value>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Приключило на</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>час</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>часа</value>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>Новини</value>
+  </data>
+  <data name="No_previous_contests" xml:space="preserve">
+    <value>Няма предишни състезания</value>
+  </data>
+  <data name="No_upcoming_contests" xml:space="preserve">
+    <value>Няма предстоящи състезания</value>
+  </data>
+  <data name="Participate" xml:space="preserve">
+    <value>Участвай</value>
+  </data>
+  <data name="Previous_contests" xml:space="preserve">
+    <value>Предишни състезания</value>
+  </data>
   <data name="Project_subtitle" xml:space="preserve">
     <value>Онлайн задачи по програмиране</value>
   </data>
   <data name="Project_title" xml:space="preserve">
     <value>BGCoder</value>
+  </data>
+  <data name="Remaining_time" xml:space="preserve">
+    <value>Оставащо време: {0} {1} и {2} минути</value>
+  </data>
+  <data name="See_more" xml:space="preserve">
+    <value>Вижте още</value>
+  </data>
+  <data name="Starts" xml:space="preserve">
+    <value>Започва на</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="Upcoming_contests" xml:space="preserve">
+    <value>Предстоящи състезания</value>
   </data>
 </root>

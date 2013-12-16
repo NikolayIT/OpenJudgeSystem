@@ -30,9 +30,15 @@
                             <tr>
                                 <td>
                                     <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
-                                    <small>Оставащо време: @hoursRemaining час@(hoursRemaining != 1 ? "а" : "") и @minutesRemaining минути</small>
+                                    @{
+                            string remainingTimeMessage =
+                                string.Format(Resource.Remaining_time, hoursRemaining, hoursRemaining != 1 ?
+                                    Resource.Hours : Resource.Hour, minutesRemaining);
+                                    }
+                                    <small>@remainingTimeMessage</small>
                                 </td>
-                                <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">Участвай</a></td>
+
+                                <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@Resource.Participate</a></td>
                             </tr>
                         }
                     }
@@ -58,14 +64,14 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>Новини</h2>
+        <h2>@Resource.News</h2>
         @{Html.RenderAction("LatestNews", "News", new { newsCount = 4 });}
     </div>
     <div class="col-md-4">
-        <h2>Предишни състезания</h2>
+        <h2>@Resource.Previous_contests</h2>
         @if (!Model.PastContests.Any())
         {
-            <p>Няма предишни състезания.</p>
+            <p>@Resource.No_previous_contests</p>
         }
         else
         {
@@ -75,23 +81,23 @@
                     <tr>
                         <td>
                             <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                            <p class="text-right">Приключило на: @contest.EndTime.ToString()</p>
+                            <p class="text-right">@Resource.Ended: @contest.EndTime.ToString()</p>
                         </td>
                     </tr>
                 }
             </table>
         }
-        <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+        <p class="pull-right"><a class="btn btn-default" href="/Contests/">@Resource.See_more &raquo;</a></p>
         @if (User.IsInRole("Administrator"))
         {
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">Администрация &raquo;</a></p>
+            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">@Resource.Administration &raquo;</a></p>
         }
     </div>
     <div class="col-md-4">
-        <h2>Предстоящи състезания</h2>
+        <h2>@Resource.Upcoming_contests</h2>
         @if (!Model.FutureContests.Any())
         {
-            <p>Няма предстоящи състезания.</p>
+            <p>@Resource.No_upcoming_contests</p>
         }
         else
         {
@@ -101,16 +107,16 @@
                     <tr>
                         <td>
                             <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                            <p class="text-right">Започва на: @contest.StartTime.ToString()</p>
+                            <p class="text-right">@Resource.Starts: @contest.StartTime.ToString()</p>
                         </td>
                     </tr>
                 }
             </table>
         }
-        <p class="pull-right"><a class="btn btn-default" href="/Contests/">Вижте още &raquo;</a></p>
+        <p class="pull-right"><a class="btn btn-default" href="/Contests/">@Resource.See_more &raquo;</a></p>
         @if (User.IsInRole("Administrator"))
         {
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">Администрация &raquo;</a></p>
+            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">@Resource.Administration &raquo;</a></p>
         }
     </div>
 </div>

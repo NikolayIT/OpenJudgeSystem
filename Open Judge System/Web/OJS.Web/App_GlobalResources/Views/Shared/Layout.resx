@@ -117,55 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contests" xml:space="preserve">
-    <value>Active contests</value>
-  </data>
   <data name="Administration" xml:space="preserve">
     <value>Administration</value>
   </data>
-  <data name="Ended" xml:space="preserve">
-    <value>Ended</value>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
   </data>
-  <data name="Hour" xml:space="preserve">
-    <value>hour</value>
+  <data name="All_administrations" xml:space="preserve">
+    <value>All administrations</value>
   </data>
-  <data name="Hours" xml:space="preserve">
-    <value>hours</value>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Category_hierarchy" xml:space="preserve">
+    <value>Category heirarchy</value>
+  </data>
+  <data name="Contests" xml:space="preserve">
+    <value>Contests</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
   </data>
   <data name="News" xml:space="preserve">
     <value>News</value>
   </data>
-  <data name="No_previous_contests" xml:space="preserve">
-    <value>No previous contests</value>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
   </data>
-  <data name="No_upcoming_contests" xml:space="preserve">
-    <value>No upcoming contests</value>
+  <data name="Problems" xml:space="preserve">
+    <value>Problems</value>
   </data>
-  <data name="Participate" xml:space="preserve">
-    <value>Participate</value>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
   </data>
-  <data name="Previous_contests" xml:space="preserve">
-    <value>Previous contests</value>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
-  <data name="Project_subtitle" xml:space="preserve">
-    <value>Solve programming problems online</value>
+  <data name="Submissions" xml:space="preserve">
+    <value>Submissions</value>
   </data>
-  <data name="Project_title" xml:space="preserve">
-    <value>BGCoder</value>
+  <data name="Test_files" xml:space="preserve">
+    <value>Test files</value>
   </data>
-  <data name="Remaining_time" xml:space="preserve">
-    <value>Time remaining: {0} {1} and {2} minutes</value>
-  </data>
-  <data name="See_more" xml:space="preserve">
-    <value>See more</value>
-  </data>
-  <data name="Starts" xml:space="preserve">
-    <value>Starts</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Upcoming_contests" xml:space="preserve">
-    <value>Upcoming contests</value>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
   </data>
 </root>

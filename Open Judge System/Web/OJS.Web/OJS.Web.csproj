@@ -399,6 +399,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Views\Shared\LoginPartial.bg.designer.cs">
+      <DependentUpon>LoginPartial.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Views\Shared\LoginPartial.designer.cs">
+      <DependentUpon>LoginPartial.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Views\Shared\Layout.bg.designer.cs">
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Views\Shared\Layout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Base\Main.bg.Designer.cs">
       <DependentUpon>Main.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -970,6 +990,26 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Views\Shared\LoginPartial.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoginPartial.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Base.Views.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Views\Shared\LoginPartial.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoginPartial.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Views.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Views\Shared\Layout.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Layout.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Views.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Views\Shared\Layout.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Layout.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Views.Shared</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Base\Main.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

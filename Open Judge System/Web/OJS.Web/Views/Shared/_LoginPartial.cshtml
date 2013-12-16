@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Resource = Resources.Views.Shared.LoginPartial
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", new { area = string.Empty }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -7,16 +9,19 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink("Здравей, " + User.Identity.Name + "!", "Index", "Profile", new { area = "Users" }, new { title = "Настройки", @class = "text-primary" })
+                @{  
+                    string welcomeMessage = string.Format("{0}, {1}!", Resource.Welcome_message, User.Identity.Name);
+                }
+                @Html.ActionLink(welcomeMessage, "Index", "Profile", new { area = "Users" }, new { title = Resource.Settings, @class = "text-primary" })
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Изход</a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resource.Log_out</a></li>
         </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Регистрация", "Register", "Account", new { area = string.Empty }, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Вход", "Login", "Account", new { area = string.Empty }, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink(Resource.Register, "Register", "Account", new { area = string.Empty }, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink(Resource.Log_in, "Login", "Account", new { area = string.Empty }, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
