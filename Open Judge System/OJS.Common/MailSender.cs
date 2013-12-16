@@ -10,7 +10,10 @@
         // TODO: Extract user, address and password as app.config settings
         private const string SendFrom = "bgcoder.com@gmail.com";
         private const string SendFromName = "BGCoder.com";
-        private const string Password = "nwcneonwcneo";
+        private const string Password = "__YOUR_PASSWORD_HERE__";
+
+        private const string ServerAddress = "smtp.gmail.com";
+        private const int ServerPort = 587;
 
         private static readonly object SyncRoot = new object();
 
@@ -19,13 +22,14 @@
 
         private MailSender()
         {
-            this.mailClient = new SmtpClient
-            {
-                Credentials = new NetworkCredential(SendFrom, Password),
-                Port = 587,
-                Host = "smtp.gmail.com",
-                EnableSsl = true,
-            };
+            //// this.mailClient = new SmtpClient
+            //// {
+            ////     Credentials = new NetworkCredential(SendFrom, Password),
+            ////     Port = ServerPort,
+            ////     Host = ServerAddress,
+            ////     EnableSsl = true,
+            //// };
+            this.mailClient = new SmtpClient { DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis };
         }
 
         public static MailSender Instance
