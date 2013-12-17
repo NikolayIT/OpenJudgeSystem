@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrincipalExtensions.cs" />
     <Compile Include="OjsUserManager.cs" />
     <Compile Include="SystemMessage.cs" />
     <Compile Include="SystemMessageCollection.cs" />
