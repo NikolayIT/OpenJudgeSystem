@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Checker.cs" />
     <Compile Include="CaseInsensitiveChecker.cs" />
+    <Compile Include="CPlusPlusCodeChecker.cs" />
     <Compile Include="CSharpCodeChecker.cs" />
     <Compile Include="ExactChecker.cs" />
     <Compile Include="PrecisionChecker.cs" />

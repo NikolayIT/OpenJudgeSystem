@@ -38,7 +38,6 @@
 
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
-        [MinLength(5, ErrorMessage = "Минималната дължина е 5 символа!")]
         [MaxLength(50, ErrorMessage = "Максималната дължина е 50 символа!")]
         [DefaultValue("Име")]
         public string Name { get; set; }

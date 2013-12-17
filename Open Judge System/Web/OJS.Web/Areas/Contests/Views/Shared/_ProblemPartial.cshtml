@@ -63,8 +63,8 @@
                 new { controller = ViewBag.CompeteType, id = Model.ContestId },
                 new AjaxOptions
                 {
-                    OnSuccess = "notifySuccess",
-                    OnFailure = "notifyFailure",
+                    OnSuccess = "messageNotifier.notifySuccess",
+                    OnFailure = "messageNotifier.notifyFailure",
                     OnBegin = "validateSubmit"
                 },
                 new { id = "problem_" + Model.ProblemId }))

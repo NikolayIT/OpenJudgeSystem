@@ -147,7 +147,6 @@
             }
 
             var contest = this.Data.Contests.GetById(id);
-
             ValidateContest(contest, official);
 
             // check if the contest is official, has a password and if the user entered the correct password
@@ -156,7 +155,6 @@
                 this.ModelState.AddModelError("Password", "Incorrect password!");
             }
 
-            // check if the contest is practice, has a password and if the user entered the correct password
             if (!official && contest.HasPracticePassword && (contest.PracticePassword != registrationData.Password))
             {
                 this.ModelState.AddModelError("Password", "Incorrect password!");
@@ -171,32 +169,23 @@
                 this.ModelState.AddModelError("Questions", "Please answer all questions!");
             }
 
-            registrationData.Questions.Each((x, i) =>
-            {
-                if (string.IsNullOrEmpty(x.Answer))
-                {
-                    this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", i), "Answer is required");
-                }
-            });
-
             if (!ModelState.IsValid)
             {
                 return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
             }
 
-            registrationData.Questions.Each(q =>
-            {
-                var contestQuestion = contest.Questions.FirstOrDefault(x => x.Id == q.QuestionId);
-
-                contestQuestion.Answers.Add(new ContestQuestionAnswer
-                {
-                    QuestionId = q.QuestionId,
-                    Text = q.Answer
-                });
-            });
-
             var participant = new Participant(id, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
+
+            foreach (var question in registrationData.Questions)
+            {
+                participant.Answers.Add(new ParticipantAnswer
+                                                {
+                                                    ContestQuestionId = question.QuestionId,
+                                                    Answer = question.Answer
+                                                });
+            };
+
             this.Data.SaveChanges();
 
             return this.RedirectToAction("Index", new { id, official });
@@ -316,7 +305,7 @@
                                                                     x.ProblemId == id &&
                                                                     x.ParticipantId == participant.Id)
                                                             .Select(SubmissionResultViewModel.FromSubmission);
-            
+
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }
 
@@ -337,7 +326,7 @@
                                                                     x.ParticipantId == participant.Id)
                                                             .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
 
-            return this.Json(userSubmissions.ToDataSourceResult(request));  
+            return this.Json(userSubmissions.ToDataSourceResult(request));
         }
 
         /// <summary>

@@ -48,5 +48,7 @@
             get { return this.participantAnswers; }
             set { this.participantAnswers = value; }
         }
+
+        public string RegularExpressionValidation { get; set; }
     }
 }

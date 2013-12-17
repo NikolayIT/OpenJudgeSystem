@@ -17,6 +17,7 @@
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
 
+    // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
     {
         public ProblemsController(IOjsData data)
