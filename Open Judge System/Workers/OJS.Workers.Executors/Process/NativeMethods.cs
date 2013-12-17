@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.Executors.Process
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.ConstrainedExecution;
     using System.Runtime.InteropServices;
     using System.Runtime.Versioning;
@@ -56,7 +57,8 @@
         public const int SAFER_LEVELID_FULLYTRUSTED = 0x40000;
 
         public const int SAFER_LEVEL_OPEN = 1;
-        
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         public static SidIdentifierAuthority SECURITY_MANDATORY_LABEL_AUTHORITY =
             new SidIdentifierAuthority(new byte[] { 0, 0, 0, 0, 0, 16 });
 

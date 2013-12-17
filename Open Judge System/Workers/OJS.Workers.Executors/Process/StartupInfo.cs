@@ -1,6 +1,7 @@
 namespace OJS.Workers.Executors.Process
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
 
     using Microsoft.Win32.SafeHandles;
@@ -8,10 +9,12 @@ namespace OJS.Workers.Executors.Process
     /// <summary>
     /// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at creation time. 
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
+        Justification = "Reviewed. Suppression is OK here.")]
     [StructLayout(LayoutKind.Sequential)]
     public class StartupInfo
     {
-        public int cb;
+        public int SizeInBytes;
 
         public IntPtr Reserved = IntPtr.Zero;
 
@@ -53,7 +56,7 @@ namespace OJS.Workers.Executors.Process
 
         public StartupInfo()
         {
-            this.cb = Marshal.SizeOf(this);
+            this.SizeInBytes = Marshal.SizeOf(this);
         }
 
         public void Dispose()

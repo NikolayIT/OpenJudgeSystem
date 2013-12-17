@@ -6,7 +6,7 @@
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessMemoryCounters
     {
-        public int cb;
+        public int SizeInBytes;
         public int PageFaultCount;
         public IntPtr PeakWorkingSetSize;
         public IntPtr WorkingSetSize;

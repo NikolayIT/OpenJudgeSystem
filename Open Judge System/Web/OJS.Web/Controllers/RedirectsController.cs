@@ -9,7 +9,7 @@
 
     public class RedirectsController : BaseController
     {
-        public static List<KeyValuePair<string, string>> OldSystemRedirects =
+        private static readonly List<KeyValuePair<string, string>> OldSystemRedirectsList =
             new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Contest/List", "/Contests"),
@@ -23,6 +23,14 @@
         public RedirectsController(IOjsData data)
             : base(data)
         {
+        }
+
+        public static List<KeyValuePair<string, string>> OldSystemRedirects
+        {
+            get
+            {
+                return OldSystemRedirectsList;
+            }
         }
 
         public RedirectResult Index(int id)
