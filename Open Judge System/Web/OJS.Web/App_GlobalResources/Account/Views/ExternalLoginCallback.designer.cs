@@ -61,7 +61,7 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have already registered with this email address. Please log in or use the forgotten password feature..
+        ///   Looks up a localized string similar to You have already registered with this email address. Please log in or use the &lt;a href=&quot;/Account/ForgottenPassword&quot;&gt;forgotten password&lt;/a&gt; feature..
         /// </summary>
         public static string Email_already_registered {
             get {

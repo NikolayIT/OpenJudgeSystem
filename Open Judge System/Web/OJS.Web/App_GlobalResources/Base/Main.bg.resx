@@ -121,7 +121,7 @@
     <value>Нямате парола за вход в сайта. Моля сложете си парола от &lt;a href="/Account/Manage"&gt;този линк&lt;/a&gt;.</value>
   </data>
   <data name="Username_in_invalid_format" xml:space="preserve">
-    <value>Вашето потребителско име съдържа непозволени символи. Можете да го смените от &lt;a href="/Account/ChangeUsername"&gt;този линк&lt;/a&gt;.</value>
+    <value>Вашето потребителско име съдържа непозволени символи, по-късо е от 5 символа или е по-дълго от 15 символа. Можете да го смените от &lt;a href="/Account/ChangeUsername"&gt;този линк&lt;/a&gt;.</value>
   </data>
   <data name="Welcome_to_the_new_bgcoder_and_change_password" xml:space="preserve">
     <value>Добре дошли в новата версия на системата BGCoder.com!&lt;br /&gt;Всички данни (с изключение на потребителските пароли) са прехвърлени от старата версия.&lt;br /&gt;Ако имате регистрация в старата система, трябва да използвате модула "&lt;a href="/Account/ForgottenPassword"&gt;забравена парола&lt;/a&gt;", за да активирате акаунта си в новата система.</value>

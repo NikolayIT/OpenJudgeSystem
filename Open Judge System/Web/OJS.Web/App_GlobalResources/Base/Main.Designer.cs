@@ -70,7 +70,7 @@ namespace Resources.Base {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your username contains symbols that are not allowed. You can change it using &lt;a href=&quot;/Account/ChangeUsername&quot;&gt;this link&lt;/a&gt;..
+        ///   Looks up a localized string similar to Your username contains symbols that are not allowed, is shorter than 5 characters or is longer than 15 characters. You can change it using &lt;a href=&quot;/Account/ChangeUsername&quot;&gt;this link&lt;/a&gt;..
         /// </summary>
         public static string Username_in_invalid_format {
             get {

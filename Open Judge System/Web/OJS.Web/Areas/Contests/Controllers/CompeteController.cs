@@ -168,8 +168,7 @@
 
             if (questionsToAnswerCount != registrationData.Questions.Count())
             {
-                // TODO: add an appropriate model error
-                this.ModelState.AddModelError(string.Empty, string.Empty);
+                this.ModelState.AddModelError("Questions", "Please answer all questions!");
             }
 
             registrationData.Questions.Each((x, i) =>

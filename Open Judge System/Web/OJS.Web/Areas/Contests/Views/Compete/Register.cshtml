@@ -23,7 +23,7 @@
         }
 
         @Html.EditorFor(x => x.Questions);
-
+        @Html.ValidationMessage("Questions");
         <input type="submit" value="Изпрати" class="btn btn-default" />
     }
 </div>

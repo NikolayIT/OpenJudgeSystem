@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Email_already_registered" xml:space="preserve">
-    <value>You have already registered with this email address. Please log in or use the forgotten password feature.</value>
+    <value>You have already registered with this email address. Please log in or use the &lt;a href="/Account/ForgottenPassword"&gt;forgotten password&lt;/a&gt; feature.</value>
   </data>
 </root>

@@ -402,7 +402,7 @@
             // notify the user if there are no users registered with this email or username
             if (usersCount == 0)
             {
-                this.TempData["DangerMessage"] = Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered;
+                this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered);
                 return this.View();
             }
 

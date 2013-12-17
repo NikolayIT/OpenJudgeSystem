@@ -15,7 +15,7 @@
     <div>@Html.ActionLink("Подробни резултати", "Full", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
 }
 
-<table class="table-bordered table-striped text-white text-center width100percent">
+<table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
     <thead>
         <tr>
             <th>Потребител</th>
@@ -32,7 +32,8 @@
     <tbody>
         @foreach (var participant in Model.Results)
         {
-            <tr>
+            string className = this.User.Identity.Name == participant.ParticipantName ? "success" : string.Empty;
+            <tr class="@className">
                 <td>@participant.ParticipantName</td>
 
                 @foreach (var participantResult in participant.ProblemResults)

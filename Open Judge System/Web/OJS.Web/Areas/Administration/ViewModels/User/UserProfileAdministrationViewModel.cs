@@ -72,7 +72,7 @@
         [UIHint("NonEditable")]
         public string UserName { get; set; }
 
-        [Display(Name = "Име")]
+        [Display(Name = "Имейл")]
         [StringLength(30, ErrorMessage = "Въведеният e-mail е твърде дълъг")]
         [DataType(DataType.EmailAddress)]
         [UIHint("SingleLineText")]

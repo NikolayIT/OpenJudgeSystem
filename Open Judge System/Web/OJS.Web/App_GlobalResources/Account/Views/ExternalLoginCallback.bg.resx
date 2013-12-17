@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Email_already_registered" xml:space="preserve">
-    <value>Този имейл адрес е вече регистриран. Моля използвайте "забравена парола" за да получите детайлите за своя акаунт.</value>
+    <value>Този имейл адрес е вече регистриран. Моля използвайте &lt;a href="/Account/ForgottenPassword"&gt;"Забравена парола"&lt;/a&gt; за да получите детайлите за своя акаунт.</value>
   </data>
 </root>
