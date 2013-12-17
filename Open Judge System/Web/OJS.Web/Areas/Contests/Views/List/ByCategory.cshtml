@@ -49,7 +49,7 @@
                     <td>
                         <div class="glyphicon glyphicon-file text-white" title="Брой задачи"></div> <span>@contest.ProblemsCount</span>
                     </td>
-                    @if (User.IsInRole("Administrator"))
+                    @if (User.IsAdmin())
                     {
                         <td>
                             <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>

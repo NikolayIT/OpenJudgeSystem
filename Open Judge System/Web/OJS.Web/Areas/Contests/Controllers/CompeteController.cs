@@ -16,6 +16,7 @@
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Common;
     using OJS.Web.Controllers;
 
     public class CompeteController : BaseController
@@ -394,7 +395,7 @@
             {
                 ValidateContest(contest, official);
             }
-            else if (this.User != null && this.User.IsInRole("Administrator"))
+            else if (this.User != null && this.User.IsAdmin())
             {
                 // TODO: add unit tests
                 // If the user is an administrator he can download the resource at any time.

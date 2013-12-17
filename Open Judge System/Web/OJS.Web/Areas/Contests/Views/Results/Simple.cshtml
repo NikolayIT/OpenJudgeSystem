@@ -10,9 +10,9 @@
 
 <h1>Резултати за @ViewBag.Title</h1>
 
-@if (this.User.IsInRole("Administrator"))
+@if (User.IsAdmin())
 {
-    <div>@Html.ActionLink("Подробни резултати", "Full", new { id = Model.Id, official = this.ViewBag.IsOfficial })</div>
+    <div>@Html.ActionLink("Подробни резултати", "Full", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
 }
 
 <table class="table-bordered table-striped text-white text-center width100percent">

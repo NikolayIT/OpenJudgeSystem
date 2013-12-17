@@ -21,7 +21,7 @@
         </table>
         <p class="pull-right"><a class="btn btn-default" href="/News/All">@Resource.See_more &raquo;</a></p>
     }
-    @if (User.IsInRole("Administrator"))
+    @if (User.IsAdmin())
     {
         <p class="pull-left"><a class="btn btn-primary" href="/Administration/News">@Resource.Administration &raquo;</a></p>
     }

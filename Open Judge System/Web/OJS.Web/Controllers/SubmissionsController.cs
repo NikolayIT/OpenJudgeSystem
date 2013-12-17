@@ -11,6 +11,7 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Common;
     using OJS.Web.ViewModels.Submission;
 
     public class SubmissionsController : BaseController
@@ -38,7 +39,7 @@
         {
             IQueryable<Submission> data;
 
-            if (User.IsInRole("Administrator"))
+            if (User.IsAdmin())
             {
                 data = this.Data.Submissions.All();
             }

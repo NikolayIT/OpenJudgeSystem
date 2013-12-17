@@ -8,6 +8,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Results;
@@ -125,7 +126,7 @@
 
         // TODO: Implement
         // TODO: Unit test
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult Full(int id, bool official)
         {
             var contest = this.Data.Contests.GetById(id);

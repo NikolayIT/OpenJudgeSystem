@@ -39,7 +39,7 @@
 
 <h2>@ViewBag.Title</h2>
 <a class="btn btn-sm btn-primary" href="#SourceCode">Виж кода</a>
-@if (User.IsInRole("Administrator"))
+@if (User.IsAdmin())
 {
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">Промяна</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">Изтриване</a>
@@ -88,7 +88,7 @@ else
     }
 }
 
-@if (Model.Processed && (Model.ShowResults || User.IsInRole("Administrator")))
+@if (Model.Processed && (Model.ShowResults || User.IsAdmin()))
 {
     foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
     {
@@ -130,7 +130,7 @@ else
                 @:Тест №@testResult.Order
             }
             (@testResultText)
-            @if (User.IsInRole("Administrator"))
+            @if (User.IsAdmin())
             {
                 <small>Run №@testResult.Id</small>
                 <small><a href="/Administration/Tests/Details/@testResult.TestId">Test №@testResult.TestId</a></small>
@@ -145,7 +145,7 @@ else
         if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
         {
             var executionComment = testResult.ExecutionComment;
-            if (!User.IsInRole("Administrator"))
+            if (!User.IsAdmin())
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
@@ -171,7 +171,7 @@ else
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
         {
-            if (testResult.IsTrialTest || User.IsInRole("Administrator"))
+            if (testResult.IsTrialTest || User.IsAdmin())
             {
                 <pre>@testResult.CheckerComment</pre>
             }

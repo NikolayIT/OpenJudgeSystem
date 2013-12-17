@@ -8,6 +8,7 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
+    using OJS.Web.Common;
     using OJS.Web.Controllers;
 
     public class SubmissionsController : BaseController
@@ -31,12 +32,12 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, "Invalid submission id was provided!");
             }
 
-            if (!User.IsInRole("Administrator") && submission.IsDeleted)
+            if (!User.IsAdmin() && submission.IsDeleted)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, "Invalid submission id was provided!");
             }
 
-            if (!User.IsInRole("Administrator") && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, "This submission is not yours!");
             }

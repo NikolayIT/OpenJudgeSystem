@@ -35,7 +35,7 @@
                   x.DataBound("expander.onDataBound");
               })
         )
-        @if (User.IsInRole("Administrator"))
+        @if (User.IsAdmin())
         {
             <br />
             <p class="pull-left"><a class="btn btn-primary" href="/Administration/ContestCategories">Категории &raquo;</a></p>

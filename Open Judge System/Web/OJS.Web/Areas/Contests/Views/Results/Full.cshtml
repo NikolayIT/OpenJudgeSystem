@@ -7,10 +7,7 @@
 
 <h1>@ViewBag.Title</h1>
 <script src="/Scripts/Helpers/test-results.js"></script>
-@if (this.User.IsInRole("Administrator"))
-{
-    <div>@Html.ActionLink("Публични резултати", "Simple", new { id = Model.Id, official = this.ViewBag.IsOfficial })</div>
-}
+<div>@Html.ActionLink("Публични резултати", "Simple", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
 <table class="table table-striped">
     <tr>
         <th>User</th>

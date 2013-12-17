@@ -37,7 +37,7 @@
                         "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully) #" +
                     "</div>"
                 ).Width("25%");
-            if (User.IsInRole("Administrator"))
+            if (User.IsAdmin())
             {
                 columns.Bound(s => s.Id).Title("Admin").ClientTemplate(@"
                     <div class='text-center'>
