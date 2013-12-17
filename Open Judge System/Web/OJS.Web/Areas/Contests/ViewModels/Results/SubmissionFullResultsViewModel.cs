@@ -31,9 +31,9 @@
 
         public IEnumerable<TestRunFullResultsViewModel> TestRuns { get; set; }
 
-        public int MaxTimeUsed { get; set; }
+        public int? MaxTimeUsed { get; set; }
 
-        public long MaxMemoryUsed { get; set; }
+        public long? MaxMemoryUsed { get; set; }
 
         public int Points { get; set; }
     }

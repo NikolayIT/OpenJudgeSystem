@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<OJS.Web.ViewModels.News.SelectedNewsViewModel>
+@using Resource = Resources.News.Views.LatestNews           
 
 <div>
     @if (!Model.Any())
     {
-        <p>Няма актуални новини.</p>
+        <p>@Resource.No_news.</p>
     }
     else
     {
@@ -18,10 +19,10 @@
                 </tr>
             }
         </table>
-        <p class="pull-right"><a class="btn btn-default" href="/News/All">Вижте още &raquo;</a></p>
+        <p class="pull-right"><a class="btn btn-default" href="/News/All">@Resource.See_more &raquo;</a></p>
     }
     @if (User.IsInRole("Administrator"))
     {
-        <p class="pull-left"><a class="btn btn-primary" href="/Administration/News">Администрация &raquo;</a></p>
+        <p class="pull-left"><a class="btn btn-primary" href="/Administration/News">@Resource.Administration &raquo;</a></p>
     }
 </div>

@@ -2,6 +2,8 @@ namespace OJS.Web.Areas.Contests.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Web;
     using System.Web.Mvc;
 
     using OJS.Common.Extensions;
@@ -75,6 +77,11 @@ namespace OJS.Web.Areas.Contests.Controllers
                                         .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
                                         .Select(ContestCategoryListViewModel.FromCategory)
                 };
+            }
+
+            if (contestCategory == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, "This category does not exist!");
             }
 
             if (this.Request.IsAjaxRequest())

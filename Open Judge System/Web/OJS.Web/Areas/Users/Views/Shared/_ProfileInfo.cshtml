@@ -44,12 +44,9 @@
                 <th>
                     Състезание
                 </th>
-                <th>
-                    Тип участие
-                </th>
                 @if (this.User.Identity.Name == Model.Username)
                 {
-                    <th>Резултат</th>
+                    <th>Резултати</th>
                 }
             </tr>
         </thead>
@@ -62,10 +59,14 @@
                             @result.ContestName
                         </a>
                     </td>
-                    <td>@(result.IsOfficial ? "Състезание" : "Практика")</td>
+
                     @if (this.User.Identity.Name == Model.Username)
                     {
-                        <td>@result.ContestResult</td>
+                        <td>
+                            Състезание: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints</span>
+                            <br />
+                            Практика: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints</span>
+                        </td>
                     }
                 </tr>
             }

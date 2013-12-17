@@ -2,6 +2,8 @@
 {
     using System.Data.Entity;
     using System.Linq;
+    using System.Net;
+    using System.Web;
     using System.Web.Mvc;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,11 +37,16 @@
         [TestMethod]
         public void SelectedActionShouldReturnViewWithMessageWhenSelectedNewsIsNull()
         {
-            var controller = new NewsController(this.EmptyOjsData);
-            var result = controller.Selected(10000) as ViewResult;
-
-            Assert.IsNull(result.Model);
-            Assert.AreEqual("Невалидна новина.", result.TempData["InfoMessage"]);
+            try
+            {
+                var controller = new NewsController(this.EmptyOjsData);
+                var result = controller.Selected(10000) as ViewResult;
+                Assert.Fail();
+            }
+            catch (HttpException ex)
+            {
+                Assert.AreEqual(ex.GetHttpCode(), (int)HttpStatusCode.NotFound);
+            }
         }
 
         [TestMethod]

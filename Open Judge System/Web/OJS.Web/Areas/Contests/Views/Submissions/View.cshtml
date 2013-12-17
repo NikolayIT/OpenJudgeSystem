@@ -12,7 +12,7 @@
 @section scripts {
     @Scripts.Render("~/bundles/codemirror")
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             var textEditor = document.getElementById("code");
             var editor = new CodeMirror.fromTextArea(textEditor, {
                 mode: "text/x-csharp",
@@ -84,7 +84,7 @@ else
     {
         <h2 class="text-success">Успешна компилация.</h2>
     }
-    
+
     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
     {
         <h2>Резултат от компилацията:</h2>
@@ -181,7 +181,7 @@ else
             }
         }
 
-        <div>Използвано време (в милисекунди): @testResult.TimeUsed</div>
-        <div>Използванa памет (в bytes): @testResult.MemoryUsed</div>
+        <div>Използвано време: @string.Format("{0:0.000}", testResult.TimeUsed / 1000.0) s</div>
+        <div>Използванa памет: @string.Format("{0:0.00}", testResult.MemoryUsed / 1024.0 / 1024.0) MB</div>
     }
 }

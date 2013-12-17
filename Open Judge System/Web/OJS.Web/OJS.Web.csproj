@@ -399,6 +399,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\News\Views\All.bg.designer.cs">
+      <DependentUpon>All.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\News\Views\All.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>All.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\News\Views\LatestNews.bg.designer.cs">
+      <DependentUpon>LatestNews.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\News\Views\LatestNews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestNews.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\News\Views\Selected.bg.designer.cs">
+      <DependentUpon>Selected.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\News\Views\Selected.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Selected.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Views\Shared\LoginPartial.bg.designer.cs">
       <DependentUpon>LoginPartial.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -990,6 +1020,36 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\All.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>All.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\LatestNews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LatestNews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\LatestNews.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LatestNews.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\Selected.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Selected.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\All.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>All.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\News\Views\Selected.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Selected.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Views\Shared\LoginPartial.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

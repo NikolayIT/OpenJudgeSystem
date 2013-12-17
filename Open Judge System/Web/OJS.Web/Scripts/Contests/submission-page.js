@@ -92,7 +92,7 @@ function getCodeMirrorInstance() {
 }
 
 function showMessage(data) {
-    container = $("div[id^='notify-container']");
+    container = $("div[id^='notify-container']").filter(':visible');
 
     var notification = $('<div/>', {
         text: data.message,
@@ -112,6 +112,8 @@ function showMessage(data) {
     }
 
     setTimeout(function () {
+        var dropdown = $("[id^=SubmissionsTabStrip-]").filter(':visible').find('input[id^="dropdown_"]').getKendoDropDownList();
+        dropdown.close();
         notification.hide(500, function () {
             notification.remove();
         });
@@ -133,7 +135,7 @@ $("#SubmissionsTabStrip").on("click", ".view-source-button", function () {
 var displayMaximumValues = function (maxMemory, maxTime) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
     var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
-    var result = "Памет: " + memoryInMb + " Mb <br />" + "Време: " + maxTimeInSeconds + " s";
+    var result = "Памет: " + memoryInMb + " MB <br />" + "Време: " + maxTimeInSeconds + " s";
     return result;
 }
 

@@ -35,16 +35,25 @@ namespace OJS.Web.Areas.Users.Controllers
             userSettingsViewModel.Participations = this.Data.Participants.All()
                                                     .AsQueryable()
                                                     .Where(x => x.UserId == profile.Id)
-                                                    .Select(p => new UserParticipationViewModel
+                                                    .GroupBy(x => x.Contest)
+                                                    .Select(c => new UserParticipationViewModel
                                                     {
-                                                        ContestId = p.ContestId,
-                                                        ContestName = p.Contest.Name,
-                                                        IsOfficial = p.IsOfficial,
-                                                        ContestResult = p.Submissions
+                                                        ContestId = c.Key.Id,
+                                                        ContestName = c.Key.Name,
+                                                        RegistrationTime = c.Key.CreatedOn,
+                                                        ContestMaximumPoints = c.Key.Problems.Sum(pr => pr.MaximumPoints),
+                                                        CompeteResult = c.Where(x => x.IsOfficial).Select(p => p.Submissions
                                                                             .Where(x => !x.IsDeleted)
                                                                             .GroupBy(s => s.ProblemId)
-                                                                            .Sum(x => x.Max(z => z.Points))
-                                                    });
+                                                                            .Sum(x => x.Max(z => z.Points)))
+                                                                            .FirstOrDefault(),
+                                                        PracticeResult = c.Where(x => !x.IsOfficial).Select(p => p.Submissions
+                                                                            .Where(x => !x.IsDeleted)
+                                                                            .GroupBy(s => s.ProblemId)
+                                                                            .Sum(x => x.Max(z => z.Points)))
+                                                                            .FirstOrDefault()
+                                                    })
+                                                    .OrderByDescending(x => x.RegistrationTime);
 
             return this.View(userSettingsViewModel);
         }

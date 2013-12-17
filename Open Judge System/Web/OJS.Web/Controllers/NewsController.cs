@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Text;
+    using System.Web;
     using System.Web.Mvc;
 
     using HtmlAgilityPack;
@@ -13,6 +14,8 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.News;
+
+    using Resource = Resources.News;
 
     public class NewsController : BaseController
     {
@@ -28,40 +31,49 @@
         {
             var newsCount = this.Data.News.All().Count(x => x.IsVisible);
 
+            IEnumerable<NewsViewModel> news;
+            int page = 0;
             int pages = 0;
 
-            if (newsCount % pageSize == 0)
+            if (newsCount == 0)
             {
-                pages = newsCount / pageSize;
+                news = new List<NewsViewModel>();
             }
             else
             {
-                pages = (newsCount / pageSize) + 1;
-            }
+                if (newsCount % pageSize == 0)
+                {
+                    pages = newsCount / pageSize;
+                }
+                else
+                {
+                    pages = (newsCount / pageSize) + 1;
+                }
 
-            if (id < 1)
-            {
-                id = 1;
-            }
-            else if (id > pages)
-            {
-                id = pages;
-            }
+                if (id < 1)
+                {
+                    id = 1;
+                }
+                else if (id > pages)
+                {
+                    id = pages;
+                }
 
-            if (pageSize < 1)
-            {
-                pageSize = 10;
+                if (pageSize < 1)
+                {
+                    pageSize = 10;
+                }
+
+                page = id;
+
+                news = this.Data.News.All()
+                    .Where(x => x.IsVisible)
+                    .OrderByDescending(x => x.CreatedOn)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(NewsViewModel.FromNews)
+                    .ToList();
             }
-
-            var page = id;
-
-            var news = this.Data.News.All()
-                .Where(x => x.IsVisible)
-                .OrderByDescending(x => x.CreatedOn)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(NewsViewModel.FromNews)
-                .ToList();
 
             var allNewsModel = new AllNewsViewModel
             {
@@ -80,8 +92,7 @@
 
             if (currentNews == null || currentNews.IsDeleted)
             {
-                this.TempData.Add("InfoMessage", "Невалидна новина.");
-                return this.View();
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Views.Selected.Invalid_news_id);
             }
 
             var previousNews = this.Data.News.All()
@@ -144,12 +155,12 @@
             var fetchedNews = new List<News>();
 
             fetchedNews.AddRange(this.FetchNewsFromInfos());
+
             // TODO: Rework fetching news from infoman.musala.com (they changed their site)
             // fetchedNews.AddRange(this.FetchNewsFromInfoMan());
-
             this.PopulateDatabaseWithNews(fetchedNews);
 
-            this.TempData["InfoMessage"] = "Новините бяха добавени успешно";
+            this.TempData["InfoMessage"] = Resource.Views.All.News_successfully_added;
             return this.RedirectToAction("All");
         }
 
