@@ -109,6 +109,10 @@
       <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
       <Name>OJS.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tests\OJS.Data.Tests\OJS.Data.Tests.csproj">
       <Project>{ea9d6519-ec81-4c8b-9385-455cf5c3544e}</Project>
       <Name>OJS.Data.Tests</Name>

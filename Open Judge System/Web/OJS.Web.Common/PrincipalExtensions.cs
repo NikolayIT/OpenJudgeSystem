@@ -2,6 +2,8 @@
 {
     using System.Security.Principal;
 
+    using OJS.Common;
+
     public static class PrincipalExtensions
     {
         public static bool IsLoggedIn(this IPrincipal principal)
@@ -11,7 +13,7 @@
 
         public static bool IsAdmin(this IPrincipal principal)
         {
-            return principal.IsInRole("Administrator");
+            return principal.IsInRole(GlobalConstants.AdministratorRoleName);
         }
     }
 }

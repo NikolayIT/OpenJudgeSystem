@@ -7,6 +7,7 @@ namespace OJS.Data.Migrations
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data.Models;
 
@@ -30,7 +31,6 @@ namespace OJS.Data.Migrations
             // this.SeedProblem(context);
             // this.SeedTest(context);
             // this.SeedCategoryContestProblem(context);
-            this.SeedAdministrators(context);
         }
 
         //// TODO: Add seed with .Any()
@@ -42,7 +42,7 @@ namespace OJS.Data.Migrations
                 context.Roles.Remove(entity);
             }
 
-            context.Roles.AddOrUpdate(new IdentityRole("Administrator"));
+            context.Roles.AddOrUpdate(new IdentityRole(GlobalConstants.AdministratorRoleName));
         }
 
         protected void SeedCheckers(OjsDbContext context)
@@ -596,24 +596,6 @@ namespace OJS.Data.Migrations
                     StartTime = DateTime.Now.AddHours(10),
                     EndTime = DateTime.Now.AddHours(18),
                     Category = category,
-                });
-        }
-
-        private void SeedAdministrators(OjsDbContext context)
-        {
-            var user = context.Users.FirstOrDefault(us => us.UserName == "IvayloIT");
-
-            var role = context.Roles.FirstOrDefault(r => r.Name == "Administrator");
-
-            if (user == null || role == null)
-            {
-                return;
-            }
-
-            user.Roles.Add(new IdentityUserRole
-                {
-                    RoleId = role.Id,
-                    UserId = user.Id,
                 });
         }
     }
