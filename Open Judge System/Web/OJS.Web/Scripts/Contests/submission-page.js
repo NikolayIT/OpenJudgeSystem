@@ -117,12 +117,12 @@ function Notifier() {
 //          notifyFailure(err);
 //      });
 //  });
-//  
-//  function getCodeMirrorInstance() {
-//      var codeMirrorContainer = $(".CodeMirror:visible").siblings('textarea')[0];
-//      var codeMirrorInstance = $.data(codeMirrorContainer, 'CodeMirrorInstance');
-//      return codeMirrorInstance;
-//  }
+
+  function getCodeMirrorInstance() {
+      var codeMirrorContainer = $(".CodeMirror:visible").siblings('textarea')[0];
+      var codeMirrorInstance = $.data(codeMirrorContainer, 'CodeMirrorInstance');
+      return codeMirrorInstance;
+  }
 
 var displayMaximumValues = function (maxMemory, maxTime) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
