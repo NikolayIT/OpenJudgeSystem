@@ -37,8 +37,8 @@
     <li class="active">@Model.Id</li>
 </ol>
 
-<h1>@ViewBag.Title</h1>
-
+<h2>@ViewBag.Title</h2>
+<a class="btn btn-sm btn-primary" href="#SourceCode">Виж кода</a>
 @if (User.IsInRole("Administrator"))
 {
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">Промяна</a>
@@ -47,7 +47,6 @@
     <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">Профил на автора</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">Ретест</a>
     <div class="clearfix"></div>
-    <br />
     if (!string.IsNullOrWhiteSpace(Model.ProcessingComment))
     {
         <h2>Резултат от изпълнението:</h2>
@@ -59,9 +58,6 @@
 {
     <div class="alert alert-danger">Това решение е изтрито!!!</div>
 }
-
-<textarea id="code">@Model.ContentAsString</textarea>
-<br />
 
 @if (!Model.Processed)
 {
@@ -124,7 +120,7 @@ else
             testResultText = "Грешка по време на изпълнение";
         }
 
-        <h2 class="@className">
+        <h3 class="@className">
             @if (testResult.IsTrialTest)
             {
                 @:Нулев тест №@testResult.Order
@@ -139,7 +135,7 @@ else
                 <small>Run №@testResult.Id</small>
                 <small><a href="/Administration/Tests/Details/@testResult.TestId">Test №@testResult.TestId</a></small>
             }
-        </h2>
+        </h3>
 
         if (testResult.IsTrialTest)
         {
@@ -185,3 +181,6 @@ else
         <div>Използванa памет: @string.Format("{0:0.00}", testResult.MemoryUsed / 1024.0 / 1024.0) MB</div>
     }
 }
+
+<h3 id="SourceCode">Source code</h3>
+<textarea id="code">@Model.ContentAsString</textarea>
