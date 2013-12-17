@@ -137,7 +137,7 @@ function validateSubmissionContent() {
     var codeMirrorText = codeMirrorInstance.getValue();
 
     if (!codeMirrorText || codeMirrorText.length < 5) {
-        showMessage({
+        messageNotifier.showMessage({
             message: "Решението трябва да съдържа поне 5 символа!",
             cssClass: "alert alert-warning"
         });
@@ -178,7 +178,7 @@ var submissionTimeValidator = function () {
         var differenceBetweenSubmissionAndLimit = parseInt(limitBetweenSubmissions - secondsForLastSubmission);
 
         if (differenceBetweenSubmissionAndLimit > 0) {
-            showMessage({
+            messageNotifier.showMessage({
                 message: "Моля изчакайте още " + differenceBetweenSubmissionAndLimit + " секунди преди да изпратите решение.",
                 cssClass: "alert alert-warning"
             });

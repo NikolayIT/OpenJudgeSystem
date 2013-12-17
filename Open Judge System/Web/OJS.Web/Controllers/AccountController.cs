@@ -525,7 +525,7 @@
         [HttpGet]
         public ActionResult ChangeUsername()
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
             }
@@ -537,7 +537,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$"))
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
             }
