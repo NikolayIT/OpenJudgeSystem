@@ -51,6 +51,7 @@
     <Compile Include="Extensions\ExecutionStrategyTypeExtensions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="GlobalConstants.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Models\CompilerType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
