@@ -406,7 +406,7 @@
                     throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
                 }
 
-                return this.File(resource.File, "application/octet-stream", string.Format("{0}.{1}", resource.Problem.Name, resource.FileExtension));
+                return this.File(resource.File, "application/octet-stream", string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
             }
 
             if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))
