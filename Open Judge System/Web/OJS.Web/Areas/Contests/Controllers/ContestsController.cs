@@ -12,6 +12,8 @@ namespace OJS.Web.Areas.Contests.Controllers
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Contests.ContestsGeneral;
+
     public class ContestsController : BaseController
     {
         public ContestsController(IOjsData data)
@@ -28,7 +30,7 @@ namespace OJS.Web.Areas.Contests.Controllers
 
             if (contestViewModel == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Could not find a contest with this id.");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
             this.ViewBag.ContestProblems = this.Data.Problems.All().Where(x => x.ContestId == id)

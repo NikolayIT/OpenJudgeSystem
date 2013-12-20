@@ -11,6 +11,8 @@ namespace OJS.Web.Areas.Contests.Controllers
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Contests.ContestsGeneral;
+
     public class ListController : BaseController
     {
         public ListController(IOjsData data)
@@ -81,7 +83,7 @@ namespace OJS.Web.Areas.Contests.Controllers
 
             if (contestCategory == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "This category does not exist!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Category_not_found);
             }
 
             if (this.Request.IsAjaxRequest())

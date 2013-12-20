@@ -2,6 +2,8 @@
 @using OJS.Common.Models;
 @using OJS.Web.Areas.Contests.ViewModels
 
+@using Resource = Resources.Areas.Contests.Views.ContestsDetails;
+
 @model ContestViewModel
 
 @{
@@ -9,8 +11,8 @@
 }
 
 <ol class="breadcrumb">
-    <li><a href="/">Начало</a></li>
-    <li>@Html.ActionLink("Състезания", "Index", "List")</li>
+    <li><a href="/">@Resource.Home</a></li>
+    <li>@Html.ActionLink(Resource.Contests, "Index", "List")</li>
     <li class="active">@Model.Name</li>
 </ol>
 
@@ -18,16 +20,16 @@
 
 <div class="row">
     <div class="col-md-8">
-        <h3>Детайли за състезанието</h3>
+        <h3>@Resource.Contest_details</h3>
         @if (Model.CanBeCompeted && Model.EndTime != null)
         {
             <h5>
-                Състезанието е активно до: @Model.EndTime.Value.ToString("hh:mm d.M.yyy")
+                @Resource.Competition_active_until: @Model.EndTime.Value.ToString("hh:mm d.M.yyy")
             </h5>
         }
         @if (Model.CanBePracticed && Model.PracticeEndTime != null)
         {
-            <h5>Практикуването е позволено до: @Model.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</h5>
+            <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</h5>
         }
         @if (!string.IsNullOrEmpty(Model.Description))
         {
@@ -35,10 +37,10 @@
         }
         else
         {
-            <div>Няма описание на избраното състезание.</div>
+            <div>@Resource.No_contest_description</div>
         }
         <h5>
-            Позволени езици:
+            @Resource.Allowed_languages:
             @foreach (var submissionType in Model.AllowedSubmissionTypes)
             {
                 <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name.ToUrlSafeString() })</span>
@@ -46,7 +48,7 @@
         </h5>
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
-        <h3>Задачи: </h3>
+        <h3>@Resource.Problems: </h3>
         @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword))
         {
             foreach (var problem in Model.Problems)
@@ -81,7 +83,7 @@
         else
         {
             <text>
-                <p>Задачите за това състезание не са публично достъпни.</p>
+                <p>@Resource.Problems_are_not_public</p>
             </text>
         }
     </div>
@@ -91,16 +93,16 @@
     <div class="col-md-12 text-center">
         @if (Model.CanBeCompeted)
         {
-            @Html.ActionLink("Участвай в състезание", "Index", new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success" })
+            @Html.ActionLink(Resource.Compete, "Index", new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success" })
         }
         @if (Model.CanBePracticed)
         {
-            @Html.ActionLink("Практикувай", "Index", new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Practice, "Index", new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
         }
         @if (User.IsAdmin())
         {
-            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">Промяна (TODO!!!)</a>
-            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">Задачи</a>
+            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">@Resource.Edit (TODO!!!)</a>
+            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>
         }
     </div>
 </div>

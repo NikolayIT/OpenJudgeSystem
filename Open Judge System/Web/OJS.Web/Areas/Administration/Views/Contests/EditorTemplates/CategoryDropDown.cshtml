@@ -1,0 +1,16 @@
+﻿@model int?
+
+@(Html.Kendo()
+    .DropDownListFor(m => m)
+    .OptionLabel("Изберете категория")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .DataSource(data =>
+        {
+            data.ServerFiltering(true)
+                .Read(read =>
+                    {
+                        read.Action("GetCategories", "Contests");
+                    });
+        })
+    .HtmlAttributes(new { style = "width: 100%;" }))

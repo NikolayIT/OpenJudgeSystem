@@ -46,17 +46,17 @@
         {
             if (contest == null || contest.IsDeleted || !contest.IsVisible)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Contest_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
             }
 
             if (official && !contest.CanBeCompeted)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Contest_cannot_be_competed);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
 
             if (!official && !contest.CanBePracticed)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Contest_cannot_be_practiced);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_practiced);
             }
         }
 
@@ -203,7 +203,7 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             ValidateContest(participant.Contest, official);
@@ -217,18 +217,18 @@
 
                 if (differenceBetweenSubmissions.TotalSeconds < limitBetweenSubmissions)
                 {
-                    throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.General.CompeteGeneral.Submission_was_sent_too_soon);
+                    throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
                 }
             }
 
             if (problem.SourceCodeSizeLimit < participantSubmission.Content.Length)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.General.CompeteGeneral.Submission_too_long);
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
             if (!ModelState.IsValid)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.General.CompeteGeneral.Invalid_request);
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
             }
 
             this.Data.Submissions.Add(new Submission
@@ -260,7 +260,7 @@
 
             if (problem == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Problem_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
             ValidateContest(problem.Contest, official);
@@ -289,12 +289,12 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             if (!problem.ShowResults)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Problem_results_not_available);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Problem_results_not_available);
             }
 
             var userSubmissions = this.Data.Submissions.All()
@@ -314,7 +314,7 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             var userSubmissions = this.Data.Submissions.All()
@@ -337,7 +337,7 @@
 
             if (contest == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Contest_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
             }
 
             var submissionTypesSelectListItems = contest
@@ -370,7 +370,7 @@
 
             if (problemWithResource == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Problem_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
             var contest = problemWithResource.Contest;
@@ -400,7 +400,7 @@
 
                 if (string.IsNullOrWhiteSpace(resource.FileExtension) || resource.File == null || resource.File.Length == 0)
                 {
-                    throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Resource_cannot_be_downloaded);
+                    throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
                 }
 
                 return this.File(resource.File, "application/octet-stream", string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
@@ -411,7 +411,7 @@
                 return this.RedirectToAction("Register", new { official = official, id = contest.Id });
             }
 
-            throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Resource_cannot_be_downloaded);
+            throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
         }
 
         /// <summary>
@@ -428,12 +428,12 @@
 
             if (submission == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Submission_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Submission_not_found);
             }
 
             if (submission.Participant.UserId != this.UserProfile.Id)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Submission_not_made_by_user);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Submission_not_made_by_user);
             }
 
             var contentString = submission.ContentAsString;

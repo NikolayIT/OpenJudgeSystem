@@ -35,49 +35,48 @@
             return this.Data.Contests
                 .All()
                 .Where(x => !x.IsDeleted)
-                .Select(ContestAdministrationViewModel.ViewModel);
+                .Select(ModelType.ViewModel);
         }
 
         public ActionResult Index()
         {
-            this.GenerateCategoryDropDownData();
             return this.View();
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            var dropDownData = this.Data.ContestCategories
-                .All()
-                .ToList()
-                .Select(cat => new SelectListItem
-                {
-                    Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
-                });
-
-            // TODO: Improve not to use ViewData
-            this.ViewData["CategoryIdData"] = dropDownData;
-            return View(new ContestAdministrationViewModel());
+            return View(new ModelType());
         }
 
-        //[HttpPost]
-        //public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
-        //{
-        //    return this.BaseCreate(request, model.ToEntity);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ModelType model)
+        {
+            if (model != null && ModelState.IsValid)
+            {
+                var contest = model.ToEntity;
+                this.Data.Contests.Add(contest);
+                this.Data.SaveChanges();
 
-        //[HttpPost]
-        //public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
-        //{
-        //    return this.BaseUpdate(request, model.ToEntity);
-        //}
+                TempData.Add("InfoMessage", "Състезанието беше добавена успешно");
+                return this.RedirectToAction("Index");
+            }
 
-        //[HttpPost]
-        //public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
-        //{
-        //    return this.BaseDestroy(request, model.ToEntity);
-        //}
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        {
+            return this.BaseUpdate(request, model.ToEntity);
+        }
+
+        [HttpPost]
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        {
+            return this.BaseDestroy(request, model.ToEntity);
+        }
 
         public ZipFileResult Export(int id, bool compete)
         {
@@ -206,13 +205,7 @@
             return this.PartialView("_QuickContestsGrid", latestContests);
         }
 
-        public JsonResult GetAllSubmissionTypes()
-        {
-            var result = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel);
-            return Json(result);
-        }
-
-        private void GenerateCategoryDropDownData()
+        public JsonResult GetCategories()
         {
             var dropDownData = this.Data.ContestCategories
                 .All()
@@ -223,8 +216,7 @@
                     Value = cat.Id.ToString(CultureInfo.InvariantCulture),
                 });
 
-            // TODO: Improve not to use ViewData
-            this.ViewData["CategoryIdData"] = dropDownData;
+            return Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
     }
 }

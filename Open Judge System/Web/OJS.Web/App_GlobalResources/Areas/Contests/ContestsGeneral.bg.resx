@@ -117,10 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SystemName" xml:space="preserve">
-    <value>Open Judge System (OJS)</value>
+  <data name="Category_not_found" xml:space="preserve">
+    <value>Такава категория не съществува!</value>
   </data>
-  <data name="SystemVersion" xml:space="preserve">
-    <value>1.0.2949.20131220</value>
+  <data name="Contest_cannot_be_competed" xml:space="preserve">
+    <value>Това състезание не е отворено за участие!</value>
+  </data>
+  <data name="Contest_cannot_be_practiced" xml:space="preserve">
+    <value>Това състезание не може да се практикува!</value>
+  </data>
+  <data name="Contest_not_found" xml:space="preserve">
+    <value>Невалидно състезание!</value>
+  </data>
+  <data name="Invalid_request" xml:space="preserve">
+    <value>Невалидни данни!</value>
+  </data>
+  <data name="Problem_not_found" xml:space="preserve">
+    <value>Не може да бъде намерена задачата!</value>
+  </data>
+  <data name="Problem_results_not_available" xml:space="preserve">
+    <value>Не може да видите резултата за тази задача!</value>
+  </data>
+  <data name="Resource_cannot_be_downloaded" xml:space="preserve">
+    <value>Този ресурс не може да бъде изтеглен!</value>
+  </data>
+  <data name="Submission_not_found" xml:space="preserve">
+    <value>Не съществува такова решение!</value>
+  </data>
+  <data name="Submission_not_made_by_user" xml:space="preserve">
+    <value>Това решение не е ваше!</value>
+  </data>
+  <data name="Submission_too_long" xml:space="preserve">
+    <value>Изпратеният код е прекалено дълъг!</value>
+  </data>
+  <data name="Submission_was_sent_too_soon" xml:space="preserve">
+    <value>Решението е изпратено прекалено скоро!</value>
+  </data>
+  <data name="User_is_not_registered_for_exam" xml:space="preserve">
+    <value>Не сте регистрирани за това състезание!</value>
   </data>
 </root>

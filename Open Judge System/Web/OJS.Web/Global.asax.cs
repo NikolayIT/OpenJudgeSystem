@@ -7,15 +7,13 @@
 
     using OJS.Data;
     using OJS.Data.Migrations;
-    using OJS.Tools.OldDatabaseMigration;
 
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
             //// Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
-            //// Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
-            //// Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, OldDatabaseMigrationConfiguration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
 
             AreaRegistration.RegisterAllAreas();
 

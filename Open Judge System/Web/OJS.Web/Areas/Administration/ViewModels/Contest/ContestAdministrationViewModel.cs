@@ -128,9 +128,9 @@
 
         [Display(Name = "Категория")]
         [Required(ErrorMessage = "Категорията е задължителна!")]
-        [UIHint("DropDownList")]
-        [DefaultValue(0)]
-        public int CategoryId { get; set; }
+        [UIHint("CategoryDropDown")]
+        [DefaultValue(null)]
+        public int? CategoryId { get; set; }
 
         [Display(Name = "Тип решения")]
         [UIHint("SubmissionTypeMultiSelect")]

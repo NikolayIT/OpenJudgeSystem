@@ -117,10 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SystemName" xml:space="preserve">
-    <value>Open Judge System (OJS)</value>
+  <data name="Allowed_languages" xml:space="preserve">
+    <value>Позволени езици</value>
   </data>
-  <data name="SystemVersion" xml:space="preserve">
-    <value>1.0.2949.20131220</value>
+  <data name="Compete" xml:space="preserve">
+    <value>Участвай в състезание</value>
+  </data>
+  <data name="Competition_active_until" xml:space="preserve">
+    <value>Състезанието е активно до</value>
+  </data>
+  <data name="Contests" xml:space="preserve">
+    <value>Състезания</value>
+  </data>
+  <data name="Contest_details" xml:space="preserve">
+    <value>Детайли за състезанието</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="No_contest_description" xml:space="preserve">
+    <value>Няма описание на избраното състезание.</value>
+  </data>
+  <data name="Practice" xml:space="preserve">
+    <value>Практикувай</value>
+  </data>
+  <data name="Practice_active_until" xml:space="preserve">
+    <value>Практикуването е позволено до</value>
+  </data>
+  <data name="Problems" xml:space="preserve">
+    <value>Задачи</value>
+  </data>
+  <data name="Problems_are_not_public" xml:space="preserve">
+    <value>Задачите за това състезание не са публично достъпни.</value>
   </data>
 </root>

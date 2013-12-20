@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.General {
+namespace Resources.Areas.Contests.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.General {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CompeteGeneral {
+    public class ContestsDetails {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CompeteGeneral() {
+        internal ContestsDetails() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.General {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.General.CompeteGeneral", typeof(CompeteGeneral).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.Contests.ContestsDetails", typeof(ContestsDetails).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,110 +61,110 @@ namespace Resources.Areas.Contests.General {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This contest cannot be competed!.
+        ///   Looks up a localized string similar to Allowed languages.
         /// </summary>
-        public static string Contest_cannot_be_competed {
+        public static string Allowed_languages {
             get {
-                return ResourceManager.GetString("Contest_cannot_be_competed", resourceCulture);
+                return ResourceManager.GetString("Allowed_languages", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This contest cannot be practiced!.
+        ///   Looks up a localized string similar to Compete.
         /// </summary>
-        public static string Contest_cannot_be_practiced {
+        public static string Compete {
             get {
-                return ResourceManager.GetString("Contest_cannot_be_practiced", resourceCulture);
+                return ResourceManager.GetString("Compete", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid contest id was provided!.
+        ///   Looks up a localized string similar to The contest is active until.
         /// </summary>
-        public static string Contest_not_found {
+        public static string Competition_active_until {
             get {
-                return ResourceManager.GetString("Contest_not_found", resourceCulture);
+                return ResourceManager.GetString("Competition_active_until", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid request!.
+        ///   Looks up a localized string similar to Contest details.
         /// </summary>
-        public static string Invalid_request {
+        public static string Contest_details {
             get {
-                return ResourceManager.GetString("Invalid_request", resourceCulture);
+                return ResourceManager.GetString("Contest_details", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The problem was not found!.
+        ///   Looks up a localized string similar to Contests.
         /// </summary>
-        public static string Problem_not_found {
+        public static string Contests {
             get {
-                return ResourceManager.GetString("Problem_not_found", resourceCulture);
+                return ResourceManager.GetString("Contests", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot view the results for this problem!.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
-        public static string Problem_results_not_available {
+        public static string Edit {
             get {
-                return ResourceManager.GetString("Problem_results_not_available", resourceCulture);
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This resource cannot be downloaded!.
+        ///   Looks up a localized string similar to Home.
         /// </summary>
-        public static string Resource_cannot_be_downloaded {
+        public static string Home {
             get {
-                return ResourceManager.GetString("Resource_cannot_be_downloaded", resourceCulture);
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid submission requested!.
+        ///   Looks up a localized string similar to There is no description for the selected contest..
         /// </summary>
-        public static string Submission_not_found {
+        public static string No_contest_description {
             get {
-                return ResourceManager.GetString("Submission_not_found", resourceCulture);
+                return ResourceManager.GetString("No_contest_description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This submission was not made by you!.
+        ///   Looks up a localized string similar to Practice.
         /// </summary>
-        public static string Submission_not_made_by_user {
+        public static string Practice {
             get {
-                return ResourceManager.GetString("Submission_not_made_by_user", resourceCulture);
+                return ResourceManager.GetString("Practice", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The submitted code is too long!.
+        ///   Looks up a localized string similar to Practicing is allowed until.
         /// </summary>
-        public static string Submission_too_long {
+        public static string Practice_active_until {
             get {
-                return ResourceManager.GetString("Submission_too_long", resourceCulture);
+                return ResourceManager.GetString("Practice_active_until", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submission was sent too soon!.
+        ///   Looks up a localized string similar to Problems.
         /// </summary>
-        public static string Submission_was_sent_too_soon {
+        public static string Problems {
             get {
-                return ResourceManager.GetString("Submission_was_sent_too_soon", resourceCulture);
+                return ResourceManager.GetString("Problems", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are not registered for this exam!.
+        ///   Looks up a localized string similar to The problems for this contest are not public..
         /// </summary>
-        public static string User_is_not_registered_for_exam {
+        public static string Problems_are_not_public {
             get {
-                return ResourceManager.GetString("User_is_not_registered_for_exam", resourceCulture);
+                return ResourceManager.GetString("Problems_are_not_public", resourceCulture);
             }
         }
     }

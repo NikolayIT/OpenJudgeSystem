@@ -11,7 +11,7 @@
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
-    using Resource = Resources.Areas.Contests.General;
+    using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class SubmissionsController : BaseController
     {
@@ -31,17 +31,17 @@
 
             if (submission == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.CompeteGeneral.Submission_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
             if (!User.IsAdmin() && submission.IsDeleted)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.CompeteGeneral.Submission_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
             if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.CompeteGeneral.Submission_not_made_by_user);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
 
             return this.View(submission);

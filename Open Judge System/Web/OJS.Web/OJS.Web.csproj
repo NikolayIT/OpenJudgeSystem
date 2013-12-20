@@ -399,15 +399,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.bg.designer.cs">
-      <DependentUpon>CompeteGeneral.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Areas\Contests\ContestsGeneral.bg.Designer.cs">
+      <DependentUpon>ContestsGeneral.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.Designer.cs">
+    <Compile Include="App_GlobalResources\Areas\Contests\ContestsGeneral.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CompeteGeneral.resx</DependentUpon>
+      <DependentUpon>ContestsGeneral.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.designer.cs">
       <DependentUpon>ContestsAllContestSubmissionsByUser.bg.resx</DependentUpon>
@@ -478,6 +478,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CompeteRegister.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Contests\ContestsDetails.bg.designer.cs">
+      <DependentUpon>ContestsDetails.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Contests\ContestsDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestsDetails.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.bg.designer.cs">
       <DependentUpon>SubmissionsView.bg.resx</DependentUpon>
@@ -924,6 +934,7 @@
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeMultiSelect.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\EditorTemplates\CategoryDropDown.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -993,7 +1004,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Contests\Views\Contests\" />
+    <Folder Include="App_GlobalResources\Areas\Contests\General\" />
     <Folder Include="App_GlobalResources\Areas\Contests\Views\List\" />
     <Folder Include="App_GlobalResources\Areas\Contests\Views\Results\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
@@ -1191,15 +1202,15 @@
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ContestsGeneral.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CompeteGeneral.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Contests.General</CustomToolNamespace>
+      <LastGenOutput>ContestsGeneral.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ContestsGeneral.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CompeteGeneral.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Contests.General</CustomToolNamespace>
+      <LastGenOutput>ContestsGeneral.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1269,6 +1280,16 @@
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CompeteRegister.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Contests\ContestsDetails.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsDetails.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Contests\ContestsDetails.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsDetails.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.bg.resx">
