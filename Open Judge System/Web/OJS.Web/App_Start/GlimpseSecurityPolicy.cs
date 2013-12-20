@@ -1,30 +1,30 @@
-/*
-// Uncomment this class to provide custom runtime policy for Glimpse
-
-using Glimpse.AspNet.Extensions;
-using Glimpse.Core.Extensibility;
-
 namespace OJS.Web
 {
-    public class GlimpseSecurityPolicy:IRuntimePolicy
+    using Glimpse.AspNet.Extensions;
+    using Glimpse.Core.Extensibility;
+
+    using OJS.Web.Common;
+
+    public class GlimpseSecurityPolicy : IRuntimePolicy
     {
+        public RuntimeEvent ExecuteOn
+        {
+            get
+            {
+                return RuntimeEvent.EndRequest | RuntimeEvent.ExecuteResource;
+            }
+        }
+
         public RuntimePolicy Execute(IRuntimePolicyContext policyContext)
         {
-            // You can perform a check like the one below to control Glimpse's permissions within your application.
             // More information about RuntimePolicies can be found at http://getglimpse.com/Help/Custom-Runtime-Policy
-            // var httpContext = policyContext.GetHttpContext();
-            // if (!httpContext.User.IsInRole("Administrator")) // User.IsAdmin()
-            // {
-            //     return RuntimePolicy.Off;
-            // }
+            var httpContext = policyContext.GetHttpContext();
+            if (!httpContext.User.IsAdmin())
+            {
+                return RuntimePolicy.Off;
+            }
 
             return RuntimePolicy.On;
         }
-
-        public RuntimeEvent ExecuteOn
-        {
-            get { return RuntimeEvent.EndRequest; }
-        }
     }
 }
-*/
