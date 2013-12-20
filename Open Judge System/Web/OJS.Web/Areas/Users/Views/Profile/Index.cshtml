@@ -1,12 +1,13 @@
 ﻿@model OJS.Web.Areas.Users.ViewModels.UserProfileViewModel
+@using Resource = Resources.Areas.Users.Views.Profile.ProfileIndex
 
 @{
-    ViewBag.Title = string.Format("Профил на {0}", Model.Username);
+    ViewBag.Title = string.Format(Resource.Title, Model.Username);
 }
 
 <ol class="breadcrumb">
-    <li><a href="/">Начало</a></li>
-    <li class="active">@ViewBag.Title</li>
+    <li><a href="/">@Resource.Home</a></li>
+    <li class="active">@Resource.Profile</li>
 </ol>
 
 <div class="row">

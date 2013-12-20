@@ -10,6 +10,8 @@
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
 
+    using Resource = Resources.Areas.Contests.ViewModels.SubmissionsViewModels;
+
     public class SubmissionResultViewModel
     {
         public SubmissionResultViewModel()
@@ -38,21 +40,22 @@
 
         public int SubmissionId { get; set; }
 
-        [Display(Name = "Задача")]
+        [Display(Name = "Problem", ResourceType = typeof(Resource))]
         public int? ProblemId { get; set; }
 
+        [Display(Name = "Type", ResourceType = typeof(Resource))]
         public bool IsOfficial { get; set; }
 
         public short MaximumPoints { get; set; }
 
         public IEnumerable<TestRunViewModel> TestRuns { get; set; }
 
-        [Display(Name = "Изпратено на")]
+        [Display(Name = "Submission_date", ResourceType = typeof(Resource))]
         public DateTime SubmissionDate { get; set; }
 
         public bool IsCalculated { get; set; }
 
-        [Display(Name = "Макс. памет")]
+        [Display(Name = "Maximum_memory", ResourceType = typeof(Resource))]
         public long? MaximumMemoryUsed
         {
             get
@@ -66,7 +69,7 @@
             }
         }
 
-        [Display(Name = "Макс. време")]
+        [Display(Name = "Maximum_time", ResourceType = typeof(Resource))]
         public int? MaximumTimeUsed
         {
             get
@@ -80,10 +83,10 @@
             }
         }
 
-        [Display(Name = "Точки")]
+        [Display(Name = "Points", ResourceType = typeof(Resource))]
         public int? SubmissionPoints { get; set; }
 
-        [Display(Name = "Успешно компилирана")]
+        [Display(Name = "Is_compiled_successfully", ResourceType = typeof(Resource))]
         public bool IsCompiledSuccessfully { get; set; }
     }
 }

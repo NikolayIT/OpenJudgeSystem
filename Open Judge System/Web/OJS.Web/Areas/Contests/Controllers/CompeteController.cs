@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
@@ -18,6 +17,8 @@
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Common;
     using OJS.Web.Controllers;
+
+    using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
     {
@@ -45,17 +46,17 @@
         {
             if (contest == null || contest.IsDeleted || !contest.IsVisible)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid contest id was provided!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Contest_not_found);
             }
 
             if (official && !contest.CanBeCompeted)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "This contest cannot be competed!");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Contest_cannot_be_competed);
             }
 
             if (!official && !contest.CanBePracticed)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "This contest cannot be practiced!");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Contest_cannot_be_practiced);
             }
         }
 
@@ -119,7 +120,6 @@
             if (contest.ShouldShowRegistrationForm(official))
             {
                 var contestRegistrationModel = new ContestRegistrationViewModel(contest, official);
-
                 return this.View(contestRegistrationModel);
             }
 
@@ -135,29 +135,27 @@
         /// Users only.
         /// </summary>
         [HttpPost, Authorize]
-        public ActionResult Register(int id, bool official, ContestRegistrationModel registrationData)
+        public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
-            // check if the user has already registered for participation and redirect him to the correct
-            // action
-            var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
+            // check if the user has already registered for participation and redirect him to the correct action
+            var participantFound = this.Data.Participants.Any(registrationData.ContestId, this.UserProfile.Id, official);
 
             if (participantFound)
             {
-                return this.RedirectToAction("Index", new { id, official });
+                return this.RedirectToAction("Index", new { id = registrationData.ContestId, official });
             }
 
-            var contest = this.Data.Contests.GetById(id);
+            var contest = this.Data.Contests.GetById(registrationData.ContestId);
             ValidateContest(contest, official);
 
-            // check if the contest is official, has a password and if the user entered the correct password
             if (official && contest.HasContestPassword && (contest.ContestPassword != registrationData.Password))
             {
-                this.ModelState.AddModelError("Password", "Incorrect password!");
+                this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
             }
 
             if (!official && contest.HasPracticePassword && (contest.PracticePassword != registrationData.Password))
             {
-                this.ModelState.AddModelError("Password", "Incorrect password!");
+                this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
             }
 
             var questionsToAnswerCount = official ?
@@ -166,7 +164,7 @@
 
             if (questionsToAnswerCount != registrationData.Questions.Count())
             {
-                this.ModelState.AddModelError("Questions", "Please answer all questions!");
+                this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
             }
 
             if (!ModelState.IsValid)
@@ -174,9 +172,8 @@
                 return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
             }
 
-            var participant = new Participant(id, this.UserProfile.Id, official);
+            var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
-
             foreach (var question in registrationData.Questions)
             {
                 participant.Answers.Add(new ParticipantAnswer
@@ -184,11 +181,11 @@
                                                     ContestQuestionId = question.QuestionId,
                                                     Answer = question.Answer
                                                 });
-            };
+            }
 
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Index", new { id, official });
+            return this.RedirectToAction("Index", new { id = registrationData.ContestId, official });
         }
 
         /// <summary>
@@ -206,7 +203,7 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam!");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
             }
 
             ValidateContest(participant.Contest, official);
@@ -220,18 +217,18 @@
 
                 if (differenceBetweenSubmissions.TotalSeconds < limitBetweenSubmissions)
                 {
-                    throw new HttpException((int)HttpStatusCode.ServiceUnavailable, "Submission was sent too soon!");
+                    throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.General.CompeteGeneral.Submission_was_sent_too_soon);
                 }
             }
 
             if (problem.SourceCodeSizeLimit < participantSubmission.Content.Length)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "The submitted code is too long.");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.General.CompeteGeneral.Submission_too_long);
             }
 
             if (!ModelState.IsValid)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid request!");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.General.CompeteGeneral.Invalid_request);
             }
 
             this.Data.Submissions.Add(new Submission
@@ -263,7 +260,7 @@
 
             if (problem == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Problem not found!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Problem_not_found);
             }
 
             ValidateContest(problem.Contest, official);
@@ -292,12 +289,12 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
             }
 
             if (!problem.ShowResults)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "You cannot view the results for this problem!");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Problem_results_not_available);
             }
 
             var userSubmissions = this.Data.Submissions.All()
@@ -317,7 +314,7 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.General.CompeteGeneral.User_is_not_registered_for_exam);
             }
 
             var userSubmissions = this.Data.Submissions.All()
@@ -340,7 +337,7 @@
 
             if (contest == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "The contest was not found");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Contest_not_found);
             }
 
             var submissionTypesSelectListItems = contest
@@ -373,7 +370,7 @@
 
             if (problemWithResource == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid problem!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Problem_not_found);
             }
 
             var contest = problemWithResource.Contest;
@@ -403,7 +400,7 @@
 
                 if (string.IsNullOrWhiteSpace(resource.FileExtension) || resource.File == null || resource.File.Length == 0)
                 {
-                    throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
+                    throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Resource_cannot_be_downloaded);
                 }
 
                 return this.File(resource.File, "application/octet-stream", string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
@@ -414,7 +411,7 @@
                 return this.RedirectToAction("Register", new { official = official, id = contest.Id });
             }
 
-            throw new HttpException((int)HttpStatusCode.Forbidden, "This resource cannot be downloaded!");
+            throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Resource_cannot_be_downloaded);
         }
 
         /// <summary>
@@ -431,12 +428,12 @@
 
             if (submission == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid submission requested!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.General.CompeteGeneral.Submission_not_found);
             }
 
             if (submission.Participant.UserId != this.UserProfile.Id)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "This submission was not made by you!");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.General.CompeteGeneral.Submission_not_made_by_user);
             }
 
             var contentString = submission.ContentAsString;

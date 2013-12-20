@@ -1,13 +1,16 @@
-﻿@model OJS.Data.Models.FeedbackReport
+﻿@using Resource = Resources.Feedback.Views.FeedbackSubmitted
 
 @{
-    ViewBag.Title = "Обратна връзка изпратена";
+    ViewBag.Title = Resource.Title;
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title</h1>
-</hgroup>
-<div class="container">
-    @Html.ActionLink("Начало", "Index", "Home", new { area = string.Empty }, new { @class = "btn btn-primary" } )
-</div>
+<ol class="breadcrumb">
+    <li><a href="/">@Resource.Home</a></li>
+    <li>@Html.ActionLink(Resource.Feedback, "Index", "Feedback", new { area = string.Empty })</li>
+</ol>
 
+<h1>@ViewBag.Title</h1>
+
+<div class="container">
+    @Html.ActionLink(Resource.Home, "Index", "Home", new { area = string.Empty }, new { @class = "btn btn-primary" })
+</div>

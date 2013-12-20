@@ -1,0 +1,109 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>@ViewBag.Title към @Model.Name</h2>
+<div id="create-form" class="container">
+    @using (Html.BeginForm("Create", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        <fieldset>
+            <legend>Основна информация</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.Name)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете заглавие на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+            </div>
+            <br /><div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.Description)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.Description, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете описание на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+            </div>
+            <br />
+        </fieldset>
+        <fieldset>
+            <legend>Времетраене</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.StartTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.StartTime, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете начало на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.StartTime)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.EndTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.EndTime, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете начало на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.EndTime)
+                </div>
+            </div>
+            <br /><div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.PracticeStartTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.PracticeStartTime, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете начало на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.PracticeStartTime)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.PracticeEndTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.PracticeEndTime, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете начало на състезанието" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.PracticeEndTime)
+                </div>
+            </div>
+            <br />
+        </fieldset>
+    }
+</div>

@@ -6,6 +6,8 @@
 
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Contests.ViewModels.ProblemsViewModels;
+
     public class ProblemResultViewModel
     {
         public static Expression<Func<Submission, ProblemResultViewModel>> FromSubmission
@@ -22,10 +24,10 @@
             }
         }
 
-        [Display(Name = "Участник")]
+        [Display(Name = "Participant", ResourceType = typeof(Resource))]
         public string ParticipantName { get; set; }
 
-        [Display(Name = "Резултат")]
+        [Display(Name = "Result", ResourceType = typeof(Resource))]
         public int Result { get; set; }
 
         public int MaximumPoints { get; set; }

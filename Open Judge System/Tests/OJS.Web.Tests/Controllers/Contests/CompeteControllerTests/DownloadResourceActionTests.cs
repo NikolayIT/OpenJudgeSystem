@@ -167,6 +167,7 @@
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue),
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue)
                 },
+                Name = "testResource",
                 FileExtension = "test"
             };
 
@@ -176,7 +177,8 @@
             this.EmptyOjsData.SaveChanges();
 
             var result = this.CompeteController.DownloadResource(resource.Id, this.IsPractice) as FileContentResult;
-            Assert.AreEqual("test problem.test", result.FileDownloadName);
+            var expectedFileName = string.Format("{0}_{1}.{2}", problem.Name, resource.Name, resource.FileExtension);
+            Assert.AreEqual(expectedFileName, result.FileDownloadName);
             Assert.IsTrue(resource.File.SequenceEqual(result.FileContents));
         }
 
@@ -196,6 +198,7 @@
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue),
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue)
                 },
+                Name = "resourceName",
                 FileExtension = "test"
             };
 
@@ -205,7 +208,8 @@
             this.EmptyOjsData.SaveChanges();
 
             var result = this.CompeteController.DownloadResource(resource.Id, this.IsCompete) as FileContentResult;
-            Assert.AreEqual("test problem.test", result.FileDownloadName);
+            var expectedFileName = string.Format("{0}_{1}.{2}", problem.Name, resource.Name, resource.FileExtension);
+            Assert.AreEqual(expectedFileName, result.FileDownloadName);
             Assert.IsTrue(resource.File.SequenceEqual(result.FileContents));
         }
 

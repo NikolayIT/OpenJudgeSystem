@@ -7,11 +7,14 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
 
+    using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
+
     public class ContestRegistrationViewModel
     {
         public ContestRegistrationViewModel(Contest contest, bool isOfficial)
         {
             this.ContestName = contest.Name;
+            this.ContestId = contest.Id;
 
             if (isOfficial)
             {
@@ -40,11 +43,13 @@
             });
         }
 
+        public int ContestId { get; set; }
+
         public string ContestName { get; set; }
 
         public bool RequirePassword { get; set; }
 
-        [Display(Name = "Парола")]
+        [Display(Name = "Password", ResourceType = typeof(Resource))]
         public string Password { get; set; }
 
         public IEnumerable<QuestionViewModel> Questions { get; set; }

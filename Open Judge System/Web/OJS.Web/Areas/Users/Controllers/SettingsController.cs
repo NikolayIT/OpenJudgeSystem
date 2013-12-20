@@ -7,6 +7,8 @@
     using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Users.Views.Settings.SettingsIndex;
+
     [Authorize]
     public class SettingsController : BaseController
     {
@@ -35,8 +37,8 @@
                 this.UpdateUserSettings(user.UserSettings, settings);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", "Настройките на профила ви са запазени!");
-                return this.Redirect("/Users/Profile");
+                TempData.Add("InfoMessage", Resource.Settings_were_saved);
+                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
             }
 
             return this.View(settings);

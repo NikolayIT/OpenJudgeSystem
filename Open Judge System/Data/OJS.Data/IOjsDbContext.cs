@@ -22,6 +22,8 @@
 
         IDbSet<ContestCategory> ContestCategories { get; set; }
 
+        IDbSet<ContestQuestion> ContestQuestions { get; set; }
+
         IDbSet<Checker> Checkers { get; set; }
 
         IDbSet<Test> Tests { get; set; }

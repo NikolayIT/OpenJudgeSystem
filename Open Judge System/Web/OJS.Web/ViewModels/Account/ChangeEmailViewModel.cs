@@ -2,32 +2,34 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Resource = Resources.Account.AccountViewModels;
+
     public class ChangeEmailViewModel
     {
         [StringLength(int.MaxValue, MinimumLength = 1, ErrorMessageResourceName = "Password_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         [Required(ErrorMessageResourceName = "Password_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
-        [Display(Name = "Password", ResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
+        [Display(Name = "Password", ResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessageResourceName = "Email_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email", ResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(Name = "Email", ResourceType = typeof(Resource))]
         [EmailAddress(ErrorMessage = null, ErrorMessageResourceName = "Email_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         public string Email { get; set; }
 
         [Required(ErrorMessageResourceName = "Email_confirmation_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email_confirm", ResourceType = typeof(Resources.Account.ViewModels))]
+        [Display(Name = "Email_confirm", ResourceType = typeof(Resource))]
         [EmailAddress(ErrorMessage = null, ErrorMessageResourceName = "Email_confirmation_required",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         [Compare("Email", ErrorMessageResourceName = "Email_confirmation_invalid",
-            ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+            ErrorMessageResourceType = typeof(Resource))]
         public string EmailConfirmation { get; set; }
     }
 }

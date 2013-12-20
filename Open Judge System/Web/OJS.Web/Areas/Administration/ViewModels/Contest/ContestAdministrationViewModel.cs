@@ -3,12 +3,15 @@
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+    using System.Collections.Generic;
 
     public class ContestAdministrationViewModel : AdministrationViewModel
     {
@@ -32,6 +35,7 @@
                     Description = contest.Description,
                     LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                     OrderBy = contest.OrderBy,
+                    SubmisstionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
                 };
@@ -57,11 +61,17 @@
                     PracticePassword = this.PracticePassword,
                     Description = this.Description,
                     LimitBetweenSubmissions = this.LimitBetweenSubmissions,
+                    SubmissionTypes = this.SubmisstionTypes.Select(st => st.ToEntity).ToList(),
                     OrderBy = this.OrderBy,
                     CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn,
                 };
             }
+        }
+
+        public ContestAdministrationViewModel()
+        {
+            this.SubmisstionTypes = new HashSet<SubmissionTypeViewModel>();
         }
 
         [Display(Name = "№")]
@@ -121,5 +131,9 @@
         [UIHint("DropDownList")]
         [DefaultValue(0)]
         public int CategoryId { get; set; }
+
+        [Display(Name = "Тип решения")]
+        [UIHint("SubmissionTypeMultiSelect")]
+        public IEnumerable<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
     }
 }

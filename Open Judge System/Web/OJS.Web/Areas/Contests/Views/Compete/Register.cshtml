@@ -1,4 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.ContestRegistrationViewModel
+
+@using Resource = Resources.Areas.Contests.Views.CompeteRegister
+
 @{
     ViewBag.Title = Model.ContestName;
 }
@@ -8,22 +11,31 @@
     </div>
 </div>
 
-<div class="text-white">
-    @using (Html.BeginForm())
-    {
-        if (Model.RequirePassword)
+<div class="row text-white">
+    <div class="col-md-4">
+        @using (Html.BeginForm())
         {
-            <div class="editor-field">
-                <div class="editor-label">
-                    @Html.LabelFor(x => x.Password)
+            @Html.HiddenFor(x => x.ContestId)
+            if (Model.RequirePassword)
+            {
+                <div class="form-group">
+                    <div class="editor-field">
+                        <div class="editor-label">
+                            @Html.LabelFor(x => x.Password)
+                        </div>
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Password)
+                    </div>
                 </div>
-                @Html.PasswordFor(x => x.Password, new { @class = "k-textbox" })
-                @Html.ValidationMessageFor(x => x.Password)
-            </div>
-        }
+            }
 
-        @Html.EditorFor(x => x.Questions);
-        @Html.ValidationMessage("Questions");
-        <input type="submit" value="Изпрати" class="btn btn-default" />
-    }
+            @Html.EditorFor(x => x.Questions);
+            @Html.ValidationMessage("Questions");
+            <input type="submit" value="@Resource.Submit" class="btn btn-default" />
+        }
+    </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

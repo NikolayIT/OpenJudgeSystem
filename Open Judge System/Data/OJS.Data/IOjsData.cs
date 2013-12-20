@@ -22,6 +22,8 @@
 
         IDeletableEntityRepository<ContestCategory> ContestCategories { get; }
 
+        IDeletableEntityRepository<ContestQuestion> ContestQuestions { get; }
+
         ITestRunsRepository TestRuns { get; }
 
         IDeletableEntityRepository<FeedbackReport> FeedbackReports { get; }

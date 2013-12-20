@@ -11,6 +11,9 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
         
+        @Html.HiddenFor(m => m.ContestName)
+        @Html.HiddenFor(m => m.ContestId)
+        
         <fieldset>
             <legend>Основна информация</legend>
             <div class="row">

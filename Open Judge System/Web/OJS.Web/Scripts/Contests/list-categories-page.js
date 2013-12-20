@@ -1,6 +1,4 @@
-﻿var expander = new CategoryExpander();
-
-// TODO: Fix nesting problem
+﻿// TODO: Fix nesting problem
 function CategoryExpander() {
     var treeview, treeviewSelector, currentlySelectedId;
     var data = [];
@@ -18,7 +16,7 @@ function CategoryExpander() {
         var categoryId;
         if (firstLoad && window.location.hash) {
             categoryId = getCategoryIdFromHash();
-            expander.select(categoryId);
+            self.select(categoryId);
             firstLoad = false;
         } else {
             categoryId = currentlySelectedId;
@@ -133,6 +131,8 @@ function getCategoryIdFromHash() {
     var categoryId = hash.split('/')[3];
     return categoryId;
 }
+
+var expander = new CategoryExpander();
 
 $(document).ready(function () {
     $(window).on("hashchange", function (ev) {

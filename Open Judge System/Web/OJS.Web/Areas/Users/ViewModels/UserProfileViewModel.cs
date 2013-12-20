@@ -8,6 +8,9 @@
     using System.Web;
 
     using OJS.Data.Models;
+    using OJS.Web.Areas.Users.Helpers;
+
+    using Resource = Resources.Areas.Users.ViewModels.ProfileViewModels;
 
     public class UserProfileViewModel
     {
@@ -23,23 +26,23 @@
 
         public string Username { get; set; }
 
-        [MaxLength(30, ErrorMessage = "Въведеното име е твърде дълго")]
-        [Display(Name = "Име")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [MaxLength(30, ErrorMessageResourceName = "First_name_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [Display(Name = "First_name", ResourceType = typeof(Resource))]
+        [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FirstName { get; set; }
 
-        [MaxLength(30, ErrorMessage = "Въведената фамилия е твърде дълга")]
-        [Display(Name = "Фамилия")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [MaxLength(30, ErrorMessage = "Family_name_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [Display(Name = "Family_name", ResourceType = typeof(Resource))]
+        [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string LastName { get; set; }
 
-        [MaxLength(30, ErrorMessage = "Въведеният град е твърде дълъг")]
-        [Display(Name = "Град")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [MaxLength(30, ErrorMessage = "City_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [Display(Name = "City", ResourceType = typeof(Resource))]
+        [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string City { get; set; }
 
-        [Display(Name = "Възраст")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [Display(Name = "Age", ResourceType = typeof(Resource))]
+        [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public byte? Age { get; set; }
 
         public IEnumerable<UserParticipationViewModel> Participations { get; set; }

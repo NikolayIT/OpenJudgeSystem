@@ -2,28 +2,30 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Resource = Resources.Account.AccountViewModels;
+
     public class LoginViewModel
     {
         [Required(
                 ErrorMessageResourceName = "Username_required",
-                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+                ErrorMessageResourceType = typeof(Resource))]
         [Display(
                 Name = "Username",
-                ResourceType = typeof(Resources.Account.ViewModels))]
+                ResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
         [Required(
                 ErrorMessageResourceName = "Enter_password",
-                ErrorMessageResourceType = typeof(Resources.Account.ViewModels))]
+                ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         [Display(
                 Name = "Password",
-                ResourceType = typeof(Resources.Account.ViewModels))]
+                ResourceType = typeof(Resource))]
         public string Password { get; set; }
 
         [Display(
                 Name = "Remember_me",
-                ResourceType = typeof(Resources.Account.ViewModels))]
+                ResourceType = typeof(Resource))]
         public bool RememberMe { get; set; }
     }
 }

@@ -71,7 +71,7 @@
                     return this.RedirectToLocal(returnUrl);
                 }
 
-                this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Invalid_username_or_password);
+                this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
             }
 
             // If we got this far, something failed, redisplay form
@@ -99,12 +99,12 @@
         {
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
-                this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+                this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
             }
 
             if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
             {
-                this.ModelState.AddModelError("UserName", Resources.Account.ViewModels.User_already_registered);
+                this.ModelState.AddModelError("UserName", Resources.Account.AccountViewModels.User_already_registered);
             }
 
             if (!captchaValid)
@@ -178,7 +178,7 @@
                         return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
                     }
 
-                    this.ModelState.AddModelError(string.Empty, Resources.Account.ViewModels.Password_incorrect);
+                    this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Password_incorrect);
                 }
             }
             else
@@ -497,14 +497,14 @@
             {
                 if (this.Data.Users.All().Any(x => x.Email == model.Email))
                 {
-                    this.ModelState.AddModelError("Email", Resources.Account.ViewModels.Email_already_registered);
+                    this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
                 }
 
                 var passwordVerificationResult = this.UserManager.PasswordHasher.VerifyHashedPassword(this.UserProfile.PasswordHash, model.Password);
 
                 if (passwordVerificationResult != PasswordVerificationResult.Success)
                 {
-                    this.ModelState.AddModelError("Password", Resources.Account.ViewModels.Incorrect_password);
+                    this.ModelState.AddModelError("Password", Resources.Account.AccountViewModels.Incorrect_password);
                 }
 
                 if (this.ModelState.IsValid)
@@ -577,11 +577,11 @@
             var mailSender = MailSender.Instance;
 
             var forgottenPasswordEmailTitle = string.Format(
-                                                        Resources.Account.Emails.Forgotten_password_title,
+                                                        Resources.Account.AccountEmails.Forgotten_password_title,
                                                         user.UserName);
 
             var forgottenPasswordEmailBody = string.Format(
-                                                Resources.Account.Emails.Forgotten_password_body,
+                                                Resources.Account.AccountEmails.Forgotten_password_body,
                                                 user.UserName,
                                                 Url.Action(
                                                         "ChangePassword",

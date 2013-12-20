@@ -176,7 +176,7 @@
         {
             try
             {
-                this.CompeteController.Register(-1, this.IsPractice, new ContestRegistrationModel());
+                this.CompeteController.Register(this.IsPractice, new ContestRegistrationModel(this.EmptyOjsData));
                 Assert.Fail("Expected an exception to be thrown when an invalid contest id is provided.");
             }
             catch (HttpException ex)
@@ -192,7 +192,10 @@
 
             try
             {
-                this.CompeteController.Register(contest.Id, this.IsPractice, new ContestRegistrationModel());
+                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+                contestRegistrationModel.ContestId = contest.Id;
+
+                this.CompeteController.Register(this.IsPractice, contestRegistrationModel);
                 Assert.Fail("Expected exception trying to register to practice contest, when practice is not available");
             }
             catch (HttpException ex)
@@ -208,7 +211,9 @@
 
             try
             {
-                this.CompeteController.Register(contest.Id, this.IsCompete, new ContestRegistrationModel());
+                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+                contestRegistrationModel.ContestId = contest.Id;
+                this.CompeteController.Register(this.IsCompete, contestRegistrationModel);
                 Assert.Fail("Expected exception trying to register to compete in a contest, when compete is not available");
             }
             catch (HttpException ex)
@@ -225,7 +230,10 @@
             this.EmptyOjsData.Participants.Add(new Participant(contest.Id, this.FakeUserProfile.Id, this.IsCompete));
             this.EmptyOjsData.SaveChanges();
 
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, new ContestRegistrationModel()) as RedirectToRouteResult;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.ContestId = contest.Id;
+
+            var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -238,12 +246,11 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
 
-            var contestRegistrationData = new ContestRegistrationModel
-            {
-                Password = "invalidPassword"
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = "invalidPassword";
+            contestRegistrationModel.ContestId = contest.Id;
 
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, contestRegistrationData) as ViewResult;
+            var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as ViewResult;
             var model = result.Model as ContestRegistrationViewModel;
 
             Assert.IsNotNull(model);
@@ -259,12 +266,11 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
 
-            var contestRegistrationData = new ContestRegistrationModel
-            {
-                Password = "invalidPassword"
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = "invalidPassword";
+            contestRegistrationModel.ContestId = contest.Id;
 
-            var result = this.CompeteController.Register(contest.Id, this.IsPractice, contestRegistrationData) as ViewResult;
+            var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as ViewResult;
             var model = result.Model as ContestRegistrationViewModel;
 
             Assert.IsNotNull(model);
@@ -280,12 +286,11 @@
         {
             var contest = this.CreateAndSaveContest("contestName", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
 
-            var registerModel = new ContestRegistrationModel
-            {
-                Password = this.DefaultCompetePassword
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = this.DefaultCompetePassword;
+            contestRegistrationModel.ContestId = contest.Id;
 
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, registerModel) as RedirectToRouteResult;
+            var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -298,12 +303,11 @@
         {
             var contest = this.CreateAndSaveContest("contestName", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
 
-            var registerModel = new ContestRegistrationModel
-            {
-                Password = this.DefaultPracticePassword
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = this.DefaultPracticePassword;
+            contestRegistrationModel.ContestId = contest.Id;
 
-            var result = this.CompeteController.Register(contest.Id, this.IsPractice, registerModel) as RedirectToRouteResult;
+            var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -316,13 +320,12 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.InactiveContestOptions);
 
-            var registerModel = new ContestRegistrationModel
-            {
-                Password = this.DefaultCompetePassword
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = this.DefaultCompetePassword;
+            contestRegistrationModel.ContestId = contest.Id;
 
-            this.TryValidateModel(registerModel, this.CompeteController);
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, registerModel) as ViewResult;
+            this.TryValidateModel(contestRegistrationModel, this.CompeteController);
+            var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as ViewResult;
             var resultModel = result.Model as ContestRegistrationViewModel;
 
             Assert.IsNotNull(resultModel);
@@ -335,13 +338,12 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
 
-            var registerModel = new ContestRegistrationModel
-            {
-                Password = this.DefaultPracticePassword
-            };
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = this.DefaultPracticePassword;
+            contestRegistrationModel.ContestId = contest.Id;
 
-            this.TryValidateModel(registerModel, this.CompeteController);
-            var result = this.CompeteController.Register(contest.Id, this.IsPractice, registerModel) as ViewResult;
+            this.TryValidateModel(contestRegistrationModel, this.CompeteController);
+            var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as ViewResult;
             var resultModel = result.Model as ContestRegistrationViewModel;
 
             Assert.IsNotNull(resultModel);
@@ -354,43 +356,21 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithQuestionsOptions, this.InactiveContestOptions);
 
-            var registerModel = new ContestRegistrationModel
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
+            contestRegistrationModel.Password = this.DefaultCompetePassword;
+            contestRegistrationModel.ContestId = contest.Id;
+            contestRegistrationModel.Questions = contest.Questions.Select(x => new ContestQuestionAnswerModel
             {
-                Password = this.DefaultCompetePassword,
-                Questions = contest.Questions.Select(x => new ContestQuestionAnswerModel
-                {
-                    QuestionId = x.Id,
-                    Answer = "answer"
-                })
-            };
+                QuestionId = x.Id,
+                Answer = "answer"
+            });
 
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, registerModel) as RedirectToRouteResult;
+            var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
-        }
-
-        [TestMethod]
-        public void RegisterActionWhenPostedDataContestHasPasswordQuestionAnsweredWithEmptyStringShouldReturnView()
-        {
-            var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithQuestionsOptions, this.InactiveContestOptions);
-
-            var registerModel = new ContestRegistrationModel
-            {
-                Password = this.DefaultCompetePassword,
-                Questions = contest.Questions.Select(x => new ContestQuestionAnswerModel
-                {
-                    QuestionId = x.Id,
-                    Answer = string.Empty
-                })
-            };
-
-            var result = this.CompeteController.Register(contest.Id, this.IsCompete, registerModel) as ViewResult;
-            var model = result.Model as ContestRegistrationViewModel;
-
-            Assert.IsNotNull(model);
         }
     }
 }

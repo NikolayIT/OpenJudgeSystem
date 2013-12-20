@@ -9,6 +9,8 @@ namespace OJS.Web.Areas.Users.Controllers
     using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Users.Views.Profile;
+
     public class ProfileController : BaseController
     {
         public ProfileController(IOjsData data)
@@ -27,7 +29,7 @@ namespace OJS.Web.Areas.Users.Controllers
 
             if (profile == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "This user does not exist!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ProfileIndex.Not_found);
             }
 
             var userSettingsViewModel = new UserProfileViewModel(profile);

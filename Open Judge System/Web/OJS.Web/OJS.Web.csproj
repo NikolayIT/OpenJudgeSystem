@@ -219,25 +219,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Account\Emails.bg.designer.cs">
-      <DependentUpon>Emails.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Account\AccountEmails.bg.Designer.cs">
+      <DependentUpon>AccountEmails.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Account\Emails.Designer.cs">
+    <Compile Include="App_GlobalResources\Account\AccountEmails.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Emails.resx</DependentUpon>
+      <DependentUpon>AccountEmails.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Account\ViewModels\ViewModels.bg.designer.cs">
-      <DependentUpon>ViewModels.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Account\ViewModels\AccountViewModels.bg.Designer.cs">
+      <DependentUpon>AccountViewModels.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Account\ViewModels\ViewModels.Designer.cs">
+    <Compile Include="App_GlobalResources\Account\ViewModels\AccountViewModels.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ViewModels.resx</DependentUpon>
+      <DependentUpon>AccountViewModels.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Account\Views\ChangeEmailView.bg.designer.cs">
       <DependentUpon>ChangeEmailView.bg.resx</DependentUpon>
@@ -399,6 +399,156 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.bg.designer.cs">
+      <DependentUpon>CompeteGeneral.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompeteGeneral.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.designer.cs">
+      <DependentUpon>ContestsAllContestSubmissionsByUser.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestsAllContestSubmissionsByUser.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsProblemPartial.bg.Designer.cs">
+      <DependentUpon>ContestsProblemPartial.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsProblemPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestsProblemPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\ContestsViewModels.bg.designer.cs">
+      <DependentUpon>ContestsViewModels.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\ContestsViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestsViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\ProblemsViewModels.bg.designer.cs">
+      <DependentUpon>ProblemsViewModels.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\ProblemsViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\SubmissionsViewModels.bg.designer.cs">
+      <DependentUpon>SubmissionsViewModels.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\ViewModels\SubmissionsViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteIndex.bg.designer.cs">
+      <DependentUpon>CompeteIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompeteIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.bg.Designer.cs">
+      <DependentUpon>CompeteRegister.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompeteRegister.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.bg.Designer.cs">
+      <DependentUpon>ProfileViewModels.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfileViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Views\Profile\ProfileIndex.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfileIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Views\Profile\ProfileIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfileIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Shared\ProfileProfileInfo.bg.Designer.cs">
+      <DependentUpon>ProfileProfileInfo.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Shared\ProfileProfileInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfileProfileInfo.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Views\Settings\SettingsIndex.bg.designer.cs">
+      <DependentUpon>SettingsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Users\Views\Settings\SettingsIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\ViewModels\FeedbackViewModels.bg.designer.cs">
+      <DependentUpon>FeedbackViewModels.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\ViewModels\FeedbackViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\Views\FeedbackIndex.bg.designer.cs">
+      <DependentUpon>FeedbackIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\Views\FeedbackIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\Views\FeedbackSubmitted.bg.designer.cs">
+      <DependentUpon>FeedbackSubmitted.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Feedback\Views\FeedbackSubmitted.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackSubmitted.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\News\Views\All.bg.designer.cs">
       <DependentUpon>All.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -506,6 +656,7 @@
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\UserInRoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Setting\SettingAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Submission\SubmissionAdministrationGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Submission\SubmissionAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\TestRun\TestRunViewModel.cs" />
@@ -527,6 +678,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantViewModel.cs" />
@@ -535,17 +687,18 @@
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemFullResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultPairViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\QuestionViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\QuestionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ParticipantResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\SubmissionFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\TestRunFullResultsViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\SubmissionResultIsCompiledViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\SubmissionResultIsCompiledViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
@@ -575,6 +728,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestViewModel.cs" />
     <Compile Include="ViewModels\CategoryMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Feedback\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexContestViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexViewModel.cs" />
     <Compile Include="ViewModels\News\AllNewsViewModel.cs" />
@@ -758,6 +912,8 @@
     <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Views\Account\ChangeUsername.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeMultiSelect.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\Create.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -823,9 +979,14 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\Areas\Contests\Views\Contests\" />
+    <Folder Include="App_GlobalResources\Areas\Contests\Views\List\" />
+    <Folder Include="App_GlobalResources\Areas\Contests\Views\Results\" />
+    <Folder Include="App_GlobalResources\Areas\Contests\Views\Submissions\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Users\Models\" />
@@ -841,24 +1002,24 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_GlobalResources\Account\Emails.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountEmails.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Emails.bg.designer.cs</LastGenOutput>
+      <LastGenOutput>AccountEmails.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Account\Emails.resx">
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountEmails.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Emails.Designer.cs</LastGenOutput>
+      <LastGenOutput>AccountEmails.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Account\ViewModels\ViewModels.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Account\ViewModels\AccountViewModels.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ViewModels.bg.designer.cs</LastGenOutput>
+      <LastGenOutput>AccountViewModels.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Account\ViewModels\ViewModels.resx">
+    <EmbeddedResource Include="App_GlobalResources\Account\ViewModels\AccountViewModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ViewModels.Designer.cs</LastGenOutput>
+      <LastGenOutput>AccountViewModels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Account\Views\ChangeEmailView.bg.resx">
@@ -1020,6 +1181,156 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Register.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteGeneral.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.General</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\General\CompeteGeneral.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteGeneral.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.General</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsAllContestSubmissionsByUser.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsAllContestSubmissionsByUser.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsProblemPartial.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsProblemPartial.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsProblemPartial.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsProblemPartial.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\ContestsViewModels.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsViewModels.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\ContestsViewModels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsViewModels.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\ProblemsViewModels.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsViewModels.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\ProblemsViewModels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsViewModels.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\SubmissionsViewModels.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsViewModels.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\SubmissionsViewModels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsViewModels.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteRegister.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompeteRegister.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileViewModels.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileViewModels.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Views\Profile\ProfileIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileIndex.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Views.Profile</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Views\Profile\ProfileIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Views.Profile</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Shared\ProfileProfileInfo.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileProfileInfo.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Shared\ProfileProfileInfo.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProfileProfileInfo.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Views\Settings\SettingsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Views.Settings</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Users\Views\Settings\SettingsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Users.Views.Settings</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\ViewModels\FeedbackViewModels.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackViewModels.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\ViewModels\FeedbackViewModels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackViewModels.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\Views\FeedbackIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\Views\FeedbackIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\Views\FeedbackSubmitted.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackSubmitted.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Feedback\Views\FeedbackSubmitted.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FeedbackSubmitted.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Feedback.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\News\Views\All.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

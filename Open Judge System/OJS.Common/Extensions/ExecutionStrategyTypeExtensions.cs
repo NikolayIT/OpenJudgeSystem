@@ -15,7 +15,7 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     return "js";
                 default:
-                    throw new ArgumentOutOfRangeException("executionStrategyType");
+                    return null;
             }
         }
     }

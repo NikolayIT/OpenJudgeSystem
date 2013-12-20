@@ -1,6 +1,7 @@
 ﻿@using OJS.Web.Areas.Contests.ViewModels
 @using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Common.Models;
+@using Resource = Resources.Areas.Contests.Shared.ContestsProblemPartial
 
 @model ContestProblemViewModel
 
@@ -19,7 +20,8 @@
     {
         className = "col-lg-8";
     }
-    else {
+    else
+    {
         className = "col-lg-12";
     }
 }
@@ -73,9 +75,9 @@
                 <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
                 <div class="col-md-12">
                     <div class="pull-left submit-container">
-                        <strong>Позволена памет: </strong>@string.Format("{0:0.00}", Model.MemoryLimit) MB
+                        <strong>@Resource.Allowed_memory: </strong>@string.Format("{0:0.00}", Model.MemoryLimit) MB
                         <br />
-                        <strong>Позволено време: </strong>@string.Format("{0:0.00}", Model.TimeLimit) sec.
+                        <strong>@Resource.Allowed_working_time: </strong>@string.Format("{0:0.00}", Model.TimeLimit) sec.
                     </div>
                     <div class="submit-container pull-right">
                         @(Html.Kendo().DropDownList()
@@ -84,7 +86,7 @@
                                 .DataValueField("Value")
                                 .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
                                 .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
-                        <input type="submit" value="Изпрати" class="k-button submision-submit-button" />
+                        <input type="submit" value="@Resource.Submit" class="k-button submision-submit-button" />
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -92,16 +94,21 @@
         </div>
     </div>
 
+    @{
+        var participantRowTemplate = "#= ParticipantName === '" + this.User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
+            "<td>#:ParticipantName#</td>" + "<td>#:Result# / #:MaximumPoints#</td></tr>";
+    }
+
     @if (Model.ShowResults)
     {
         <div class="col-lg-4 problem-result-container visible-lg">
             @(Html.Kendo().Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
-                .ToolBar(tool => tool.Template("Резултати за задачата"))
+                .ToolBar(tool => tool.Template(Resource.Problem_results))
                 .Columns(col =>
                 {
                     col.Bound(x => x.ParticipantName).Width(100);
-                    col.Bound(x => x.Result).ClientTemplate("#:Result# / #:MaximumPoints#").Width(80);
+                    col.Bound(x => x.Result).Width(80);
                 })
                 .DataSource(data =>
                 {
@@ -121,6 +128,8 @@
                     x.Refresh(true);
                     x.Info(false);
                 })
+                .ClientRowTemplate(participantRowTemplate)
+                .TableHtmlAttributes(new { @class = "table table-striped table-bordered" })
                 .HtmlAttributes(new { @class = "problem_submit_grid" })
             )
         </div>
@@ -128,12 +137,9 @@
 </div>
 
 @{
-    var clientTemplate = "#= IsCalculated ? " +
-                            "IsCompiledSuccessfully ? " +
-                                "displayTestRuns(TestRuns).concat(" +
-                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" +
-                                        " : 'Неуспешна компилация' " +
-                                            ": 'Все още не е обработено' #";
+    var clientTemplate = "#= IsCalculated ? IsCompiledSuccessfully ? displayTestRuns(TestRuns).concat(" +
+                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints)) : " + "'" + Resource.Compile_time_error + "'" +
+                                            ":" + "'" + Resource.Not_processed + "'" + "#";
 }
 
 @if (Model.ShowResults)
@@ -145,7 +151,7 @@
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {
-                tool.Template("Изпратени решения");
+                tool.Template(Resource.Submissions);
             })
             .DataSource(data =>
             {
@@ -162,15 +168,18 @@
             .Columns(col =>
             {
                 col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
-                col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
-                    .Title("Време и памет")
-                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
+                col.Template(@<text></text>)
+                    .Title(Resource.Time_and_memory)
+                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed, '"
+                    + Resource.Memory + "','" + Resource.Time + "') : '---' #");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
             }).HtmlAttributes(new { @class = "problem_submit_grid" })
             )
         </div>
     </div>
-} else {
+}
+else
+{
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
@@ -178,7 +187,7 @@
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {
-                tool.Template("Изпратени решения");
+                tool.Template(Resource.Submissions);
             })
             .DataSource(data =>
             {
@@ -194,8 +203,8 @@
             })
             .Columns(col =>
             {
-                col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? 'Успешна компилация' : 'Неуспешна компилация' : 'Обработва се' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>Детайли</div>");
+                col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? " + "'" + Resource.Compiled_successfully + "'" + " : '" + Resource.Compile_time_error + "' : '" + Resource.Not_processed + "' #");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
             }).HtmlAttributes(new { @class = "problem_submit_grid" })
             )
         </div>

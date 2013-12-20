@@ -1,10 +1,11 @@
 ﻿@using OJS.Web.Areas.Users.ViewModels
+@using Resource = Resources.Areas.Users.Shared.ProfileProfileInfo;
 
 @model UserProfileViewModel
 
 <div class="container">
     <h2>
-        Профил на @Model.Username
+        @string.Format(Resource.Profile_title, Model.Username)
         @if (!string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.LastName))
         {
             <text>(@Model.FirstName @Model.LastName)</text>
@@ -15,7 +16,7 @@
         @if (Model.Age != null)
         {
             <div class="text-white">
-                <span class="text-primary">Години: </span>
+                <span class="text-primary">@Resource.Age: </span>
                 @Model.Age
             </div>
         }
@@ -23,7 +24,7 @@
         @if (!string.IsNullOrEmpty(Model.City))
         {
             <div class="text-white">
-                <span class="text-primary">Град: </span>
+                <span class="text-primary">@Resource.City: </span>
                 @Model.City
             </div>
         }
@@ -31,22 +32,22 @@
     @if (this.User.Identity.Name == Model.Username)
     {
         <div class="col-md-offset-4 col-md-2">
-            <a href="Settings/" class="btn btn-primary pull-right">Настройки</a>
+            <a href="Settings/" class="btn btn-primary pull-right">@Resource.Settings</a>
         </div>
     }
 </div>
 <br />
 <div class="col-md-12">
-    <h2>Участия</h2>
+    <h2>@Resource.Participations</h2>
     <table class="table table-responsive table-striped">
         <thead class="text-white">
             <tr>
                 <th>
-                    Състезание
+                    @Resource.Contest
                 </th>
                 @if (this.User.Identity.Name == Model.Username)
                 {
-                    <th>Резултати</th>
+                    <th>@Resource.Results</th>
                 }
             </tr>
         </thead>
@@ -63,9 +64,9 @@
                     @if (this.User.Identity.Name == Model.Username)
                     {
                         <td>
-                            Състезание: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints</span>
+                            @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints</span>
                             <br />
-                            Практика: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints</span>
+                            @Resource.Practice: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints</span>
                         </td>
                     }
                 </tr>

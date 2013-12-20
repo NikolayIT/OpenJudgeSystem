@@ -13,6 +13,7 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
@@ -43,23 +44,40 @@
             return this.View();
         }
 
-        [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        [HttpGet]
+        public ActionResult Create()
         {
-            return this.BaseCreate(request, model.ToEntity);
+            var dropDownData = this.Data.ContestCategories
+                .All()
+                .ToList()
+                .Select(cat => new SelectListItem
+                {
+                    Text = cat.Name,
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
+                });
+
+            // TODO: Improve not to use ViewData
+            this.ViewData["CategoryIdData"] = dropDownData;
+            return View(new ContestAdministrationViewModel());
         }
 
-        [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
-        {
-            return this.BaseUpdate(request, model.ToEntity);
-        }
+        //[HttpPost]
+        //public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        //{
+        //    return this.BaseCreate(request, model.ToEntity);
+        //}
 
-        [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
-        {
-            return this.BaseDestroy(request, model.ToEntity);
-        }
+        //[HttpPost]
+        //public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        //{
+        //    return this.BaseUpdate(request, model.ToEntity);
+        //}
+
+        //[HttpPost]
+        //public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        //{
+        //    return this.BaseDestroy(request, model.ToEntity);
+        //}
 
         public ZipFileResult Export(int id, bool compete)
         {
@@ -186,6 +204,12 @@
             }
 
             return this.PartialView("_QuickContestsGrid", latestContests);
+        }
+
+        public JsonResult GetAllSubmissionTypes()
+        {
+            var result = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel);
+            return Json(result);
         }
 
         private void GenerateCategoryDropDownData()

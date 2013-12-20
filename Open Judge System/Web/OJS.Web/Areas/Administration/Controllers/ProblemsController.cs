@@ -157,6 +157,7 @@
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
+
             return this.View(problem);
         }
 
@@ -210,21 +211,28 @@
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
             // TODO: Add validation with ModelState.IsValid
-            var existingProblem = this.Data.Problems.All()
+
+            if (problem != null && ModelState.IsValid)
+            {
+                var existingProblem = this.Data.Problems.All()
                 .FirstOrDefault(x => x.Id == id);
 
-            existingProblem.Name = problem.Name;
-            existingProblem.MaximumPoints = problem.MaximumPoints;
-            existingProblem.TimeLimit = problem.TimeLimit;
-            existingProblem.MemoryLimit = problem.MemoryLimit;
-            existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
-            existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
-            existingProblem.OrderBy = problem.OrderBy;
+                existingProblem.Name = problem.Name;
+                existingProblem.MaximumPoints = problem.MaximumPoints;
+                existingProblem.TimeLimit = problem.TimeLimit;
+                existingProblem.MemoryLimit = problem.MemoryLimit;
+                existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
+                existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+                existingProblem.OrderBy = problem.OrderBy;
 
-            this.Data.SaveChanges();
+                this.Data.SaveChanges();
 
-            this.TempData["InfoMessage"] = "Задачата беше променена успешно";
-            return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
+                this.TempData["InfoMessage"] = "Задачата беше променена успешно";
+                return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
+            }
+
+            problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
+            return this.View(problem);
         }
 
         [HttpGet]

@@ -1,4 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.ParticipantViewModel
+
+@using Resource = Resources.Areas.Contests.Views.CompeteIndex;
+
 @{
     ViewBag.Title = Model.Contest.Name;
 }
@@ -18,15 +21,15 @@
 
 <div class="row">
     <div class="col-md-8">
-        <h2>Изпратете решение</h2>
+        <h2>@Resource.Submit_solution</h2>
     </div>
     <div class="col-md-4 text-right" id="countdown-timer-container">
         @if (contestIsPractice)
         {
-            <div>Може да се упражнява до: @Model.Contest.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</div>
+            <div>@Resource.Practice_end_time: @Model.Contest.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</div>
         }
         <div class="clearfix"></div>
-        <div class="pull-right"><a href="@(string.Format("/Contests/{0}/Results/Simple/{1}", ViewBag.CompeteType, Model.Contest.Id))">Резултати</a></div>
+        <div class="pull-right"><a href="@(string.Format("/Contests/{0}/Results/Simple/{1}", ViewBag.CompeteType, Model.Contest.Id))">@Resource.Results</a></div>
     </div>
 </div>
 
@@ -52,6 +55,11 @@
     </div>
 </div>
 
+@{
+    string remainingTimeFormat = string.Format("\"<div id='countdown-timer'>" + Resource.Remaining_time_format + "</div>\"", "<span id='hours-remaining'></span>",
+        "<span id='minutes-remaining'></span>", "<span id='seconds-remaining'></span>");
+}
+
 @section scripts {
     @Scripts.Render("~/bundles/codemirror")
     <script src="/Scripts/Helpers/test-results.js"></script>
@@ -64,7 +72,7 @@
             var submitTime;
 
             @if(Model.LastSubmissionTime != null) {
-        <text>
+            <text>
             submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
             </text>
         };
@@ -85,8 +93,7 @@
         @if (contestIsCompete)
     {
     <text>
-        $('#countdown-timer-container').prepend('<div id="countdown-timer">Оставащо време <span id="hours-remaining">' +
-            '</span> ч. <span id="minutes-remaining"></span> мин. и <span id="seconds-remaining"></span> сек.</div>');
+        $('#countdown-timer-container').prepend(@Html.Raw(remainingTimeFormat));
 
         var contestTimer = new countdownTimer({
             year: "@Model.Contest.EndTime.Value.Year",
@@ -98,7 +105,7 @@
         });
 
         contestTimer.start();
-        </text>
+    </text>
     }
     </script>
 }

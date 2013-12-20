@@ -1,19 +1,21 @@
 ﻿@using OJS.Web.Areas.Contests.ViewModels
+@using Resource = Resources.Areas.Contests;
+
 
 @model OJS.Web.Areas.Contests.ViewModels.ContestViewModel
 
 <script src="/Scripts/Helpers/test-results.js"></script>
 <script src="/Scripts/Contests/submission-page.js"></script>
 
-<h2>Вашите решения</h2>
+<h2>@Resource.Shared.ContestsAllContestSubmissionsByUser.User_submission</h2>
 
 @{
     var clientTemplate = "#= IsCalculated ? " +
                             "IsCompiledSuccessfully ? " +
                                 "displayTestRuns(TestRuns).concat(" +
                                     " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints))" +
-                                        " : 'Неуспешна компилация' " +
-                                            ": 'Все още не е обработено' #";
+                                        " : '" + Resource.Shared.ContestsAllContestSubmissionsByUser.Compile_time_error + "' " +
+                                            ": '" + Resource.Shared.ContestsAllContestSubmissionsByUser.Not_processed + "' #";
 }
 
 <div class="row">
@@ -24,12 +26,14 @@
             .Columns(col =>
             {
                 col.ForeignKey("ProblemId", (IEnumerable<ProblemListItemViewModel>)ViewBag.ContestProblems, "ProblemId", "Name");
-                col.Bound(model => model.SubmissionPoints).Title("Резултат").ClientTemplate(clientTemplate);
-                col.Template(@<text>@item.IsCalculated && @item.IsCompiledSuccessfully ? Памет: @item.MaximumMemoryUsed <br /> Време: @item.MaximumTimeUsed : ---</text>)
-                    .Title("Време и памет")
-                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed) : '---' #");
-                col.Bound(model => model.IsOfficial).Title("Тип").ClientTemplate("#: IsOfficial ? 'Състезание' : 'Практика'#");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>Виж решение</div>");
+                col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
+                col.Template(@<text></text>)
+                    .Title(Resource.ViewModels.SubmissionsViewModels.Time_and_memory)
+                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed,"
+                                    + "'" + Resource.Shared.ContestsAllContestSubmissionsByUser.Memory + "','"
+                                    + Resource.Shared.ContestsAllContestSubmissionsByUser.Time + "'" + ") : '---' #");
+                col.Bound(model => model.IsOfficial).ClientTemplate("#: IsOfficial ? '" + Resource.Shared.ContestsAllContestSubmissionsByUser.Compete + "' : '" + Resource.Shared.ContestsAllContestSubmissionsByUser.Practice + "'#");
+                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Shared.ContestsAllContestSubmissionsByUser.View + "</div>");
             })
             .DataSource(data =>
             {

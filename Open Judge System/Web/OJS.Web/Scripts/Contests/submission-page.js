@@ -49,8 +49,6 @@
     };
 };
 
-var messageNotifier = new Notifier();
-
 function Notifier() {
     function showMessage(data) {
         container = $("div[id^='notify-container']").filter(':visible');
@@ -118,16 +116,16 @@ function Notifier() {
 //      });
 //  });
 
-  function getCodeMirrorInstance() {
-      var codeMirrorContainer = $(".CodeMirror:visible").siblings('textarea')[0];
-      var codeMirrorInstance = $.data(codeMirrorContainer, 'CodeMirrorInstance');
-      return codeMirrorInstance;
-  }
+function getCodeMirrorInstance() {
+    var codeMirrorContainer = $(".CodeMirror:visible").siblings('textarea')[0];
+    var codeMirrorInstance = $.data(codeMirrorContainer, 'CodeMirrorInstance');
+    return codeMirrorInstance;
+}
 
-var displayMaximumValues = function (maxMemory, maxTime) {
+var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeString) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
     var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
-    var result = "Памет: " + memoryInMb + " MB <br />" + "Време: " + maxTimeInSeconds + " s";
+    var result = memoryString + ": " + memoryInMb + " MB <br />" + timeString + ": " + maxTimeInSeconds + " s";
     return result;
 }
 
@@ -147,6 +145,8 @@ function validateSubmissionContent() {
 
     return true;
 }
+
+var messageNotifier = new Notifier();
 
 // validate the submission time
 var submissionTimeValidator = function () {
@@ -208,12 +208,14 @@ function TabStripManager() {
         tabStrip = tabstrip;
 
         tabStrip = $("#SubmissionsTabStrip").data("kendoTabStrip");
-        var hashIndex = getSelectedIndexFromHashtag();
-        if (!hashIndex) {
-            hashIndex = 0;
-        }
+        if (tabstrip) {
+            var hashIndex = getSelectedIndexFromHashtag();
+            if (!hashIndex) {
+                hashIndex = 0;
+            }
 
-        selectTabWithIndex(hashIndex);
+            selectTabWithIndex(hashIndex);
+        }
     }
 
     function selectTabWithIndex(ind) {

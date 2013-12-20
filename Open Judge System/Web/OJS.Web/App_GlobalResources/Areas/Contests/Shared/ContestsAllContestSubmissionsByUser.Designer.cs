@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Account {
+namespace Resources.Areas.Contests.Shared {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Account {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Emails {
+    public class ContestsAllContestSubmissionsByUser {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Emails() {
+        internal ContestsAllContestSubmissionsByUser() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Resources.Account {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Account.Emails", typeof(Emails).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Shared.ContestsAllContestSubmissionsBy" +
+                            "User", typeof(ContestsAllContestSubmissionsByUser).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +62,74 @@ namespace Resources.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi &lt;strong&gt;{0}&lt;/strong&gt;, &lt;br/&gt;To reset your password please click &lt;a href=&quot;{1}&quot;&gt;{1}&lt;/a&gt; or copy and paste the url in your browser..
+        ///   Looks up a localized string similar to Compete.
         /// </summary>
-        public static string Forgotten_password_body {
+        public static string Compete {
             get {
-                return ResourceManager.GetString("Forgotten_password_body", resourceCulture);
+                return ResourceManager.GetString("Compete", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgotten password for {0}.
+        ///   Looks up a localized string similar to Compile time error.
         /// </summary>
-        public static string Forgotten_password_title {
+        public static string Compile_time_error {
             get {
-                return ResourceManager.GetString("Forgotten_password_title", resourceCulture);
+                return ResourceManager.GetString("Compile_time_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory.
+        /// </summary>
+        public static string Memory {
+            get {
+                return ResourceManager.GetString("Memory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not process yet.
+        /// </summary>
+        public static string Not_processed {
+            get {
+                return ResourceManager.GetString("Not_processed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Practice.
+        /// </summary>
+        public static string Practice {
+            get {
+                return ResourceManager.GetString("Practice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your submissions.
+        /// </summary>
+        public static string User_submission {
+            get {
+                return ResourceManager.GetString("User_submission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
     }

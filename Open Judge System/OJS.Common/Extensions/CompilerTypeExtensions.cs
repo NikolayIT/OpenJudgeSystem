@@ -21,7 +21,7 @@
                 case CompilerType.Java:
                     return "java";
                 default:
-                    throw new ArgumentOutOfRangeException("compilerType");
+                    throw null;
             }
         }
     }

@@ -9,6 +9,9 @@
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
+        
+        @Html.HiddenFor(m => m.ContestName)
+        @Html.HiddenFor(m => m.ContestId)
 
         <fieldset>
             <legend>Основна информация</legend>

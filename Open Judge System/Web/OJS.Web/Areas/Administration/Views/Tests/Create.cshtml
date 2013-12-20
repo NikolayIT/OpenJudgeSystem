@@ -10,9 +10,10 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
+
         @Html.HiddenFor(m => m.ProblemId)
         @Html.HiddenFor(m => m.ProblemName)
-        
+
         <div class="editor-label">
             @Html.LabelFor(m => m.InputFull)
         </div>

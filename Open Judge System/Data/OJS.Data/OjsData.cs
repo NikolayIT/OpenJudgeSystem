@@ -75,6 +75,14 @@
             }
         }
 
+        public IDeletableEntityRepository<ContestQuestion> ContestQuestions
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ContestQuestion>();
+            }
+        }
+
         public ISubmissionsRepository Submissions
         {
             get

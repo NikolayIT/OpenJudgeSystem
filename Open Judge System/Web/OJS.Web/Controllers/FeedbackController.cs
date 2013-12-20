@@ -4,13 +4,14 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.ViewModels.Feedback;
 
     using Recaptcha;
 
+    using Resource = Resources.Feedback.Views;
+
     public class FeedbackController : BaseController
     {
-        private const string FeedbackSubmitMessage = "Благодарим ви за обратната връзка. Ще се постараем да поправим проблема възможно най-скоро!";
-
         public FeedbackController(IOjsData data)
             : base(data)
         {
@@ -19,39 +20,46 @@
         [HttpGet]
         public ActionResult Index()
         {
-            return this.View(new FeedbackReport());
+            return this.View();
         }
 
         [HttpPost]
         [RecaptchaControlMvc.CaptchaValidator]
-        public ActionResult Index(FeedbackReport feedback, bool captchaValid)
+        public ActionResult Index(FeedbackViewModel model, bool captchaValid)
         {
             if (!captchaValid)
             {
-                ModelState.AddModelError("Captcha", "Грешно въведен Captcha. Моля опитайте отново.");
+                ModelState.AddModelError("Captcha", Resource.FeedbackIndex.Invalid_captcha);
             }
 
             if (ModelState.IsValid)
             {
+                var report = new FeedbackReport
+                {
+                    Content = model.Content,
+                    Email = model.Email,
+                    Name = model.Name
+                };
+
                 if (User.Identity.IsAuthenticated)
                 {
                     var userProfile = this.Data.Users.GetByUsername(User.Identity.Name);
-                    feedback.User = userProfile;
+                    report.User = userProfile;
                 }
 
-                this.Data.FeedbackReports.Add(feedback);
+                this.Data.FeedbackReports.Add(report);
                 this.Data.SaveChanges();
 
+                this.TempData["InfoMessage"] = Resource.FeedbackIndex.Feedback_submitted;
                 return this.RedirectToAction("Submitted");
             }
 
-            return this.View(feedback);
+            return this.View(model);
         }
         
         [HttpGet]
         public ActionResult Submitted()
         {
-            this.TempData["InfoMessage"] = FeedbackSubmitMessage;
             return this.View();
         }
     }

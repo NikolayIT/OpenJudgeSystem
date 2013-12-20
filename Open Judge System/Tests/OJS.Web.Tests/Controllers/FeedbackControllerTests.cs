@@ -12,6 +12,7 @@
     using OJS.Data.Models;
     using OJS.Tests.Common;
     using OJS.Web.Controllers;
+    using OJS.Web.ViewModels.Feedback;
 
     [TestClass]
     public class FeedbackControllerTests : TestClassBase
@@ -25,16 +26,15 @@
         {
             var controller = new FeedbackController(EmptyOjsData);
             var result = controller.Index() as ViewResult;
-            var model = result.Model as FeedbackReport;
 
-            Assert.IsNotNull(model);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void IndexActionShouldReturnTheModelIfPostIsNotValid()
         {
-            var feedback = new FeedbackReport
+            var feedback = new FeedbackViewModel
             {
                 Name = "Ivaylo",
                 Content = "Test",
