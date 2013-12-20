@@ -1,8 +1,10 @@
 ﻿@using OJS.Common.Extensions
 @using OJS.Common.Models
+@using Resource = Resources.Areas.Contests.Views.SubmissionsView;
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
+
 @{
-    ViewBag.Title = string.Format("Решение №{0} от {1} към задача {2}", Model.Id, Model.UserName, Model.ProblemName);
+    ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName, Model.ProblemName);
 }
 
 @section styles {
@@ -32,24 +34,24 @@
 }
 
 <ol class="breadcrumb">
-    <li><a href="/">Начало</a></li>
-    <li><a href="/Submissions">Решения</a></li>
+    <li><a href="/">@Resource.Home</a></li>
+    <li><a href="/Submissions">@Resource.Submissions</a></li>
     <li class="active">@Model.Id</li>
 </ol>
 
 <h2>@ViewBag.Title</h2>
-<a class="btn btn-sm btn-primary" href="#SourceCode">Виж кода</a>
+<a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
 @if (User.IsAdmin())
 {
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">Промяна</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">Изтриване</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">Тестове</a>
-    <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">Профил на автора</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">Ретест</a>
+    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
+    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
+    <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
+    <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
+    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>
     <div class="clearfix"></div>
     if (!string.IsNullOrWhiteSpace(Model.ProcessingComment))
     {
-        <h2>Резултат от изпълнението:</h2>
+        <h2>@Resource.Execution_result:</h2>
         <pre>@Model.ProcessingComment</pre>
     }
 }
@@ -57,34 +59,34 @@
 
 @if (Model.IsDeleted)
 {
-    <div class="alert alert-danger">Това решение е изтрито!!!</div>
+    <div class="alert alert-danger">@Resource.Submission_is_deleted</div>
 }
 
 @if (!Model.Processed)
 {
     if (Model.Processing)
     {
-        <div class="alert alert-info">Решението се изпълнява в момента... Моля бъдете търпеливи.</div>
+        <div class="alert alert-info">@Resource.Submission_is_processing</div>
     }
     else
     {
-        <div class="alert alert-info">Решението е в опашката и скоро ще се изпълни. Моля бъдете търпеливи.</div>
+        <div class="alert alert-info">@Resource.Submission_in_queue</div>
     }
 }
 else
 {
     if (!Model.IsCompiledSuccessfully)
     {
-        <div class="alert alert-danger">Възникнала е грешка по време на компилацията</div>
+        <div class="alert alert-danger">@Resource.Compile_time_error_occured</div>
     }
     else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
     {
-        <h2 class="text-success">Успешна компилация.</h2>
+        <h2 class="text-success">@Resource.Compiled_successfully</h2>
     }
 
     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
     {
-        <h2>Резултат от компилацията:</h2>
+        <h2>@Resource.Compilation_result:</h2>
         <pre>@Model.CompilerComment</pre>
     }
 }
@@ -98,49 +100,49 @@ else
         if (testResult.ResultType == TestRunResultType.CorrectAnswer)
         {
             className = "text-success";
-            testResultText = "Верен отговор";
+            testResultText = Resource.Answer_correct;
         }
         else if (testResult.ResultType == TestRunResultType.WrongAnswer)
         {
             className = "text-danger";
-            testResultText = "Грешен отговор";
+            testResultText = Resource.Answer_incorrect;
         }
         else if (testResult.ResultType == TestRunResultType.MemoryLimit)
         {
             className = "text-danger";
-            testResultText = "Недостатъчна памет";
+            testResultText = Resource.Memory_limit;
         }
         else if (testResult.ResultType == TestRunResultType.TimeLimit)
         {
             className = "text-danger";
-            testResultText = "Недостатъчно време";
+            testResultText = Resource.Time_limit;
         }
         else if (testResult.ResultType == TestRunResultType.RunTimeError)
         {
             className = "text-danger";
-            testResultText = "Грешка по време на изпълнение";
+            testResultText = Resource.Runtime_error;
         }
 
         <h3 class="@className">
             @if (testResult.IsTrialTest)
             {
-                @:Нулев тест №@testResult.Order
+                @:@string.Format("{0}{1}", Resource.Zero_test, testResult.Order)
             }
             else
             {
-                @:Тест №@testResult.Order
+                @:@string.Format("{0}{1}", Resource.Test, testResult.Order)
             }
             (@testResultText)
             @if (User.IsAdmin())
             {
-                <small>Run №@testResult.Id</small>
-                <small><a href="/Administration/Tests/Details/@testResult.TestId">Test №@testResult.TestId</a></small>
+                <small>@string.Format("{0}{1}",Resource.Run, testResult.Id)</small>
+                <small><a href="/Administration/Tests/Details/@testResult.TestId">@string.Format("{0}{1}", Resource.Test, testResult.TestId)</a></small>
             }
         </h3>
 
         if (testResult.IsTrialTest)
         {
-            <div>Нулевите тестове не се броят в крайния резултат.</div>
+            <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
         if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment))
@@ -178,10 +180,10 @@ else
             }
         }
 
-        <div>Използвано време: @string.Format("{0:0.000}", testResult.TimeUsed / 1000.0) s</div>
-        <div>Използванa памет: @string.Format("{0:0.00}", testResult.MemoryUsed / 1024.0 / 1024.0) MB</div>
+        <div>@Resource.Time_used: @string.Format("{0:0.000}", testResult.TimeUsed / 1000.0) s</div>
+        <div>@Resource.Memory_used: @string.Format("{0:0.00}", testResult.MemoryUsed / 1024.0 / 1024.0) MB</div>
     }
 }
 
-<h3 id="SourceCode">Source code</h3>
+<h3 id="SourceCode">@Resource.Source_code</h3>
 <textarea id="code">@Model.ContentAsString</textarea>

@@ -11,6 +11,8 @@
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Contests.General;
+
     public class SubmissionsController : BaseController
     {
         public SubmissionsController(IOjsData data)
@@ -29,17 +31,17 @@
 
             if (submission == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid submission id was provided!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.CompeteGeneral.Submission_not_found);
             }
 
             if (!User.IsAdmin() && submission.IsDeleted)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid submission id was provided!");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.CompeteGeneral.Submission_not_found);
             }
 
             if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "This submission is not yours!");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.CompeteGeneral.Submission_not_made_by_user);
             }
 
             return this.View(submission);

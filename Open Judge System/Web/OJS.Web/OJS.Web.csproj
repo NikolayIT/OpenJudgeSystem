@@ -479,6 +479,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CompeteRegister.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.bg.designer.cs">
+      <DependentUpon>SubmissionsView.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsView.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.bg.Designer.cs">
       <DependentUpon>ProfileViewModels.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -986,7 +996,6 @@
     <Folder Include="App_GlobalResources\Areas\Contests\Views\Contests\" />
     <Folder Include="App_GlobalResources\Areas\Contests\Views\List\" />
     <Folder Include="App_GlobalResources\Areas\Contests\Views\Results\" />
-    <Folder Include="App_GlobalResources\Areas\Contests\Views\Submissions\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Users\Models\" />
@@ -1260,6 +1269,16 @@
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Compete\CompeteRegister.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CompeteRegister.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsView.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Submissions\SubmissionsView.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsView.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Users\ViewModels\ProfileViewModels.bg.resx">
