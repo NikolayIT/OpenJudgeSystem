@@ -9,7 +9,6 @@
     @using (Html.BeginForm("Create", "Contests", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
 
         <fieldset>
             <legend>Основна информация</legend>
@@ -203,6 +202,11 @@
             <br />
         </fieldset>
         <br />
+        <fieldset>
+            <legend>Видове решения</legend>
+                @Html.EditorFor(m => m.SubmisstionTypes)
+        </fieldset>
+        <hr />
         <div class="row">
             <div class="editor-label col-xs-3">
                 <button type="submit" class="btn btn-primary pull-right">Създай</button>

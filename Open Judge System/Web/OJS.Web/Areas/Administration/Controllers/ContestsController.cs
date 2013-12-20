@@ -46,7 +46,10 @@
         [HttpGet]
         public ActionResult Create()
         {
-            return View(new ModelType());
+            var newContest = new ModelType();
+            newContest.SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
+
+            return View(newContest);
         }
 
         [HttpPost]
@@ -56,6 +59,16 @@
             if (model != null && ModelState.IsValid)
             {
                 var contest = model.ToEntity;
+
+                model.SubmisstionTypes.Each(s =>
+                    {
+                        if (s.IsChecked)
+                        {
+                            var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                            contest.SubmissionTypes.Add(submission);
+                        }
+                    });
+
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 

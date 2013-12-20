@@ -14,6 +14,8 @@
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Contests.ContestsGeneral;
+
     public class ResultsController : BaseController
     {
         public ResultsController(IOjsData data)
@@ -37,12 +39,12 @@
 
             if (participant == null)
             {
-                throw new HttpException((int)HttpStatusCode.Unauthorized, "You are not registered for this exam!");
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.User_is_not_registered_for_exam);
             }
 
             if (!problem.ShowResults)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this problem are not available.");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }
 
             var results =
@@ -78,7 +80,7 @@
 
             if (contest == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid contest Id was provided.");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
             // if the results are not visible and the participant is not registered for the contest
@@ -86,7 +88,7 @@
             if (!contest.ResultsArePubliclyVisible &&
                 !this.Data.Participants.Any(id, this.UserProfile.Id, official))
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, "The results for this contest are not available");
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
             // TODO: Extract choosing the best submission logic to separate repository method?
@@ -133,7 +135,7 @@
 
             if (contest == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, "Invalid contest Id was provided.");
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
             var model = new ContestFullResultsViewModel

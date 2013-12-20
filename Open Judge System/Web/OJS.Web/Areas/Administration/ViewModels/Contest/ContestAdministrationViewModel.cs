@@ -35,7 +35,6 @@
                     Description = contest.Description,
                     LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                     OrderBy = contest.OrderBy,
-                    SubmisstionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
                 };
@@ -61,7 +60,6 @@
                     PracticePassword = this.PracticePassword,
                     Description = this.Description,
                     LimitBetweenSubmissions = this.LimitBetweenSubmissions,
-                    SubmissionTypes = this.SubmisstionTypes.Select(st => st.ToEntity).ToList(),
                     OrderBy = this.OrderBy,
                     CreatedOn = this.CreatedOn.GetValueOrDefault(),
                     ModifiedOn = this.ModifiedOn,
@@ -71,7 +69,7 @@
 
         public ContestAdministrationViewModel()
         {
-            this.SubmisstionTypes = new HashSet<SubmissionTypeViewModel>();
+            this.SubmisstionTypes = new List<SubmissionTypeViewModel>();
         }
 
         [Display(Name = "№")]
@@ -133,7 +131,7 @@
         public int? CategoryId { get; set; }
 
         [Display(Name = "Тип решения")]
-        [UIHint("SubmissionTypeMultiSelect")]
-        public IEnumerable<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
+        [UIHint("SubmissionTypeCheckBoxes")]
+        public IList<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.ViewModels {
+namespace Resources.Areas.Contests.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.ViewModels {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ContestsViewModels {
+    public class ResultsSimple {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ContestsViewModels() {
+        internal ResultsSimple() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.ViewModels {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.ViewModels.ContestsViewModels", typeof(ContestsViewModels).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.Results.ResultsSimple", typeof(ResultsSimple).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,56 @@ namespace Resources.Areas.Contests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Detailed results.
         /// </summary>
-        public static string Name {
+        public static string Detailed_results {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("Detailed_results", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Парола.
+        ///   Looks up a localized string similar to Home.
         /// </summary>
-        public static string Password {
+        public static string Home {
             get {
-                return ResourceManager.GetString("Password", resourceCulture);
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Въпрос.
+        ///   Looks up a localized string similar to Results.
         /// </summary>
-        public static string Question {
+        public static string Simple_results {
             get {
-                return ResourceManager.GetString("Question", resourceCulture);
+                return ResourceManager.GetString("Simple_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results for {0}.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
             }
         }
     }

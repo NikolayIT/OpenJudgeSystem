@@ -97,6 +97,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This contest results are not available!.
+        /// </summary>
+        public static string Contest_results_not_available {
+            get {
+                return ResourceManager.GetString("Contest_results_not_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid request!.
         /// </summary>
         public static string Invalid_request {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.ViewModels {
+namespace Resources.Areas.Contests.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.ViewModels {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ContestsViewModels {
+    public class ListIndex {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ContestsViewModels() {
+        internal ListIndex() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.ViewModels {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.ViewModels.ContestsViewModels", typeof(ContestsViewModels).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.List.ListIndex", typeof(ListIndex).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,47 @@ namespace Resources.Areas.Contests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Categories.
         /// </summary>
-        public static string Name {
+        public static string Categories {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("Categories", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Парола.
+        ///   Looks up a localized string similar to Contests.
         /// </summary>
-        public static string Password {
+        public static string Contests {
             get {
-                return ResourceManager.GetString("Password", resourceCulture);
+                return ResourceManager.GetString("Contests", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Въпрос.
+        ///   Looks up a localized string similar to Heirarchy.
         /// </summary>
-        public static string Question {
+        public static string Hierarchy {
             get {
-                return ResourceManager.GetString("Question", resourceCulture);
+                return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contests archive.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }

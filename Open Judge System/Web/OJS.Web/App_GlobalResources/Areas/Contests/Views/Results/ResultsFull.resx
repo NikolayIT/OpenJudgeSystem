@@ -118,87 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Answer_correct" xml:space="preserve">
-    <value>Верен отговор</value>
+    <value>Correct answer</value>
   </data>
   <data name="Answer_incorrect" xml:space="preserve">
-    <value>Грешен отговор</value>
+    <value>Wrong answer</value>
   </data>
-  <data name="Authors_profile" xml:space="preserve">
-    <value>Профил на автора</value>
-  </data>
-  <data name="Compilation_result" xml:space="preserve">
-    <value>Резултат от компилацията:</value>
-  </data>
-  <data name="Compiled_successfully" xml:space="preserve">
-    <value>Успешна компилация.</value>
-  </data>
-  <data name="Compile_time_error_occured" xml:space="preserve">
-    <value>Възникнала е грешка по време на компилацията.</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Изтриване</value>
-  </data>
-  <data name="Execution_result" xml:space="preserve">
-    <value>Резултат от изпълнението</value>
+  <data name="Full_results" xml:space="preserve">
+    <value>Detailed results</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Начало</value>
+    <value>Home</value>
   </data>
   <data name="Memory_limit" xml:space="preserve">
-    <value>Недостатъчна памет</value>
+    <value>Memory limit</value>
   </data>
-  <data name="Retest" xml:space="preserve">
-    <value>Ретест</value>
+  <data name="No_solution" xml:space="preserve">
+    <value>No solution</value>
+  </data>
+  <data name="Public_results" xml:space="preserve">
+    <value>Public results</value>
   </data>
   <data name="Runtime_error" xml:space="preserve">
-    <value>Грешка по време на изпълнение</value>
-  </data>
-  <data name="Submissions" xml:space="preserve">
-    <value>Решения</value>
-  </data>
-  <data name="Submission_in_queue" xml:space="preserve">
-    <value>Решението е в опашката и скоро ще се изпълни. Моля бъдете търпеливи.</value>
-  </data>
-  <data name="Submission_is_deleted" xml:space="preserve">
-    <value>Това решение е изтрито!!!</value>
-  </data>
-  <data name="Submission_is_processing" xml:space="preserve">
-    <value>Решението се изпълнява в момента... Моля бъдете търпеливи.</value>
-  </data>
-  <data name="Tests" xml:space="preserve">
-    <value>Тестове</value>
+    <value>Run-time error</value>
   </data>
   <data name="Time_limit" xml:space="preserve">
-    <value>Недостатъчно време</value>
+    <value>Time limit</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Решение №{0} от {1} към задача {2}</value>
+    <value>Full results: {0}</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Промяна</value>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
   </data>
-  <data name="View_code" xml:space="preserve">
-    <value>Виж кода</value>
-  </data>
-  <data name="Memory_used" xml:space="preserve">
-    <value>Използвана памет</value>
-  </data>
-  <data name="Run" xml:space="preserve">
-    <value>Изпълнение №</value>
-  </data>
-  <data name="Source_code" xml:space="preserve">
-    <value>Сорс код</value>
-  </data>
-  <data name="Test" xml:space="preserve">
-    <value>Тест №</value>
-  </data>
-  <data name="Time_used" xml:space="preserve">
-    <value>Използвано време</value>
-  </data>
-  <data name="Zero_test" xml:space="preserve">
-    <value>Нулев тест №</value>
-  </data>
-  <data name="Zero_tests_not_included_in_result" xml:space="preserve">
-    <value>Резултата от нулевите тестове не се включва към крайния резултат.</value>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

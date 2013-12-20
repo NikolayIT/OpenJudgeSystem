@@ -1,12 +1,14 @@
 ﻿@using OJS.Web.Areas.Contests.ViewModels
+@using Resource = Resources.Areas.Contests.Views.ListIndex
+
 @model IEnumerable<ContestViewModel>
 @{
-    ViewBag.Title = "Архив състезания";
+    ViewBag.Title = Resource.Title;
 }
 
 <ol class="breadcrumb">
-    <li><a href="/">Начало</a></li>
-    <li class="active">Състезания</li>
+    <li><a href="/">@Resource.Home</a></li>
+    <li class="active">@Resource.Contests</li>
 </ol>
 
 @section Scripts {
@@ -26,9 +28,7 @@
                               x.HasChildren("HasChildren");
                           })
                           .Read(read => read
-                              .Action("ReadCategories", "List", new { area = "Contests" })
-                  )
-              )
+                              .Action("ReadCategories", "List", new { area = "Contests" })))
               .Events(x =>
               {
                   x.Select("expander.categorySelected");
@@ -38,8 +38,8 @@
         @if (User.IsAdmin())
         {
             <br />
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/ContestCategories">Категории &raquo;</a></p>
-            <p class="pull-right"><a class="btn btn-primary" href="/Administration/ContestCategories/Hierarchy">Йерархия &raquo;</a></p>
+            <p class="pull-left"><a class="btn btn-primary" href="/Administration/ContestCategories">@Resource.Categories &raquo;</a></p>
+            <p class="pull-right"><a class="btn btn-primary" href="/Administration/ContestCategories/Hierarchy">@Resource.Hierarchy &raquo;</a></p>
             <div class="clearfix"></div>
         }
     </div>

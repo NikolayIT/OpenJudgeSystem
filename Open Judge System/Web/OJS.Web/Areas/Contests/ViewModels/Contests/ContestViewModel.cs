@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
 
     using OJS.Data.Models;
+
+    using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
 
     public class ContestViewModel
     {
@@ -50,6 +53,7 @@
 
         public int Id { get; set; }
 
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string Name { get; set; }
 
         public string Description { get; set; }

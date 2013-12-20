@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.ViewModels {
+namespace Resources.Areas.Contests.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.ViewModels {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ContestsViewModels {
+    public class ListByType {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ContestsViewModels() {
+        internal ListByType() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.ViewModels {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.ViewModels.ContestsViewModels", typeof(ContestsViewModels).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.List.ListByType", typeof(ListByType).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,11 @@ namespace Resources.Areas.Contests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Contests where {0} is allowed.
         /// </summary>
-        public static string Name {
+        public static string Contests_with_allowed {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Парола.
-        /// </summary>
-        public static string Password {
-            get {
-                return ResourceManager.GetString("Password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Въпрос.
-        /// </summary>
-        public static string Question {
-            get {
-                return ResourceManager.GetString("Question", resourceCulture);
+                return ResourceManager.GetString("Contests_with_allowed", resourceCulture);
             }
         }
     }

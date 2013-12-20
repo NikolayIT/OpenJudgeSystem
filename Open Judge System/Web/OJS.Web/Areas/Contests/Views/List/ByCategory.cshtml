@@ -1,5 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.ContestCategoryViewModel
 
+@using Resource = Resources.Areas.Contests.Views.ListByCategory;
+
 <h3>@Model.CategoryName</h3>
 <div>
     @if (Model.Contests.Any())
@@ -14,46 +16,46 @@
                     <td>
                         @if (contest.CanBeCompeted)
                         {
-                            @Html.RouteLink("Участвай", "Contests_compete", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-success" })
+                            @Html.RouteLink(Resource.Compete, "Contests_compete", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-success" })
                             if (contest.HasContestPassword)
                             {
-                                <div class="glyphicon glyphicon-lock text-white"></div>
+                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
                             }
                             if (contest.HasContestQuestions)
                             {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="Has questions to be answered"></div>
+                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                             }
-                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
+                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
                         }
                         @if (contest.ResultsArePubliclyVisible)
                         {
-                            <a class="btn btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">Резултати</a>
-                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.OfficialParticipants</span>
+                            <a class="btn btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Results</a>
+                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
                         }
                     </td>
                     <td>
                         @if (contest.CanBePracticed)
                         {
-                            @Html.RouteLink("Практикувай", "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
                             if (contest.HasPracticePassword)
                             {
-                                <div class="glyphicon glyphicon-lock text-white" title="Състезанието е защитено с парола"></div>
+                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
                             }
                             if (contest.HasPracticeQuestions)
                             {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="За да участвате в състезанието, трябва да отговорите на въпроси"></div>
+                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                             }
-                            <div class="glyphicon glyphicon-user text-white" title="Участници"></div> <span>@contest.PracticeParticipants</span>
+                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
                         }
                     </td>
                     <td>
-                        <div class="glyphicon glyphicon-file text-white" title="Брой задачи"></div> <span>@contest.ProblemsCount</span>
+                        <div class="glyphicon glyphicon-file text-white" title="@Resource.Problems_count"></div> <span>@contest.ProblemsCount</span>
                     </td>
                     @if (User.IsAdmin())
                     {
                         <td>
-                            <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
-                            <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='Tasks'></span></a>
+                            <a href="/Administration/Contest/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span></a>
+                            <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span></a>
                         </td>
                     }
                 </tr>
@@ -86,7 +88,7 @@
         }
         else
         {
-            <p class="lead text-warning">Съжаляваме, но избраната категория е празна.</p>
+            <p class="lead text-warning">@Resource.Category_is_empty</p>
         }
     }
 </div>

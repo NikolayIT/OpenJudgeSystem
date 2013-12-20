@@ -129,6 +129,9 @@
   <data name="Contest_not_found" xml:space="preserve">
     <value>Невалидно състезание!</value>
   </data>
+  <data name="Contest_results_not_available" xml:space="preserve">
+    <value>Резултатите за това състезание не са достъпни!</value>
+  </data>
   <data name="Invalid_request" xml:space="preserve">
     <value>Невалидни данни!</value>
   </data>

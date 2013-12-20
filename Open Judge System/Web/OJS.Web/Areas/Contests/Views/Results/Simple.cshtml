@@ -1,24 +1,32 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
+@using Resource = Resources.Areas.Contests.Views.ResultsSimple
+
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = string.Format(Resource.Title, Model.Name);
 }
 
 @section Styles {
     <link href="/Content/Contests/results-page.css" rel="stylesheet" />
 }
 
-<h1>Резултати за @ViewBag.Title</h1>
+<ol class="breadcrumb">
+    <li><a href="/">@Resource.Home</a></li>
+    <li><a href="@ContestsHelper.GetUrl(Model.Id, Model.Name)">@Model.Name</a></li>
+    <li class="active">@Resource.Simple_results</li>
+</ol>
+
+<h1>@ViewBag.Title</h1>
 
 @if (User.IsAdmin())
 {
-    <div>@Html.ActionLink("Подробни резултати", "Full", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
+    <div>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
 }
 
 <table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
     <thead>
         <tr>
-            <th>Потребител</th>
+            <th>@Resource.User</th>
             @foreach (var problem in Model.Problems)
             {
                 if (problem.ShowResults)
@@ -26,7 +34,7 @@
                     <th>@problem.Name</th>
                 }
             }
-            <th>Общо</th>
+            <th>@Resource.Total</th>
         </tr>
     </thead>
     <tbody>
