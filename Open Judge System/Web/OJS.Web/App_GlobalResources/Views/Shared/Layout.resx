@@ -165,6 +165,9 @@
   <data name="Roles" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>

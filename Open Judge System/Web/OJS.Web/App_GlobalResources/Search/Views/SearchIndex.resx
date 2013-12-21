@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SystemName" xml:space="preserve">
-    <value>Open Judge System (OJS)</value>
+  <data name="Placeholder" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="SystemVersion" xml:space="preserve">
-    <value>1.0.2968.20131221</value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
 </root>

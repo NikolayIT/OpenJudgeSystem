@@ -1,0 +1,13 @@
+﻿@using Resource = Resources.Search.Views.SearchIndex
+
+<div class="row">
+    @using (Html.BeginForm("Results", "Search", FormMethod.Get))
+    {
+        <div class="col-xs-3 no-padding-right">
+            <input type="text" class="form-control" name="searchTerm" placeholder="@Resource.Placeholder" />
+        </div>
+        <div class="col-xs-1">
+            <input class="btn btn-default" type="submit" value="@Resource.Search" />
+        </div>
+    }
+</div>

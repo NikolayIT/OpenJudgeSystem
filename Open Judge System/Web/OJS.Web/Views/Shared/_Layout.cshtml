@@ -103,15 +103,18 @@
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
-                <div class="col-sm-3 navbar-left search-form">
+                <div class="col-md-3 hidden-sm navbar-left search-form">
                     <form class="navbar-form" role="search" action="/Search/Results">
                         <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Search" name="searchTerm" id="searchTerm">
+                            <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">
                             <div class="input-group-btn">
                                 <button class="btn btn-default btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="col-sm-1 hidden-lg hidden-md hidden-xs btn-search-small navbar-left">
+                    <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
                 </div>
             </div>
         </div>

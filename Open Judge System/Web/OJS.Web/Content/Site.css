@@ -111,14 +111,20 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* Code mirror fix for the matrix theme */
-.cm-s-the-matrix div.CodeMirror-selected { background: #2D2D2D !important; }
-.cm-s-the-matrix span.cm-builtin { color: #2A9FD6 !important; }
+.cm-s-the-matrix div.CodeMirror-selected {
+    background: #2D2D2D !important;
+}
+
+.cm-s-the-matrix span.cm-builtin {
+    color: #2A9FD6 !important;
+}
 
 /* Kendo  */
 .k-alt,
 .k-separator {
   background-color: #282828;
 }
+
 .k-state-selected {
     background-color: initial;
 }
@@ -137,6 +143,26 @@ input[type="checkbox"].input-validation-error {
 
 .search-form {
     line-height: 36px;
+}
+
+.btn-search-small {
+    line-height: 48px;
+}
+
+@media (min-width: 991px) {
+    .nav > li > a {
+        padding: 15px 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .nav > li > a {
+        padding: 15px 7px;
+    }
+}
+
+.no-padding-right {
+    padding-right: 0;
 }
 
 #cookies-notification {

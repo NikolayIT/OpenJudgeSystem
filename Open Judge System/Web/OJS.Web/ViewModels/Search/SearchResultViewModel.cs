@@ -35,6 +35,17 @@
             }
         }
 
+        public static Expression<Func<UserProfile, SearchResultViewModel>> FromUser
+        {
+            get
+            {
+                return user => new SearchResultViewModel
+                {
+                    Name = user.UserName
+                };
+            }
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

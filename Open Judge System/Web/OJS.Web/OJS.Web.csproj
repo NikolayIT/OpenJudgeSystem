@@ -649,6 +649,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Selected.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Search\Views\SearchIndex.bg.Designer.cs">
+      <DependentUpon>SearchIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Search\Views\SearchIndex.designer.cs">
+      <DependentUpon>SearchIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Search\Views\SearchResults.bg.Designer.cs">
+      <DependentUpon>SearchResults.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Search\Views\SearchResults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchResults.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Views\Shared\LoginPartial.bg.designer.cs">
       <DependentUpon>LoginPartial.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1058,7 +1078,7 @@
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SearchResultGroupViewModel.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1506,6 +1526,26 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Selected.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Search\Views\SearchIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchIndex.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Search.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Search\Views\SearchIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Search.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Search\Views\SearchResults.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchResults.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Search.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Search\Views\SearchResults.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchResults.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Search.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Views\Shared\LoginPartial.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

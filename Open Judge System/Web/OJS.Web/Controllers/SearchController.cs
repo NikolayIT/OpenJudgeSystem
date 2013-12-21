@@ -14,21 +14,36 @@
         {
         }
 
+        public ActionResult Index()
+        {
+            return this.View();
+        }
+
+
         public ActionResult Results(string searchTerm)
         {
             var results = new SearchResultGroupViewModel(searchTerm);
 
-            var problemSearchResults = this.Data.Problems.All()
-                                    .Where(x => !x.IsDeleted && x.Name.Contains(searchTerm))
-                                    .Select(SearchResultViewModel.FromProblem);
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var problemSearchResults = this.Data.Problems.All()
+                                        .Where(x => !x.IsDeleted && x.Name.Contains(searchTerm))
+                                        .Select(SearchResultViewModel.FromProblem);
 
-            results.SearchResults.Add(SearchResultType.Problem, problemSearchResults);
+                results.SearchResults.Add(SearchResultType.Problem, problemSearchResults);
 
-            var contestSearchResults = this.Data.Contests.All()
-                                    .Where(x => x.IsVisible && !x.IsDeleted && x.Name.Contains(searchTerm))
-                                    .Select(SearchResultViewModel.FromContest);
+                var contestSearchResults = this.Data.Contests.All()
+                                        .Where(x => x.IsVisible && !x.IsDeleted && x.Name.Contains(searchTerm))
+                                        .Select(SearchResultViewModel.FromContest);
+                
+                results.SearchResults.Add(SearchResultType.Contest, contestSearchResults);
 
-            results.SearchResults.Add(SearchResultType.Contest, contestSearchResults);
+                var userSearchResults = this.Data.Users.All()
+                                        .Where(x => !x.IsDeleted && x.UserName.Contains(searchTerm))
+                                        .Select(SearchResultViewModel.FromUser);
+
+                results.SearchResults.Add(SearchResultType.User, userSearchResults);
+            }
 
             return this.View(results);
         }
