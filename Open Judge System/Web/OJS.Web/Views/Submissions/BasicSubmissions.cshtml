@@ -70,7 +70,7 @@
                             {
                                 <div>
                                     <strong class="text-primary">@Model[i].Points / @Model[i].ProblemMaximumPoints</strong>
-                                    <small>@string.Format("{0:F2} MB", Model[i].MaxUsedMemory / 1024.0 / 1024.0) | @string.Format("{0:F3} sec.", (decimal)Model[i].MaxUsedTime / 1000)</small>
+                                    <small>@string.Format("{0:F2} MB", Model[i].MaxUsedMemory / 1024.0 / 1024.0) | @string.Format("{0:F3} sec.", (decimal)Model[i].MaxUsedTime / 1000) | @Model[i].SubmissionType</small>
                                 </div>
                                 for (int j = 0; j < tests.Count; j++)
                                 {

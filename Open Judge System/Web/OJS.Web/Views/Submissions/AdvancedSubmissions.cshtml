@@ -34,7 +34,7 @@
                 );
             columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
                         "<div>" +
-                        "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully) #" +
+                        "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
                     "</div>"
                 ).Width("25%");
             if (User.IsAdmin())
