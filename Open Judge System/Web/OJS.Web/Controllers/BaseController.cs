@@ -8,8 +8,6 @@
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
-    using Kendo.Mvc.Extensions;
-
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;

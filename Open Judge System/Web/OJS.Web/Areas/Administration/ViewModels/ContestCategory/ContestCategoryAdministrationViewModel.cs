@@ -29,23 +29,6 @@
             }
         }
 
-        [ExcludeFromExcelAttribute]
-        public ContestCategory ToEntity
-        {
-            get
-            {
-                return new ContestCategory
-                {
-                    Id = this.Id ?? default(int),
-                    Name = this.Name,
-                    OrderBy = this.OrderBy,
-                    IsVisible = this.IsVisible,
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn
-                };
-            }
-        }
-
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
@@ -59,10 +42,27 @@
 
         [Display(Name = "Подредба")]
         [Required(ErrorMessage = "Подредбата е задължителна!")]
-        [UIHint("PositiveInteger")]
+        [UIHint("Integer")]
         public int OrderBy { get; set; }
 
         [Display(Name = "Видимост")]
         public bool IsVisible { get; set; }
+
+        public ContestCategory GetEntity(ContestCategory category = null)
+        {
+            if (category == null)
+            {
+                category = new ContestCategory();
+            }
+
+            category.Id = this.Id ?? default(int);
+            category.Name = this.Name;
+            category.OrderBy = this.OrderBy;
+            category.IsVisible = this.IsVisible;
+            category.CreatedOn = this.CreatedOn.GetValueOrDefault();
+            category.ModifiedOn = this.ModifiedOn;
+
+            return category;
+        }
     }
 }

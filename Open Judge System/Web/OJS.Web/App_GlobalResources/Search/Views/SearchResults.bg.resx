@@ -126,8 +126,11 @@
   <data name="Problems" xml:space="preserve">
     <value>Задачи</value>
   </data>
+  <data name="Search_term_too_short" xml:space="preserve">
+    <value>Критерия за търсене трябва да е поне {0} символа.</value>
+  </data>
   <data name="Title" xml:space="preserve">
-    <value>Резултати от търсене на {0}</value>
+    <value>Резултати от търсене на "{0}"</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Потребители</value>

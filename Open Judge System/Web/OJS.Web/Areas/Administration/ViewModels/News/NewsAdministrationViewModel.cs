@@ -78,7 +78,7 @@
         [StringLength(int.MaxValue, MinimumLength = 100, ErrorMessage = "Съдържанието трябва да бъде поне 100 символа")]
         [DataType(DataType.MultilineText)]
         [AllowHtml]
-        [UIHint("MultiLineText")]
+        [UIHint("HtmlContent")]
         public string Content { get; set; }
 
         [Display(Name = "Видимост")]

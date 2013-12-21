@@ -1011,6 +1011,8 @@
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\CategoryDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\HtmlContent.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Integer.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

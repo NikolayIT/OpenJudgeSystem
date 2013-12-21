@@ -23,28 +23,6 @@
             }
         }
 
-        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
-        {
-            return st =>
-            {
-                var submissionViewModel = new SubmissionTypeViewModel
-                    {
-                        Id = st.Id,
-                        Name = st.Name,
-                        IsChecked = false,
-                    };
-
-                var selectedSubmission = contest.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
-
-                if (selectedSubmission != null)
-                {
-                    submissionViewModel.IsChecked = true;
-                }
-
-                contest.SubmisstionTypes.Add(submissionViewModel);
-            };
-        }
-
         [JsonIgnore]
         public SubmissionType ToEntity
         {
@@ -62,5 +40,27 @@
         public string Name { get; set; }
 
         public bool IsChecked { get; set; }
+
+        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
+        {
+            return st =>
+            {
+                var submissionViewModel = new SubmissionTypeViewModel
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    IsChecked = false,
+                };
+
+                var selectedSubmission = contest.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
+
+                if (selectedSubmission != null)
+                {
+                    submissionViewModel.IsChecked = true;
+                }
+
+                contest.SubmisstionTypes.Add(submissionViewModel);
+            };
+        }
     }
 }

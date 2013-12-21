@@ -5,78 +5,84 @@
     ViewBag.Title = string.Format(Resource.Title, Model.SearchTerm);
 }
 
-<h1>@ViewBag.Title</h1>
 
-@foreach (var resultGroup in Model.SearchResults)
+@if (Model.IsSearchTermValid)
 {
-    if (resultGroup.Key == SearchResultType.Problem && resultGroup.Value.Any())
+    <h1>@ViewBag.Title</h1>
+    
+    foreach (var resultGroup in Model.SearchResults)
     {
-        int problemCounter = 0;
-        <div class="row">
-            <h4 class="col-lg-12">@Resource.Problems: </h4>
-            <hr />
-            @foreach (var problemResult in resultGroup.Value)
-            {
-                <div class="col-lg-3 well">
-                    <div><span class="text-white">@problemResult.Name</span> @Resource.From_contest </div>
-                    <a href="@ContestsHelper.GetUrl(problemResult.ParentId.Value, problemResult.ParentName)">
-                        @problemResult.ParentName
-                    </a>
-                </div>
+        if (resultGroup.Key == SearchResultType.Problem && resultGroup.Value.Any())
+        {
+            int problemCounter = 0;
+            <div class="row">
+                <h4 class="col-lg-12">@Resource.Problems: </h4>
+                <hr />
+                @foreach (var problemResult in resultGroup.Value)
                 {
-                    problemCounter++;
-                    if (problemCounter % 4 == 0)
+                    <div class="col-lg-3 well">
+                        <div><span class="text-white">@problemResult.Name</span> @Resource.From_contest </div>
+                        <a href="@ContestsHelper.GetUrl(problemResult.ParentId.Value, problemResult.ParentName)">
+                            @problemResult.ParentName
+                        </a>
+                    </div>
                     {
-                        @:</div><div class="row">
+                        problemCounter++;
+                        if (problemCounter % 4 == 0)
+                        {
+                            @:</div><div class="row">
+                        }
                     }
                 }
-            }
-        </div>
-    }
+            </div>
+        }
 
-    if (resultGroup.Key == SearchResultType.Contest && resultGroup.Value.Any())
-    {
-        int contestCounter = 0;
-        <div class="row">
-            <h4 class="col-lg-12">@Resource.Contests: </h4>
-            <hr />
-            @foreach (var contestResult in resultGroup.Value)
-            {
-                <div class="col-lg-3 well">
-                    <a href="@ContestsHelper.GetUrl(contestResult.Id, contestResult.Name)">
-                        @contestResult.Name
-                    </a>
-                </div>
+        if (resultGroup.Key == SearchResultType.Contest && resultGroup.Value.Any())
+        {
+            int contestCounter = 0;
+            <div class="row">
+                <h4 class="col-lg-12">@Resource.Contests: </h4>
+                <hr />
+                @foreach (var contestResult in resultGroup.Value)
                 {
-                    contestCounter++;
-                    if (contestCounter % 4 == 0)
+                    <div class="col-lg-3 well">
+                        <a href="@ContestsHelper.GetUrl(contestResult.Id, contestResult.Name)">
+                            @contestResult.Name
+                        </a>
+                    </div>
                     {
-                        @:</div><div class="row">
+                        contestCounter++;
+                        if (contestCounter % 4 == 0)
+                        {
+                            @:</div><div class="row">
+                        }
                     }
                 }
-            }
-        </div>
-    }
+            </div>
+        }
 
-    if (resultGroup.Key == SearchResultType.User && resultGroup.Value.Any())
-    {
-        int userCounter = 0;
-        <div class="row">
-            <h4 class="col-lg-12">@Resource.Users: </h4>
-            <hr />
-            @foreach (var userResult in resultGroup.Value)
-            {
-                <div class="col-lg-3 well">
-                    @Html.ActionLink(userResult.Name, "Index", new { controller = "Profile", area = "Users", id = userResult.Name })
-                </div>
+        if (resultGroup.Key == SearchResultType.User && resultGroup.Value.Any())
+        {
+            int userCounter = 0;
+            <div class="row">
+                <h4 class="col-lg-12">@Resource.Users: </h4>
+                <hr />
+                @foreach (var userResult in resultGroup.Value)
                 {
-                    userCounter++;
-                    if (userCounter % 4 == 0)
+                    <div class="col-lg-3 well">
+                        @Html.ActionLink(userResult.Name, "Index", new { controller = "Profile", area = "Users", id = userResult.Name })
+                    </div>
                     {
-                        @:</div><div class="row">
+                        userCounter++;
+                        if (userCounter % 4 == 0)
+                        {
+                            @:</div><div class="row">
+                        }
                     }
                 }
-            }
-        </div>
+            </div>
+        }
     }
+} else {
+    <p class="lead text-warning">@string.Format(Resource.Search_term_too_short, Model.MinimumSearchTermLength)</p>
 }

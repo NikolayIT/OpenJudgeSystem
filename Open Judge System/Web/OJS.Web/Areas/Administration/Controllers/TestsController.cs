@@ -331,7 +331,7 @@
         public ActionResult FullInput(int id)
         {
             var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id).InputDataAsString;
-            return this.Content(result, "text/html");
+            return this.Content(HttpUtility.HtmlEncode(result), "text/html");
         }
 
         /// <summary>
@@ -342,7 +342,7 @@
         public ActionResult FullOutput(int id)
         {
             var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id).OutputDataAsString;
-            return this.Content(result, "text/html");
+            return this.Content(HttpUtility.HtmlEncode(result), "text/html");
         }
 
         /// <summary>

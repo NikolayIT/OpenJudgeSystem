@@ -5,6 +5,7 @@ namespace OJS.Web.Areas.Administration.Controllers
     using System.Linq;
     using System.Web.Mvc;
 
+    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -35,19 +36,21 @@ namespace OJS.Web.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseCreate(request, model.ToEntity);
+            return this.BaseCreate(request, model.GetEntity());
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            var report = this.Data.FeedbackReports.GetById(model.Id.Value);
+            this.BaseUpdate(request, model.GetEntity(report));
+            return Json(new[] { model }.ToDataSourceResult(request));
         }
 
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            return this.BaseDestroy(request, model.GetEntity());
         }
     }
 }

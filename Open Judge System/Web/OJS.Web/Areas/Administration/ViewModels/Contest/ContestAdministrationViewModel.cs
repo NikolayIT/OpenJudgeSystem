@@ -47,32 +47,6 @@
             }
         }
 
-        [ExcludeFromExcelAttribute]
-        public Contest ToEntity
-        {
-            get
-            {
-                return new Contest
-                {
-                    Id = this.Id ?? default(int),
-                    Name = this.Name,
-                    StartTime = this.StartTime,
-                    EndTime = this.EndTime,
-                    PracticeStartTime = this.PracticeStartTime,
-                    PracticeEndTime = this.PracticeEndTime,
-                    IsVisible = this.IsVisible,
-                    CategoryId = this.CategoryId,
-                    ContestPassword = this.ContestPassword,
-                    PracticePassword = this.PracticePassword,
-                    Description = this.Description,
-                    LimitBetweenSubmissions = this.LimitBetweenSubmissions,
-                    OrderBy = this.OrderBy,
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn,
-                };
-            }
-        }
-
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
@@ -119,7 +93,7 @@
 
         [Display(Name = "Подредба")]
         [Required(ErrorMessage = "Подредбата е задължителна!")]
-        [UIHint("PositiveInteger")]
+        [UIHint("Integer")]
         public int OrderBy { get; set; }
 
         [Display(Name = "Видимост")]
@@ -136,5 +110,31 @@
         public IList<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
 
         public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
+
+        public Contest GetEntity(Contest contest = null)
+        {
+            if (contest == null)
+            {
+                contest = new Contest();
+            }
+
+            contest.Id = this.Id ?? default(int);
+            contest.Name = this.Name;
+            contest.StartTime = this.StartTime;
+            contest.EndTime = this.EndTime;
+            contest.PracticeStartTime = this.PracticeStartTime;
+            contest.PracticeEndTime = this.PracticeEndTime;
+            contest.IsVisible = this.IsVisible;
+            contest.CategoryId = this.CategoryId;
+            contest.ContestPassword = this.ContestPassword;
+            contest.PracticePassword = this.PracticePassword;
+            contest.Description = this.Description;
+            contest.LimitBetweenSubmissions = this.LimitBetweenSubmissions;
+            contest.OrderBy = this.OrderBy;
+            contest.CreatedOn = this.CreatedOn.GetValueOrDefault();
+            contest.ModifiedOn = this.ModifiedOn;
+
+            return contest;
+        }
     }
 }

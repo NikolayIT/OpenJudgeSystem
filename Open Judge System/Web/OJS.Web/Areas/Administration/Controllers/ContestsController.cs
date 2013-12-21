@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -12,6 +13,7 @@
 
     using OJS.Common.Extensions;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
@@ -56,9 +58,21 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(ModelType model)
         {
+            if (model.StartTime >= model.EndTime)
+            {
+                ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                return this.View(model);
+            }
+
+            if (model.PracticeStartTime >= model.PracticeEndTime)
+            {
+                ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                return this.View(model);
+            }
+
             if (model != null && ModelState.IsValid)
             {
-                var contest = model.ToEntity;
+                var contest = model.GetEntity();
 
                 model.SubmisstionTypes.Each(s =>
                     {
@@ -98,16 +112,48 @@
                 .Select(SubmissionTypeViewModel.ViewModel)
                 .Each(SubmissionTypeViewModel.ApplySelectedTo(contest));
 
-            return View(contest);
+            return this.View(contest);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ModelType model)
         {
+            if (model.StartTime >= model.EndTime)
+            {
+                ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                return this.View(model);
+            }
+
+            if (model.PracticeStartTime >= model.PracticeEndTime)
+            {
+                ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                return this.View(model);
+            }
+
             if (model != null && ModelState.IsValid)
             {
-                this.Data.Contests.Update(model.ToEntity);
+                var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
+
+                if (contest == null)
+                {
+                    TempData.Add("DangerMessage", "Състезанието не е намерено");
+                    return this.RedirectToAction("Index");
+                }
+
+                contest = model.GetEntity(contest);
+                contest.SubmissionTypes.Clear();
+
+                model.SubmisstionTypes.Each(s =>
+                {
+                    if (s.IsChecked)
+                    {
+                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                        contest.SubmissionTypes.Add(submission);
+                    }
+                });
+
+                this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
                 TempData.Add("InfoMessage", "Състезанието беше променено успешно");
@@ -120,7 +166,7 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            return this.BaseDestroy(request, model.GetEntity());
         }
 
         public ZipFileResult Export(int id, bool compete)

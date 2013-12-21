@@ -55,6 +55,7 @@
             return this.Content(json, "application/json");
         }
 
+        // TODO: Extract this method in the submissions repository
         private IEnumerable<SubmissionViewModel> GetLastFiftySubmissions()
         {
             // TODO: add language type

@@ -5,11 +5,12 @@
 }
 
 <h2>@ViewBag.Title @Model.Name</h2>
-
 <div id="create-form" class="container">
     @using (Html.BeginForm("Edit", "Contests", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.CreatedOn)
+        @Html.ValidationMessage("DateTimeError")
 
         @Html.Partial("_ContestEditor", Model)
         <hr />

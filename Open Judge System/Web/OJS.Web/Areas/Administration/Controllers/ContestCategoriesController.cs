@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
+    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -35,19 +37,23 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseCreate(request, model.ToEntity);
+            return this.BaseCreate(request, model.GetEntity());
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            var contest = this.Data.ContestCategories.GetById(model.Id.Value);
+            this.BaseUpdate(request, model.GetEntity(contest));
+            return this.Json(new[] { model }.ToDataSourceResult(request));
         }
 
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            var contest = this.Data.ContestCategories.GetById(model.Id.Value);
+            this.CascadeDeleteCategories(contest);
+            return this.Json(ModelState.ToDataSourceResult());
         }
 
         public ActionResult Hierarchy()
@@ -71,6 +77,17 @@
         {
             var category = this.Data.ContestCategories.GetById(id);
             category.ParentId = to;
+            this.Data.SaveChanges();
+        }
+
+        private void CascadeDeleteCategories(ContestCategory contest)
+        {
+            foreach (var children in contest.Children.ToList())
+            {
+                this.CascadeDeleteCategories(children);
+            }
+
+            this.Data.ContestCategories.Delete(contest);
             this.Data.SaveChanges();
         }
     }

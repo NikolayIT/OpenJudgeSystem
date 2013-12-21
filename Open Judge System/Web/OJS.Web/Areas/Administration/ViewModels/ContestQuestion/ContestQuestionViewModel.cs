@@ -29,25 +29,6 @@
             }
         }
 
-        public ContestQuestion ToEntity
-        {
-            get
-            {
-                return new ContestQuestion
-                {
-                    Id = this.Id ?? default(int),
-                    ContestId = this.ContestId ?? default(int),
-                    Text = this.Text,
-                    AskOfficialParticipants = this.AskOfficialParticipants,
-                    AskPracticeParticipants = this.AskPracticeParticipats,
-                    Type = this.Type,
-                    RegularExpressionValidation = this.RegularExpressionValidation,
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn,
-                };
-            }
-        }
-
         public int? Id { get; set; }
 
         public int? ContestId { get; set; }
@@ -70,5 +51,25 @@
 
         [Display(Name = "Reg-Ex валидация")]
         public string RegularExpressionValidation { get; set; }
+
+        public ContestQuestion ToEntity(ContestQuestion question = null)
+        {
+            if (question == null)
+            {
+                question = new ContestQuestion();
+            }
+
+            question.Id = this.Id ?? default(int);
+            question.ContestId = this.ContestId ?? default(int);
+            question.Text = this.Text;
+            question.AskOfficialParticipants = this.AskOfficialParticipants;
+            question.AskPracticeParticipants = this.AskPracticeParticipats;
+            question.Type = this.Type;
+            question.RegularExpressionValidation = this.RegularExpressionValidation;
+            question.CreatedOn = this.CreatedOn.GetValueOrDefault();
+            question.ModifiedOn = this.ModifiedOn;
+
+            return question;
+        }
     }
 }

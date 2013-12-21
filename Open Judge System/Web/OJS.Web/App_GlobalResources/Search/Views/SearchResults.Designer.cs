@@ -88,7 +88,16 @@ namespace Resources.Search.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search results for {0}.
+        ///   Looks up a localized string similar to The search term must be at least {0} characters..
+        /// </summary>
+        public static string Search_term_too_short {
+            get {
+                return ResourceManager.GetString("Search_term_too_short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search results for &quot;{0}&quot;.
         /// </summary>
         public static string Title {
             get {

@@ -12,7 +12,7 @@
 
     public class FeedbackReportViewModel : AdministrationViewModel
     {
-        [ExcludeFromExcelAttribute]
+        [ExcludeFromExcel]
         public static Expression<Func<FeedbackReport, FeedbackReportViewModel>> FromFeedbackReport
         {
             get
@@ -27,24 +27,6 @@
                     IsFixed = feedback.IsFixed,
                     CreatedOn = feedback.CreatedOn,
                     ModifiedOn = feedback.ModifiedOn
-                };
-            }
-        }
-
-        [ExcludeFromExcel]
-        public FeedbackReport ToEntity
-        {
-            get
-            {
-                return new FeedbackReport
-                {
-                    Id = this.Id ?? default(int),
-                    Name = this.Name,
-                    Email = this.Email,
-                    Content = this.Content,
-                    IsFixed = this.IsFixed,
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn,
                 };
             }
         }
@@ -78,5 +60,23 @@
 
         [Display(Name = "Поправен")]
         public bool IsFixed { get; set; }
+
+        public FeedbackReport GetEntity(FeedbackReport report = null)
+        {
+            if (report == null)
+            {
+                report = new FeedbackReport();
+            }
+
+            report.Id = this.Id ?? default(int);
+            report.Name = this.Name;
+            report.Email = this.Email;
+            report.Content = this.Content;
+            report.IsFixed = this.IsFixed;
+            report.CreatedOn = this.CreatedOn.GetValueOrDefault();
+            report.ModifiedOn = this.ModifiedOn;
+
+            return report;
+        }
     }
 }
