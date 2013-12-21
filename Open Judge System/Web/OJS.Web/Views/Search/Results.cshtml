@@ -1,0 +1,9 @@
+﻿@model OJS.Web.ViewModels.Search.SearchResultGroupViewModel
+
+@{
+    ViewBag.Title = "Results for " + Model.SearchTerm;
+}
+
+<h1>@ViewBag.Title</h1>
+
+@Html.DisplayForModel()

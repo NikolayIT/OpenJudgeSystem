@@ -715,6 +715,7 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestCategory\ContestCategoryAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ContestQuestion\ContestQuestionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -770,6 +771,7 @@
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
     <Compile Include="Controllers\RedirectsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
@@ -804,6 +806,8 @@
     <Compile Include="ViewModels\News\AllNewsViewModel.cs" />
     <Compile Include="ViewModels\News\NewsViewModel.cs" />
     <Compile Include="ViewModels\News\SelectedViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
@@ -985,6 +989,8 @@
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeCheckBoxes.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\CategoryDropDown.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\Edit.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -1051,6 +1057,8 @@
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
+    <Content Include="Views\Search\Results.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SearchResultGroupViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,10 +1,13 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.SubmissionType
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
 
-    using OJS.Data.Models;
     using Newtonsoft.Json;
+
+    using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.ViewModels.Contest;
 
     public class SubmissionTypeViewModel
     {
@@ -18,6 +21,28 @@
                     Name = st.Name
                 };
             }
+        }
+
+        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
+        {
+            return st =>
+            {
+                var submissionViewModel = new SubmissionTypeViewModel
+                    {
+                        Id = st.Id,
+                        Name = st.Name,
+                        IsChecked = false,
+                    };
+
+                var selectedSubmission = contest.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
+
+                if (selectedSubmission != null)
+                {
+                    submissionViewModel.IsChecked = true;
+                }
+
+                contest.SubmisstionTypes.Add(submissionViewModel);
+            };
         }
 
         [JsonIgnore]

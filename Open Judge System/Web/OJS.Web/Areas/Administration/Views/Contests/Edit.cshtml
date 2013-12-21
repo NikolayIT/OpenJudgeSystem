@@ -4,9 +4,10 @@
     ViewBag.Title = "Създаване на състезание";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title @Model.Name</h2>
+
 <div id="create-form" class="container">
-    @using (Html.BeginForm("Create", "Contests", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Contests", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
@@ -14,7 +15,7 @@
         <hr />
         <div class="row">
             <div class="editor-label col-xs-3">
-                <button type="submit" class="btn btn-primary pull-right">Създай</button>
+                <button type="submit" class="btn btn-primary pull-right">Промени</button>
             </div>
             <div class="editor-label col-xs-4">
                 <a href="/Administration/Contests/" class="btn btn-primary">Назад</a>

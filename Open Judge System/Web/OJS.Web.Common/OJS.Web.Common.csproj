@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="PrincipalExtensions.cs" />
     <Compile Include="OjsUserManager.cs" />
+    <Compile Include="SearchResultType.cs" />
     <Compile Include="SystemMessage.cs" />
     <Compile Include="SystemMessageCollection.cs" />
     <Compile Include="SystemMessageType.cs" />

@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Contest
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -11,10 +12,14 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
-    using System.Collections.Generic;
 
     public class ContestAdministrationViewModel : AdministrationViewModel
     {
+        public ContestAdministrationViewModel()
+        {
+            this.SubmisstionTypes = new List<SubmissionTypeViewModel>();
+        }
+
         [ExcludeFromExcelAttribute]
         public static Expression<Func<Contest, ContestAdministrationViewModel>> ViewModel
         {
@@ -35,6 +40,7 @@
                     Description = contest.Description,
                     LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                     OrderBy = contest.OrderBy,
+                    SelectedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
                 };
@@ -65,11 +71,6 @@
                     ModifiedOn = this.ModifiedOn,
                 };
             }
-        }
-
-        public ContestAdministrationViewModel()
-        {
-            this.SubmisstionTypes = new List<SubmissionTypeViewModel>();
         }
 
         [Display(Name = "№")]
@@ -133,5 +134,7 @@
         [Display(Name = "Тип решения")]
         [UIHint("SubmissionTypeCheckBoxes")]
         public IList<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
+
+        public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
     }
 }

@@ -49,7 +49,7 @@
             var newContest = new ModelType();
             newContest.SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
 
-            return View(newContest);
+            return this.View(newContest);
         }
 
         [HttpPost]
@@ -72,17 +72,49 @@
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", "Състезанието беше добавена успешно");
+                TempData.Add("InfoMessage", "Състезанието беше добавено успешно");
                 return this.RedirectToAction("Index");
             }
 
-            return View(model);
+            return this.View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var contest = this.Data.Contests
+                .All()
+                .Where(con => con.Id == id)
+                .Select(ContestAdministrationViewModel.ViewModel)
+                .FirstOrDefault();
+
+            if (contest == null)
+            {
+                TempData.Add("DangerMessage", "Състезанието не е намерено");
+                return this.RedirectToAction("Index");
+            }
+
+            this.Data.SubmissionTypes.All()
+                .Select(SubmissionTypeViewModel.ViewModel)
+                .Each(SubmissionTypeViewModel.ApplySelectedTo(contest));
+
+            return View(contest);
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            if (model != null && ModelState.IsValid)
+            {
+                this.Data.Contests.Update(model.ToEntity);
+                this.Data.SaveChanges();
+
+                TempData.Add("InfoMessage", "Състезанието беше променено успешно");
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(model);
         }
 
         [HttpPost]
@@ -229,7 +261,7 @@
                     Value = cat.Id.ToString(CultureInfo.InvariantCulture),
                 });
 
-            return Json(dropDownData, JsonRequestBehavior.AllowGet);
+            return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
     }
 }

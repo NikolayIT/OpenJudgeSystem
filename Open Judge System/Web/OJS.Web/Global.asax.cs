@@ -12,9 +12,8 @@
     {
         protected void Application_Start()
         {
-            //// Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
-
+            // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
+            // Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
             AreaRegistration.RegisterAllAreas();
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

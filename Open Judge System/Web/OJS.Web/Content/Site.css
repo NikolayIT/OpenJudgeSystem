@@ -126,3 +126,15 @@ input[type="checkbox"].input-validation-error {
 .width100percent {
     width: 100%;
 }
+
+.search-box {
+    height: 32px;
+}
+
+.btn-search {
+    padding: 4px 12px;
+}
+
+.search-form {
+    line-height: 36px;
+}

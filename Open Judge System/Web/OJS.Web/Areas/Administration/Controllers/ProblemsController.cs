@@ -211,7 +211,6 @@
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
             // TODO: Add validation with ModelState.IsValid
-
             if (problem != null && ModelState.IsValid)
             {
                 var existingProblem = this.Data.Problems.All()
