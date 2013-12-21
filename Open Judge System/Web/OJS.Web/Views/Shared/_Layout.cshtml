@@ -147,8 +147,14 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - @Global.SystemName @Global.SystemVersion - running on Windows. <a href="https://github.com/NikolayIT/OpenJudgeSystem" target="_blank">Open source project.</a></p>
+            <p>&copy; @DateTime.Now.Year - @Global.SystemName @Global.SystemVersion - running on Windows. <a href="https://github.com/NikolayIT/OpenJudgeSystem" target="_blank">@Resource.Open_source_project</a></p>
         </footer>
+    </div>
+
+    <!-- Cookie usage notification -->
+    <div id="cookies-notification">
+        @Html.Raw(Resource.Cookies_notification)
+        <a id="cookies-notification-button" href="#">@Resource.Cookies_notification_OK</a>
     </div>
 
     <!-- JavaScripts -->

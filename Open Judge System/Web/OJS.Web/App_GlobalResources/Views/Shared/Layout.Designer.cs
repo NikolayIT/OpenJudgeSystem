@@ -115,6 +115,24 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;a href=&quot;http://en.wikipedia.org/wiki/HTTP_cookie&quot; target=&quot;_blank&quot;&gt;Cookies&lt;/a&gt; help us deliver our services. By using our services, you agree to our use of cookies..
+        /// </summary>
+        public static string Cookies_notification {
+            get {
+                return ResourceManager.GetString("Cookies_notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string Cookies_notification_OK {
+            get {
+                return ResourceManager.GetString("Cookies_notification_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback {
@@ -147,6 +165,15 @@ namespace Resources.Views.Shared {
         public static string News {
             get {
                 return ResourceManager.GetString("News", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open source project..
+        /// </summary>
+        public static string Open_source_project {
+            get {
+                return ResourceManager.GetString("Open_source_project", resourceCulture);
             }
         }
         

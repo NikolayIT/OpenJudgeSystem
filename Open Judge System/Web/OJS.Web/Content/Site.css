@@ -138,3 +138,22 @@ input[type="checkbox"].input-validation-error {
 .search-form {
     line-height: 36px;
 }
+
+#cookies-notification {
+    position: fixed !important;
+    z-index: 99999998 !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 13px;
+    display: block;
+    bottom: 0;
+    background-color: #000000;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    display: none;
+}
+
+#cookies-notification-button {
+    color: #00AA00;
+}

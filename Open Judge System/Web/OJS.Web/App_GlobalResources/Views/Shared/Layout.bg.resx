@@ -135,6 +135,12 @@
   <data name="Contests" xml:space="preserve">
     <value>Състезания</value>
   </data>
+  <data name="Cookies_notification" xml:space="preserve">
+    <value>За да доставяме нашите услуги, ние използваме &lt;a href="http://bg.wikipedia.org/wiki/HTTP-%D0%B1%D0%B8%D1%81%D0%BA%D0%B2%D0%B8%D1%82%D0%BA%D0%B0" target="_blank"&gt;HTTP бисквитки&lt;/a&gt;. Използвайки сайта, вие се съгласявате с това.</value>
+  </data>
+  <data name="Cookies_notification_OK" xml:space="preserve">
+    <value>Да</value>
+  </data>
   <data name="Feedback" xml:space="preserve">
     <value>Обратна връзка</value>
   </data>
@@ -146,6 +152,9 @@
   </data>
   <data name="News" xml:space="preserve">
     <value>Новини</value>
+  </data>
+  <data name="Open_source_project" xml:space="preserve">
+    <value>Проект с отворен код.</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Други</value>

@@ -1,5 +1,15 @@
 ﻿$(document).ready(function () {
     kendo.culture("en-GB");
+
+    if (getCookie("cookies-notification") != "ok") {
+        $("#cookies-notification").show();
+    }
+
+    $("#cookies-notification-button").click(function () {
+        $("#cookies-notification").hide();
+        setCookie("cookies-notification", "ok", 3650);
+        return false;
+    });
 });
 
 function CreateExportToExcelButton(elementId) {
@@ -39,4 +49,21 @@ function CreateKendoSubmitParamsButton(buttonId, elementId) {
 
     // Update the 'href' attribute
     $exportLink.attr('href', href);
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
 }

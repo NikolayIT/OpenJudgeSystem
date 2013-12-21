@@ -135,6 +135,12 @@
   <data name="Contests" xml:space="preserve">
     <value>Contests</value>
   </data>
+  <data name="Cookies_notification" xml:space="preserve">
+    <value>&lt;a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank"&gt;Cookies&lt;/a&gt; help us deliver our services. By using our services, you agree to our use of cookies.</value>
+  </data>
+  <data name="Cookies_notification_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="Feedback" xml:space="preserve">
     <value>Feedback</value>
   </data>
@@ -146,6 +152,9 @@
   </data>
   <data name="News" xml:space="preserve">
     <value>News</value>
+  </data>
+  <data name="Open_source_project" xml:space="preserve">
+    <value>Open source project.</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Other</value>
