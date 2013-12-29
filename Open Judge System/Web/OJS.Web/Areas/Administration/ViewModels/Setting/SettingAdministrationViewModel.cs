@@ -21,19 +21,6 @@
             }
         }
 
-        [ExcludeFromExcel]
-        public Setting ToEntity
-        {
-            get
-            {
-                return new Setting
-                {
-                    Name = this.Name,
-                    Value = this.Value,
-                };
-            }
-        }
-
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
         [UIHint("SingleLineText")]
@@ -43,5 +30,13 @@
         [Required(ErrorMessage = "Стойността е задължителна!")]
         [UIHint("MultiLineText")]
         public string Value { get; set; }
+
+        public Setting GetEntityModel(Setting model = null)
+        {
+            model = model ?? new Setting();
+            model.Name = this.Name;
+            model.Value = this.Value;
+            return model;
+        }
     }
 }

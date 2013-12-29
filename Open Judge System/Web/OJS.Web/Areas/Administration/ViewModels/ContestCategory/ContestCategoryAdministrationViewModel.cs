@@ -10,7 +10,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class ContestCategoryAdministrationViewModel : AdministrationViewModel
+    public class ContestCategoryAdministrationViewModel : AdministrationViewModel<ContestCategory>
     {
         [ExcludeFromExcelAttribute]
         public static Expression<Func<ContestCategory, ContestCategoryAdministrationViewModel>> ViewModel
@@ -29,40 +29,33 @@
             }
         }
 
+        [DatabaseProperty]
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Подредба")]
         [Required(ErrorMessage = "Подредбата е задължителна!")]
         [UIHint("Integer")]
         public int OrderBy { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Видимост")]
         public bool IsVisible { get; set; }
 
-        public ContestCategory GetEntity(ContestCategory category = null)
+        public override ContestCategory GetEntityModel(ContestCategory model = null)
         {
-            if (category == null)
-            {
-                category = new ContestCategory();
-            }
-
-            category.Id = this.Id ?? default(int);
-            category.Name = this.Name;
-            category.OrderBy = this.OrderBy;
-            category.IsVisible = this.IsVisible;
-            category.CreatedOn = this.CreatedOn.GetValueOrDefault();
-            category.ModifiedOn = this.ModifiedOn;
-
-            return category;
+            model = model ?? new ContestCategory();
+            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

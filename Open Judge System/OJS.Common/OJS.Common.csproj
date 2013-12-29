@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeCalculator.cs" />
+    <Compile Include="DataAnnotations\DatabasePropertyAttribute.cs" />
     <Compile Include="Extensions\CompilerTypeExtensions.cs" />
     <Compile Include="Extensions\CompressStringExtensions.cs" />
     <Compile Include="DataAnnotations\ExcludeFromExcelAttribute.cs" />

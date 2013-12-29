@@ -14,8 +14,9 @@
     using OJS.Web.Areas.Administration.ViewModels.Roles;
     using OJS.Web.Controllers;
 
+    using DatabaseModelType = Microsoft.AspNet.Identity.EntityFramework.IdentityRole;
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel;
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
 
     public class RolesController : KendoGridAdministrationController
     {
@@ -28,7 +29,14 @@
         {
             return this.Data.Roles
                 .All()
-                .Select(ModelType.ViewModel);
+                .Select(ViewModelType.ViewModel);
+        }
+
+        public override object GetById(object id)
+        {
+            return this.Data.Roles
+                .All()
+                .FirstOrDefault(o => o.Id == (string)id);
         }
 
         public ActionResult Index()
@@ -37,23 +45,26 @@
         }
 
         [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             model.RoleId = Guid.NewGuid().ToString();
-
-            return this.BaseCreate(request, model.ToEntity);
+            this.BaseCreate(model.GetEntityModel());
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            var entity = this.GetById(model.RoleId) as DatabaseModelType;
+            this.BaseUpdate(model.GetEntityModel(entity));
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            this.BaseDestroy(model.RoleId);
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]

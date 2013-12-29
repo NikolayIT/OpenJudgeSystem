@@ -7,8 +7,10 @@
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using OJS.Common.DataAnnotations;
+    using System.Web.Mvc;
 
-    public class ContestQuestionViewModel : AdministrationViewModel
+    public class ContestQuestionViewModel : AdministrationViewModel<ContestQuestion>
     {
         public static Expression<Func<ContestQuestion, ContestQuestionViewModel>> ViewModel
         {
@@ -29,47 +31,43 @@
             }
         }
 
+        [DatabaseProperty]
+        [Display(Name = "№")]
+        [DefaultValue(null)]
+        [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
+        [DatabaseProperty]
         public int? ContestId { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Текст")]
         [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
         [StringLength(100, MinimumLength = 5)]
         public string Text { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Задаване към състезанията")]
         [DefaultValue(true)]
         public bool AskOfficialParticipants { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Задаване към упражненията")]
         [DefaultValue(true)]
         public bool AskPracticeParticipats { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Тип въпрос")]
         public ContestQuestionType Type { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Reg-Ex валидация")]
         public string RegularExpressionValidation { get; set; }
 
-        public ContestQuestion ToEntity(ContestQuestion question = null)
+        public override ContestQuestion GetEntityModel(ContestQuestion model = null)
         {
-            if (question == null)
-            {
-                question = new ContestQuestion();
-            }
-
-            question.Id = this.Id ?? default(int);
-            question.ContestId = this.ContestId ?? default(int);
-            question.Text = this.Text;
-            question.AskOfficialParticipants = this.AskOfficialParticipants;
-            question.AskPracticeParticipants = this.AskPracticeParticipats;
-            question.Type = this.Type;
-            question.RegularExpressionValidation = this.RegularExpressionValidation;
-            question.CreatedOn = this.CreatedOn.GetValueOrDefault();
-            question.ModifiedOn = this.ModifiedOn;
-
-            return question;
+            model = model ?? new ContestQuestion();
+            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

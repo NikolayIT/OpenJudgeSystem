@@ -18,8 +18,9 @@
 
     using OJS.Common.DataAnnotations;
     using OJS.Data;
+    using OJS.Web.Common.Interfaces;
 
-    public abstract class KendoGridAdministrationController : AdministrationController
+    public abstract class KendoGridAdministrationController : AdministrationController, IKendoGridAdministrationController
     {
         protected KendoGridAdministrationController(IOjsData data)
             : base(data)
@@ -27,6 +28,8 @@
         }
 
         public abstract IEnumerable GetData();
+
+        public abstract object GetById(object id);
 
         [HttpPost]
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
@@ -44,40 +47,31 @@
         }
 
         [NonAction]
-        protected ActionResult BaseCreate([DataSourceRequest]DataSourceRequest request, object model)
+        protected void BaseCreate(object model)
         {
-            var list = new List<object>();
-
             if (model != null && ModelState.IsValid)
             {
                 var itemForAdding = this.Data.Context.Entry(model);
                 itemForAdding.State = EntityState.Added;
                 this.Data.SaveChanges();
-                list.Add(model);
             }
-
-            return this.Json(list.ToDataSourceResult(request));
         }
 
         [NonAction]
-        protected ActionResult BaseUpdate([DataSourceRequest]DataSourceRequest request, object model)
+        protected void BaseUpdate(object model)
         {
-            var list = new List<object>();
-
             if (model != null && ModelState.IsValid)
             {
                 var itemForUpdating = this.Data.Context.Entry(model);
                 itemForUpdating.State = EntityState.Modified;
                 this.Data.SaveChanges();
-                list.Add(model);
             }
-
-            return this.Json(list.ToDataSourceResult(request));
         }
 
         [NonAction]
-        protected ActionResult BaseDestroy([DataSourceRequest]DataSourceRequest request, object model)
+        protected void BaseDestroy(object id)
         {
+            var model = this.GetById(id);
             if (model != null)
             {
                 var itemForDeletion = this.Data.Context.Entry(model);
@@ -87,8 +81,12 @@
                     this.Data.SaveChanges();
                 }
             }
+        }
 
-            return this.Json(ModelState.ToDataSourceResult());
+        [NonAction]
+        protected JsonResult GridOperation([DataSourceRequest]DataSourceRequest request, object model)
+        {
+            return Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
         }
 
         [NonAction]
@@ -98,7 +96,7 @@
             var dataTypeProperties = dataType.GetProperties();
             if (data == null || dataType == null)
             {
-                throw new Exception("GetData() and DataType must be override");
+                throw new Exception("GetData() and DataType must be overriden");
             }
 
             // Get the data representing the current grid state - page, sort and filter

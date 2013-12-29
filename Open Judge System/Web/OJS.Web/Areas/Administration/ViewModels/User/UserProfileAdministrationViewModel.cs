@@ -10,9 +10,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class UserProfileAdministrationViewModel : AdministrationViewModel
+    public class UserProfileAdministrationViewModel : AdministrationViewModel<UserProfile>
     {
-        [ExcludeFromExcel]
         public static Expression<Func<UserProfile, UserProfileAdministrationViewModel>> ViewModel
         {
             get
@@ -33,33 +32,6 @@
                     JobTitle = user.UserSettings.JobTitle,
                     CreatedOn = user.CreatedOn,
                     ModifiedOn = user.ModifiedOn,
-                };
-            }
-        }
-
-        [ExcludeFromExcel]
-        public UserProfile ToEntity
-        {
-            get
-            {
-                return new UserProfile
-                {
-                    Id = this.Id,
-                    UserName = this.UserName,
-                    Email = this.Email,
-                    UserSettings = new UserSettings
-                    {
-                        FirstName = this.FirstName,
-                        LastName = this.LastName,
-                        City = this.City,
-                        EducationalInstitution = this.EducationalInstitution,
-                        FacultyNumber = this.FacultyNumber,
-                        DateOfBirth = this.DateOfBirth,
-                        Company = this.Company,
-                        JobTitle = this.JobTitle,
-                    },
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn,
                 };
             }
         }
@@ -139,6 +111,30 @@
             {
                 return Calculator.Age(this.DateOfBirth) ?? default(byte);
             }
+        }
+
+        public override UserProfile GetEntityModel(UserProfile model = null)
+        {
+            model = model ?? new UserProfile();
+
+            model.Id = this.Id;
+            model.UserName = this.UserName;
+            model.Email = this.Email;
+            model.UserSettings = new UserSettings
+            {
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                City = this.City,
+                EducationalInstitution = this.EducationalInstitution,
+                FacultyNumber = this.FacultyNumber,
+                DateOfBirth = this.DateOfBirth,
+                Company = this.Company,
+                JobTitle = this.JobTitle,
+            };
+            model.CreatedOn = this.CreatedOn.GetValueOrDefault();
+            model.ModifiedOn = this.ModifiedOn;
+
+            return model;
         }
     }
 }

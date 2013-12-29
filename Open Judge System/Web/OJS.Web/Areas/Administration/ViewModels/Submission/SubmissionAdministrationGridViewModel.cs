@@ -10,7 +10,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     
-    public class SubmissionAdministrationGridViewModel : AdministrationViewModel
+    public class SubmissionAdministrationGridViewModel : AdministrationViewModel<Submission>
     {
         [ExcludeFromExcel]
         public static Expression<Func<Submission, SubmissionAdministrationGridViewModel>> ViewModel
@@ -76,6 +76,12 @@
                     throw new InvalidOperationException("Submission cannot be processed and processing at the same time.");
                 }
             }
+        }
+
+        public override Submission GetEntityModel(Submission model = null)
+        {
+            model = model ?? new Submission();
+            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

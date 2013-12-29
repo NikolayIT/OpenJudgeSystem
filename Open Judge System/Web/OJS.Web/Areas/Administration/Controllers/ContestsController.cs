@@ -19,7 +19,7 @@
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
     public class ContestsController : KendoGridAdministrationController
     {
@@ -37,7 +37,14 @@
             return this.Data.Contests
                 .All()
                 .Where(x => !x.IsDeleted)
-                .Select(ModelType.ViewModel);
+                .Select(ViewModelType.ViewModel);
+        }
+
+        public override object GetById(object id)
+        {
+            return this.Data.Contests
+                .All()
+                .FirstOrDefault(o => o.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -48,7 +55,7 @@
         [HttpGet]
         public ActionResult Create()
         {
-            var newContest = new ModelType();
+            var newContest = new ViewModelType();
             newContest.SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
 
             return this.View(newContest);
@@ -56,7 +63,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ModelType model)
+        public ActionResult Create(ViewModelType model)
         {
             if (model.StartTime >= model.EndTime)
             {
@@ -72,7 +79,7 @@
 
             if (model != null && ModelState.IsValid)
             {
-                var contest = model.GetEntity();
+                var contest = model.GetEntityModel();
 
                 model.SubmisstionTypes.Each(s =>
                     {
@@ -117,7 +124,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ModelType model)
+        public ActionResult Edit(ViewModelType model)
         {
             if (model.StartTime >= model.EndTime)
             {
@@ -141,7 +148,7 @@
                     return this.RedirectToAction("Index");
                 }
 
-                contest = model.GetEntity(contest);
+                contest = model.GetEntityModel(contest);
                 contest.SubmissionTypes.Clear();
 
                 model.SubmisstionTypes.Each(s =>
@@ -164,9 +171,10 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseDestroy(request, model.GetEntity());
+            this.BaseDestroy(model.Id);
+            return this.GridOperation(request, model);
         }
 
         public ZipFileResult Export(int id, bool compete)

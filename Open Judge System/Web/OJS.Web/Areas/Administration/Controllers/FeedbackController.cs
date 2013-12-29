@@ -12,7 +12,8 @@ namespace OJS.Web.Areas.Administration.Controllers
     using OJS.Web.Areas.Administration.ViewModels.FeedbackReport;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.FeedbackReport.FeedbackReportViewModel;
+    using DatabaseModelType = OJS.Data.Models.FeedbackReport;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.FeedbackReport.FeedbackReportViewModel;
 
     public class FeedbackController : KendoGridAdministrationController
     {
@@ -28,29 +29,38 @@ namespace OJS.Web.Areas.Administration.Controllers
                 .Select(FeedbackReportViewModel.FromFeedbackReport);
         }
 
+        public override object GetById(object id)
+        {
+            return this.Data.FeedbackReports
+                .All()
+                .FirstOrDefault(o => o.Id == (int)id);
+        }
+
         public ActionResult Index()
         {
             return this.View();
         }
 
         [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseCreate(request, model.GetEntity());
+            this.BaseCreate(model.GetEntityModel());
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var report = this.Data.FeedbackReports.GetById(model.Id.Value);
-            this.BaseUpdate(request, model.GetEntity(report));
-            return Json(new[] { model }.ToDataSourceResult(request));
+            var entity = this.GetById(model.Id) as DatabaseModelType;
+            this.BaseUpdate(model.GetEntityModel(entity));
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseDestroy(request, model.GetEntity());
+            this.BaseDestroy(model.Id);
+            return this.GridOperation(request, model);
         }
     }
 }

@@ -10,6 +10,7 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
+    using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
 
@@ -32,6 +33,13 @@
                 .Select(GridModelType.ViewModel);
         }
 
+        public override object GetById(object id)
+        {
+            return this.Data.Submissions
+                .All()
+                .FirstOrDefault(o => o.Id == (int)id);
+        }
+
         public ActionResult Index()
         {
             return this.View();
@@ -49,8 +57,7 @@
         {
             if (model != null && ModelState.IsValid)
             {
-                this.BaseCreate(new DataSourceRequest(), model.ToEntity);
-
+                this.BaseCreate(model.GetEntityModel());
                 this.TempData["InfoMessage"] = SuccessfulCreationMessage;
                 return this.RedirectToAction("Index");
             }
@@ -82,8 +89,8 @@
         {
             if (model != null && ModelState.IsValid)
             {
-                this.BaseUpdate(new DataSourceRequest(), model.ToEntity);
-
+                var entity = this.GetById(model.Id) as DatabaseModelType;
+                this.BaseUpdate(model.GetEntityModel(entity));
                 this.TempData["InfoMessage"] = SuccessfulEditMessage;
                 return this.RedirectToAction("Index");
             }
@@ -108,7 +115,7 @@
 
             return this.View(submission);
         }
-         
+
         public ActionResult ConfirmDelete(int id)
         {
             var submission = this.Data.Submissions

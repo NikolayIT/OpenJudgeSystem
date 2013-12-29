@@ -132,6 +132,9 @@
   <data name="Category_hierarchy" xml:space="preserve">
     <value>Category heirarchy</value>
   </data>
+  <data name="Checkers" xml:space="preserve">
+    <value>Checkers</value>
+  </data>
   <data name="Contests" xml:space="preserve">
     <value>Contests</value>
   </data>

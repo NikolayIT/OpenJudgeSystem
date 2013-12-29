@@ -11,9 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class SubmissionAdministrationViewModel : AdministrationViewModel
+    public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
     {
-        [ExcludeFromExcel]
         public static Expression<Func<Submission, SubmissionAdministrationViewModel>> ViewModel
         {
             get
@@ -31,46 +30,31 @@
             }
         }
 
-        [ExcludeFromExcel]
-        public Submission ToEntity
-        {
-            get
-            {
-                return new Submission
-                {
-                    Id = this.Id ?? default(int),
-                    ParticipantId = this.ParticipantId,
-                    ProblemId = this.ProblemId,
-                    Content = this.Content,
-                    SubmissionTypeId = this.SubmissionTypeId,
-                    Processed = false,
-                    Processing = false,
-                    CreatedOn = this.CreatedOn.GetValueOrDefault(),
-                    ModifiedOn = this.ModifiedOn,
-                };
-            }
-        }
-
+        [DatabaseProperty]
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Задача")]
         [Required(ErrorMessage = "Задачата е задължителна!")]
         [UIHint("ProblemComboBox")]
         public int? ProblemId { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Потребител")]
         [Required(ErrorMessage = "Потребителя е задължителен!")]
         [UIHint("ParticipantDropDownList")]
         public int? ParticipantId { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Тип")]
         [Required(ErrorMessage = "Типа е задължителен!")]
         [UIHint("SubmissionTypesDropDownList")]
         public int? SubmissionTypeId { get; set; }
 
+        [DatabaseProperty]
         [ScaffoldColumn(false)]
         public byte[] Content { get; set; }
 
@@ -88,6 +72,12 @@
             {
                 this.Content = value.Compress();
             }
+        }
+
+        public override Submission GetEntityModel(Submission model = null)
+        {
+            model = model ?? new Submission();
+            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

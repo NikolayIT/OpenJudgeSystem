@@ -12,7 +12,8 @@
     using OJS.Data.Models;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel;
+    using DatabaseModelType = OJS.Data.Models.ContestCategory;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel;
 
     public class ContestCategoriesController : KendoGridAdministrationController
     {
@@ -26,7 +27,14 @@
             return this.Data.ContestCategories
                 .All()
                 .Where(cat => !cat.IsDeleted)
-                .Select(ModelType.ViewModel);
+                .Select(ViewModelType.ViewModel);
+        }
+
+        public override object GetById(object id)
+        {
+            return this.Data.ContestCategories
+                .All()
+                .FirstOrDefault(o => o.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -35,21 +43,22 @@
         }
 
         [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseCreate(request, model.GetEntity());
+            this.BaseCreate(model.GetEntityModel());
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var contest = this.Data.ContestCategories.GetById(model.Id.Value);
-            this.BaseUpdate(request, model.GetEntity(contest));
-            return this.Json(new[] { model }.ToDataSourceResult(request));
+            var entity = this.GetById(model.Id) as DatabaseModelType;
+            this.BaseUpdate(model.GetEntityModel(entity));
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             var contest = this.Data.ContestCategories.GetById(model.Id.Value);
             this.CascadeDeleteCategories(contest);

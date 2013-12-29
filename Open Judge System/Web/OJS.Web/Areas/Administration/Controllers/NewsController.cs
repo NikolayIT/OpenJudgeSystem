@@ -10,7 +10,8 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
+    using DatabaseModelType = OJS.Data.Models.News;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
 
     public class NewsController : KendoGridAdministrationController
     {
@@ -23,7 +24,14 @@
         {
             return this.Data.News.All()
                 .Where(news => !news.IsDeleted)
-                .Select(ModelType.ViewModel);
+                .Select(ViewModelType.ViewModel);
+        }
+
+        public override object GetById(object id)
+        {
+            return this.Data.News
+                .All()
+                .FirstOrDefault(o => o.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -32,22 +40,26 @@
         }
 
         [HttpPost]
-        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseCreate(request, model.ToEntity);
+            this.BaseCreate(model.GetEntityModel());
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseUpdate(request, model.ToEntity);
+            var entity = this.GetById(model.Id) as DatabaseModelType;
+            this.BaseUpdate(model.GetEntityModel(entity));
+            return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            return this.BaseDestroy(request, model.ToEntity);
+            this.BaseDestroy(model.Id);
+            return this.GridOperation(request, model);
         }
     }
 }

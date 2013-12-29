@@ -106,6 +106,15 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checkers.
+        /// </summary>
+        public static string Checkers {
+            get {
+                return ResourceManager.GetString("Checkers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contests.
         /// </summary>
         public static string Contests {

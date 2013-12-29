@@ -13,7 +13,7 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using ModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileAdministrationViewModel;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileAdministrationViewModel;
 
     public class UsersController : KendoGridAdministrationController
     {
@@ -26,7 +26,14 @@
         {
             return this.Data.Users
                 .All()
-                .Select(ModelType.ViewModel);
+                .Select(ViewModelType.ViewModel);
+        }
+
+        public override object GetById(object id)
+        {
+            return this.Data.Users
+                .All()
+                .FirstOrDefault(o => o.Id == (string)id);
         }
 
         public ActionResult Index()
@@ -35,13 +42,14 @@
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var list = new List<ModelType>();
+            var list = new List<ViewModelType>();
 
             if (model != null && ModelState.IsValid)
             {
-                var itemForUpdating = this.Data.Context.Entry(model.ToEntity);
+                var userProfile = this.Data.Users.All().FirstOrDefault(u => u.Id == model.Id);
+                var itemForUpdating = this.Data.Context.Entry(model.GetEntityModel(userProfile));
                 itemForUpdating.State = EntityState.Modified;
                 this.Data.SaveChanges();
                 list.Add(model);
@@ -51,7 +59,7 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             throw new NotImplementedException();
         }

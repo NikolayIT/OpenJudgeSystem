@@ -10,28 +10,28 @@
     using OJS.Data;
     using OJS.Web.Controllers;
 
-    using DatabaseModelType = OJS.Data.Models.Setting;
-    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Setting.SettingAdministrationViewModel;
+    using DatabaseModelType = OJS.Data.Models.Checker;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Checker.CheckerAdministrationViewModel;
 
-    public class SettingsController : KendoGridAdministrationController
+    public class CheckersController : KendoGridAdministrationController
     {
-        public SettingsController(IOjsData data)
+        public CheckersController(IOjsData data)
             : base(data)
         {
         }
 
         public override IEnumerable GetData()
         {
-            return this.Data.Settings
+            return this.Data.Checkers
                 .All()
                 .Select(ViewModelType.ViewModel);
         }
 
         public override object GetById(object id)
         {
-            return this.Data.Settings
+            return this.Data.Checkers
                 .All()
-                .FirstOrDefault(o => o.Name == (string)id);
+                .FirstOrDefault(o => o.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -49,7 +49,7 @@
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var entity = this.GetById(model.Name) as DatabaseModelType;
+            var entity = this.GetById(model.Id) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
             return this.GridOperation(request, model);
         }
@@ -57,7 +57,7 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            this.BaseDestroy(model.Name);
+            this.BaseDestroy(model.Id);
             return this.GridOperation(request, model);
         }
     }

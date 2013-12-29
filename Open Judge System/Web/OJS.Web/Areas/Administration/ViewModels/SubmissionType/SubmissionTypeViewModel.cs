@@ -23,24 +23,6 @@
             }
         }
 
-        [JsonIgnore]
-        public SubmissionType ToEntity
-        {
-            get
-            {
-                return new SubmissionType
-                {
-                    Id = this.Id ?? default(int),
-                };
-            }
-        }
-
-        public int? Id { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsChecked { get; set; }
-
         public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
         {
             return st =>
@@ -61,6 +43,19 @@
 
                 contest.SubmisstionTypes.Add(submissionViewModel);
             };
+        }
+
+        public int? Id { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsChecked { get; set; }
+
+        public SubmissionType GetEntityModel(SubmissionType model = null)
+        {
+            model = model ?? new SubmissionType();
+            model.Id = this.Id.Value;
+            return model;
         }
     }
 }

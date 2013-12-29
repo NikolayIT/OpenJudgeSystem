@@ -132,6 +132,9 @@
   <data name="Category_hierarchy" xml:space="preserve">
     <value>Йерархия на категориите</value>
   </data>
+  <data name="Checkers" xml:space="preserve">
+    <value>Чекери</value>
+  </data>
   <data name="Contests" xml:space="preserve">
     <value>Състезания</value>
   </data>

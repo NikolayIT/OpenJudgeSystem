@@ -10,7 +10,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class FeedbackReportViewModel : AdministrationViewModel
+    public class FeedbackReportViewModel : AdministrationViewModel<FeedbackReport>
     {
         [ExcludeFromExcel]
         public static Expression<Func<FeedbackReport, FeedbackReportViewModel>> FromFeedbackReport
@@ -31,16 +31,19 @@
             }
         }
 
+        [DatabaseProperty]
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "Имейла е задължителен")]
         [DataType(DataType.EmailAddress)]
@@ -48,6 +51,7 @@
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Съдържание")]
         [Required(ErrorMessage = "Съдържанието е задължително")]
         [DataType(DataType.MultilineText)]
@@ -58,25 +62,14 @@
         [UIHint("NonEditable")]
         public string Username { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Поправен")]
         public bool IsFixed { get; set; }
 
-        public FeedbackReport GetEntity(FeedbackReport report = null)
+        public override FeedbackReport GetEntityModel(FeedbackReport model = null)
         {
-            if (report == null)
-            {
-                report = new FeedbackReport();
-            }
-
-            report.Id = this.Id ?? default(int);
-            report.Name = this.Name;
-            report.Email = this.Email;
-            report.Content = this.Content;
-            report.IsFixed = this.IsFixed;
-            report.CreatedOn = this.CreatedOn.GetValueOrDefault();
-            report.ModifiedOn = this.ModifiedOn;
-
-            return report;
+            model = model ?? new FeedbackReport();
+            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

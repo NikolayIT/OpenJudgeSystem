@@ -100,8 +100,8 @@
                 }
                 catch (Exception exception)
                 {
-                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
+                    this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = string.Format("Exception in CalculatePointsForSubmission: {0}", exception.Message);
                 }
 
                 submission.Processed = true;
