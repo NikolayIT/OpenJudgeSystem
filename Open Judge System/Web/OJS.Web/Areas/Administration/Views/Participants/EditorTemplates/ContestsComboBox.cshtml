@@ -1,0 +1,20 @@
+﻿@model int?
+
+@(Html.Kendo()
+    .ComboBoxFor(m => m)
+    .Name("ContestId")
+    .DataTextField("Name")
+    .DataValueField("Id")
+    .Filter(FilterType.Contains)
+    .MinLength(1)
+    .Placeholder("Изберете състезание")
+    .DataSource(data =>
+    {
+        data.ServerFiltering(true)
+            .Read(read =>
+            {
+                read.Action("Contests", "Participants")
+                    .Data(@<text> function () { return { text: $('\\#ContestId').data("kendoComboBox").input.val() };} </text>);
+            });
+    })
+    .HtmlAttributes(new { style = "width: 100%;" }))

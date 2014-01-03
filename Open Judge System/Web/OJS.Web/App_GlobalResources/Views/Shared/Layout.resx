@@ -162,6 +162,9 @@
   <data name="Other" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="Participants" xml:space="preserve">
+    <value>Participants</value>
+  </data>
   <data name="Problems" xml:space="preserve">
     <value>Problems</value>
   </data>

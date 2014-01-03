@@ -206,7 +206,7 @@
         <br />
         <div class="row">
             <div class="editor-label col-xs-5">
-                <button type="submit" class="btn btn-primary pull-right">Създай</button>
+                <button type="submit" id="create-submit" class="btn btn-primary pull-right">Създай</button>
             </div>
             <div class="editor-label col-xs-3">
                 <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
@@ -248,6 +248,7 @@
 
 @section scripts{
     <script src="~/Scripts/Administration/Problems/problems-create.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
 }
 
 

@@ -1,0 +1,83 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+
+@{
+    ViewBag.Title = "Детайли за задача";
+}
+
+<h2>@ViewBag.Title @Model.Name</h2>
+<div class="container">
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Name)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.Name
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.ContestName)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.ContestName
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.TimeLimit)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.TimeLimit
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.MemoryLimit)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.MemoryLimit
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.SourceCodeSizeLimit)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @if (Model.SourceCodeSizeLimit == null)
+        {
+            <text>Неограничен</text>
+        }
+        else
+        {
+            @Model.SourceCodeSizeLimit
+        }
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.MaximumPoints)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.MaximumPoints
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.Checker)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.Checker
+    </div>
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.OrderBy)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @Model.OrderBy
+    </div>
+    <br />
+    @Ajax.ActionLink("Покажи решенията", "GetSubmissions", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
+    @Ajax.ActionLink("Покажи ресурсите", "GetResources", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
+    <br />
+    <br />
+    <div id="grid">
+
+    </div>
+    <br />
+    <a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">Тестове</a>
+    <a href="/Administration/Problems/Edit/@Model.Id" class="btn btn-primary">Промени</a>
+    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+</div>

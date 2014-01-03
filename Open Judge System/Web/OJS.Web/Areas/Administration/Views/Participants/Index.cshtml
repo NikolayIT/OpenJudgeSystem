@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Участници";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @(Html
+            .Kendo()
+            .ComboBox()
+            .Name("contests")
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .Filter(FilterType.Contains)
+            .AutoBind(false)
+            .MinLength(3)
+            .Placeholder("Изберете или напишете състезание")
+            .Events(ev => ev.Change("selectContest"))
+            .DataSource(dataSource =>
+                {
+                    dataSource
+                        .Read(read =>
+                            {
+                                read.Action("Contests", "Participants")
+                                    .Data("additionalComboBoxData");
+                            })
+                        .ServerFiltering(true);
+                })
+            .HtmlAttributes(new { style = "width: 100%;" }))
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12" id="participants-grid">
+            @Html.Partial("_Participants")
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function additionalComboBoxData() {
+            return {
+                text: $("#contests").data("kendoComboBox").input.val()
+            }
+        }
+
+        function selectContest() {
+            var contestId = $("#contests").val();
+
+            $.post('/Administration/Participants/RenderGrid/' + contestId, function (data) {
+                $("#participants-grid").html(data);
+            });
+        }
+    </script>
+}

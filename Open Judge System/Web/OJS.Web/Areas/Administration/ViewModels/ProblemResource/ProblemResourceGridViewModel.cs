@@ -1,7 +1,10 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.ProblemResource
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel;
     using System.Linq.Expressions;
+    using System.Web.Mvc;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
@@ -25,16 +28,23 @@
             }
         }
 
+        [Display(Name = "№")]
+        [DefaultValue(null)]
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
         public int ProblemId { get; set; }
 
+        [Display(Name = "Име")]
         public string Name { get; set; }
 
+        [Display(Name = "Тип")]
         public ProblemResourceType Type { get; set; }
 
+        [Display(Name = "Линк")]
         public string Link { get; set; }
 
+        [Display(Name = "Подредба")]
         public int OrderBy { get; set; }
 
         public string TypeName

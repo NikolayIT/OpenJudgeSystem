@@ -1,33 +1,30 @@
-﻿@{
-    ViewBag.Title = "Решения";
-    const string ControllerName = "Submissions";
+﻿@model int?
+@{
+    const string ControllerName = "Participants";
 }
-<h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
         {
-            columns.Bound(model => model.Id);
-            columns.Bound(model => model.ParticipantName);
-            columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
-            columns.Bound(model => model.SubmissionTypeName);
-            columns.Bound(model => model.Status);
-            columns.Bound(model => model.Points);
-            columns.Bound(model => model.CreatedOn).Hidden();
-            columns.Bound(model => model.ModifiedOn).Hidden();
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промяна</a>");
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтриване</a>");    
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>");
+            columns.Bound(col => col.Id);
+            columns.Bound(col => col.UserName);
+            columns.Bound(col => col.ContestName);
+            columns.Bound(col => col.IsOfficial);
+            columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
     .ToolBar(toolbar =>
     {
-        toolbar.Custom().Text("Създай").Action("Create", ControllerName);
+        toolbar.Create().Text("Добавяне на участник");
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
+        editable.Mode(GridEditMode.PopUp);
+        editable.Window(w => w.Title(ViewBag.Title));
         editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
     })
     .ColumnMenu()
@@ -50,7 +47,9 @@
                 model.Id(m => m.Id);
             })
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-        .Read(read => read.Action("Read", ControllerName))
+        .Create(create => create.Action("Create", ControllerName))
+        .Read(read => read.Action("ReadParticipants", ControllerName, new { id = Model }))
+        .Update(update => update.Action("Update", ControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ControllerName))
     )
 )

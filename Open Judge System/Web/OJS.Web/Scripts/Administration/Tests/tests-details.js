@@ -24,8 +24,6 @@ function initilizeTestRuns(response) {
 
     $('#test-runs-button').hide();
 
-    console.log(response);
-
     grid = $('#test-runs-grid').kendoGrid({
         dataSource: new kendo.data.DataSource({
             data: response.responseJSON,
@@ -43,5 +41,4 @@ function initilizeTestRuns(response) {
             { title: "Изпълнение", template: '<a href="/Administration/Submissions/ #= SubmissionId # "> #= ProblemName # </a>' },
         ],
     });
-
 }

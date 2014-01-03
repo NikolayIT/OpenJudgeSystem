@@ -19,8 +19,10 @@
 
     public class NewsController : BaseController
     {
-        private const string InfoManUrl = "http://infoman.musala.com/welcome/main.php";
+        private const string InfoManUrl = "http://infoman.musala.com/feeds/";
+        private const string InfoManEncoding = "utf-8";
         private const string InfosUrl = "http://www.math.bas.bg/infos/index.html";
+        private const string InfosEncoding = "windows-1251";
 
         public NewsController(IOjsData data)
             : base(data)
@@ -155,9 +157,8 @@
             var fetchedNews = new List<News>();
 
             fetchedNews.AddRange(this.FetchNewsFromInfos());
+            fetchedNews.AddRange(this.FetchNewsFromInfoMan());
 
-            // TODO: Rework fetching news from infoman.musala.com (they changed their site)
-            // fetchedNews.AddRange(this.FetchNewsFromInfoMan());
             this.PopulateDatabaseWithNews(fetchedNews);
 
             this.TempData["InfoMessage"] = Resource.Views.All.News_successfully_added;
@@ -179,7 +180,7 @@
 
         // TODO: Refactor! This code should ne in two separate classes (for each site) and each class should implement an interface
         #region Fetching news
-        private HtmlDocument GetHtmlDocument(string url)
+        private HtmlDocument GetHtmlDocument(string url, string encoding)
         {
             var document = new HtmlDocument();
 
@@ -187,7 +188,7 @@
             {
                 using (var stream = client.OpenRead(url))
                 {
-                    var reader = new StreamReader(stream, Encoding.GetEncoding("windows-1251"));
+                    var reader = new StreamReader(stream, Encoding.GetEncoding(encoding));
                     var html = reader.ReadToEnd();
                     document.LoadHtml(html);
                 }
@@ -200,24 +201,43 @@
 
         private IEnumerable<News> FetchNewsFromInfoMan()
         {
-            var document = this.GetHtmlDocument(InfoManUrl);
+            var document = this.GetHtmlDocument(InfoManUrl, InfoManEncoding);
 
-            HtmlNode node = document.DocumentNode.SelectSingleNode("//body//table//tr[3]//td");
+            var nodes = document.DocumentNode.SelectNodes("//rss//channel//item");
 
             var currentListOfNews = new List<News>();
 
-            this.GenerateNewsFromInfoMan(node, currentListOfNews);
+            foreach (var node in nodes)
+            {
+                var title = node.ChildNodes.First(n => n.Name == "title").InnerHtml;
+                var description = node.ChildNodes.First(n => n.Name == "description").InnerHtml;
+                var date = node.ChildNodes.First(n => n.Name == "pubdate").InnerHtml;
+
+                var decodedDescription = HttpUtility.HtmlDecode(description);
+                var parsedDate = DateTime.Parse(date);
+
+                currentListOfNews.Add(new News
+                    {
+                        Title = title,
+                        Content = decodedDescription,
+                        Author = "ИнфоМан",
+                        Source = "http://infoman.musala.com/",
+                        IsVisible = true,
+                        CreatedOn = parsedDate,
+                        PreserveCreatedOn = true,
+                    });
+            }
 
             return currentListOfNews;
         }
 
         private IEnumerable<News> FetchNewsFromInfos()
         {
-            var document = this.GetHtmlDocument(InfosUrl);
+            var document = this.GetHtmlDocument(InfosUrl, InfosEncoding);
 
             var currentListOfNews = new List<News>();
 
-            HtmlNode node = document.DocumentNode.SelectSingleNode("//body//div//div//div[6]");
+            HtmlNode node = document.DocumentNode.SelectSingleNode("//body//div//div//div[4]");
 
             this.GenerateNewsFromInfos(node, currentListOfNews);
 
@@ -275,6 +295,7 @@
                     title = string.Empty;
                     date = DateTime.Now;
                     content.Length = 0;
+                    continue;
                 }
                 else if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws12"))
                 {
@@ -284,103 +305,9 @@
                 node = node.NextSibling;
             }
         }
-
-        private void GenerateNewsFromInfoMan(HtmlNode node, List<News> fetchedNews)
-        {
-            try
-            {
-                var title = string.Empty;
-                var date = string.Empty;
-                var content = new StringBuilder();
-
-                foreach (var child in node.ChildNodes)
-                {
-                    if (child.ChildNodes.Any(tag => tag.Name == "h5"))
-                    {
-                        this.GenerateNewsFromInfoMan(child, fetchedNews);
-                    }
-
-                    if (child.Name == "h5" && title == string.Empty)
-                    {
-                        if (child.ChildNodes.Any(tag => tag.Attributes.Any(attr => attr.Name == "class" && attr.Value == "date")))
-                        {
-                            if (child.FirstChild == null || child.FirstChild.NextSibling == null || child.FirstChild.NextSibling.NextSibling == null)
-                            {
-                                continue;
-                            }
-
-                            fetchedNews.Add(new News
-                                {
-                                    Title = child.FirstChild.InnerText.Trim(),
-                                    CreatedOn = this.TryGetDate(child.FirstChild.NextSibling.InnerText),
-                                    IsVisible = true,
-                                    Author = "ИнфоМан",
-                                    Source = "http://infoman.musala.com/",
-                                    Content = child.FirstChild.NextSibling.NextSibling.InnerHtml.Trim(),
-                                    PreserveCreatedOn = true,
-                                });
-
-                            continue;
-                        }
-
-                        if (child.FirstChild == null || child.NextSibling == null || child.NextSibling.NextSibling == null)
-                        {
-                            break;
-                        }
-
-                        title = child.FirstChild.InnerText;
-                        date = child.NextSibling.NextSibling.InnerText;
-                    }
-                    else if (child.Name == "h5" && title != string.Empty && content.Length != 0)
-                    {
-                        fetchedNews.Add(new News
-                        {
-                            Title = title.Trim(),
-                            CreatedOn = this.TryGetDate(date),
-                            IsVisible = true,
-                            Author = "ИнфоМан",
-                            Source = "http://infoman.musala.com/",
-                            Content = content.ToString().Trim(),
-                            PreserveCreatedOn = true,
-                        });
-
-                        if (child.FirstChild == null || child.NextSibling == null || child.NextSibling.NextSibling == null)
-                        {
-                            break;
-                        }
-
-                        title = child.FirstChild.InnerText;
-                        date = child.NextSibling.NextSibling.InnerText;
-                        content.Length = 0;
-                    }
-                    else if (child.Name == "p" && child.Attributes.Count == 0)
-                    {
-                        content.AppendLine(child.InnerHtml);
-                    }
-                }
-
-                if (content.Length != 0)
-                {
-                    fetchedNews.Add(new News
-                    {
-                        Title = title.Trim(),
-                        CreatedOn = this.TryGetDate(date),
-                        IsVisible = true,
-                        Author = "ИнфоМан",
-                        Source = "http://infoman.musala.com/",
-                        Content = content.ToString().Trim(),
-                        PreserveCreatedOn = true,
-                    });
-                }
-            }
-            catch (Exception)
-            {
-                return;
-            }
-        }
         #endregion
 
-        // TODO: May be move to string extensions and unit test it
+        // TODO: May be moved to string extensions and unit test it
         private DateTime TryGetDate(string date)
         {
             try

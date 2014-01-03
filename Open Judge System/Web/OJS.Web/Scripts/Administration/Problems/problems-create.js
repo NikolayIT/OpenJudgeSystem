@@ -39,16 +39,29 @@ function onResourceTypeSelect() {
 
 $(document).ready(function () {
 
+    $.validator.setDefaults({ ignore: '' });
+
     $('#enable-sclimit').change(function () {
-        var numericTextBox = $("#SourceCodeSizeLimit").data("kendoNumericTextBox");
+        var input = $("#SourceCodeSizeLimit");
+        var numericTextBox = input.data("kendoNumericTextBox");
 
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
             numericTextBox.value(1024);
+            input.attr("data-val-required", "Лимита е задължителен!");
+            
+            $("form").removeData("validator");
+            $("form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('form'));
         }
         else {
             numericTextBox.value(null);
             numericTextBox.enable(false);
+            input.removeAttr("data-val-required");
+
+            $("form").removeData("validator");
+            $("form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('form'));
         }
     });
 

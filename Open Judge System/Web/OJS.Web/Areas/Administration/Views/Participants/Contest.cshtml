@@ -1,0 +1,15 @@
+﻿@model int
+@{
+    ViewBag.Title = "Участници";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" id="participants-grid">
+            @Html.Partial("_Participants", Model)
+        </div>
+    </div>
+</div>
+

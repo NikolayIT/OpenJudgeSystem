@@ -86,7 +86,7 @@
         [NonAction]
         protected JsonResult GridOperation([DataSourceRequest]DataSourceRequest request, object model)
         {
-            return Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
+            return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
         }
 
         [NonAction]

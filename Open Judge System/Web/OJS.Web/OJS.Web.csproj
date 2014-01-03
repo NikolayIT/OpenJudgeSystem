@@ -727,6 +727,7 @@
     <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\RolesController.cs" />
@@ -738,6 +739,9 @@
     <Compile Include="Areas\Administration\ViewModels\ContestCategory\ContestCategoryAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestQuestion\ContestQuestionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Participant\ContestViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
@@ -1016,6 +1020,14 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\HtmlContent.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Integer.cshtml" />
     <Content Include="Areas\Administration\Views\Checkers\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />
+    <Content Include="Areas\Administration\Views\Participants\Contest.cshtml" />
+    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\ContestsComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\UsersComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />

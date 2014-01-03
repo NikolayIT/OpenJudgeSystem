@@ -162,6 +162,9 @@
   <data name="Other" xml:space="preserve">
     <value>Други</value>
   </data>
+  <data name="Participants" xml:space="preserve">
+    <value>Участници</value>
+  </data>
   <data name="Problems" xml:space="preserve">
     <value>Задачи</value>
   </data>

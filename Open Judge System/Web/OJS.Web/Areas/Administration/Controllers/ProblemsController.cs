@@ -7,6 +7,9 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
@@ -16,6 +19,7 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
+    using OJS.Web.Areas.Administration.ViewModels.Submission;
 
     // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
@@ -356,6 +360,62 @@
 
             this.TempData["InfoMessage"] = "Задачите бяха изтрити успешно";
             return this.RedirectToAction("Contest", new { id = id });
+        }
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
+            }
+
+            var problem = this.Data.Problems.All()
+                .Where(pr => pr.Id == id)
+                .Select(DetailedProblemViewModel.FromProblem)
+                .FirstOrDefault();
+
+            if (problem == null)
+            {
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(problem);
+        }
+
+        [HttpGet]
+        public ActionResult GetSubmissions(int id)
+        {
+            return this.PartialView("_SubmissionsGrid", id);
+        }
+
+        [HttpPost]
+        public JsonResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, int id)
+        {
+            var submissions = this.Data.Submissions
+                .All()
+                .Where(s => s.ProblemId == id)
+                .Select(SubmissionAdministrationGridViewModel.ViewModel);
+
+            return Json(submissions.ToDataSourceResult(request));
+        }
+
+        [HttpGet]
+        public ActionResult GetResources(int id)
+        {
+            return this.PartialView("_ResourcesGrid", id);
+        }
+
+        [HttpPost]
+        public ActionResult ReadResources([DataSourceRequest]DataSourceRequest request, int id)
+        {
+            var resources = this.Data.Resources
+                .All()
+                .Where(r => r.ProblemId == id)
+                .Select(ProblemResourceGridViewModel.FromResource);
+
+            return Json(resources.ToDataSourceResult(request));
         }
 
         [HttpGet]

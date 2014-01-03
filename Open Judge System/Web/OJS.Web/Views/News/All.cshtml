@@ -79,7 +79,7 @@ else
             {
                 if (pageIndex != Model.CurrentPage)
                 {
-                    @Html.ActionLink(pageIndex.ToString(), "All", new { controller = "News", area = string.Empty }, new { @class = "btn btn-primary" });
+                    @Html.ActionLink(pageIndex.ToString(), "All", new { controller = "News", area = string.Empty, id = pageIndex }, new { @class = "btn btn-primary" });
                 }
                 else
                 {

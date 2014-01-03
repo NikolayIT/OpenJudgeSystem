@@ -21,6 +21,7 @@
                 {
                     Id = sub.Id,
                     ParticipantName = sub.Participant.User.UserName,
+                    ProblemId = sub.ProblemId,
                     ProblemName = sub.Problem.Name,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
@@ -36,6 +37,8 @@
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
         public int? Id { get; set; }
+
+        public int? ProblemId { get; set; }
 
         [Display(Name = "Задача")]
         public string ProblemName { get; set; }
@@ -55,6 +58,7 @@
         [ScaffoldColumn(false)]
         public bool Processed { get; set; }
 
+        [Display(Name = "Статус")]
         public string Status
         {
             get
