@@ -1,0 +1,3 @@
+http://openfmi.net/projects/pcms/
+
+svn checkout --username developername https://svn.openfmi.net/pcms
