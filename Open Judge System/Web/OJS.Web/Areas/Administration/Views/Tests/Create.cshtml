@@ -5,7 +5,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<h3>@ViewBag.ProblemName</h3>
+<h3>@Model.ProblemName</h3>
 <div class="container">
     @using (Html.BeginForm())
     {
@@ -48,7 +48,7 @@
             </div>
             <br />
             <button type="submit" class="btn btn-primary">Създай</button>
-            <a href="/Administration/Tests/Problem/@ViewBag.ProblemId" class="btn btn-primary">Назад</a>
+            <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">Назад</a>
         </div>
     }
 </div>

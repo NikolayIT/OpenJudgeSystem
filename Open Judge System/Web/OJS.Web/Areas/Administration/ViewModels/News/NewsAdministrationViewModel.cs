@@ -58,12 +58,12 @@
         [UIHint("SingleLineText")]
         public string Source { get; set; }
 
+        [AllowHtml]
         [DatabaseProperty]
         [Display(Name = "Съдържание")]
         [Required(ErrorMessage = "Съдържанието е задължително!")]
         [StringLength(int.MaxValue, MinimumLength = 100, ErrorMessage = "Съдържанието трябва да бъде поне 100 символа")]
         [DataType(DataType.MultilineText)]
-        [AllowHtml]
         [UIHint("HtmlContent")]
         public string Content { get; set; }
 

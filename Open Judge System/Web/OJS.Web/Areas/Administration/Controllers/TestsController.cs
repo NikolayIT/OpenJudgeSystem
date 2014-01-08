@@ -75,10 +75,13 @@
                 return this.RedirectToAction("Index");
             }
 
-            this.ViewBag.ProblemName = problem.Name;
-            this.ViewBag.ProblemId = problem.Id;
+            var test = new TestViewModel
+            {
+                ProblemId = problem.Id,
+                ProblemName = problem.Name,
+            };
 
-            return this.View();
+            return this.View(test);
         }
 
         /// <summary>

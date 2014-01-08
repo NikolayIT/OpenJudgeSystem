@@ -21,7 +21,7 @@
     {
         toolbar.Create().Text("Създай");
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Изтегли новини").Action("Fetch", "News", new { Area = "" });
+        toolbar.Custom().Text("Изтегли новини").Action("Fetch", "News", new { Area = "Administration" });
         toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>

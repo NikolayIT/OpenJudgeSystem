@@ -85,52 +85,41 @@ function populateDropDowns(problemIdAsString) {
             }
         });
 
+        function categoriesCascade() {
+            contests.dataSource.fetch(function () {
+                contests.dataSource.read();
+
+                contests.select(function (dataItem) {
+                    return dataItem.Id == contestId;
+                });
+            });
+        }
+
+        function contestsCascade() {
+            problems.dataSource.fetch(function () {
+                problems.dataSource.read();
+
+                problems.select(function (dataItem) {
+                    return dataItem.Id == problemId;
+                })
+            });
+        }
+
+        categories.bind("cascade", categoriesCascade);
+        contests.bind("cascade", contestsCascade);
+
         categoriesData.fetch(function () {
             categories.dataSource.data(categoriesData);
             categories.setDataSource(categoriesData);
             categories.refresh();
+        });
 
-            contestsData.fetch(function () {
-                contests.dataSource.data(contestsData);
-                contests.refresh();
-
-                problemsData.fetch(function () {
-
-                    problems.dataSource.data(problemsData);
-                    problems.refresh();
-
-                    categories.select(function (dataItem) {
-                        return dataItem.Id === categoryId;
-                    });
-
-                    // TODO: Improve by using success callback or promises, not setTimeout - Cascade event on widgets might work too
-
-                    window.setTimeout(function () {
-
-                        contests.select(function (dataItem) {
-                            return dataItem.Id === contestId;
-                        });
-
-                        window.setTimeout(function () {
-
-                            problems.select(function (dataItem) {
-                                return dataItem.Id === problemId;
-                            })
-
-                        }, 500)
-
-                    }, 500);
-
-                });
-            });
+        categories.select(function (dataItem) {
+            return dataItem.Id === categoryId;
         });
 
         initializeGrid(problemId, contestId);
-
     })
-    .then(function () {
-        
-    });
 }
 
 function initializeGrid(problemId, contestId) {

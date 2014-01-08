@@ -125,6 +125,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Administration\NewsControllerTests\NewsControllerBaseTestsClass.cs" />
     <Compile Include="Administration\TestsControllerTests\AjaxOperationsTests.cs" />
     <Compile Include="Administration\TestsControllerTests\DeleteActionTests.cs" />
     <Compile Include="Administration\TestsControllerTests\DetailsActionTests.cs" />

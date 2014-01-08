@@ -8,7 +8,7 @@
     using OJS.Common.DataAnnotations;
     using OJS.Web.Common.Interfaces;
 
-    public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T> where T : class
+    public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T> where T : class, new()
     {
         [DatabaseProperty]
         [Display(Name = "Дата на създаване")]
@@ -22,7 +22,11 @@
         [HiddenInput(DisplayValue = false)]
         public DateTime? ModifiedOn { get; set; }
 
-        public abstract T GetEntityModel(T model = null);
+        public virtual T GetEntityModel(T model = null)
+        {
+            model = model ?? new T();
+            return this.ConvertToDatabaseEntity(model);
+        }
 
         protected T ConvertToDatabaseEntity(T model)
         {

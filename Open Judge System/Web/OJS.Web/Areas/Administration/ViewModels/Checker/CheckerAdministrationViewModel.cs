@@ -60,13 +60,7 @@
 
         [DatabaseProperty]
         [Display(Name = "Параметър")]
-        [UIHint("SingleLineText")]
+        [UIHint("MultiLineText")]
         public string Parameter { get; set; }
-
-        public override Checker GetEntityModel(Checker model = null)
-        {
-            model = model ?? new Checker();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }
