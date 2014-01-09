@@ -20,7 +20,7 @@
             this.SubmisstionTypes = new List<SubmissionTypeViewModel>();
         }
 
-        [ExcludeFromExcelAttribute]
+        [ExcludeFromExcel]
         public static Expression<Func<Contest, ContestAdministrationViewModel>> ViewModel
         {
             get
@@ -119,15 +119,11 @@
         public int? CategoryId { get; set; }
 
         [Display(Name = "Тип решения")]
+        [ExcludeFromExcel]
         [UIHint("SubmissionTypeCheckBoxes")]
         public IList<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
 
+        [ExcludeFromExcel]
         public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
-
-        public override Contest GetEntityModel(Contest model = null)
-        {
-            model = model ?? new Contest();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

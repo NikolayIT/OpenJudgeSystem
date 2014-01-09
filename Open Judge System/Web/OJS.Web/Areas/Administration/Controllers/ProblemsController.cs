@@ -20,6 +20,7 @@
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
+using System.Collections;
 
     // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
@@ -421,23 +422,7 @@
         [HttpGet]
         public JsonResult ByContest(int id)
         {
-            // TODO: Select should use the static method from DetailedProblemViewModel
-            var result = this.Data.Problems.All()
-                .Where(x => x.ContestId == id)
-                .OrderBy(x => x.Name)
-                .Select(problem => new DetailedProblemViewModel
-                {
-                    Id = problem.Id,
-                    Name = problem.Name,
-                    ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Where(x => x.IsTrialTest).Count(),
-                    CompeteTests = problem.Tests.AsQueryable().Where(x => !x.IsTrialTest).Count(),
-                    MaximumPoints = problem.MaximumPoints,
-                    TimeLimit = problem.TimeLimit,
-                    MemoryLimit = problem.MemoryLimit,
-                    Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy,
-                });
+            var result = this.GetData(id);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -488,6 +473,12 @@
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int contestId)
+        {
+            return this.ExportToExcel(request, this.GetData(contestId));
+        }
+
         // TODO: Transfer to ResourcesController
         public ActionResult AddResourceForm(int id)
         {
@@ -503,6 +494,16 @@
             };
 
             return this.PartialView("_ProblemResourceForm", resourceViewModel);
+        }
+
+        private IEnumerable GetData(int id)
+        {
+            var result = this.Data.Problems.All()
+                .Where(x => x.ContestId == id)
+                .OrderBy(x => x.Name)
+                .Select(DetailedProblemViewModel.FromProblem);
+
+            return result;
         }
 
         private void AddResourcesToProblem(Problem problem, IEnumerable<ProblemResourceViewModel> resources)

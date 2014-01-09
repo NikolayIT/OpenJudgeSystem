@@ -4,9 +4,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class ShortContestAdministrationViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Contest, ShortContestAdministrationViewModel>> FromContest
         {
             get

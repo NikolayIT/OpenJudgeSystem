@@ -7,11 +7,14 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
+
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
+    using OJS.Common.DataAnnotations;
 
     public class DetailedProblemViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Problem, DetailedProblemViewModel>> FromProblem
         {
             get
@@ -71,6 +74,7 @@
         [Display(Name = "Чекер")]
         public string Checker { get; set; }
 
+        [ExcludeFromExcel]
         public IEnumerable<SelectListItem> AvailableCheckers { get; set; }
 
         [Display(Name = "Подредба")]
@@ -82,6 +86,7 @@
         [DefaultValue(null)]
         public int? SourceCodeSizeLimit { get; set; }
 
+        [ExcludeFromExcel]
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }
     }
 }

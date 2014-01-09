@@ -13,6 +13,7 @@
 
     public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Submission, SubmissionAdministrationViewModel>> ViewModel
         {
             get
@@ -72,12 +73,6 @@
             {
                 this.Content = value.Compress();
             }
-        }
-
-        public override Submission GetEntityModel(Submission model = null)
-        {
-            model = model ?? new Submission();
-            return base.ConvertToDatabaseEntity(model);
         }
     }
 }

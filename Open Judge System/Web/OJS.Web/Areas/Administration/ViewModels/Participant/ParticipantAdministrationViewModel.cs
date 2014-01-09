@@ -12,6 +12,7 @@
 
     public class ParticipantAdministrationViewModel : AdministrationViewModel<Participant>
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Participant, ParticipantAdministrationViewModel>> ViewModel
         {
             get
@@ -39,7 +40,7 @@
         [Display(Name = "Състезание")]
         [Required(ErrorMessage = "Състезанието е задължително!")]
         [UIHint("ContestsComboBox")]
-        public int? ContestId { get; set; }
+        public int ContestId { get; set; }
 
         [Display(Name = "Състезание")]
         [HiddenInput(DisplayValue = false)]
@@ -58,11 +59,5 @@
         [DatabaseProperty]
         [Display(Name = "Официално участие")]
         public bool IsOfficial { get; set; }
-
-        public override Participant GetEntityModel(Participant model = null)
-        {
-            model = model ?? new Participant();
-            return this.ConvertToDatabaseEntity(model);
-        }
     }
 }

@@ -70,11 +70,5 @@
         [Display(Name = "Видимост")]
         [DatabaseProperty]
         public bool IsVisible { get; set; }
-
-        public override News GetEntityModel(News model = null)
-        {
-            model = model ?? new News();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

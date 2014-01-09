@@ -4,9 +4,11 @@
     using System.Linq.Expressions;
 
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class ContestViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Contest, ContestViewModel>> ViewModel
         {
             get

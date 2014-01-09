@@ -12,6 +12,7 @@
 
     public class CheckerAdministrationViewModel : AdministrationViewModel<Checker>
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Checker, CheckerAdministrationViewModel>> ViewModel
         {
             get

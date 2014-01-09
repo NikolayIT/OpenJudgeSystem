@@ -9,9 +9,11 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class ProblemResourceGridViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<ProblemResource, ProblemResourceGridViewModel>> FromResource
         {
             get

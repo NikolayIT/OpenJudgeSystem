@@ -81,11 +81,5 @@
                 }
             }
         }
-
-        public override Submission GetEntityModel(Submission model = null)
-        {
-            model = model ?? new Submission();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

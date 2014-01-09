@@ -12,6 +12,7 @@
 
     public class ContestQuestionViewModel : AdministrationViewModel<ContestQuestion>
     {
+        [ExcludeFromExcel]
         public static Expression<Func<ContestQuestion, ContestQuestionViewModel>> ViewModel
         {
             get
@@ -63,11 +64,5 @@
         [DatabaseProperty]
         [Display(Name = "Reg-Ex валидация")]
         public string RegularExpressionValidation { get; set; }
-
-        public override ContestQuestion GetEntityModel(ContestQuestion model = null)
-        {
-            model = model ?? new ContestQuestion();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

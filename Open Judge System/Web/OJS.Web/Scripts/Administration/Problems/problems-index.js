@@ -102,7 +102,8 @@ function initializeGrid(contestId) {
             scrollable: false,
             toolbar: [{
                 template: '<a href="/Administration/Problems/Create/' + contestId + '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Problems/DeleteAll/' + contestId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>',
+                    ' <a href="/Administration/Problems/DeleteAll/' + contestId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
+                    ' <a href="/Administration/Problems/ExportToExcel?contestId=' + contestId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>',
             }],
             columns: [
                 { field: "Id", title: "Номер" },

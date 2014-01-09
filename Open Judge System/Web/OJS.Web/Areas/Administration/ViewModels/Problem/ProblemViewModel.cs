@@ -3,9 +3,11 @@
     using System;
     using System.Linq.Expressions;
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class ProblemViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Problem, ProblemViewModel>> FromProblem
         {
             get

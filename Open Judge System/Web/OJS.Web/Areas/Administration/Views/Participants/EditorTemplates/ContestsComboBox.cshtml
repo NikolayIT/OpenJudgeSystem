@@ -1,4 +1,4 @@
-﻿@model int?
+﻿@model int
 
 @(Html.Kendo()
     .ComboBoxFor(m => m)
@@ -8,6 +8,7 @@
     .Filter(FilterType.Contains)
     .MinLength(1)
     .Placeholder("Изберете състезание")
+    .Value("Изберете състезание")
     .DataSource(data =>
     {
         data.ServerFiltering(true)

@@ -6,12 +6,14 @@
     using System.Linq.Expressions;
     using System.Web;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
     using TestRunModel = OJS.Data.Models.TestRun;
 
     public class TestRunViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<TestRunModel, TestRunViewModel>> FromTestRun
         {
             get

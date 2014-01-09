@@ -9,7 +9,7 @@
     .Columns(columns =>
         {
             columns.Bound(col => col.Id);
-            columns.Bound(col => col.Title);
+            columns.Bound(col => col.Title).ClientTemplate("<a href='" + Url.Action("Selected", "News", new { Area = string.Empty }) + "/#= Id #' target='_blank'>#= Title #</a>");
             columns.Bound(col => col.Author);
             columns.Bound(col => col.IsVisible);
             columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();

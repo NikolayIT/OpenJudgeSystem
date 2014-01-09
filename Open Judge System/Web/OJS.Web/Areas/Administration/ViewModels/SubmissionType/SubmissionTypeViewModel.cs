@@ -8,9 +8,11 @@
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Common.DataAnnotations;
 
     public class SubmissionTypeViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<SubmissionType, SubmissionTypeViewModel>> ViewModel
         {
             get

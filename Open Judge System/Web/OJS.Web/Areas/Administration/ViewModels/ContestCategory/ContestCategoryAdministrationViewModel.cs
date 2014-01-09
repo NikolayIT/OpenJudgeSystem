@@ -51,11 +51,5 @@
         [DatabaseProperty]
         [Display(Name = "Видимост")]
         public bool IsVisible { get; set; }
-
-        public override ContestCategory GetEntityModel(ContestCategory model = null)
-        {
-            model = model ?? new ContestCategory();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

@@ -65,11 +65,5 @@
         [DatabaseProperty]
         [Display(Name = "Поправен")]
         public bool IsFixed { get; set; }
-
-        public override FeedbackReport GetEntityModel(FeedbackReport model = null)
-        {
-            model = model ?? new FeedbackReport();
-            return base.ConvertToDatabaseEntity(model);
-        }
     }
 }

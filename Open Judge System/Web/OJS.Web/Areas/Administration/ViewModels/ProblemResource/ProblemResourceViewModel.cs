@@ -10,6 +10,7 @@
 
     using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class ProblemResourceViewModel
     {

@@ -145,7 +145,8 @@ function initializeGrid(problemId, contestId) {
             toolbar: [{
                 template: '<a href="/Administration/Tests/Create/' + problemId + '" class="btn btn-sm btn-primary">Добавяне</a>' +
                     ' <a href="/Administration/Tests/DeleteAll/' + problemId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/Contest/' + contestId + '" class="btn btn-sm btn-primary">Към задачата</a>',
+                    ' <a href="/Administration/Problems/Contest/' + contestId + '" class="btn btn-sm btn-primary">Към задачата</a>' +
+                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>',
             }],
             columns: [
                 { field: "Input", title: "Вход" },

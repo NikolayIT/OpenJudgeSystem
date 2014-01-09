@@ -8,9 +8,11 @@
 
     using OJS.Common.Extensions;
     using OJS.Data.Models;
+    using OJS.Common.DataAnnotations;
 
     public class TestViewModel
     {
+        [ExcludeFromExcel]
         public static Expression<Func<Test, TestViewModel>> FromTest
         {
             get

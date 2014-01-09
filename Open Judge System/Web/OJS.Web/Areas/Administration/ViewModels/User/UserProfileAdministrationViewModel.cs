@@ -12,6 +12,7 @@
 
     public class UserProfileAdministrationViewModel : AdministrationViewModel<UserProfile>
     {
+        [ExcludeFromExcel]
         public static Expression<Func<UserProfile, UserProfileAdministrationViewModel>> ViewModel
         {
             get

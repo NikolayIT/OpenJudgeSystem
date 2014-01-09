@@ -17,6 +17,8 @@
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
+    using Kendo.Mvc.UI;
+    using System.Collections;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -450,11 +452,7 @@
         /// <returns>JSON result of all tests for the problem</returns>
         public ContentResult ProblemTests(int id)
         {
-            var result = this.Data.Tests.All()
-                .Where(test => test.ProblemId == id)
-                .OrderByDescending(test => test.IsTrialTest)
-                .ThenBy(test => test.OrderBy)
-                .Select(TestViewModel.FromTest);
+            var result = this.GetData(id);
 
             return this.LargeJson(result);
         }
@@ -592,6 +590,23 @@
             stream.Position = 0;
 
             return this.File(stream, MediaTypeNames.Application.Zip, zip.Name);
+        }
+
+        [HttpGet]
+        public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int id)
+        {
+            return this.ExportToExcel(request, this.GetData(id));
+        }
+
+        private IEnumerable GetData(int id)
+        {
+            var result = this.Data.Tests.All()
+                .Where(test => test.ProblemId == id)
+                .OrderByDescending(test => test.IsTrialTest)
+                .ThenBy(test => test.OrderBy)
+                .Select(TestViewModel.FromTest);
+
+            return result;
         }
     }
 }
