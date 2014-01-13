@@ -109,10 +109,10 @@
                                     Id = problem.Id,
                                     ProblemName = problem.Name,
                                     ShowResult = problem.ShowResults,
-                                    Result = problem.Submissions
+                                    BestSubmission = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id)
                                                         .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
-                                                        .Select(z => z.Points)
+                                                        .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points })
                                                         .FirstOrDefault()
                                 })
                                 .OrderBy(res => res.ProblemName)

@@ -277,7 +277,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Update {
             get {

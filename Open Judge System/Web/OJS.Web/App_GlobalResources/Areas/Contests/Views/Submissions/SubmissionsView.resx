@@ -190,7 +190,7 @@
     <value>Solution #{0} by {1} for problem {2}</value>
   </data>
   <data name="Update" xml:space="preserve">
-    <value>Update</value>
+    <value>Edit</value>
   </data>
   <data name="View_code" xml:space="preserve">
     <value>View code</value>

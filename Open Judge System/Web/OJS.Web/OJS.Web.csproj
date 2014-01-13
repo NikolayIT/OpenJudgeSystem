@@ -775,6 +775,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantViewModel.cs" />

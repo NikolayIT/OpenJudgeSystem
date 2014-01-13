@@ -29,7 +29,7 @@
             <th>@Resource.User</th>
             @foreach (var problem in Model.Problems)
             {
-                if (problem.ShowResults)
+                if (problem.ShowResults || User.IsAdmin())
                 {
                     <th>@problem.Name</th>
                 }
@@ -46,9 +46,27 @@
 
                 @foreach (var participantResult in participant.ProblemResults)
                 {
-                    if (participantResult.ShowResult)
+                    if (User.IsAdmin())
                     {
-                        <td>@participantResult.Result</td>
+                        if (participantResult.BestSubmission == null)
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
+                        }
+                    }
+                    else if (participantResult.ShowResult)
+                    {
+                        if (participantResult.BestSubmission == null)
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td>@participantResult.BestSubmission.Points</td>
+                        }
                     }
                 }
                 <td>@participant.Total</td>
