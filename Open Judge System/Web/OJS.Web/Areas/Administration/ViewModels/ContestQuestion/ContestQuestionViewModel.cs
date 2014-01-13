@@ -19,7 +19,7 @@
             {
                 return question => new ContestQuestionViewModel
                 {
-                    Id = question.Id,
+                    QuestionId = question.Id,
                     ContestId = question.ContestId,
                     Text = question.Text,
                     AskOfficialParticipants = question.AskOfficialParticipants,
@@ -36,7 +36,7 @@
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
-        public int? Id { get; set; }
+        public int? QuestionId { get; set; }
 
         [DatabaseProperty]
         public int? ContestId { get; set; }

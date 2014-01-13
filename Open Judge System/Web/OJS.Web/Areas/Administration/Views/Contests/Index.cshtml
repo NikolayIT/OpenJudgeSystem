@@ -14,12 +14,13 @@
             columns.Bound(x => x.EndTime).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Bound(x => x.PracticeStartTime).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Bound(x => x.PracticeEndTime).Format("{0:dd/MM/yyyy HH:mm}");
-            columns.Bound(x => x.IsVisible);
+            columns.Bound(x => x.IsVisible).Hidden();
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Участници");
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=true'>Export contest solutions</a><br /><a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=false'>Export practical solutions</a>").Title("Export").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Edit", "Contests") + "/#=Id#'>Edit</a>");
-            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Delete");
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Edit", "Contests") + "/#=Id#'>Промяна</a>").Title("Промяна");
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Изтриване");
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Export", "Contests") + "/#=Id#?compete=false'>На упражненията</a>").Title("Експорт").Width(200);
         })
     .ToolBar(toolbar =>
     {
@@ -34,6 +35,7 @@
         editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
     })
     .ColumnMenu()
+    .ClientDetailTemplateId("questions-template")
     .Events(e => e.DataBound("onDataBound"))
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
@@ -61,4 +63,45 @@
     function onDataBound() {
         CreateExportToExcelButton();
     }
+</script>
+
+<script type="text/x-kendo-template" id="questions-template">
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
+        .Name("DetailGrid_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.QuestionId);
+            columns.Bound(m => m.Text);
+            columns.Bound(m => m.Type);
+            columns.Bound(m => m.AskPracticeParticipats);
+            columns.Bound(m => m.AskOfficialParticipants);
+            columns.Command(com => com.Edit().Text(" ")).Width(80);
+            columns.Command(com => com.Destroy().Text(" ")).Width(80);
+        })
+        .ToolBar(tool =>
+            {
+                tool.Create().Text("Добави въпрос");
+            })
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+                edit.Window(w => w.Title(ViewBag.Title));
+                // edit.TemplateName("AddUserToRole");
+                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .ServerOperation(true)
+                .Model(model =>
+                {
+                    model.Id(m => m.QuestionId);
+                })
+                .Sort(sort => sort.Add(field => field.CreatedOn))
+                .Create(create => create.Action("AddQuestionToContest", ControllerName, new { id = "#= Id #" }))
+                .Read(read => read.Action("QuestionsInContest", ControllerName, new { id = "#= Id #" }))
+                .Update(update => update.Action("UpdateQuestionInContest", ControllerName, new { id = "#= Id #" }))
+                .Destroy(destroy => destroy.Action("DeleteUserFromRole", ControllerName, new { id = "#= Id #" }));
+        })
+        .ToClientTemplate())
 </script>

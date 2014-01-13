@@ -10,6 +10,7 @@
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
+    using Kendo.Mvc.Extensions;
 
     using OJS.Common.Extensions;
     using OJS.Data;
@@ -20,6 +21,7 @@
     using OJS.Web.Controllers;
 
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
+    using OJS.Web.Areas.Administration.ViewModels.ContestQuestion;
 
     public class ContestsController : KendoGridAdministrationController
     {
@@ -81,7 +83,7 @@
             {
                 var contest = model.GetEntityModel();
 
-                model.SubmisstionTypes.Each(s =>
+                model.SubmisstionTypes.ForEach(s =>
                     {
                         if (s.IsChecked)
                         {
@@ -117,7 +119,7 @@
 
             this.Data.SubmissionTypes.All()
                 .Select(SubmissionTypeViewModel.ViewModel)
-                .Each(SubmissionTypeViewModel.ApplySelectedTo(contest));
+                .ForEach(SubmissionTypeViewModel.ApplySelectedTo(contest));
 
             return this.View(contest);
         }
@@ -151,7 +153,7 @@
                 contest = model.GetEntityModel(contest);
                 contest.SubmissionTypes.Clear();
 
-                model.SubmisstionTypes.Each(s =>
+                model.SubmisstionTypes.ForEach(s =>
                 {
                     if (s.IsChecked)
                     {
@@ -316,6 +318,17 @@
                 });
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult QuestionsInContest([DataSourceRequest]DataSourceRequest request, int id)
+        {
+            var questions = this.Data.ContestQuestions
+                .All()
+                .Where(q => q.ContestId == id)
+                .Select(ContestQuestionViewModel.ViewModel);
+
+            return this.Json(questions.ToDataSourceResult(request));
         }
     }
 }
