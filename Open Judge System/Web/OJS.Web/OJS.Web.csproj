@@ -758,6 +758,7 @@
     <Compile Include="Areas\Administration\ViewModels\TestRun\TestRunViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Test\TestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
+    <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
     <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -1024,6 +1025,7 @@
     <Content Include="Areas\Administration\Views\Problems\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
+    <Content Include="Areas\Api\Views\web.config" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -1097,6 +1099,9 @@
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="Areas\Administration\Views\Files\" />
+    <Folder Include="Areas\Api\Controllers\" />
+    <Folder Include="Areas\Api\Models\" />
+    <Folder Include="Areas\Api\Views\Shared\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Scripts\CodeMirror\addon\" />
   </ItemGroup>
