@@ -876,8 +876,7 @@
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\docs.css" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\Fonts\glyphiconshalflings-regular.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\KendoUI\Black\editor.png" />
     <Content Include="Content\KendoUI\Black\imagebrowser.png" />
     <Content Include="Content\KendoUI\Black\indeterminate.gif" />
@@ -962,14 +961,10 @@
     <Content Include="Areas\Contests\Views\Compete\Index.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Simple.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\Register.cshtml" />
-    <Content Include="Content\Fonts\glyphiconshalflings-regular.eot" />
-    <Content Include="Content\Fonts\glyphiconshalflings-regular.otf" />
-    <Content Include="Content\Fonts\glyphiconshalflings-regular.ttf" />
-    <Content Include="Content\Fonts\glyphiconshalflings-regular.woff" />
     <Content Include="Areas\Administration\Views\Tests\Index.cshtml" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Administration\Views\Tests\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Tests\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Tests\Delete.cshtml" />
