@@ -1,14 +1,13 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Participant
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using OJS.Common.DataAnnotations;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel;
-    using System.Web.Mvc;
 
     public class ParticipantAdministrationViewModel : AdministrationViewModel<Participant>
     {

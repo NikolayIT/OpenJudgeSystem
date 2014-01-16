@@ -8,9 +8,9 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
-    using OJS.Common.DataAnnotations;
 
     public class DetailedProblemViewModel
     {

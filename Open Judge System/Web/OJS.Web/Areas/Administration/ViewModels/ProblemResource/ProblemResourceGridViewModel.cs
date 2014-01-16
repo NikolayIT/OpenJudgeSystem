@@ -1,15 +1,15 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.ProblemResource
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Models;
-    using OJS.Common.DataAnnotations;
 
     public class ProblemResourceGridViewModel
     {

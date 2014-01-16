@@ -4,11 +4,11 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Web.Mvc;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using OJS.Common.DataAnnotations;
-    using System.Web.Mvc;
 
     public class ContestQuestionViewModel : AdministrationViewModel<ContestQuestion>
     {

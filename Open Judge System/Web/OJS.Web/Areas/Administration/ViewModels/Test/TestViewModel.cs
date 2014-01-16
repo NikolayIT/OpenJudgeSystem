@@ -2,13 +2,11 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
 
+    using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
-    using OJS.Common.DataAnnotations;
 
     public class TestViewModel
     {

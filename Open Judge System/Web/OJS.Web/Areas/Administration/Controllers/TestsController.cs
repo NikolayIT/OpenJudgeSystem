@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -10,6 +11,8 @@
 
     using Ionic.Zip;
 
+    using Kendo.Mvc.UI;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
@@ -17,8 +20,6 @@
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
-    using Kendo.Mvc.UI;
-    using System.Collections;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation

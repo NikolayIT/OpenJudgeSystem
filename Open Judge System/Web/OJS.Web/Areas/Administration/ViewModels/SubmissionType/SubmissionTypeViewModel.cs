@@ -4,11 +4,9 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Newtonsoft.Json;
-
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
-    using OJS.Common.DataAnnotations;
 
     public class SubmissionTypeViewModel
     {
@@ -24,6 +22,12 @@
                 };
             }
         }
+
+        public int? Id { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsChecked { get; set; }
 
         public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
         {
@@ -46,12 +50,6 @@
                 contest.SubmisstionTypes.Add(submissionViewModel);
             };
         }
-
-        public int? Id { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsChecked { get; set; }
 
         public SubmissionType GetEntityModel(SubmissionType model = null)
         {

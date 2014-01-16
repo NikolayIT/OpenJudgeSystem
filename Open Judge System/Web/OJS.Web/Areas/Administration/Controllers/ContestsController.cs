@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -9,19 +8,18 @@
 
     using Ionic.Zip;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     using OJS.Common.Extensions;
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Administration.ViewModels.ContestQuestion;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
-    using OJS.Web.Areas.Administration.ViewModels.ContestQuestion;
 
     public class ContestsController : KendoGridAdministrationController
     {

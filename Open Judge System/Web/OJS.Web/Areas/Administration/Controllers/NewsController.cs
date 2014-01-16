@@ -7,11 +7,11 @@
     using System.Linq;
     using System.Net;
     using System.Text;
+    using System.Web;
     using System.Web.Mvc;
 
     using HtmlAgilityPack;
 
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -19,10 +19,8 @@
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.News;
-    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
-
     using Resource = Resources.News;
-    using System.Web;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
 
     public class NewsController : KendoGridAdministrationController
     {
@@ -257,7 +255,7 @@
                     i += 6;
                     if (i + 4 < content.Length && content.Substring(i, 4) == "http")
                     {
-                        i+=4;
+                        i += 4;
                         result.Append("http");
                     }
                     else

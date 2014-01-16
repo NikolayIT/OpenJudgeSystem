@@ -1,12 +1,11 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     using Newtonsoft.Json;
 
@@ -53,7 +52,7 @@
         {
             if (id == null)
             {
-                return base.Read(request);
+                return this.Read(request);
             }
 
             var participants = this.Data.Participants
@@ -99,7 +98,7 @@
                 contests = contests.Where(c => c.Name.ToLower().Contains(text.ToLower()));
             }
 
-            return Json(contests, JsonRequestBehavior.AllowGet);
+            return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Users(string text)
@@ -113,12 +112,12 @@
                 users = users.Where(c => c.Name.ToLower().Contains(text.ToLower()));
             }
 
-            return Json(users, JsonRequestBehavior.AllowGet);
+            return this.Json(users, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult RenderGrid(int id)
         {
-            return PartialView("_Participants", id);
+            return this.PartialView("_Participants", id);
         }
     }
 }

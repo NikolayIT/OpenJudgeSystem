@@ -5,7 +5,6 @@
     using System.Web.Mvc;
 
     using Kendo.Mvc.UI;
-    using Kendo.Mvc.Extensions;
 
     using OJS.Data;
     using OJS.Web.Controllers;

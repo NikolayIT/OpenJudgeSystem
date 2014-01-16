@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -17,10 +18,9 @@
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
+    using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
-    using OJS.Web.Areas.Administration.ViewModels.Submission;
-using System.Collections;
 
     // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
@@ -399,7 +399,7 @@ using System.Collections;
                 .Where(s => s.ProblemId == id)
                 .Select(SubmissionAdministrationGridViewModel.ViewModel);
 
-            return Json(submissions.ToDataSourceResult(request));
+            return this.Json(submissions.ToDataSourceResult(request));
         }
 
         [HttpGet]
@@ -416,7 +416,7 @@ using System.Collections;
                 .Where(r => r.ProblemId == id)
                 .Select(ProblemResourceGridViewModel.FromResource);
 
-            return Json(resources.ToDataSourceResult(request));
+            return this.Json(resources.ToDataSourceResult(request));
         }
 
         [HttpGet]

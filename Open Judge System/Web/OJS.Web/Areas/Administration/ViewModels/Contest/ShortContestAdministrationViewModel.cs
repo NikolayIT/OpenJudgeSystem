@@ -3,8 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
-    using OJS.Data.Models;
+
     using OJS.Common.DataAnnotations;
+    using OJS.Data.Models;
 
     public class ShortContestAdministrationViewModel
     {
