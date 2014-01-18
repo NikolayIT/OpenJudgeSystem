@@ -69,7 +69,14 @@
                         }
                     }
                 }
-                <td>@participant.Total</td>
+                @if (User.IsAdmin())
+                {
+                    <td>@participant.AdminTotal</td>
+                }
+                else
+                {
+                    <td>@participant.Total</td>
+                }
             </tr>
         }
     </tbody>

@@ -12,6 +12,7 @@
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Results;
+    using OJS.Web.Common;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
@@ -86,7 +87,8 @@
             // if the results are not visible and the participant is not registered for the contest
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
-                !this.Data.Participants.Any(id, this.UserProfile.Id, official))
+                !this.Data.Participants.Any(id, this.UserProfile.Id, official) &&
+                !this.User.IsAdmin())
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -120,6 +122,11 @@
                     .ToList()
                     .OrderByDescending(x => x.Total)
             };
+
+            if (User.IsAdmin())
+            {
+                contestModel.Results = contestModel.Results.OrderByDescending(x => x.AdminTotal);
+            }
 
             this.ViewBag.IsOfficial = official;
 

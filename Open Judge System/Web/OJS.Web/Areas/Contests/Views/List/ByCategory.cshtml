@@ -25,12 +25,15 @@
                             {
                                 <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                             }
+                        }
+                        @* TODO: Refactor these checks *@
+                        @if (contest.CanBeCompeted || contest.ResultsArePubliclyVisible || User.IsAdmin())
+                        {
                             <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
                         }
-                        @if (contest.ResultsArePubliclyVisible)
+                        @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
                         {
                             <a class="btn btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Results</a>
-                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
                         }
                     </td>
                     <td>
