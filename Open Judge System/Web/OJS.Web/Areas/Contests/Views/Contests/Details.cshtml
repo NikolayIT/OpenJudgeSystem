@@ -101,13 +101,15 @@
         }
         @if (User.IsAdmin())
         {
-            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">@Resource.Edit (TODO!!!)</a>
+            <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Simple/@Model.Id">Results</a>
+            <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Full/@Model.Id">Full results</a>
+            <a class="btn btn-sm btn-primary" href="/Administration/Contests/Edit/@Model.Id">@Resource.Edit</a>
             <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>
         }
     </div>
 </div>
 
-@if (this.User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated)
 {
     Html.RenderPartial("_AllContestSubmissionsByUser");
 }
