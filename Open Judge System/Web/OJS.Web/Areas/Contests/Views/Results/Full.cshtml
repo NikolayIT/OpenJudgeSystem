@@ -29,7 +29,7 @@
     @foreach (var participant in Model.Results)
     {
         <tr>
-            <th>@participant.ParticipantName</th>
+            <th><a href="/Users/@participant.ParticipantName">@participant.ParticipantName</a></th>
             @foreach (var problemResult in participant.ProblemResults)
             {
                 <td style="white-space: nowrap">
@@ -39,8 +39,12 @@
                     }
                     else
                     {
-                        <strong>@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</strong> @problemResult.BestSubmission.SubmissionType
+                        <strong><a href="/Contests/Submissions/View/@problemResult.BestSubmission.Id">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong> @problemResult.BestSubmission.SubmissionType
                         <br />
+                        if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                        {
+                            @:Compilation failed!
+                        }
                         foreach (var testRun in problemResult.BestSubmission.TestRuns)
                         {
                             if (testRun.IsZeroTest)
