@@ -80,11 +80,9 @@
                     throw;
                 }
 
-                data.TestRuns.DeleteBySubmissionId(submission.Id);
-                data.SaveChanges();
-
                 try
                 {
+                    data.TestRuns.DeleteBySubmissionId(submission.Id);
                     this.ProcessSubmission(submission);
                     data.SaveChanges();
                 }
