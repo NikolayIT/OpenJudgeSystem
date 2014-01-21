@@ -133,7 +133,7 @@
     <value>Детайли</value>
   </data>
   <data name="Not_processed" xml:space="preserve">
-    <value>Още е обработено</value>
+    <value>Още не е обработено</value>
   </data>
   <data name="Problem_results" xml:space="preserve">
     <value>Резултати</value>

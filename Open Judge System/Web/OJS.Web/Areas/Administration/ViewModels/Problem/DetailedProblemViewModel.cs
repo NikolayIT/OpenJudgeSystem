@@ -30,6 +30,7 @@
                     MaximumPoints = problem.MaximumPoints,
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
+                    ShowResults = problem.ShowResults,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy
@@ -85,6 +86,9 @@
         [Display(Name = "Размер на сорс кода")]
         [DefaultValue(null)]
         public int? SourceCodeSizeLimit { get; set; }
+
+        [Display(Name = "Видими резултати")]
+        public bool ShowResults { get; set; }
 
         [ExcludeFromExcel]
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }

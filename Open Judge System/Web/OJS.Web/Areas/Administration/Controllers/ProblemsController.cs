@@ -98,6 +98,7 @@
                 OrderBy = lastOrderBy + 1,
                 ContestId = contest.Id,
                 ContestName = contest.Name,
+                ShowResults = true,
             };
 
             return this.View(problem);
@@ -131,6 +132,7 @@
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
+                    ShowResults = problem.ShowResults,
                     OrderBy = problem.OrderBy,
                     Checker = this.Data.Checkers.All().Where(x => x.Name == problem.Checker).FirstOrDefault()
                 };
@@ -189,6 +191,7 @@
                     MaximumPoints = problem.MaximumPoints,
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
+                    ShowResults = problem.ShowResults,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy
@@ -226,6 +229,7 @@
                 existingProblem.TimeLimit = problem.TimeLimit;
                 existingProblem.MemoryLimit = problem.MemoryLimit;
                 existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
+                existingProblem.ShowResults = problem.ShowResults;
                 existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
                 existingProblem.OrderBy = problem.OrderBy;
 

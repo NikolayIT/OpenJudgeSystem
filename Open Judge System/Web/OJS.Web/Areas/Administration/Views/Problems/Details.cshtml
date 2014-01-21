@@ -63,6 +63,20 @@
     </div>
     <br />
     <div class="editor-label">
+        @Html.LabelFor(m => m.ShowResults)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @if (Model.ShowResults)
+        {
+            <text>Резултатите са видими</text>
+        }
+        else
+        {
+            <text>Резултатите не са видими</text>
+        }
+    </div>
+    <br />
+    <div class="editor-label">
         @Html.LabelFor(m => m.OrderBy)
     </div>
     <div class="panel-body news-content editor-label">

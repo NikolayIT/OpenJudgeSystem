@@ -73,8 +73,11 @@
             columns.Bound(m => m.QuestionId);
             columns.Bound(m => m.Text);
             columns.Bound(m => m.Type);
-            columns.Bound(m => m.AskPracticeParticipats);
+            columns.Bound(m => m.AskPracticeParticipants);
             columns.Bound(m => m.AskOfficialParticipants);
+            columns.Bound(m => m.RegularExpressionValidation).Hidden();
+            columns.Bound(m => m.CreatedOn).Hidden();
+            columns.Bound(m => m.ModifiedOn).Hidden();
             columns.Command(com => com.Edit().Text(" ")).Width(80);
             columns.Command(com => com.Destroy().Text(" ")).Width(80);
         })
@@ -82,6 +85,7 @@
             {
                 tool.Create().Text("Добави въпрос");
             })
+        .ColumnMenu()
         .Editable(edit =>
             {
                 edit.Mode(GridEditMode.PopUp);

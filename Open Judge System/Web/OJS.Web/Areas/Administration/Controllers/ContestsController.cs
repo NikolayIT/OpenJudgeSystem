@@ -328,5 +328,17 @@
 
             return this.Json(questions.ToDataSourceResult(request));
         }
+
+        [HttpPost]
+        public JsonResult AddQuestionToContest([DataSourceRequest]DataSourceRequest request, ContestQuestionViewModel model, int id)
+        {
+            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == id);
+            var question = model.GetEntityModel();
+
+            contest.Questions.Add(question);
+            this.Data.SaveChanges();
+
+            return Json(new[] { model }.ToDataSourceResult(request));
+        }
     }
 }

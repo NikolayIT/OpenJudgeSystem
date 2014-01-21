@@ -23,7 +23,7 @@
                     ContestId = question.ContestId,
                     Text = question.Text,
                     AskOfficialParticipants = question.AskOfficialParticipants,
-                    AskPracticeParticipats = question.AskPracticeParticipants,
+                    AskPracticeParticipants = question.AskPracticeParticipants,
                     Type = question.Type,
                     RegularExpressionValidation = question.RegularExpressionValidation,
                     CreatedOn = question.CreatedOn,
@@ -32,7 +32,6 @@
             }
         }
 
-        [DatabaseProperty]
         [Display(Name = "№")]
         [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
@@ -55,7 +54,7 @@
         [DatabaseProperty]
         [Display(Name = "Задаване към упражненията")]
         [DefaultValue(true)]
-        public bool AskPracticeParticipats { get; set; }
+        public bool AskPracticeParticipants { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Тип въпрос")]
@@ -64,5 +63,12 @@
         [DatabaseProperty]
         [Display(Name = "Reg-Ex валидация")]
         public string RegularExpressionValidation { get; set; }
+
+        public override ContestQuestion GetEntityModel(ContestQuestion model = null)
+        {
+            model = model ?? new ContestQuestion();
+            model.Id = this.QuestionId.GetValueOrDefault();
+            return this.ConvertToDatabaseEntity(model);
+        }
     }
 }

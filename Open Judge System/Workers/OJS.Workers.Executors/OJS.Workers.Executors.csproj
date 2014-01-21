@@ -58,7 +58,6 @@
     <Compile Include="JobObjects\UiRestrictionFlags.cs" />
     <Compile Include="JobObjects\Win32.cs" />
     <Compile Include="JobObjects\SecurityAttributes.cs" />
-    <Compile Include="NodeJsExecutor.cs" />
     <Compile Include="Process\CreateProcessFlags.cs" />
     <Compile Include="Process\CreateRestrictedTokenFlags.cs" />
     <Compile Include="Process\DuplicateOptions.cs" />
