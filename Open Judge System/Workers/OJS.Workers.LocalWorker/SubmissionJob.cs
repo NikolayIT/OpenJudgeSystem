@@ -116,7 +116,8 @@
                     this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
                 }
 
-                // this.processingSubmissionIds.Remove(submission.Id);
+                // Next line removes the submission from the list. Fixes problem with retesting submissions.
+                this.processingSubmissionIds.Remove(submission.Id);
             }
 
             this.logger.Info("SubmissionJob stopped.");
