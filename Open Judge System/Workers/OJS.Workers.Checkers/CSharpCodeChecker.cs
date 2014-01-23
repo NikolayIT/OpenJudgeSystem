@@ -28,6 +28,8 @@
         {
             var codeProvider = new CSharpCodeProvider();
             var compilerParameters = new CompilerParameters { GenerateInMemory = true, };
+            compilerParameters.ReferencedAssemblies.Add("System.dll");
+            compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
             compilerParameters.ReferencedAssemblies.Add("OJS.Workers.Common.dll");
             var compilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, new[] { parameter });
             if (compilerResults.Errors.HasErrors)
