@@ -1,10 +1,14 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
 
     using Ionic.Zip;
+
+    using NPOI.HSSF.UserModel;
+    using NPOI.SS.UserModel;
 
     using OJS.Common.Extensions;
     using OJS.Data;
@@ -16,6 +20,109 @@
         public ContestsExportController(IOjsData data)
             : base(data)
         {
+        }
+
+        public FileResult Results(int id, bool compete)
+        {
+            var contest = this.Data.Contests.GetById(id);
+
+            var data = new
+            {
+                Id = contest.Id,
+                Name = contest.Name,
+                Problems = contest.Problems.AsQueryable().OrderBy(x => x.Name),
+                Questions = contest.Questions.OrderBy(x => x.Id),
+                Results = this.Data.Participants.All()
+                    .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == compete)
+                    .Select(participant => new
+                    {
+                        ParticipantUserName = participant.User.UserName,
+                        ParticipantFirstName = participant.User.UserSettings.FirstName,
+                        ParticipantLastName = participant.User.UserSettings.LastName,
+                        Answers = participant.Answers.OrderBy(answer => answer.ContestQuestionId),
+                        ProblemResults = participant.Contest.Problems
+                            .Select(problem =>
+                                new
+                                {
+                                    Id = problem.Id,
+                                    ProblemName = problem.Name,
+                                    ShowResult = problem.ShowResults,
+                                    BestSubmission = problem.Submissions
+                                                        .Where(z => z.ParticipantId == participant.Id)
+                                                        .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
+                                                        .Select(z => new { Id = z.Id, Points = z.Points })
+                                                        .FirstOrDefault()
+                                })
+                                .OrderBy(res => res.ProblemName),
+                    })
+                    .ToList()
+                    .Select(x => new { Data = x, Total = x.ProblemResults.Where(y => y.ShowResult).Sum(y => y.BestSubmission == null ? 0 : y.BestSubmission.Points) })
+                    .OrderByDescending(x => x.Total)
+            };
+
+            var workbook = new HSSFWorkbook();
+            var sheet = workbook.CreateSheet();
+
+            // Header
+            var headerRow = sheet.CreateRow(0);
+            int columnNumber = 0;
+            headerRow.CreateCell(columnNumber++).SetCellValue("Username");
+            headerRow.CreateCell(columnNumber++).SetCellValue("Name");
+            foreach (var question in data.Questions)
+            {
+                headerRow.CreateCell(columnNumber++).SetCellValue(question.Text);
+            }
+
+            foreach (var problem in data.Problems)
+            {
+                headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
+            }
+
+            headerRow.CreateCell(columnNumber++).SetCellValue("Total");
+
+            // All rows
+            int rowNumber = 1;
+            foreach (var result in data.Results)
+            {
+                int cellNumber = 0;
+                var row = sheet.CreateRow(rowNumber++);
+                row.CreateCell(cellNumber++).SetCellValue(result.Data.ParticipantUserName);
+                row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName));
+                foreach (var answer in result.Data.Answers)
+                {
+                    row.CreateCell(cellNumber++).SetCellValue(answer.Answer);
+                }
+
+                foreach (var problemResult in result.Data.ProblemResults)
+                {
+                    if (problemResult.BestSubmission != null)
+                    {
+                        row.CreateCell(cellNumber++).SetCellValue(problemResult.BestSubmission.Points);
+                    }
+                    else
+                    {
+                        row.CreateCell(cellNumber++, CellType.BLANK);
+                    }
+                }
+
+                row.CreateCell(cellNumber++).SetCellValue(result.Total);
+            }
+
+            // Auto-size all columns
+            for (int i = 0; i < columnNumber; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+
+            // Write the workbook to a memory stream
+            var outputStream = new MemoryStream();
+            workbook.Write(outputStream);
+
+            // Return the result to the end user
+            return this.File(
+                outputStream.ToArray(), // The binary data of the XLS file
+                "application/vnd.ms-excel", // MIME type of Excel files
+                string.Format("Класиране за {0} {1}.xls", compete ? "състезание" : "практика", contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
         public ZipFileResult Solutions(int id, bool compete)
