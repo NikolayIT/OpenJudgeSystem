@@ -80,6 +80,7 @@
                     throw;
                 }
 
+                submission.ProcessingComment = null;
                 try
                 {
                     data.TestRuns.DeleteBySubmissionId(submission.Id);
