@@ -5,7 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Web.Mvc;
 
     using Kendo.Mvc.Extensions;
@@ -28,16 +27,23 @@
         [NonAction]
         protected FileResult ExportToExcel([DataSourceRequest]DataSourceRequest request, IEnumerable data)
         {
-            Type dataType = data.GetType().GetGenericArguments()[0];
-            var dataTypeProperties = dataType.GetProperties();
-            if (data == null || dataType == null)
+            if (data == null)
             {
-                throw new Exception("GetData() and DataType must be overriden");
+                throw new Exception("GetData() and DataType must be overridden");
             }
 
             // Get the data representing the current grid state - page, sort and filter
             request.PageSize = 0;
             IEnumerable items = data.ToDataSourceResult(request).Data;
+            return this.CreateExcelFile(items);
+        }
+
+        [NonAction]
+        protected FileResult CreateExcelFile(IEnumerable items)
+        {
+            Type dataType = items.GetType().GetGenericArguments()[0];
+
+            var dataTypeProperties = dataType.GetProperties();
 
             // Create new Excel workbook
             var workbook = new HSSFWorkbook();
