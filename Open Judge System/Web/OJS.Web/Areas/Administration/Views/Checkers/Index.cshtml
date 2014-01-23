@@ -10,10 +10,10 @@
         {
             columns.Bound(col => col.Id);
             columns.Bound(col => col.Name);
-            columns.Bound(col => col.Description);
+            columns.Bound(col => col.Description).Hidden();
             columns.Bound(col => col.DllFile);
             columns.Bound(col => col.ClassName);
-            columns.Bound(col => col.Parameter);
+            columns.Bound(col => col.Parameter).ClientTemplate("#= substring(Parameter) #");
             columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
@@ -49,6 +49,8 @@
         .Model(model =>
             {
                 model.Id(m => m.Id);
+                model.Field(m => m.DllFile).DefaultValue("OJS.Workers.Checkers.dll");
+                model.Field(m => m.ClassName).DefaultValue("OJS.Workers.Checkers.CSharpCodeChecker");
             })
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
         .Create(create => create.Action("Create", ControllerName))
@@ -61,5 +63,14 @@
 <script type="text/javascript">
     function onDataBound(e) {
         CreateExportToExcelButton();
+    }
+
+    function substring(value) {
+        if (value == null || value == undefined || value == "") {
+            return "";
+        }
+        else {
+            return value.toString().length > 100 ? value.substring(0, 100) + "..." : value;
+        }
     }
 </script>

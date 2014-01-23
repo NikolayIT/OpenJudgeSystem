@@ -92,7 +92,7 @@
             {
                 Name = "Име",
                 MaximumPoints = 100,
-                TimeLimit = 1000,
+                TimeLimit = 100,
                 MemoryLimit = 16777216,
                 AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name }),
                 OrderBy = lastOrderBy + 1,

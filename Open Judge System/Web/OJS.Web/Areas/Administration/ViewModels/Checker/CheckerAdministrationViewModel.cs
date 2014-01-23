@@ -59,6 +59,7 @@
         [UIHint("SingleLineText")]
         public string ClassName { get; set; }
 
+        [AllowHtml]
         [DatabaseProperty]
         [Display(Name = "Параметър")]
         [UIHint("MultiLineText")]

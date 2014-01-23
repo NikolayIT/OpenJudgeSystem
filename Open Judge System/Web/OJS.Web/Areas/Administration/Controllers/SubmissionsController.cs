@@ -155,9 +155,7 @@
 
         public ActionResult Retest(int id)
         {
-            var submission = this.Data.Submissions
-                .All()
-                .FirstOrDefault(subm => subm.Id == id);
+            var submission = this.Data.Submissions.GetById(id);
 
             if (submission == null)
             {

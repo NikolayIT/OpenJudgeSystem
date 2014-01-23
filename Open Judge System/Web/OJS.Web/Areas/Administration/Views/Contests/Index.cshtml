@@ -13,8 +13,9 @@
             columns.Bound(x => x.StartTime).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Bound(x => x.EndTime).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Bound(x => x.PracticeStartTime).Format("{0:dd/MM/yyyy HH:mm}");
-            columns.Bound(x => x.PracticeEndTime).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(x => x.PracticeEndTime).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.IsVisible).Hidden();
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Problems") + "/#=Id#'>Задачи</a>").Title("Задачи");
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Участници");
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
