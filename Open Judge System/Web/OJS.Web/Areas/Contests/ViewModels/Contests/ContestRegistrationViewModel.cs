@@ -38,7 +38,9 @@
                 {
                     Answer = userAnswer == null ? null : userAnswer.Answer,
                     QuestionId = x.QuestionId,
-                    Question = x.Question
+                    Question = x.Question,
+                    Type = x.Type,
+                    PossibleAnswers = x.PossibleAnswers
                 };
             });
         }

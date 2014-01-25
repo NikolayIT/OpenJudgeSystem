@@ -4,6 +4,7 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
 
@@ -134,6 +135,7 @@
         /// Accepts form input for contest registration.
         /// Users only.
         /// </summary>
+        //// TODO: Refactor
         [HttpPost, Authorize]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
@@ -167,20 +169,49 @@
                 this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
             }
 
-            if (!ModelState.IsValid)
-            {
-                return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
-            }
+            var contestQuestions = contest.Questions.ToList();
 
             var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
             foreach (var question in registrationData.Questions)
             {
+                var counter = 0;
+                var contestQuestion = contestQuestions.FirstOrDefault(x => x.Id == question.QuestionId);
+
+                var regularExpression = contestQuestion.RegularExpressionValidation;
+                bool correctlyAnswered = false;
+
+                if (!string.IsNullOrEmpty(regularExpression))
+                {
+                    correctlyAnswered = Regex.IsMatch(question.Answer, regularExpression);
+                }
+
+                if (contestQuestion.Type == ContestQuestionType.DropDown)
+                {
+                    int contestAnswerId;
+                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Any(x => x.Id == contestAnswerId))
+                    {
+                        correctlyAnswered = true;
+                    }
+
+                    if (!correctlyAnswered)
+                    {
+                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), "Invalid selection");
+                    }
+                }
+
                 participant.Answers.Add(new ParticipantAnswer
                                                 {
                                                     ContestQuestionId = question.QuestionId,
                                                     Answer = question.Answer
                                                 });
+
+                counter++;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
             }
 
             this.Data.SaveChanges();
