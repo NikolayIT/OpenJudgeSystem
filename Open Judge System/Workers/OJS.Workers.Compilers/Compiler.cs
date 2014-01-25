@@ -86,8 +86,20 @@
             string compilerOutput;
             using (var process = Process.Start(processStartInfo))
             {
-                compilerOutput = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
+                if (process == null)
+                {
+                    compilerOutput = "Could not start compiler. Process object is null.";
+                }
+                else
+                {
+                    compilerOutput = process.StandardOutput.ReadToEnd();
+                    if (string.IsNullOrWhiteSpace(compilerOutput))
+                    {
+                        compilerOutput = process.StandardError.ReadToEnd();
+                    }
+
+                    process.WaitForExit();
+                }
             }
 
             // Check results and return CompilerResult instance
