@@ -25,6 +25,8 @@
                                                 .Select(ContestProblemResourceViewModel.FromResource);
             this.TimeLimit = problem.TimeLimit;
             this.MemoryLimit = problem.MemoryLimit;
+            this.CheckerName = problem.Checker.Name;
+            this.CheckerDescription = problem.Checker.Description;
         }
 
         public ContestProblemViewModel()
@@ -44,6 +46,8 @@
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
                     ShowResults = problem.ShowResults,
+                    CheckerName = problem.Checker.Name,
+                    CheckerDescription = problem.Checker.Description,
                     Resources = problem.Resources.AsQueryable()
                                                             .Where(x => !x.IsDeleted)
                                                             .OrderBy(x => x.OrderBy)
@@ -85,6 +89,10 @@
                 this.timeLimitInMs = (int)value;
             }
         }
+
+        public string CheckerName { get; set; }
+
+        public string CheckerDescription { get; set; }
 
         public IEnumerable<ContestProblemResourceViewModel> Resources { get; set; }
     }
