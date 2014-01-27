@@ -24,6 +24,8 @@
 
         IDeletableEntityRepository<ContestQuestion> ContestQuestions { get; }
 
+        IRepository<ContestQuestionAnswer> ContestQuestionAnswers { get; }
+
         ITestRunsRepository TestRuns { get; }
 
         IDeletableEntityRepository<FeedbackReport> FeedbackReports { get; }

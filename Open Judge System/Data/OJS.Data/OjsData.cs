@@ -83,6 +83,14 @@
             }
         }
 
+        public IRepository<ContestQuestionAnswer> ContestQuestionAnswers
+        {
+            get
+            {
+                return this.GetRepository<ContestQuestionAnswer>();
+            }
+        }
+
         public ISubmissionsRepository Submissions
         {
             get

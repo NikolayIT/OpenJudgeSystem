@@ -12,6 +12,7 @@
 
     using OJS.Common.Extensions;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
@@ -90,7 +91,21 @@
                 row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName));
                 foreach (var answer in result.Data.Answers)
                 {
-                    row.CreateCell(cellNumber++).SetCellValue(answer.Answer);
+                    var answerId = 0;
+                    if (answer.ContestQuestion.Type == ContestQuestionType.DropDown && int.TryParse(answer.Answer, out answerId))
+                    {
+                        // TODO: N+1 query problem. Optimize it.
+                        var answerText =
+                            this.Data.ContestQuestionAnswers.All()
+                                .Where(x => x.Id == answerId)
+                                .Select(x => x.Text)
+                                .FirstOrDefault();
+                        row.CreateCell(cellNumber++).SetCellValue(answerText);
+                    }
+                    else
+                    {
+                        row.CreateCell(cellNumber++).SetCellValue(answer.Answer);
+                    }
                 }
 
                 foreach (var problemResult in result.Data.ProblemResults)
