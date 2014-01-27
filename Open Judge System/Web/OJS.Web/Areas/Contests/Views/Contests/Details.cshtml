@@ -48,7 +48,7 @@
         </h5>
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
-        <h3>@Resource.Problems: </h3>
+        <h3>@Resource.Problems</h3>
         @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword))
         {
             foreach (var problem in Model.Problems)
