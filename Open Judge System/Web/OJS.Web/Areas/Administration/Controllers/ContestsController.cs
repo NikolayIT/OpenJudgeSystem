@@ -259,7 +259,7 @@
             contest.Questions.Add(question);
             this.Data.SaveChanges();
 
-            return Json(new[] { model }.ToDataSourceResult(request));
+            return this.Json(new[] { model }.ToDataSourceResult(request));
         }
     }
 }
