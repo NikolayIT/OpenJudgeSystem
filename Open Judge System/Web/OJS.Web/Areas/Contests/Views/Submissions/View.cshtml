@@ -145,7 +145,7 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && User.IsAdmin()) // Temporally execution comments are visible only for administrators
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || User.IsAdmin())) // Temporally execution comments are visible only for administrators
         {
             var executionComment = testResult.ExecutionComment;
             if (!User.IsAdmin())

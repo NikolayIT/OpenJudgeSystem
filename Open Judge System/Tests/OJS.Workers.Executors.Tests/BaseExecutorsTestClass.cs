@@ -29,6 +29,26 @@ class Program
     }
 }";
 
+        protected const string ReadInputAndThenOutputTheLengthSourceCode = @"using System;
+class Program
+{
+    public static void Main()
+    {
+        var line = Console.ReadLine();
+        Console.WriteLine(line.Length);
+    }
+}";
+
+        protected const string ReadInputAndThenCheckTheTextToContainCyrillicLettersSourceCode = @"using System;
+class Program
+{
+    public static void Main()
+    {
+        var line = Console.ReadLine();
+        Console.WriteLine((line.Contains(""а"") || line.Contains(""е"")));
+    }
+}";
+
         protected const string ReadClipboardSourceCode = @"using System;
 using System.Windows.Forms;
 class Program
