@@ -102,30 +102,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{55BD5E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Executors.Tests", "Tests\OJS.Workers.Executors.Tests\OJS.Workers.Executors.Tests.csproj", "{5054FE58-791D-41EA-9ED9-911788A7E631}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Judge Systems", "Other Judge Systems", "{092EECBD-57E2-441B-81E2-53C17CD6436C}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Other Judge Systems\Similar sites.txt = Documentation\Other Judge Systems\Similar sites.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PC2", "PC2", "{CC5CD26F-142E-4035-A9EB-09FD01B8AD02}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Other Judge Systems\PC2\pc2-9.1.6-2136.zip = Documentation\Other Judge Systems\PC2\pc2-9.1.6-2136.zip
-		Documentation\Other Judge Systems\PC2\pc2-9.2.3-2565.zip = Documentation\Other Judge Systems\PC2\pc2-9.2.3-2565.zip
-		Documentation\Other Judge Systems\PC2\Web page.url = Documentation\Other Judge Systems\PC2\Web page.url
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMOC", "SMOC", "{DFD7AC50-D467-4DE7-B8F5-5814AAF8BE18}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Other Judge Systems\SMOC\SMOC.txt = Documentation\Other Judge Systems\SMOC\SMOC.txt
-		Documentation\Other Judge Systems\SMOC\Web page.url = Documentation\Other Judge Systems\SMOC\Web page.url
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "spoj0", "spoj0", "{FABB714D-7669-486B-BFC4-B7F3F7CDA265}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Other Judge Systems\spoj0\spoj0 Google Code.url = Documentation\Other Judge Systems\spoj0\spoj0 Google Code.url
-		Documentation\Other Judge Systems\spoj0\Spoj0.zip = Documentation\Other Judge Systems\spoj0\Spoj0.zip
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{042CF9B9-A029-4D72-A642-A1727F892D26}"
 	ProjectSection(SolutionItems) = preProject
 		Tools\Files\ApiMonitorApiFilters.xml = Tools\Files\ApiMonitorApiFilters.xml
@@ -386,7 +362,6 @@ Global
 		{04DE40D9-F362-4916-940F-712C165909AF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{29554AA1-87DF-4811-9084-071C4D6BEAAF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{95A6091F-9D63-4E56-99E4-DC34CEBD551A} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
-		{092EECBD-57E2-441B-81E2-53C17CD6436C} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{341CA732-D483-4487-923E-27ED2A6E9A4F} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
 		{1807194C-9E25-4365-B3BE-FE1DF627612B} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
 		{8C4BF453-24EF-46F3-B947-31505FB905DE} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
@@ -399,8 +374,5 @@ Global
 		{7A010146-2DF8-49D5-8B21-EE73AE6422E6} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
 		{154179FB-ED7B-4C9D-89DE-77EEBDC7BD3A} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
 		{3BDB3472-E927-4660-AF50-3C8CACFFC012} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
-		{CC5CD26F-142E-4035-A9EB-09FD01B8AD02} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
-		{DFD7AC50-D467-4DE7-B8F5-5814AAF8BE18} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
-		{FABB714D-7669-486B-BFC4-B7F3F7CDA265} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
 	EndGlobalSection
 EndGlobal
