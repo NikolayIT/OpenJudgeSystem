@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{93034417-0AAA-4E72-84EA-767DB4EF5283}"
 EndProject
@@ -118,34 +118,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMOC", "SMOC", "{DFD7AC50-D
 	ProjectSection(SolutionItems) = preProject
 		Documentation\Other Judge Systems\SMOC\SMOC.txt = Documentation\Other Judge Systems\SMOC\SMOC.txt
 		Documentation\Other Judge Systems\SMOC\Web page.url = Documentation\Other Judge Systems\SMOC\Web page.url
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Requirements", "Requirements", "{18727930-BBE6-48CA-81E3-9CEB42E45D74}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Requirements\Requirements for agent enviroments.txt = Documentation\Requirements\Requirements for agent enviroments.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PowerCollections", "PowerCollections", "{8450770E-1FAF-434C-AAC5-9AB44CD68176}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries", "Binaries", "{195ED1FC-6D34-4B5C-B2BF-647B1D77AC66}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Requirements\PowerCollections\Binaries\License.txt = Documentation\Requirements\PowerCollections\Binaries\License.txt
-		Documentation\Requirements\PowerCollections\Binaries\PowerCollections.dll = Documentation\Requirements\PowerCollections\Binaries\PowerCollections.dll
-		Documentation\Requirements\PowerCollections\Binaries\PowerCollections.XML = Documentation\Requirements\PowerCollections\Binaries\PowerCollections.XML
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries_Signed_4.5", "Binaries_Signed_4.5", "{4F69427F-000F-430A-A982-5E6535734F6F}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.dll = Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.dll
-		Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.dll.config = Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.dll.config
-		Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.XML = Documentation\Requirements\PowerCollections\Binaries_Signed_4.5\PowerCollections.XML
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gacutil", "Gacutil", "{7D6B701A-F78A-43B8-B4B0-DE275962A5B8}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Requirements\Gacutil\gacutil.exe = Documentation\Requirements\Gacutil\gacutil.exe
-		Documentation\Requirements\Gacutil\gacutil.exe.config = Documentation\Requirements\Gacutil\gacutil.exe.config
-		Documentation\Requirements\Gacutil\gacutlrc.dll = Documentation\Requirements\Gacutil\gacutlrc.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "spoj0", "spoj0", "{FABB714D-7669-486B-BFC4-B7F3F7CDA265}"
@@ -415,7 +387,6 @@ Global
 		{29554AA1-87DF-4811-9084-071C4D6BEAAF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{95A6091F-9D63-4E56-99E4-DC34CEBD551A} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{092EECBD-57E2-441B-81E2-53C17CD6436C} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
-		{18727930-BBE6-48CA-81E3-9CEB42E45D74} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
 		{341CA732-D483-4487-923E-27ED2A6E9A4F} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
 		{1807194C-9E25-4365-B3BE-FE1DF627612B} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
 		{8C4BF453-24EF-46F3-B947-31505FB905DE} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
@@ -431,9 +402,5 @@ Global
 		{CC5CD26F-142E-4035-A9EB-09FD01B8AD02} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
 		{DFD7AC50-D467-4DE7-B8F5-5814AAF8BE18} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
 		{FABB714D-7669-486B-BFC4-B7F3F7CDA265} = {092EECBD-57E2-441B-81E2-53C17CD6436C}
-		{8450770E-1FAF-434C-AAC5-9AB44CD68176} = {18727930-BBE6-48CA-81E3-9CEB42E45D74}
-		{7D6B701A-F78A-43B8-B4B0-DE275962A5B8} = {18727930-BBE6-48CA-81E3-9CEB42E45D74}
-		{195ED1FC-6D34-4B5C-B2BF-647B1D77AC66} = {8450770E-1FAF-434C-AAC5-9AB44CD68176}
-		{4F69427F-000F-430A-A982-5E6535734F6F} = {8450770E-1FAF-434C-AAC5-9AB44CD68176}
 	EndGlobalSection
 EndGlobal

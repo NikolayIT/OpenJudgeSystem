@@ -1,0 +1,19 @@
+	.NET 4.5.1 installed
+
+PowerCollections.dll should be added to the GAC
+	gacutil /i PowerCollections.dll
+	http://msdn.microsoft.com/en-us/library/ex0ss12c.aspx
+	If gacutil doesn't work, paste the assembly in C:\Windows\Microsoft.NET\Framework64\v4.0.30319 and C:\Windows\Microsoft.NET\Framework\v4.0.30319
+
+GCC compiler installed
+
+Firewall should block all unnessesary ips and ports
+
+System is tested in Win8 and Windows Server 2012 R2 (Preview)
+
+
+The executor process should be with Realtime priority
+
+When executor process is run for the first time, a sample process should be run in order for system dlls to be cached.
+
+For tests with strange characters to work correctly the non-Unicode setting in Windows settings must be set to proper encoding (for example: Windows-1251)
