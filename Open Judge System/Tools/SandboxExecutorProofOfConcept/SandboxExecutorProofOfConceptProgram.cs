@@ -5,19 +5,14 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
-    using System.Security.Principal;
     using System.Threading;
-    using System.Threading.Tasks;
 
     using OJS.Common.Extensions;
     using OJS.Workers.Executors;
-    using OJS.Workers.Executors.Impersonation;
     using OJS.Workers.Executors.Process;
 
     internal class SandboxExecutorProofOfConceptProgram
     {
-        private const string UserName = @"testcode";
-        private const string Password = @"testcode1234";
         private const string ProcessInfoFormat = "{0,-25} {1}";
         private const string ProcessInfoTimeFormat = "{0,-25} {1:O}";
         private static readonly string SandboxTargetExecutablePath = Environment.CurrentDirectory + @"\SandboxTarget.exe";
@@ -87,32 +82,6 @@
             Console.WriteLine(ProcessInfoFormat, "UserProcessorTime:", result.UserProcessorTime);
             Console.WriteLine(ProcessInfoFormat, "Memory:", string.Format("{0:0.00}MB", result.MemoryUsed / 1024.0 / 1024.0));
             Console.WriteLine(new string('-', 79));
-        }
-
-        private static void ProcessOnExited(object sender, EventArgs eventArgs)
-        {
-            Console.WriteLine(ProcessInfoTimeFormat, "-- Process exited event:", DateTime.Now);
-        }
-
-        private static void ImpersonateCurrentProcess()
-        {
-            Console.WriteLine("WindowsIdentity.GetCurrent().Name: " + WindowsIdentity.GetCurrent().Name);
-
-            Console.WriteLine();
-            var context = new WrapperImpersonationContext("Nikolay-PC", UserName, Password);
-            context.Enter();
-            Console.WriteLine("... context.Enter(); ...");
-
-            // Execute code under other uses context
-            Console.WriteLine("WindowsIdentity.GetCurrent().Name: " + WindowsIdentity.GetCurrent().Name);
-            Console.WriteLine("Environment.UserName: " + Environment.UserName);
-            //// Process.Start(SandboxTargetExecutablePath);
-            //// File.ReadAllText("SandboxExecutorProofOfConcept.exe.config");
-
-            Console.WriteLine();
-            context.Leave();
-            Console.WriteLine("... context.Leave(); ...");
-            Console.WriteLine("WindowsIdentity.GetCurrent().Name: " + WindowsIdentity.GetCurrent().Name);
         }
     }
 }
