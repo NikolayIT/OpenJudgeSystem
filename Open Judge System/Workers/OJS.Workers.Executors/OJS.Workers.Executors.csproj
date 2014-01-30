@@ -82,10 +82,8 @@
     <Compile Include="Process\TokenInformationClass.cs" />
     <Compile Include="Process\TokenMandatoryLabel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DifferentUserExecutor.cs" />
     <Compile Include="JobObjects\PrepareJobObject.cs" />
     <Compile Include="Process\RestrictedProcess.cs" />
-    <Compile Include="DifferentUserProcessExecutor.cs" />
     <Compile Include="RestrictedProcessExecutor.cs" />
     <Compile Include="Impersonation\WrapperImpersonationContext.cs" />
   </ItemGroup>

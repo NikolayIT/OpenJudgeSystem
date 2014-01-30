@@ -88,52 +88,6 @@
             Console.WriteLine(ProcessInfoFormat, "Memory:", string.Format("{0:0.00}MB", result.MemoryUsed / 1024.0 / 1024.0));
             Console.WriteLine(new string('-', 79));
         }
-        
-        private static void ExecuteProcessWithDifferentUser(string applicationPath, string textToWrite, int timeLimit, int memoryLimit)
-        {
-            try
-            {
-                var process = new DifferentUserProcessExecutor(applicationPath, Environment.UserDomainName, UserName, Password);
-                process.Process.Exited += ProcessOnExited;
-                process.SetTextToWrite(textToWrite);
-                Console.WriteLine("Chars to write to the process: {0}", process.CharsToWrite.Length);
-                Console.WriteLine("Starting sandbox target process...");
-                var executionInfo = process.Start(timeLimit, memoryLimit);
-
-                Console.WriteLine("================== Process output ==================");
-                Console.WriteLine(executionInfo.StandardOutputContent);
-
-                if (!string.IsNullOrEmpty(executionInfo.StandardErrorContent))
-                {
-                    Console.WriteLine("================== Process error ===================");
-                    Console.WriteLine(executionInfo.StandardErrorContent);
-                }
-
-                // Process information
-                Console.WriteLine("================== Process info ====================");
-                Console.WriteLine(ProcessInfoFormat, "Id:", process.Process.Id);
-                Console.WriteLine(ProcessInfoFormat, "HasExited:", process.Process.HasExited);
-                Console.WriteLine(ProcessInfoFormat, "ExitCode:", process.Process.ExitCode);
-                Console.WriteLine(ProcessInfoFormat, "Error code description:", new Win32Exception(process.Process.ExitCode).Message);
-                Console.WriteLine(ProcessInfoFormat, "PriorityClass:", process.Process.PriorityClass);
-                Console.WriteLine(ProcessInfoTimeFormat, "StartTime:", process.Process.StartTime);
-                Console.WriteLine(ProcessInfoTimeFormat, "ExitTime:", process.Process.ExitTime);
-                Console.WriteLine(ProcessInfoFormat, "PrivilegedProcessorTime:", process.Process.PrivilegedProcessorTime);
-                Console.WriteLine(ProcessInfoFormat, "UserProcessorTime:", process.Process.UserProcessorTime);
-                Console.WriteLine(ProcessInfoFormat, "TotalProcessorTime:", process.Process.TotalProcessorTime);
-                Console.WriteLine(ProcessInfoFormat, "ExitTime - StartTime:", process.Process.ExitTime - process.Process.StartTime);
-                //// When process is exited no access to: process.BasePriority, process.HandleCount, MaxWorkingSet, etc.
-                Console.WriteLine("==================== More info =====================");
-                Console.WriteLine(ProcessInfoFormat, "ProcessKilledBecauseOfTimeLimit:", executionInfo.ProcessKilledBecauseOfTimeLimit);
-                Console.WriteLine("====================================================");
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex);
-                //// throw;
-            }
-        }
 
         private static void ProcessOnExited(object sender, EventArgs eventArgs)
         {
