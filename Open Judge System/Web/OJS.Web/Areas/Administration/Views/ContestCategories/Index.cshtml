@@ -14,8 +14,8 @@
         columns.Bound(x => x.OrderBy);
         columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
         columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-        columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
-        columns.Command(command => command.Destroy().Text(" ")).Width(80);
+        columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80).Title("Промяна");
+        columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Изтриване");
     })
     .ToolBar(toolbar =>
     {

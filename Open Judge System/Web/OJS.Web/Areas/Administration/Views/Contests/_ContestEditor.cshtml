@@ -1,5 +1,10 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
 
+<div class="row">
+    <div class="editor-label col-xs-3">
+        @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
+    </div>
+</div>
 <fieldset>
     <legend>Основна информация</legend>
     <div class="row">

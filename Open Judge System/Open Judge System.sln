@@ -87,9 +87,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxExecutorProofOfConcept", "Tools\SandboxExecutorProofOfConcept\SandboxExecutorProofOfConcept.csproj", "{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{95A6091F-9D63-4E56-99E4-DC34CEBD551A}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Sandbox\Useful links.txt = Documentation\Sandbox\Useful links.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxTarget", "Tools\SandboxTarget\SandboxTarget.csproj", "{D51F7D60-421C-44B2-9422-2610066CB82D}"
 EndProject

@@ -77,6 +77,12 @@
                 return this.View(model);
             }
 
+            if (model.SelectedSubmissionTypes == null || !model.SelectedSubmissionTypes.Any())
+            {
+                ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
+                return this.View(model);
+            }
+
             if (model != null && ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();

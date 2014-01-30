@@ -19,7 +19,7 @@
             columns.Bound(model => model.DateOfBirth);
             columns.Bound(model => model.Company).Hidden();
             columns.Bound(model => model.JobTitle).Hidden();
-            columns.Bound(model => model.Age);
+            columns.Bound(model => model.Age).Filterable(false);
             columns.Bound(model => model.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(model => model.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);

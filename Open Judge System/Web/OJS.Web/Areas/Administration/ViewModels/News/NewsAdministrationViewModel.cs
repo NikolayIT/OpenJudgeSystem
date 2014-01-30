@@ -46,14 +46,14 @@
 
         [DatabaseProperty]
         [Display(Name = "Автор")]
-        [Required(ErrorMessage = "Автора е задължителен!")]
+        [Required(ErrorMessage = "Авторът е задължителен!")]
         [StringLength(25, MinimumLength = 2, ErrorMessage = "Позволената дължина е между 2 и 25 символа")]
         [UIHint("SingleLineText")]
         public string Author { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Източник")]
-        [Required(ErrorMessage = "Съдържанието е задължително!")]
+        [Required(ErrorMessage = "Източникът е задължителен!")]
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
         [UIHint("SingleLineText")]
         public string Source { get; set; }
