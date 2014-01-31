@@ -12,6 +12,27 @@
     public class RestrictedProcessSecurityTests : BaseExecutorsTestClass
     {
         [TestMethod]
+        public void RestrictedProcessShouldNotBeAbleToCreateFiles()
+        {
+            const string CreateFileSourceCode = @"using System;
+using System.IO;
+class Program
+{
+    public static void Main()
+    {
+        File.OpenWrite(""test.txt"");
+    }
+}";
+            var exePath = this.CreateExe("RestrictedProcessShouldNotBeAbleToCreateFiles.exe", CreateFileSourceCode);
+
+            var process = new RestrictedProcessExecutor();
+            var result = process.Execute(exePath, string.Empty, 1000, 32 * 1024 * 1024);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
+        }
+
+        [TestMethod]
         public void RestrictedProcessShouldNotBeAbleToReadClipboard()
         {
             const string ReadClipboardSourceCode = @"using System;

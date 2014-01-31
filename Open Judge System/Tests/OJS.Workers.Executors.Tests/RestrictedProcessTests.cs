@@ -1,17 +1,13 @@
 ﻿namespace OJS.Workers.Executors.Tests
 {
     using System;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
-    using System.Windows.Forms;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Workers.Common;
 
     [TestClass]
-    public class TestRestrictedProcess : BaseExecutorsTestClass
+    public class RestrictedProcessTests : BaseExecutorsTestClass
     {
         private const string ReadInputAndThenOutputSourceCode = @"using System;
 class Program
