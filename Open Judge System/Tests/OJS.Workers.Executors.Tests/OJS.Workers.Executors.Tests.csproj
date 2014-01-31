@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="BaseExecutorsTestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestrictedProcessSecurityTests.cs" />
     <Compile Include="TestRestrictedProcess.cs" />
   </ItemGroup>
   <ItemGroup>
