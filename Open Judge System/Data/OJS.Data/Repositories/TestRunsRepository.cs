@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Repositories
 {
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -22,6 +23,12 @@
             }
 
             return testRuns.Count;
+        }
+
+        public override void Delete(int id)
+        {
+            var testRun = new TestRun { Id = id };
+            this.Context.Entry(testRun).State = EntityState.Deleted;
         }
     }
 }
