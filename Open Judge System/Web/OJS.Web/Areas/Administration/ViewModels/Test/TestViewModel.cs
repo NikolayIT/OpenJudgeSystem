@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Web.Script.Serialization;
 
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
@@ -60,6 +61,7 @@
         [Display(Name = "Вход")]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Входа е задължителен!", AllowEmptyStrings = false)]
+        [ScriptIgnore]
         [StringLength(int.MaxValue, MinimumLength = 1)]
         public string InputFull
         {
@@ -106,6 +108,7 @@
         [Display(Name = "Изход")]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Изхода е задължителен!", AllowEmptyStrings = false)]
+        [ScriptIgnore]
         [StringLength(int.MaxValue, MinimumLength = 1)]
         public string OutputFull
         {

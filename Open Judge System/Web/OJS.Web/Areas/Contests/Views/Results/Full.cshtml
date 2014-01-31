@@ -2,6 +2,7 @@
 
 @using OJS.Common.Models
 @using Resource = Resources.Areas.Contests.Views.ResultsFull
+@using OJS.Web.Areas.Contests.Controllers
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
@@ -21,13 +22,13 @@
     <tr>
         <th>@Resource.User</th>
         @{
-            string isOfficial = ViewBag.IsOfficial ? "Compete" : "Practice";
-            int problemCounter = 0;
+            string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
+            int problemNumber = 0;
         }
         @foreach (var problem in Model.Problems)
         {
-            <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
-            problemCounter++;
+            <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
+            problemNumber++;
         }
         <th>@Resource.Total</th>
     </tr>

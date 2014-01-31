@@ -1,6 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
+@using OJS.Web.Areas.Contests.Controllers
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
@@ -29,7 +30,7 @@
             <th>№</th>
             <th>@Resource.User</th>
             @{ 
-                string isOfficial = ViewBag.IsOfficial ? "Compete" : "Practice";
+                string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
                 int problemCounter = 0;
             }
             @foreach (var problem in Model.Problems)

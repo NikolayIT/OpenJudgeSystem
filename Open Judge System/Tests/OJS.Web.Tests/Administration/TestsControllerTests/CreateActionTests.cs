@@ -58,21 +58,6 @@
         }
 
         [TestMethod]
-        public void CreateGetActionShouldContainProperViewBagEntriesOnCorrectProblem()
-        {
-            var viewResult = this.TestsController.Create(1) as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var viewBagProblemId = viewResult.ViewBag.ProblemId;
-            Assert.IsNotNull(viewBagProblemId);
-            Assert.AreEqual(1, viewBagProblemId);
-
-            var viewBagProblemName = viewResult.ViewBag.ProblemName;
-            Assert.IsNotNull(viewBagProblemName);
-            Assert.AreEqual("Problem", viewBagProblemName);
-        }
-
-        [TestMethod]
         public void CreatePostActionShouldReturnProperRedirectAndMessageWhenProblemDoesNotExist()
         {
             var redirectResult = this.TestsController.Create(100, null) as RedirectToRouteResult;

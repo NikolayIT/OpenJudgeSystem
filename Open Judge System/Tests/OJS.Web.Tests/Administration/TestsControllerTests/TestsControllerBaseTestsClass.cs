@@ -233,7 +233,7 @@
 
             this.data = new Mock<IOjsData>();
             this.Problems = new Mock<IDeletableEntityRepository<Problem>>();
-            this.Tests = new Mock<IRepository<Test>>();
+            this.Tests = new Mock<ITestRepository>();
             this.TestsRuns = new Mock<ITestRunsRepository>();
             this.Categories = new Mock<IDeletableEntityRepository<ContestCategory>>();
             this.Contests = new Mock<IContestsRepository>();
@@ -273,7 +273,7 @@
 
         protected Mock<IDeletableEntityRepository<Problem>> Problems { get; set; }
 
-        protected Mock<IRepository<Test>> Tests { get; set; }
+        protected Mock<ITestRepository> Tests { get; set; }
 
         protected Mock<ITestRunsRepository> TestsRuns { get; set; }
 

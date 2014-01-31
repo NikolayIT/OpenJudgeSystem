@@ -14,7 +14,7 @@
 
         IDeletableEntityRepository<Problem> Problems { get; }
 
-        IRepository<Test> Tests { get; }
+        ITestRepository Tests { get; }
 
         IDeletableEntityRepository<News> News { get; }
 

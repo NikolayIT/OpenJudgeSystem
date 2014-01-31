@@ -141,7 +141,8 @@
             var problem = new Problem
             {
                 ContestId = contest.Id,
-                Name = "Sample Problem"
+                Name = "Sample Problem",
+                Checker = new Checker { Name = "Checker" }
             };
 
             contest.Problems.Add(problem);
@@ -182,7 +183,8 @@
                     {
                         Link = "http://www.testlink.com"
                     }
-                }
+                },
+                Checker = new Checker { Name = "Checker" }
             };
 
             contest.Problems.Add(problem);

@@ -234,6 +234,16 @@
                 return this.RedirectToAction("Index");
             }
 
+            // delete all test runs for the current test
+            var testRunsIdList = test.TestRuns.Select(t => t.Id).ToList();
+            foreach (var testRun in testRunsIdList)
+            {
+                this.Data.TestRuns.Delete(testRun);
+            }
+
+            this.Data.SaveChanges();
+
+            // delete the test
             this.Data.Tests.Delete(id.Value);
             this.Data.SaveChanges();
 
@@ -291,9 +301,16 @@
                 return this.RedirectToAction("Index");
             }
 
-            foreach (var testId in problem.Tests.ToList())
+            var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
+            foreach (var test in tests)
             {
-                this.Data.Tests.Delete(testId);
+                var testRuns = test.TestRuns.ToList();
+                foreach (var testRun in testRuns)
+                {
+                    this.Data.TestRuns.Delete(testRun);
+                }
+
+                this.Data.Tests.Delete(test.Id);
             }
 
             this.Data.SaveChanges();
@@ -494,15 +511,13 @@
 
             if (deleteOldFiles)
             {
-                var tests = problem.Tests.ToList();
-
+                var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
                 foreach (var test in tests)
                 {
                     var testRuns = test.TestRuns.ToList();
-
                     foreach (var testRun in testRuns)
                     {
-                        this.Data.TestRuns.Delete(testRun.Id);
+                        this.Data.TestRuns.Delete(testRun);
                     }
 
                     this.Data.Tests.Delete(test.Id);

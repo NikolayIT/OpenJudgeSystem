@@ -43,11 +43,11 @@
             }
         }
 
-        public IRepository<Test> Tests
+        public ITestRepository Tests
         {
             get
             {
-                return this.GetRepository<Test>();
+                return (TestRepository)this.GetRepository<Test>();
             }
         }
 
@@ -221,6 +221,11 @@
                 if (typeof(T).IsAssignableFrom(typeof(Submission)))
                 {
                     type = typeof(SubmissionsRepository);
+                }
+
+                if (typeof(T).IsAssignableFrom(typeof(Test)))
+                {
+                    type = typeof(TestRepository);
                 }
 
                 if (typeof(T).IsAssignableFrom(typeof(TestRun)))
