@@ -20,9 +20,14 @@
 <table class="table table-striped">
     <tr>
         <th>@Resource.User</th>
+        @{
+            string isOfficial = ViewBag.IsOfficial ? "Compete" : "Practice";
+            int problemCounter = 0;
+        }
         @foreach (var problem in Model.Problems)
         {
-            <th>@problem.Name</th>
+            <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
+            problemCounter++;
         }
         <th>@Resource.Total</th>
     </tr>

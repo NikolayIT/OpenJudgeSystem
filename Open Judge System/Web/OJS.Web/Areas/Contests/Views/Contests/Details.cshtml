@@ -40,10 +40,10 @@
             <div>@Resource.No_contest_description</div>
         }
         <h5>
-            @Resource.Allowed_languages:
+            @Resource.Allowed_languages: |
             @foreach (var submissionType in Model.AllowedSubmissionTypes)
             {
-                <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name.ToUrlSafeString() })</span>
+                <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name.ToUrlSafeString() }) |</span>
             }
         </h5>
     </div>

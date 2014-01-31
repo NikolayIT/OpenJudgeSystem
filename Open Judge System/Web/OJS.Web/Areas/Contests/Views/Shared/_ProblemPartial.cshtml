@@ -8,6 +8,15 @@
 <h2>@Model.Name</h2>
 
 <div class="row">
+    @if (User.IsAdmin())
+    {
+        <div class="col-md-12">
+            @Html.ActionLink("Участници", "Contest", "Participants", new { Area = "Administration", Id = Model.ContestId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink("Тестове", "Problem", "Tests", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink("Промяна", "Edit", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink("Изтриване", "Delete", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+        </div>
+    }
     <div class="col-md-12">
         <div id="notify-container-@(Model.ProblemId)">
         </div>
@@ -58,6 +67,11 @@
                     <span class="glyphicon glyphicon-question-sign"></span>
                 }
                 <a href="@resourceLink" target="_blank" class="resource-link">@resource.Name</a>
+            }
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <a href="/Administration/Problems/Resource/@Model.ProblemId" target="_blank" class="resource-link">Администрация</a>
             }
         </div>
         <div class="submision">

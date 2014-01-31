@@ -61,6 +61,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is empty.
+        /// </summary>
+        public static string Empty_Password {
+            get {
+                return ResourceManager.GetString("Empty_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incorrect password.
         /// </summary>
         public static string Incorrect_password {

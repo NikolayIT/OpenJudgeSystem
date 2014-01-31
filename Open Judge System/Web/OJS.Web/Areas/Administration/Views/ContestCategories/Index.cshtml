@@ -27,7 +27,7 @@
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете категорията? Всичките подкатегории също ще бъдат изтрити!");
     })
     .ColumnMenu()
     .Events(e => e.DataBound("onDataBound"))

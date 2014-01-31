@@ -28,12 +28,17 @@
         <tr>
             <th>№</th>
             <th>@Resource.User</th>
+            @{ 
+                string isOfficial = ViewBag.IsOfficial ? "Compete" : "Practice";
+                int problemCounter = 0;
+            }
             @foreach (var problem in Model.Problems)
             {
                 if (problem.ShowResults || User.IsAdmin())
                 {
-                    <th>@problem.Name</th>
+                    <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
                 }
+                problemCounter++;
             }
             <th>@Resource.Total</th>
         </tr>

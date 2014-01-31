@@ -45,6 +45,11 @@
                     .Text(problem.Name)
                     .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
             }
+
+            if (User.IsAdmin())
+            {
+                tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
+            }
         })
         .Events(ev =>
         {
@@ -105,7 +110,7 @@
         });
 
         contestTimer.start();
-    </text>
+        </text>
     }
     </script>
 }

@@ -150,12 +150,20 @@
             var contest = this.Data.Contests.GetById(registrationData.ContestId);
             ValidateContest(contest, official);
 
-            if (official && contest.HasContestPassword && (contest.ContestPassword != registrationData.Password))
+            if (official && contest.HasContestPassword && string.IsNullOrEmpty(registrationData.Password))
+            {
+                this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+            }
+            else if (official && contest.HasContestPassword && (contest.ContestPassword != registrationData.Password))
             {
                 this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
             }
 
-            if (!official && contest.HasPracticePassword && (contest.PracticePassword != registrationData.Password))
+            if (!official && contest.HasPracticePassword && string.IsNullOrEmpty(registrationData.Password))
+            {
+                this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+            }
+            else if (!official && contest.HasPracticePassword && (contest.PracticePassword != registrationData.Password))
             {
                 this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
             }
