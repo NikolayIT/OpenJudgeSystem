@@ -199,6 +199,6 @@
     <value>Нулев тест №</value>
   </data>
   <data name="Zero_tests_not_included_in_result" xml:space="preserve">
-    <value>Резултата от нулевите тестове не се включва към крайния резултат.</value>
+    <value>Резултатът от нулевите тестове не се включва към крайния резултат.</value>
   </data>
 </root>
