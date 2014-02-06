@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Common.Extensions;
@@ -7,6 +8,7 @@
 
     public class SourceCode : DeletableEntity
     {
+        [Key]
         public int Id { get; set; }
 
         public string AuthorId { get; set; }

@@ -153,4 +153,22 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="Case_insensitive_checker_description" xml:space="preserve">
+    <value>- the system does not make difference between small and capital letters when comparing the sent code result with the expected output symbol by symbol</value>
+  </data>
+  <data name="Checker_types" xml:space="preserve">
+    <value>Checker types:</value>
+  </data>
+  <data name="Exact_checker_description" xml:space="preserve">
+    <value> - the system compares the sent code result with the expected output symbol by symbol</value>
+  </data>
+  <data name="Precision_checker_description" xml:space="preserve">
+    <value>- only for tasks with end result decimal number - the system compares only the first N digits after the decimal point</value>
+  </data>
+  <data name="Sort_checker_description" xml:space="preserve">
+    <value>- the system sorts all lines in the sent code result and then compares symbol by symbol with the expected output</value>
+  </data>
+  <data name="Trim_checker_description" xml:space="preserve">
+    <value>- the system trims the whitespace before and after the sent code result and then compares symbol by symbol with the expected output</value>
+  </data>
 </root>

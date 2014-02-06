@@ -13,6 +13,7 @@
 
     using Kendo.Mvc.UI;
 
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
@@ -97,9 +98,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, TestViewModel test)
         {
-            var hasProblem = this.Data.Problems.All().Any(pr => pr.Id == id);
+            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
-            if (!hasProblem)
+            if (problem == null)
             {
                 this.TempData["DangerMessage"] = "Невалидна задача";
                 return this.RedirectToAction("Index");
@@ -117,6 +118,8 @@
                 });
 
                 this.Data.SaveChanges();
+
+                this.RetestSubmissions(problem);
 
                 this.TempData["InfoMessage"] = "Теста беше добавен успешно";
                 return this.RedirectToAction("Problem", new { id = id });
@@ -157,18 +160,25 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, TestViewModel test)
         {
-            var hasProblem = this.Data.Tests.All().Any(t => t.Id == id);
+            var problem = this.Data.Problems.All().FirstOrDefault(t => t.Id == id);
 
-            if (!hasProblem)
+            if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Невалиден тест";
+                this.TempData["DangerMessage"] = "Невалидна задача";
                 return this.RedirectToAction("Index");
             }
 
             if (test != null && ModelState.IsValid)
             {
-                var existingTest = this.Data.Tests.All()
-                .FirstOrDefault(t => t.Id == id);
+                var existingTest = this.Data.Tests
+                    .All()
+                    .FirstOrDefault(t => t.Id == id);
+
+                if (existingTest == null)
+                {
+                    this.TempData["DangerMessage"] = "Невалиден тест";
+                    return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
+                }
 
                 existingTest.InputData = test.InputData;
                 existingTest.OutputData = test.OutputData;
@@ -176,6 +186,8 @@
                 existingTest.IsTrialTest = test.IsTrialTest;
 
                 this.Data.SaveChanges();
+
+                this.RetestSubmissions(problem);
 
                 this.TempData["InfoMessage"] = "Теста беше променен успешно";
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
@@ -247,6 +259,33 @@
             this.Data.Tests.Delete(id.Value);
             this.Data.SaveChanges();
 
+            // recalculate submissions point
+            var submissionResults = this.Data.Submissions
+                .All()
+                .Where(s => s.ProblemId == test.ProblemId)
+                .Select(s => new
+                    {
+                        Id = s.Id, 
+                        CorrectTestRuns = s.TestRuns.Where(t => t.ResultType == TestRunResultType.CorrectAnswer).Count(),
+                        AllTestRuns = s.TestRuns.Count(),
+                        MaxPoints = s.Problem.MaximumPoints
+                    })
+                .ToList();
+
+            foreach (var submissionResult in submissionResults)
+            {
+                var submission = this.Data.Submissions.GetById(submissionResult.Id);
+                int points = 0;
+                if (submissionResult.AllTestRuns != 0)
+                {
+                    points = submissionResult.CorrectTestRuns / submissionResult.AllTestRuns * submissionResult.MaxPoints;
+                }
+
+                submission.Points = points;
+            }
+
+            this.Data.SaveChanges();
+
             this.TempData["InfoMessage"] = "Теста беше изтрит успешно";
             return this.RedirectToAction("Problem", new { id = test.ProblemId });
         }
@@ -314,6 +353,8 @@
             }
 
             this.Data.SaveChanges();
+
+            this.RetestSubmissions(problem);
 
             this.TempData["InfoMessage"] = "Тестовете бяха изтрити успешно";
             return this.RedirectToAction("Problem", new { id = id });
@@ -471,7 +512,6 @@
         public ContentResult ProblemTests(int id)
         {
             var result = this.GetData(id);
-
             return this.LargeJson(result);
         }
 
@@ -487,7 +527,7 @@
                 return this.RedirectToAction("Index");
             }
 
-            var problem = this.Data.Problems.All().Where(x => x.Id == id).FirstOrDefault();
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
             if (problem == null)
             {
@@ -553,6 +593,8 @@
 
                 this.Data.SaveChanges();
             }
+
+            this.RetestSubmissions(problem);
 
             this.TempData.Add("InfoMessage", "Тестовете са добавени към задачата");
 
@@ -623,6 +665,19 @@
                 .Select(TestViewModel.FromTest);
 
             return result;
+        }
+
+        private void RetestSubmissions(Problem problem)
+        {
+            var submissionIds = problem.Submissions.Select(s => new { Id = s.Id }).ToList();
+            foreach (var submissionId in submissionIds)
+            {
+                var currentSubmission = this.Data.Submissions.GetById(submissionId.Id);
+                currentSubmission.Processed = false;
+                currentSubmission.Processing = false;
+            }
+
+            this.Data.SaveChanges();
         }
     }
 }

@@ -126,6 +126,9 @@
   <data name="Simple_results" xml:space="preserve">
     <value>Резултати</value>
   </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>{0} участници</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Резултати за {0}</value>
   </data>

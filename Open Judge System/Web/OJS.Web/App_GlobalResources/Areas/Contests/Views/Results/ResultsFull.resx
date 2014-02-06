@@ -141,11 +141,14 @@
   <data name="Runtime_error" xml:space="preserve">
     <value>Run-time error</value>
   </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>{0} participants</value>
+  </data>
   <data name="Time_limit" xml:space="preserve">
     <value>Time limit</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Full results: {0}</value>
+    <value>Full results for {0}</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Total</value>

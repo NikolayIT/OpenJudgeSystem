@@ -5,6 +5,7 @@
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
+    ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.Results.Count());
 }
 
 @section Styles {
@@ -18,6 +19,7 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
+<h2>@ViewBag.Subtitle</h2>
 
 @if (User.IsAdmin())
 {

@@ -97,6 +97,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest participants.
+        /// </summary>
+        public static string Contest_participants {
+            get {
+                return ResourceManager.GetString("Contest_participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contests.
         /// </summary>
         public static string Contests {
@@ -147,6 +156,15 @@ namespace Resources.Areas.Contests.Views {
         public static string Practice_active_until {
             get {
                 return ResourceManager.GetString("Practice_active_until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Practice participants.
+        /// </summary>
+        public static string Practice_participants {
+            get {
+                return ResourceManager.GetString("Practice_participants", resourceCulture);
             }
         }
         

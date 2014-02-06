@@ -7,6 +7,7 @@
 
     public class Event : DeletableEntity
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]

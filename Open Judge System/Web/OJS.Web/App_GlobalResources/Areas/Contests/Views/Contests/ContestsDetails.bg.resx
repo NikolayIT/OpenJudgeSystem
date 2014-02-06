@@ -153,4 +153,10 @@
   <data name="Problems_are_not_public" xml:space="preserve">
     <value>Задачите за това състезание не са публично достъпни.</value>
   </data>
+  <data name="Contest_participants" xml:space="preserve">
+    <value>Участници в състезанието</value>
+  </data>
+  <data name="Practice_participants" xml:space="preserve">
+    <value>Участници в практиката</value>
+  </data>
 </root>

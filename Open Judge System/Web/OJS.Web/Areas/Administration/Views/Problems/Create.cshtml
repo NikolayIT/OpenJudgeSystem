@@ -233,10 +233,10 @@
 @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
 
 <script type="text/x-kendo-template" id="checkers-template">
-    <div>
-        Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:
-    </div>
-    <ul>
+    <ul style="list-style-type: none">
+        <li>
+            <strong>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</strong>
+        </li>
         <li>
             <strong>Exact</strong> - системата проверява резултатите на състезателя с очаквания изход символ по символ;
         </li>

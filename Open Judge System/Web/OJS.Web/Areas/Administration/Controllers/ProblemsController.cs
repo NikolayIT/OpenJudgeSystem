@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -307,7 +308,7 @@
                 this.Data.TestRuns.DeleteBySubmissionId(submission.Id);
                 this.Data.Submissions.Delete(submission.Id);
             }
-            
+
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 
@@ -355,6 +356,7 @@
                 return this.RedirectToAction("Index");
             }
 
+            // TODO: check for N + 1
             foreach (var problem in contest.Problems.ToList())
             {
                 // TODO: Add cascading deletion of submissions, tests, resources
@@ -387,6 +389,31 @@
             }
 
             return this.View(problem);
+        }
+
+        public ActionResult Retest(int? id)
+        {
+            if (id == null)
+            {
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
+            }
+
+            var problem = this.Data.Problems
+                .All()
+                .FirstOrDefault(pr => pr.Id == id);
+
+            if (problem == null)
+            {
+                this.TempData["DangerMessage"] = "Невалидна задача";
+                return this.RedirectToAction("Index");
+            }
+
+            this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
+            this.Data.SaveChanges();
+
+            this.TempData["InfoMessage"] = "Задачата беше ретествана успешно";
+            return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
         [HttpGet]
@@ -571,6 +598,15 @@
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
             }
+        }
+
+        private void RetestSubmission(int submissionId)
+        {
+            var submission = new Submission { Id = submissionId, Processed = false, Processing = false };
+            this.Data.Context.Submissions.Attach(submission);
+            var entry = this.Data.Context.Entry(submission);
+            entry.Property(pr => pr.Processed).IsModified = true;
+            entry.Property(pr => pr.Processing).IsModified = true;
         }
     }
 }

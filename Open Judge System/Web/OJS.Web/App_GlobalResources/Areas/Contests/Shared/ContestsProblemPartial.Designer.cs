@@ -79,6 +79,24 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to - the system does not make difference between small and capital letters when comparing the sent code result with the expected output symbol by symbol.
+        /// </summary>
+        public static string Case_insensitive_checker_description {
+            get {
+                return ResourceManager.GetString("Case_insensitive_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checker types:.
+        /// </summary>
+        public static string Checker_types {
+            get {
+                return ResourceManager.GetString("Checker_types", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compile time error.
         /// </summary>
         public static string Compile_time_error {
@@ -106,6 +124,15 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  - the system compares the sent code result with the expected output symbol by symbol.
+        /// </summary>
+        public static string Exact_checker_description {
+            get {
+                return ResourceManager.GetString("Exact_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Memory.
         /// </summary>
         public static string Memory {
@@ -124,11 +151,29 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to - only for tasks with end result decimal number - the system compares only the first N digits after the decimal point.
+        /// </summary>
+        public static string Precision_checker_description {
+            get {
+                return ResourceManager.GetString("Precision_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem results.
         /// </summary>
         public static string Problem_results {
             get {
                 return ResourceManager.GetString("Problem_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system sorts all lines in the sent code result and then compares symbol by symbol with the expected output.
+        /// </summary>
+        public static string Sort_checker_description {
+            get {
+                return ResourceManager.GetString("Sort_checker_description", resourceCulture);
             }
         }
         
@@ -165,6 +210,15 @@ namespace Resources.Areas.Contests.Shared {
         public static string Time_and_memory {
             get {
                 return ResourceManager.GetString("Time_and_memory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system trims the whitespace before and after the sent code result and then compares symbol by symbol with the expected output.
+        /// </summary>
+        public static string Trim_checker_description {
+            get {
+                return ResourceManager.GetString("Trim_checker_description", resourceCulture);
             }
         }
     }

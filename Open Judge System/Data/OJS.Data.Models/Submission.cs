@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
@@ -17,6 +18,7 @@
             this.testRuns = new HashSet<TestRun>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public int? ParticipantId { get; set; }

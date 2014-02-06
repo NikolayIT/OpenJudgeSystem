@@ -141,11 +141,14 @@
   <data name="Runtime_error" xml:space="preserve">
     <value>Грешка при изпълнение</value>
   </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>{0} участници</value>
+  </data>
   <data name="Time_limit" xml:space="preserve">
     <value>Лимит време</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Пълни резултати: {0}</value>
+    <value>Пълни резултати за {0}</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Общо</value>

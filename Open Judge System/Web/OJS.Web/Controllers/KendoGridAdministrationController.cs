@@ -31,6 +31,11 @@
 
         public abstract object GetById(object id);
 
+        public virtual string GetEntityKeyName()
+        {
+            return null;
+        }
+
         [HttpPost]
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
@@ -46,18 +51,20 @@
             return this.ExportToExcel(request, this.GetData());
         }
 
-        [NonAction]
-        protected void BaseCreate(object model)
+        protected object BaseCreate(object model)
         {
             if (model != null && ModelState.IsValid)
             {
                 var itemForAdding = this.Data.Context.Entry(model);
                 itemForAdding.State = EntityState.Added;
                 this.Data.SaveChanges();
+                var databaseValues = itemForAdding.GetDatabaseValues();
+                return databaseValues[this.GetEntityKeyName()];
             }
+
+            return null;
         }
 
-        [NonAction]
         protected void BaseUpdate(object model)
         {
             if (model != null && ModelState.IsValid)
@@ -68,7 +75,6 @@
             }
         }
 
-        [NonAction]
         protected void BaseDestroy(object id)
         {
             var model = this.GetById(id);
@@ -87,6 +93,13 @@
         protected JsonResult GridOperation([DataSourceRequest]DataSourceRequest request, object model)
         {
             return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
+        }
+
+        protected string GetEntityKeyNameByType(Type type)
+        {
+            return type.GetProperties()
+                .FirstOrDefault(pr => pr.GetCustomAttributes(typeof(KeyAttribute), true).Any())
+                .Name;
         }
     }
 }

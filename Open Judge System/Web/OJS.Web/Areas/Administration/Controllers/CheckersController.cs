@@ -34,6 +34,11 @@
                 .FirstOrDefault(o => o.Id == (int)id);
         }
 
+        public override string GetEntityKeyName()
+        {
+            return this.GetEntityKeyNameByType(typeof(DatabaseModelType));
+        }
+
         public ActionResult Index()
         {
             return this.View();
@@ -42,7 +47,8 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            this.BaseCreate(model.GetEntityModel());
+            var id = this.BaseCreate(model.GetEntityModel());
+            model.Id = (int)id;
             return this.GridOperation(request, model);
         }
 

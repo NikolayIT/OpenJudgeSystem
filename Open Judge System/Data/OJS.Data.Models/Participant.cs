@@ -24,6 +24,7 @@
             this.IsOfficial = isOfficial;
         }
 
+        [Key]
         public int Id { get; set; }
 
         public int OldId { get; set; }

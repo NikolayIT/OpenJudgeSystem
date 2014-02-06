@@ -153,4 +153,10 @@
   <data name="Problems_are_not_public" xml:space="preserve">
     <value>The problems for this contest are not public.</value>
   </data>
+  <data name="Contest_participants" xml:space="preserve">
+    <value>Contest participants</value>
+  </data>
+  <data name="Practice_participants" xml:space="preserve">
+    <value>Practice participants</value>
+  </data>
 </root>

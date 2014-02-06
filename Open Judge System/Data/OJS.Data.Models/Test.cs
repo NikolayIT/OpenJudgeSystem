@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Common.Extensions;
@@ -15,6 +16,7 @@
             this.testRuns = new HashSet<TestRun>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public int ProblemId { get; set; }

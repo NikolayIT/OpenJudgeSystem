@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using OJS.Data.Contracts;
 
@@ -13,6 +14,7 @@
             this.problems = new HashSet<Problem>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }

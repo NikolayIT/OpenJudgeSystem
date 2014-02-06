@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Data.Contracts;
@@ -21,6 +22,7 @@
             this.tags = new HashSet<Tag>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public int? OldId { get; set; }

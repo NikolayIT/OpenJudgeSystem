@@ -59,3 +59,14 @@
         CreateExportToExcelButton();
     }
 </script>
+
+@if (Model.HasValue)
+{
+    <script>
+        var exportButton = $('#export');
+        var hrefAttr = exportButton.attr('href');
+        var linkParts = hrefAttr.split('?');
+        var url = linkParts[0] + 'ByContest?' + linkParts[1] + "&contestId=@Model.Value";
+        exportButton.attr('href', url);
+    </script>
+}

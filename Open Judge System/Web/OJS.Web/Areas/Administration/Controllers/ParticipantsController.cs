@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -35,6 +36,11 @@
             return this.Data.Participants
                 .All()
                 .FirstOrDefault(o => o.Id == (int)id);
+        }
+
+        public override string GetEntityKeyName()
+        {
+            return this.GetEntityKeyNameByType(typeof(DatabaseModelType));
         }
 
         public ActionResult Index()
@@ -73,8 +79,9 @@
             var user = this.Data.Users.All().FirstOrDefault(u => u.Id == model.UserId);
             participant.Contest = contest;
             participant.User = user;
-            this.BaseCreate(participant);
+            var id = this.BaseCreate(participant);
 
+            model.Id = (int)id;
             model.UserName = user.UserName;
             model.ContestName = contest.Name;
             return this.GridOperation(request, model);
@@ -115,9 +122,16 @@
             return this.Json(users, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult RenderGrid(int id)
+        public ActionResult RenderGrid(int? id)
         {
             return this.PartialView("_Participants", id);
+        }
+
+        [HttpGet]
+        public FileResult ExportToExcelByContest(DataSourceRequest request, int contestId)
+        {
+            var data = ((IEnumerable<ViewModelType>)this.GetData()).Where(p => p.ContestId == contestId);
+            return this.ExportToExcel(request, data);
         }
     }
 }

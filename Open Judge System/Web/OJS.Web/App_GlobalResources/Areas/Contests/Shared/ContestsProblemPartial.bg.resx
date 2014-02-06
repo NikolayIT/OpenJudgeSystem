@@ -153,4 +153,22 @@
   <data name="Time" xml:space="preserve">
     <value>Време</value>
   </data>
+  <data name="Case_insensitive_checker_description" xml:space="preserve">
+    <value>- системата не отчита разлика между главна и малка буква като сравнява символ по символ;</value>
+  </data>
+  <data name="Checker_types" xml:space="preserve">
+    <value>Типове чекери:</value>
+  </data>
+  <data name="Exact_checker_description" xml:space="preserve">
+    <value>- системата проверява резултатите на състезателя с очаквания изход символ по символ;</value>
+  </data>
+  <data name="Precision_checker_description" xml:space="preserve">
+    <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
+  </data>
+  <data name="Sort_checker_description" xml:space="preserve">
+    <value>- системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;</value>
+  </data>
+  <data name="Trim_checker_description" xml:space="preserve">
+    <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
+  </data>
 </root>

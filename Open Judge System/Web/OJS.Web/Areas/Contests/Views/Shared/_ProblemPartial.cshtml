@@ -93,7 +93,7 @@
                         <br />
                         <strong>@Resource.Allowed_memory:</strong> @string.Format("{0:0.00}", Model.MemoryLimit) MB
                         <br />
-                        <strong>Checker:</strong> @Model.CheckerName
+                        <strong>Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span>
                         @if (!string.IsNullOrWhiteSpace(Model.CheckerDescription))
                         {
                             @:(@Model.CheckerDescription)
@@ -230,3 +230,28 @@ else
         </div>
     </div>
 }
+
+@Html.Kendo().Tooltip().For("#checkers-tooltip").ContentTemplateId("checkers-template").Position(TooltipPosition.Top).Width(700)
+
+<script type="text/x-kendo-template" id="checkers-template">
+    <ul style="list-style-type: none">
+        <li>
+            <strong>@Resource.Checker_types</strong>
+        </li>
+        <li>
+            <strong>Exact</strong> @Resource.Exact_checker_description
+        </li>
+        <li>
+            <strong>Trim</strong> @Resource.Trim_checker_description
+        </li>
+        <li>
+            <strong>Sort</strong> @Resource.Sort_checker_description
+        </li>
+        <li>
+            <strong>Case-insensitive</strong> @Resource.Case_insensitive_checker_description
+        </li>
+        <li>
+            <strong>Precision N</strong> @Resource.Precision_checker_description
+        </li>
+    </ul>
+</script>

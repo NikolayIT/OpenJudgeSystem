@@ -46,6 +46,12 @@
                 <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name.ToUrlSafeString() }) |</span>
             }
         </h5>
+        <h5>
+            @Resource.Contest_participants: @Model.OfficialParticipants
+        </h5>
+        <h5>
+            @Resource.Practice_participants: @Model.PracticeParticipants
+        </h5>
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
