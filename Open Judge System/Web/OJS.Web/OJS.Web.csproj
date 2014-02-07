@@ -815,7 +815,6 @@
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
-    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
