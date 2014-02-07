@@ -237,6 +237,7 @@
             this.TestsRuns = new Mock<ITestRunsRepository>();
             this.Categories = new Mock<IDeletableEntityRepository<ContestCategory>>();
             this.Contests = new Mock<IContestsRepository>();
+            this.Submissions = new Mock<ISubmissionsRepository>();
 
             this.Problems.Setup(x => x.All()).Returns((new List<Problem>() { selectedProblem, otherProblem, problemWithOnlyTrialTests, problemWithOnlyNormalTests }).AsQueryable());
 
@@ -263,6 +264,7 @@
             this.data.SetupGet(x => x.TestRuns).Returns(this.TestsRuns.Object);
             this.data.SetupGet(x => x.ContestCategories).Returns(this.Categories.Object);
             this.data.SetupGet(x => x.Contests).Returns(this.Contests.Object);
+            this.data.SetupGet(x => x.Submissions).Returns(this.Submissions.Object);
 
             this.TestsController = new TestsController(this.data.Object);
 
@@ -278,6 +280,8 @@
         protected Mock<ITestRunsRepository> TestsRuns { get; set; }
 
         protected Mock<IContestsRepository> Contests { get; set; }
+
+        protected Mock<ISubmissionsRepository> Submissions { get; set; }
 
         protected TestsController TestsController { get; set; }
 

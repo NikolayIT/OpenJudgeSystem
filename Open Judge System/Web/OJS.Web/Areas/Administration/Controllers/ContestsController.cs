@@ -19,6 +19,9 @@
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
+    using QuestionDatabaseModelType = OJS.Data.Models.ContestQuestion;
+    using QuestionViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel;
+    using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
     public class ContestsController : KendoGridAdministrationController
@@ -65,25 +68,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(ViewModelType model)
         {
-            if (model.StartTime >= model.EndTime)
+            if (!this.IsValidContest(model))
             {
-                ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
                 return this.View(model);
             }
 
-            if (model.PracticeStartTime >= model.PracticeEndTime)
-            {
-                ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
-                return this.View(model);
-            }
-
-            if (model.SelectedSubmissionTypes == null || !model.SelectedSubmissionTypes.Any())
-            {
-                ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
-                return this.View(model);
-            }
-
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();
 
@@ -132,19 +122,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ViewModelType model)
         {
-            if (model.StartTime >= model.EndTime)
+            if (!this.IsValidContest(model))
             {
-                ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
                 return this.View(model);
             }
 
-            if (model.PracticeStartTime >= model.PracticeEndTime)
-            {
-                ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
-                return this.View(model);
-            }
-
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
 
@@ -189,7 +172,7 @@
                 .AllFuture()
                 .OrderBy(contest => contest.StartTime)
                 .Take(3)
-                .Select(ShortContestAdministrationViewModel.FromContest);
+                .Select(ShortViewModelType.FromContest);
 
             if (!futureContests.Any())
             {
@@ -205,7 +188,7 @@
                 .AllActive()
                 .OrderBy(contest => contest.EndTime)
                 .Take(3)
-                .Select(ShortContestAdministrationViewModel.FromContest);
+                .Select(ShortViewModelType.FromContest);
 
             if (!activeContests.Any())
             {
@@ -221,7 +204,7 @@
                 .AllVisible()
                 .OrderByDescending(contest => contest.CreatedOn)
                 .Take(3)
-                .Select(ShortContestAdministrationViewModel.FromContest);
+                .Select(ShortViewModelType.FromContest);
 
             if (!latestContests.Any())
             {
@@ -245,27 +228,29 @@
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult QuestionsInContest([DataSourceRequest]DataSourceRequest request, int id)
+        private bool IsValidContest(ViewModelType model)
         {
-            var questions = this.Data.ContestQuestions
-                .All()
-                .Where(q => q.ContestId == id)
-                .Select(ContestQuestionViewModel.ViewModel);
+            bool isValid = true;
 
-            return this.Json(questions.ToDataSourceResult(request));
-        }
+            if (model.StartTime >= model.EndTime)
+            {
+                this.ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                isValid = false;
+            }
 
-        [HttpPost]
-        public JsonResult AddQuestionToContest([DataSourceRequest]DataSourceRequest request, ContestQuestionViewModel model, int id)
-        {
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == id);
-            var question = model.GetEntityModel();
+            if (model.PracticeStartTime >= model.PracticeEndTime)
+            {
+                this.ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                isValid = false;
+            }
 
-            contest.Questions.Add(question);
-            this.Data.SaveChanges();
+            if (model.SubmisstionTypes == null || !model.SubmisstionTypes.Any(s => s.IsChecked))
+            {
+                this.ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
+                isValid = false;
+            }
 
-            return this.Json(new[] { model }.ToDataSourceResult(request));
+            return isValid;
         }
     }
 }

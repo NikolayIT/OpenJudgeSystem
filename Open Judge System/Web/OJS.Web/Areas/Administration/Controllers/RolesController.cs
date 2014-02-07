@@ -128,7 +128,7 @@
             user.Roles.Remove(role);
             this.Data.SaveChanges();
 
-            return this.Json(ModelState.ToDataSourceResult());
+            return this.Json(this.ModelState.ToDataSourceResult());
         }
     }
 }

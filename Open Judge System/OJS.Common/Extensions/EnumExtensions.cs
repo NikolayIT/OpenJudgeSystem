@@ -1,7 +1,9 @@
 ﻿namespace OJS.Common.Extensions
 {
     using System;
+    using System.Collections;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reflection;
 
     public static class EnumExtensions
@@ -10,7 +12,7 @@
         /// Extends the enumeration so that if it has Description attribute on top of the value, it can be taken as a friendly text instead of the basic ToString method
         /// </summary>
         public static string GetDescription<T>(this T enumerationValue)
-            where T : struct
+            where T : struct, IConvertible
         {
             Type type = enumerationValue.GetType();
             if (!type.IsEnum)

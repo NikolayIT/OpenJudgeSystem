@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumConverter.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />
     <Compile Include="PrincipalExtensions.cs" />

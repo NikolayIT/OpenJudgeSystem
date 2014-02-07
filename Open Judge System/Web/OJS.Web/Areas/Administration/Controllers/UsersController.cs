@@ -46,7 +46,7 @@
         {
             var list = new List<ViewModelType>();
 
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var userProfile = this.Data.Users.All().FirstOrDefault(u => u.Id == model.Id);
                 var itemForUpdating = this.Data.Context.Entry(model.GetEntityModel(userProfile));

@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common.Models;
     using OJS.Data.Contracts;
 
     /// <summary>

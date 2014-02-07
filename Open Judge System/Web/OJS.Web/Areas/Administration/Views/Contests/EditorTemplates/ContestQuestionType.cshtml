@@ -1,0 +1,8 @@
+﻿@using OJS.Common.Models
+@model ContestQuestionType
+
+@(Html.Kendo()
+    .DropDownListFor(m => m)
+    .BindTo(EnumConverter.GetSelectListItems<ContestQuestionType>())
+    .SelectedIndex((int)Model - 1)
+    .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))

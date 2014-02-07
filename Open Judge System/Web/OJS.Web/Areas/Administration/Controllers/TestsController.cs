@@ -168,7 +168,7 @@
                 return this.RedirectToAction("Index");
             }
 
-            if (test != null && ModelState.IsValid)
+            if (test != null && this.ModelState.IsValid)
             {
                 var existingTest = this.Data.Tests
                     .All()
@@ -177,7 +177,7 @@
                 if (existingTest == null)
                 {
                     this.TempData["DangerMessage"] = "Невалиден тест";
-                    return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
+                    return this.RedirectToAction("Problem", new { id = id });
                 }
 
                 existingTest.InputData = test.InputData;

@@ -31,7 +31,7 @@
         [HttpPost]
         public ActionResult Index(UserSettingsViewModel settings)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var user = this.Data.Users.GetByUsername(User.Identity.Name);
                 this.UpdateUserSettings(user.UserSettings, settings);

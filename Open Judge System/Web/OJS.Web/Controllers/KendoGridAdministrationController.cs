@@ -53,7 +53,7 @@
 
         protected object BaseCreate(object model)
         {
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var itemForAdding = this.Data.Context.Entry(model);
                 itemForAdding.State = EntityState.Added;
@@ -67,7 +67,7 @@
 
         protected void BaseUpdate(object model)
         {
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var itemForUpdating = this.Data.Context.Entry(model);
                 itemForUpdating.State = EntityState.Modified;

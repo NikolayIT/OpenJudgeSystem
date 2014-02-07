@@ -62,7 +62,7 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var user = await this.UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
@@ -296,7 +296,7 @@
                 return this.RedirectToAction("Manage");
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
                 var info = await this.AuthenticationManager.GetExternalLoginInfoAsync();
@@ -456,7 +456,7 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 IdentityResult removePassword =
                                         await
@@ -604,7 +604,7 @@
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error);
+                this.ModelState.AddModelError(string.Empty, error);
             }
         }
 

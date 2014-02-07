@@ -4,6 +4,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
 

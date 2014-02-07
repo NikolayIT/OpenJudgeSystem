@@ -1,12 +1,14 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.ContestQuestion
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
@@ -38,13 +40,25 @@
         public int? QuestionId { get; set; }
 
         [DatabaseProperty]
+        [HiddenInput(DisplayValue = false)]
         public int? ContestId { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Текст")]
         [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
         [StringLength(100, MinimumLength = 5)]
+        [UIHint("SingleLineText")]
         public string Text { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Тип въпрос")]
+        [UIHint("ContestQuestionType")]
+        public ContestQuestionType Type { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Reg-Ex валидация")]
+        [UIHint("SingleLineText")]
+        public string RegularExpressionValidation { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Задаване към състезанията")]
@@ -55,14 +69,6 @@
         [Display(Name = "Задаване към упражненията")]
         [DefaultValue(true)]
         public bool AskPracticeParticipants { get; set; }
-
-        [DatabaseProperty]
-        [Display(Name = "Тип въпрос")]
-        public ContestQuestionType Type { get; set; }
-
-        [DatabaseProperty]
-        [Display(Name = "Reg-Ex валидация")]
-        public string RegularExpressionValidation { get; set; }
 
         public override ContestQuestion GetEntityModel(ContestQuestion model = null)
         {

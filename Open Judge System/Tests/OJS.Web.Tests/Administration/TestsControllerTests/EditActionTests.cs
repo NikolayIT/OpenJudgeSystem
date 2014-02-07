@@ -5,7 +5,7 @@
     using System.Web.Mvc;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
     using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
@@ -46,9 +46,9 @@
         [TestMethod]
         public void EditPostActionShouldReturnProperMessageAndRedirectWhenTestDoesNotExist()
         {
-            var redirectResult = this.TestsController.Edit(2, null) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Edit(2, new TestViewModel()) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
 
             var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
             Assert.IsTrue(tempDataHasKey);

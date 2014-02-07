@@ -14,6 +14,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
+    using OJS.Web.Common;
     using OJS.Web.Controllers;
 
     public class ResourcesController : AdministrationController
@@ -62,7 +63,7 @@
                 ProblemId = id,
                 ProblemName = problem.Name,
                 OrderBy = orderBy,
-                AllTypes = this.GetAllResourceTypes()
+                AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>()
             };
 
             return this.View(resource);
@@ -80,14 +81,14 @@
 
             if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
             {
-                ModelState.AddModelError("Link", "Линкът не може да бъде празен");
+                this.ModelState.AddModelError("Link", "Линкът не може да бъде празен");
             }
             else if (resource.Type != ProblemResourceType.Video && (resource.File == null || resource.File.ContentLength == 0))
             {
-                ModelState.AddModelError("File", "Файлът е задължителен");
+                this.ModelState.AddModelError("File", "Файлът е задължителен");
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var problem = this.Data.Problems
                     .All()
@@ -122,7 +123,7 @@
                 return this.RedirectToAction("Resource", "Problems", new { id = id });
             }
 
-            resource.AllTypes = this.GetAllResourceTypes();
+            resource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
             return this.View(resource);
         }
 
@@ -146,7 +147,7 @@
                 return this.RedirectToAction("Index", "Problems");
             }
 
-            existingResource.AllTypes = this.GetAllResourceTypes();
+            existingResource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
 
             return this.View(existingResource);
         }
@@ -161,7 +162,7 @@
                 return this.RedirectToAction("Index", "Problems");
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var existingResource = this.Data.Resources
                     .All()
@@ -192,7 +193,7 @@
                 return this.RedirectToAction("Resource", "Problems", new { id = existingResource.ProblemId });
             }
 
-            resource.AllTypes = this.GetAllResourceTypes();
+            resource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
             return this.View(resource);
         }
 
@@ -225,17 +226,6 @@
             var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
 
             return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
-        }
-
-        private IEnumerable<SelectListItem> GetAllResourceTypes()
-        {
-            var allTypes = Enum.GetValues(typeof(ProblemResourceType)).Cast<ProblemResourceType>().Select(v => new SelectListItem
-            {
-                Text = v.GetDescription(),
-                Value = ((int)v).ToString()
-            });
-
-            return allTypes;
         }
     }
 }

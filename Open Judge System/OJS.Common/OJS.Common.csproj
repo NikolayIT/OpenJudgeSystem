@@ -56,6 +56,7 @@
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Models\CompilerType.cs" />
+    <Compile Include="Models\ContestQuestionType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
     <Compile Include="Models\TestRunResultType.cs" />
     <Compile Include="Models\ProblemResourceType.cs" />

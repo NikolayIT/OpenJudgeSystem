@@ -55,7 +55,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(ModelType model)
         {
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 this.BaseCreate(model.GetEntityModel());
                 this.TempData["InfoMessage"] = SuccessfulCreationMessage;
@@ -87,7 +87,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Update(ModelType model)
         {
-            if (model != null && ModelState.IsValid)
+            if (model != null && this.ModelState.IsValid)
             {
                 var entity = this.GetById(model.Id) as DatabaseModelType;
                 this.BaseUpdate(model.GetEntityModel(entity));

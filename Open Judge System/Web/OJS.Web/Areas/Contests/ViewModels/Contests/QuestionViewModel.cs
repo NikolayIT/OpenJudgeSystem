@@ -7,6 +7,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
 
     using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;

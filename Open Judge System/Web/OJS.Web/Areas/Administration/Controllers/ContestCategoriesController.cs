@@ -68,7 +68,7 @@
         {
             var contest = this.Data.ContestCategories.GetById(model.Id.Value);
             this.CascadeDeleteCategories(contest);
-            return this.Json(ModelState.ToDataSourceResult());
+            return this.Json(this.ModelState.ToDataSourceResult());
         }
 
         public ActionResult Hierarchy()

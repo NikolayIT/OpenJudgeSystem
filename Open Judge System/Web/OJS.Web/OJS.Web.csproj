@@ -620,6 +620,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FeedbackSubmitted.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Models\ContestQuestionTypeResource.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestQuestionTypeResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Models\ContestQuestionTypeResource.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestQuestionTypeResource.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\News\Views\All.bg.designer.cs">
       <DependentUpon>All.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -723,6 +733,8 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ContestQuestionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
@@ -739,6 +751,7 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestCategory\ContestCategoryAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ContestQuestionAnswer\ContestQuestionAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestQuestion\ContestQuestionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ContestViewModel.cs" />
@@ -1028,6 +1041,12 @@
     <Content Include="Areas\Administration\Views\Problems\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\EditorTemplates\ContestQuestionType.cshtml" />
+    <EmbeddedResource Include="App_GlobalResources\Models\ContestQuestionTypeResource.bg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestQuestionTypeResource.bg.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\Helpers\test-results.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -1100,6 +1119,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
+    <Folder Include="Areas\Administration\Views\ContestQuestionAnswers\" />
     <Folder Include="Areas\Administration\Views\ContestsExport\" />
     <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Api\Models\" />
@@ -1516,6 +1536,10 @@
       <LastGenOutput>FeedbackSubmitted.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Feedback.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\Models\ContestQuestionTypeResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ContestQuestionTypeResource.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\News\Views\All.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>All.Designer.cs</LastGenOutput>

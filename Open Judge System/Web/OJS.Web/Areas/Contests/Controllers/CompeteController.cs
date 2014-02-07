@@ -11,6 +11,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Helpers;
@@ -223,7 +224,7 @@
                 counter++;
             }
 
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
             }
@@ -271,7 +272,7 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
             }

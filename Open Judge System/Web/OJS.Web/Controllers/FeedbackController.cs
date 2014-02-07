@@ -29,10 +29,10 @@
         {
             if (!captchaValid)
             {
-                ModelState.AddModelError("Captcha", Resource.FeedbackIndex.Invalid_captcha);
+                this.ModelState.AddModelError("Captcha", Resource.FeedbackIndex.Invalid_captcha);
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var report = new FeedbackReport
                 {

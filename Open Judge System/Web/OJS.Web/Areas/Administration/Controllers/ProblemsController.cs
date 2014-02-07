@@ -119,11 +119,11 @@
 
                 if (!validResources)
                 {
-                    ModelState.AddModelError("Resources", "Ресурсите трябва да бъдат попълнени изцяло!");
+                    this.ModelState.AddModelError("Resources", "Ресурсите трябва да бъдат попълнени изцяло!");
                 }
             }
 
-            if (problem != null && ModelState.IsValid)
+            if (problem != null && this.ModelState.IsValid)
             {
                 var newProblem = new Problem
                 {
@@ -219,8 +219,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
-            // TODO: Add validation with ModelState.IsValid
-            if (problem != null && ModelState.IsValid)
+            if (problem != null && this.ModelState.IsValid)
             {
                 var existingProblem = this.Data.Problems.All()
                 .FirstOrDefault(x => x.Id == id);
