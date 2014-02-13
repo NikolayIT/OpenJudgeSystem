@@ -12,13 +12,15 @@
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Results;
-    using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class ResultsController : BaseController
     {
+        public const int ResultsPageSize = 300;
+
         public ResultsController(IOjsData data)
             : base(data)
         {
@@ -75,7 +77,7 @@
         /// or for competition</param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
-        public ActionResult Simple(int id, bool official)
+        public ActionResult Simple(int id, bool official, int? page)
         {
             var contest = this.Data.Contests.GetById(id);
 
@@ -122,6 +124,30 @@
                     .ToList()
                     .OrderByDescending(x => x.Total)
             };
+
+            // calculate page information
+            contestModel.TotalResults = contestModel.Results.Count();
+            int totalResults = contestModel.TotalResults;
+            int totalPages = totalResults % ResultsPageSize == 0 ? totalResults / ResultsPageSize : (totalResults / ResultsPageSize) + 1;
+
+            if (page == null || page < 1)
+            {
+                page = 1;
+            }
+            else if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            // TODO: optimize if possible
+            // query the paged result
+            contestModel.Results = contestModel.Results
+                    .Skip((page.Value - 1) * ResultsPageSize)
+                    .Take(ResultsPageSize);
+            
+            // add page info to View Model
+            contestModel.CurrentPage = page.Value;
+            contestModel.AllPages = totalPages;
 
             if (User.IsAdmin())
             {

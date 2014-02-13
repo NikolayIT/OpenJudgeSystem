@@ -10,7 +10,7 @@
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.CreatedOn)
-        @Html.ValidationMessage("DateTimeError")
+        @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
         @Html.Partial("_ContestEditor", Model)
         <hr />

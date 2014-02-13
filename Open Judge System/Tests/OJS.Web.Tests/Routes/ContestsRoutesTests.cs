@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Common;
     using OJS.Web.Areas.Contests;
 
     [TestClass]
@@ -14,7 +15,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("List", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
         [TestMethod]
@@ -57,7 +58,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Compete", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
             Assert.AreEqual("11", routeData.Values["id"]);
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
@@ -69,7 +70,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Compete", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
             Assert.AreEqual("12", routeData.Values["id"]);
             Assert.IsFalse((bool)routeData.Values["official"]);
         }

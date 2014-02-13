@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     using OJS.Data;
     using OJS.Web.Controllers;
@@ -26,7 +26,7 @@
         {
             var answers = this.Data.ContestQuestionAnswers
                 .All()
-                .Where(q => q.QuestionId == questionId)
+                .Where(q => q.QuestionId == this.questionId)
                 .Select(ViewModelType.ViewModel);
 
             return answers;
@@ -59,26 +59,35 @@
             question.Answers.Add(answer);
             this.Data.SaveChanges();
 
-            int savedId = this.Data.Context.Entry(answer).Property(pr => pr.Id).CurrentValue;
-            model.AnswerId = savedId;
-
+            this.UpdateViewModelValues(model, answer);
+            model.QuestionId = question.Id;
+            model.QuestionText = question.Text;
+            
             return this.Json(new[] { model }.ToDataSourceResult(request));
         }
 
         [HttpPost]
-        public JsonResult UpdateQuestionInContest([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        public JsonResult UpdateAnswerInQuestion([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             var entity = this.GetById(model.AnswerId) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
+            this.UpdateAuditInfoValues(model, entity);
             return this.GridOperation(request, model);
         }
 
         [HttpPost]
-        public JsonResult DeleteQuestionFromContest([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        public JsonResult DeleteAnswerFromQuestion([DataSourceRequest]DataSourceRequest request, ViewModelType model, int id)
         {
-            this.Data.ContestQuestions.Delete(model.AnswerId.Value);
+            this.Data.ContestQuestionAnswers.Delete(model.AnswerId.Value);
             this.Data.SaveChanges();
             return this.GridOperation(request, model);
+        }
+
+        protected void UpdateViewModelValues(ViewModelType viewModel, DatabaseModelType databaseModel)
+        {
+            var entry = this.Data.Context.Entry(databaseModel);
+            viewModel.AnswerId = entry.Property(pr => pr.Id).CurrentValue;
+            this.UpdateAuditInfoValues(viewModel, databaseModel);
         }
     }
 }

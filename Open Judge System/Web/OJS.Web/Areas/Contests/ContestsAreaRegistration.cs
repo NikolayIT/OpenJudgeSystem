@@ -2,6 +2,7 @@ namespace OJS.Web.Areas.Contests
 {
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Web.Areas.Contests.Controllers;
 
     public class ContestsAreaAreaRegistration : AreaRegistration
@@ -19,7 +20,7 @@ namespace OJS.Web.Areas.Contests
             context.MapRoute(
                 "Contests_list",
                 "Contests",
-                new { controller = "List", action = "Index" },
+                new { controller = "List", action = GlobalConstants.Index },
                 new[] { "OJS.Web.Areas.Contests.Controllers" });
 
             context.MapRoute(
@@ -52,12 +53,12 @@ namespace OJS.Web.Areas.Contests
             context.MapRoute(
                "Contests_compete",
                string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.CompeteUrl),
-               new { controller = "Compete", action = "Index", official = true, id = UrlParameter.Optional });
+               new { controller = "Compete", action = GlobalConstants.Index, official = true, id = UrlParameter.Optional });
 
             context.MapRoute(
                "Contests_practice",
                string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.PracticeUrl),
-               new { controller = "Compete", action = "Index", official = false, id = UrlParameter.Optional });
+               new { controller = "Compete", action = GlobalConstants.Index, official = false, id = UrlParameter.Optional });
 
             context.MapRoute(
                "Contests_default",

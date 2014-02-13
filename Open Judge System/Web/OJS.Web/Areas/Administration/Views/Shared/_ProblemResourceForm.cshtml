@@ -5,7 +5,8 @@
     <input type="hidden" id="Resources_@(Model.Id)__Id" class="hidden-field" name="Resources[@Model.Id].Id" />
     <div class="col-md-2">
         <label for="Resources_@(Model.Id)__Name">Име</label>
-        @Html.TextBox("Resources[" + Model.Id + "].Name", null, new { id = "Resources_" + Model.Id + "__Name", @class = "form-control full-editor" })
+        @Html.TextBox("Resources[" + Model.Id + "].Name", null, new { id = "Resources_" + Model.Id + "__Name", @class = "form-control full-editor required-resource-field" })
+        @Html.ValidationMessage("Resources[" + Model.Id + "].Name")
     </div>
     <div class="col-md-2">
         <label for="Resources_@(Model.Id)__Type">Тип</label>
@@ -21,8 +22,9 @@
             <div><strong>Файл</strong></div>
             <div id="file-button-@Model.Id" data-file-upload-button="true" data-id="@Model.Id" class="btn btn-sm btn-primary" onclick="startUploadForm(this)">Избери ресурс</div>
             <div class="hidden-file-upload">
-                <input type="file" name="Resources[@Model.Id].File" id="Resources_@(Model.Id)__File" data-id="@Model.Id" onchange="selectedFile(this)" />
+                <input type="file" class="required-resource-field" name="Resources[@Model.Id].File" id="Resources_@(Model.Id)__File" data-id="@Model.Id" onchange="selectedFile(this)" />
             </div>
         </div>
+        @Html.ValidationMessage("Resources[" + Model.Id + "].File", new { @class = "pull-right" })
     </div>
 </div>

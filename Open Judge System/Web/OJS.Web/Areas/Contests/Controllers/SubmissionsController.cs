@@ -8,7 +8,7 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
-    using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;

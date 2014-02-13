@@ -70,7 +70,7 @@
                 @foreach (var userResult in resultGroup.Value)
                 {
                     <div class="col-lg-3 well">
-                        @Html.ActionLink(userResult.Name, "Index", new { controller = "Profile", area = "Users", id = userResult.Name })
+                        @Html.ActionLink(userResult.Name, GlobalConstants.Index, new { controller = "Profile", area = "Users", id = userResult.Name })
                     </div>
                     {
                         userCounter++;

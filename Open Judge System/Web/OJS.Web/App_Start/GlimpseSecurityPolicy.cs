@@ -3,7 +3,7 @@ namespace OJS.Web
     using Glimpse.AspNet.Extensions;
     using Glimpse.Core.Extensibility;
 
-    using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
 
     public class GlimpseSecurityPolicy : IRuntimePolicy
     {

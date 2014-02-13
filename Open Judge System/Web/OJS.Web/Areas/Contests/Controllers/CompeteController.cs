@@ -11,13 +11,14 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels;
-    using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests;
@@ -70,7 +71,6 @@
         public ActionResult Index(int id, bool official)
         {
             var contest = this.Data.Contests.GetById(id);
-
             ValidateContest(contest, official);
 
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
@@ -112,7 +112,7 @@
             if (participantFound)
             {
                 // Participant exists. Redirect to index page.
-                return this.RedirectToAction("Index", new { id, official });
+                return this.RedirectToAction(GlobalConstants.Index, new { id, official });
             }
 
             var contest = this.Data.Contests.All().Include(x => x.Questions).FirstOrDefault(x => x.Id == id);
@@ -129,7 +129,7 @@
             this.Data.Participants.Add(participant);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Index", new { id, official });
+            return this.RedirectToAction(GlobalConstants.Index, new { id, official });
         }
 
         /// <summary>
@@ -145,7 +145,7 @@
 
             if (participantFound)
             {
-                return this.RedirectToAction("Index", new { id = registrationData.ContestId, official });
+                return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
             }
 
             var contest = this.Data.Contests.GetById(registrationData.ContestId);
@@ -231,7 +231,7 @@
 
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Index", new { id = registrationData.ContestId, official });
+            return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
         }
 
         /// <summary>

@@ -51,11 +51,13 @@
 
         [DatabaseProperty]
         [Display(Name = "DLL файл")]
+        [Required(ErrorMessage = "DLL файла е задължителен!", AllowEmptyStrings = false)]
         [UIHint("SingleLineText")]
         public string DllFile { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Име на клас")]
+        [Required(ErrorMessage = "Името на класа е задължително!", AllowEmptyStrings = false)]
         [UIHint("SingleLineText")]
         public string ClassName { get; set; }
 

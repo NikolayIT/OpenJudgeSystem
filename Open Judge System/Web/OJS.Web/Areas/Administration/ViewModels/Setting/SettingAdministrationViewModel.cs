@@ -21,11 +21,13 @@
             }
         }
 
+        [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Стойност")]
         [Required(ErrorMessage = "Стойността е задължителна!")]
         [UIHint("MultiLineText")]

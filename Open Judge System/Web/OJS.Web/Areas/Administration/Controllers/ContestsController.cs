@@ -11,6 +11,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -89,8 +90,8 @@
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", "Състезанието беше добавено успешно");
-                return this.RedirectToAction("Index");
+                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(model);
@@ -107,8 +108,8 @@
 
             if (contest == null)
             {
-                TempData.Add("DangerMessage", "Състезанието не е намерено");
-                return this.RedirectToAction("Index");
+                TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             this.Data.SubmissionTypes.All()
@@ -133,8 +134,8 @@
 
                 if (contest == null)
                 {
-                    TempData.Add("DangerMessage", "Състезанието не е намерено");
-                    return this.RedirectToAction("Index");
+                    TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                    return this.RedirectToAction(GlobalConstants.Index);
                 }
 
                 contest = model.GetEntityModel(contest);
@@ -152,8 +153,8 @@
                 this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", "Състезанието беше променено успешно");
-                return this.RedirectToAction("Index");
+                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(model);
@@ -179,7 +180,7 @@
                 return this.Content(NoFutureContests);
             }
 
-            return this.PartialView("_QuickContestsGrid", futureContests);
+            return this.PartialView(GlobalConstants.QuickContestsGrid, futureContests);
         }
 
         public ActionResult GetActiveContests([DataSourceRequest]DataSourceRequest request)
@@ -195,7 +196,7 @@
                 return this.Content(NoActiveContests);
             }
 
-            return this.PartialView("_QuickContestsGrid", activeContests);
+            return this.PartialView(GlobalConstants.QuickContestsGrid, activeContests);
         }
 
         public ActionResult GetLatestContests([DataSourceRequest]DataSourceRequest request)
@@ -211,7 +212,7 @@
                 return this.Content(NoLatestContests);
             }
 
-            return this.PartialView("_QuickContestsGrid", latestContests);
+            return this.PartialView(GlobalConstants.QuickContestsGrid, latestContests);
         }
 
         public JsonResult GetCategories()
@@ -234,13 +235,13 @@
 
             if (model.StartTime >= model.EndTime)
             {
-                this.ModelState.AddModelError("DateTimeError", "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
                 isValid = false;
             }
 
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
-                this.ModelState.AddModelError("DateTimeError", "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
                 isValid = false;
             }
 

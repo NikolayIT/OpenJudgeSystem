@@ -1,6 +1,4 @@
-﻿// TODO: Add custom tooltip for .zip tests file - give link to sample file with tests
-
-// TODO: Convert these events to unobtrusive with $(parent).on('click')...
+﻿// TODO: Convert these events to unobtrusive with $(parent).on('click')...
 
 function startUploadForm(e) {
     var id = $(e).data('id');
@@ -86,6 +84,10 @@ $(document).ready(function () {
             $("#resources").append(data);
 
             $('#remove-resource').removeAttr('disabled');
+
+            $('#resources .required-resource-field').each(function () {
+                $(this).rules("add", { required: true, messages: { required: "Задължително поле" } })
+            })
         });
     });
 

@@ -45,9 +45,9 @@
 
         [DatabaseProperty]
         [Display(Name = "E-mail")]
-        [Required(ErrorMessage = "Имейла е задължителен")]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "Невалиден имейл адрес")]
+        [RegularExpression(EmailValidationRegularExpression, ErrorMessage = "Невалиден имейл адрес")]
+        [Required(ErrorMessage = "Имейла е задължителен")]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 

@@ -24,7 +24,7 @@
                     Question = question.Text,
                     Type = question.Type,
                     RegularExpression = question.RegularExpressionValidation,
-                    PossibleAnswers = question.Answers.Select(x => new DropDownAnswerViewModel
+                    PossibleAnswers = question.Answers.Where(x => !x.IsDeleted).Select(x => new DropDownAnswerViewModel
                     {
                         Text = x.Text,
                         Value = x.Id

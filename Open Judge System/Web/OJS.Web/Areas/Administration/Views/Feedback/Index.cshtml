@@ -45,12 +45,16 @@
 		.DataSource(datasource => datasource
 			.Ajax()
 			.ServerOperation(true)
-			.Model(model => model.Id(x => x.Id))
+			.Model(model =>
+                {
+                    model.Id(x => x.Id);
+                })
 			.Sort(sort => sort.Add(x => x.CreatedOn).Descending())
 			.Create(create => create.Action("Create", ControllerName))
 			.Read(read => read.Action("Read", ControllerName))
 			.Update(update => update.Action("Update", ControllerName))
 			.Destroy(destroy => destroy.Action("Destroy", ControllerName))
+            .Events(ev => ev.Error("validateModelStateErrors"))
 		)
 )
 

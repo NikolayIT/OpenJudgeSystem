@@ -20,6 +20,8 @@
 
     public class RolesController : KendoGridAdministrationController
     {
+        private const string EntityKeyName = "Id";
+
         public RolesController(IOjsData data)
             : base(data)
         {
@@ -37,6 +39,11 @@
             return this.Data.Roles
                 .All()
                 .FirstOrDefault(o => o.Id == (string)id);
+        }
+
+        public override string GetEntityKeyName()
+        {
+            return EntityKeyName;
         }
 
         public ActionResult Index()

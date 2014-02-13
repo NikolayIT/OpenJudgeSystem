@@ -21,13 +21,16 @@
                     AnswerId = qa.Id,
                     QuestionId = qa.QuestionId,
                     QuestionText = qa.Question.Text,
-                    Text = qa.Text
+                    Text = qa.Text,
+                    CreatedOn = qa.CreatedOn,
+                    ModifiedOn = qa.ModifiedOn
                 };
             }
         }
 
-        [Display(Name = "№")]
+        [DatabaseProperty(Name = "Id")]
         [DefaultValue(null)]
+        [Display(Name = "№")]
         [HiddenInput(DisplayValue = false)]
         public int? AnswerId { get; set; }
 
@@ -36,20 +39,14 @@
         public int? QuestionId { get; set; }
 
         [Display(Name = "Въпрос")]
-        public  string QuestionText { get; private set; }
+        [UIHint("NonEditable")]
+        public string QuestionText { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Текст")]
         [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
-        [StringLength(100, MinimumLength = 5)]
+        [StringLength(100, MinimumLength = 1)]
         [UIHint("SingleLineText")]
         public string Text { get; set; }
-
-        public override ContestQuestionAnswer GetEntityModel(ContestQuestionAnswer model = null)
-        {
-            model = model ?? new ContestQuestionAnswer();
-            model.Id = this.AnswerId.GetValueOrDefault();
-            return this.ConvertToDatabaseEntity(model);
-        }
     }
 }

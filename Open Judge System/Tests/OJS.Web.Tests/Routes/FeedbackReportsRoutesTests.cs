@@ -2,6 +2,8 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Common;
+
     [TestClass]
     public class FeedbackReportsRoutesTests : RoutesTestsBase
     {
@@ -12,7 +14,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Feedback", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
         [TestMethod]

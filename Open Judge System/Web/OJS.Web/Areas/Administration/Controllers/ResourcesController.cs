@@ -9,6 +9,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
@@ -42,8 +43,8 @@
 
             if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Задачата не е намерена";
-                return this.RedirectToAction("Index", "Problems");
+                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
             int orderBy;
@@ -75,7 +76,7 @@
         {
             if (resource == null)
             {
-                this.TempData["DangerMessage"] = "Ресурсът е невалиден";
+                this.TempData[GlobalConstants.DangerMessage] = "Ресурсът е невалиден";
                 return this.RedirectToAction("Resource", "Problems", new { id = id });
             }
 
@@ -96,8 +97,8 @@
 
                 if (problem == null)
                 {
-                    this.TempData["DangerMessage"] = "Задачата не е намерена";
-                    return this.RedirectToAction("Index", "Problems");
+                    this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                    return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
                 var newResource = new ProblemResource
@@ -132,8 +133,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Задачата не е намерена";
-                return this.RedirectToAction("Index", "Problems");
+                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
             var existingResource = this.Data.Resources.All()
@@ -143,8 +144,8 @@
 
             if (existingResource == null)
             {
-                this.TempData["DangerMessage"] = "Задачата не е намерена";
-                return this.RedirectToAction("Index", "Problems");
+                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
             existingResource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
@@ -158,8 +159,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Задачата не е намерена";
-                return this.RedirectToAction("Index", "Problems");
+                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
             if (this.ModelState.IsValid)
@@ -170,8 +171,8 @@
 
                 if (existingResource == null)
                 {
-                    this.TempData["DangerMessage"] = "Ресурсът не е намерен";
-                    return this.RedirectToAction("Index", "Problems");
+                    this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
+                    return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
                 existingResource.Name = resource.Name;
@@ -218,7 +219,7 @@
 
             if (resource == null)
             {
-                this.TempData["DangerMessage"] = "Ресурса не е намерен";
+                this.TempData[GlobalConstants.DangerMessage] = "Ресурса не е намерен";
                 return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
             }
 

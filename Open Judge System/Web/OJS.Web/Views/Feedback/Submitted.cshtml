@@ -6,11 +6,11 @@
 
 <ol class="breadcrumb">
     <li><a href="/">@Resource.Home</a></li>
-    <li>@Html.ActionLink(Resource.Feedback, "Index", "Feedback", new { area = string.Empty })</li>
+    <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = string.Empty })</li>
 </ol>
 
 <h1>@ViewBag.Title</h1>
 
 <div class="container">
-    @Html.ActionLink(Resource.Home, "Index", "Home", new { area = string.Empty }, new { @class = "btn btn-primary" })
+    @Html.ActionLink(Resource.Home, GlobalConstants.Index, "Home", new { area = string.Empty }, new { @class = "btn btn-primary" })
 </div>

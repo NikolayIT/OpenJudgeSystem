@@ -76,30 +76,30 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-header">@Resource.Contests</li>
-                                <li>@Html.ActionLink(Resource.Contests, "Index", "Contests", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Categories, "Index", "ContestCategories", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Categories, GlobalConstants.Index, "ContestCategories", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.Category_hierarchy, "Hierarchy", "ContestCategories", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Participants, "Index", "Participants", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Participants, GlobalConstants.Index, "Participants", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">@Resource.Problems</li>
-                                <li>@Html.ActionLink(Resource.Problems, "Index", "Problems", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Test_files, "Index", "Tests", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Test_files, GlobalConstants.Index, "Tests", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">@Resource.Users</li>
-                                <li>@Html.ActionLink(Resource.Users, "Index", "Users", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Submissions, "Index", "Submissions", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Roles, "Index", "Roles", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Users, GlobalConstants.Index, "Users", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Roles, GlobalConstants.Index, "Roles", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">@Resource.Other</li>
-                                <li>@Html.ActionLink(Resource.News, "Index", "News", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Feedback, "Index", "Feedback", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Checkers, "Index", "Checkers", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Settings, "Index", "Settings", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Debugging</li>
                                 <li><a href="/Glimpse.axd">Glimpse</a></li>
                                 <li class="divider"></li>
-                                <li>@Html.ActionLink(Resource.All_administrations, "Index", "Navigation", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new { area = "Administration" }, null)</li>
                             </ul>
                         </li>
                     }

@@ -2,6 +2,7 @@
     ViewBag.Title = "Състезания";
     const string ContestControllerName = "Contests";
     const string ContestQuestionControllerName = "ContestQuestions";
+    const string ContestQuestionAnswersControllerName = "ContestQuestionAnswers";
 }
 <h1>@ViewBag.Title</h1>
 
@@ -58,6 +59,7 @@
         .Read(read => read.Action("Read", ContestControllerName))
         .Update(update => update.Action("Update", ContestControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ContestControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
     )
 )
 
@@ -69,7 +71,7 @@
 
 <script type="text/x-kendo-template" id="questions-template">
     @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
-        .Name("DetailGrid_#=Id#")
+        .Name("DetailQuestionsGrid_#=Id#")
         .Columns(columns =>
         {
             columns.Bound(m => m.QuestionId);
@@ -88,6 +90,7 @@
                 tool.Create().Text("Добави въпрос");
             })
         .ColumnMenu()
+        .ClientDetailTemplateId("answers-template")
         .Editable(edit =>
             {
                 edit.Mode(GridEditMode.PopUp);
@@ -111,11 +114,54 @@
         .ToClientTemplate())
 </script>
 
+<script type="text/x-kendo-template" id="answers-template">
+    # if ((Type == 0) || (Type == 1)) { #
+        @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
+        .Name("DetailAnswerGrid_#=QuestionId#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.AnswerId);
+            columns.Bound(m => m.Text);
+            columns.Bound(m => m.QuestionText);
+            columns.Command(com => com.Edit().Text(" ")).Width(80);
+            columns.Command(com => com.Destroy().Text(" ")).Width(80);
+        })
+        .ToolBar(tool =>
+            {
+                tool.Create().Text("Добави отговор");
+            })
+        .ColumnMenu()
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+                edit.Window(w => w.Title(ViewBag.Title));
+                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .ServerOperation(true)
+                .Model(model =>
+                {
+                    model.Id(m => m.QuestionId);
+                })
+                .Sort(sort => sort.Add(field => field.AnswerId))
+                .Create(create => create.Action("AddAnswerToQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }))
+                .Read(read => read.Action("AnswersInQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }))
+                .Update(update => update.Action("UpdateAnswerInQuestion", ContestQuestionAnswersControllerName))
+                .Destroy(destroy => destroy.Action("DeleteAnswerFromQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }));
+        })
+        .ToClientTemplate())
+    # } 
+    else { #
+        <div class="text-center">Избраният тип въпрос няма възможни отговори!</div>
+    # } # 
+</script>
+
 @section scripts {
     <script>
         function getTypeName(type) {
-            switch(type)
-            {
+            switch (type) {
                 case 0: return "Default"; break;
                 case 1: return "Drop-down list"; break;
                 case 2: return "Single line text"; break;

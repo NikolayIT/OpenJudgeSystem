@@ -12,7 +12,7 @@
                 @{  
                     string welcomeMessage = string.Format("{0}, {1}!", Resource.Welcome_message, User.Identity.Name);
                 }
-                @Html.ActionLink(welcomeMessage, "Index", "Profile", new { area = "Users" }, new { title = Resource.Settings, @class = "text-primary" })
+                @Html.ActionLink(welcomeMessage, GlobalConstants.Index, "Profile", new { area = "Users" }, new { title = Resource.Settings, @class = "text-primary" })
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resource.Log_out</a></li>
         </ul>

@@ -2,6 +2,7 @@
 {
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.Feedback;
@@ -50,7 +51,7 @@
                 this.Data.FeedbackReports.Add(report);
                 this.Data.SaveChanges();
 
-                this.TempData["InfoMessage"] = Resource.FeedbackIndex.Feedback_submitted;
+                this.TempData[GlobalConstants.InfoMessage] = Resource.FeedbackIndex.Feedback_submitted;
                 return this.RedirectToAction("Submitted");
             }
 

@@ -57,6 +57,7 @@
         .Read(read => read.Action("Read", ControllerName))
         .Update(update => update.Action("Update", ControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
     )
 )
 

@@ -74,16 +74,33 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var participant = model.GetEntityModel();
             var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
             var user = this.Data.Users.All().FirstOrDefault(u => u.Id == model.UserId);
+
+            if (contest == null || user == null)
+            {
+                if (contest == null)
+                {
+                    ModelState.AddModelError("ContestId", "Невалидно състезание");
+                }
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserId", "Невалиден потребител");
+                }
+
+                return this.GridOperation(request, model);
+            }
+
+            var participant = model.GetEntityModel();
             participant.Contest = contest;
             participant.User = user;
-            var id = this.BaseCreate(participant);
 
-            model.Id = (int)id;
+            model.Id = (int)this.BaseCreate(participant);
             model.UserName = user.UserName;
             model.ContestName = contest.Name;
+            this.UpdateAuditInfoValues(model, participant);
+
             return this.GridOperation(request, model);
         }
 

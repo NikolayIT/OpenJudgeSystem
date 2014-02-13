@@ -119,7 +119,7 @@
                 if (result.Succeeded)
                 {
                     await this.SignInAsync(user, isPersistent: false);
-                    return this.RedirectToAction("Index", "Home");
+                    return this.RedirectToAction(GlobalConstants.Index, "Home");
                 }
 
                 this.AddErrors(result);
@@ -139,11 +139,11 @@
                 this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                this.TempData["InfoMessage"] = Resources.Account.Views.Disassociate.External_login_removed;
+                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Disassociate.External_login_removed;
             }
             else
             {
-                this.TempData["DangerMessage"] = Resources.Account.Views.Disassociate.Error;
+                this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.Disassociate.Error;
             }
 
             return this.RedirectToAction("Manage");
@@ -174,8 +174,8 @@
                         this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = Resources.Account.Views.Manage.Password_updated;
-                        return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
+                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
+                        return this.RedirectToAction(GlobalConstants.Index, new { controller = "Settings", area = "Users" });
                     }
 
                     this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Password_incorrect);
@@ -196,8 +196,8 @@
                         await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        this.TempData["InfoMessage"] = Resources.Account.Views.Manage.Password_updated;
-                        return this.RedirectToAction("Index", new { controller = "Settings", area = "Users" });
+                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
+                        return this.RedirectToAction(GlobalConstants.Index, new { controller = "Settings", area = "Users" });
                     }
 
                     this.AddErrors(result);
@@ -244,7 +244,7 @@
 
             if (this.Data.Users.All().Any(x => x.Email == email))
             {
-                this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginCallback.Email_already_registered;
+                this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginCallback.Email_already_registered;
                 return this.RedirectToAction("Login");
             }
 
@@ -279,7 +279,7 @@
                 }
             }
 
-            this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginConfirmation.Error;
+            this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginConfirmation.Error;
             return this.RedirectToAction("Manage");
         }
 
@@ -307,7 +307,7 @@
 
                 if (this.Data.Users.All().Any(x => x.Email == model.Email))
                 {
-                    this.TempData["DangerMessage"] = Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered;
+                    this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered;
                     return this.RedirectToAction("ForgottenPassword");
                 }
 
@@ -346,7 +346,7 @@
         public ActionResult LogOff()
         {
             this.AuthenticationManager.SignOut();
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
 
         // GET: /Account/ExternalLoginFailure
@@ -387,7 +387,7 @@
                 userByUsername.ForgottenPasswordToken = Guid.NewGuid();
                 this.Data.SaveChanges();
                 this.SendForgottenPasswordToUser(userByUsername);
-                this.TempData["InfoMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ForgottenPassword.Email_sent;
                 return this.RedirectToAction("ForgottenPassword");
             }
 
@@ -415,7 +415,7 @@
                 this.SendForgottenPasswordToUser(user);
             }
 
-            this.TempData["InfoMessage"] = Resources.Account.Views.ForgottenPassword.Email_sent;
+            this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ForgottenPassword.Email_sent;
             return this.RedirectToAction("ForgottenPassword");
         }
 
@@ -472,7 +472,7 @@
                         user.ForgottenPasswordToken = null;
                         this.Data.SaveChanges();
 
-                        this.TempData["InfoMessage"] = Resources.Account.Views.ChangePasswordView.Password_updated;
+                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ChangePasswordView.Password_updated;
                         return this.RedirectToAction("Login");
                     }
 
@@ -513,7 +513,7 @@
 
                     currentUser.Email = model.Email;
                     this.Data.SaveChanges();
-                    this.TempData["InfoMessage"] = "Success";
+                    this.TempData[GlobalConstants.InfoMessage] = "Success";
                     return this.RedirectToAction("Profile", new { controller = "Users", area = string.Empty });
                 }
             }
@@ -527,7 +527,7 @@
         {
             if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
-                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
+                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
 
             return this.View();
@@ -539,7 +539,7 @@
         {
             if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
-                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
+                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
 
             if (this.ModelState.IsValid)
@@ -553,7 +553,7 @@
                 this.UserProfile.UserName = model.Username;
                 this.Data.SaveChanges();
 
-                this.TempData["InfoMessage"] = Resources.Account.Views.ChangeUsernameView.Username_changed;
+                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ChangeUsernameView.Username_changed;
                 this.AuthenticationManager.SignOut();
                 return this.RedirectToAction("Login", new { controller = "Account", area = string.Empty });
             }
@@ -626,7 +626,7 @@
                 return this.Redirect(returnUrl);
             }
 
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
 
         private class ChallengeResult : HttpUnauthorizedResult

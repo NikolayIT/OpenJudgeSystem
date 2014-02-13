@@ -14,6 +14,7 @@
 
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Controllers;
@@ -61,8 +62,9 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var id = this.BaseCreate(model.GetEntityModel());
-            model.Id = (int)id;
+            var databaseModel = model.GetEntityModel();
+            model.Id = (int)this.BaseCreate(databaseModel);
+            this.UpdateAuditInfoValues(model, databaseModel);
             return this.GridOperation(request, model);
         }
 
@@ -71,6 +73,7 @@
         {
             var entity = this.GetById(model.Id) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
+            this.UpdateAuditInfoValues(model, entity);
             return this.GridOperation(request, model);
         }
 
@@ -90,7 +93,7 @@
 
             this.PopulateDatabaseWithNews(fetchedNews);
 
-            this.TempData["InfoMessage"] = Resource.Views.All.News_successfully_added;
+            this.TempData[GlobalConstants.InfoMessage] = Resource.Views.All.News_successfully_added;
             return this.RedirectToAction("All", "News", new { Area = string.Empty });
         }
 

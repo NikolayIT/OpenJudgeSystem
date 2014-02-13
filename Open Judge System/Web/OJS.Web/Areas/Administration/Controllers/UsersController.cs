@@ -57,11 +57,5 @@
 
             return this.Json(list.ToDataSourceResult(request));
         }
-
-        [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

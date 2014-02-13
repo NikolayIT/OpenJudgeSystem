@@ -1,11 +1,13 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
-@using Resource = Resources.Areas.Contests.Views.ResultsSimple
 @using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.ViewModels.Shared
+@using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.Results.Count());
+    ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.TotalResults);
+    string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
 }
 
 @section Styles {
@@ -19,31 +21,37 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
-<h2>@ViewBag.Subtitle</h2>
+<h2>
+    @ViewBag.Subtitle
 
-@if (User.IsAdmin())
+    @if (User.IsAdmin())
+    {
+        <span>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+    }
+</h2>
+
+@if (Model.AllPages > 1)
 {
-    <div>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
+    @Html.Partial("_Pagination", new PaginationViewModel { AllPages = Model.AllPages, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
 }
 
 <table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
     <thead>
         <tr>
             <th>№</th>
-            <th>@Resource.User</th>
-            @{ 
-                string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
+            <th class="text-center">@Resource.User</th>
+            @{
                 int problemCounter = 0;
             }
             @foreach (var problem in Model.Problems)
             {
                 if (problem.ShowResults || User.IsAdmin())
                 {
-                    <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
+                    <th class="text-center"><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
                 }
                 problemCounter++;
             }
-            <th>@Resource.Total</th>
+            <th class="text-center">@Resource.Total</th>
         </tr>
     </thead>
     <tbody>
@@ -53,7 +61,7 @@
             var participant = results[i];
             string className = this.User.Identity.Name == participant.ParticipantName ? "success" : string.Empty;
             <tr class="@className">
-                <td>@(i + 1)</td>
+                <td>@((Model.CurrentPage - 1) * ResultsController.ResultsPageSize + i + 1)</td>
                 <td>@participant.ParticipantName</td>
 
                 @foreach (var participantResult in participant.ProblemResults)
@@ -93,3 +101,8 @@
         }
     </tbody>
 </table>
+
+@if (Model.AllPages > 1)
+{
+    @Html.Partial("_Pagination", new PaginationViewModel { AllPages = Model.AllPages, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
+}

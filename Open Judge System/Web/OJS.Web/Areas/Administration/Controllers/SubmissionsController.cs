@@ -7,6 +7,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Controllers;
 
@@ -21,6 +22,8 @@
         private const string InvalidSubmissionMessage = "Невалидно решение!";
         private const string RetestSuccessful = "Решението беше успешно пуснато за ретестване!";
 
+        private int? contestId;
+
         public SubmissionsController(IOjsData data)
             : base(data)
         {
@@ -28,9 +31,14 @@
 
         public override IEnumerable GetData()
         {
-            return this.Data.Submissions
-                .All()
-                .Select(GridModelType.ViewModel);
+            var submissions = this.Data.Submissions.All();
+
+            if (this.contestId != null)
+            {
+                submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
+            }
+
+            return submissions.Select(GridModelType.ViewModel);
         }
 
         public override object GetById(object id)
@@ -38,6 +46,11 @@
             return this.Data.Submissions
                 .All()
                 .FirstOrDefault(o => o.Id == (int)id);
+        }
+
+        public override string GetEntityKeyName()
+        {
+            return this.GetEntityKeyNameByType(typeof(DatabaseModelType));
         }
 
         public ActionResult Index()
@@ -52,14 +65,21 @@
         }
 
         [HttpPost]
+        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, int? id)
+        {
+            this.contestId = id;
+            return this.Read(request);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ModelType model)
         {
             if (model != null && this.ModelState.IsValid)
             {
                 this.BaseCreate(model.GetEntityModel());
-                this.TempData["InfoMessage"] = SuccessfulCreationMessage;
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(model);
@@ -76,8 +96,8 @@
 
             if (submission == null)
             {
-                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
-                this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(submission);
@@ -91,8 +111,8 @@
             {
                 var entity = this.GetById(model.Id) as DatabaseModelType;
                 this.BaseUpdate(model.GetEntityModel(entity));
-                this.TempData["InfoMessage"] = SuccessfulEditMessage;
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(model);
@@ -109,8 +129,8 @@
 
             if (submission == null)
             {
-                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
-                this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(submission);
@@ -124,8 +144,8 @@
 
             if (submission == null)
             {
-                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
-                this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.RedirectToAction(GlobalConstants.Index);
             }
 
             foreach (var testRun in submission.TestRuns.ToList())
@@ -136,7 +156,7 @@
             this.Data.Submissions.Delete(id);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(GlobalConstants.Index);
         }
 
         public JsonResult GetSubmissionTypes()
@@ -159,7 +179,7 @@
 
             if (submission == null)
             {
-                this.TempData["DangerMessage"] = InvalidSubmissionMessage;
+                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
             }
             else
             {
@@ -167,7 +187,7 @@
                 submission.Processing = false;
                 this.Data.SaveChanges();
 
-                this.TempData["InfoMessage"] = RetestSuccessful;
+                this.TempData[GlobalConstants.InfoMessage] = RetestSuccessful;
             }
 
             return this.RedirectToAction("View", "Submissions", new { area = "Contests", id = id });
@@ -213,6 +233,29 @@
                 });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RenderGrid(int? id)
+        {
+            return this.PartialView("_SubmissionsGrid", id);
+        }
+
+        public JsonResult Contests(string text)
+        {
+            var contests = this.Data.Contests
+                .All()
+                .Select(c => new 
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    });
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                contests = contests.Where(c => c.Name.ToLower().Contains(text.ToLower()));
+            }
+
+            return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
     }
 }

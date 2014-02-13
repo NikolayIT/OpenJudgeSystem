@@ -1,10 +1,14 @@
 ﻿namespace OJS.Data.Repositories.Base
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
+    using System.Linq.Expressions;
 
+    using OJS.Common.Extensions;
     using OJS.Data.Contracts;
 
     public class GenericRepository<T> : IRepository<T> where T : class
@@ -87,6 +91,60 @@
             DbEntityEntry entry = this.Context.Entry(entity);
 
             entry.State = EntityState.Detached;
+        }
+
+        /// <summary>
+        /// This method updates database values by using expression. It works with both anonymous and class objects.
+        /// It is used in one of the following ways:
+        /// 1. .UpdateValues(x => new Type { Id = ..., Property = ..., AnotherProperty = ... })
+        /// 2. .UpdateValues(x => new { Id = ..., Property = ..., AnotherProperty = ... })
+        /// </summary>
+        /// <param name="entity">Expression for the updated entity</param>
+        public virtual void UpdateValues(Expression<Func<T, object>> entity)
+        {
+            // compile the expression to delegate and invoke it
+            object compiledExpression = entity.Compile()(null);
+
+            // cast the result of invokation to T and attach it to the ObjectStateManager of EntityFramework
+            T updatedEntity = compiledExpression is T ? compiledExpression as T : compiledExpression.CastTo<T>();
+            var entry = this.Context.Entry(updatedEntity);
+            this.Context.Set<T>().Attach(updatedEntity);
+            var values = entry.GetDatabaseValues(); // get current database values of the entity
+
+            if (values == null)
+            {
+                throw new InvalidOperationException("Object does not exists in ObjectStateDictionary. Entity Key|Id should be provided or valid.");
+            }
+
+            // select the updated members as property names
+            IEnumerable<string> members;
+            if (compiledExpression is T)
+            {
+                members = ((MemberInitExpression)entity.Body).Bindings.Select(b => b.Member.Name);
+            }
+            else
+            {
+                members = ((NewExpression)entity.Body).Members.Select(m => m.Name);
+            }
+
+            // select all not mapped properties and set value
+            typeof(T)
+                .GetProperties()
+                .Where(pr => !pr.GetCustomAttributes(typeof(NotMappedAttribute), true).Any())
+                .ForEach(prop => 
+                        {
+                            if (members.Contains(prop.Name))
+                            {
+                                // if a member is updated set its state to modified
+                                entry.Property(prop.Name).IsModified = true;
+                            }
+                            else
+                            {
+                                // otherwise set the existing database value
+                                var value = values.GetValue<object>(prop.Name);
+                                prop.SetValue(entry.Entity, value);
+                            }
+                        });
         }
     }
 }

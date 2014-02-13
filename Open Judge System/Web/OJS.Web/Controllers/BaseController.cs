@@ -2,12 +2,14 @@
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;
@@ -24,6 +26,18 @@
             : this(data)
         {
             this.UserProfile = profile;
+        }
+
+        protected internal RedirectToRouteResult RedirectToAction<TController>(Expression<Action<TController>> expression)
+            where TController : Controller
+        {
+            var method = expression.Body as MethodCallExpression;
+            if (method == null)
+            {
+                throw new ArgumentException("Expected method call");
+            }
+
+            return this.RedirectToAction(method.Method.Name);
         }
 
         protected IOjsData Data { get; set; }
@@ -98,14 +112,14 @@
             // Warning: always escape data to prevent XSS
             var messages = new SystemMessageCollection();
 
-            if (this.TempData.ContainsKey("InfoMessage"))
+            if (this.TempData.ContainsKey(GlobalConstants.InfoMessage))
             {
-                messages.Add(this.TempData["InfoMessage"].ToString(), SystemMessageType.Success, 1000);
+                messages.Add(this.TempData[GlobalConstants.InfoMessage].ToString(), SystemMessageType.Success, 1000);
             }
 
-            if (this.TempData.ContainsKey("DangerMessage"))
+            if (this.TempData.ContainsKey(GlobalConstants.DangerMessage))
             {
-                messages.Add(this.TempData["DangerMessage"].ToString(), SystemMessageType.Error, 1000);
+                messages.Add(this.TempData[GlobalConstants.DangerMessage].ToString(), SystemMessageType.Error, 1000);
             }
 
             if (this.UserProfile != null)

@@ -159,4 +159,10 @@
   <data name="Practice_participants" xml:space="preserve">
     <value>Участници в практиката</value>
   </data>
+  <data name="Full_results" xml:space="preserve">
+    <value>Пълни резултати</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Резултати</value>
+  </data>
 </root>

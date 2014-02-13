@@ -8,6 +8,7 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Common;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels;
@@ -116,7 +117,7 @@
             var result = this.CompeteController.Register(contest.Id, this.IsCompete) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
         }
 
         [TestMethod]
@@ -165,7 +166,7 @@
             var result = this.CompeteController.Register(contest.Id, this.IsCompete) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
             Assert.IsTrue(this.EmptyOjsData.Participants.Any(contest.Id, this.FakeUserProfile.Id, this.IsCompete));
@@ -236,7 +237,7 @@
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
         }
@@ -293,7 +294,7 @@
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
@@ -310,7 +311,7 @@
             var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
             Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
@@ -368,7 +369,7 @@
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
             Assert.IsNull(result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
         }

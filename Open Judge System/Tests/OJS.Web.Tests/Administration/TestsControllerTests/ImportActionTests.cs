@@ -11,6 +11,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;
+    using OJS.Common;
 
     [TestClass]
     public class ImportActionTests : TestsControllerBaseTestsClass
@@ -28,12 +29,12 @@
             var redirectResult = this.TestsController.Import("invalid", null, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
@@ -43,12 +44,12 @@
             var redirectResult = this.TestsController.Import("100", null, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
@@ -61,10 +62,10 @@
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
@@ -79,10 +80,10 @@
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
@@ -98,10 +99,10 @@
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Файлът трябва да бъде .ZIP файл", tempDataMessage);
         }
 
@@ -139,10 +140,10 @@
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
             Assert.AreEqual(1, redirectResult.RouteValues["id"]);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Zip файлът е повреден", tempDataMessage);
         }
 
@@ -174,10 +175,10 @@
             var tests = this.Data.Problems.All().First(pr => pr.Id == 1).Tests.Count;
             Assert.AreEqual(14, tests);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.InfoMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.InfoMessage];
             Assert.AreEqual("Тестовете са добавени към задачата", tempDataMessage);
         }
     }

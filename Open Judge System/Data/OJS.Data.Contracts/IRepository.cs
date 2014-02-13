@@ -1,6 +1,8 @@
 ﻿namespace OJS.Data.Contracts
 {
+    using System;
     using System.Linq;
+    using System.Linq.Expressions;
 
     public interface IRepository<T> where T : class
     {
@@ -17,5 +19,7 @@
         void Delete(int id);
 
         void Detach(T entity);
+
+        void UpdateValues(Expression<Func<T, object>> entity);
     }
 }

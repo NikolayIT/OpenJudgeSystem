@@ -1,0 +1,63 @@
+﻿@model int?
+@{
+    const string ControllerName = "Submissions";
+}
+
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
+    .Name("DataGrid")
+    .Columns(columns =>
+        {
+            columns.Bound(model => model.Id);
+            columns.Bound(model => model.ParticipantName);
+            columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
+            columns.Bound(model => model.SubmissionTypeName);
+            columns.Bound(model => model.Status);
+            columns.Bound(model => model.Points);
+            columns.Bound(model => model.CreatedOn).Hidden();
+            columns.Bound(model => model.ModifiedOn).Hidden();
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промени</a>").Title("Промяна");
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтрий</a>").Title("Изтриване");
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Прегледай</a>").Title("Преглед");
+            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>").Title("Ретест");
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Text("Създай").Action("Create", ControllerName);
+            toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        })
+        .Editable(editable =>
+        {
+            editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        })
+        .ColumnMenu()
+        .Events(e => e.DataBound("onDataBound"))
+        .Pageable(x => x.Refresh(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
+        /*.Groupable(x =>
+        {
+            x.Enabled(true);
+            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        })*/
+        .Reorderable(x => x.Columns(true))
+        .Resizable(x => x.Columns(true))
+        .DataSource(datasource => datasource
+            .Ajax()
+            .ServerOperation(true)
+            .Model(model =>
+                {
+                    model.Id(m => m.Id);
+                })
+            .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+            .Read(read => read.Action("ReadSubmissions", ControllerName, new { id = Model }))
+            .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+            .Events(ev => ev.Error("validateModelStateErrors"))
+        )
+)
+
+<script type="text/javascript">
+    function onDataBound(e) {
+        CreateExportToExcelButton();
+    }
+</script>

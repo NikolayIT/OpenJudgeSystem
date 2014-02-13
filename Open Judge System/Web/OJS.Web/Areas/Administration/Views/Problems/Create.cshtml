@@ -9,7 +9,7 @@
     @using (Html.BeginForm("Create", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
+        @Html.ValidationMessage("Resources")
 
         @Html.HiddenFor(m => m.ContestName)
         @Html.HiddenFor(m => m.ContestId)
@@ -45,7 +45,6 @@
                     .Step(1)
                     .Spinners(false)
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
-                    @Html.ValidationMessageFor(m => m.MaximumPoints)
                 </div>
                 <div class="editor-field col-xs-4">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете максимален брой точки, които състезателят може да получи от задачата" data-tooltip="true"></span>

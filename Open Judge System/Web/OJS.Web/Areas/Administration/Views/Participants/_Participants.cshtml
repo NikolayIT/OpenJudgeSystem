@@ -28,7 +28,7 @@
         editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
     })
     .ColumnMenu()
-    .Events(e => e.DataBound("onDataBound"))
+    .Events(e => e.DataBound("onDataBound").Edit("onEdit"))
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
     .Filterable(x => x.Enabled(true))
@@ -51,12 +51,19 @@
         .Read(read => read.Action("ReadParticipants", ControllerName, new { id = Model }))
         .Update(update => update.Action("Update", ControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
     )
 )
 
 <script type="text/javascript">
     function onDataBound(e) {
         CreateExportToExcelButton();
+    }
+
+    function onEdit(e) {
+        var contestComboBox = e.container.find('#ContestId').data('kendoComboBox');
+        contestComboBox.value(null);
+        contestComboBox.text(null);
     }
 </script>
 

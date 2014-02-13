@@ -9,7 +9,7 @@
     @using (Html.BeginForm("Create", "Contests", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationMessage("DateTimeError")
+        @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
         @Html.Partial("_ContestEditor", Model)
         <hr />

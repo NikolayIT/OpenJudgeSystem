@@ -2,7 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ContestQuestionAnswer
+    using OJS.Data.Contracts;
+
+    public class ContestQuestionAnswer : DeletableEntity
     {
         [Key]
         public int Id { get; set; }

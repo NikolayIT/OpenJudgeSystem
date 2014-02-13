@@ -25,20 +25,14 @@
             }
         }
         
+        [DatabaseProperty(Name = "Id")]
         [HiddenInput(DisplayValue = false)]
         public string RoleId { get; set; }
 
+        [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
-
-        public override IdentityRole GetEntityModel(IdentityRole model = null)
-        {
-            model = model ?? new IdentityRole();
-            model.Id = this.RoleId;
-            model.Name = this.Name;
-            return model;
-        }
     }
 }

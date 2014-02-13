@@ -54,9 +54,9 @@
                 model.Id(m => m.Id);
             })
         .Sort(sort => sort.Add(x => x.UserName))
-        .Create(create => create.Action("Create", ControllerName))
         .Read(read => read.Action("Read", ControllerName))
         .Update(update => update.Action("Update", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
     )
 )
 

@@ -124,6 +124,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full results.
+        /// </summary>
+        public static string Full_results {
+            get {
+                return ResourceManager.GetString("Full_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {
@@ -183,6 +192,15 @@ namespace Resources.Areas.Contests.Views {
         public static string Problems_are_not_public {
             get {
                 return ResourceManager.GetString("Problems_are_not_public", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results.
+        /// </summary>
+        public static string Results {
+            get {
+                return ResourceManager.GetString("Results", resourceCulture);
             }
         }
     }

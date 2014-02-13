@@ -42,6 +42,8 @@
 
         public virtual IDbSet<ContestQuestion> ContestQuestions { get; set; }
 
+        public virtual IDbSet<ContestQuestionAnswer> ContestQuestionAnswers { get; set; }
+
         public virtual IDbSet<Checker> Checkers { get; set; }
 
         public virtual IDbSet<Test> Tests { get; set; }

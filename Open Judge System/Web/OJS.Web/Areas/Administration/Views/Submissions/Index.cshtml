@@ -1,62 +1,61 @@
 ﻿@{
     ViewBag.Title = "Решения";
-    const string ControllerName = "Submissions";
 }
+
 <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
-    .Name("DataGrid")
-    .Columns(columns =>
-        {
-            columns.Bound(model => model.Id);
-            columns.Bound(model => model.ParticipantName);
-            columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
-            columns.Bound(model => model.SubmissionTypeName);
-            columns.Bound(model => model.Status);
-            columns.Bound(model => model.Points);
-            columns.Bound(model => model.CreatedOn).Hidden();
-            columns.Bound(model => model.ModifiedOn).Hidden();
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промяна</a>");
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтриване</a>");    
-            columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>");
-        })
-    .ToolBar(toolbar =>
-    {
-        toolbar.Custom().Text("Създай").Action("Create", ControllerName);
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
-    })
-    .Editable(editable =>
-    {
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
-    })
-    .ColumnMenu()
-    .Events(e => e.DataBound("onDataBound"))
-    .Pageable(x => x.Refresh(true))
-    .Sortable(x => x.Enabled(true).AllowUnsort(false))
-    .Filterable(x => x.Enabled(true))
-        /*.Groupable(x =>
-        {
-            x.Enabled(true);
-            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
-        })*/
-    .Reorderable(x => x.Columns(true))
-    .Resizable(x => x.Columns(true))
-    .DataSource(datasource => datasource
-        .Ajax()
-        .ServerOperation(true)
-        .Model(model =>
-            {
-                model.Id(m => m.Id);
-            })
-        .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-        .Read(read => read.Action("Read", ControllerName))
-        .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-    )
-)
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            @(Html
+            .Kendo()
+            .ComboBox()
+            .Name("contests")
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .Filter(FilterType.Contains)
+            .AutoBind(false)
+            .MinLength(3)
+            .Placeholder("Изберете или напишете състезание")
+            .Events(ev => ev.Change("selectContest"))
+            .DataSource(dataSource =>
+                {
+                    dataSource
+                        .Read(read =>
+                            {
+                                read.Action("Contests", "Submissions")
+                                    .Data("additionalComboBoxData");
+                            })
+                        .ServerFiltering(true);
+                })
+            .HtmlAttributes(new { style = "width: 100%;" }))
+        </div>
+        <div class="col-md-2 text-right">
+            @Ajax.ActionLink("Изчистване", "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-grid" }, new { @class = "btn btn-primary btn-sm" })
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12" id="submissions-grid">
+            @Html.Partial("_SubmissionsGrid")
+        </div>
+    </div>
+</div>
 
-<script type="text/javascript">
-    function onDataBound(e) {
-        CreateExportToExcelButton();
-    }
-</script>
+@section scripts{
+    <script>
+        function additionalComboBoxData() {
+            return {
+                text: $("#contests").data("kendoComboBox").input.val()
+            }
+        }
+
+        function selectContest() {
+            var contestId = $("#contests").val();
+
+            $.post('/Administration/Submissions/RenderGrid/' + contestId, function (data) {
+                $("#submissions-grid").html(data);
+            });
+        }
+    </script>
+}

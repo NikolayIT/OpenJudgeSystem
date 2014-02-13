@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Common;
     using OJS.Web.Areas.Users;
 
     [TestClass]
@@ -14,7 +15,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Profile", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
         [TestMethod]
@@ -24,7 +25,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Settings", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
         [TestMethod]
@@ -34,7 +35,7 @@
 
             Assert.IsNotNull(routeData);
             Assert.AreEqual("Profile", routeData.Values["controller"]);
-            Assert.AreEqual("Index", routeData.Values["action"]);
+            Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
             Assert.AreEqual("Nikolay.IT", routeData.Values["id"]);
         }
     }

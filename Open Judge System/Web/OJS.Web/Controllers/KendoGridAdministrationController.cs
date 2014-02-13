@@ -22,6 +22,9 @@
 
     public abstract class KendoGridAdministrationController : AdministrationController, IKendoGridAdministrationController
     {
+        private const string CreatedOnPropertyName = "CreatedOn";
+        private const string ModifiedOnPropertyName = "ModifiedOn";
+
         protected KendoGridAdministrationController(IOjsData data)
             : base(data)
         {
@@ -33,7 +36,7 @@
 
         public virtual string GetEntityKeyName()
         {
-            return null;
+            throw new InvalidOperationException("GetEntityKeyName method required but not implemented in derived controller");
         }
 
         [HttpPost]
@@ -100,6 +103,13 @@
             return type.GetProperties()
                 .FirstOrDefault(pr => pr.GetCustomAttributes(typeof(KeyAttribute), true).Any())
                 .Name;
+        }
+
+        protected void UpdateAuditInfoValues<T>(IAdministrationViewModel<T> viewModel, object databaseModel) where T : class, new()
+        {
+            var entry = this.Data.Context.Entry(databaseModel);
+            viewModel.CreatedOn = (DateTime?)entry.Property(CreatedOnPropertyName).CurrentValue;
+            viewModel.ModifiedOn = (DateTime?)entry.Property(ModifiedOnPropertyName).CurrentValue;
         }
     }
 }

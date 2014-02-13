@@ -5,7 +5,7 @@
 @using OJS.Web.Areas.Contests.Controllers
 
 @{
-    ViewBag.Title = string.Format(Resource.Title, Model.Name, Model.Results.Count());
+    ViewBag.Title = string.Format(Resource.Title, Model.Name);
     ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.Results.Count());
     var style = string.Empty;
 }
@@ -17,9 +17,12 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
-<h2>@ViewBag.Subtitle</h2>
+<h2>
+    @ViewBag.Subtitle
+    <span>@Html.ActionLink(Resource.Public_results, "Simple", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+</h2>
+
 <script src="/Scripts/Helpers/test-results.js"></script>
-<div>@Html.ActionLink(Resource.Public_results, "Simple", new { id = Model.Id, official = ViewBag.IsOfficial })</div>
 <table class="table table-striped">
     <tr>
         <th>@Resource.User</th>

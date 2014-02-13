@@ -3,14 +3,14 @@
 }
 
 <h1>@ViewBag.Title</h1>
-@Html.ActionLink("Новини", "Index", "News", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Задачи", "Index", "Problems", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Състезания", "Index", "Contests", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Категории", "Index", "ContestCategories", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Обратна връзка", "Index", "Feedback", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Новини", GlobalConstants.Index, "News", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Задачи", GlobalConstants.Index, "Problems", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Състезания", GlobalConstants.Index, "Contests", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Категории", GlobalConstants.Index, "ContestCategories", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Обратна връзка", GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)<br />
 @Html.ActionLink("Йерархия на категориите", "Hierarchy", "ContestCategories", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Тестови файлове", "Index", "Tests", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Потребители", "Index", "Users", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Решения", "Index", "Submissions", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Роли", "Index", "Roles", new { area = "Administration" }, null)<br />
-@Html.ActionLink("Настройки", "Index", "Settings", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Тестови файлове", GlobalConstants.Index, "Tests", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Потребители", GlobalConstants.Index, "Users", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Решения", GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Роли", GlobalConstants.Index, "Roles", new { area = "Administration" }, null)<br />
+@Html.ActionLink("Настройки", GlobalConstants.Index, "Settings", new { area = "Administration" }, null)<br />

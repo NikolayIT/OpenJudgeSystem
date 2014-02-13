@@ -45,9 +45,10 @@
         [UIHint("NonEditable")]
         public string UserName { get; set; }
 
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(EmailValidationRegularExpression, ErrorMessage = "Невалиден имейл адрес")]
         [Required(ErrorMessage = "Email-а е задължителен")]
         [StringLength(30, ErrorMessage = "Въведеният e-mail е твърде дълъг")]
-        [DataType(DataType.EmailAddress)]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 

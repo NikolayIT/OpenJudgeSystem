@@ -8,6 +8,7 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using OJS.Common;
     using OJS.Web.Areas.Administration.ViewModels;
 
     [TestClass]
@@ -19,7 +20,7 @@
             var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
         [TestMethod]
@@ -28,10 +29,10 @@
             var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
@@ -41,7 +42,7 @@
             var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
         [TestMethod]
@@ -50,10 +51,10 @@
             var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
@@ -63,10 +64,10 @@
             var redirectResult = this.TestsController.Create(100, null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
@@ -84,10 +85,10 @@
             var viewResult = this.TestsController.Create(1, this.TestViewModel) as RedirectToRouteResult;
             Assert.IsNotNull(viewResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("InfoMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.InfoMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["InfoMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.InfoMessage];
             Assert.AreEqual("Теста беше добавен успешно", tempDataMessage);
         }
 

@@ -83,11 +83,11 @@
             }
         }
 
-        public IRepository<ContestQuestionAnswer> ContestQuestionAnswers
+        public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers
         {
             get
             {
-                return this.GetRepository<ContestQuestionAnswer>();
+                return this.GetDeletableEntityRepository<ContestQuestionAnswer>();
             }
         }
 

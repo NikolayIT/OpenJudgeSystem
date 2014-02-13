@@ -2,6 +2,8 @@ namespace OJS.Web.Areas.Administration
 {
     using System.Web.Mvc;
 
+    using OJS.Common;
+
     public class AdministrationAreaAreaRegistration : AreaRegistration
     {
         public override string AreaName
@@ -17,7 +19,7 @@ namespace OJS.Web.Areas.Administration
             context.MapRoute(
                 "Administration_default",
                 "Administration/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional });
+                new { action = GlobalConstants.Index, id = UrlParameter.Optional });
         }
     }
 }

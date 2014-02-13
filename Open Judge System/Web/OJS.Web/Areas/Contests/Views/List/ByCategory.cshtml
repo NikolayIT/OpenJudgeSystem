@@ -16,7 +16,7 @@
                     <td>
                         @if (contest.CanBeCompeted)
                         {
-                            @Html.RouteLink(Resource.Compete, "Contests_compete", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-success" })
+                            @Html.RouteLink(Resource.Compete, "Contests_compete", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-success" })
                             if (contest.HasContestPassword)
                             {
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
@@ -39,7 +39,7 @@
                     <td>
                         @if (contest.CanBePracticed)
                         {
-                            @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = "Index" }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary" })
                             if (contest.HasPracticePassword)
                             {
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>

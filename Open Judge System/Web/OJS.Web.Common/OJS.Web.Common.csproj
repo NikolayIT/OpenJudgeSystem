@@ -88,7 +88,7 @@
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />
-    <Compile Include="PrincipalExtensions.cs" />
+    <Compile Include="Extensions\PrincipalExtensions.cs" />
     <Compile Include="OjsUserManager.cs" />
     <Compile Include="SearchResultType.cs" />
     <Compile Include="SystemMessage.cs" />

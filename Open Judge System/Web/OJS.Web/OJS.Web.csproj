@@ -851,6 +851,7 @@
     <Compile Include="ViewModels\News\SelectedViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
+    <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
@@ -946,6 +947,7 @@
     <Content Include="Areas\Administration\Views\Contests\Index.cshtml" />
     <Content Include="google95e631afa25e7960.html" />
     <Content Include="robots.txt" />
+    <Content Include="Scripts\Administration\administration-global.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
     <Content Include="Scripts\Administration\Problems\problems-index.js" />
@@ -1021,6 +1023,9 @@
     <Content Include="Areas\Administration\Views\Submissions\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\EditorTemplates\AddUserToRole.cshtml" />
+    <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_AdministrationLayout.cshtml" />
+    <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
@@ -1114,13 +1119,11 @@
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Shared\_Pagination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
-    <Folder Include="Areas\Administration\Views\ContestQuestionAnswers\" />
-    <Folder Include="Areas\Administration\Views\ContestsExport\" />
-    <Folder Include="Areas\Administration\Views\Files\" />
     <Folder Include="Areas\Api\Models\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Scripts\CodeMirror\addon\" />

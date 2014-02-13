@@ -2,6 +2,7 @@
 {
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Users.ViewModels;
@@ -37,8 +38,8 @@
                 this.UpdateUserSettings(user.UserSettings, settings);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", Resource.Settings_were_saved);
-                return this.RedirectToAction("Index", new { controller = "Profile", area = "Users" });
+                TempData.Add(GlobalConstants.InfoMessage, Resource.Settings_were_saved);
+                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
 
             return this.View(settings);

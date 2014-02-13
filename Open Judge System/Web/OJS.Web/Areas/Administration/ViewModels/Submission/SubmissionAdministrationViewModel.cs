@@ -59,6 +59,7 @@
         [ScaffoldColumn(false)]
         public byte[] Content { get; set; }
 
+        [AllowHtml]
         [Display(Name = "Съдържание")]
         [Required(ErrorMessage = "Съдържанието е задължително!")]
         [UIHint("MultiLineText")]

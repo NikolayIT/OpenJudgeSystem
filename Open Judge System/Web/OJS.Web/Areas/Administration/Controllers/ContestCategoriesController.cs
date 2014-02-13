@@ -50,8 +50,9 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var id = this.BaseCreate(model.GetEntityModel());
-            model.Id = (int)id;
+            var databaseModel = model.GetEntityModel();
+            model.Id = (int)this.BaseCreate(databaseModel);
+            this.UpdateAuditInfoValues(model, databaseModel);
             return this.GridOperation(request, model);
         }
 
@@ -60,6 +61,7 @@
         {
             var entity = this.GetById(model.Id) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
+            this.UpdateAuditInfoValues(model, entity);
             return this.GridOperation(request, model);
         }
 

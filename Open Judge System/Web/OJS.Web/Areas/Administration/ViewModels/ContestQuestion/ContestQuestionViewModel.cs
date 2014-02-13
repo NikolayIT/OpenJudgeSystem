@@ -34,8 +34,9 @@
             }
         }
 
-        [Display(Name = "№")]
+        [DatabaseProperty(Name = "Id")]
         [DefaultValue(null)]
+        [Display(Name = "№")]
         [HiddenInput(DisplayValue = false)]
         public int? QuestionId { get; set; }
 
@@ -69,12 +70,5 @@
         [Display(Name = "Задаване към упражненията")]
         [DefaultValue(true)]
         public bool AskPracticeParticipants { get; set; }
-
-        public override ContestQuestion GetEntityModel(ContestQuestion model = null)
-        {
-            model = model ?? new ContestQuestion();
-            model.Id = this.QuestionId.GetValueOrDefault();
-            return this.ConvertToDatabaseEntity(model);
-        }
     }
 }

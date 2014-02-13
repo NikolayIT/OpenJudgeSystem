@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     using OJS.Data;
     using OJS.Web.Controllers;
@@ -26,7 +26,7 @@
         {
             var questions = this.Data.ContestQuestions
                 .All()
-                .Where(q => q.ContestId == contestId)
+                .Where(q => q.ContestId == this.contestId)
                 .Select(ViewModelType.ViewModel);
 
             return questions;
@@ -59,8 +59,9 @@
             contest.Questions.Add(question);
             this.Data.SaveChanges();
 
-            int savedId = this.Data.Context.Entry(question).Property(pr => pr.Id).CurrentValue;
-            model.QuestionId = savedId;
+            this.UpdateAuditInfoValues(model, question);
+            model.QuestionId = this.Data.Context.Entry(question).Property(pr => pr.Id).CurrentValue;
+            model.ContestId = contest.Id;
 
             return this.Json(new[] { model }.ToDataSourceResult(request));
         }
@@ -70,6 +71,7 @@
         {
             var entity = this.GetById(model.QuestionId) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
+            this.UpdateAuditInfoValues(model, entity);
             return this.GridOperation(request, model);
         }
 

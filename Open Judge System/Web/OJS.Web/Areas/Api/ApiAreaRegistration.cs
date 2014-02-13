@@ -2,6 +2,8 @@
 {
     using System.Web.Mvc;
 
+    using OJS.Common;
+
     public class ApiAreaRegistration : AreaRegistration
     {
         public override string AreaName
@@ -17,7 +19,7 @@
             context.MapRoute(
                 "Api_default",
                 "Api/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional });
+                new { action = GlobalConstants.Index, id = UrlParameter.Optional });
         }
     }
 }

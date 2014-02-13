@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Common
+﻿namespace OJS.Web.Common.Extensions
 {
     using System.Security.Principal;
 

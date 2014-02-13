@@ -11,7 +11,7 @@
 
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
     public class SubmissionsController : BaseController

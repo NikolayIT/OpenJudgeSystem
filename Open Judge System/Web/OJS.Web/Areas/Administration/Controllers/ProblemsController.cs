@@ -12,6 +12,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
@@ -40,7 +41,7 @@
         {
             this.ViewBag.ContestId = id;
 
-            return this.View("Index");
+            return this.View(GlobalConstants.Index);
         }
 
         public ActionResult Resource(int? id)
@@ -51,14 +52,14 @@
 
             if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             this.ViewBag.ContestId = problem.ContestId;
             this.ViewBag.ProblemId = problem.Id;
 
-            return this.View("Index");
+            return this.View(GlobalConstants.Index);
         }
 
         [HttpGet]
@@ -66,16 +67,16 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
 
             if (contest == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var checkers = this.Data.Checkers.All()
@@ -151,7 +152,7 @@
                     }
                     catch (Exception ex)
                     {
-                        TempData.Add("DangerMessage", ex.Message);
+                        TempData.Add(GlobalConstants.DangerMessage, ex.Message);
                         problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
                         return this.View(problem);
                     }
@@ -160,7 +161,7 @@
                 this.Data.Problems.Add(newProblem);
                 this.Data.SaveChanges();
 
-                TempData.Add("InfoMessage", "Задачата беше добавена успешно");
+                TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
                 return this.RedirectToAction("Contest", new { id = id });
             }
 
@@ -174,8 +175,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             // TODO: Fix this query to use the static method from DetailedProblemViewModel
@@ -208,8 +209,8 @@
 
             if (selectedProblem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(selectedProblem);
@@ -235,7 +236,7 @@
 
                 this.Data.SaveChanges();
 
-                this.TempData["InfoMessage"] = "Задачата беше променена успешно";
+                this.TempData[GlobalConstants.InfoMessage] = "Задачата беше променена успешно";
                 return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
             }
 
@@ -248,8 +249,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var selectedProblem = this.Data.Problems.All()
@@ -273,8 +274,8 @@
 
             if (selectedProblem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(selectedProblem);
@@ -284,8 +285,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var problem = this.Data.Problems.All()
@@ -293,8 +294,8 @@
 
             if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             foreach (var resource in problem.Resources.ToList())
@@ -311,7 +312,7 @@
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 
-            this.TempData["InfoMessage"] = "Задачата беше изтрита успешно";
+            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше изтрита успешно";
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
@@ -320,8 +321,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var contest = this.Data.Contests.All()
@@ -331,8 +332,8 @@
 
             if (contest == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(contest);
@@ -342,8 +343,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var contest = this.Data.Contests.All()
@@ -351,8 +352,8 @@
 
             if (contest == null)
             {
-                this.TempData["DangerMessage"] = "Невалидно състезание";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             // TODO: check for N + 1
@@ -364,7 +365,7 @@
 
             this.Data.SaveChanges();
 
-            this.TempData["InfoMessage"] = "Задачите бяха изтрити успешно";
+            this.TempData[GlobalConstants.InfoMessage] = "Задачите бяха изтрити успешно";
             return this.RedirectToAction("Contest", new { id = id });
         }
 
@@ -372,8 +373,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var problem = this.Data.Problems.All()
@@ -383,8 +384,8 @@
 
             if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(problem);
@@ -394,8 +395,8 @@
         {
             if (id == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             var problem = this.Data.Problems
@@ -404,14 +405,14 @@
 
             if (problem == null)
             {
-                this.TempData["DangerMessage"] = "Невалидна задача";
-                return this.RedirectToAction("Index");
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
             this.Data.SaveChanges();
 
-            this.TempData["InfoMessage"] = "Задачата беше ретествана успешно";
+            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше ретествана успешно";
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 

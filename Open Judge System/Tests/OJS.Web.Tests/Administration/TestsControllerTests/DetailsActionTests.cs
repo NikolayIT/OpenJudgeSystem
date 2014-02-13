@@ -3,7 +3,8 @@
     using System.Web.Mvc;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
+    using OJS.Common;
     using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
@@ -16,7 +17,7 @@
             var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
         [TestMethod]
@@ -25,10 +26,10 @@
             var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
@@ -38,7 +39,7 @@
             var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
 
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
         [TestMethod]
@@ -47,10 +48,10 @@
             var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
-            var tempDataHasKey = this.TestsController.TempData.ContainsKey("DangerMessage");
+            var tempDataHasKey = this.TestsController.TempData.ContainsKey(GlobalConstants.DangerMessage);
             Assert.IsTrue(tempDataHasKey);
 
-            var tempDataMessage = this.TestsController.TempData["DangerMessage"];
+            var tempDataMessage = this.TestsController.TempData[GlobalConstants.DangerMessage];
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
