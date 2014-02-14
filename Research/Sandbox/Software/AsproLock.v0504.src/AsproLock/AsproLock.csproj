@@ -1,0 +1,127 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B240ED4-4766-4AC5-8ECD-5325B9784F67}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Asprosys.Security</RootNamespace>
+    <AssemblyName>AsproLock</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>AsproLock.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>AsproLock.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessControl\BaseSecurity.cs" />
+    <Compile Include="AccessControl\DesktopAccessRule.cs" />
+    <Compile Include="AccessControl\DesktopAuditRule.cs" />
+    <Compile Include="AccessControl\DesktopRights.cs" />
+    <Compile Include="AccessControl\DesktopSecurity.cs" />
+    <Compile Include="AccessControl\DirectoryAccessRule.cs" />
+    <Compile Include="AccessControl\DirectoryAuditRule.cs" />
+    <Compile Include="AccessControl\DirectoryRights.cs" />
+    <Compile Include="AccessControl\DirectorySecurity.cs" />
+    <Compile Include="AccessControl\FileAccessRule.cs" />
+    <Compile Include="AccessControl\FileAuditRule.cs" />
+    <Compile Include="AccessControl\FileMappingAccessRule.cs" />
+    <Compile Include="AccessControl\FileMappingAuditRule.cs" />
+    <Compile Include="AccessControl\FileMappingRights.cs" />
+    <Compile Include="AccessControl\FileMappingSecurity.cs" />
+    <Compile Include="AccessControl\FileRights.cs" />
+    <Compile Include="AccessControl\FileSecurity.cs" />
+    <Compile Include="AccessControl\GenericMapping.cs" />
+    <Compile Include="AccessControl\JobObjectAccessRule.cs" />
+    <Compile Include="AccessControl\JobObjectAuditRule.cs" />
+    <Compile Include="AccessControl\JobObjectRights.cs" />
+    <Compile Include="AccessControl\JobObjectSecurity.cs" />
+    <Compile Include="AccessControl\PipeAccessRule.cs" />
+    <Compile Include="AccessControl\PipeAuditRule.cs" />
+    <Compile Include="AccessControl\PipeRights.cs" />
+    <Compile Include="AccessControl\PipeSecurity.cs" />
+    <Compile Include="AccessControl\PrinterAccessRule.cs" />
+    <Compile Include="AccessControl\PrinterAuditRule.cs" />
+    <Compile Include="AccessControl\PrinterRights.cs" />
+    <Compile Include="AccessControl\PrinterSecurity.cs" />
+    <Compile Include="AccessControl\ProcessAccessRule.cs" />
+    <Compile Include="AccessControl\ProcessAuditRule.cs" />
+    <Compile Include="AccessControl\ProcessRights.cs" />
+    <Compile Include="AccessControl\ProcessSecurity.cs" />
+    <Compile Include="AccessControl\RegistryKeyAccessRule.cs" />
+    <Compile Include="AccessControl\RegistryKeyAuditRule.cs" />
+    <Compile Include="AccessControl\RegistryKeyRights.cs" />
+    <Compile Include="AccessControl\RegistryKeySecurity.cs" />
+    <Compile Include="AccessControl\ServiceAccessRule.cs" />
+    <Compile Include="AccessControl\ServiceAuditRule.cs" />
+    <Compile Include="AccessControl\ServiceRights.cs" />
+    <Compile Include="AccessControl\ServiceSecurity.cs" />
+    <Compile Include="AccessControl\ShareAccessRule.cs" />
+    <Compile Include="AccessControl\ShareAuditRule.cs" />
+    <Compile Include="AccessControl\ShareRights.cs" />
+    <Compile Include="AccessControl\ShareSecurity.cs" />
+    <Compile Include="AccessControl\StandardRights.cs" />
+    <Compile Include="AccessControl\ThreadAccessRule.cs" />
+    <Compile Include="AccessControl\ThreadAuditRule.cs" />
+    <Compile Include="AccessControl\ThreadRights.cs" />
+    <Compile Include="AccessControl\ThreadSecurity.cs" />
+    <Compile Include="AccessControl\TokenAccessRule.cs" />
+    <Compile Include="AccessControl\TokenAuditRule.cs" />
+    <Compile Include="AccessControl\TokenRights.cs" />
+    <Compile Include="AccessControl\TokenSecurity.cs" />
+    <Compile Include="AccessControl\WaitObjectAccessRule.cs" />
+    <Compile Include="AccessControl\WaitObjectAuditRule.cs" />
+    <Compile Include="AccessControl\WaitObjectRights.cs" />
+    <Compile Include="AccessControl\WaitObjectSecurity.cs" />
+    <Compile Include="AccessControl\WindowStationAccessRule.cs" />
+    <Compile Include="AccessControl\WindowStationAuditRule.cs" />
+    <Compile Include="AccessControl\WindowStationRights.cs" />
+    <Compile Include="AccessControl\WindowStationSecurity.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Win32\GenericSafeHandle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Win32\NativeConstants.cs" />
+    <Compile Include="Win32\NativeMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
