@@ -1,11 +1,11 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Participant
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
     using OJS.Data.Models;
-    using System.ComponentModel.DataAnnotations;
 
     public class ParticipantAnswerViewModel
     {

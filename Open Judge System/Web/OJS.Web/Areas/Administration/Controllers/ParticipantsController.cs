@@ -14,9 +14,9 @@
     using OJS.Web.Areas.Administration.ViewModels.Participant;
     using OJS.Web.Controllers;
 
+    using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
     using DatabaseModelType = OJS.Data.Models.Participant;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel;
-    using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
 
     public class ParticipantsController : KendoGridAdministrationController
     {

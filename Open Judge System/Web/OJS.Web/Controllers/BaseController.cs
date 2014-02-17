@@ -28,6 +28,10 @@
             this.UserProfile = profile;
         }
 
+        protected IOjsData Data { get; set; }
+
+        protected UserProfile UserProfile { get; set; }
+
         protected internal RedirectToRouteResult RedirectToAction<TController>(Expression<Action<TController>> expression)
             where TController : Controller
         {
@@ -39,10 +43,6 @@
 
             return this.RedirectToAction(method.Method.Name);
         }
-
-        protected IOjsData Data { get; set; }
-
-        protected UserProfile UserProfile { get; set; }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
