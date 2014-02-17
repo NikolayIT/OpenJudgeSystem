@@ -755,6 +755,7 @@
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ContestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -948,6 +949,7 @@
     <Content Include="google95e631afa25e7960.html" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\administration-global.js" />
+    <Content Include="Scripts\Administration\Contests\contests-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
     <Content Include="Scripts\Administration\Problems\problems-index.js" />

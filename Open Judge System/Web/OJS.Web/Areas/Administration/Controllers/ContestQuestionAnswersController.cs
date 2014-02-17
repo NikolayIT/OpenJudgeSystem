@@ -12,6 +12,7 @@
 
     using DatabaseModelType = OJS.Data.Models.ContestQuestionAnswer;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel;
+    using System;
 
     public class ContestQuestionAnswersController : KendoGridAdministrationController
     {
@@ -81,6 +82,19 @@
             this.Data.ContestQuestionAnswers.Delete(model.AnswerId.Value);
             this.Data.SaveChanges();
             return this.GridOperation(request, model);
+        }
+
+        public void DeleteAllAnswers(int id)
+        {
+            var question = this.Data.ContestQuestions.GetById(id);
+
+            if (question == null)
+            {
+                throw new ArgumentNullException("Question could not be found by given Id");
+            }
+
+            question.Answers.Select(a => a.Id).ToList().Each(a => this.Data.ContestQuestionAnswers.Delete(a));
+            this.Data.SaveChanges();
         }
 
         protected void UpdateViewModelValues(ViewModelType viewModel, DatabaseModelType databaseModel)

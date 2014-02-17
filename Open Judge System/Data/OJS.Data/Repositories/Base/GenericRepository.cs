@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
+    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Linq.Expressions;
@@ -105,12 +107,28 @@
             // compile the expression to delegate and invoke it
             object compiledExpression = entity.Compile()(null);
 
-            // cast the result of invokation to T and attach it to the ObjectStateManager of EntityFramework
+            // cast the result of invokation to T
             T updatedEntity = compiledExpression is T ? compiledExpression as T : compiledExpression.CastTo<T>();
-            var entry = this.Context.Entry(updatedEntity);
-            this.Context.Set<T>().Attach(updatedEntity);
-            var values = entry.GetDatabaseValues(); // get current database values of the entity
 
+            // attach the entry if missing in ObjectStateManager
+            var entry = this.Context.Entry(updatedEntity);
+
+            if (entry.State == EntityState.Detached)
+            {
+                try
+                {
+                    this.DbSet.Attach(updatedEntity);
+                }
+                catch
+                {
+                    var key = this.GetPrimaryKey(entry);
+                    entry = this.Context.Entry(this.DbSet.Find(key));
+                    entry.CurrentValues.SetValues(updatedEntity);
+                }
+            }
+
+            // get current database values of the entity
+            var values = entry.GetDatabaseValues(); 
             if (values == null)
             {
                 throw new InvalidOperationException("Object does not exists in ObjectStateDictionary. Entity Key|Id should be provided or valid.");
@@ -145,6 +163,18 @@
                                 prop.SetValue(entry.Entity, value);
                             }
                         });
+        }
+
+        private int GetPrimaryKey(DbEntityEntry entry)
+        {
+            var myObject = entry.Entity;
+
+            var property = myObject
+                .GetType()
+                .GetProperties()
+                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+
+            return (int)property.GetValue(myObject, null);
         }
     }
 }

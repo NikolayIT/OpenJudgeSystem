@@ -4,10 +4,9 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-10">
-            @(Html
+<div class="row">
+    <div class="col-md-10">
+        @(Html
             .Kendo()
             .ComboBox()
             .Name("contests")
@@ -29,16 +28,15 @@
                         .ServerFiltering(true);
                 })
             .HtmlAttributes(new { style = "width: 100%;" }))
-        </div>
-        <div class="col-md-2 text-right">
-            @Ajax.ActionLink("Изчистване", "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "participants-grid" }, new { @class = "btn btn-primary btn-sm" })
-        </div>
     </div>
-    <br />
-    <div class="row">
-        <div class="col-md-12" id="participants-grid">
-            @Html.Partial("_Participants")
-        </div>
+    <div class="col-md-2 text-right">
+        @Ajax.ActionLink("Изчистване", "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "participants-grid", OnSuccess = "clearContestComboBox" }, new { @class = "btn btn-primary btn-sm" })
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12" id="participants-grid">
+        @Html.Partial("_Participants")
     </div>
 </div>
 
@@ -56,6 +54,10 @@
             $.post('/Administration/Participants/RenderGrid/' + contestId, function (data) {
                 $("#participants-grid").html(data);
             });
+        }
+
+        function clearContestComboBox() {
+            $("#contests").data("kendoComboBox").value(null);
         }
     </script>
 }

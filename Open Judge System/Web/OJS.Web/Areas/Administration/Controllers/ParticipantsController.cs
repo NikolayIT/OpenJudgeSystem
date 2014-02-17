@@ -16,6 +16,7 @@
 
     using DatabaseModelType = OJS.Data.Models.Participant;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel;
+    using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
 
     public class ParticipantsController : KendoGridAdministrationController
     {
@@ -149,6 +150,33 @@
         {
             var data = ((IEnumerable<ViewModelType>)this.GetData()).Where(p => p.ContestId == contestId);
             return this.ExportToExcel(request, data);
+        }
+
+        [HttpPost]
+        public JsonResult Answers([DataSourceRequest]DataSourceRequest request, int id)
+        {
+            var answers = this.Data.Participants
+                .GetById(id)
+                .Answers
+                .AsQueryable()
+                .Select(AnswerViewModelType.ViewModel);
+
+            return this.Json(answers.ToDataSourceResult(request));
+        }
+
+        public JsonResult UpdateParticipantAnswer([DataSourceRequest]DataSourceRequest request, AnswerViewModelType model)
+        {
+            var participantAnswer = this.Data.Participants
+                .GetById(model.ParticipantId)
+                .Answers
+                .First(a => a.ContestQuestionId == model.ContestQuestionId);
+
+            participantAnswer.Answer = model.Answer;
+            participantAnswer.Participant = this.Data.Participants.GetById(model.ParticipantId);
+            participantAnswer.ContestQuestion = this.Data.ContestQuestions.GetById(model.ContestQuestionId);
+            this.Data.SaveChanges();
+
+            return this.GridOperation(request, model);
         }
     }
 }

@@ -116,7 +116,7 @@
 
 <script type="text/x-kendo-template" id="answers-template">
     # if ((Type == 0) || (Type == 1)) { #
-        @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
         .Name("DetailAnswerGrid_#=QuestionId#")
         .Columns(columns =>
         {
@@ -129,6 +129,7 @@
         .ToolBar(tool =>
             {
                 tool.Create().Text("Добави отговор");
+                tool.Custom().Text("Изтрий всички").HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
             })
         .ColumnMenu()
         .Editable(edit =>
@@ -152,21 +153,12 @@
                 .Destroy(destroy => destroy.Action("DeleteAnswerFromQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }));
         })
         .ToClientTemplate())
-    # } 
+    # }
     else { #
-        <div class="text-center">Избраният тип въпрос няма възможни отговори!</div>
-    # } # 
+    <div class="text-center">Избраният тип въпрос няма възможни отговори!</div>
+    # } #
 </script>
 
 @section scripts {
-    <script>
-        function getTypeName(type) {
-            switch (type) {
-                case 0: return "Default"; break;
-                case 1: return "Drop-down list"; break;
-                case 2: return "Single line text"; break;
-                case 3: return "Multi-line text"; break;
-            }
-        }
-    </script>
+    <script src="~/Scripts/Administration/Contests/contests-index.js"></script>
 }

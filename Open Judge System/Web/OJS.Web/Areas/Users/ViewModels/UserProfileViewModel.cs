@@ -16,7 +16,9 @@
     {
         public UserProfileViewModel(UserProfile profile)
         {
+            this.Id = profile.Id;
             this.Username = profile.UserName;
+            this.Email = profile.Email;
             this.FirstName = profile.UserSettings.FirstName;
             this.LastName = profile.UserSettings.LastName;
             this.City = profile.UserSettings.City;
@@ -24,7 +26,11 @@
             this.Participations = new HashSet<UserParticipationViewModel>();
         }
 
+        public string Id { get; set; }
+
         public string Username { get; set; }
+
+        public string Email { get; set; }
 
         [MaxLength(30, ErrorMessageResourceName = "First_name_too_long", ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "First_name", ResourceType = typeof(Resource))]

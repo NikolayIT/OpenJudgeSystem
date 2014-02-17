@@ -28,6 +28,7 @@
         editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
     })
     .ColumnMenu()
+    .ClientDetailTemplateId("questions-answers-template")
     .Events(e => e.DataBound("onDataBound").Edit("onEdit"))
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
@@ -49,7 +50,6 @@
         .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
         .Create(create => create.Action("Create", ControllerName))
         .Read(read => read.Action("ReadParticipants", ControllerName, new { id = Model }))
-        .Update(update => update.Action("Update", ControllerName))
         .Destroy(destroy => destroy.Action("Destroy", ControllerName))
         .Events(ev => ev.Error("validateModelStateErrors"))
     )
@@ -65,6 +65,37 @@
         contestComboBox.value(null);
         contestComboBox.text(null);
     }
+</script>
+
+<script type="text/x-kendo-template" id="questions-answers-template">
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel>()
+        .Name("DetailQuestionsAnswersGrid_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.QuestionText);
+            columns.Bound(m => m.Answer);
+            columns.Command(com => com.Edit().Text(" ")).Width(80);
+        })
+        .ColumnMenu()
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+                edit.Window(w => w.Title(ViewBag.Title));
+                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .ServerOperation(true)
+                .Model(model =>
+                {
+                    model.Id(m => m.ContestQuestionId);
+                })
+                .Sort(sort => sort.Add(field => field.ContestQuestionId))
+                .Read(read => read.Action("Answers", ControllerName, new { id = "#= Id #" }))
+                .Update(update => update.Action("UpdateParticipantAnswer", ControllerName));
+        })
+        .ToClientTemplate())
 </script>
 
 @if (Model.HasValue)
