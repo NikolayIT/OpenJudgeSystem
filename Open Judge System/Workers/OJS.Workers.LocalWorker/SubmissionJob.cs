@@ -136,7 +136,7 @@
                 case CompilerType.CSharp:
                     return Settings.CSharpCompilerPath;
                 case CompilerType.MsBuild:
-                    throw new NotImplementedException("Compiler not supported.");
+                    return Settings.MsBuildExecutablePath;
                 case CompilerType.CPlusPlusGcc:
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:

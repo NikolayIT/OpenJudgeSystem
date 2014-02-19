@@ -30,6 +30,14 @@
             }
         }
 
+        public static string MsBuildExecutablePath
+        {
+            get
+            {
+                return GetSetting("MsBuildExecutablePath");
+            }
+        }
+
         public static string NodeJsExecutablePath
         {
             get

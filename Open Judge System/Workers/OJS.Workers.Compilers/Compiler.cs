@@ -3,7 +3,6 @@
     using System;
     using System.Diagnostics;
     using System.IO;
-    using System.Threading;
 
     using OJS.Common.Models;
     using OJS.Workers.Common;
@@ -24,6 +23,8 @@
                     return new CSharpCompiler();
                 case CompilerType.CPlusPlusGcc:
                     return new CPlusPlusCompiler();
+                case CompilerType.MsBuild:
+                    return new MsBuildCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
