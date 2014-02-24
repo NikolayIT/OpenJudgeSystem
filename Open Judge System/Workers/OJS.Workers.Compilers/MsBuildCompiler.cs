@@ -14,7 +14,7 @@
         {
             var arguments = new StringBuilder();
 
-            // TODO: input file -> unzip to filesPath
+            // TODO: inputFile -> unzip to filesPath
             var filesPath = inputFile;
 
             // Input file argument

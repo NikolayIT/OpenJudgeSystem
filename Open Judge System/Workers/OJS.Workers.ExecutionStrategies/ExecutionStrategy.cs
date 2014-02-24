@@ -19,7 +19,17 @@
 
             // Compile the file
             var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
-            var sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
+
+            string sourceCodeFilePath;
+            if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
+            {
+                sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
+            }
+            else
+            {
+                sourceCodeFilePath = this.SaveByteArrayToTempFile(executionContext.FileContent);
+            }
+
             var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, sourceCodeFilePath);
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
@@ -92,9 +102,15 @@
 
         protected string SaveStringToTempFile(string stringToWrite)
         {
-            var code = stringToWrite;
             var tempFilePath = Path.GetTempFileName();
-            File.WriteAllText(tempFilePath, code);
+            File.WriteAllText(tempFilePath, stringToWrite);
+            return tempFilePath;
+        }
+
+        protected string SaveByteArrayToTempFile(byte[] dataToWrite)
+        {
+            var tempFilePath = Path.GetTempFileName();
+            File.WriteAllBytes(tempFilePath, dataToWrite);
             return tempFilePath;
         }
 

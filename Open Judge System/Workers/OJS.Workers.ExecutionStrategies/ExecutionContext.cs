@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
 
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
 
     public class ExecutionContext
@@ -10,7 +11,17 @@
 
         public string AdditionalCompilerArguments { get; set; }
 
-        public string Code { get; set; }
+        public string Code
+        {
+            get
+            {
+                return this.FileContent.Decompress();
+            }
+        }
+
+        public byte[] FileContent { get; set; }
+
+        public string AllowedFileExtensions { get; set; }
 
         public IEnumerable<TestContext> Tests { get; set; }
 
