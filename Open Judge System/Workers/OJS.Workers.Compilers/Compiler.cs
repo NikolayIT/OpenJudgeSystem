@@ -61,7 +61,7 @@
             }
 
             // Build compiler arguments
-            var outputFile = inputFile + ".exe";
+            var outputFile = this.GetOutputFileName(inputFile);
             var arguments = this.BuildCompilerArguments(inputFile, outputFile, additionalArguments);
 
             // Find compiler directory
@@ -107,7 +107,7 @@
             if (!File.Exists(outputFile))
             {
                 // Compiled file is missing
-                return new CompileResult(false, compilerOutput);
+                return new CompileResult(false, string.Format("Compiled file is missing. Compiler output: {0}", compilerOutput));
             }
 
             if (!string.IsNullOrWhiteSpace(compilerOutput))
@@ -121,6 +121,11 @@
         }
 
         public abstract string RenameInputFile(string inputFile);
+
+        public virtual string GetOutputFileName(string inputFileName)
+        {
+            return inputFileName + ".exe";
+        }
 
         public abstract string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments);
 

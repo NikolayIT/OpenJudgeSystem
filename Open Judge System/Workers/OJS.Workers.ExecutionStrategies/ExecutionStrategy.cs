@@ -18,19 +18,18 @@
             var result = new ExecutionResult();
 
             // Compile the file
-            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
-
-            string sourceCodeFilePath;
+            string submissionFilePath;
             if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
             {
-                sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
+                submissionFilePath = this.SaveStringToTempFile(executionContext.Code);
             }
             else
             {
-                sourceCodeFilePath = this.SaveByteArrayToTempFile(executionContext.FileContent);
+                submissionFilePath = this.SaveByteArrayToTempFile(executionContext.FileContent);
             }
 
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, sourceCodeFilePath);
+            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
             if (!compilerResult.IsCompiledSuccessfully)
@@ -114,11 +113,11 @@
             return tempFilePath;
         }
 
-        protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string sourceCodeFilePath)
+        protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
-                return new CompileResult(true, null) { OutputFile = sourceCodeFilePath };
+                return new CompileResult(true, null) { OutputFile = submissionFilePath };
             }
 
             if (!File.Exists(compilerPath))
@@ -127,8 +126,8 @@
             }
 
             ICompiler compiler = Compiler.CreateCompiler(compilerType);
-            var compilerResult = compiler.Compile(compilerPath, sourceCodeFilePath, compilerArguments);
-            File.Delete(sourceCodeFilePath);
+            var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
+            File.Delete(submissionFilePath);
 
             return compilerResult;
         }

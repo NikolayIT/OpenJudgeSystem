@@ -2,11 +2,11 @@
 {
     using System.Text;
 
+    // TODO: Return somehow the executable file as a result of the compilation
     public class MsBuildCompiler : Compiler
     {
         public override string RenameInputFile(string inputFile)
         {
-            // No need to rename input file
             return inputFile + ".zip";
         }
 
