@@ -19,7 +19,8 @@
 
             // Compile the file
             var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, executionContext.Code);
+            var sourceCodeFilePath = this.SaveStringToTempFile(executionContext.Code);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, sourceCodeFilePath);
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
             if (!compilerResult.IsCompiledSuccessfully)
@@ -97,10 +98,8 @@
             return tempFilePath;
         }
 
-        protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string code)
+        protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string sourceCodeFilePath)
         {
-            var sourceCodeFilePath = this.SaveStringToTempFile(code);
-
             if (compilerType == CompilerType.None)
             {
                 return new CompileResult(true, null) { OutputFile = sourceCodeFilePath };

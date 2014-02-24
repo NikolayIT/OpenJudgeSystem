@@ -17,5 +17,9 @@
         public IEnumerable<ContestProblemViewModel> Problems { get; set; }
 
         public IEnumerable<ParticipantResultViewModel> Results { get; set; }
+
+        public bool ContestCanBeCompeted { get; set; }
+
+        public bool ContestCanBePracticed { get; set; }
     }
 }

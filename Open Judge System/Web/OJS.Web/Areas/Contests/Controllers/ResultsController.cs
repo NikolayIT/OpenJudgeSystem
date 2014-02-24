@@ -100,13 +100,17 @@
             {
                 Id = contest.Id,
                 Name = contest.Name,
-                Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                ContestCanBeCompeted = contest.CanBeCompeted,
+                ContestCanBePracticed = contest.CanBePracticed,
+                Problems = contest.Problems.AsQueryable().Where(x => !x.IsDeleted)
+                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                     .Select(participant => new ParticipantResultViewModel
                     {
                         ParticipantName = participant.User.UserName,
                         ProblemResults = participant.Contest.Problems
+                            .Where(x => !x.IsDeleted)
                             .Select(problem =>
                                 new ProblemResultPairViewModel
                                 {
@@ -114,7 +118,7 @@
                                     ProblemName = problem.Name,
                                     ShowResult = problem.ShowResults,
                                     BestSubmission = problem.Submissions
-                                                        .Where(z => z.ParticipantId == participant.Id)
+                                                        .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
                                                         .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                         .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points })
                                                         .FirstOrDefault()
@@ -175,13 +179,14 @@
                 {
                     Id = contest.Id,
                     Name = contest.Name,
-                    Problems = contest.Problems.AsQueryable().Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
                     Results = this.Data.Participants.All()
                         .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                         .Select(participant => new ParticipantFullResultViewModel
                         {
                             ParticipantName = participant.User.UserName,
                             ProblemResults = participant.Contest.Problems
+                                .Where(x => !x.IsDeleted)
                                 .Select(problem =>
                                     new ProblemFullResultViewModel
                                     {
@@ -189,7 +194,7 @@
                                         ProblemName = problem.Name,
                                         MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
-                                                            .Where(submission => submission.ParticipantId == participant.Id)
+                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
                                                             .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                             .Select(SubmissionFullResultsViewModel.FromSubmission)
                                                             .FirstOrDefault(),

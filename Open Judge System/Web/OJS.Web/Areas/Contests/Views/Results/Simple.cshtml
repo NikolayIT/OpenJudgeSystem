@@ -42,14 +42,25 @@
             <th class="text-center">@Resource.User</th>
             @{
                 int problemCounter = 0;
+                bool displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
+                var contestLink = Model.ContestCanBeCompeted ? "Compete" : "Practice";
             }
             @foreach (var problem in Model.Problems)
             {
                 if (problem.ShowResults || User.IsAdmin())
                 {
-                    <th class="text-center"><a href="/Contests/@isOfficial/Index/@Model.Id#@problemCounter">@problem.Name</a></th>
+                <th class="text-center">
+                    @if (displayLink)
+                    {
+                        <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
+                        problemCounter++;
+                    }
+                    else
+                    {
+                        @problem.Name
+                    }
+                </th>
                 }
-                problemCounter++;
             }
             <th class="text-center">@Resource.Total</th>
         </tr>
@@ -70,22 +81,22 @@
                     {
                         if (participantResult.BestSubmission == null)
                         {
-                            <td>0</td>
+                    <td>0</td>
                         }
                         else
                         {
-                            <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
+                    <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
                         }
                     }
                     else if (participantResult.ShowResult)
                     {
                         if (participantResult.BestSubmission == null)
                         {
-                            <td>0</td>
+                    <td>0</td>
                         }
                         else
                         {
-                            <td>@participantResult.BestSubmission.Points</td>
+                    <td>@participantResult.BestSubmission.Points</td>
                         }
                     }
                 }
