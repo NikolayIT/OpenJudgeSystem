@@ -117,6 +117,7 @@ namespace OJS.Data.Migrations
                         "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
                     ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = true,
+                    AllowedFileExtensions = null,
                 },
                 new SubmissionType
                 {
@@ -126,6 +127,7 @@ namespace OJS.Data.Migrations
                         "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
                     ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
                 },
                 new SubmissionType
                 {
@@ -134,6 +136,16 @@ namespace OJS.Data.Migrations
                     AdditionalCompilerArguments = string.Empty,
                     ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
                     IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                },
+                new SubmissionType
+                {
+                    Name = "C# project/solution",
+                    CompilerType = CompilerType.MsBuild,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
                 });
 
             context.SaveChanges();
