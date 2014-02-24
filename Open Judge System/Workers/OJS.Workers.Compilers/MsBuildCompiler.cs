@@ -17,7 +17,7 @@
         {
             if (Directory.Exists(this.outputPath))
             {
-                Directory.Delete(this.outputPath);
+                Directory.Delete(this.outputPath, true);
             }
         }
 
