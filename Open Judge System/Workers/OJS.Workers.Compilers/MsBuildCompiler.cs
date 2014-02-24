@@ -1,13 +1,35 @@
 ﻿namespace OJS.Workers.Compilers
 {
+    using System.IO;
+    using System.Linq;
     using System.Text;
 
-    // TODO: Return somehow the executable file as a result of the compilation
     public class MsBuildCompiler : Compiler
     {
+        private readonly string outputPath;
+
+        public MsBuildCompiler()
+        {
+            this.outputPath = Path.GetTempPath();
+        }
+
+        ~MsBuildCompiler()
+        {
+            if (Directory.Exists(this.outputPath))
+            {
+                Directory.Delete(this.outputPath);
+            }
+        }
+
         public override string RenameInputFile(string inputFile)
         {
             return inputFile + ".zip";
+        }
+
+        public override string ChangeOutputFileAfterCompilation(string outputFile)
+        {
+            var newOutputFile = Directory.GetFiles(this.outputPath).First(x => x.EndsWith(".exe"));
+            return newOutputFile;
         }
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
@@ -27,18 +49,13 @@
             arguments.Append("/nologo ");
 
             // Output path argument
-            arguments.Append(string.Format("/p:OutputPath=\"{0}\"", outputFile));
+            arguments.Append(string.Format("/p:OutputPath=\"{0}\"", this.outputPath));
             arguments.Append(' ');
 
             // Additional compiler arguments
             arguments.Append(additionalArguments);
 
             return arguments.ToString().Trim();
-        }
-
-        public override void UpdateCompilerProcessStartInfo(System.Diagnostics.ProcessStartInfo processStartInfo)
-        {
-            // No need to update compiler process start info
         }
     }
 }

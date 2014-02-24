@@ -28,10 +28,5 @@
 
             return arguments.ToString().Trim();
         }
-
-        public override void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
-        {
-            // No need to update compiler process start info
-        }
     }
 }

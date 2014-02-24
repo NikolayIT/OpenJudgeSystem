@@ -103,6 +103,8 @@
                 }
             }
 
+            outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
+
             // Check results and return CompilerResult instance
             if (!File.Exists(outputFile))
             {
@@ -120,15 +122,25 @@
             return new CompileResult(outputFile);
         }
 
-        public abstract string RenameInputFile(string inputFile);
-
+        public virtual string RenameInputFile(string inputFile)
+        {
+            return inputFile;
+        }
+        
         public virtual string GetOutputFileName(string inputFileName)
         {
             return inputFileName + ".exe";
         }
 
+        public virtual string ChangeOutputFileAfterCompilation(string outputFile)
+        {
+            return outputFile;
+        }
+
         public abstract string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments);
 
-        public abstract void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo);
+        public virtual void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
+        {
+        }
     }
 }

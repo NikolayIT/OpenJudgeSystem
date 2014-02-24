@@ -1,16 +1,9 @@
 ﻿namespace OJS.Workers.Compilers
 {
-    using System.Diagnostics;
     using System.Text;
 
     public class CSharpCompiler : Compiler
     {
-        public override string RenameInputFile(string inputFile)
-        {
-            // No need to rename input file
-            return inputFile;
-        }
-
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
@@ -27,11 +20,6 @@
             arguments.Append(additionalArguments);
 
             return arguments.ToString().Trim();
-        }
-
-        public override void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
-        {
-            // No need to update compiler process start info
         }
     }
 }
