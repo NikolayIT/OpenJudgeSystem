@@ -34,7 +34,7 @@
         public virtual SubmissionType SubmissionType { get; set; }
 
         /// <remarks>
-        /// Using byte[] (compressed with deflate) to save database space.
+        /// Using byte[] (compressed with deflate) to save database space for text inputs. For other file types the actual file content is saved in the field.
         /// </remarks>
         public byte[] Content { get; set; }
 
