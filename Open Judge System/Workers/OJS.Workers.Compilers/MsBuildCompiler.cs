@@ -60,8 +60,9 @@
 
             // Settings
             arguments.Append("/t:rebuild ");
-            arguments.Append("/p:Configuration=Release ");
+            arguments.Append("/p:Configuration=Release,Optimize=true ");
             arguments.Append("/nologo ");
+            arguments.Append("/verbosity:quiet ");
 
             // Output path argument
             arguments.Append(string.Format("/p:OutputPath=\"{0}\"", this.outputPath));
