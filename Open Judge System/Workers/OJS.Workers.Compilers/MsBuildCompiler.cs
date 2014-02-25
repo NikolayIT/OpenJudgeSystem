@@ -4,19 +4,28 @@
     using System.Linq;
     using System.Text;
 
+    using Ionic.Zip;
+
     using OJS.Common.Extensions;
 
     public class MsBuildCompiler : Compiler
     {
+        private readonly string inputPath;
         private readonly string outputPath;
 
         public MsBuildCompiler()
         {
+            this.inputPath = FileHelpers.CreateTempDirectory();
             this.outputPath = FileHelpers.CreateTempDirectory();
         }
 
         ~MsBuildCompiler()
         {
+            if (Directory.Exists(this.inputPath))
+            {
+                Directory.Delete(this.inputPath, true);
+            }
+
             if (Directory.Exists(this.outputPath))
             {
                 Directory.Delete(this.outputPath, true);
@@ -38,11 +47,15 @@
         {
             var arguments = new StringBuilder();
 
-            // TODO: inputFile -> unzip to filesPath
-            var filesPath = inputFile;
+            UnzipFile(inputFile, this.inputPath);
+            string solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".sln"));
+            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
+            {
+                solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
+            }
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\"", filesPath));
+            arguments.Append(string.Format("\"{0}\"", solutionOrProjectFile));
             arguments.Append(' ');
 
             // Settings
@@ -58,6 +71,17 @@
             arguments.Append(additionalArguments);
 
             return arguments.ToString().Trim();
+        }
+
+        private static void UnzipFile(string fileToUnzip, string outputDirectory)
+        {
+            using (ZipFile zip1 = ZipFile.Read(fileToUnzip))
+            {
+                foreach (ZipEntry entry in zip1)
+                {
+                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
+                }
+            }
         }
     }
 }
