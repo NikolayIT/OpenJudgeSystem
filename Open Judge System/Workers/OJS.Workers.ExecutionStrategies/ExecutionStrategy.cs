@@ -113,7 +113,11 @@
 
             ICompiler compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
-            File.Delete(submissionFilePath);
+
+            if (File.Exists(submissionFilePath))
+            {
+                File.Delete(submissionFilePath);
+            }
 
             return compilerResult;
         }

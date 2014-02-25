@@ -105,6 +105,12 @@
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
+            // Delete input file
+            if (File.Exists(newInputFilePath))
+            {
+                File.Delete(newInputFilePath);
+            }
+
             // Check results and return CompilerResult instance
             if (!File.Exists(outputFile))
             {
