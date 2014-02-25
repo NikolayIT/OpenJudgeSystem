@@ -7,10 +7,16 @@
     {
         public static string CreateTempDirectory()
         {
-            var randomDirectoryName = Path.GetRandomFileName();
-            var path = Path.Combine(Path.GetTempPath(), randomDirectoryName);
-            Directory.CreateDirectory(path);
-            return path;
+            while (true)
+            {
+                var randomDirectoryName = Path.GetRandomFileName();
+                var path = Path.Combine(Path.GetTempPath(), randomDirectoryName);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                    return path;
+                }
+            }
         }
 
         public static string SaveStringToTempFile(string stringToWrite)
