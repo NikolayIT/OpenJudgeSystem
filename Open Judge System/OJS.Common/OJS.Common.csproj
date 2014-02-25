@@ -53,6 +53,7 @@
     <Compile Include="Extensions\FuncExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\FileHelpers.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="MailSender.cs" />

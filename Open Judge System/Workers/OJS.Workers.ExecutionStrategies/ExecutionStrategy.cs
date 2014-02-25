@@ -21,11 +21,11 @@
             string submissionFilePath;
             if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
             {
-                submissionFilePath = this.SaveStringToTempFile(executionContext.Code);
+                submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
             }
             else
             {
-                submissionFilePath = this.SaveByteArrayToTempFile(executionContext.FileContent);
+                submissionFilePath = FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
             }
 
             var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
@@ -97,20 +97,6 @@
             }
 
             return testResult;
-        }
-
-        protected string SaveStringToTempFile(string stringToWrite)
-        {
-            var tempFilePath = Path.GetTempFileName();
-            File.WriteAllText(tempFilePath, stringToWrite);
-            return tempFilePath;
-        }
-
-        protected string SaveByteArrayToTempFile(byte[] dataToWrite)
-        {
-            var tempFilePath = Path.GetTempFileName();
-            File.WriteAllBytes(tempFilePath, dataToWrite);
-            return tempFilePath;
         }
 
         protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)

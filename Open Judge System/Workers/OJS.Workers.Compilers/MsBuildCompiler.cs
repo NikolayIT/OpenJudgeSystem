@@ -4,13 +4,15 @@
     using System.Linq;
     using System.Text;
 
+    using OJS.Common.Extensions;
+
     public class MsBuildCompiler : Compiler
     {
         private readonly string outputPath;
 
         public MsBuildCompiler()
         {
-            this.outputPath = this.GetTempDirectory();
+            this.outputPath = FileHelpers.CreateTempDirectory();
         }
 
         ~MsBuildCompiler()
@@ -19,15 +21,6 @@
             {
                 Directory.Delete(this.outputPath, true);
             }
-        }
-
-        // TODO: Extract into Path extension method
-        public string GetTempDirectory()
-        {
-            var randomDirectoryName = Path.GetRandomFileName();
-            var path = Path.Combine(Path.GetTempPath(), randomDirectoryName);
-            Directory.CreateDirectory(path);
-            return path;
         }
 
         public override string RenameInputFile(string inputFile)

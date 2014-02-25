@@ -1,9 +1,10 @@
 ﻿namespace OJS.Workers.Compilers.Tests
 {
     using System;
-    using System.IO;
 
     using NUnit.Framework;
+
+    using OJS.Common.Extensions;
 
     [TestFixture]
     public class MsBuildCompilerTests
@@ -14,19 +15,11 @@
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedSolution()
         {
             var compiler = new MsBuildCompiler();
-            var result = compiler.Compile(MsBuildCompilerPath, this.SaveByteArrayToTempFile(this.SampleSolutionFile), string.Empty);
+            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.SampleSolutionFile), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully);
             Assert.IsNotNullOrEmpty(result.OutputFile);
             Assert.IsTrue(result.OutputFile.EndsWith(".exe"));
-        }
-
-        // TODO: Extract into Path extension method
-        protected string SaveByteArrayToTempFile(byte[] dataToWrite)
-        {
-            var tempFilePath = Path.GetTempFileName();
-            File.WriteAllBytes(tempFilePath, dataToWrite);
-            return tempFilePath;
         }
 
         private byte[] SampleSolutionFile
@@ -34,7 +27,8 @@
             get
             {
                 return
-                    Convert.FromBase64String(@"UEsDBAoAAAAAANSJWUQAAAAAAAAAAAAAAAAPAAAAU2FtcGxlU29sdXRpb24vUEsDBBQAAAAIALKJ
+                    Convert.FromBase64String(
+@"UEsDBAoAAAAAANSJWUQAAAAAAAAAAAAAAAAPAAAAU2FtcGxlU29sdXRpb24vUEsDBBQAAAAIALKJ
 WUTDeUDOigAAALsAAAAZAAAAU2FtcGxlU29sdXRpb24vQXBwLmNvbmZpZ3u/e7+NfUVujkJZalFx
 Zn6erZKhnoGSQmpecn5KZl66rVJpSZquhZKCvR0vl01yfl5aZnppUWJJZn4eUEABCGyKSxKLSkoL
 7BQgfIhYaUFBflFJakpQaV5JZm4qwvQyE5Dxxdmltkp6fq4hbkWJuanl+UXZOmFQFUAFpkoK+jDT

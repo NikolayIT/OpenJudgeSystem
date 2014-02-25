@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
@@ -128,7 +129,7 @@ var code = {
             var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code);
 
             // Save the preprocessed submission which is ready for execution
-            var codeSavePath = this.SaveStringToTempFile(codeToExecute);
+            var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
