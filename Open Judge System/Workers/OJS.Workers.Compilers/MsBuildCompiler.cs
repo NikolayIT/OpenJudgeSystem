@@ -10,7 +10,7 @@
 
         public MsBuildCompiler()
         {
-            this.outputPath = Path.GetTempPath();
+            this.outputPath = this.GetTempDirectory();
         }
 
         ~MsBuildCompiler()
@@ -21,6 +21,15 @@
             }
         }
 
+        // TODO: Extract into Path extension method
+        public string GetTempDirectory()
+        {
+            var randomDirectoryName = Path.GetRandomFileName();
+            var path = Path.Combine(Path.GetTempPath(), randomDirectoryName);
+            Directory.CreateDirectory(path);
+            return path;
+        }
+
         public override string RenameInputFile(string inputFile)
         {
             return inputFile + ".zip";
@@ -28,7 +37,7 @@
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
-            var newOutputFile = Directory.GetFiles(this.outputPath).First(x => x.EndsWith(".exe"));
+            var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
             return newOutputFile;
         }
 
