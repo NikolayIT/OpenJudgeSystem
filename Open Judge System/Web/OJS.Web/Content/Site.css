@@ -113,10 +113,6 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* Code mirror fix for the matrix theme */
-.cm-s-the-matrix div.CodeMirror-selected {
-    background: #2D2D2D !important;
-}
-
 .cm-s-the-matrix span.cm-builtin {
     color: #2A9FD6 !important;
 }

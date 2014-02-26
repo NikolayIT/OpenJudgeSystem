@@ -878,12 +878,14 @@
     <Content Include="Content\CodeMirror\theme\erlang-dark.css" />
     <Content Include="Content\CodeMirror\theme\lesser-dark.css" />
     <Content Include="Content\CodeMirror\theme\mbo.css" />
+    <Content Include="Content\CodeMirror\theme\mdn-like.css" />
     <Content Include="Content\CodeMirror\theme\midnight.css" />
     <Content Include="Content\CodeMirror\theme\monokai.css" />
     <Content Include="Content\CodeMirror\theme\neat.css" />
     <Content Include="Content\CodeMirror\theme\night.css" />
     <Content Include="Content\CodeMirror\theme\paraiso-dark.css" />
     <Content Include="Content\CodeMirror\theme\paraiso-light.css" />
+    <Content Include="Content\CodeMirror\theme\pastel-on-dark.css" />
     <Content Include="Content\CodeMirror\theme\rubyblue.css" />
     <Content Include="Content\CodeMirror\theme\solarized.css" />
     <Content Include="Content\CodeMirror\theme\the-matrix.css" />
