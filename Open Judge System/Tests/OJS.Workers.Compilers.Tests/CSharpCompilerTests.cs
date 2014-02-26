@@ -24,9 +24,9 @@ class Program
             var compiler = new CSharpCompiler();
             var result = compiler.Compile(CSharpCompilerPath, FileHelpers.SaveStringToTempFile(Source), string.Empty);
 
-            Assert.IsTrue(result.IsCompiledSuccessfully);
-            Assert.IsTrue(string.IsNullOrWhiteSpace(result.OutputFile));
-            Assert.IsTrue(result.OutputFile.EndsWith(".exe"));
+            Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.OutputFile), "Output file is null");
+            Assert.IsTrue(result.OutputFile.EndsWith(".exe"), "Output file does not ends with .exe");
         }
     }
 }
