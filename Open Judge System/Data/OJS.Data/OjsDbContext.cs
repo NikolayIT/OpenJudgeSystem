@@ -146,6 +146,11 @@
             base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+
         private void ApplyAuditInfoRules()
         {
             // Approach via @julielerman: http://bit.ly/123661P

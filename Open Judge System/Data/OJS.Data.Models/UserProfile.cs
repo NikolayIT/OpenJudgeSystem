@@ -20,7 +20,6 @@
         public UserProfile(string userName, string email)
             : base(userName)
         {
-            this.UserName = userName;
             this.Email = email;
             this.UserSettings = new UserSettings();
             this.CreatedOn = DateTime.Now;

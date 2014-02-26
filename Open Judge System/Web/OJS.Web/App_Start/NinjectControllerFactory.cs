@@ -8,7 +8,7 @@
 
     using OJS.Data;
 
-    public class NinjectControllerFactory : DefaultControllerFactory
+    public class NinjectControllerFactory : DefaultControllerFactory, IDisposable
     {
         private readonly IKernel ninjectKernel;
 
@@ -16,6 +16,19 @@
         {
             this.ninjectKernel = new StandardKernel();
             this.AddBindings();
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.ninjectKernel.Dispose();
+            }
         }
 
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)

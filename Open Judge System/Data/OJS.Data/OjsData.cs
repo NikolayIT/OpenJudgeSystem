@@ -201,9 +201,17 @@
 
         public void Dispose()
         {
-            if (this.context != null)
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                this.context.Dispose();
+                if (this.context != null)
+                {
+                    this.context.Dispose();
+                }
             }
         }
 

@@ -65,7 +65,7 @@
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [System.Security.SuppressUnmanagedCodeSecurityAttribute]
         [ResourceExposure(ResourceScope.Machine)]
-        public static extern bool CreateProcessAsUser(
+        internal static extern bool CreateProcessAsUser(
             IntPtr hToken,
             string lpApplicationName,
             string lpCommandLine,
@@ -79,25 +79,25 @@
             out ProcessInformation lpProcessInformation);
 
         [DllImport("kernel32.dll")]
-        public static extern uint ResumeThread(IntPtr hThread);
+        internal static extern uint ResumeThread(IntPtr hThread);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.Process)]
-        public static extern bool CreatePipe(
+        internal static extern bool CreatePipe(
             out SafeFileHandle hReadPipe,
             out SafeFileHandle hWritePipe,
             SecurityAttributes lpPipeAttributes,
             int nSize);
 
         [DllImport("kernel32.dll")]
-        public static extern IntPtr GetCurrentProcess();
+        internal static extern IntPtr GetCurrentProcess();
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+        internal static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
-        public static extern bool DuplicateHandle(
+        internal static extern bool DuplicateHandle(
             HandleRef hSourceProcessHandle,
             SafeHandle hSourceHandle,
             HandleRef hTargetProcess,
@@ -108,7 +108,7 @@
 
         [DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
-        public static extern bool DuplicateHandle(
+        internal static extern bool DuplicateHandle(
             HandleRef hSourceProcessHandle,
             SafeHandle hSourceHandle,
             HandleRef hTargetProcess,
@@ -119,7 +119,7 @@
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DuplicateHandle(
+        internal static extern bool DuplicateHandle(
             IntPtr hSourceProcessHandle,
             IntPtr hSourceHandle,
             IntPtr hTargetProcessHandle,
@@ -130,15 +130,15 @@
         
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.Machine)]
-        public static extern bool TerminateProcess(SafeProcessHandle processHandle, int exitCode);
+        internal static extern bool TerminateProcess(SafeProcessHandle processHandle, int exitCode);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.None)]
-        public static extern bool GetExitCodeProcess(SafeProcessHandle processHandle, out int exitCode);
+        internal static extern bool GetExitCodeProcess(SafeProcessHandle processHandle, out int exitCode);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.None)]
-        public static extern bool GetProcessTimes(
+        internal static extern bool GetProcessTimes(
             SafeProcessHandle handle,
             out long creation,
             out long exit,
@@ -154,10 +154,10 @@
         /// <returns></returns>
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr tokenHandle);
+        internal static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr tokenHandle);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool CreateRestrictedToken(
+        internal static extern bool CreateRestrictedToken(
             IntPtr existingTokenHandle,
             CreateRestrictedTokenFlags createRestrictedTokenFlags,
             int disableSidCount,
@@ -169,7 +169,7 @@
             out IntPtr newTokenHandle);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool ConvertStringSidToSid(string StringSid, out IntPtr ptrSid);
+        internal static extern bool ConvertStringSidToSid(string StringSid, out IntPtr ptrSid);
 
         /// <summary>
         /// The function sets various types of information for a specified 
@@ -184,7 +184,7 @@
         /// <returns></returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetTokenInformation(
+        internal static extern bool SetTokenInformation(
             IntPtr hToken,
             TokenInformationClass tokenInfoClass,
             IntPtr pTokenInfo,
@@ -200,7 +200,7 @@
         /// bytes, of the SID structure.
         /// </returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern int GetLengthSid(IntPtr pSid);
+        internal static extern int GetLengthSid(IntPtr pSid);
 
         /// <summary>
         /// The AllocateAndInitializeSid function allocates and initializes a 
@@ -224,7 +224,7 @@
         /// </returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool AllocateAndInitializeSid(
+        internal static extern bool AllocateAndInitializeSid(
             ref SidIdentifierAuthority pIdentifierAuthority,
             byte nSubAuthorityCount,
             int dwSubAuthority0,
@@ -239,27 +239,27 @@
 
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)]
         [ResourceExposure(ResourceScope.None)]
-        public static extern int NtQuerySystemInformation(int query, IntPtr dataPtr, int size, out int returnedSize);
+        internal static extern int NtQuerySystemInformation(int query, IntPtr dataPtr, int size, out int returnedSize);
 
         [DllImport("psapi.dll", EntryPoint = "GetProcessMemoryInfo")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetProcessMemoryInfo([In] IntPtr Process, [Out] out ProcessMemoryCounters ppsmemCounters, uint cb);
+        internal static extern bool GetProcessMemoryInfo([In] IntPtr Process, [Out] out ProcessMemoryCounters ppsmemCounters, uint cb);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool SaferCloseLevel(IntPtr hLevelHandle);
+        internal static extern bool SaferCloseLevel(IntPtr hLevelHandle);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool SaferCreateLevel(int dwScopeId, int dwLevelId, int OpenFlags, out IntPtr pLevelHandle, IntPtr lpReserved);
+        internal static extern bool SaferCreateLevel(int dwScopeId, int dwLevelId, int OpenFlags, out IntPtr pLevelHandle, IntPtr lpReserved);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool SaferComputeTokenFromLevel(IntPtr LevelHandle, IntPtr InAccessToken, out IntPtr OutAccessToken, int dwFlags, IntPtr lpReserved);
+        internal static extern bool SaferComputeTokenFromLevel(IntPtr LevelHandle, IntPtr InAccessToken, out IntPtr OutAccessToken, int dwFlags, IntPtr lpReserved);
         
         [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [ResourceExposure(ResourceScope.None)]
-        public static extern bool CloseHandle(IntPtr handle);
+        internal static extern bool CloseHandle(IntPtr handle);
 
         [DllImport("advapi32.dll", SetLastError = true)]
-        public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+        internal static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
     }
 }

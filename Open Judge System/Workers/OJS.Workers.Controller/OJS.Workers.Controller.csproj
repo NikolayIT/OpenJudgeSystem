@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientConnectedEventArgs.cs" />
     <Compile Include="ControllerCommunicator.cs" />
     <Compile Include="ControllerServer.cs" />
     <Compile Include="ControllerService.cs">

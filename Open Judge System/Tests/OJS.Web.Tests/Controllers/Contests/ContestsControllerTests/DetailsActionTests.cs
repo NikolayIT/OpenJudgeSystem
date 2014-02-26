@@ -12,7 +12,7 @@
     using OJS.Web.Areas.Contests.ViewModels;
 
     [TestClass]
-    public class DetailsActionTests : BaseWebTests
+    public class DetailsActionTests : BaseWebTests, IDisposable
     {
         private ContestsController contestsController;
 
@@ -76,6 +76,22 @@
             Assert.AreEqual(contest.Id, model.Id);
             Assert.AreEqual(contest.Name, model.Name);
             Assert.AreEqual(contest.Description, model.Description);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.contestsController != null)
+                {
+                    this.contestsController.Dispose();
+                }
+            }
         }
     }
 }

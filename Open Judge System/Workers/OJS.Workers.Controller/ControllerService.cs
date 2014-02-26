@@ -59,9 +59,9 @@
             logger.Info("ControllerService stopped.");
         }
 
-        private void ServerOnClientConnected(TcpClient tcpClient, EventArgs e)
+        private void ServerOnClientConnected(object sender, ClientConnectedEventArgs e)
         {
-            var communicator = new ControllerCommunicator(tcpClient.GetStream(), logger);
+            var communicator = new ControllerCommunicator(e.Client.GetStream(), logger);
             //// communicator.
         }
     }

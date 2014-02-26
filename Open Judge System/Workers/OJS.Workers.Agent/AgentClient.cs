@@ -1,11 +1,12 @@
 ﻿namespace OJS.Workers.Agent
 {
+    using System;
     using System.IO;
     using System.Net.Sockets;
 
     using log4net;
 
-    public class AgentClient
+    public class AgentClient : IDisposable
     {
         private readonly ILog logger;
         private readonly TcpClient tcpClient;
@@ -47,6 +48,19 @@
         public void Stop()
         {
             this.tcpClient.Close();
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.Stop();
+            }
         }
     }
 }

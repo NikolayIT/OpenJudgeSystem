@@ -1,13 +1,12 @@
 ﻿namespace OJS.Workers.Controller
 {
-    using System;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
 
     using log4net;
 
-    public delegate void ClientConnectedEventHandler(TcpClient tcpClient, EventArgs e);
+    public delegate void ClientConnectedEventHandler(object sender, ClientConnectedEventArgs e);
 
     public class ControllerServer
     {
@@ -54,7 +53,7 @@
                 // blocks until a client has connected to the server
                 var client = this.tcpListener.AcceptTcpClient();
                 this.logger.InfoFormat("Client {0} connected!", client.Client.RemoteEndPoint);
-                this.OnClientConnected(client, new EventArgs());
+                this.OnClientConnected(this, new ClientConnectedEventArgs(client));
             }
         }
     }
