@@ -21,10 +21,9 @@ function testResult(test) {
 };
 
 function initilizeTestRuns(response) {
-
     $('#test-runs-button').hide();
 
-    grid = $('#test-runs-grid').kendoGrid({
+    $('#test-runs-grid').kendoGrid({
         dataSource: new kendo.data.DataSource({
             data: response.responseJSON,
             pageSize: 25,
@@ -38,7 +37,7 @@ function initilizeTestRuns(response) {
             { title: "Резултат", template: '<div> #= testResult(ExecutionResult) # </div>' },
             { field: "CheckerComment", title: "Чекер" },
             { field: "ExecutionComment", title: "Екзекютор" },
-            { title: "Изпълнение", template: '<a href="/Administration/Submissions/ #= SubmissionId # "> #= ProblemName # </a>' },
+            { title: "Решение", template: '<a href="/Contests/Submissions/View/#= SubmissionId #" target="_blank">№#= SubmissionId #</a>' }
         ],
     });
 }
