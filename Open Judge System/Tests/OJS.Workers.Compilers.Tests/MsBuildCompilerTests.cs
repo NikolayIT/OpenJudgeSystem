@@ -2,30 +2,28 @@
 {
     using System;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Common.Extensions;
 
-    [TestFixture]
+    [TestClass]
     public class MsBuildCompilerTests
     {
         private const string MsBuildCompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
 
-        [Test]
+        [TestMethod]
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedSolution()
         {
             var compiler = new MsBuildCompiler();
-            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.SampleSolutionFile), string.Empty);
+            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionFile()), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully);
-            Assert.IsNotNullOrEmpty(result.OutputFile);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result.OutputFile));
             Assert.IsTrue(result.OutputFile.EndsWith(".exe"));
         }
 
-        private byte[] SampleSolutionFile
+        private byte[] GetSampleSolutionFile()
         {
-            get
-            {
                 return
                     Convert.FromBase64String(
 @"UEsDBAoAAAAAANSJWUQAAAAAAAAAAAAAAAAPAAAAU2FtcGxlU29sdXRpb24vUEsDBBQAAAAIALKJ
@@ -130,7 +128,6 @@ Ah8AFAAAAAgAtYlZRM78/NJ8AQAA8wMAABIAJAAAAAAAAAAgAAAAdggAAFNhbXBsZVNvbHV0aW9u
 LnNsbgoAIAAAAAAAAQAYANrxiis8Ms8BzY+nJzwyzwHNj6cnPDLPAVBLAQIfABQAAAAIANGJWUT7
 vfgN5QgAAABMAAAWACQAAAAAAAAAIgAAACIKAABTYW1wbGVTb2x1dGlvbi52MTIuc3VvCgAgAAAA
 AAABABgA0PpASzwyzwH0GIsrPDLPAfQYiys8Ms8BUEsFBgAAAAAIAAgAYAMAADsTAAAAAA==");
-            }
         }
     }
 }
