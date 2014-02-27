@@ -53,10 +53,10 @@
     <Compile Include="JobObjects\ExtendedLimitInformation.cs" />
     <Compile Include="JobObjects\InfoClass.cs" />
     <Compile Include="JobObjects\LimitFlags.cs" />
+    <Compile Include="JobObjects\NativeMethods.cs" />
     <Compile Include="JobObjects\SecurityLimitFlags.cs" />
     <Compile Include="JobObjects\SecurityLimitInformation.cs" />
     <Compile Include="JobObjects\UiRestrictionFlags.cs" />
-    <Compile Include="JobObjects\Win32.cs" />
     <Compile Include="JobObjects\SecurityAttributes.cs" />
     <Compile Include="Process\CreateProcessFlags.cs" />
     <Compile Include="Process\CreateRestrictedTokenFlags.cs" />

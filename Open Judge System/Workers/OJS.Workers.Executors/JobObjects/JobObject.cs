@@ -12,7 +12,12 @@
         public JobObject()
         {
             var attr = new SecurityAttributes();
-            this.handle = CreateJobObject(ref attr, null);
+            this.handle = NativeMethods.CreateJobObject(ref attr, null);
+        }
+
+        ~JobObject()
+        {
+            this.Dispose(false);
         }
 
         public void SetExtendedLimitInformation(ExtendedLimitInformation extendedInfo)
@@ -20,7 +25,7 @@
             var length = Marshal.SizeOf(typeof(ExtendedLimitInformation));
             var extendedInfoPointer = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(extendedInfo, extendedInfoPointer, false);
-            if (!SetInformationJobObject(this.handle, InfoClass.ExtendedLimitInformation, extendedInfoPointer, (uint)length))
+            if (!NativeMethods.SetInformationJobObject(this.handle, InfoClass.ExtendedLimitInformation, extendedInfoPointer, (uint)length))
             {
                 throw new Win32Exception();
             }
@@ -31,7 +36,7 @@
             var length = Marshal.SizeOf(typeof(BasicUiRestrictions));
             var uiRestrictionsInfoPointer = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(uiRestrictions, uiRestrictionsInfoPointer, false);
-            if (!SetInformationJobObject(this.handle, InfoClass.BasicUiRestrictions, uiRestrictionsInfoPointer, (uint)length))
+            if (!NativeMethods.SetInformationJobObject(this.handle, InfoClass.BasicUiRestrictions, uiRestrictionsInfoPointer, (uint)length))
             {
                 throw new Win32Exception();
             }
@@ -43,7 +48,7 @@
             var length = Marshal.SizeOf(typeof(ExtendedLimitInformation));
             var extendedLimitInformationInfoPointer = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(extendedLimitInformation, extendedLimitInformationInfoPointer, false);
-            QueryInformationJobObject(this.handle, InfoClass.ExtendedLimitInformation, out extendedLimitInformationInfoPointer, (uint)length, IntPtr.Zero);
+            NativeMethods.QueryInformationJobObject(this.handle, InfoClass.ExtendedLimitInformation, out extendedLimitInformationInfoPointer, (uint)length, IntPtr.Zero);
             return extendedLimitInformation;
         }
 
@@ -66,48 +71,35 @@
         ////     return System::IntPtr((void *)extendedLimitInformation.PeakJobMemoryUsed);
         //// }
 
-        public void Dispose()
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.Close();
-            this.disposed = true;
-            GC.SuppressFinalize(this);
-        }
-
         public void Close()
         {
-            Win32.CloseHandle(this.handle);
+            NativeMethods.CloseHandle(this.handle);
             this.handle = IntPtr.Zero;
         }
 
         public bool AddProcess(IntPtr processHandle)
         {
-            return AssignProcessToJobObject(this.handle, processHandle);
+            return NativeMethods.AssignProcessToJobObject(this.handle, processHandle);
         }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr CreateJobObject([In]ref SecurityAttributes jobAttributes, string name);
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
-        [DllImport("kernel32.dll")]
-        private static extern bool SetInformationJobObject(
-            IntPtr job,
-            InfoClass infoType,
-            IntPtr jobObjectInfo,
-            uint jobObjectInfoLength);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.disposed)
+                {
+                    return;
+                }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-
-        [DllImport("kernel32.dll")]
-        private static extern bool QueryInformationJobObject(
-            IntPtr job,
-            InfoClass jobObjectInformationClass,
-            out IntPtr jobObjectInfo,
-            uint jobObjectInfoLength,
-            IntPtr returnLength);
+                this.Close();
+                this.disposed = true;
+                GC.SuppressFinalize(this);
+            }
+        }
     }
 }

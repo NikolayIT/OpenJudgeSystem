@@ -62,7 +62,7 @@
         public static SidIdentifierAuthority SECURITY_MANDATORY_LABEL_AUTHORITY =
             new SidIdentifierAuthority(new byte[] { 0, 0, 0, 0, 0, 16 });
 
-        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         [System.Security.SuppressUnmanagedCodeSecurityAttribute]
         [ResourceExposure(ResourceScope.Machine)]
         internal static extern bool CreateProcessAsUser(
@@ -168,7 +168,7 @@
             SidAndAttributes[] sidsToRestrict,
             out IntPtr newTokenHandle);
 
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern bool ConvertStringSidToSid(string StringSid, out IntPtr ptrSid);
 
         /// <summary>
@@ -240,6 +240,10 @@
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)]
         [ResourceExposure(ResourceScope.None)]
         internal static extern int NtQuerySystemInformation(int query, IntPtr dataPtr, int size, out int returnedSize);
+        
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [ResourceExposure(ResourceScope.Machine)]
+        internal static extern SafeProcessHandle OpenProcess(int access, bool inherit, int processId);
 
         [DllImport("psapi.dll", EntryPoint = "GetProcessMemoryInfo")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -259,7 +263,16 @@
         [ResourceExposure(ResourceScope.None)]
         internal static extern bool CloseHandle(IntPtr handle);
 
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+        
+        #region SafeLocalMemHandle
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)]
+        internal static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string stringSecurityDescriptor, int stringSDRevision, out SafeLocalMemHandle securityDescriptor, IntPtr securityDescriptorSize);
+        
+        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr LocalFree(IntPtr memoryHandler);
+        #endregion
     }
 }

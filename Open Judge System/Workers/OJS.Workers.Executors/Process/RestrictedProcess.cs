@@ -296,14 +296,23 @@
 
         public void Dispose()
         {
-            this.IsDisposed = true;
-            this.safeProcessHandle.Dispose();
-            NativeMethods.CloseHandle(this.processInformation.Thread);
+            this.Dispose(true);
+        }
 
-            // Disposing these object causes "System.InvalidOperationException: The stream is currently in use by a previous operation on the stream."
-            // this.StandardInput.Dispose();
-            // this.StandardOutput.Dispose();
-            // this.StandardError.Dispose();
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.IsDisposed = true;
+                this.safeProcessHandle.Dispose();
+                NativeMethods.CloseHandle(this.processInformation.Thread);
+                this.jobObject.Dispose();
+
+                // Disposing these object causes "System.InvalidOperationException: The stream is currently in use by a previous operation on the stream."
+                // this.StandardInput.Dispose();
+                // this.StandardOutput.Dispose();
+                // this.StandardError.Dispose();
+            }
         }
 
         private void RedirectStandardIoHandles(ref StartupInfo startupInfo, int bufferSize)

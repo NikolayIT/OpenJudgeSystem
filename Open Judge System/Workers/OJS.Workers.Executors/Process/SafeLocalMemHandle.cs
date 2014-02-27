@@ -1,8 +1,6 @@
 ﻿namespace OJS.Workers.Executors.Process
 {
     using System;
-    using System.Runtime.ConstrainedExecution;
-    using System.Runtime.InteropServices;
     using System.Security;
     using System.Security.Permissions;
 
@@ -24,16 +22,9 @@
             this.SetHandle(existingHandle);
         }
 
-        [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)]
-        internal static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string stringSecurityDescriptor, int stringSDRevision, out SafeLocalMemHandle securityDescriptor, IntPtr securityDescriptorSize);
-
         protected override bool ReleaseHandle()
         {
-            return LocalFree(this.handle) == IntPtr.Zero;
+            return NativeMethods.LocalFree(this.handle) == IntPtr.Zero;
         }
-
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LocalFree(IntPtr memoryHandler);
     }
 }

@@ -2,8 +2,6 @@
 {
     using System;
     using System.Diagnostics;
-    using System.Runtime.InteropServices;
-    using System.Runtime.Versioning;
     using System.Security;
 
     using Microsoft.Win32.SafeHandles;
@@ -35,9 +33,5 @@
         {
             return NativeMethods.CloseHandle(this.handle);
         }
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [ResourceExposure(ResourceScope.Machine)]
-        private static extern SafeProcessHandle OpenProcess(int access, bool inherit, int processId);
     } 
 }
