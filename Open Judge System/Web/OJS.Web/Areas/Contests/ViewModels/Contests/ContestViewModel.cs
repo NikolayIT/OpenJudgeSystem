@@ -189,5 +189,20 @@
                 return this.PracticePassword != null;
             }
         }
+
+        public long? RemainingTime
+        {
+            get
+            {
+                if (this.EndTime.HasValue)
+                {
+                    return (long?)(this.EndTime.Value - DateTime.Now).Ticks / 10000;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

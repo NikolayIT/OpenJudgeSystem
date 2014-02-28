@@ -77,10 +77,10 @@
             var submitTime;
 
             @if(Model.LastSubmissionTime != null) {
-            <text>
-            submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
-            </text>
-        };
+                <text>
+                submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+                </text>
+            };
 
             var serverTime = new Date(Date.parse("@DateTime.Now.ToString("dd MMM yyyy HH:mm:ss")"));
 
@@ -96,21 +96,25 @@
         })();
 
         @if (contestIsCompete)
-    {
-    <text>
-        $('#countdown-timer-container').prepend(@Html.Raw(remainingTimeFormat));
+        {
+            <text>
+                $('#countdown-timer-container').prepend(@Html.Raw(remainingTimeFormat));
+                var contestRemainingTimeOnServer = parseInt("@Model.Contest.RemainingTime.Value");
+                var currentTimeOnClient = new Date();
+                var contestRemainingTimeOnClient = new Date();
+                contestRemainingTimeOnClient.setTime(currentTimeOnClient.getTime() + contestRemainingTimeOnServer);
 
-        var contestTimer = new countdownTimer({
-            year: "@Model.Contest.EndTime.Value.Year",
-            month: "@(Model.Contest.EndTime.Value.Month - 1)",
-            day: "@Model.Contest.EndTime.Value.Day",
-            hour: "@Model.Contest.EndTime.Value.Hour",
-            minute: "@Model.Contest.EndTime.Value.Minute",
-            second: "@Model.Contest.EndTime.Value.Second"
-        });
+                var contestTimer = new countdownTimer({
+                    year: contestRemainingTimeOnClient.getFullYear(),
+                    month: contestRemainingTimeOnClient.getMonth(),
+                    day: contestRemainingTimeOnClient.getDate(),
+                    hour: contestRemainingTimeOnClient.getHours(),
+                    minute: contestRemainingTimeOnClient.getMinutes(),
+                    second: contestRemainingTimeOnClient.getSeconds(),
+                });
 
-        contestTimer.start();
-        </text>
-    }
+                contestTimer.start();
+            </text>
+        }
     </script>
 }
