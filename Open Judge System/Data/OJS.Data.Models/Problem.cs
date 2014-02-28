@@ -46,7 +46,7 @@
         public int MemoryLimit { get; set; }
 
         /// <summary>
-        /// Source code size limit (measured in bytes).
+        /// File size limit (measured in bytes).
         /// </summary>
         public int? SourceCodeSizeLimit { get; set; }
 

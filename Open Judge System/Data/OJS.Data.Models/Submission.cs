@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -38,16 +39,31 @@
         /// </remarks>
         public byte[] Content { get; set; }
 
+        /// <remarks>
+        /// If the value of FileExtension is null, then compressed text file is written in Content
+        /// </remarks>
+        public string FileExtension { get; set; }
+
         [NotMapped]
         public string ContentAsString
         {
             get
             {
+                if (!string.IsNullOrWhiteSpace(this.FileExtension))
+                {
+                    throw new InvalidOperationException("This is a binary file (not a text submission).");
+                }
+
                 return this.Content.Decompress();
             }
 
             set
             {
+                if (!string.IsNullOrWhiteSpace(this.FileExtension))
+                {
+                    throw new InvalidOperationException("This is a binary file (not a text submission).");
+                }
+
                 this.Content = value.Compress();
             }
         }
