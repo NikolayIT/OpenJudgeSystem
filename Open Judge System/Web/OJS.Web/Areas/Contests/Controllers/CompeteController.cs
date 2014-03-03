@@ -255,13 +255,18 @@
 
             ValidateContest(participant.Contest, official);
 
-            if (participant.Submissions.Any())
+            var lastSubmission =
+                this.Data.Submissions.All()
+                    .Where(x => x.ParticipantId == participant.Id)
+                    .OrderBy(x => x.CreatedOn)
+                    .Select(x => new { x.Id, x.CreatedOn })
+                    .FirstOrDefault();
+            if (lastSubmission != null)
             {
                 // check if the submission was sent after the submission time limit has passed
-                var latestSubmissionTime = participant.Submissions.Max(x => x.CreatedOn);
-                TimeSpan differenceBetweenSubmissions = DateTime.Now - latestSubmissionTime;
+                var latestSubmissionTime = lastSubmission.CreatedOn;
+                var differenceBetweenSubmissions = DateTime.Now - latestSubmissionTime;
                 int limitBetweenSubmissions = participant.Contest.LimitBetweenSubmissions;
-
                 if (differenceBetweenSubmissions.TotalSeconds < limitBetweenSubmissions)
                 {
                     throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -298,6 +303,18 @@
             // TODO: Validate file extension
             // TODO: Validate file size
             throw new NotImplementedException("SubmitBinaryFile is not implemented, yet.");
+            
+            //// this.Data.Submissions.Add(new Submission
+            //// {
+            ////     Content = participantSubmission.Content,
+            ////     ProblemId = participantSubmission.ProblemId,
+            ////     SubmissionTypeId = participantSubmission.SubmissionTypeId,
+            ////     ParticipantId = participant.Id
+            //// });
+            
+            this.Data.SaveChanges();
+
+            return this.Json(participantSubmission.ProblemId);
         }
 
         /// <summary>
