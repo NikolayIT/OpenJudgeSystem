@@ -64,9 +64,9 @@
 
         private static void UnzipFile(string fileToUnzip, string outputDirectory)
         {
-            using (ZipFile zip1 = ZipFile.Read(fileToUnzip))
+            using (var zipFile = ZipFile.Read(fileToUnzip))
             {
-                foreach (ZipEntry entry in zip1)
+                foreach (var entry in zipFile)
                 {
                     entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
                 }

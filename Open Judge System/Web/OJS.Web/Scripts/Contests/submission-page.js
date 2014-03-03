@@ -51,7 +51,7 @@
 
 function Notifier() {
     function showMessage(data) {
-        container = $("div[id^='notify-container']").filter(':visible');
+        var container = $("div[id^='notify-container']").filter(':visible');
 
         var notification = $('<div/>', {
             text: data.message,
@@ -101,7 +101,7 @@ function Notifier() {
         showMessage: showMessage,
         notifySuccess: notifySuccess,
         notifyFailure: notifyFailure
-    }
+    };
 }
 
 //  update the code mirror textarea to display the submission content - not used
@@ -122,12 +122,12 @@ function getCodeMirrorInstance() {
     return codeMirrorInstance;
 }
 
-var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeString) {
+var displayMaximumValues = function(maxMemory, maxTime, memoryString, timeString) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
     var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
     var result = memoryString + ": " + memoryInMb + " MB <br />" + timeString + ": " + maxTimeInSeconds + " s";
     return result;
-}
+};
 
 // validate the submission content
 function validateSubmissionContent() {
@@ -149,7 +149,7 @@ function validateSubmissionContent() {
 var messageNotifier = new Notifier();
 
 // validate the submission time
-var submissionTimeValidator = function () {
+var submissionTimeValidator = function() {
     var lastSubmissionTime;
     var currentServerTime;
 
@@ -161,12 +161,11 @@ var submissionTimeValidator = function () {
 
         if (!currentServerTime) {
             currentServerTime = serverTime;
-            setInterval(function () {
+            setInterval(function() {
                 currentServerTime = new Date(currentServerTime.getTime() + 1000);
-            }, 1000)
+            }, 1000);
         }
 
-        var limitBetweenSubmissions = limitBetweenSubmissions;
         var currentTime = currentServerTime;
         var secondsForLastSubmission = (currentTime - lastSubmissionTime) / 1000;
 
@@ -192,8 +191,8 @@ var submissionTimeValidator = function () {
 
     return {
         validate: validate
-    }
-}
+    };
+};
 
 var tabStripManager = new TabStripManager();
 
@@ -264,15 +263,15 @@ function TabStripManager() {
         onContentLoad: onContentLoad,
         currentIndex: currentIndex,
         init: init
-    }
+    };
 }
 
 function getSelectedIndexFromHashtag() {
     return parseInt(window.location.hash.substr(1));
 }
 
-$(document).ready(function () {
-    $(window).on("hashchange", function (ev) {
+$(document).ready(function() {
+    $(window).on("hashchange", function() {
         var hashIndex = getSelectedIndexFromHashtag();
         if (hashIndex !== tabStripManager.currentIndex()) {
             tabStripManager.selectTabWithIndex(hashIndex);
