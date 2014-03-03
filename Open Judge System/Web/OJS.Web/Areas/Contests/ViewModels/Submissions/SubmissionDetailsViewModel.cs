@@ -21,6 +21,7 @@
                     UserName = submission.Participant.User.UserName,
                     CompilerComment = submission.CompilerComment,
                     Content = submission.Content,
+                    FileExtension = submission.FileExtension,
                     CreatedOn = submission.CreatedOn,
                     IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
                     IsDeleted = submission.IsDeleted,
@@ -49,12 +50,27 @@
 
         public string CompilerComment { get; set; }
 
+        public string FileExtension { get; set; }
+
         public byte[] Content { get; set; }
+
+        public bool IsBinaryFile
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.FileExtension);
+            }
+        }
 
         public string ContentAsString
         {
             get
             {
+                if (this.IsBinaryFile)
+                {
+                    return "Binary file.";
+                }
+
                 return this.Content.Decompress();
             }
         }

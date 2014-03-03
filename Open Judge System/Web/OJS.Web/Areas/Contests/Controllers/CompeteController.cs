@@ -288,6 +288,11 @@
         // TODO: Extract common logic between SubmitBinaryFile() and Submit()
         public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official)
         {
+            if (participantSubmission == null || participantSubmission.File == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Please upload file.");
+            }
+
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
             if (problem == null)
             {
@@ -460,6 +465,7 @@
                                                         Value = x.Id.ToString(CultureInfo.InvariantCulture),
                                                         Selected = x.IsSelectedByDefault,
                                                         x.AllowBinaryFilesUpload,
+                                                        x.AllowedFileExtensions,
                                                     });
 
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);

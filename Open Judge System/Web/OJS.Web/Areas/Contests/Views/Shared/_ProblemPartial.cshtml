@@ -87,8 +87,13 @@
             {
                 @Html.HiddenFor(x => x.ProblemId)
                 <div id="submisionDataFields">
-                    <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
-                    @(Html.Kendo().Upload().Name("File").Multiple(false).ShowFileList(true).HtmlAttributes(new { id = "file-problem-" + Model.ProblemId }))
+                    <div id="SourceCodeInputFields_@Model.ProblemId">
+                        <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
+                    </div>
+                    <div id="FileUploadInputFields_@Model.ProblemId">
+                        @(Html.Kendo().Upload().Name("File").Multiple(false).ShowFileList(true).HtmlAttributes(new { id = "file-problem-" + Model.ProblemId }))
+                        <div id="FileUploadAllowedFileExtensions_@Model.ProblemId"></div>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <div class="pull-left submit-container">
@@ -96,6 +101,12 @@
                         <br />
                         <strong>@Resource.Allowed_memory:</strong> @string.Format("{0:0.00}", Model.MemoryLimit) MB
                         <br />
+                        @if (Model.FileSizeLimit.HasValue)
+                        {
+                            <strong>Size limit:</strong> @(string.Format("{0:0.00}", Model.FileSizeLimit.Value)) @:KB
+                            <br />
+                        }
+                        
                         <strong>Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span>
                         @if (!string.IsNullOrWhiteSpace(Model.CheckerDescription))
                         {
@@ -108,14 +119,16 @@
                                 var index = this.selectedIndex;
                                 var dataItem = this.dataItem(index);
                                 var form = $("#problem_@Model.ProblemId");
-                                var fileUpload = $("#file-problem-@Model.ProblemId").data("kendoUpload").wrapper;
-                                var codeArea = $($("#code-problem-@Model.ProblemId").data('CodeMirrorInstance').getWrapperElement());
+                                var fileUpload = $("#FileUploadInputFields_@Model.ProblemId");
+                                var codeArea = $("#SourceCodeInputFields_@Model.ProblemId");
+                                var fileExtensionsInfo = $("#FileUploadAllowedFileExtensions_@Model.ProblemId");
                                 
                                 if (dataItem.AllowBinaryFilesUpload) {
                                     form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/"));
                                     form.attr("data-ajax", "false");
                                     fileUpload.show();
                                     codeArea.hide();
+                                    fileExtensionsInfo.html("<b>Allowed file extensions:</b> " + dataItem.AllowedFileExtensions);
                                 } else {
                                     form.attr("action", form.attr("action").replace("/SubmitBinaryFile/", "/Submit/"));
                                     form.attr("data-ajax", "true");

@@ -13,6 +13,8 @@
 
         private int timeLimitInMs;
 
+        private int? fileSizeLimitInBytes;
+
         public ContestProblemViewModel(Problem problem)
         {
             this.ProblemId = problem.Id;
@@ -25,6 +27,7 @@
                                                 .Select(ContestProblemResourceViewModel.FromResource);
             this.TimeLimit = problem.TimeLimit;
             this.MemoryLimit = problem.MemoryLimit;
+            this.FileSizeLimit = problem.SourceCodeSizeLimit;
             this.CheckerName = problem.Checker.Name;
             this.CheckerDescription = problem.Checker.Description;
         }
@@ -34,6 +37,7 @@
             this.Resources = new HashSet<ContestProblemResourceViewModel>();
         }
 
+        // TODO: Constructor and this static property have the same code. Refactor.
         public static Expression<Func<Problem, ContestProblemViewModel>> FromProblem
         {
             get
@@ -45,6 +49,7 @@
                     ContestId = problem.ContestId,
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
+                    FileSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
                     CheckerName = problem.Checker.Name,
                     CheckerDescription = problem.Checker.Description,
@@ -87,6 +92,24 @@
             set
             {
                 this.timeLimitInMs = (int)value;
+            }
+        }
+        
+        public double? FileSizeLimit
+        {
+            get
+            {
+                if (!this.fileSizeLimitInBytes.HasValue)
+                {
+                    return null;
+                }
+
+                return (double)this.fileSizeLimitInBytes / 1024;
+            }
+
+            set
+            {
+                this.fileSizeLimitInBytes = (int?)value;
             }
         }
 
