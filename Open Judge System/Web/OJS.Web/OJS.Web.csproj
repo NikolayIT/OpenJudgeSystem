@@ -785,6 +785,7 @@
     <Compile Include="Areas\Contests\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Contests\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Contests\Helpers\ContestExtensions.cs" />
+    <Compile Include="Areas\Contests\Models\BinarySubmissionModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />

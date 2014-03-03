@@ -39,7 +39,7 @@
 
             try
             {
-                var result = this.CompeteController.Submit(submission, contest.Id, this.IsCompete);
+                var result = this.CompeteController.Submit(submission, this.IsCompete);
                 Assert.Fail("An exception was expected when a user is trying to submit for a contest that he isn't registered for.");
             }
             catch (HttpException ex)
@@ -74,7 +74,7 @@
                 SubmissionTypeId = submissionType.Id
             };
 
-            var result = this.CompeteController.Submit(submission, contest.Id, this.IsCompete) as JsonResult;
+            var result = this.CompeteController.Submit(submission, this.IsCompete) as JsonResult;
             var receivedContestId = (int)result.Data;
             Assert.AreEqual(receivedContestId, contest.Id);
         }
@@ -107,13 +107,13 @@
                 SubmissionTypeId = submissionType.Id
             };
 
-            var result = this.CompeteController.Submit(submission, contest.Id, this.IsCompete) as JsonResult;
+            var result = this.CompeteController.Submit(submission, this.IsCompete) as JsonResult;
             var receivedContestId = (int)result.Data;
             Assert.AreEqual(receivedContestId, contest.Id);
 
             try
             {
-                var secondSubmissionResult = this.CompeteController.Submit(submission, contest.Id, this.IsCompete);
+                var secondSubmissionResult = this.CompeteController.Submit(submission, this.IsCompete);
                 Assert.Fail("Expected an exception when a participant sends too many submissions");
             }
             catch (HttpException ex)
@@ -152,11 +152,11 @@
                 SubmissionTypeId = submissionType.Id
             };
 
-            var result = this.CompeteController.Submit(submission, contest.Id, this.IsCompete) as JsonResult;
+            var result = this.CompeteController.Submit(submission, this.IsCompete) as JsonResult;
             var receivedContestId = (int)result.Data;
             Assert.AreEqual(receivedContestId, contest.Id);
 
-            var secondSubmissionResult = this.CompeteController.Submit(submission, contest.Id, this.IsCompete) as JsonResult;
+            var secondSubmissionResult = this.CompeteController.Submit(submission, this.IsCompete) as JsonResult;
             var secondSubmissionResultContestId = (int)secondSubmissionResult.Data;
 
             Assert.AreEqual(receivedContestId, secondSubmissionResultContestId);
@@ -196,7 +196,7 @@
 
             try
             {
-                var result = this.CompeteController.Submit(submission, contest.Id, this.IsCompete);
+                var result = this.CompeteController.Submit(submission, this.IsCompete);
                 Assert.Fail("Expected an exception when sending a submission with no content");
             }
             catch (HttpException ex)

@@ -75,8 +75,6 @@
 
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
 
-            var contestQuestions = contest.Questions.ToList();
-
             if (!participantFound)
             {
                 if (!contest.ShouldShowRegistrationForm(official))
@@ -176,8 +174,8 @@
             }
 
             var questionsToAnswerCount = official ?
-                contest.Questions.Where(x => x.AskOfficialParticipants).Count() :
-                contest.Questions.Where(x => x.AskPracticeParticipants).Count();
+                contest.Questions.Count(x => x.AskOfficialParticipants) :
+                contest.Questions.Count(x => x.AskPracticeParticipants);
 
             if (questionsToAnswerCount != registrationData.Questions.Count())
             {
@@ -188,9 +186,9 @@
 
             var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
+            var counter = 0;
             foreach (var question in registrationData.Questions)
             {
-                var counter = 0;
                 var contestQuestion = contestQuestions.FirstOrDefault(x => x.Id == question.QuestionId);
 
                 var regularExpression = contestQuestion.RegularExpressionValidation;
@@ -235,18 +233,21 @@
         }
 
         /// <summary>
-        /// Processes a participant's submision for a problem.
+        /// Processes a participant's submission for a problem.
         /// </summary>
         /// <param name="participantSubmission">Participant submission.</param>
-        /// <param name="id">Contest id.</param>
         /// <param name="official">A check whether the contest is official or practice.</param>
         /// <returns>Returns confirmation if the submission was correctly processed.</returns>
         [HttpPost, Authorize]
-        public ActionResult Submit(SubmissionModel participantSubmission, int id, bool official)
+        public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
-            var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
+            if (problem == null)
+            {
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
+            }
 
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -290,6 +291,15 @@
             return this.Json(participantSubmission.ProblemId);
         }
 
+        public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official)
+        {
+            // TODO: Validate participant
+            // TODO: Validate if binary files allowed?
+            // TODO: Validate file extension
+            // TODO: Validate file size
+            throw new NotImplementedException("SubmitBinaryFile is not implemented, yet.");
+        }
+
         /// <summary>
         /// Obtains the partial view for a particular problem.
         /// </summary>
@@ -326,6 +336,7 @@
         /// </summary>
         /// <param name="request">The Kendo data source request.</param>
         /// <param name="id">The problem id.</param>
+        /// <param name="official">A check whether the problem is practiced or competed.</param>
         /// <returns>Returns the submissions results for a participant's problem.</returns>
         [Authorize]
         public ActionResult ReadSubmissionResults([DataSourceRequest]DataSourceRequest request, int id, bool official)
@@ -454,7 +465,7 @@
 
             if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))
             {
-                return this.RedirectToAction("Register", new { official = official, id = contest.Id });
+                return this.RedirectToAction("Register", new { official, id = contest.Id });
             }
 
             throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
@@ -464,7 +475,6 @@
         /// Gets the content of a participant submission for a particular problem.
         /// </summary>
         /// <param name="id">The submission id.</param>
-        /// <param name="official">A flag checking if the submission was for practice or for a competition.</param>
         /// <returns>Returns a JSON with the submission content.</returns>
         //// TODO: Remove if not used
         [Authorize]
