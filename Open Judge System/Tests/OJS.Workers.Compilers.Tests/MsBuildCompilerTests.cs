@@ -22,6 +22,17 @@
             Assert.IsTrue(result.OutputFile.EndsWith(".exe"), "Output file does not ends with .exe");
         }
 
+        [TestMethod]
+        public void MsBuildCompilerShouldWorkWhenGivenValidZippedProjectInSingleFolder()
+        {
+            var compiler = new MsBuildCompiler();
+            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()), string.Empty);
+
+            Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.OutputFile), "Output file is null");
+            Assert.IsTrue(result.OutputFile.EndsWith(".exe"), "Output file does not ends with .exe");
+        }
+
         private byte[] GetSampleSolutionFile()
         {
                 return
@@ -128,6 +139,61 @@ Ah8AFAAAAAgAtYlZRM78/NJ8AQAA8wMAABIAJAAAAAAAAAAgAAAAdggAAFNhbXBsZVNvbHV0aW9u
 LnNsbgoAIAAAAAAAAQAYANrxiis8Ms8BzY+nJzwyzwHNj6cnPDLPAVBLAQIfABQAAAAIANGJWUT7
 vfgN5QgAAABMAAAWACQAAAAAAAAAIgAAACIKAABTYW1wbGVTb2x1dGlvbi52MTIuc3VvCgAgAAAA
 AAABABgA0PpASzwyzwH0GIsrPDLPAfQYiys8Ms8BUEsFBgAAAAAIAAgAYAMAADsTAAAAAA==");
+        }
+        
+        private byte[] GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()
+        {
+            return Convert.FromBase64String(
+@"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");
         }
     }
 }

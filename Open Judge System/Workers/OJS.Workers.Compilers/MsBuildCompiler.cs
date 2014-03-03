@@ -48,11 +48,7 @@
             var arguments = new StringBuilder();
 
             UnzipFile(inputFile, this.inputPath);
-            string solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".sln"));
-            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
-            {
-                solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
-            }
+            string solutionOrProjectFile = this.FindSolutionOrProjectFile();
 
             // Input file argument
             arguments.Append(string.Format("\"{0}\"", solutionOrProjectFile));
@@ -83,6 +79,26 @@
                     entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
                 }
             }
+        }
+
+        private string FindSolutionOrProjectFile()
+        {
+            var solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".sln"));
+            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
+            {
+                solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
+            }
+
+            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
+            {
+                var directory = Directory.GetDirectories(this.inputPath).FirstOrDefault();
+                if (directory != null)
+                {
+                    solutionOrProjectFile = Directory.GetFiles(directory).FirstOrDefault(x => x.EndsWith(".sln") || x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
+                }
+            }
+
+            return solutionOrProjectFile;
         }
     }
 }
