@@ -45,11 +45,20 @@
         public string FileExtension { get; set; }
 
         [NotMapped]
+        public bool IsBinaryFile
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.FileExtension);
+            }
+        }
+
+        [NotMapped]
         public string ContentAsString
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(this.FileExtension))
+                if (this.IsBinaryFile)
                 {
                     throw new InvalidOperationException("This is a binary file (not a text submission).");
                 }
@@ -59,7 +68,7 @@
 
             set
             {
-                if (!string.IsNullOrWhiteSpace(this.FileExtension))
+                if (this.IsBinaryFile)
                 {
                     throw new InvalidOperationException("This is a binary file (not a text submission).");
                 }

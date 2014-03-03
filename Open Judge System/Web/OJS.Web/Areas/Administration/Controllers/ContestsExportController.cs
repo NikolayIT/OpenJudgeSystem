@@ -206,9 +206,17 @@
                             string.Format("{0}.{1}", problem.Name, bestSubmission.SubmissionType.FileNameExtension)
                                 .ToValidFileName();
 
-                        var entry = file.AddEntry(
-                            string.Format("{0}\\{1}", directoryName, fileName),
-                            bestSubmission.ContentAsString.ToByteArray());
+                        byte[] content;
+                        if (bestSubmission.IsBinaryFile)
+                        {
+                            content = bestSubmission.Content;
+                        }
+                        else
+                        {
+                            content = bestSubmission.ContentAsString.ToByteArray();
+                        }
+
+                        var entry = file.AddEntry(string.Format("{0}\\{1}", directoryName, fileName), content);
                         entry.CreationTime = bestSubmission.CreatedOn;
                         entry.ModifiedTime = bestSubmission.CreatedOn;
                     }
