@@ -1,5 +1,6 @@
 ﻿namespace OJS.Data.Repositories
 {
+    using System;
     using System.Data.Entity;
     using System.Linq;
 
@@ -37,6 +38,28 @@
                            .FirstOrDefault();
 
             return submission;
+        }
+
+        public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)
+        {
+            var lastSubmission =
+                this.All()
+                    .Where(x => x.ParticipantId == participantId)
+                    .OrderBy(x => x.CreatedOn)
+                    .Select(x => new { x.Id, x.CreatedOn })
+                    .FirstOrDefault();
+            if (lastSubmission != null)
+            {
+                // check if the submission was sent after the submission time limit has passed
+                var latestSubmissionTime = lastSubmission.CreatedOn;
+                var differenceBetweenSubmissions = DateTime.Now - latestSubmissionTime;
+                if (differenceBetweenSubmissions.TotalSeconds < limitBetweenSubmissions)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

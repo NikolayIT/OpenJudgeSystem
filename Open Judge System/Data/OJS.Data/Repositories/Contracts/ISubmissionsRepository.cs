@@ -9,5 +9,7 @@
         IQueryable<Submission> AllPublic();
 
         Submission GetSubmissionForProcessing();
+
+        bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions);
     }
 }

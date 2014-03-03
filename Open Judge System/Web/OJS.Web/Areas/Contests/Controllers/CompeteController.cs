@@ -255,22 +255,9 @@
 
             ValidateContest(participant.Contest, official);
 
-            var lastSubmission =
-                this.Data.Submissions.All()
-                    .Where(x => x.ParticipantId == participant.Id)
-                    .OrderBy(x => x.CreatedOn)
-                    .Select(x => new { x.Id, x.CreatedOn })
-                    .FirstOrDefault();
-            if (lastSubmission != null)
+            if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
-                // check if the submission was sent after the submission time limit has passed
-                var latestSubmissionTime = lastSubmission.CreatedOn;
-                var differenceBetweenSubmissions = DateTime.Now - latestSubmissionTime;
-                int limitBetweenSubmissions = participant.Contest.LimitBetweenSubmissions;
-                if (differenceBetweenSubmissions.TotalSeconds < limitBetweenSubmissions)
-                {
-                    throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
-                }
+                throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
             }
 
             if (problem.SourceCodeSizeLimit < participantSubmission.Content.Length)
