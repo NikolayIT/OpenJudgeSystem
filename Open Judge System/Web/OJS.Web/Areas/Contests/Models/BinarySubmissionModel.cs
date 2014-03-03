@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
 
     public class BinarySubmissionModel
     {
@@ -9,6 +10,6 @@
         public int SubmissionTypeId { get; set; }
 
         [Required]
-        public byte[] Content { get; set; }
+        public HttpPostedFileBase File { get; set; }
     }
 }

@@ -12,6 +12,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -283,21 +284,66 @@
             return this.Json(participantSubmission.ProblemId);
         }
 
+        // TODO: Extract common logic between SubmitBinaryFile() and Submit()
         public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official)
         {
-            // TODO: Validate participant
-            // TODO: Validate if binary files allowed?
-            // TODO: Validate file extension
-            // TODO: Validate file size
-            throw new NotImplementedException("SubmitBinaryFile is not implemented, yet.");
-            
-            //// this.Data.Submissions.Add(new Submission
-            //// {
-            ////     Content = participantSubmission.Content,
-            ////     ProblemId = participantSubmission.ProblemId,
-            ////     SubmissionTypeId = participantSubmission.SubmissionTypeId,
-            ////     ParticipantId = participant.Id
-            //// });
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
+            if (problem == null)
+            {
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
+            }
+
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            if (participant == null)
+            {
+                throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
+            }
+
+            ValidateContest(participant.Contest, official);
+
+            if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
+            {
+                throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
+            }
+
+            if (problem.SourceCodeSizeLimit < participantSubmission.File.ContentLength)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
+            }
+
+            // Validate submission type existence
+            var submissionType = this.Data.SubmissionTypes.GetById(participantSubmission.SubmissionTypeId);
+            if (submissionType == null)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+            }
+
+            // Validate if binary files are allowed
+            if (!submissionType.AllowBinaryFilesUpload)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "This submission type does not allow sending binary files");
+            }
+
+            // Validate file extension
+            if (!submissionType.AllowedFileExtensionsList.Contains(
+                    participantSubmission.File.FileName.GetFileExtension()))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid file extension");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+            }
+
+            this.Data.Submissions.Add(new Submission
+            {
+                Content = participantSubmission.File.InputStream.ToByteArray(),
+                FileExtension = participantSubmission.File.FileName.GetFileExtension(),
+                ProblemId = participantSubmission.ProblemId,
+                SubmissionTypeId = participantSubmission.SubmissionTypeId,
+                ParticipantId = participant.Id
+            });
             
             this.Data.SaveChanges();
 
