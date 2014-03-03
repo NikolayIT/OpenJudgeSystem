@@ -118,6 +118,7 @@ namespace OJS.Data.Migrations
                     ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = true,
                     AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
                 },
                 new SubmissionType
                 {
@@ -128,6 +129,7 @@ namespace OJS.Data.Migrations
                     ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
                 },
                 new SubmissionType
                 {
@@ -137,15 +139,17 @@ namespace OJS.Data.Migrations
                     ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
                 },
                 new SubmissionType
                 {
                     Name = "C# project/solution",
                     CompilerType = CompilerType.MsBuild,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
                 });
 
             context.SaveChanges();

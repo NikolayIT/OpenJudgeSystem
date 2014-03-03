@@ -51,18 +51,10 @@
             string solutionOrProjectFile = this.FindSolutionOrProjectFile();
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\"", solutionOrProjectFile));
-            arguments.Append(' ');
-
-            // Settings
-            arguments.Append("/t:rebuild ");
-            arguments.Append("/p:Configuration=Release,Optimize=true ");
-            arguments.Append("/nologo ");
-            arguments.Append("/verbosity:quiet ");
+            arguments.Append(string.Format("\"{0}\" ", solutionOrProjectFile));
 
             // Output path argument
-            arguments.Append(string.Format("/p:OutputPath=\"{0}\"", this.outputPath));
-            arguments.Append(' ');
+            arguments.Append(string.Format("/p:OutputPath=\"{0}\" ", this.outputPath));
 
             // Additional compiler arguments
             arguments.Append(additionalArguments);
