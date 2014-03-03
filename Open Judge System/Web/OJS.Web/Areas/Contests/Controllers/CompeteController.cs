@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Text.RegularExpressions;
@@ -347,7 +348,9 @@
             
             this.Data.SaveChanges();
 
-            return this.Json(participantSubmission.ProblemId);
+            this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
+            var problemIndex = 0; // TODO: Find problem index
+            return this.Redirect(string.Format("/Contests/Compete/Index/{0}#{1}", problem.ContestId, 0));
         }
 
         /// <summary>
@@ -440,6 +443,7 @@
         /// <returns>Returns the allowed submission types as JSON.</returns>
         public ActionResult GetAllowedSubmissionTypes(int id)
         {
+            // TODO: Implement this method with only one database query (this.Data.SubmissionTypes.All().Where(x => x.ContestId == id)
             var contest = this.Data.Contests.GetById(id);
 
             if (contest == null)
@@ -450,11 +454,12 @@
             var submissionTypesSelectListItems = contest
                                                     .SubmissionTypes
                                                     .ToList()
-                                                    .Select(x => new SelectListItem
+                                                    .Select(x => new
                                                     {
                                                         Text = x.Name,
-                                                        Value = x.Id.ToString(),
-                                                        Selected = x.IsSelectedByDefault
+                                                        Value = x.Id.ToString(CultureInfo.InvariantCulture),
+                                                        Selected = x.IsSelectedByDefault,
+                                                        x.AllowBinaryFilesUpload,
                                                     });
 
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);

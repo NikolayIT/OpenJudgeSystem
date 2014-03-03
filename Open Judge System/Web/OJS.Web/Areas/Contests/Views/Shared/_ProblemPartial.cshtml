@@ -78,15 +78,18 @@
             @using (Ajax.BeginForm("Submit",
                 new { controller = ViewBag.CompeteType, id = Model.ContestId },
                 new AjaxOptions
-                {
-                    OnSuccess = "messageNotifier.notifySuccess",
-                    OnFailure = "messageNotifier.notifyFailure",
-                    OnBegin = "validateSubmit"
-                },
+                    {
+                        OnSuccess = "messageNotifier.notifySuccess",
+                        OnFailure = "messageNotifier.notifyFailure",
+                        OnBegin = "validateSubmit"
+                    },
                 new { id = "problem_" + Model.ProblemId }))
             {
                 @Html.HiddenFor(x => x.ProblemId)
-                <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
+                <div id="submisionDataFields">
+                    <textarea class="code-for-problem" id="code-problem-@Model.ProblemId" name="Content"></textarea>
+                    @(Html.Kendo().Upload().Name("File").Multiple(false).ShowFileList(true).HtmlAttributes(new { id = "file-problem-" + Model.ProblemId }))
+                </div>
                 <div class="col-md-12">
                     <div class="pull-left submit-container">
                         <strong>@Resource.Allowed_working_time:</strong> @string.Format("{0:0.00}", Model.TimeLimit) sec.
@@ -100,12 +103,34 @@
                         }
                     </div>
                     <div class="submit-container pull-right">
+                        <script>
+                            function onSubmissionTypeChange() {
+                                var index = this.selectedIndex;
+                                var dataItem = this.dataItem(index);
+                                var form = $("#problem_@Model.ProblemId");
+                                var fileUpload = $("#file-problem-@Model.ProblemId").data("kendoUpload").wrapper;
+                                var codeArea = $($("#code-problem-@Model.ProblemId").data('CodeMirrorInstance').getWrapperElement());
+                                
+                                if (dataItem.AllowBinaryFilesUpload) {
+                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/"));
+                                    form.attr("data-ajax", "false");
+                                    fileUpload.show();
+                                    codeArea.hide();
+                                } else {
+                                    form.attr("action", form.attr("action").replace("/SubmitBinaryFile/", "/Submit/"));
+                                    form.attr("data-ajax", "true");
+                                    fileUpload.hide();
+                                    codeArea.show();
+                                }
+                            }
+                        </script>
                         @(Html.Kendo().DropDownList()
-                                .Name("SubmissionTypeId")
-                                .DataTextField("Text")
-                                .DataValueField("Value")
-                                .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
-                                .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
+                              .Name("SubmissionTypeId")
+                              .DataTextField("Text")
+                              .DataValueField("Value")
+                              .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange"))
+                              .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
+                              .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
                         <input type="submit" value="@Resource.Submit" class="k-button submision-submit-button" />
                     </div>
                 </div>
