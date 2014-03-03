@@ -78,7 +78,7 @@
 
             @if(Model.LastSubmissionTime != null) {
                 <text>
-                submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+                    submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
                 </text>
             };
 
@@ -98,22 +98,7 @@
         @if (contestIsCompete)
         {
             <text>
-                $('#countdown-timer-container').prepend(@Html.Raw(remainingTimeFormat));
-                var contestRemainingTimeOnServer = parseInt("@Model.Contest.RemainingTime.Value");
-                var currentTimeOnClient = new Date();
-                var contestRemainingTimeOnClient = new Date();
-                contestRemainingTimeOnClient.setTime(currentTimeOnClient.getTime() + contestRemainingTimeOnServer);
-
-                var contestTimer = new countdownTimer({
-                    year: contestRemainingTimeOnClient.getFullYear(),
-                    month: contestRemainingTimeOnClient.getMonth(),
-                    day: contestRemainingTimeOnClient.getDate(),
-                    hour: contestRemainingTimeOnClient.getHours(),
-                    minute: contestRemainingTimeOnClient.getMinutes(),
-                    second: contestRemainingTimeOnClient.getSeconds(),
-                });
-
-                contestTimer.start();
+                calculateRemainingTimeOnClient('countdown-timer-container', @Html.Raw(remainingTimeFormat), @Model.Contest.RemainingTimeInMilliseconds.Value);
             </text>
         }
     </script>

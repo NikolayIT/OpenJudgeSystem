@@ -67,3 +67,27 @@ function getCookie(cname) {
     }
     return "";
 }
+
+function calculateRemainingTimeOnClient(condownTimerContainerId, remainingTimeFormat, remainingTimeOnServerInMilliseconds) {
+    $('#' + condownTimerContainerId).prepend(remainingTimeFormat);
+    var remainingTimeOnServer;
+    if (typeof stringValue) {
+        remainingTimeOnServer = parseInt(remainingTimeOnServerInMilliseconds);
+    }
+    else {
+        remainingTimeOnServer = remainingTimeOnServerInMillisecond;
+    }
+    var currentTimeOnClient = new Date();
+    var remainingTimeOnClient = currentTimeOnClient;
+    remainingTimeOnClient.setTime(currentTimeOnClient.getTime() + remainingTimeOnServer);
+    var timer = new countdownTimer({
+        year: remainingTimeOnClient.getFullYear(),
+        month: remainingTimeOnClient.getMonth(),
+        day: remainingTimeOnClient.getDate(),
+        hour: remainingTimeOnClient.getHours(),
+        minute: remainingTimeOnClient.getMinutes(),
+        second: remainingTimeOnClient.getSeconds()
+    });
+
+    timer.start();
+}

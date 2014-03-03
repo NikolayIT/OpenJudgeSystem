@@ -190,13 +190,13 @@
             }
         }
 
-        public long? RemainingTime
+        public double? RemainingTimeInMilliseconds
         {
             get
             {
                 if (this.EndTime.HasValue)
                 {
-                    return (long?)(this.EndTime.Value - DateTime.Now).Ticks / 10000;
+                    return (double?)(this.EndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
                 else
                 {
