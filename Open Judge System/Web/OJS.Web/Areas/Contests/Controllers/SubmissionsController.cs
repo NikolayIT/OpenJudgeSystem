@@ -46,5 +46,32 @@
 
             return this.View(submission);
         }
+
+        // TODO: Extract common validations between Download() and Details()
+        public FileResult Download(int id)
+        {
+            var submission = this.Data.Submissions.All()
+                .Where(x => x.Id == id)
+                .Select(SubmissionDetailsViewModel.FromSubmission)
+                .FirstOrDefault();
+
+            if (submission == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
+            }
+
+            if (!User.IsAdmin() && submission.IsDeleted)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
+            }
+
+            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
+            }
+
+            // TODO: When text content is saved, uncompressing should be performed
+            return this.File(submission.Content, "application/octet-stream", string.Format("Submission_{0}.{1}", submission.Id, submission.FileExtension));
+        }
     }
 }

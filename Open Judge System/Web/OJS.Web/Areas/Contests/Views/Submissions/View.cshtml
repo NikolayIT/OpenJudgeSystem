@@ -186,4 +186,11 @@ else
 }
 
 <h3 id="SourceCode">@Resource.Source_code</h3>
-<textarea id="code">@Model.ContentAsString</textarea>
+@if (Model.IsBinaryFile)
+{
+    <a class="btn btn-default" href="/Contests/Submissions/Download/@Model.Id">Download binary file</a>
+}
+else
+{
+    <textarea id="code">@Model.ContentAsString</textarea>
+}
