@@ -45,9 +45,11 @@
                 return null;
             }
 
-            var randomFileName = Path.GetTempFileName() + ".exe";
-            File.Move(newOutputFile, randomFileName);
-            return randomFileName;
+            var tempFile = Path.GetTempFileName();
+            var tempExeFile = tempFile + ".exe";
+            File.Move(newOutputFile, tempExeFile);
+            File.Delete(tempFile);
+            return tempExeFile;
         }
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
