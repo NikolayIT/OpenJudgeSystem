@@ -40,7 +40,14 @@
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
             var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
-            return newOutputFile;
+            if (newOutputFile == null)
+            {
+                return null;
+            }
+
+            var randomFileName = Path.GetTempFileName() + ".exe";
+            File.Move(newOutputFile, randomFileName);
+            return randomFileName;
         }
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
