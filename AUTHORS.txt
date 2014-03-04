@@ -3,3 +3,4 @@ Authors ordered by first contribution:
 Nikolay Kostov <admin@nikolay.it>
 Ivaylo Kenov <ivaylo.kenov@telerik.com>
 Vasil Dininski <vasil.diniski@telerik.com>
+Todor Stoyanov <todor.stoyanov@telerik.com>

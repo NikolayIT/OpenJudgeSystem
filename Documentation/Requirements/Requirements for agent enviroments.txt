@@ -1,4 +1,5 @@
-	.NET 4.5.1 installed
+.NET 4.5.1 installed
+	http://msdn.microsoft.com/en-us/library/windows/desktop/hh852363.aspx
 
 PowerCollections.dll should be added to the GAC
 	gacutil /i PowerCollections.dll
