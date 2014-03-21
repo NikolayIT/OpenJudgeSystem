@@ -1,4 +1,6 @@
 .NET 4.5.1 installed
+
+.NET Framework 4.5 Software Development Kit
 	http://msdn.microsoft.com/en-us/library/windows/desktop/hh852363.aspx
 
 PowerCollections.dll should be added to the GAC
@@ -8,7 +10,7 @@ PowerCollections.dll should be added to the GAC
 
 GCC compiler installed
 
-Firewall should block all unnessesary ips and ports
+Firewall should block all unnecessary ips and ports
 
 System is tested in Win8 and Windows Server 2012 R2 (Preview)
 

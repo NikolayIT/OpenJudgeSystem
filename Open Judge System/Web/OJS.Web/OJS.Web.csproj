@@ -1032,6 +1032,7 @@
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_AdministrationLayout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
+    <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />

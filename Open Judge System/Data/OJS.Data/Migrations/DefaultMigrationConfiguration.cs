@@ -21,10 +21,16 @@ namespace OJS.Data.Migrations
 
         protected override void Seed(OjsDbContext context)
         {
+            if (context.Roles.Any())
+            {
+                return;
+            }
+
             // this.SeedSubmissionsAndTestRuns(context);
-            // this.SeedRoles(context);
-            // this.SeedCheckers(context);
-            // this.SeedSubmissionTypes(context);
+            this.SeedRoles(context);
+            this.SeedCheckers(context);
+            this.SeedSubmissionTypes(context);
+
             // this.SeedContests(context);
             // this.SeedLongNews(context);
             // this.SeedRandomContests(context);

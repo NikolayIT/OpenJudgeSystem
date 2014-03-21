@@ -138,7 +138,7 @@
             return secureString;
         }
 
-        // TODO: Test
+        // TODO: Remove and replace with ToUrl
         public static string ToUrlSafeString(this string input)
         {
             input = input.Replace("+", "Plus");
@@ -146,7 +146,7 @@
             return input;
         }
 
-        // TODO: Test
+        // TODO: Remove and replace with ToUrl
         public static string FromUrlSafeString(this string input)
         {
             input = input.Replace("Plus", "+");
