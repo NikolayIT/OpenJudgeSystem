@@ -147,6 +147,9 @@
   <data name="Feedback" xml:space="preserve">
     <value>Обратна връзка</value>
   </data>
+  <data name="Files" xml:space="preserve">
+    <value>Файлове</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Начало</value>
   </data>
