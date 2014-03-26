@@ -14,7 +14,7 @@
     <RootNamespace>OJS.Web</RootNamespace>
     <AssemblyName>OJS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -862,11 +862,15 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap\bootstrap-amelia.css" />
+    <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
+    <Content Include="Content\bootstrap\bootstrap-flatly.css" />
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.css" />
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.min.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
+    <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\CodeMirror\codemirror.css" />
     <Content Include="Content\CodeMirror\theme\3024-day.css" />
