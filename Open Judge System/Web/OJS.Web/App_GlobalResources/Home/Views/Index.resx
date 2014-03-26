@@ -148,10 +148,10 @@
     <value>Previous contests</value>
   </data>
   <data name="Project_subtitle" xml:space="preserve">
-    <value>Solve programming problems online</value>
+    <value />
   </data>
   <data name="Project_title" xml:space="preserve">
-    <value>BGCoder</value>
+    <value>SoftUni Judge</value>
   </data>
   <data name="Remaining_time" xml:space="preserve">
     <value>Time remaining: {0} {1} and {2} minutes</value>

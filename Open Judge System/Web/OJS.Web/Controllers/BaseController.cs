@@ -137,7 +137,7 @@
             else
             {
                 // User is not logged-in
-                messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
+                //messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
             }
 
             return messages;

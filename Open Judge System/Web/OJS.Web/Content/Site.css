@@ -43,9 +43,9 @@ input[type="checkbox"].input-validation-error {
     margin-top: 20px; /* its buggy without it */
 }
 
-    .jumbotron h1 {
+    /*.jumbotron h1 {
         color: #FFF;
-    }
+    }*/
 
 @media (max-width: 767px) {
     .jumbotron h1 {

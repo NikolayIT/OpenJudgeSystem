@@ -51,7 +51,7 @@
 
             bundles.Add(new StyleBundle("~/Content/KendoUI/kendo").Include(
                       "~/Content/KendoUI/kendo.common.css",
-                      "~/Content/KendoUI/kendo.black.css"));
+                      "~/Content/KendoUI/kendo.blueopal.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/bootstrap").Include(
                       "~/Content/bootstrap/bootstrap-flatly.css"));
