@@ -148,10 +148,10 @@
     <value>Предишни състезания</value>
   </data>
   <data name="Project_subtitle" xml:space="preserve">
-    <value>Онлайн задачи по програмиране</value>
+    <value />
   </data>
   <data name="Project_title" xml:space="preserve">
-    <value>BGCoder</value>
+    <value>SoftUni Judge</value>
   </data>
   <data name="Remaining_time" xml:space="preserve">
     <value>Оставащо време: {0} {1} и {2} минути</value>

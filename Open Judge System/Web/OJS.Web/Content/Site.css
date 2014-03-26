@@ -43,9 +43,9 @@ input[type="checkbox"].input-validation-error {
     margin-top: 20px; /* its buggy without it */
 }
 
-    .jumbotron h1 {
+    /*.jumbotron h1 {
         color: #FFF;
-    }
+    }*/
 
 @media (max-width: 767px) {
     .jumbotron h1 {
@@ -75,9 +75,9 @@ input[type="checkbox"].input-validation-error {
     width: 100%;
 }
 
-.text-white {
+/*.text-white {
     color: white;
-}
+}*/
 
 .drop-down-width {
     width: 175px;
@@ -85,7 +85,7 @@ input[type="checkbox"].input-validation-error {
 
 .full-editor {
     width: 100%;
-    height: 30px;
+    /*height: 30px;*/
 }
 
 .full-kendo-editor {
@@ -118,14 +118,14 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* Kendo */
-.k-alt,
+/*.k-alt,
 .k-separator {
   background-color: #282828;
-}
+}*/
 
-.k-state-selected {
+/*.k-state-selected {
     background-color: initial;
-}
+}*/
 
 .width100percent {
     width: 100%;
