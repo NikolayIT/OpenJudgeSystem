@@ -3,6 +3,8 @@
     using System;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Claims;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -26,6 +28,8 @@
     {
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
+        private const string JsonContentType = "application/json";
+        private const string GetExternalAuthenticatedUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetAuthenticatedUser";
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
@@ -64,9 +68,24 @@
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this.UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                ExternalUserViewModel externalUser = null;
+                try
                 {
+                    externalUser = await this.GetExternalUser(model.UserName);
+                }
+                catch (Exception)
+                {
+                    this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
+                    return this.RedirectToAction("Index", "Home", new { area = string.Empty });
+                }
+
+                if (externalUser != null)
+                {
+                    var user = externalUser.Entity;
+                    this.AddOrUpdateUser(user);
+
+                    //// TODO: Handle the case when the password is not correct!!!
+
                     await this.SignInAsync(user, model.RememberMe);
                     return this.RedirectToLocal(returnUrl);
                 }
@@ -134,7 +153,7 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            IdentityResult result =
+            var result =
                 await
                 this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
@@ -570,6 +589,44 @@
             }
 
             base.Dispose(disposing);
+        }
+
+        private void AddOrUpdateUser(UserProfile user)
+        {
+            if (this.Data.Users.All().Any(x => x.Id == user.Id))
+            {
+                this.Data.Users.Update(user);
+            }
+            else
+            {
+                this.Data.Users.Add(user);
+            }
+
+            this.Data.SaveChanges();
+        }
+
+        private async Task<ExternalUserViewModel> GetExternalUser(string username)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(JsonContentType);
+                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
+
+                var response = await httpClient.PostAsJsonAsync(GetExternalAuthenticatedUserUrl, new { username });
+                if (response.IsSuccessStatusCode)
+                {
+                    var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
+                    if (externalUser != null)
+                    {
+                        return externalUser;
+                    }
+
+                    // There is no user with provided username
+                    return null;
+                }
+
+                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
+            }
         }
 
         private void SendForgottenPasswordToUser(UserProfile user)
