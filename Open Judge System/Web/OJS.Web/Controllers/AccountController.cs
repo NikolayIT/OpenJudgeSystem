@@ -29,7 +29,7 @@
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
         private const string JsonContentType = "application/json";
-        private const string GetExternalAuthenticatedUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetUserInfo";
+        private const string GetExternalUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetUserInfo";
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
@@ -614,7 +614,7 @@
                 var jsonMediaType = new MediaTypeWithQualityHeaderValue(JsonContentType);
                 httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
 
-                var response = await httpClient.PostAsJsonAsync(GetExternalAuthenticatedUserUrl, new { username });
+                var response = await httpClient.PostAsJsonAsync(GetExternalUserUrl, new { username });
                 if (response.IsSuccessStatusCode)
                 {
                     var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
