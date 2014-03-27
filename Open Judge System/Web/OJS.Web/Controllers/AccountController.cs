@@ -29,7 +29,7 @@
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
         private const string JsonContentType = "application/json";
-        private const string GetExternalAuthenticatedUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetAuthenticatedUser";
+        private const string GetExternalAuthenticatedUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetUserInfo";
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
@@ -81,13 +81,15 @@
 
                 if (externalUser != null)
                 {
-                    var user = externalUser.Entity;
-                    this.AddOrUpdateUser(user);
+                    var userEntity = externalUser.Entity;
+                    this.AddOrUpdateUser(userEntity);
 
-                    //// TODO: Handle the case when the password is not correct!!!
-
-                    await this.SignInAsync(user, model.RememberMe);
-                    return this.RedirectToLocal(returnUrl);
+                    var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+                    if (user != null)
+                    {
+                        await this.SignInAsync(userEntity, model.RememberMe);
+                        return this.RedirectToLocal(returnUrl);
+                    }
                 }
 
                 this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
@@ -616,13 +618,7 @@
                 if (response.IsSuccessStatusCode)
                 {
                     var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
-                    if (externalUser != null)
-                    {
-                        return externalUser;
-                    }
-
-                    // There is no user with provided username
-                    return null;
+                    return externalUser;
                 }
 
                 throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
