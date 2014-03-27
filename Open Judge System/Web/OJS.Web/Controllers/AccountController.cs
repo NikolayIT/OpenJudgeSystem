@@ -647,13 +647,21 @@ namespace OJS.Web.Controllers
 
         private void AddOrUpdateUser(UserProfile user)
         {
-            if (this.Data.Users.All().Any(x => x.Id == user.Id))
+            var existingUser = this.Data.Users.GetById(user.Id);
+            if (existingUser == null)
             {
-                this.Data.Users.Update(user);
+                this.Data.Users.Add(user);
             }
             else
             {
-                this.Data.Users.Add(user);
+                existingUser.PasswordHash = user.PasswordHash;
+                existingUser.SecurityStamp = user.SecurityStamp;
+                existingUser.Email = user.Email;
+                existingUser.ForgottenPasswordToken = user.ForgottenPasswordToken;
+                existingUser.IsDeleted = user.IsDeleted;
+                existingUser.DeletedOn = user.DeletedOn;
+                existingUser.ModifiedOn = user.ModifiedOn;
+                existingUser.UserSettings = user.UserSettings;
             }
 
             this.Data.SaveChanges();
