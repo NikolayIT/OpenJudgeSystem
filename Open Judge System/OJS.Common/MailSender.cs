@@ -31,6 +31,7 @@
                 Host = ServerAddress,
                 EnableSsl = true,
             };
+
             ////this.mailClient = new SmtpClient { DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis };
         }
 

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
 
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -72,6 +74,23 @@
         {
             this.ApplyAuditInfoRules();
             this.ApplyDeletableEntityRules();
+
+            ////// Use this to see Database validation errors
+            ////try
+            ////{
+            ////    return base.SaveChanges();
+            ////}
+            ////catch (DbEntityValidationException databeseException)
+            ////{
+            ////    foreach (var validationErrors in databeseException.EntityValidationErrors)
+            ////    {
+            ////        foreach (var validationError in validationErrors.ValidationErrors)
+            ////        {
+            ////            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+            ////        }
+            ////    }
+            ////}
+
             return base.SaveChanges();
         }
 

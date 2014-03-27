@@ -21,6 +21,8 @@
         [HttpGet]
         public ActionResult Index()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             string currentUserName = this.User.Identity.Name;
 
             var profile = this.Data.Users.GetByUsername(currentUserName);
@@ -32,6 +34,8 @@
         [HttpPost]
         public ActionResult Index(UserSettingsViewModel settings)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.ModelState.IsValid)
             {
                 var user = this.Data.Users.GetByUsername(User.Identity.Name);
