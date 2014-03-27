@@ -1,4 +1,6 @@
-﻿namespace OJS.Web.Controllers
+﻿using System.Web.Routing;
+
+namespace OJS.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -103,6 +105,8 @@
         [AllowAnonymous]
         public ActionResult Register()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Manage");
@@ -118,6 +122,8 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, bool captchaValid)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
                 this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
@@ -155,6 +161,8 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var result =
                 await
                 this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
@@ -173,8 +181,22 @@
         // GET: /Account/Manage
         public ActionResult Manage()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             this.ViewBag.HasLocalPassword = this.HasPassword();
             this.ViewBag.ReturnUrl = Url.Action("Manage");
+            return this.View();
+        }
+
+        // GET: /Account/ExternalNotify
+        /// <summary>
+        /// Informs the user that the registration proccess is 
+        /// disabled on this site and he must register from exturnal source
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ExternalNotify()
+        {
             return this.View();
         }
 
@@ -183,6 +205,8 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             bool hasPassword = this.HasPassword();
             this.ViewBag.HasLocalPassword = hasPassword;
             this.ViewBag.ReturnUrl = Url.Action("Manage");
@@ -235,6 +259,8 @@
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             // Request a redirect to the external login provider
             return new ChallengeResult(
                 provider,
@@ -245,6 +271,8 @@
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
@@ -283,6 +311,8 @@
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             // Request a redirect to the external login provider to link a login for the current user
             return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
@@ -290,6 +320,8 @@
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo != null)
             {
@@ -312,6 +344,8 @@
             ExternalLoginConfirmationViewModel model,
             string returnUrl)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Manage");
@@ -380,6 +414,8 @@
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var linkedAccounts = this.UserManager.GetLogins(User.Identity.GetUserId());
             this.ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
             return this.PartialView("_RemoveAccountPartial", linkedAccounts);
@@ -388,6 +424,8 @@
         [AllowAnonymous]
         public ActionResult ForgottenPassword()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             return this.View();
         }
 
@@ -395,6 +433,8 @@
         [AllowAnonymous]
         public ActionResult ForgottenPassword(string emailOrUsername)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (string.IsNullOrEmpty(emailOrUsername))
             {
                 this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_required);
@@ -443,6 +483,8 @@
         [AllowAnonymous]
         public ActionResult ChangePassword(string token)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             Guid guid;
 
             if (!Guid.TryParse(token, out guid))
@@ -469,6 +511,8 @@
         [AllowAnonymous]
         public async Task<ActionResult> ChangePassword(ForgottenPasswordViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var user = this.Data.Users.All()
                 .FirstOrDefault(x => x.ForgottenPasswordToken == model.Token);
 
@@ -508,12 +552,16 @@
 
         public ActionResult ChangeEmail()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             return this.View();
         }
 
         [HttpPost]
         public ActionResult ChangeEmail(ChangeEmailViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.ModelState.IsValid)
             {
                 if (this.Data.Users.All().Any(x => x.Email == model.Email))
@@ -546,6 +594,8 @@
         [HttpGet]
         public ActionResult ChangeUsername()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
@@ -558,6 +608,8 @@
         [ValidateAntiForgeryToken]
         public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
