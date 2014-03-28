@@ -7,6 +7,7 @@
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    using OJS.Common;
     using OJS.Data.Contracts;
     using OJS.Data.Contracts.DataAnnotations;
 
@@ -26,7 +27,9 @@
         }
 
         [Required]
-        [MaxLength(80)]
+        [MaxLength(GlobalConstants.EmailMaxLength)]
+        [MinLength(GlobalConstants.EmailMinLength)]
+        [RegularExpression(GlobalConstants.EmailRegEx)]
         [IsUnicode(false)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }

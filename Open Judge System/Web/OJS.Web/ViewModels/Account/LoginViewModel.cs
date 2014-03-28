@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using OJS.Common;
+
     using Resource = Resources.Account.AccountViewModels;
 
     public class LoginViewModel
@@ -12,6 +14,10 @@
         [Display(
                 Name = "Username",
                 ResourceType = typeof(Resource))]
+        [StringLength(GlobalConstants.UsernameMaxLength,
+            MinimumLength = GlobalConstants.UsernameMinLength,
+            ErrorMessage = "Потребителското име трябва да бъде между {2} и {1} символа.")]
+        [RegularExpression(GlobalConstants.UsernameRegEx, ErrorMessage = "Невалиден формат на потребителското име.")]
         public string UserName { get; set; }
 
         [Required(
@@ -21,6 +27,9 @@
         [Display(
                 Name = "Password",
                 ResourceType = typeof(Resource))]
+        [StringLength(GlobalConstants.PasswordMaxLength,
+            MinimumLength = GlobalConstants.PasswordMinLength,
+            ErrorMessage = "{0}та трябва да бъде между {2} и {1} символа.")]
         public string Password { get; set; }
 
         [Display(

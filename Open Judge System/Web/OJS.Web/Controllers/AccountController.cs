@@ -1,8 +1,7 @@
-﻿using System.Web.Routing;
-
-namespace OJS.Web.Controllers
+﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Configuration;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -31,7 +30,10 @@ namespace OJS.Web.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
         private const string JsonContentType = "application/json";
-        private const string GetExternalUserUrl = "http://localhost:30623/Api/ExternalAuthentication/GetUserInfo";
+
+        private static readonly string GetExternalUserUrl = string.Format(
+            "http://{0}/Api/ExternalAuthentication/GetUserInfo",
+            ConfigurationManager.AppSettings["LearningSystemIp"]);
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
