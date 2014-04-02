@@ -234,6 +234,9 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
                     break;
+                case ExecutionStrategyType.DoNothing:
+                    executionStrategy = new DoNothingExecutionStrategy();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -117,6 +117,16 @@ namespace OJS.Data.Migrations
                 x => x.Name,
                 new SubmissionType
                 {
+                    Name = "File upload",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DoNothing,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip,rar",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
                     Name = "C# code",
                     CompilerType = CompilerType.CSharp,
                     AdditionalCompilerArguments =
