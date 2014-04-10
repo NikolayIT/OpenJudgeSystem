@@ -117,6 +117,7 @@
                                 {
                                     Id = problem.Id,
                                     ProblemName = problem.Name,
+                                    ProblemOrderBy = problem.OrderBy,
                                     ShowResult = problem.ShowResults,
                                     BestSubmission = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
@@ -124,7 +125,7 @@
                                                         .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points })
                                                         .FirstOrDefault()
                                 })
-                                .OrderBy(res => res.ProblemName)
+                                .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
                     })
                     .ToList()
                     .OrderByDescending(x => x.Total)
@@ -164,7 +165,6 @@
             return this.View(contestModel);
         }
 
-        // TODO: Implement
         // TODO: Unit test
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult Full(int id, bool official)
@@ -193,6 +193,7 @@
                                     {
                                         Id = problem.Id,
                                         ProblemName = problem.Name,
+                                        ProblemOrderBy = problem.OrderBy,
                                         MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
                                                             .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
@@ -200,7 +201,7 @@
                                                             .Select(SubmissionFullResultsViewModel.FromSubmission)
                                                             .FirstOrDefault(),
                                     })
-                                    .OrderBy(res => res.ProblemName)
+                                    .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
                         })
                         .ToList()
                         .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantName)

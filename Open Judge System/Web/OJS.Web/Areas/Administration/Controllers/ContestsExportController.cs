@@ -48,6 +48,7 @@
                                 {
                                     Id = problem.Id,
                                     ProblemName = problem.Name,
+                                    ProblemOrderBy = problem.OrderBy,
                                     ShowResult = problem.ShowResults,
                                     BestSubmission = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id)
@@ -55,7 +56,7 @@
                                                         .Select(z => new { Id = z.Id, Points = z.Points })
                                                         .FirstOrDefault()
                                 })
-                                .OrderBy(res => res.ProblemName),
+                                .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName),
                     })
                     .ToList()
                     .Select(x => new { Data = x, Total = x.ProblemResults.Where(y => y.ShowResult).Sum(y => y.BestSubmission == null ? 0 : y.BestSubmission.Points) })
