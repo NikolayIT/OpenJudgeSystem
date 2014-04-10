@@ -9,7 +9,7 @@
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
-    using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     [TestClass]
     public class DetailsActionTests : BaseWebTests, IDisposable

@@ -1,4 +1,4 @@
-﻿@model OJS.Web.Areas.Contests.ViewModels.ParticipantViewModel
+﻿@model OJS.Web.Areas.Contests.ViewModels.Participants.ParticipantViewModel
 
 @using Resource = Resources.Areas.Contests.Views.CompeteIndex;
 
@@ -36,26 +36,26 @@
 <div class="row">
     <div class="col-md-12">
         @(Html.Kendo().TabStrip()
-        .Name("SubmissionsTabStrip")
-        .Items(tabstrip =>
-        {
-            foreach (var problem in Model.Contest.Problems)
+            .Name("SubmissionsTabStrip")
+            .Items(tabstrip =>
             {
-                tabstrip.Add()
-                    .Text(problem.Name)
-                    .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
-            }
+                foreach (var problem in Model.Contest.Problems)
+                {
+                    tabstrip.Add()
+                        .Text(problem.Name)
+                        .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
+                }
 
-            if (User.IsAdmin())
+                if (User.IsAdmin())
+                {
+                    tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
+                }
+            })
+            .Events(ev =>
             {
-                tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
-            }
-        })
-        .Events(ev =>
-        {
-            ev.ContentLoad("tabStripManager.onContentLoad");
-            ev.Activate("tabStripManager.tabSelected");
-        })
+                ev.ContentLoad("tabStripManager.onContentLoad");
+                ev.Activate("tabStripManager.tabSelected");
+            })
         )
     </div>
 </div>

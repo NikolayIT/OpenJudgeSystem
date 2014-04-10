@@ -9,6 +9,8 @@ namespace OJS.Web.Areas.Contests.Controllers
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
+    using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
@@ -96,20 +98,36 @@ namespace OJS.Web.Areas.Contests.Controllers
             return this.View(contestCategory);
         }
 
-        public ActionResult BySubmissionType(string submissionType)
+        public ActionResult BySubmissionType(int? id, string submissionTypeName)
         {
-            var submissionName = submissionType.FromUrlSafeString();
-            this.ViewBag.SubmissionType = submissionName;
+            SubmissionTypeViewModel submissionType;
+            if (id.HasValue)
+            {
+                submissionType = this.Data.SubmissionTypes.All()
+                                                  .Where(x => x.Id == id.Value)
+                                                  .Select(SubmissionTypeViewModel.FromSubmissionType)
+                                                  .FirstOrDefault();
+            }
+            else
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.Invalid_request);
+            }
+
+            if (submissionType == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_type_not_found);
+            }
 
             var contests =
                 this.Data.Contests
                                 .All()
                                 .Where(c => !c.IsDeleted &&
                                             c.IsVisible &&
-                                            c.SubmissionTypes.Any(s => s.Name == submissionName))
+                                            c.SubmissionTypes.Any(s => s.Id == submissionType.Id))
                                 .OrderBy(x => x.OrderBy)
                                 .Select(ContestViewModel.FromContest);
 
+            this.ViewBag.SubmissionType = submissionType.Name;
             return this.View(contests);
         }
     }

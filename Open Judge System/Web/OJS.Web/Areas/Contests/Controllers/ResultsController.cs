@@ -11,12 +11,13 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
-
+    
     public class ResultsController : BaseController
     {
         public const int ResultsPageSize = 300;

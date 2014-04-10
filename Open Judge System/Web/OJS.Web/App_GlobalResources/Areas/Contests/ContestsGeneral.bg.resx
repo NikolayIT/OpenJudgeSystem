@@ -153,6 +153,9 @@
   <data name="Submission_too_long" xml:space="preserve">
     <value>Изпратеният код е прекалено дълъг!</value>
   </data>
+  <data name="Submission_type_not_found" xml:space="preserve">
+    <value>Грешен тип за оценяване на решението!</value>
+  </data>
   <data name="Submission_was_sent_too_soon" xml:space="preserve">
     <value>Решението е изпратено прекалено скоро!</value>
   </data>

@@ -11,7 +11,7 @@
     using OJS.Common;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
-    using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     [TestClass]
     public class RegisterActionTests : CompeteControllerBaseTestsClass

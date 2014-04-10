@@ -1,6 +1,6 @@
 ﻿@using OJS.Common.Extensions;
 @using OJS.Common.Models;
-@using OJS.Web.Areas.Contests.ViewModels
+@using OJS.Web.Areas.Contests.ViewModels.Contests
 
 @using Resource = Resources.Areas.Contests.Views.ContestsDetails;
 
@@ -43,7 +43,13 @@
             @Resource.Allowed_languages: |
             @foreach (var submissionType in Model.AllowedSubmissionTypes)
             {
-                <span>@Html.ActionLink(submissionType.Name, "BySubmissionType", new { controller = "List", submissionType = submissionType.Name.ToUrlSafeString() }) |</span>
+                <span>
+                    @Html.ActionLink(
+                        submissionType.Name, 
+                        "BySubmissionType", 
+                        new { controller = "List", id = submissionType.Id, submissionTypeName = submissionType.Name.ToUrl() 
+                    }) |
+                </span>
             }
         </h5>
         <h5>

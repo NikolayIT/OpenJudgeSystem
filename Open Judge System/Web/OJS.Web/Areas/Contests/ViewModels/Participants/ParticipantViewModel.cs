@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Participants
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Web;
 
     using OJS.Data.Models;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     public class ParticipantViewModel
     {
