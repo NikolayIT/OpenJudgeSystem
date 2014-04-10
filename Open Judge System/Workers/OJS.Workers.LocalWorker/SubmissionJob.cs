@@ -154,6 +154,7 @@
             IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
             var context = new ExecutionContext
             {
+                SubmissionId = submission.Id,
                 AdditionalCompilerArguments = submission.SubmissionType.AdditionalCompilerArguments,
                 CheckerAssemblyName = submission.Problem.Checker.DllFile,
                 CheckerParameter = submission.Problem.Checker.Parameter,
@@ -236,6 +237,9 @@
                     break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.RemoteExecution:
+                    executionStrategy = new RemoteExecutionStrategy();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

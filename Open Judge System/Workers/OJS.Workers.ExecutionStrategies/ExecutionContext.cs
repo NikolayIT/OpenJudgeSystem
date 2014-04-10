@@ -7,6 +7,8 @@
 
     public class ExecutionContext
     {
+        public int SubmissionId { get; set; }
+
         public CompilerType CompilerType { get; set; }
 
         public string AdditionalCompilerArguments { get; set; }
