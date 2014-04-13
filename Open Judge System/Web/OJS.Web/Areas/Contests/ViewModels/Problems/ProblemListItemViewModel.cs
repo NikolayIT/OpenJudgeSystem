@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Problems
 {
     using System;
     using System.Linq.Expressions;

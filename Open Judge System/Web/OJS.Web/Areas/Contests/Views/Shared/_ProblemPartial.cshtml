@@ -1,4 +1,5 @@
-﻿@using OJS.Web.Areas.Contests.ViewModels
+﻿@using OJS.Web.Areas.Contests.ViewModels.Contests
+@using OJS.Web.Areas.Contests.ViewModels.Submissions
 @using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Common.Models;
 @using Resource = Resources.Areas.Contests.Shared.ContestsProblemPartial
@@ -36,7 +37,7 @@
 }
 
 <div class="row">
-    <div class=@className>
+    <div class="@className">
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
@@ -241,7 +242,7 @@ else
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<SubmissionResultIsCompiledViewModel>()
+            .Grid<OJS.Web.Areas.Contests.ViewModels.Results.SubmissionResultIsCompiledViewModel>()
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {

@@ -25,8 +25,8 @@ namespace OJS.Web.Areas.Contests
 
             context.MapRoute(
                 "Contests_by_submission_type",
-                "Contests/BySubmissionType/{submissionType}",
-                new { controller = "List", action = "BySubmissionType", submissionType = UrlParameter.Optional });
+                "Contests/BySubmissionType/{id}/{submissionTypeName}",
+                new { controller = "List", action = "BySubmissionType", id = UrlParameter.Optional, submissionTypeName = UrlParameter.Optional });
 
             context.MapRoute(
                 "Contests_by_category",

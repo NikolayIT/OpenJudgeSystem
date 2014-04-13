@@ -138,22 +138,6 @@
             return secureString;
         }
 
-        // TODO: Remove and replace with ToUrl
-        public static string ToUrlSafeString(this string input)
-        {
-            input = input.Replace("+", "Plus");
-            input = input.Replace("#", "Sharp");
-            return input;
-        }
-
-        // TODO: Remove and replace with ToUrl
-        public static string FromUrlSafeString(this string input)
-        {
-            input = input.Replace("Plus", "+");
-            input = input.Replace("Sharp", "#");
-            return input;
-        }
-
         // TODO: Test
         public static string ToValidFileName(this string input)
         {

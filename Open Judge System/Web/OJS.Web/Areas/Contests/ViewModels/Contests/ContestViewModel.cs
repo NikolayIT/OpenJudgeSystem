@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Contests
 {
     using System;
     using System.Collections.Generic;
@@ -7,9 +7,10 @@
     using System.Linq.Expressions;
 
     using OJS.Data.Models;
+    using OJS.Web.Areas.Contests.ViewModels.Submissions;
 
     using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
-
+    
     public class ContestViewModel
     {
         public ContestViewModel()

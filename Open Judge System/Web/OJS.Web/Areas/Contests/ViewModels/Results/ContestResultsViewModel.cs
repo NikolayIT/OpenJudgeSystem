@@ -1,6 +1,8 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
     using System.Collections.Generic;
+    
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     public class ContestResultsViewModel
     {

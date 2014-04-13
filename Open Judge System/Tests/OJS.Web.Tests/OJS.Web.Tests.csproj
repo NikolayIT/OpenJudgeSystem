@@ -150,6 +150,7 @@
     <Compile Include="Controllers\Contests\CompeteControllerTests\DownloadResourceActionTests.cs" />
     <Compile Include="Controllers\Contests\CompeteControllerTests\SubmitActionTests.cs" />
     <Compile Include="Controllers\Contests\CompeteControllerTests\ValidateContestTests.cs" />
+    <Compile Include="Controllers\Contests\CompeteControllerTests\ValidateSubmissionTypeTests.cs" />
     <Compile Include="Controllers\Contests\ContestsControllerTests\DetailsActionTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\FeedbackControllerTests.cs" />

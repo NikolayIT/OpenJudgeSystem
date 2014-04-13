@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
+
     // TODO: Refactor to reuse same logic with ContestResultsViewModel
     public class ContestFullResultsViewModel
     {

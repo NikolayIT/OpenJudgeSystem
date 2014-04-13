@@ -10,6 +10,9 @@ namespace OJS.Web.Areas.Contests.Controllers
 
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
+    using OJS.Web.Areas.Contests.ViewModels.Problems;
+    using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;

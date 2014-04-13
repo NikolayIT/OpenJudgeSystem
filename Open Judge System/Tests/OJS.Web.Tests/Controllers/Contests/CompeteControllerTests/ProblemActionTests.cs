@@ -10,7 +10,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OJS.Data.Models;
-    using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     [TestClass]
     public class ProblemActionTests : CompeteControllerBaseTestsClass

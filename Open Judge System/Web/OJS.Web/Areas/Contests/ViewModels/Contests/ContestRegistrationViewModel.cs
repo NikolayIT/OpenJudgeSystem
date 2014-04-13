@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels
+﻿namespace OJS.Web.Areas.Contests.ViewModels.Contests
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

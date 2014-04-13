@@ -19,7 +19,10 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
-    using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
+    using OJS.Web.Areas.Contests.ViewModels.Participants;
+    using OJS.Web.Areas.Contests.ViewModels.Results;
+    using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
@@ -62,6 +65,20 @@
             if (!official && !contest.CanBePracticed)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_practiced);
+            }
+        }
+
+        /// <summary>
+        /// Validates if the selected submission type from the participant is allowed in the current contest
+        /// </summary>
+        /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
+        /// <param name="contest">The contest in which the user participate</param>
+        [NonAction]
+        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
+        {
+            if (!contest.SubmissionTypes.Any(submissionType => submissionType.Id == submissionTypeId))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
         }
 
@@ -256,6 +273,7 @@
             }
 
             ValidateContest(participant.Contest, official);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -306,6 +324,7 @@
             }
 
             ValidateContest(participant.Contest, official);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
