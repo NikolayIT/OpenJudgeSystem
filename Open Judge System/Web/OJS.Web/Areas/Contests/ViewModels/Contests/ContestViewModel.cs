@@ -39,7 +39,7 @@
                                       HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
                                       OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
                                       PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
-                                      ProblemsCount = contest.Problems.Count(),
+                                      ProblemsCount = contest.Problems.Count(x => !x.IsDeleted),
                                       Problems = contest.Problems.AsQueryable()
                                                                     .Where(x => !x.IsDeleted)
                                                                     .OrderBy(x => x.OrderBy)
