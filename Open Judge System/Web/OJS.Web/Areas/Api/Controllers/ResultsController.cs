@@ -173,14 +173,14 @@ namespace OJS.Web.Areas.Api.Controllers
                             .Select(z => z.Points)
                             .FirstOrDefault())
                         .Sum(),
-                    Minutes = participant.Submissions
+                    ExamTimeInMinutes = participant.Submissions
                         .Where(x => x.Problem.ContestId == contestId.Value)
                         .OrderByDescending(x => x.CreatedOn)
                         .Select(x => DbFunctions.DiffMinutes(participant.Contest.StartTime, x.CreatedOn))
                         .FirstOrDefault()
                 })
                 .OrderByDescending(x => x.Points)
-                .ThenBy(x => x.Minutes)
+                .ThenBy(x => x.ExamTimeInMinutes)
                 .ToList();
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
