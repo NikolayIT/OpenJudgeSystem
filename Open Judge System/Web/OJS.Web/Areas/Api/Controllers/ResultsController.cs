@@ -6,6 +6,7 @@ using OJS.Data.Models;
 
 namespace OJS.Web.Areas.Api.Controllers
 {
+    using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
@@ -114,25 +115,31 @@ namespace OJS.Web.Areas.Api.Controllers
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
             }
 
-            var participants =
-                this.Data.Participants.All()
-                    .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
-                    .Select(
-                        participant =>
-                        new
-                            {
-                                participant.User.UserName,
-                                participant.User.Email,
-                                Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
-                                Points = participant.Contest.Problems.Select(
-                                    problem =>
-                                    problem.Submissions.Where(z => z.ParticipantId == participant.Id)
-                                        .OrderByDescending(z => z.Points)
-                                        .Select(z => z.Points)
-                                        .FirstOrDefault()).Sum()
-                            })
-                    .OrderByDescending(x => x.Points)
-                    .ToList();
+            var participants = this.Data.Participants
+                .All()
+                .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
+                .Select(participant =>
+                new
+                {
+                    participant.User.UserName,
+                    participant.User.Email,
+                    Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
+                    Points = participant.Contest.Problems
+                        .Select(problem => problem.Submissions
+                            .Where(z => z.ParticipantId == participant.Id)
+                            .OrderByDescending(z => z.Points)
+                            .Select(z => z.Points)
+                            .FirstOrDefault())
+                        .Sum(),
+                    Minutes = participant.Submissions
+                        .OrderByDescending(x => x.CreatedOn)
+                        .Select(x => DbFunctions.DiffMinutes(participant.Contest.StartTime, x.CreatedOn))
+                        .FirstOrDefault()
+                })
+                .OrderByDescending(x => x.Points)
+                .ThenBy(x => x.Minutes)
+                .ThenBy(x => x.UserName)
+                .ToList();
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
         }
