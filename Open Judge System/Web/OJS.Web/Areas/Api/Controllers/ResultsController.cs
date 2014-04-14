@@ -132,6 +132,7 @@
                 })
                 .OrderByDescending(x => x.Points)
                 .ThenBy(x => x.Minutes)
+                .ThenBy(x => x.UserName)
                 .ToList();
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
