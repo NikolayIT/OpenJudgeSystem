@@ -1,10 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Web.UI.WebControls.WebParts;
-using OJS.Data.Models;
-
-namespace OJS.Web.Areas.Api.Controllers
+﻿namespace OJS.Web.Areas.Api.Controllers
 {
     using System.Data.Entity;
     using System.Globalization;
