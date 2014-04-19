@@ -186,7 +186,7 @@
                 var directoryName =
                     string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
                         .ToValidFilePath();
-                var directory = file.AddDirectoryByName(directoryName);
+                file.AddDirectoryByName(directoryName);
 
                 foreach (var problem in problems)
                 {
@@ -204,18 +204,10 @@
                     if (bestSubmission != null)
                     {
                         var fileName =
-                            string.Format("{0}.{1}", problem.Name, bestSubmission.SubmissionType.FileNameExtension)
+                            string.Format("{0}.{1}", problem.Name, bestSubmission.FileExtension ?? bestSubmission.SubmissionType.FileNameExtension)
                                 .ToValidFileName();
 
-                        byte[] content;
-                        if (bestSubmission.IsBinaryFile)
-                        {
-                            content = bestSubmission.Content;
-                        }
-                        else
-                        {
-                            content = bestSubmission.ContentAsString.ToByteArray();
-                        }
+                        var content = bestSubmission.IsBinaryFile ? bestSubmission.Content : bestSubmission.ContentAsString.ToByteArray();
 
                         var entry = file.AddEntry(string.Format("{0}\\{1}", directoryName, fileName), content);
                         entry.CreationTime = bestSubmission.CreatedOn;
