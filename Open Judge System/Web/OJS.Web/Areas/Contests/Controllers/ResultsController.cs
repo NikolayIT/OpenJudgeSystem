@@ -104,7 +104,7 @@
                 ContestCanBeCompeted = contest.CanBeCompeted,
                 ContestCanBePracticed = contest.CanBePracticed,
                 Problems = contest.Problems.AsQueryable().Where(x => !x.IsDeleted)
-                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                     .Select(participant => new ParticipantResultViewModel
@@ -180,7 +180,7 @@
                 {
                     Id = contest.Id,
                     Name = contest.Name,
-                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                     Results = this.Data.Participants.All()
                         .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                         .Select(participant => new ParticipantFullResultViewModel

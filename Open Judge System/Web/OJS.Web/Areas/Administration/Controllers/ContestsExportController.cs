@@ -30,9 +30,9 @@
 
             var data = new
             {
-                Id = contest.Id,
-                Name = contest.Name,
-                Problems = contest.Problems.AsQueryable().OrderBy(x => x.Name),
+                contest.Id,
+                contest.Name,
+                Problems = contest.Problems.AsQueryable().OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                 Questions = contest.Questions.OrderBy(x => x.Id),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == compete)
@@ -145,7 +145,7 @@
         public ZipFileResult Solutions(int id, bool compete)
         {
             var contest = this.Data.Contests.GetById(id);
-            var problems = contest.Problems.OrderBy(x => x.Name).ToList();
+            var problems = contest.Problems.OrderBy(x => x.OrderBy).ThenBy(x => x.Name).ToList();
             var participants =
                 this.Data.Participants.All()
                     .Where(x => x.ContestId == id && x.IsOfficial == compete)
