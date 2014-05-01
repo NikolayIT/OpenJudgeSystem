@@ -82,7 +82,7 @@
                     {
                         OnSuccess = "messageNotifier.notifySuccess",
                         OnFailure = "messageNotifier.notifyFailure",
-                        OnBegin = "validateSubmit"
+                        OnBegin = "validateSubmit.content"
                     },
                 new { id = "problem_" + Model.ProblemId }))
             {
@@ -124,15 +124,21 @@
                                 var codeArea = $("#SourceCodeInputFields_@Model.ProblemId");
                                 var fileExtensionsInfo = $("#FileUploadAllowedFileExtensions_@Model.ProblemId");
                                 
+                                function submitHandler() {
+                                    return validateSubmit.binary();
+                                }
+
                                 if (dataItem.AllowBinaryFilesUpload) {
-                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/"));
+                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/") + '?returnProblem=' + getSelectedIndexFromHashtag());
                                     form.attr("data-ajax", "false");
+                                    form.bind('submit', submitHandler);
                                     fileUpload.show();
                                     codeArea.hide();
                                     fileExtensionsInfo.html("<b>Allowed file extensions:</b> " + dataItem.AllowedFileExtensions);
                                 } else {
                                     form.attr("action", form.attr("action").replace("/SubmitBinaryFile/", "/Submit/"));
                                     form.attr("data-ajax", "true");
+                                    form.unbind('submit', submitHandler);
                                     fileUpload.hide();
                                     codeArea.show();
                                 }

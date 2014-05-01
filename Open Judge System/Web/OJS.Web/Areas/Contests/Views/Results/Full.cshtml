@@ -25,7 +25,9 @@
 <script src="/Scripts/Helpers/test-results.js"></script>
 <table class="table table-striped">
     <tr>
+        <th>No</th>
         <th>@Resource.User</th>
+        <th>@Resource.UserFullName</th>
         @{
             string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
             int problemNumber = 0;
@@ -37,10 +39,13 @@
         }
         <th>@Resource.Total</th>
     </tr>
+    @{ var count = 1; }
     @foreach (var participant in Model.Results)
     {
         <tr>
-            <th><a href="/Users/@participant.ParticipantName">@participant.ParticipantName</a></th>
+            <td><strong>@count.</strong></td>
+            <th><a href="/Users/@participant.ParticipantUsername">@participant.ParticipantUsername</a></th>
+            <td>@participant.ParticipantFullName</td>
             @foreach (var problemResult in participant.ProblemResults)
             {
                 <td style="white-space: nowrap">
@@ -81,5 +86,6 @@
             }
             <td>@participant.Total</td>
         </tr>
+        { count++; }
     }
 </table>

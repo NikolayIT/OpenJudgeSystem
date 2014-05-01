@@ -7,6 +7,25 @@
     }
 }
 
+function copyFromContest(ev, contestId) {
+    ev.preventDefault();
+    var copyWindow = $('#CopyFromContestWindow_' + contestId);
+    copyWindow.data('kendoWindow').open().center();
+
+    var form = copyWindow.children('form');
+
+    form.one('submit', function () {
+        $.post('/Administration/ContestQuestions/CopyTo/' + contestId, form.serialize(), function () {
+            copyWindow.data('kendoWindow').close();
+            var grid = $('#DetailQuestionsGrid_' + contestId).data("kendoGrid");
+            grid.dataSource.read();
+            grid.refresh();
+        });
+
+        return false;
+    });
+}
+
 $(document).ready(function () {
     $('table').on('click', "#delete-all-answers", function (e) {
         e.preventDefault();

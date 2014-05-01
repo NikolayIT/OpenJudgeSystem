@@ -29,7 +29,7 @@ function onProblemSelect(e) {
     if (problemId != "") {
         $('#controls').show();
         $('#problemId').val(problemId);
-        $('#export').attr('href', '/Administration/Tests/Export/' + problemId)
+        $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemId)
 
         initializeGrid(parseInt(problemId), parseInt($("#contests").val()));
         $('#grid').show();
@@ -43,7 +43,7 @@ function onProblemSelect(e) {
 function populateDropDowns(problemIdAsString) {
 
     $('#controls').show();
-    $('#export').attr('href', '/Administration/Tests/Export/' + problemIdAsString)
+    $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemIdAsString)
 
     var response;
 
@@ -146,7 +146,8 @@ function initializeGrid(problemId, contestId) {
                 template: '<a href="/Administration/Tests/Create/' + problemId + '" class="btn btn-sm btn-primary">Добавяне</a>' +
                     ' <a href="/Administration/Tests/DeleteAll/' + problemId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
                     ' <a href="/Administration/Problems/Contest/' + contestId + '" class="btn btn-sm btn-primary">Към задачата</a>' +
-                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>',
+                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
+                    ' <a  href="/Administration/Tests/Export/' + problemId + '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>',
             }],
             columns: [
                 { field: "Input", title: "Вход" },

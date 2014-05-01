@@ -510,7 +510,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Import(string problemId, HttpPostedFileBase file, bool deleteOldFiles)
+        public ActionResult Import(string problemId, HttpPostedFileBase file, bool retestTask, bool deleteOldFiles)
         {
             int id;
 
@@ -587,7 +587,10 @@
                 this.Data.SaveChanges();
             }
 
-            this.RetestSubmissions(problem);
+            if (retestTask)
+            {
+                this.RetestSubmissions(problem);
+            }
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Тестовете са добавени към задачата");
 

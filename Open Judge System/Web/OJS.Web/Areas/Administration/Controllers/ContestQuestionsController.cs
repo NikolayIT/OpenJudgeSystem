@@ -11,7 +11,10 @@
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestQuestion;
+    using DatabaseAnswerModelType = OJS.Data.Models.ContestQuestionAnswer;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel;
+    using System.Collections.Generic;
+using OJS.Data.Models;
 
     public class ContestQuestionsController : KendoGridAdministrationController
     {
@@ -81,6 +84,67 @@
             this.Data.ContestQuestions.Delete(model.QuestionId.Value);
             this.Data.SaveChanges();
             return this.GridOperation(request, model);
+        }
+
+        public ActionResult CopyFromAnotherContest(int id)
+        {
+            var contests = this.Data.Contests
+                .All()
+                .OrderByDescending(c => c.CreatedOn)
+                .Select(c => new { Text = c.Name, Value = c.Id });
+
+            ViewBag.ContestId = id;
+
+            return this.PartialView("_CopyQuestionsFromContest", contests);
+        }
+
+        public void CopyTo(int id, int contestFrom, bool? deleteOld)
+        {
+            var copyFromContest = this.Data.Contests.GetById(contestFrom);
+            var copyToContest = this.Data.Contests.GetById(id);
+
+            if (deleteOld.HasValue && deleteOld.Value)
+            {
+                var oldQuestions = copyToContest.Questions.Select(q => q.Id).ToList();
+                this.DeleteQuestions(oldQuestions);
+            }
+
+            var questionsToCopy = copyFromContest.Questions.ToList();
+            this.CopyQuestionsToContest(copyToContest, questionsToCopy);
+        }
+
+        private void DeleteQuestions(IEnumerable<int> questions)
+        {
+            foreach (var question in questions)
+            {
+                this.Data.ContestQuestions.Delete(question);
+            }
+
+            this.Data.SaveChanges();
+        }
+
+        private void CopyQuestionsToContest(Contest contest, IEnumerable<ContestQuestion> questions)
+        {
+            foreach (var question in questions)
+            {
+                var newQuestion = new DatabaseModelType
+                {
+                    Text = question.Text,
+                    Type = question.Type,
+                    AskOfficialParticipants = question.AskOfficialParticipants,
+                    AskPracticeParticipants = question.AskPracticeParticipants,
+                    RegularExpressionValidation = question.RegularExpressionValidation
+                };
+
+                foreach (var answer in question.Answers)
+                {
+                    newQuestion.Answers.Add(new DatabaseAnswerModelType { Text = answer.Text });
+                }
+
+                contest.Questions.Add(newQuestion);
+            }
+
+            this.Data.SaveChanges();
         }
     }
 }

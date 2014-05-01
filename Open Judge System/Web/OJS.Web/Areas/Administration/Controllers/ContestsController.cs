@@ -3,25 +3,17 @@
     using System.Collections;
     using System.Globalization;
     using System.Linq;
-    using System.Text;
     using System.Web.Mvc;
 
-    using Ionic.Zip;
-
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
-    using OJS.Web.Areas.Administration.ViewModels.ContestQuestion;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
-    using OJS.Web.Common;
     using OJS.Web.Controllers;
 
-    using QuestionDatabaseModelType = OJS.Data.Models.ContestQuestion;
-    using QuestionViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 

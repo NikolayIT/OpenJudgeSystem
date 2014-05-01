@@ -88,6 +88,7 @@
         .ToolBar(tool =>
             {
                 tool.Create().Text("Добави въпрос");
+                tool.Custom().Text("Копирай от...").HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
             })
         .ColumnMenu()
         .ClientDetailTemplateId("answers-template")
@@ -111,6 +112,16 @@
                 .Update(update => update.Action("UpdateQuestionInContest", ContestQuestionControllerName))
                 .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ContestQuestionControllerName));
         })
+        .ToClientTemplate())
+
+    @(Html.Kendo().Window()
+        .Name("CopyFromContestWindow_#=Id#")
+        .Title("Копирай от друго състезание")
+        .LoadContentFrom("/Administration/ContestQuestions/CopyFromAnotherContest/#=Id#")
+        .Visible(false)
+        .Modal(true)
+        .Width(400)
+        .Actions(actions => actions.Close())
         .ToClientTemplate())
 </script>
 

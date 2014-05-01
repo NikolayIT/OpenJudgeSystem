@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Submission
 {
     using System;
+    using System.Web;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
@@ -10,9 +11,13 @@
     using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+    using System.IO;
 
     public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
     {
+        private HttpPostedFileBase fileSubmission;
+
         [ExcludeFromExcel]
         public static Expression<Func<Submission, SubmissionAdministrationViewModel>> ViewModel
         {
@@ -24,7 +29,9 @@
                     ProblemId = sub.ProblemId,
                     ParticipantId = sub.ParticipantId,
                     SubmissionTypeId = sub.SubmissionTypeId,
+                    AllowBinaryFilesUpload = sub.SubmissionType.AllowBinaryFilesUpload,
                     Content = sub.Content,
+                    FileExtension = sub.FileExtension,
                     CreatedOn = sub.CreatedOn,
                     ModifiedOn = sub.ModifiedOn,
                 };
@@ -45,29 +52,38 @@
 
         [DatabaseProperty]
         [Display(Name = "Потребител")]
-        [Required(ErrorMessage = "Потребителя е задължителен!")]
+        [Required(ErrorMessage = "Потребителят е задължителен!")]
         [UIHint("ParticipantDropDownList")]
         public int? ParticipantId { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Тип")]
-        [Required(ErrorMessage = "Типа е задължителен!")]
+        [Required(ErrorMessage = "Типът е задължителен!")]
         [UIHint("SubmissionTypesDropDownList")]
         public int? SubmissionTypeId { get; set; }
 
+        public bool? AllowBinaryFilesUpload { get; set; }
+
         [DatabaseProperty]
         [ScaffoldColumn(false)]
+        [Required(ErrorMessage = "Решението е задължително!")]
         public byte[] Content { get; set; }
 
         [AllowHtml]
         [Display(Name = "Съдържание")]
-        [Required(ErrorMessage = "Съдържанието е задължително!")]
         [UIHint("MultiLineText")]
         public string ContentAsString
         {
             get
             {
-                return this.Content.Decompress();
+                if (AllowBinaryFilesUpload.HasValue && !AllowBinaryFilesUpload.Value)
+                {
+                    return this.Content.Decompress();
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             set
@@ -75,5 +91,25 @@
                 this.Content = value.Compress();
             }
         }
+
+        [Display(Name = "Файл с решение")]
+        [ScaffoldColumn(false)]
+        public HttpPostedFileBase FileSubmission 
+        {
+            get 
+            {
+                return fileSubmission;
+            }
+
+            set
+            {
+                this.fileSubmission = value;
+                this.Content = value.InputStream.ToByteArray();
+                this.FileExtension = value.FileName.GetFileExtension();
+            }
+        }
+        
+        [DatabaseProperty]
+        public string FileExtension { get; set; }
     }
 }

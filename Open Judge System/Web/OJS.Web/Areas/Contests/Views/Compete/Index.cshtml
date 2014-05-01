@@ -46,6 +46,11 @@
                         .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
                 }
 
+                if (Model.Contest.Problems.Count() == 0)
+                {
+                    tabstrip.Add().Text("Няма задачи").Content("Все още няма добавени задачи към това състезание");
+                }
+                
                 if (User.IsAdmin())
                 {
                     tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
@@ -88,11 +93,18 @@
 
             function validateSubmit() {
                 var validationResult = validateSubmissionContent() && timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
-
                 return validationResult;
             }
 
-            return validateSubmit;
+            function validateBinarySubmit() {
+                var validationResult = timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
+                return validationResult;
+            }
+
+            return {
+                content: validateSubmit,
+                binary : validateBinarySubmit
+            };
         })();
 
         @if (contestIsCompete)

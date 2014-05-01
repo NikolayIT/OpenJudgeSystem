@@ -4,11 +4,12 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.Submission;
@@ -61,7 +62,9 @@
         [HttpGet]
         public ActionResult Create()
         {
-            return this.View();
+            ViewBag.SubmissionAction = "Create";
+            var model = new SubmissionAdministrationViewModel();
+            return this.View(model);
         }
 
         [HttpPost]
@@ -77,11 +80,31 @@
         {
             if (model != null && this.ModelState.IsValid)
             {
-                this.BaseCreate(model.GetEntityModel());
-                this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
-                return this.RedirectToAction(GlobalConstants.Index);
+                if (model.ProblemId.HasValue)
+                {
+                    var problem = this.Data.Problems.GetById(model.ProblemId.Value);
+                    if (problem != null)
+                    {
+                        ValidateParticipant(model.ParticipantId, problem.ContestId);
+                    }
+
+                    var submissionType = GetSubmissionType(model.SubmissionTypeId.Value);
+                    if (submissionType != null)
+                    {
+                        ValidateSubmissionContentLenght(model, problem);
+                        ValidateBinarySubmission(model, problem, submissionType);
+                    }
+                }
+
+                if (this.ModelState.IsValid)
+                {
+                    this.BaseCreate(model.GetEntityModel());
+                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
+                    return this.RedirectToAction(GlobalConstants.Index);
+                }
             }
 
+            ViewBag.SubmissionAction = "Create";
             return this.View(model);
         }
 
@@ -100,6 +123,7 @@
                 this.RedirectToAction(GlobalConstants.Index);
             }
 
+            ViewBag.SubmissionAction = "Update";
             return this.View(submission);
         }
 
@@ -107,15 +131,103 @@
         [ValidateAntiForgeryToken]
         public ActionResult Update(ModelType model)
         {
-            if (model != null && this.ModelState.IsValid)
-            {
-                var entity = this.GetById(model.Id) as DatabaseModelType;
-                this.BaseUpdate(model.GetEntityModel(entity));
-                this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
-                return this.RedirectToAction(GlobalConstants.Index);
+            if (model.Id.HasValue)
+	        {
+                var submission = this.Data.Submissions.GetById(model.Id.Value);
+                if (model.SubmissionTypeId.HasValue)
+                {
+                    var submissionType = this.Data.SubmissionTypes.GetById(model.SubmissionTypeId.Value);        
+                    if (submissionType.AllowBinaryFilesUpload && model.FileSubmission == null)
+                    {
+                        model.Content = submission.Content;
+                        model.FileExtension = submission.FileExtension;
+                        if (ModelState.ContainsKey("Content"))
+                        {
+                            ModelState["Content"].Errors.Clear();
+                        }
+                    }
+                }
             }
 
+            if (model != null && this.ModelState.IsValid)
+            {
+                if (model.ProblemId.HasValue)
+                {
+                    var problem = this.Data.Problems.GetById(model.ProblemId.Value);
+                    if (problem != null)
+                    {
+                        ValidateParticipant(model.ParticipantId, problem.ContestId);
+                    }
+
+                    var submissionType = GetSubmissionType(model.SubmissionTypeId.Value);
+                    if (submissionType != null)
+                    {
+                        ValidateSubmissionContentLenght(model, problem);
+                        ValidateBinarySubmission(model, problem, submissionType);    
+                    }
+                }
+           
+                if (this.ModelState.IsValid)
+                {
+                    var entity = this.GetById(model.Id) as DatabaseModelType;
+                    this.UpdateAuditInfoValues(model, entity);
+                    this.BaseUpdate(model.GetEntityModel(entity));
+                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
+                    return this.RedirectToAction(GlobalConstants.Index);
+                }
+            }
+
+            ViewBag.SubmissionAction = "Update";
             return this.View(model);
+        }
+
+        private SubmissionType GetSubmissionType(int submissionTypeId) 
+        {
+            var submissionType = this.Data.SubmissionTypes.GetById(submissionTypeId);
+
+            if (submissionType != null)
+            {
+                return submissionType;
+            }
+            else
+            {
+                ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
+                return null;
+            }
+        }
+
+        private void ValidateParticipant(int? participantId, int contestId)
+        {
+            if (participantId.HasValue)
+            {
+                if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
+                {
+                    this.ModelState.AddModelError("ParticipantId", "Задачата не е от състезанието, от което е избраният участник!");
+                }
+            }
+        }
+
+        private void ValidateSubmissionContentLenght(ModelType model, Problem problem) 
+        {
+            if (model.Content.Length > problem.SourceCodeSizeLimit)
+            {
+                ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+            }
+        }
+
+        private void ValidateBinarySubmission(ModelType model, Problem problem, SubmissionType submissionType) 
+        {
+            if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
+            {
+                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+            }
+            if (submissionType.AllowedFileExtensions != null)
+            {
+                if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
+                {
+                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                }
+            }
         }
 
         [HttpGet]
@@ -159,18 +271,27 @@
             return this.RedirectToAction(GlobalConstants.Index);
         }
 
-        public JsonResult GetSubmissionTypes()
+        public JsonResult GetSubmissionTypes(int problemId, bool? allowBinaryFilesUpload)
         {
-            var dropDownData = this.Data.SubmissionTypes
-                .All()
+            var selectedProblemContest = this.Data.Contests.All().FirstOrDefault(contest => contest.Problems.Any(problem => problem.Id == problemId));
+
+            var submissionTypesSelectListItems = selectedProblemContest.SubmissionTypes
                 .ToList()
-                .Select(subm => new SelectListItem
+                .Select(subm => new
                 {
                     Text = subm.Name,
                     Value = subm.Id.ToString(),
+                    AllowBinaryFilesUpload = subm.AllowBinaryFilesUpload,
+                    AllowedFileExtensions = subm.AllowedFileExtensions
                 });
 
-            return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
+            if (allowBinaryFilesUpload.HasValue)
+            {
+                submissionTypesSelectListItems = submissionTypesSelectListItems
+                    .Where(submissionType => submissionType.AllowBinaryFilesUpload == allowBinaryFilesUpload);
+            }
+            
+            return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Retest(int id)
@@ -244,7 +365,8 @@
         {
             var contests = this.Data.Contests
                 .All()
-                .Select(c => new 
+                .OrderByDescending(c => c.CreatedOn)
+                .Select(c => new
                     {
                         Id = c.Id,
                         Name = c.Name
@@ -256,6 +378,15 @@
             }
 
             return this.Json(contests, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileResult GetSubmissionFile(int submissionId)
+        {
+            var submission = this.Data.Submissions.GetById(submissionId);
+
+            return this.File(submission.Content, 
+                "application/octet-stream", 
+                string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
         }
     }
 }

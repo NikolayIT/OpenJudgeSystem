@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Answer_required" xml:space="preserve">
+    <value>Изберете отговор от падащото меню</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Име</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Парола</value>
   </data>
   <data name="Question" xml:space="preserve">
-    <value>Question</value>
+    <value>Въпрос</value>
   </data>
 </root>

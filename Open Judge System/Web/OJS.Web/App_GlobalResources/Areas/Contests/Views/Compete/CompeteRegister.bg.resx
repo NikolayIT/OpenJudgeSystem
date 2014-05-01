@@ -126,6 +126,9 @@
   <data name="Not_all_questions_answered" xml:space="preserve">
     <value>Моля, отговорете на всички въпроси</value>
   </data>
+  <data name="Select_dropdown_answer" xml:space="preserve">
+    <value>Изберете отговор</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Изпрати</value>
   </data>

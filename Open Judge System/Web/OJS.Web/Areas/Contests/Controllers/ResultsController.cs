@@ -109,7 +109,9 @@
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                     .Select(participant => new ParticipantResultViewModel
                     {
-                        ParticipantName = participant.User.UserName,
+                        ParticipantUsername = participant.User.UserName,
+                        ParticipantFirstName = participant.User.UserSettings.FirstName,
+                        ParticipantLastName = participant.User.UserSettings.LastName, 
                         ProblemResults = participant.Contest.Problems
                             .Where(x => !x.IsDeleted)
                             .Select(problem =>
@@ -185,7 +187,9 @@
                         .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                         .Select(participant => new ParticipantFullResultViewModel
                         {
-                            ParticipantName = participant.User.UserName,
+                            ParticipantUsername = participant.User.UserName,
+                            ParticipantFirstName = participant.User.UserSettings.FirstName,
+                            ParticipantLastName = participant.User.UserSettings.LastName, 
                             ProblemResults = participant.Contest.Problems
                                 .Where(x => !x.IsDeleted)
                                 .Select(problem =>
@@ -204,7 +208,7 @@
                                     .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
                         })
                         .ToList()
-                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantName)
+                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantUsername)
                 };
 
             this.ViewBag.IsOfficial = official;

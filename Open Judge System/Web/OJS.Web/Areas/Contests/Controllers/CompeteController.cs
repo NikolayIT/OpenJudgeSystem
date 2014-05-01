@@ -304,7 +304,7 @@
         }
 
         // TODO: Extract common logic between SubmitBinaryFile() and Submit()
-        public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official)
+        public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official, int? returnProblem)
         {
             if (participantSubmission == null || participantSubmission.File == null)
             {
@@ -374,7 +374,7 @@
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
             var problemIndex = 0; // TODO: Find problem index
-            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, 0, official ? CompeteUrl : PracticeUrl));
+            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
         }
 
         /// <summary>

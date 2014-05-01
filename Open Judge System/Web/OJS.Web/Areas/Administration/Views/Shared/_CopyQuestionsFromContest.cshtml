@@ -1,0 +1,16 @@
+﻿@model IEnumerable<object>
+
+<form>
+    @(Html.Kendo().ComboBox()
+    .Name("ContestFrom")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Placeholder("Изберете състезание...")
+    .HtmlAttributes(new { style = "width: 100%;", id = "CopyContests_" + ViewBag.ContestId })
+    .BindTo(Model))
+    <br />
+    <input type="checkbox" id="deleteOld_@ViewBag.ContestId" name="deleteOld" value="true" />
+    <label for="deleteOld_@ViewBag.ContestId">Изтрий текущите въпроси</label>
+    <br />
+    <input class="k-button pull-right" type="submit" value="Копирай" />
+</form>
