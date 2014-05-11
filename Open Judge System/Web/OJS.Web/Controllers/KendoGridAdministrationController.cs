@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
-    using System.IO;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -14,9 +12,6 @@
 
     using Newtonsoft.Json;
 
-    using NPOI.HSSF.UserModel;
-
-    using OJS.Common.DataAnnotations;
     using OJS.Data;
     using OJS.Web.Common.Interfaces;
 
