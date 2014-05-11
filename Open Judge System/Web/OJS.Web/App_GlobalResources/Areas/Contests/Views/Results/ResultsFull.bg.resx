@@ -156,4 +156,7 @@
   <data name="User" xml:space="preserve">
     <value>Потребител</value>
   </data>
+  <data name="UserFullName" xml:space="preserve">
+    <value>Име</value>
+  </data>
 </root>

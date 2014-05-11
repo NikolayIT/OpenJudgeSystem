@@ -19,6 +19,7 @@
         {
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
+            this.OrderBy = problem.OrderBy;
             this.ContestId = problem.ContestId;
             this.ShowResults = problem.ShowResults;
             this.Resources = problem.Resources.AsQueryable()
@@ -45,6 +46,7 @@
                 return problem => new ContestProblemViewModel
                 {
                     Name = problem.Name,
+                    OrderBy = problem.OrderBy,
                     ProblemId = problem.Id,
                     ContestId = problem.ContestId,
                     MemoryLimit = problem.MemoryLimit,
@@ -66,6 +68,8 @@
         public int ProblemId { get; set; }
 
         public string Name { get; set; }
+
+        public int OrderBy { get; set; }
 
         public bool ShowResults { get; set; }
 

@@ -26,7 +26,7 @@
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWithIncorrectProblemId()
         {
-            var redirectResult = this.TestsController.Import("invalid", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("invalid", null, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
@@ -41,7 +41,7 @@
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenProblemDoesNotExist()
         {
-            var redirectResult = this.TestsController.Import("100", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("100", null, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
@@ -56,7 +56,7 @@
         [TestMethod]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileIsNull()
         {
-            var redirectResult = this.TestsController.Import("1", null, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", null, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
@@ -74,7 +74,7 @@
         {
             this.File.Setup(x => x.ContentLength).Returns(0);
 
-            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
@@ -93,7 +93,7 @@
             this.File.Setup(x => x.ContentLength).Returns(1);
             this.File.Setup(x => x.FileName).Returns("filename.invalid");
 
-            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
@@ -118,7 +118,7 @@
 
             try
             {
-                this.TestsController.Import("1", this.File.Object, true);
+                this.TestsController.Import("1", this.File.Object, false, true);
             }
             catch (Exception)
             {
@@ -134,7 +134,7 @@
             this.File.Setup(x => x.FileName).Returns("filename.zip");
             this.File.Setup(x => x.InputStream).Returns(new MemoryStream());
 
-            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);
@@ -166,7 +166,7 @@
             this.File.Setup(x => x.FileName).Returns("file.zip");
             this.File.Setup(x => x.InputStream).Returns(zipStream);
 
-            var redirectResult = this.TestsController.Import("1", this.File.Object, false) as RedirectToRouteResult;
+            var redirectResult = this.TestsController.Import("1", this.File.Object, false, false) as RedirectToRouteResult;
             Assert.IsNotNull(redirectResult);
 
             Assert.AreEqual("Problem", redirectResult.RouteValues["action"]);

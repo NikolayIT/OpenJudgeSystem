@@ -40,7 +40,7 @@
         [Display(Name = "Question", ResourceType = typeof(Resource))]
         public string Question { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "Answer_required", ErrorMessageResourceType = typeof(Resource))]
         public string Answer { get; set; }
 
         public ContestQuestionType Type { get; set; }

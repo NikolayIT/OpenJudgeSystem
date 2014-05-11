@@ -1,17 +1,14 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm((string)ViewBag.SubmissionAction, "Submissions", FormMethod.Post, new { id = "SubmissionForm" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="row">
-        <div class="col-md-12">
-            @Html.EditorForModel()
-        </div>
+        @Html.EditorForModel()
     </div>
-    <br />
     <div class="row">
-        <div class="editor-label col-xs-1">
+        <div class="editor-label col-md-1">
             <button type="submit" class="btn btn-primary">Запази</button>
         </div>
         <div class="editor-label col-xs-1">

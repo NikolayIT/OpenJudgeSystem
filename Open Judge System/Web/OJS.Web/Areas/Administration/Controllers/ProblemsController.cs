@@ -23,6 +23,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
+    using OJS.Web.Common;
 
     // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
@@ -152,7 +153,17 @@
                     }
                     catch (Exception ex)
                     {
-                        TempData.Add(GlobalConstants.DangerMessage, ex.Message);
+                        // TempData is not working with return this.View
+                        var systemMessages = new SystemMessageCollection
+                                {
+                                    new SystemMessage
+                                    {
+                                        Content = ex.Message,
+                                        Type = SystemMessageType.Error,
+                                        Importance = 0
+                                    }
+                                };
+                        ViewBag.SystemMessages = systemMessages;
                         problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
                         return this.View(problem);
                     }

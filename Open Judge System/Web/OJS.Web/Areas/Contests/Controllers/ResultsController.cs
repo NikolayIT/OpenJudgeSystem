@@ -104,12 +104,14 @@
                 ContestCanBeCompeted = contest.CanBeCompeted,
                 ContestCanBePracticed = contest.CanBePracticed,
                 Problems = contest.Problems.AsQueryable().Where(x => !x.IsDeleted)
-                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                     .Select(participant => new ParticipantResultViewModel
                     {
-                        ParticipantName = participant.User.UserName,
+                        ParticipantUsername = participant.User.UserName,
+                        ParticipantFirstName = participant.User.UserSettings.FirstName,
+                        ParticipantLastName = participant.User.UserSettings.LastName, 
                         ProblemResults = participant.Contest.Problems
                             .Where(x => !x.IsDeleted)
                             .Select(problem =>
@@ -180,12 +182,14 @@
                 {
                     Id = contest.Id,
                     Name = contest.Name,
-                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.Name),
+                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                     Results = this.Data.Participants.All()
                         .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
                         .Select(participant => new ParticipantFullResultViewModel
                         {
-                            ParticipantName = participant.User.UserName,
+                            ParticipantUsername = participant.User.UserName,
+                            ParticipantFirstName = participant.User.UserSettings.FirstName,
+                            ParticipantLastName = participant.User.UserSettings.LastName, 
                             ProblemResults = participant.Contest.Problems
                                 .Where(x => !x.IsDeleted)
                                 .Select(problem =>
@@ -204,7 +208,7 @@
                                     .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
                         })
                         .ToList()
-                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantName)
+                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantUsername)
                 };
 
             this.ViewBag.IsOfficial = official;

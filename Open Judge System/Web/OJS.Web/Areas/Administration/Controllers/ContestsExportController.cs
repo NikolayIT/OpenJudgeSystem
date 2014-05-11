@@ -30,9 +30,9 @@
 
             var data = new
             {
-                Id = contest.Id,
-                Name = contest.Name,
-                Problems = contest.Problems.AsQueryable().OrderBy(x => x.Name),
+                contest.Id,
+                contest.Name,
+                Problems = contest.Problems.AsQueryable().OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
                 Questions = contest.Questions.OrderBy(x => x.Id),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == compete)
@@ -90,7 +90,7 @@
                 int cellNumber = 0;
                 var row = sheet.CreateRow(rowNumber++);
                 row.CreateCell(cellNumber++).SetCellValue(result.Data.ParticipantUserName);
-                row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName));
+                row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName).Trim());
                 foreach (var answer in result.Data.Answers)
                 {
                     var answerId = 0;
@@ -145,7 +145,7 @@
         public ZipFileResult Solutions(int id, bool compete)
         {
             var contest = this.Data.Contests.GetById(id);
-            var problems = contest.Problems.OrderBy(x => x.Name).ToList();
+            var problems = contest.Problems.OrderBy(x => x.OrderBy).ThenBy(x => x.Name).ToList();
             var participants =
                 this.Data.Participants.All()
                     .Where(x => x.ContestId == id && x.IsOfficial == compete)
@@ -186,7 +186,7 @@
                 var directoryName =
                     string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
                         .ToValidFilePath();
-                var directory = file.AddDirectoryByName(directoryName);
+                file.AddDirectoryByName(directoryName);
 
                 foreach (var problem in problems)
                 {
@@ -204,18 +204,10 @@
                     if (bestSubmission != null)
                     {
                         var fileName =
-                            string.Format("{0}.{1}", problem.Name, bestSubmission.SubmissionType.FileNameExtension)
+                            string.Format("{0}.{1}", problem.Name, bestSubmission.FileExtension ?? bestSubmission.SubmissionType.FileNameExtension)
                                 .ToValidFileName();
 
-                        byte[] content;
-                        if (bestSubmission.IsBinaryFile)
-                        {
-                            content = bestSubmission.Content;
-                        }
-                        else
-                        {
-                            content = bestSubmission.ContentAsString.ToByteArray();
-                        }
+                        var content = bestSubmission.IsBinaryFile ? bestSubmission.Content : bestSubmission.ContentAsString.ToByteArray();
 
                         var entry = file.AddEntry(string.Format("{0}\\{1}", directoryName, fileName), content);
                         entry.CreationTime = bestSubmission.CreatedOn;

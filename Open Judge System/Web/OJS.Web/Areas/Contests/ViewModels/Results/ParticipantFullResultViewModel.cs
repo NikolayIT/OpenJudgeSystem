@@ -7,7 +7,19 @@
     
     public class ParticipantFullResultViewModel
     {
-        public string ParticipantName { get; set; }
+        public string ParticipantUsername { get; set; }
+
+        public string ParticipantFirstName { get; set; }
+
+        public string ParticipantLastName { get; set; }
+
+        public string ParticipantFullName
+        {
+            get
+            {
+                return string.Format("{0} {1}", ParticipantFirstName, ParticipantLastName).Trim();
+            }
+        }
 
         public IEnumerable<ProblemFullResultViewModel> ProblemResults { get; set; }
 

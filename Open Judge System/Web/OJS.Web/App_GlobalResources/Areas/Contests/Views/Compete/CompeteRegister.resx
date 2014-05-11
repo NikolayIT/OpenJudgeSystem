@@ -126,6 +126,9 @@
   <data name="Not_all_questions_answered" xml:space="preserve">
     <value>Please answer all questions</value>
   </data>
+  <data name="Select_dropdown_answer" xml:space="preserve">
+    <value>Select an answer</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
   </data>

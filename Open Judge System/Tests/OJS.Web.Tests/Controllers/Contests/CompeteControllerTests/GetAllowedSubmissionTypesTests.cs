@@ -38,7 +38,7 @@
             {
                 IsSelectedByDefault = true,
                 Name = "java type",
-                CompilerType = CompilerType.Java
+                CompilerType = CompilerType.Java,
             };
 
             var csharpSubmissionType = new SubmissionType

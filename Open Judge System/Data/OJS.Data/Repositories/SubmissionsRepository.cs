@@ -45,7 +45,7 @@
             var lastSubmission =
                 this.All()
                     .Where(x => x.ParticipantId == participantId)
-                    .OrderBy(x => x.CreatedOn)
+                    .OrderByDescending(x => x.CreatedOn)
                     .Select(x => new { x.Id, x.CreatedOn })
                     .FirstOrDefault();
             if (lastSubmission != null)

@@ -1,6 +1,8 @@
 ﻿@using OJS.Common.Models
 @model OJS.Web.Areas.Contests.ViewModels.Contests.QuestionViewModel
 
+@using Resource = Resources.Areas.Contests.Views.CompeteRegister;
+
 <div class="form-group">
     @Html.HiddenFor(x => x.QuestionId)
     <div class="editor-label">
@@ -22,7 +24,7 @@
                 @Html.TextBoxFor(x => x.Answer, htmlAttributes)
                 break;
             case ContestQuestionType.DropDown:
-            @Html.DropDownListFor(x => x.Answer, Model.DropDownItems, new { @class = "form-control" })
+            @Html.DropDownListFor(x => x.Answer, Model.DropDownItems, @Resource.Select_dropdown_answer, new { @class = "form-control" })
                 break;
             case ContestQuestionType.TextBox:
             @Html.TextBoxFor(x => x.Answer, htmlAttributes)

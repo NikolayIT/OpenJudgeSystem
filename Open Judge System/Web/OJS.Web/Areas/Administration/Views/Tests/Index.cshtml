@@ -112,7 +112,7 @@
             @Html.AntiForgeryToken()
             
             <div class="col-md-6 pull-right">
-                <div class="col-md-5">
+                <div class="col-md-7 pull-right">
                     @if (ViewBag.ProblemId != null)
                     {
                         <input id="problemId" name="problemId" type="text" value="@ViewBag.ProblemId" />
@@ -121,18 +121,17 @@
                     {
                         <input id="problemId" name="problemId" type="text" />
                     }
-                    @Html.Kendo().Upload().Name("file").Multiple(false).HtmlAttributes(new { @class = "kendo-upload" })
+                    <div>
+                        @Html.CheckBox("retestTask", false)
+                        @Html.Label("Ретестване на задачата", new { @for = "retestTask", style = "display: inline-block; " })
+                    </div>
                     <div>
                         @Html.CheckBox("deleteOldFiles", true)
                         @Html.Label("Изтриване на стари тестове", new { @for = "deleteOldFiles", style = "display: inline-block; " })
                     </div>
-                </div>
-                <div class="col-md-4 pull-right">
                     <p>
-                        <input class="btn btn-primary" type="submit" value="Импортиране" />
-                    </p>
-                    <p>
-                        <a class="btn btn-primary" id="export" href="#">Експортиране</a>
+                        @Html.Kendo().Upload().Name("file").Multiple(false).HtmlAttributes(new { @class = "kendo-upload" })
+                        <input class="k-button" type="submit" value="Импортиране" />
                     </p>
                 </div>
             </div>

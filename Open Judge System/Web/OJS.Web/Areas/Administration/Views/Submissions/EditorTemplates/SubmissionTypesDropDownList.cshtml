@@ -1,16 +1,29 @@
 ﻿@model int?
+@{
+    bool? allowBinaryFilesUpload = null;
+    if (ViewData["AllowBinaryFilesUpload"] != null)
+    {
+        allowBinaryFilesUpload = Convert.ToBoolean(ViewData["AllowBinaryFilesUpload"]); 
+    } 
+}
 
 @(Html.Kendo()
     .DropDownListFor(m => m)
     .OptionLabel("Изберете тип събмисия")
     .DataTextField("Text")
     .DataValueField("Value")
+    .CascadeFrom("ProblemId")
+    .Events(ev=> ev.DataBound("onSubmissionDataBound").Change("onSubmissionTypeChange"))
     .DataSource(data => 
         {
             data.ServerFiltering(true)
                 .Read(read =>
                     {
-                        read.Action("GetSubmissionTypes", "Submissions");
-                    });
+                        read.Action("GetSubmissionTypes", 
+                                    "Submissions",
+                                    new { allowBinaryFilesUpload = allowBinaryFilesUpload })
+                                    .Data(@<text> function () { return { problemId: $('#ProblemId').val() };} </text>);
+                        });
         })
-    .HtmlAttributes(new { style = "width: 100%;" }))
+    .HtmlAttributes(new { style = "width: 100%;" })
+)
