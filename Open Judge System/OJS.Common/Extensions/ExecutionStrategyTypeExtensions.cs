@@ -1,7 +1,5 @@
 ﻿namespace OJS.Common.Extensions
 {
-    using System;
-
     using OJS.Common.Models;
 
     public static class ExecutionStrategyTypeExtensions
@@ -14,6 +12,8 @@
                     return null; // The file extension depends on the compiler.
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     return "js";
+                case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
+                    return "java";
                 default:
                     return null;
             }

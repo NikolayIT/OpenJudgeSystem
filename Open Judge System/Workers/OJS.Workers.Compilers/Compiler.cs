@@ -25,6 +25,8 @@
                     return new CPlusPlusCompiler();
                 case CompilerType.MsBuild:
                     return new MsBuildCompiler();
+                case CompilerType.Java:
+                    return new JavaCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

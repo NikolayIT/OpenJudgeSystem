@@ -140,7 +140,7 @@
                 case CompilerType.CPlusPlusGcc:
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:
-                    throw new NotImplementedException("Compiler not supported.");
+                    return Settings.JavaCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException("type");
             }
@@ -151,7 +151,7 @@
             // TODO: Check for N+1 queries problem
             this.logger.InfoFormat("Work on submission №{0} started.", submission.Id);
 
-            IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
+            var executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
             var context = new ExecutionContext
             {
                 SubmissionId = submission.Id,
@@ -164,15 +164,15 @@
                 CompilerType = submission.SubmissionType.CompilerType,
                 MemoryLimit = submission.Problem.MemoryLimit,
                 TimeLimit = submission.Problem.TimeLimit,
+                Tests = submission.Problem.Tests.AsQueryable().Select(x =>
+                        new TestContext
+                        {
+                            Id = x.Id,
+                            Input = x.InputDataAsString,
+                            Output = x.OutputDataAsString,
+                            IsTrialTest = x.IsTrialTest
+                        }).ToList(),
             };
-
-            context.Tests = submission.Problem.Tests.ToList().Select(x => new TestContext
-            {
-                Id = x.Id,
-                Input = x.InputDataAsString,
-                Output = x.OutputDataAsString,
-                IsTrialTest = x.IsTrialTest
-            });
 
             ExecutionResult executionResult;
             try
@@ -231,6 +231,9 @@
             {
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
+                    executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);

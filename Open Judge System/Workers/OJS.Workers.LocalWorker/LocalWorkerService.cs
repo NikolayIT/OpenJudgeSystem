@@ -7,7 +7,6 @@
     using log4net;
 
     using OJS.Common;
-    using OJS.Data;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -24,7 +23,7 @@
             this.jobs = new List<IJob>();
             var processingSubmissionIds = new SynchronizedHashtable();
 
-            for (int i = 1; i <= Settings.ThreadsCount; i++)
+            for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
                 var job = new SubmissionJob(string.Format("Job №{0}", i), processingSubmissionIds);
                 var thread = new Thread(job.Start) { Name = string.Format("Thread №{0}", i) };

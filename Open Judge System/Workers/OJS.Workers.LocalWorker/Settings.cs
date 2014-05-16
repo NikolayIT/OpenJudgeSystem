@@ -46,6 +46,22 @@
             }
         }
 
+        public static string JavaCompilerPath
+        {
+            get
+            {
+                return GetSetting("JavaCompilerPath");
+            }
+        }
+
+        public static string JavaExecutablePath
+        {
+            get
+            {
+                return GetSetting("JavaExecutablePath");
+            }
+        }
+
         public static int ThreadsCount
         {
             get

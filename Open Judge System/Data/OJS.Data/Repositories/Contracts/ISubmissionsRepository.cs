@@ -4,7 +4,7 @@
     using OJS.Data.Contracts;
     using OJS.Data.Models;
 
-    public interface ISubmissionsRepository : IRepository<Submission>, IDeletableEntityRepository<Submission>
+    public interface ISubmissionsRepository : IDeletableEntityRepository<Submission>
     {
         IQueryable<Submission> AllPublic();
 
