@@ -85,6 +85,7 @@
     <Compile Include="JobObjects\PrepareJobObject.cs" />
     <Compile Include="Process\RestrictedProcess.cs" />
     <Compile Include="RestrictedProcessExecutor.cs" />
+    <Compile Include="StandardProcessExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
