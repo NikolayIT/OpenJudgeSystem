@@ -76,7 +76,7 @@
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { submissionFilePath });
+                    new[] { compilerResult.OutputFile.Replace(".class", string.Empty) });
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);

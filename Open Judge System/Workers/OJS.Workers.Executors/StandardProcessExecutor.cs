@@ -29,53 +29,26 @@
 
             var processStartInfo = new ProcessStartInfo(fileName)
             {
-                WorkingDirectory = workingDirectory,
                 CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
+                WindowStyle = ProcessWindowStyle.Normal,
                 ErrorDialog = false,
                 UseShellExecute = false,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
+                WorkingDirectory = workingDirectory,
+                Arguments = executionArguments == null ? string.Empty : string.Join(" ", executionArguments)
             };
 
             using (var process = new System.Diagnostics.Process())
             {
                 process.StartInfo = processStartInfo;
 
+                process.Start();
+
                 // Write to standard input using another thread
                 process.StandardInput.WriteLineAsync(inputData).ContinueWith(
                     delegate
-
-            var commandLineBuilder = new StringBuilder();
-            if (executionArguments != null)
-            {
-                foreach (var argument in executionArguments)
-                {
-                    commandLineBuilder.Append(' ');
-                    commandLineBuilder.Append(argument);
-                }
-            }
-
-            var process = new System.Diagnostics.Process
-                              {
-                                  StartInfo =
-                                      {
-                                          FileName = fileName,
-                                          WorkingDirectory = new FileInfo(fileName).Directory.ToString(),
-                                          CreateNoWindow = true,
-                                          WindowStyle = ProcessWindowStyle.Hidden,
-                                          ErrorDialog = false,
-                                          UseShellExecute = false,
-                                          RedirectStandardInput = true,
-                                          RedirectStandardOutput = true,
-                                          RedirectStandardError = true
-                                      }
-                              };
-
-            // Write to standard input using another thread
-            process.StandardInput.WriteLineAsync(inputData).ContinueWith(
-                delegate
                     {
                         // ReSharper disable once AccessToDisposedClosure
                         process.StandardInput.FlushAsync().ContinueWith(
