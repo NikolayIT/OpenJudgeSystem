@@ -11,8 +11,8 @@
     using log4net;
 
     using OJS.Workers.Common;
-    using OJS.Workers.Executors.Process;
 
+    // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
     {
         private static ILog logger;
@@ -29,22 +29,30 @@
             var workingDirectory = new FileInfo(fileName).DirectoryName;
 
             var commandLineBuilder = new StringBuilder();
-            foreach (var argument in executionArguments)
+            if (executionArguments != null)
             {
-                commandLineBuilder.Append(' ');
-                commandLineBuilder.Append(argument);
+                foreach (var argument in executionArguments)
+                {
+                    commandLineBuilder.Append(' ');
+                    commandLineBuilder.Append(argument);
+                }
             }
 
-            var process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = fileName;
-            process.StartInfo.WorkingDirectory = new FileInfo(fileName).Directory.ToString();
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.StartInfo.ErrorDialog = false;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
+            var process = new System.Diagnostics.Process
+                              {
+                                  StartInfo =
+                                      {
+                                          FileName = fileName,
+                                          WorkingDirectory = new FileInfo(fileName).Directory.ToString(),
+                                          CreateNoWindow = true,
+                                          WindowStyle = ProcessWindowStyle.Hidden,
+                                          ErrorDialog = false,
+                                          UseShellExecute = false,
+                                          RedirectStandardInput = true,
+                                          RedirectStandardOutput = true,
+                                          RedirectStandardError = true
+                                      }
+                              };
 
             // Write to standard input using another thread
             process.StandardInput.WriteLineAsync(inputData).ContinueWith(
