@@ -11,6 +11,7 @@
 
     using OJS.Workers.Common;
 
+    // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
     {
         private static ILog logger;
@@ -45,6 +46,36 @@
                 // Write to standard input using another thread
                 process.StandardInput.WriteLineAsync(inputData).ContinueWith(
                     delegate
+
+            var commandLineBuilder = new StringBuilder();
+            if (executionArguments != null)
+            {
+                foreach (var argument in executionArguments)
+                {
+                    commandLineBuilder.Append(' ');
+                    commandLineBuilder.Append(argument);
+                }
+            }
+
+            var process = new System.Diagnostics.Process
+                              {
+                                  StartInfo =
+                                      {
+                                          FileName = fileName,
+                                          WorkingDirectory = new FileInfo(fileName).Directory.ToString(),
+                                          CreateNoWindow = true,
+                                          WindowStyle = ProcessWindowStyle.Hidden,
+                                          ErrorDialog = false,
+                                          UseShellExecute = false,
+                                          RedirectStandardInput = true,
+                                          RedirectStandardOutput = true,
+                                          RedirectStandardError = true
+                                      }
+                              };
+
+            // Write to standard input using another thread
+            process.StandardInput.WriteLineAsync(inputData).ContinueWith(
+                delegate
                     {
                         // ReSharper disable once AccessToDisposedClosure
                         process.StandardInput.FlushAsync().ContinueWith(

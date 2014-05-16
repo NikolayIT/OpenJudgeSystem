@@ -108,7 +108,10 @@ process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
     var inputData = content.trim().split(EOL);
-    console.log(code.run(inputData));
+    var result = code.run(inputData);
+    if (result !== undefined) {
+        console.log(result);
+    }
 });
 
 var code = {
