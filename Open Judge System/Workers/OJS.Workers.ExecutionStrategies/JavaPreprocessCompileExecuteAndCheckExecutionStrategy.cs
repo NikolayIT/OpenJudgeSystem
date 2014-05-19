@@ -11,6 +11,14 @@
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
+        private const string SandboxExecutorClassName = "_$SandboxExecutor";
+
+        private const string SandboxExecutorFileName = "_$SandboxExecutor.class";
+        private const string SandboxSecurityManagerFileName = "_$SandboxSecurityManager.class";
+
+        private const string SandboxExecutorFilePath = @"C:\Users\Administrator\Desktop\JavaSandBoxExecutorFiles\_$SandboxExecutor.class";
+        private const string SandboxSecurityManagerFilePath = @"C:\Users\Administrator\Desktop\JavaSandBoxExecutorFiles\_$SandboxSecurityManager.class";
+
         private readonly string javaExecutablePath;
         private readonly string workingDirectory;
         private readonly Func<CompilerType, string> getCompilerPathFunc;
@@ -49,6 +57,7 @@
             {
                 result.IsCompiledSuccessfully = false;
                 result.CompilerComment = exception.Message;
+
                 return result;
             }
 
@@ -64,6 +73,12 @@
                 return result;
             }
 
+            var localSandboxExecutorFilePath = string.Format("{0}\\{1}", this.workingDirectory, SandboxExecutorFileName);
+            var localSandboxSecurityManagerFilePath = string.Format("{0}\\{1}", this.workingDirectory, SandboxSecurityManagerFileName);
+
+            File.Copy(SandboxExecutorFilePath, localSandboxExecutorFilePath, true);
+            File.Copy(SandboxSecurityManagerFilePath, localSandboxSecurityManagerFilePath, true);
+
             // Create an executor and a checker
             var executor = new StandardProcessExecutor();
             var checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
@@ -76,7 +91,11 @@
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { compilerResult.OutputFile.Replace(".class", string.Empty) });
+                    new[]
+                    {
+                        string.Format("-classpath \"{0}\"", this.workingDirectory),
+                        SandboxExecutorClassName
+                    });
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
@@ -94,12 +113,10 @@
         private string CreateSubmissionFile(string submissionCode)
         {
             // TODO: Improve not to use public class
-            var classNameRegEx = new Regex(@"public class \w+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-            var classNameMatch = classNameRegEx.Match(submissionCode);
+            var classNameMatch = Regex.Match(submissionCode, @"public class Program");
             if (!classNameMatch.Success)
             {
-                throw new ArgumentException("No public class found!", "submissionCode");
+                throw new ArgumentException("No 'public class Program' found!");
             }
 
             var className = classNameMatch.Value.Substring(classNameMatch.Value.LastIndexOf(' ') + 1).Trim();

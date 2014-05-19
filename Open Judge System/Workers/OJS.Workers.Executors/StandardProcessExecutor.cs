@@ -27,23 +27,20 @@
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             var workingDirectory = new FileInfo(fileName).DirectoryName;
 
-            var processStartInfo = new ProcessStartInfo(fileName)
-            {
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Normal,
-                ErrorDialog = false,
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                WorkingDirectory = workingDirectory,
-                Arguments = executionArguments == null ? string.Empty : string.Join(" ", executionArguments)
-            };
-
             using (var process = new System.Diagnostics.Process())
             {
-                process.StartInfo = processStartInfo;
+                process.StartInfo.FileName = fileName;
+                process.StartInfo.Arguments = executionArguments == null ? string.Empty : string.Join(" ", executionArguments);
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.ErrorDialog = false;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.WorkingDirectory = workingDirectory;
 
+                // Start the process
                 process.Start();
 
                 // Write to standard input using another thread
@@ -94,9 +91,6 @@
                         }
                     },
                     memoryTaskCancellationToken.Token);
-
-                // Start the process
-                process.Start();
 
                 // Wait the process to complete. Kill it after (timeLimit * 1.5) milliseconds if not completed.
                 // We are waiting the process for more than defined time and after this we compare the process time with the real time limit.
