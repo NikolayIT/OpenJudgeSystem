@@ -123,18 +123,7 @@
                 throw new ArgumentException("No valid public class found!");
             }
 
-            string className;
-            var lastIndexOfWhitespaceInClassName = classNameMatch.Value.LastIndexOf(' ');
-            if (lastIndexOfWhitespaceInClassName >= 0)
-            {
-                className = classNameMatch.Value.Substring(lastIndexOfWhitespaceInClassName + 1);
-            }
-            else
-            {
-                // The match is with ending '{' which is also valid
-                className = classNameMatch.Value.Substring(classNameMatch.Value.LastIndexOf('{') + 1);
-            }
-
+            var className = classNameMatch.Groups[1].Value;
             var submissionFilePath = new FileInfo(string.Format("{0}\\{1}", this.workingDirectory, className)).FullName;
             File.WriteAllText(submissionFilePath, submissionCode);
 
