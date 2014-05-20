@@ -11,6 +11,8 @@
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
+        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z][a-zA-Z_$0-9]{0,50})\s+{";
+
         private const string SandboxExecutorClassName = "_$SandboxExecutor";
 
         private const string SandboxExecutorFileName = "_$SandboxExecutor.class";
@@ -77,6 +79,7 @@
             var localSandboxSecurityManagerFilePath = string.Format("{0}\\{1}", this.workingDirectory, SandboxSecurityManagerFileName);
 
             File.Copy(SandboxExecutorFilePath, localSandboxExecutorFilePath, true);
+
             File.Copy(SandboxSecurityManagerFilePath, localSandboxSecurityManagerFilePath, true);
 
             // Create an executor and a checker
@@ -94,7 +97,8 @@
                     new[]
                     {
                         string.Format("-classpath \"{0}\"", this.workingDirectory),
-                        SandboxExecutorClassName
+                        SandboxExecutorClassName,
+                        submissionFilePath.Substring(submissionFilePath.LastIndexOf('\\') + 1)
                     });
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
@@ -113,13 +117,23 @@
         private string CreateSubmissionFile(string submissionCode)
         {
             // TODO: Improve not to use public class
-            var classNameMatch = Regex.Match(submissionCode, @"public class Program");
+            var classNameMatch = Regex.Match(submissionCode, ClassNameRegEx);
             if (!classNameMatch.Success)
             {
-                throw new ArgumentException("No 'public class Program' found!");
+                throw new ArgumentException("No valid public class found!");
             }
 
-            var className = classNameMatch.Value.Substring(classNameMatch.Value.LastIndexOf(' ') + 1).Trim();
+            string className;
+            var lastIndexOfWhitespaceInClassName = classNameMatch.Value.LastIndexOf(' ');
+            if (lastIndexOfWhitespaceInClassName >= 0)
+            {
+                className = classNameMatch.Value.Substring(lastIndexOfWhitespaceInClassName + 1);
+            }
+            else
+            {
+                // The match is with ending '{' which is also valid
+                className = classNameMatch.Value.Substring(classNameMatch.Value.LastIndexOf('{') + 1);
+            }
 
             var submissionFilePath = new FileInfo(string.Format("{0}\\{1}", this.workingDirectory, className)).FullName;
             File.WriteAllText(submissionFilePath, submissionCode);
