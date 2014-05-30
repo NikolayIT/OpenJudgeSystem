@@ -10,7 +10,6 @@
     using log4net;
 
     using OJS.Workers.Common;
-    using OJS.Workers.Executors.Process;
 
     // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
@@ -40,7 +39,7 @@
                 WorkingDirectory = new FileInfo(fileName).DirectoryName
             };
 
-            using (var process = new ExtendedProcess())
+            using (var process = new System.Diagnostics.Process())
             {
                 process.StartInfo = processStartInfo;
 
@@ -54,18 +53,12 @@
                 process.StandardInput.WriteLineAsync(inputData).ContinueWith(
                     delegate
                     {
-                        if (!process.IsDisposed)
-                        {
-                            // ReSharper disable once AccessToDisposedClosure
-                            process.StandardInput.FlushAsync().ContinueWith(
-                                delegate
-                                {
-                                    if (!process.IsDisposed)
-                                    {
-                                        process.StandardInput.Close();
-                                    }
-                                });
-                        }
+                        // ReSharper disable once AccessToDisposedClosure
+                        process.StandardInput.FlushAsync().ContinueWith(
+                            delegate
+                            {
+                                process.StandardInput.Close();
+                            });
                     });
 
                 // Read standard output using another thread to prevent process locking (waiting us to empty the output buffer)
@@ -90,27 +83,17 @@
                     {
                         while (true)
                         {
-                            try
+                            // ReSharper disable once AccessToDisposedClosure
+                            var peakWorkingSetSize = process.PeakWorkingSet64;
+
+                            result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
+
+                            if (memoryTaskCancellationToken.IsCancellationRequested)
                             {
-                                if (!process.IsDisposed && !process.HasExited)
-                                {
-                                    // ReSharper disable once AccessToDisposedClosure
-                                    var peakWorkingSetSize = process.PeakWorkingSet64;
-
-                                    result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
-
-                                    if (memoryTaskCancellationToken.IsCancellationRequested)
-                                    {
-                                        return;
-                                    }
-
-                                    Thread.Sleep(TimeIntervalBetweenTwoMemoryConsumptionRequests);
-                                }
+                                return;
                             }
-                            catch (InvalidOperationException)
-                            {
-                                return; // Ignore "There is no process associated with the object." error
-                            }
+
+                            Thread.Sleep(TimeIntervalBetweenTwoMemoryConsumptionRequests);
                         }
                     },
                     memoryTaskCancellationToken.Token);
