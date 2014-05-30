@@ -62,6 +62,22 @@
             }
         }
 
+        public static string JavaArchiverPath
+        {
+            get
+            {
+                return GetSetting("JavaArchiverPath");
+            }
+        }
+
+        public static string JavaSandboxExecutorSourceFilePath
+        {
+            get
+            {
+                return GetSetting("JavaSandboxExecutorSourceFilePath");
+            }
+        }
+
         public static int ThreadsCount
         {
             get

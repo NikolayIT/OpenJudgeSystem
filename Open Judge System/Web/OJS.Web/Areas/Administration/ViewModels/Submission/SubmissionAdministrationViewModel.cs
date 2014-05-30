@@ -1,18 +1,16 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Submission
 {
     using System;
-    using System.Web;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Web;
     using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
-    using System.IO;
 
     public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
     {
@@ -76,14 +74,12 @@
         {
             get
             {
-                if (AllowBinaryFilesUpload.HasValue && !AllowBinaryFilesUpload.Value)
+                if (this.AllowBinaryFilesUpload.HasValue && !this.AllowBinaryFilesUpload.Value)
                 {
                     return this.Content.Decompress();
                 }
-                else
-                {
-                    return null;
-                }
+                
+                return null;
             }
 
             set
@@ -98,7 +94,7 @@
         {
             get 
             {
-                return fileSubmission;
+                return this.fileSubmission;
             }
 
             set

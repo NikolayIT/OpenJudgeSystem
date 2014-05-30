@@ -369,7 +369,7 @@
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id
             });
-            
+
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");

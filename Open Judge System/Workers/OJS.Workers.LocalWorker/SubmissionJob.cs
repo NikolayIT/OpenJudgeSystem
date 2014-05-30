@@ -233,7 +233,11 @@
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
-                    executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
+                    executionStrategy = new JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        Settings.JavaArchiverPath,
+                        Settings.JavaSandboxExecutorSourceFilePath,
+                        GetCompilerPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);

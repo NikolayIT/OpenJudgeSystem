@@ -1,14 +1,14 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
+    using System.Collections.Generic;
     using System.Net;
     using System.Web;
-    using System.Collections.Generic;
-    
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
-    
+
     [TestClass]
     public class ValidateSubmissionTypeTests
     {

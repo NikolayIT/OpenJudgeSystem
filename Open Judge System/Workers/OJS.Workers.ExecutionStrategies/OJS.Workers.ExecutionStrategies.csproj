@@ -58,7 +58,7 @@
     <Compile Include="DoNothingExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
-    <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompileExecuteAndCheckExecutionStrategy.cs" />

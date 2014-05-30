@@ -129,15 +129,15 @@
                     messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
 
-                //if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") || this.UserProfile.UserName.Length < 5 || this.UserProfile.UserName.Length > 15)
-                //{
-                //    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
-                //}
+                ////if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") || this.UserProfile.UserName.Length < 5 || this.UserProfile.UserName.Length > 15)
+                ////{
+                ////    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
+                ////}
             }
             else
             {
-                // User is not logged-in
-                //messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
+                //// User is not logged-in
+                ////messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
             }
 
             return messages;

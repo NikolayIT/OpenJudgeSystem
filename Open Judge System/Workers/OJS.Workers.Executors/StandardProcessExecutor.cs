@@ -10,6 +10,7 @@
     using log4net;
 
     using OJS.Workers.Common;
+    using OJS.Workers.Executors.Process;
 
     // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
@@ -25,34 +26,46 @@
         public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
-            var workingDirectory = new FileInfo(fileName).DirectoryName;
 
-            using (var process = new System.Diagnostics.Process())
+            var processStartInfo = new ProcessStartInfo(fileName)
             {
-                process.StartInfo.FileName = fileName;
-                process.StartInfo.Arguments = executionArguments == null ? string.Empty : string.Join(" ", executionArguments);
-                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.ErrorDialog = false;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.WorkingDirectory = workingDirectory;
+                Arguments = executionArguments == null ? string.Empty : string.Join(" ", executionArguments),
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                ErrorDialog = false,
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                WorkingDirectory = new FileInfo(fileName).DirectoryName
+            };
 
-                // Start the process
-                process.Start();
+            using (var process = new ExtendedProcess())
+            {
+                process.StartInfo = processStartInfo;
+
+                if (!process.Start())
+                {
+                    var exceptionMessage = string.Format("Could not start process: {0}!", fileName);
+                    throw new Exception(exceptionMessage);
+                }
 
                 // Write to standard input using another thread
                 process.StandardInput.WriteLineAsync(inputData).ContinueWith(
                     delegate
                     {
-                        // ReSharper disable once AccessToDisposedClosure
-                        process.StandardInput.FlushAsync().ContinueWith(
-                            delegate
-                            {
-                                process.StandardInput.Close();
-                            });
+                        if (!process.IsDisposed)
+                        {
+                            // ReSharper disable once AccessToDisposedClosure
+                            process.StandardInput.FlushAsync().ContinueWith(
+                                delegate
+                                {
+                                    if (!process.IsDisposed)
+                                    {
+                                        process.StandardInput.Close();
+                                    }
+                                });
+                        }
                     });
 
                 // Read standard output using another thread to prevent process locking (waiting us to empty the output buffer)
@@ -77,17 +90,27 @@
                     {
                         while (true)
                         {
-                            // ReSharper disable once AccessToDisposedClosure
-                            var peakWorkingSetSize = process.PeakWorkingSet64;
-
-                            result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
-
-                            if (memoryTaskCancellationToken.IsCancellationRequested)
+                            try
                             {
-                                return;
-                            }
+                                if (!process.IsDisposed && !process.HasExited)
+                                {
+                                    // ReSharper disable once AccessToDisposedClosure
+                                    var peakWorkingSetSize = process.PeakWorkingSet64;
 
-                            Thread.Sleep(TimeIntervalBetweenTwoMemoryConsumptionRequests);
+                                    result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
+
+                                    if (memoryTaskCancellationToken.IsCancellationRequested)
+                                    {
+                                        return;
+                                    }
+
+                                    Thread.Sleep(TimeIntervalBetweenTwoMemoryConsumptionRequests);
+                                }
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                return; // Ignore "There is no process associated with the object." error
+                            }
                         }
                     },
                     memoryTaskCancellationToken.Token);
@@ -133,7 +156,7 @@
                     logger.Warn("AggregateException caught.", ex.InnerException);
                 }
 
-                Debug.Assert(process.HasExited, "Restricted process didn't exit!");
+                Debug.Assert(process.HasExited, "Standard process didn't exit!");
 
                 // Report exit code and total process working time
                 result.ExitCode = process.ExitCode;

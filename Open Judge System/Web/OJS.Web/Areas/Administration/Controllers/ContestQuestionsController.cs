@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -8,13 +9,12 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Controllers;
 
-    using DatabaseModelType = OJS.Data.Models.ContestQuestion;
     using DatabaseAnswerModelType = OJS.Data.Models.ContestQuestionAnswer;
+    using DatabaseModelType = OJS.Data.Models.ContestQuestion;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel;
-    using System.Collections.Generic;
-using OJS.Data.Models;
 
     public class ContestQuestionsController : KendoGridAdministrationController
     {

@@ -17,7 +17,7 @@
         {
             get
             {
-                return string.Format("{0} {1}", ParticipantFirstName, ParticipantLastName).Trim();
+                return string.Format("{0} {1}", this.ParticipantFirstName, this.ParticipantLastName).Trim();
             }
         }
 
@@ -27,7 +27,7 @@
         {
             get
             {
-                int totalPoints = 0;
+                var totalPoints = 0;
                 foreach (var problemResult in this.ProblemResults)
                 {
                     if (problemResult.BestSubmission != null)
