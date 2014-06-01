@@ -96,12 +96,12 @@
 
             // Compile all source files (sandbox executor and submission file)
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
-            var sourceFilePathsToCompile = new DirectoryInfo(this.workingDirectory).GetFiles(JavaSourceFilesPattern).Select(x => x.FullName);
+            var sourceFilesToCompile = new DirectoryInfo(this.workingDirectory).GetFiles(JavaSourceFilesPattern).Select(x => x.FullName);
             var compilerResult = this.CompileAllSourceFiles(
                 executionContext.CompilerType,
                 compilerPath,
                 executionContext.AdditionalCompilerArguments,
-                sourceFilePathsToCompile);
+                sourceFilesToCompile);
 
             // Assign compiled result info to the execution result
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
@@ -152,21 +152,34 @@
                     executionContext.MemoryLimit,
                     new[] { classPathWithJarFile, sandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
 
-                if (File.Exists(timeMeasurementFilePath))
-                {
-                    long timeInNanoseconds;
-                    if (long.TryParse(File.ReadAllText(timeMeasurementFilePath), out timeInNanoseconds))
-                    {
-                        processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
-                        File.Delete(timeMeasurementFilePath);
-                    }
-                }
+                UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
             }
 
             return result;
+        }
+
+        private static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
+        {
+            if (File.Exists(timeMeasurementFilePath))
+            {
+                long timeInNanoseconds;
+                if (long.TryParse(File.ReadAllText(timeMeasurementFilePath), out timeInNanoseconds))
+                {
+                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+
+                    if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
+                        processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
+                    {
+                        // The time from the time measurement file is under the time limit
+                        processExecutionResult.Type = ProcessExecutionResultType.Success;
+                    }
+                }
+
+                File.Delete(timeMeasurementFilePath);
+            }
         }
 
         private string CreateSubmissionFile(string submissionCode)
@@ -188,12 +201,12 @@
             return submissionFilePath;
         }
 
-        private CompileResult CompileAllSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilePathsToCompile)
+        private CompileResult CompileAllSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilesToCompile)
         {
             CompileResult compilerResult = null;
-            foreach (var sourceFilePath in sourceFilePathsToCompile)
+            foreach (var sourceFile in sourceFilesToCompile)
             {
-                compilerResult = this.Compile(compilerType, compilerPath, compilerArguments, sourceFilePath);
+                compilerResult = this.Compile(compilerType, compilerPath, compilerArguments, sourceFile);
 
                 if (!compilerResult.IsCompiledSuccessfully)
                 {

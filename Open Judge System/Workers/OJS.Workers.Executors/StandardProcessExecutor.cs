@@ -39,11 +39,9 @@
                 WorkingDirectory = new FileInfo(fileName).DirectoryName
             };
 
-            using (var process = new System.Diagnostics.Process())
+            using (var process = System.Diagnostics.Process.Start(processStartInfo))
             {
-                process.StartInfo = processStartInfo;
-
-                if (!process.Start())
+                if (process == null)
                 {
                     var exceptionMessage = string.Format("Could not start process: {0}!", fileName);
                     throw new Exception(exceptionMessage);
