@@ -222,7 +222,7 @@
 
         private void ArchiveCompiledFilesIntoJarFile()
         {
-            var arguments = string.Format("cf {0} *.{1}", ArchivedFileName, JavaCompiledFileExtension);
+            var arguments = string.Format("cf {0} *{1}", ArchivedFileName, JavaCompiledFileExtension);
 
             var processStartInfo = new ProcessStartInfo(this.javaArchiverPath)
             {
