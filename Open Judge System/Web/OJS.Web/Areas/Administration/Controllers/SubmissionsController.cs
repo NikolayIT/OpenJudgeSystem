@@ -85,14 +85,14 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
                     }
 
-                    var submissionType = GetSubmissionType(model.SubmissionTypeId.Value);
+                    var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        ValidateSubmissionContentLenght(model, problem);
-                        ValidateBinarySubmission(model, problem, submissionType);
+                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
 
@@ -132,11 +132,11 @@
         public ActionResult Update(ModelType model)
         {
             if (model.Id.HasValue)
-	        {
+            {
                 var submission = this.Data.Submissions.GetById(model.Id.Value);
                 if (model.SubmissionTypeId.HasValue)
                 {
-                    var submissionType = this.Data.SubmissionTypes.GetById(model.SubmissionTypeId.Value);        
+                    var submissionType = this.Data.SubmissionTypes.GetById(model.SubmissionTypeId.Value);
                     if (submissionType.AllowBinaryFilesUpload && model.FileSubmission == null)
                     {
                         model.Content = submission.Content;
@@ -156,17 +156,17 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
                     }
 
-                    var submissionType = GetSubmissionType(model.SubmissionTypeId.Value);
+                    var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        ValidateSubmissionContentLenght(model, problem);
-                        ValidateBinarySubmission(model, problem, submissionType);    
+                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
-           
+
                 if (this.ModelState.IsValid)
                 {
                     var entity = this.GetById(model.Id) as DatabaseModelType;
@@ -179,55 +179,6 @@
 
             ViewBag.SubmissionAction = "Update";
             return this.View(model);
-        }
-
-        private SubmissionType GetSubmissionType(int submissionTypeId) 
-        {
-            var submissionType = this.Data.SubmissionTypes.GetById(submissionTypeId);
-
-            if (submissionType != null)
-            {
-                return submissionType;
-            }
-            else
-            {
-                ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
-                return null;
-            }
-        }
-
-        private void ValidateParticipant(int? participantId, int contestId)
-        {
-            if (participantId.HasValue)
-            {
-                if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
-                {
-                    this.ModelState.AddModelError("ParticipantId", "Задачата не е от състезанието, от което е избраният участник!");
-                }
-            }
-        }
-
-        private void ValidateSubmissionContentLenght(ModelType model, Problem problem) 
-        {
-            if (model.Content.Length > problem.SourceCodeSizeLimit)
-            {
-                ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
-            }
-        }
-
-        private void ValidateBinarySubmission(ModelType model, Problem problem, SubmissionType submissionType) 
-        {
-            if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
-            {
-                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
-            }
-            if (submissionType.AllowedFileExtensions != null)
-            {
-                if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
-                {
-                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
-                }
-            }
         }
 
         [HttpGet]
@@ -290,7 +241,7 @@
                 submissionTypesSelectListItems = submissionTypesSelectListItems
                     .Where(submissionType => submissionType.AllowBinaryFilesUpload == allowBinaryFilesUpload);
             }
-            
+
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }
 
@@ -384,9 +335,58 @@
         {
             var submission = this.Data.Submissions.GetById(submissionId);
 
-            return this.File(submission.Content, 
-                "application/octet-stream", 
+            return this.File(
+                submission.Content,
+                "application/octet-stream",
                 string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
+        }
+
+        private SubmissionType GetSubmissionType(int submissionTypeId)
+        {
+            var submissionType = this.Data.SubmissionTypes.GetById(submissionTypeId);
+
+            if (submissionType != null)
+            {
+                return submissionType;
+            }
+
+            this.ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
+            return null;
+        }
+
+        private void ValidateParticipant(int? participantId, int contestId)
+        {
+            if (participantId.HasValue)
+            {
+                if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
+                {
+                    this.ModelState.AddModelError("ParticipantId", "Задачата не е от състезанието, от което е избраният участник!");
+                }
+            }
+        }
+
+        private void ValidateSubmissionContentLenght(ModelType model, Problem problem)
+        {
+            if (model.Content.Length > problem.SourceCodeSizeLimit)
+            {
+                ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+            }
+        }
+
+        private void ValidateBinarySubmission(ModelType model, Problem problem, SubmissionType submissionType)
+        {
+            if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
+            {
+                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+            }
+
+            if (submissionType.AllowedFileExtensions != null)
+            {
+                if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
+                {
+                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                }
+            }
         }
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="CPlusPlusCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
+    <Compile Include="JavaCompiler.cs" />
     <Compile Include="MsBuildCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -25,6 +25,8 @@
                     return new CPlusPlusCompiler();
                 case CompilerType.MsBuild:
                     return new MsBuildCompiler();
+                case CompilerType.Java:
+                    return new JavaCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
@@ -72,15 +74,17 @@
             }
 
             // Prepare process start information
-            var processStartInfo = new ProcessStartInfo(compilerPath)
-                                       {
-                                           RedirectStandardError = true,
-                                           RedirectStandardOutput = true,
-                                           UseShellExecute = false,
-                                           WindowStyle = ProcessWindowStyle.Hidden,
-                                           WorkingDirectory = directoryInfo.ToString(),
-                                           Arguments = arguments
-                                       };
+            var processStartInfo = 
+                new ProcessStartInfo(compilerPath)
+                {
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    WorkingDirectory = directoryInfo.ToString(),
+                    Arguments = arguments
+                };
+
             this.UpdateCompilerProcessStartInfo(processStartInfo);
 
             // Execute compiler

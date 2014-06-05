@@ -15,7 +15,7 @@
         {
             get
             {
-                return string.Format("{0} {1}", ParticipantFirstName, ParticipantLastName).Trim();
+                return string.Format("{0} {1}", this.ParticipantFirstName, this.ParticipantLastName).Trim();
             }
         }
 
