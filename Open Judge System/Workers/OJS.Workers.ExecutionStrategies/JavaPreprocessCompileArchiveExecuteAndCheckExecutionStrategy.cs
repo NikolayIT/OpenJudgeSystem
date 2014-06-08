@@ -15,6 +15,7 @@
 
     public class JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
+        private const string JavaCompiledFileExtension = ".class";
         private const string JavaSourceFilesPattern = "*.java";
         private const string ArchivedFileName = "_submission.jar";
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
@@ -91,13 +92,13 @@
             var sandboxExecutorSourceFilePathLastIndexOfSlash = this.sandboxExecutorSourceFilePath.LastIndexOf('\\');
             var sandboxExecutorFileName = this.sandboxExecutorSourceFilePath.Substring(sandboxExecutorSourceFilePathLastIndexOfSlash + 1);
 
-            var tempSandboxExecutorSourceFilePath = string.Format("{0}\\{1}", this.workingDirectory, sandboxExecutorFileName);
-            File.Copy(this.sandboxExecutorSourceFilePath, tempSandboxExecutorSourceFilePath);
+            var workingSandboxExecutorSourceFilePath = string.Format("{0}\\{1}", this.workingDirectory, sandboxExecutorFileName);
+            File.Copy(this.sandboxExecutorSourceFilePath, workingSandboxExecutorSourceFilePath);
 
-            // Compile all source files (sandbox executor and submission file)
+            // Compile all source files - sandbox executor and submission file(s)
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
             var sourceFilesToCompile = new DirectoryInfo(this.workingDirectory).GetFiles(JavaSourceFilesPattern).Select(x => x.FullName);
-            var compilerResult = this.CompileAllSourceFiles(
+            var compilerResult = this.CompileSourceFiles(
                 executionContext.CompilerType,
                 compilerPath,
                 executionContext.AdditionalCompilerArguments,
@@ -166,7 +167,8 @@
             if (File.Exists(timeMeasurementFilePath))
             {
                 long timeInNanoseconds;
-                if (long.TryParse(File.ReadAllText(timeMeasurementFilePath), out timeInNanoseconds))
+                var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
+                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
                 {
                     processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
 
@@ -195,13 +197,14 @@
             }
 
             var className = classNameMatch.Groups[1].Value;
-            var submissionFilePath = new FileInfo(string.Format("{0}\\{1}.java", this.workingDirectory, className)).FullName;
+            var submissionFilePath = string.Format("{0}\\{1}.{2}", this.workingDirectory, className, CompilerType.Java.GetFileExtension());
+
             File.WriteAllText(submissionFilePath, submissionCode);
 
             return submissionFilePath;
         }
 
-        private CompileResult CompileAllSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilesToCompile)
+        private CompileResult CompileSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilesToCompile)
         {
             CompileResult compilerResult = null;
             foreach (var sourceFile in sourceFilesToCompile)
@@ -219,7 +222,7 @@
 
         private void ArchiveCompiledFilesIntoJarFile()
         {
-            var arguments = string.Format("cf {0} *.class", ArchivedFileName);
+            var arguments = string.Format("cf {0} *{1}", ArchivedFileName, JavaCompiledFileExtension);
 
             var processStartInfo = new ProcessStartInfo(this.javaArchiverPath)
             {

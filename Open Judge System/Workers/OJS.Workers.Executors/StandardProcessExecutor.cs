@@ -25,6 +25,7 @@
         public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
+            var workingDirectory = new FileInfo(fileName).DirectoryName;
 
             var processStartInfo = new ProcessStartInfo(fileName)
             {
@@ -36,15 +37,15 @@
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
-                WorkingDirectory = new FileInfo(fileName).DirectoryName
+                WorkingDirectory = workingDirectory
             };
 
             using (var process = System.Diagnostics.Process.Start(processStartInfo))
             {
                 if (process == null)
                 {
-                    var exceptionMessage = string.Format("Could not start process: {0}!", fileName);
-                    throw new Exception(exceptionMessage);
+                    var errorMessage = string.Format("Could not start process: {0}!", fileName);
+                    throw new Exception(errorMessage);
                 }
 
                 // Write to standard input using another thread
