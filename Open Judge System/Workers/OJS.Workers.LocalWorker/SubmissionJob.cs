@@ -42,7 +42,7 @@
             this.logger.Info("SubmissionJob starting...");
             while (!this.stopping)
             {
-                IOjsData data = new OjsData();
+                var data = new OjsData();
                 Submission submission;
                 try
                 {
@@ -140,7 +140,7 @@
                 case CompilerType.CPlusPlusGcc:
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:
-                    throw new NotImplementedException("Compiler not supported.");
+                    return Settings.JavaCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException("type");
             }
@@ -151,7 +151,7 @@
             // TODO: Check for N+1 queries problem
             this.logger.InfoFormat("Work on submission №{0} started.", submission.Id);
 
-            IExecutionStrategy executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
+            var executionStrategy = this.CreateExecutionStrategy(submission.SubmissionType.ExecutionStrategyType);
             var context = new ExecutionContext
             {
                 SubmissionId = submission.Id,
@@ -234,6 +234,13 @@
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
+                    break;
+                case ExecutionStrategyType.JavaPreprocessCompileArchiveExecuteAndCheck:
+                    executionStrategy = new JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        Settings.JavaArchiverPath,
+                        Settings.JavaSandboxExecutorSourceFilePath,
+                        GetCompilerPath);
                     break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();
