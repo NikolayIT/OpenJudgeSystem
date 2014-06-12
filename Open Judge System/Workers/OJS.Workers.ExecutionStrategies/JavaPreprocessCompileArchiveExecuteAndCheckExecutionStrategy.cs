@@ -115,7 +115,7 @@
             // Archive all compiled into a jar file
             try
             {
-                this.ArchiveCompiledFilesIntoJarFile();
+                this.ArchiveCompiledFilesIntoJarFile(ArchivedFileName);
             }
             catch (Exception exception)
             {
@@ -189,7 +189,7 @@
             // Remove existing packages
             submissionCode = Regex.Replace(submissionCode, PackageNameRegEx, string.Empty);
 
-            // TODO: Improve not to use public class
+            // TODO: Remove the restriction for one public class - a non-public Java class can contain the main method!
             var classNameMatch = Regex.Match(submissionCode, ClassNameRegEx);
             if (!classNameMatch.Success)
             {
@@ -220,9 +220,9 @@
             return compilerResult;
         }
 
-        private void ArchiveCompiledFilesIntoJarFile()
+        private void ArchiveCompiledFilesIntoJarFile(string archiveFileName)
         {
-            var arguments = string.Format("cf {0} *{1}", ArchivedFileName, JavaCompiledFileExtension);
+            var arguments = string.Format("cf {0} *{1}", archiveFileName, JavaCompiledFileExtension);
 
             var processStartInfo = new ProcessStartInfo(this.javaArchiverPath)
             {
