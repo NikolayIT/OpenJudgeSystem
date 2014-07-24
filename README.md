@@ -9,10 +9,17 @@ The system consists of few parts:
 * Restricted process executor using Windows APIs
 * Compiler wrappers and checkers
 
-Developed by:
+Originally developed by:
 * Nikolay Kostov
 * Ivaylo Kenov
 * Vasil Dininski
 * Todor Stoyanov
+ 
+Contributors from Software University (SoftUni):
+* Teodor Kurtev
+* Svetlin Nakov
+
+Other contributors:
+* Vladislav Karamfilov
 
 The system is licensed under MIT License
