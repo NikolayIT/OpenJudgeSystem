@@ -163,10 +163,7 @@
         {
             if (test != null && this.ModelState.IsValid)
             {
-                var existingTest = this.Data.Tests
-                    .All()
-                    .FirstOrDefault(t => t.Id == id);
-
+                var existingTest = this.Data.Tests.GetById(id);
                 if (existingTest == null)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
@@ -182,7 +179,7 @@
 
                 this.RetestSubmissions(existingTest.Problem);
 
-                this.TempData[GlobalConstants.InfoMessage] = "Теста беше променен успешно";
+                this.TempData[GlobalConstants.InfoMessage] = "Тестът беше променен успешно.";
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
             }
 
@@ -257,12 +254,12 @@
                 .All()
                 .Where(s => s.ProblemId == test.ProblemId)
                 .Select(s => new
-                    {
-                        Id = s.Id, 
-                        CorrectTestRuns = s.TestRuns.Where(t => t.ResultType == TestRunResultType.CorrectAnswer).Count(),
-                        AllTestRuns = s.TestRuns.Count(),
-                        MaxPoints = s.Problem.MaximumPoints
-                    })
+                {
+                    Id = s.Id, 
+                    CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
+                    AllTestRuns = s.TestRuns.Count(),
+                    MaxPoints = s.Problem.MaximumPoints
+                })
                 .ToList();
 
             foreach (var submissionResult in submissionResults)
@@ -654,7 +651,8 @@
 
         private IEnumerable GetData(int id)
         {
-            var result = this.Data.Tests.All()
+            var result = this.Data.Tests
+                .All()
                 .Where(test => test.ProblemId == id)
                 .OrderByDescending(test => test.IsTrialTest)
                 .ThenBy(test => test.OrderBy)
@@ -665,10 +663,10 @@
 
         private void RetestSubmissions(Problem problem)
         {
-            var submissionIds = problem.Submissions.Select(s => new { Id = s.Id }).ToList();
+            var submissionIds = problem.Submissions.Select(s => s.Id).ToList();
             foreach (var submissionId in submissionIds)
             {
-                var currentSubmission = this.Data.Submissions.GetById(submissionId.Id);
+                var currentSubmission = this.Data.Submissions.GetById(submissionId);
                 currentSubmission.Processed = false;
                 currentSubmission.Processing = false;
             }
