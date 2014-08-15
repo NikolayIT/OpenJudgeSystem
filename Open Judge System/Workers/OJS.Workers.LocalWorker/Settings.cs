@@ -78,6 +78,14 @@
             }
         }
 
+        public static string PhpCgiExecutablePath
+        {
+            get
+            {
+                return GetSetting("PhpCgiExecutablePath");
+            }
+        }
+
         public static int ThreadsCount
         {
             get
