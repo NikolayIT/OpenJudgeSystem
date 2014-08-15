@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Web.Mvc;
     using System.Web.Script.Serialization;
 
     using OJS.Common.DataAnnotations;
@@ -36,6 +37,7 @@
         public string ProblemName { get; set; }
 
         [Display(Name = "Вход")]
+        [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Входа е задължителен!", AllowEmptyStrings = false)]
         [StringLength(int.MaxValue, MinimumLength = 1)]
@@ -59,6 +61,7 @@
         }
 
         [Display(Name = "Вход")]
+        [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Входа е задължителен!", AllowEmptyStrings = false)]
         [ScriptIgnore]
@@ -83,6 +86,7 @@
         }
 
         [Display(Name = "Изход")]
+        [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Изхода е задължителен!", AllowEmptyStrings = false)]
         [StringLength(int.MaxValue, MinimumLength = 1)]
@@ -106,6 +110,7 @@
         }
 
         [Display(Name = "Изход")]
+        [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Изхода е задължителен!", AllowEmptyStrings = false)]
         [ScriptIgnore]

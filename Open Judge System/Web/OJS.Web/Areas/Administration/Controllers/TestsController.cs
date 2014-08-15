@@ -122,8 +122,8 @@
 
                 this.RetestSubmissions(problem);
 
-                this.TempData[GlobalConstants.InfoMessage] = "Теста беше добавен успешно";
-                return this.RedirectToAction("Problem", new { id = id });
+                this.TempData[GlobalConstants.InfoMessage] = "Тестът беше добавен успешно.";
+                return this.RedirectToAction("Problem", new { id });
             }
 
             return this.View(test);
@@ -170,7 +170,7 @@
                 if (existingTest == null)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
-                    return this.RedirectToAction("Problem", new { id = id });
+                    return this.RedirectToAction("Problem", new {id });
                 }
 
                 existingTest.InputData = test.InputData;
@@ -182,7 +182,7 @@
 
                 this.RetestSubmissions(existingTest.Problem);
 
-                this.TempData[GlobalConstants.InfoMessage] = "Теста беше променен успешно";
+                this.TempData[GlobalConstants.InfoMessage] = "Тестът беше променен успешно.";
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
             }
 
@@ -257,12 +257,12 @@
                 .All()
                 .Where(s => s.ProblemId == test.ProblemId)
                 .Select(s => new
-                    {
-                        Id = s.Id, 
-                        CorrectTestRuns = s.TestRuns.Where(t => t.ResultType == TestRunResultType.CorrectAnswer).Count(),
-                        AllTestRuns = s.TestRuns.Count(),
-                        MaxPoints = s.Problem.MaximumPoints
-                    })
+                {
+                    Id = s.Id,
+                    CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
+                    AllTestRuns = s.TestRuns.Count(),
+                    MaxPoints = s.Problem.MaximumPoints
+                })
                 .ToList();
 
             foreach (var submissionResult in submissionResults)
@@ -279,7 +279,7 @@
 
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Теста беше изтрит успешно";
+            this.TempData[GlobalConstants.InfoMessage] = "Тестът беше изтрит успешно.";
             return this.RedirectToAction("Problem", new { id = test.ProblemId });
         }
 
