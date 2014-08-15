@@ -373,7 +373,7 @@
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
-            var problemIndex = 0; // TODO: Find problem index
+            ////var problemIndex = 0; // TODO: Find problem index
             return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
         }
 
