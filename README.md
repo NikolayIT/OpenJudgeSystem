@@ -9,7 +9,7 @@ The system consists of few parts:
 * Restricted process executor using Windows APIs
 * Compiler wrappers and checkers
 
-Developed by:
+Originally developed by:
 * Nikolay Kostov
 * Ivaylo Kenov
 * Vasil Dininski
