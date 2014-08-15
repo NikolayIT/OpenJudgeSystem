@@ -242,6 +242,9 @@
                         Settings.JavaSandboxExecutorSourceFilePath,
                         GetCompilerPath);
                     break;
+                case ExecutionStrategyType.PhpCgiExecuteAndCheck:
+                    executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);
+                    break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();
                     break;
