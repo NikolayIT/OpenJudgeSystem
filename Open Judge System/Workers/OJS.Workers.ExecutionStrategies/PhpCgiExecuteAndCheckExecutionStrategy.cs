@@ -46,7 +46,7 @@
                     string.Empty, // Input data is passed as the last execution argument
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { FileToExecuteOption, codeSavePath, test.Input });
+                    new[] { FileToExecuteOption, codeSavePath, string.Format("\"{0}\"", test.Input) });
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
