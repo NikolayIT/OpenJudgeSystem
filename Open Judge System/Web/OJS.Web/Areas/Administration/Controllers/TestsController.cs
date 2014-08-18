@@ -170,7 +170,7 @@
                 if (existingTest == null)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
-                    return this.RedirectToAction("Problem", new {id });
+                    return this.RedirectToAction("Problem", new { id });
                 }
 
                 existingTest.InputData = test.InputData;
