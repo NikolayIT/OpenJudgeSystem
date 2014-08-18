@@ -70,14 +70,6 @@
             }
         }
 
-        public static string JavaSandboxExecutorSourceFilePath
-        {
-            get
-            {
-                return GetSetting("JavaSandboxExecutorSourceFilePath");
-            }
-        }
-
         public static string PhpCgiExecutablePath
         {
             get

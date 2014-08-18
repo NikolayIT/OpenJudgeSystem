@@ -239,7 +239,6 @@
                     executionStrategy = new JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
                         Settings.JavaArchiverPath,
-                        Settings.JavaSandboxExecutorSourceFilePath,
                         GetCompilerPath);
                     break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
