@@ -235,11 +235,8 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
                     break;
-                case ExecutionStrategyType.JavaPreprocessCompileArchiveExecuteAndCheck:
-                    executionStrategy = new JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
-                        Settings.JavaExecutablePath,
-                        Settings.JavaArchiverPath,
-                        GetCompilerPath);
+                case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
+                    executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);

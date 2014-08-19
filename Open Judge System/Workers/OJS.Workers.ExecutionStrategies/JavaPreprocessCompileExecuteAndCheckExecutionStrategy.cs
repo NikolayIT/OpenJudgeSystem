@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     using OJS.Common.Extensions;
@@ -14,47 +12,31 @@
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
-    public class JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy : ExecutionStrategy
+    public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private const string JavaCompiledFileExtension = ".class";
         private const string JavaSourceFilesPattern = "*.java";
-        private const string ArchivedFileName = "_submission.jar";
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
         private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,50})\s*{";
         private const string TimeMeasurementFileName = "_time.txt";
         private const string SandboxExecutorClassName = "_$SandboxExecutor";
 
         private readonly string javaExecutablePath;
-        private readonly string javaArchiverPath;
         private readonly string workingDirectory;
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
-        public JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
-            string javaExecutablePath,
-            string javaArchiverPath,
-            Func<CompilerType, string> getCompilerPathFunc)
+        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
         {
             if (!File.Exists(javaExecutablePath))
             {
-                throw new ArgumentException(
-                    string.Format("Java not found in: {0}!", javaExecutablePath),
-                    "javaExecutablePath");
-            }
-
-            if (!File.Exists(javaArchiverPath))
-            {
-                throw new ArgumentException(
-                    string.Format("Java archiver not found in: {0}!", javaArchiverPath),
-                    "javaArchiverPath");
+                throw new ArgumentException(string.Format("Java not found in: {0}!", javaExecutablePath), "javaExecutablePath");
             }
 
             this.javaExecutablePath = javaExecutablePath;
-            this.javaArchiverPath = javaArchiverPath;
             this.workingDirectory = FileHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
-        ~JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy()
+        ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
         {
             if (Directory.Exists(this.workingDirectory))
             {
@@ -213,21 +195,8 @@ class _$SandboxSecurityManager extends SecurityManager {
                 return result;
             }
 
-            // Archive all compiled into a jar file
-            try
-            {
-                this.ArchiveCompiledFilesIntoJarFile(ArchivedFileName);
-            }
-            catch (Exception exception)
-            {
-                result.IsCompiledSuccessfully = false;
-                result.CompilerComment = exception.Message;
-
-                return result;
-            }
-
             // Prepare execution process arguments and time measurement info
-            var classPathWithJarFile = string.Format("-classpath \"{0}\\{1}\"", this.workingDirectory, ArchivedFileName);
+            var classPathArgument = string.Format("-classpath \"{0}\"", this.workingDirectory);
 
             var submissionFilePathLastIndexOfSlash = submissionFilePath.LastIndexOf('\\');
             var submissionFilePathLastIndexOfDot = submissionFilePath.LastIndexOf('.');
@@ -249,7 +218,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { classPathWithJarFile, SandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
+                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
 
                 UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
 
@@ -316,36 +285,6 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             return compilerResult;
-        }
-
-        private void ArchiveCompiledFilesIntoJarFile(string archiveFileName)
-        {
-            var arguments = string.Format("cf {0} *{1}", archiveFileName, JavaCompiledFileExtension);
-
-            var processStartInfo = new ProcessStartInfo(this.javaArchiverPath)
-            {
-                Arguments = arguments,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                WorkingDirectory = this.workingDirectory
-            };
-
-            using (var process = Process.Start(processStartInfo))
-            {
-                if (process == null)
-                {
-                    throw new Exception("Could not start Java archiver!");
-                }
-
-                var errorMessage = process.StandardError.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    throw new Exception(errorMessage);
-                }
-
-                process.WaitForExit();
-            }
         }
     }
 }
