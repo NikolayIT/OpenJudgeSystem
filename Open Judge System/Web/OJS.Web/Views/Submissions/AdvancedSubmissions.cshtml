@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Последно изпратени решения";
 }
+
 <script src="/Scripts/Helpers/test-results.js"></script>
 
 <ol class="breadcrumb">
@@ -11,6 +12,12 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
+
+@if (User.IsAdmin())
+{
+    <h4>Обработващи се решения: @ViewBag.ProcessingSubmissionsCount</h4>
+}
+
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
     .Name("Submissions")
     .Columns(columns =>

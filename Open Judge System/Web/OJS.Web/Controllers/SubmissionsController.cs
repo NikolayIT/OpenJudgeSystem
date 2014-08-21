@@ -10,7 +10,6 @@
     using Newtonsoft.Json;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
@@ -21,37 +20,32 @@
         {
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.IsLoggedIn())
             {
+                if (this.User.IsAdmin())
+                {
+                    this.ViewBag.ProcessingSubmissionsCount = this.Data.Submissions.All().Count(x => x.Processing);
+                }
+
                 return this.View("AdvancedSubmissions");
             }
-            else
-            {
-                IEnumerable<SubmissionViewModel> submissions = this.GetLastFiftySubmissions();
-                return this.View("BasicSubmissions", submissions.ToList());
-            }
+
+            var submissions = this.GetLastFiftySubmissions();
+            return this.View("BasicSubmissions", submissions.ToList());
         }
 
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest] DataSourceRequest request)
+        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request)
         {
-            IQueryable<Submission> data;
-
-            if (User.IsAdmin())
-            {
-                data = this.Data.Submissions.All();
-            }
-            else
-            {
-                data = this.Data.Submissions.AllPublic();
-            }
+            var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 
             var result = data.Select(SubmissionViewModel.FromSubmission);
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            string json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
+            var json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
             return this.Content(json, "application/json");
         }
 
@@ -59,7 +53,8 @@
         private IEnumerable<SubmissionViewModel> GetLastFiftySubmissions()
         {
             // TODO: add language type
-            var submissions = this.Data.Submissions.AllPublic()
+            var submissions = this.Data.Submissions
+                .AllPublic()
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(50)
                 .Select(SubmissionViewModel.FromSubmission)
