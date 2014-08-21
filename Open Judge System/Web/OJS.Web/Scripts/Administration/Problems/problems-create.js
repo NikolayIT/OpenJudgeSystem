@@ -39,13 +39,19 @@ $(document).ready(function () {
 
     $.validator.setDefaults({ ignore: '' });
 
-    $('#enable-sclimit').change(function () {
-        var input = $("#SourceCodeSizeLimit");
-        var numericTextBox = input.data("kendoNumericTextBox");
+    var input = $("#SourceCodeSizeLimit");
+    var numericTextBox = input.data("kendoNumericTextBox");
+    if ($('#enable-sclimit').is(':checked')) {
+        numericTextBox.enable(true);
+    }
+    else {
+        numericTextBox.enable(false);
+    }
 
+    $('#enable-sclimit').change(function () {
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
-            numericTextBox.value(1024);
+            numericTextBox.value(16384);
             input.attr("data-val-required", "Лимита е задължителен!");
             
             $("form").removeData("validator");
