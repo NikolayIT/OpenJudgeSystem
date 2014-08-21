@@ -15,7 +15,7 @@
 
 @if (User.IsAdmin())
 {
-    <h4>Обработващи се решения: @ViewBag.ProcessingSubmissionsCount</h4>
+    <h4>Решения в опашката: @ViewBag.SubmissionsInQueue</h4>
 }
 
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()

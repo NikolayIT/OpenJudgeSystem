@@ -27,7 +27,7 @@
             {
                 if (this.User.IsAdmin())
                 {
-                    this.ViewBag.ProcessingSubmissionsCount = this.Data.Submissions.All().Count(x => x.Processing);
+                    this.ViewBag.SubmissionsInQueue = this.Data.Submissions.All().Count(x => !x.Processed);
                 }
 
                 return this.View("AdvancedSubmissions");
