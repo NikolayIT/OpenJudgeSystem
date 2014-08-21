@@ -12,6 +12,11 @@
 
 @section Styles {
     <link href="/Content/Contests/results-page.css" rel="stylesheet" />
+    <style>
+        tr.success a, tr.success a:hover {
+            color: #fff;
+        }
+    </style>
 }
 
 <ol class="breadcrumb">
@@ -50,17 +55,17 @@
             {
                 if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin())
                 {
-                <th class="text-center">
-                    @if (displayLink)
-                    {
-                        <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
-                        problemCounter++;
-                    }
-                    else
-                    {
-                        @problem.Name
-                    }
-                </th>
+                    <th class="text-center">
+                        @if (displayLink)
+                        {
+                            <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
+                            problemCounter++;
+                        }
+                        else
+                        {
+                            @problem.Name
+                        }
+                    </th>
                 }
             }
             <th class="text-center">@Resource.Total</th>
@@ -82,22 +87,22 @@
                     {
                         if (participantResult.BestSubmission == null)
                         {
-                    <td>0</td>
+                            <td>0</td>
                         }
                         else
                         {
-                    <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
+                            <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
                         }
                     }
                     else if (participantResult.ShowResult)
                     {
                         if (participantResult.BestSubmission == null)
                         {
-                    <td>0</td>
+                            <td>0</td>
                         }
                         else
                         {
-                    <td>@participantResult.BestSubmission.Points</td>
+                            <td>@participantResult.BestSubmission.Points</td>
                         }
                     }
                 }

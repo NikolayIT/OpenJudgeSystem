@@ -99,8 +99,8 @@ input[type="checkbox"].input-validation-error {
 }
 
 .hidden-file-upload {
-    height: 0px;
-    width: 0px;
+    height: 0;
+    width: 0;
     overflow: hidden;
 }
 
