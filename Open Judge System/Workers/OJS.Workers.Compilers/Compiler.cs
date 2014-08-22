@@ -3,6 +3,8 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Text;
+    using System.Threading;
 
     using OJS.Common.Models;
     using OJS.Workers.Common;
@@ -13,6 +15,8 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        private const int CompilerProcessExitTimeOut = 5000;
+
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -74,7 +78,7 @@
             }
 
             // Prepare process start information
-            var processStartInfo = 
+            var processStartInfo =
                 new ProcessStartInfo(compilerPath)
                 {
                     RedirectStandardError = true,
@@ -84,28 +88,10 @@
                     WorkingDirectory = directoryInfo.ToString(),
                     Arguments = arguments
                 };
-
             this.UpdateCompilerProcessStartInfo(processStartInfo);
 
             // Execute compiler
-            string compilerOutput;
-            using (var process = Process.Start(processStartInfo))
-            {
-                if (process == null)
-                {
-                    compilerOutput = "Could not start compiler. Process object is null.";
-                }
-                else
-                {
-                    compilerOutput = process.StandardOutput.ReadToEnd();
-                    if (string.IsNullOrWhiteSpace(compilerOutput))
-                    {
-                        compilerOutput = process.StandardError.ReadToEnd();
-                    }
-
-                    process.WaitForExit();
-                }
-            }
+            var compilerOutput = ExecuteCompiler(processStartInfo);
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
@@ -127,7 +113,7 @@
                 // Compile file is ready but the compiler has something on standard error (possibly compile warnings)
                 return new CompileResult(true, compilerOutput, outputFile);
             }
-            
+
             // Compilation is ready without warnings
             return new CompileResult(outputFile);
         }
@@ -136,7 +122,7 @@
         {
             return inputFile;
         }
-        
+
         public virtual string GetOutputFileName(string inputFileName)
         {
             return inputFileName + ".exe";
@@ -151,6 +137,71 @@
 
         public virtual void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
         {
+        }
+
+        private static string ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        {
+            var outputBuilder = new StringBuilder();
+            var errorOutputBuilder = new StringBuilder();
+
+            using (var process = new Process())
+            {
+                process.StartInfo = compilerProcessStartInfo;
+
+                using (var outputWaitHandle = new AutoResetEvent(false))
+                {
+                    using (var errorWaitHandle = new AutoResetEvent(false))
+                    {
+                        process.OutputDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
+                            {
+                                outputWaitHandle.Set();
+                            }
+                            else
+                            {
+                                outputBuilder.AppendLine(e.Data);
+                            }
+                        };
+
+                        process.ErrorDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
+                            {
+                                errorWaitHandle.Set();
+                            }
+                            else
+                            {
+                                errorOutputBuilder.AppendLine(e.Data);
+                            }
+                        };
+
+                        var started = process.Start();
+                        if (!started)
+                        {
+                            return "Could not start compiler.";
+                        }
+
+                        process.BeginOutputReadLine();
+                        process.BeginErrorReadLine();
+
+                        var exited = process.WaitForExit(CompilerProcessExitTimeOut);
+                        if (!exited)
+                        {
+                            process.Kill();
+                        }
+
+                        outputWaitHandle.WaitOne(100);
+                        errorWaitHandle.WaitOne(100);
+                    }
+                }
+            }
+
+            var output = outputBuilder.ToString().Trim();
+            var errorOutput = errorOutputBuilder.ToString().Trim();
+
+            var compilerOutput = string.Format("{0}{1}{2}", output, Environment.NewLine, errorOutput).Trim();
+            return compilerOutput;
         }
     }
 }
