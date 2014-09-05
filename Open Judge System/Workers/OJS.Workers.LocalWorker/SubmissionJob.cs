@@ -213,7 +213,7 @@
 
         private void CalculatePointsForSubmission(Submission submission)
         {
-            // Internal joke: submission.Points = new Random().Next(0, submission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;            
+            // Internal joke: submission.Points = new Random().Next(0, submission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
             if (submission.Problem.Tests.Count == 0)
             {
                 submission.Points = 0;
@@ -240,6 +240,9 @@
                     break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);
+                    break;
+                case ExecutionStrategyType.PhpCliExecuteAndCheck:
+                    executionStrategy = new PhpCliExecuteAndCheckExecutionStrategy(Settings.PhpCliExecutablePath);
                     break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();
