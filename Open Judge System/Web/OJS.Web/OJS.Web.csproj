@@ -782,6 +782,7 @@
     <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Api\Controllers\ResultsController.cs" />
+    <Compile Include="Areas\Api\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Api\Models\ErrorMessageViewModel.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
     <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
