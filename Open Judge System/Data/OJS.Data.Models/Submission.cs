@@ -44,6 +44,10 @@
         /// </remarks>
         public string FileExtension { get; set; }
 
+        [StringLength(45)]
+        [Column(TypeName="varchar")]
+        public string IpAddress { get; set; }
+
         [NotMapped]
         public bool IsBinaryFile
         {
