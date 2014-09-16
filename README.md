@@ -10,9 +10,12 @@ The system consists of few parts:
 * Compiler wrappers and checkers
 
 Originally developed by:
-* Nikolay Kostov
-* Ivaylo Kenov
-* Vasil Dininski
-* Todor Stoyanov
+* Nikolay Kostov (@NikolayIT)
+* Ivaylo Kenov (@ivaylokenov)
+* Vasil Dininski (@dininski)
+* Todor Stoyanov (@todorstoianov)
+
+Other contributors:
+* Vladislav Karamfilov (@vladislav-karamfilov)
 
 The system is licensed under MIT License
