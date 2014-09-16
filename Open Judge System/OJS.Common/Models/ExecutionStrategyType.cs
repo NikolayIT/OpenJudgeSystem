@@ -6,6 +6,8 @@
         CompileExecuteAndCheck = 1,
         NodeJsPreprocessExecuteAndCheck = 2,
         RemoteExecution = 3,
-        JavaPreprocessCompileArchiveExecuteAndCheck = 4
+        JavaPreprocessCompileExecuteAndCheck = 4,
+        PhpCgiExecuteAndCheck = 5,
+        PhpCliExecuteAndCheck = 6,
     }
 }

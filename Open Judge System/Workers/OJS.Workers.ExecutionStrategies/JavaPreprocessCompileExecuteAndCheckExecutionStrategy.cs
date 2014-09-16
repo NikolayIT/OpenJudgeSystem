@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -13,60 +12,147 @@
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
-    public class JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy : ExecutionStrategy
+    public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private const string JavaCompiledFileExtension = ".class";
         private const string JavaSourceFilesPattern = "*.java";
-        private const string ArchivedFileName = "_submission.jar";
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
         private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,50})\s*{";
         private const string TimeMeasurementFileName = "_time.txt";
+        private const string SandboxExecutorClassName = "_$SandboxExecutor";
 
         private readonly string javaExecutablePath;
-        private readonly string javaArchiverPath;
-        private readonly string sandboxExecutorSourceFilePath;
         private readonly string workingDirectory;
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
-        public JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy(
-            string javaExecutablePath,
-            string javaArchiverPath,
-            string sandboxExecutorSourceFilePath,
-            Func<CompilerType, string> getCompilerPathFunc)
+        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
         {
             if (!File.Exists(javaExecutablePath))
             {
-                throw new ArgumentException(
-                    string.Format("Java not found in: {0}!", javaExecutablePath),
-                    "javaExecutablePath");
-            }
-
-            if (!File.Exists(javaArchiverPath))
-            {
-                throw new ArgumentException(
-                    string.Format("Java archiver not found in: {0}!", javaArchiverPath),
-                    "javaArchiverPath");
-            }
-
-            if (!File.Exists(sandboxExecutorSourceFilePath))
-            {
-                throw new ArgumentException(
-                    string.Format("Sandbox executor source file not found in: {0}!", sandboxExecutorSourceFilePath),
-                    "sandboxExecutorSourceFilePath");
+                throw new ArgumentException(string.Format("Java not found in: {0}!", javaExecutablePath), "javaExecutablePath");
             }
 
             this.javaExecutablePath = javaExecutablePath;
-            this.javaArchiverPath = javaArchiverPath;
-            this.sandboxExecutorSourceFilePath = sandboxExecutorSourceFilePath;
             this.workingDirectory = FileHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
-        ~JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy()
+        ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
         {
             if (Directory.Exists(this.workingDirectory))
             {
                 Directory.Delete(this.workingDirectory, true);
+            }
+        }
+
+        private string SandboxExecutorCode
+        {
+            get
+            {
+                return @"
+import java.io.File;
+import java.io.FilePermission;
+import java.io.FileWriter;
+import java.lang.reflect.Method;
+import java.lang.reflect.ReflectPermission;
+import java.net.NetPermission;
+import java.security.Permission;
+import java.util.PropertyPermission;
+
+public class " + SandboxExecutorClassName + @" {
+    private static final String MAIN_METHOD_NAME = ""main"";
+
+    public static void main(String[] args) throws Throwable {
+        if (args.length == 0) {
+            throw new IllegalArgumentException(""The name of the class to execute not provided!"");
+        }
+
+        String className = args[0];
+        Class<?> userClass = Class.forName(className);
+
+        Method mainMethod = userClass.getMethod(MAIN_METHOD_NAME, String[].class);
+
+        FileWriter writer = null;
+        long startTime = 0;
+        try {
+            if (args.length == 2) {
+                String timeFilePath = args[1];
+                writer = new FileWriter(timeFilePath, false);
+            }
+
+            // Set the sandbox security manager
+            _$SandboxSecurityManager securityManager = new _$SandboxSecurityManager();
+            System.setSecurityManager(securityManager);
+
+            startTime = System.nanoTime();
+
+            mainMethod.invoke(userClass, (Object) args);
+        } catch (Throwable throwable) {
+            Throwable cause = throwable.getCause();
+            throw cause == null ? throwable : cause;
+        } finally {
+            if (writer != null) {
+                long endTime = System.nanoTime();
+                writer.write("""" + (endTime - startTime));
+                writer.close();
+            }
+        }
+    }
+}
+
+class _$SandboxSecurityManager extends SecurityManager {
+    private static final String JAVA_HOME_DIR = System.getProperty(""java.home"");
+    private static final String USER_DIR = System.getProperty(""user.dir"");
+
+    @Override
+    public void checkPermission(Permission permission) {
+        if (permission instanceof PropertyPermission) {
+            // Allow reading system properties
+            return;
+        }
+
+        if (permission instanceof FilePermission) {
+            FilePermission filePermission = (FilePermission) permission;
+            String filePath = filePermission.getName();
+            File file = new File(filePath);
+            if ((file.getPath().startsWith(JAVA_HOME_DIR) || file.getPath().startsWith(USER_DIR)) &&
+                    filePermission.getActions().equals(""read"")) {
+                // Allow reading Java system directories and user directories
+                return;
+            }
+        }
+
+        if (permission instanceof NetPermission) {
+            if (permission.getName().equals(""specifyStreamHandler"")) {
+                // Allow specifyStreamHandler
+                return;
+            }
+        }
+
+        if (permission instanceof ReflectPermission) {
+            if (permission.getName().equals(""suppressAccessChecks"")) {
+                // Allow suppressAccessChecks
+                return;
+            }
+        }
+
+        if (permission instanceof RuntimePermission) {
+            if (permission.getName().equals(""createClassLoader"") ||
+                    permission.getName().startsWith(""accessClassInPackage.sun."") ||
+                    permission.getName().equals(""getProtectionDomain"") ||
+                    permission.getName().equals(""accessDeclaredMembers"")) {
+                // Allow createClassLoader, accessClassInPackage.sun, getProtectionDomain and accessDeclaredMembers
+                return;
+            }
+        }
+
+        throw new SecurityException(""Not allowed: "" + permission.getClass().getName());
+    }
+
+    @Override
+    public void checkAccess(Thread thread) {
+        throw new UnsupportedOperationException();
+    }
+}";
             }
         }
 
@@ -88,12 +174,9 @@
                 return result;
             }
 
-            // Copy the sandbox executor source file to the working directory
-            var sandboxExecutorSourceFilePathLastIndexOfSlash = this.sandboxExecutorSourceFilePath.LastIndexOf('\\');
-            var sandboxExecutorFileName = this.sandboxExecutorSourceFilePath.Substring(sandboxExecutorSourceFilePathLastIndexOfSlash + 1);
-
-            var workingSandboxExecutorSourceFilePath = string.Format("{0}\\{1}", this.workingDirectory, sandboxExecutorFileName);
-            File.Copy(this.sandboxExecutorSourceFilePath, workingSandboxExecutorSourceFilePath);
+            // Create a sandbox executor source file in the working directory
+            var sandboxExecutorSourceFilePath = string.Format("{0}\\{1}.{2}", this.workingDirectory, SandboxExecutorClassName, CompilerType.Java.GetFileExtension());
+            File.WriteAllText(sandboxExecutorSourceFilePath, this.SandboxExecutorCode);
 
             // Compile all source files - sandbox executor and submission file(s)
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
@@ -112,24 +195,8 @@
                 return result;
             }
 
-            // Archive all compiled into a jar file
-            try
-            {
-                this.ArchiveCompiledFilesIntoJarFile();
-            }
-            catch (Exception exception)
-            {
-                result.IsCompiledSuccessfully = false;
-                result.CompilerComment = exception.Message;
-
-                return result;
-            }
-
             // Prepare execution process arguments and time measurement info
-            var classPathWithJarFile = string.Format("-classpath \"{0}\\{1}\"", this.workingDirectory, ArchivedFileName);
-
-            var sandboxExecutorFileNameLastIndexOfDot = sandboxExecutorFileName.LastIndexOf('.');
-            var sandboxExecutorClassName = sandboxExecutorFileName.Substring(0, sandboxExecutorFileNameLastIndexOfDot);
+            var classPathArgument = string.Format("-classpath \"{0}\"", this.workingDirectory);
 
             var submissionFilePathLastIndexOfSlash = submissionFilePath.LastIndexOf('\\');
             var submissionFilePathLastIndexOfDot = submissionFilePath.LastIndexOf('.');
@@ -151,7 +218,7 @@
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { classPathWithJarFile, sandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
+                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
 
                 UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
 
@@ -189,7 +256,7 @@
             // Remove existing packages
             submissionCode = Regex.Replace(submissionCode, PackageNameRegEx, string.Empty);
 
-            // TODO: Allow not always to user public class
+            // TODO: Remove the restriction for one public class - a non-public Java class can contain the main method!
             var classNameMatch = Regex.Match(submissionCode, ClassNameRegEx);
             if (!classNameMatch.Success)
             {
@@ -218,36 +285,6 @@
             }
 
             return compilerResult;
-        }
-
-        private void ArchiveCompiledFilesIntoJarFile()
-        {
-            var arguments = string.Format("cf {0} *{1}", ArchivedFileName, JavaCompiledFileExtension);
-
-            var processStartInfo = new ProcessStartInfo(this.javaArchiverPath)
-            {
-                Arguments = arguments,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                WorkingDirectory = this.workingDirectory
-            };
-
-            using (var process = Process.Start(processStartInfo))
-            {
-                if (process == null)
-                {
-                    throw new Exception("Could not start Java archiver!");
-                }
-
-                var errorMessage = process.StandardError.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    throw new Exception(errorMessage);
-                }
-
-                process.WaitForExit();
-            }
         }
     }
 }

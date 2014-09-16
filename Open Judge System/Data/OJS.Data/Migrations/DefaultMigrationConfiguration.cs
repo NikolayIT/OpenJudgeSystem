@@ -166,12 +166,42 @@ namespace OJS.Data.Migrations
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "Java code",
+                    CompilerType = CompilerType.Java,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
+                    Name = "PHP code (CGI)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpCgiExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
+                    Name = "PHP code (CLI)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpCliExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
                 });
 
             context.SaveChanges();
         }
 
-        private void SeedCategoryContestProblem(OjsDbContext context)
+        private void SeedCategoryContestProblem(IOjsDbContext context)
         {
             foreach (var categoryToBeDeleted in context.ContestCategories)
             {

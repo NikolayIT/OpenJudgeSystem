@@ -2,7 +2,7 @@
 {
     using System.IO;
 
-    public static class FileExtensions
+    public static class StreamExtensions
     {
         public static byte[] ToByteArray(this Stream input)
         {
