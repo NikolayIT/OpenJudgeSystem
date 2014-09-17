@@ -66,6 +66,7 @@
             {
                 return this.contestName.ToUrl();
             }
+
             set
             {
                 this.contestName = value;

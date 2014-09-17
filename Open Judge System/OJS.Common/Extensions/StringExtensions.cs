@@ -185,19 +185,19 @@
             {
                 char symbolToAdd = input[i];
 
-                if (Char.IsUpper(symbolToAdd) && previous == WhiteSpace && !inWord)
+                if (char.IsUpper(symbolToAdd) && previous == WhiteSpace && !inWord)
                 {
                     inWord = true;
                     isAbbreviation = true;
                     abbreviation.Append(symbolToAdd);
                 }
-                else if (Char.IsUpper(symbolToAdd) && inWord)
+                else if (char.IsUpper(symbolToAdd) && inWord)
                 {
                     abbreviation.Append(symbolToAdd);
                     currentWord.Append(WhiteSpace);
-                    symbolToAdd = Char.ToLower(symbolToAdd);
+                    symbolToAdd = char.ToLower(symbolToAdd);
                 }
-                else if (Char.IsLower(symbolToAdd) && inWord)
+                else if (char.IsLower(symbolToAdd) && inWord)
                 {
                     isAbbreviation = false;
                 }
