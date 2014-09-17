@@ -134,11 +134,13 @@
                     messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
                 }
             }
-            else
-            {
-                // User is not logged-in
-                messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
-            }
+
+            // use this condition if you want to display welcome message
+            // else
+            // {
+            //     // User is not logged-in
+            //     messages.Add(Resources.Base.Main.Welcome_to_the_new_bgcoder_and_change_password, SystemMessageType.Informational, 2000);
+            // }
 
             return messages;
         }

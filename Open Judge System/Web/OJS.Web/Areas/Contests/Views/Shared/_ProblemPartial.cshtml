@@ -123,9 +123,28 @@
                                 var fileUpload = $("#FileUploadInputFields_@Model.ProblemId");
                                 var codeArea = $("#SourceCodeInputFields_@Model.ProblemId");
                                 var fileExtensionsInfo = $("#FileUploadAllowedFileExtensions_@Model.ProblemId");
+                                var fileInput;
+                                initFileInput();
                                 
                                 function submitHandler() {
-                                    return validateSubmit.binary();
+                                    var size = parseFloat("@(Model.FileSizeLimit)") * 1024;
+                                    var extensions = dataItem.AllowedFileExtensions.split(',');
+                                    return validateSubmit.binary(fileInput[0], size, extensions);
+                                }
+
+                                function initFileInput() {
+                                    fileInput = $('#file-problem-@Model.ProblemId');
+                                }
+
+                                if (fileInput.data('kendoUpload')) {
+                                    var kendoUpload = fileInput.data('kendoUpload');
+                                    kendoUpload.bind('remove', function () {
+                                        initFileInput();
+                                    });
+
+                                    kendoUpload.bind('select', function () {
+                                        initFileInput();
+                                    })
                                 }
 
                                 if (dataItem.AllowBinaryFilesUpload) {

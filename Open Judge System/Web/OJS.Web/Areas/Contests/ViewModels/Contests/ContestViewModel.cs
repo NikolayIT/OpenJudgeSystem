@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
 
@@ -13,9 +14,7 @@
     
     public class ContestViewModel
     {
-        public ContestViewModel()
-        {
-        }
+        private string contestName;
 
         public static Expression<Func<Contest, ContestViewModel>> FromContest
         {
@@ -27,6 +26,8 @@
                                   {
                                       Id = contest.Id,
                                       Name = contest.Name,
+                                      CategoryId = contest.CategoryId,
+                                      CategoryName = contest.Category.Name,
                                       StartTime = contest.StartTime,
                                       EndTime = contest.EndTime,
                                       PracticeStartTime = contest.PracticeStartTime,
@@ -56,6 +57,20 @@
 
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string Name { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        public string CategoryName
+        {
+            get
+            {
+                return this.contestName.ToUrl();
+            }
+            set
+            {
+                this.contestName = value;
+            }
+        }
 
         public string Description { get; set; }
 

@@ -54,7 +54,7 @@
                       "~/Content/KendoUI/kendo.black.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/bootstrap").Include(
-                      "~/Content/bootstrap/bootstrap-theme-cyborg.css"));
+                      "~/Content/bootstrap/themes/bootstrap-theme-cyborg.css"));
 
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirror").Include(
                       "~/Content/CodeMirror/codemirror.css",
