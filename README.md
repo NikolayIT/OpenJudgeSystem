@@ -15,11 +15,9 @@ Originally developed by:
 * Vasil Dininski (https://github.com/dininski)
 * Todor Stoyanov (https://github.com/todorstoianov)
 
-Contributors from Software University (SoftUni):
-* Teodor Kurtev (https://github.com/teodor92)
-* Svetlin Nakov (https://github.com/nakov)
-
 Other contributors:
 * Vladislav Karamfilov (https://github.com/vladislav-karamfilov)
+* Teodor Kurtev (https://github.com/teodor92)
+* Svetlin Nakov (https://github.com/nakov)
 
 The system is licensed under MIT License
