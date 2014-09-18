@@ -97,6 +97,9 @@
                                 <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
+                                <li class="dropdown-header">Anti-cheat</li>
+                                <li>@Html.ActionLink("IP Usage", "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>
+                                <li class="divider"></li>
                                 <li class="dropdown-header">Debugging</li>
                                 <li><a href="/Glimpse.axd">Glimpse</a></li>
                                 <li class="divider"></li>
