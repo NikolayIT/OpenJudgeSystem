@@ -134,7 +134,6 @@
                 ////    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
                 ////}
             }
-                       
 
             return messages;
         }
