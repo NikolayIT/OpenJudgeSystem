@@ -61,6 +61,7 @@
     <Compile Include="JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="ExecutionContext.cs" />

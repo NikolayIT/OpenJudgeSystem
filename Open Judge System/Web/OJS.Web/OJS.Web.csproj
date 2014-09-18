@@ -875,6 +875,14 @@
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.min.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.min.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-cyborg.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-cyborg.min.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-flatly.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme-flatly.min.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />

@@ -1,6 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Participants.ParticipantViewModel
 
 @using Resource = Resources.Areas.Contests.Views.CompeteIndex;
+@using ContestResource = Resources.Areas.Contests.Views.ContestsDetails;
 
 @{
     ViewBag.Title = Model.Contest.Name;
@@ -9,6 +10,13 @@
 @section styles {
     @Styles.Render("~/Content/CodeMirror/codemirror", "~/Content/Contests/submission-page")
 }
+
+<ol class="breadcrumb">
+    <li><a href="/">@ContestResource.Home</a></li>
+    <li>@Html.ActionLink(ContestResource.Contests, GlobalConstants.Index, "List")</li>
+    <li><a href="/Contests#!/List/ByCategory/@Model.Contest.CategoryId/@Model.Contest.CategoryName">@Model.Contest.CategoryName</a></li>
+    <li class="active">@Model.Contest.Name</li>
+</ol>
 
 <h1>
     <a href="@ContestsHelper.GetUrl(Model.Contest.Id, Model.Contest.Name)">@Model.Contest.Name</a>
@@ -96,8 +104,11 @@
                 return validationResult;
             }
 
-            function validateBinarySubmit() {
-                var validationResult = timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
+            function validateBinarySubmit(fileInput, size, extensions) {
+                var validationResult = validateBinaryFileExists(fileInput)
+                                        && validateBinaryFileSize(fileInput, size)
+                                        && validateBinaryFileAllowedExtensions(fileInput, extensions)
+                                        && timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
                 return validationResult;
             }
 

@@ -122,8 +122,8 @@
 
                 this.RetestSubmissions(problem);
 
-                this.TempData[GlobalConstants.InfoMessage] = "Теста беше добавен успешно";
-                return this.RedirectToAction("Problem", new { id = id });
+                this.TempData[GlobalConstants.InfoMessage] = "Тестът беше добавен успешно.";
+                return this.RedirectToAction("Problem", new { id });
             }
 
             return this.View(test);
@@ -167,7 +167,7 @@
                 if (existingTest == null)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
-                    return this.RedirectToAction("Problem", new { id = id });
+                    return this.RedirectToAction("Problem", new { id });
                 }
 
                 existingTest.InputData = test.InputData;
@@ -255,7 +255,7 @@
                 .Where(s => s.ProblemId == test.ProblemId)
                 .Select(s => new
                 {
-                    Id = s.Id, 
+                    Id = s.Id,
                     CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
                     AllTestRuns = s.TestRuns.Count(),
                     MaxPoints = s.Problem.MaximumPoints
@@ -276,7 +276,7 @@
 
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Теста беше изтрит успешно";
+            this.TempData[GlobalConstants.InfoMessage] = "Тестът беше изтрит успешно.";
             return this.RedirectToAction("Problem", new { id = test.ProblemId });
         }
 
@@ -601,7 +601,7 @@
         /// <returns>Zip file containing all tests in format {task}.{testNum}[.{zeroNum}].{in|out}.txt</returns>
         public ActionResult Export(int id)
         {
-            var problem = this.Data.Problems.All().Where(x => x.Id == id).FirstOrDefault();
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
             if (problem == null)
             {

@@ -86,6 +86,14 @@
             }
         }
 
+        public static string PhpCliExecutablePath
+        {
+            get
+            {
+                return GetSetting("PhpCliExecutablePath");
+            }
+        }
+
         public static int ThreadsCount
         {
             get

@@ -176,7 +176,8 @@
                                 }
                             };
 
-                        if (!process.Start())
+                        var started = process.Start();
+                        if (!started)
                         {
                             return "Could not start compiler.";
                         }

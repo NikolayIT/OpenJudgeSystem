@@ -25,7 +25,7 @@
 
             indexViewModel.FutureContests =
                 this.Data.Contests.AllFuture()
-                    .OrderByDescending(x => x.StartTime)
+                    .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList();
 

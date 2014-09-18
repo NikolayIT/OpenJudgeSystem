@@ -97,10 +97,18 @@ function Notifier() {
         });
     }
 
+    function notifyWarning(warning) {
+        showMessage({
+            message: warning.statusText,
+            cssClass: "alert alert-warning"
+        });
+    }
+
     return {
         showMessage: showMessage,
         notifySuccess: notifySuccess,
-        notifyFailure: notifyFailure
+        notifyFailure: notifyFailure,
+        notifyWarning: notifyWarning
     };
 }
 
@@ -129,7 +137,6 @@ var displayMaximumValues = function(maxMemory, maxTime, memoryString, timeString
     return result;
 };
 
-// validate the submission content
 function validateSubmissionContent() {
     var codeMirrorInstance = getCodeMirrorInstance();
     var codeMirrorText = codeMirrorInstance.getValue();
@@ -146,6 +153,53 @@ function validateSubmissionContent() {
     return true;
 }
 
+function validateBinaryFileExists(fileInput) {
+    if (!fileInput.files[0]) {
+        messageNotifier.notifyWarning({
+            statusText: 'Моля изберете файл, който да изпратите.'
+        });
+        return false;
+    }
+
+    return true;
+}
+
+function validateBinaryFileSize(fileInput, size) {
+    if (!size) {
+        return true;
+    }
+
+    var file = fileInput.files[0];
+    if (file && file.size > size) {
+        messageNotifier.notifyWarning({
+            statusText: 'Избраният файл е твърде голям. Моля, изберете файл с по-малък размер.'
+        });
+
+        return false;
+    }
+
+    return true;
+}
+
+function validateBinaryFileAllowedExtensions(fileInput, extensions) {
+    var fileName = fileInput.files[0].name;
+    var fileExtension = fileName.split('.')[fileName.split('.').length - 1].toLowerCase();
+
+    if (!extensions || extensions.length == 0) {
+        return true;
+    }
+
+    if ($.inArray(fileExtension, extensions) < 0) {
+        messageNotifier.notifyWarning({
+            statusText: 'Избраният тип файл не е позволен. Разрешените формати са: ' + extensions.join(',') + '.'
+        });
+
+        return false;
+    }
+
+    return true;
+}
+
 var messageNotifier = new Notifier();
 
 // validate the submission time
@@ -154,7 +208,6 @@ var submissionTimeValidator = function() {
     var currentServerTime;
 
     function validate(lastSubmit, limitBetweenSubmissions, serverTime) {
-
         if (!lastSubmissionTime) {
             lastSubmissionTime = lastSubmit;
         }

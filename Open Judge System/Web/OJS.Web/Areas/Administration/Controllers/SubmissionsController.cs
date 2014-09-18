@@ -341,22 +341,6 @@
                 string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
         }
 
-        private void ValidateBinarySubmission(ModelType model, Problem problem, SubmissionType submissionType)
-        {
-            if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
-            {
-                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
-            }
-
-            if (submissionType.AllowedFileExtensions != null)
-            {
-                if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
-                {
-                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
-                }
-            }
-        }
-
         private SubmissionType GetSubmissionType(int submissionTypeId)
         {
             var submissionType = this.Data.SubmissionTypes.GetById(submissionTypeId);
@@ -365,11 +349,9 @@
             {
                 return submissionType;
             }
-            else
-            {
-                ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
-                return null;
-            }
+
+            this.ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
+            return null;
         }
 
         private void ValidateParticipant(int? participantId, int contestId)
@@ -388,6 +370,22 @@
             if (model.Content.Length > problem.SourceCodeSizeLimit)
             {
                 ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+            }
+        }
+
+        private void ValidateBinarySubmission(ModelType model, Problem problem, SubmissionType submissionType)
+        {
+            if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
+            {
+                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+            }
+
+            if (submissionType.AllowedFileExtensions != null)
+            {
+                if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
+                {
+                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                }
             }
         }
     }
