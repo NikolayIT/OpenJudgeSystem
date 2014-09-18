@@ -121,3 +121,6 @@ $tf/
 
 # Installation guide
 /Documentation/Installation/Installation Guide for Open Judge System.docx
+
+# JustMock configuration files
+/Open Judge System/*.jmconfig
