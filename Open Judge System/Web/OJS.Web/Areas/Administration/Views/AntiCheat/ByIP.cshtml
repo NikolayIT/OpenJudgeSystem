@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SelectListItem>
+@{
+    ViewBag.Title = "By IP";
+}
+
+<h1>@ViewBag.Title</h1>
+<div class="row">
+    <div class="col-md-9">
+        @(Html.Kendo()
+            .ComboBox()
+            .Name("contests")
+            .BindTo(Model)
+            .Filter(FilterType.Contains)
+            .AutoBind(false)
+            .MinLength(3)
+            .Placeholder("Изберете или напишете състезание")
+            .Events(ev => ev.Change("selectContest"))
+            .HtmlAttributes(new { style = "width: 100%; height: 30px" }))
+    </div>
+    <div class="col-md-3">
+        <input id="exclude-ips" type="text" class="form-control" />
+    </div>
+</div>
+
+
+<br />
+<div id="ip-grid">
+</div>
+
+@section scripts{
+    <script>
+        function selectContest() {
+            var contestId = $('#contests').val();
+            var excludeIps = $('#exclude-ips').val();
+
+            $.get('/Administration/AntiCheat/RenderByIpGrid/' + contestId + '?excludeIps=' + excludeIps, function (data) {
+                $("#ip-grid").html(data);
+            });
+        }
+    </script>
+}

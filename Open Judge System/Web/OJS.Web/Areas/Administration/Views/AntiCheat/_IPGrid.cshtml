@@ -1,0 +1,35 @@
+﻿@model IEnumerable<OJS.Web.Areas.Administration.ViewModels.AntiCheat.AntiCheatByIpAdministrationViewModel>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Participant Id
+        </th>
+        <th>
+            Username
+        </th>
+        <th>
+            Points
+        </th>
+        <th>
+            IP Addresses
+        </th>
+    </tr>
+    @foreach (var participant in Model)
+    {
+        <tr id="participant-@participant.Id">
+            <td>
+                <span class="text-white">@participant.Id</span>
+            </td>
+            <td>
+                <a href="/Users/@participant.UserName" target="_blank"><span class="text-primary">@participant.UserName</span></a>
+            </td>
+            <td>
+                <span class="text-white">@participant.Points</span>
+            </td>
+            <td>
+                <span class="text-white">@Html.Raw(string.Join("  |  ", participant.DifferentIps.Take(10).Select(ip => string.Format("<a href=\"http://tools.nikolay.in/whois/{0}\" target=\"_blank\">{0}</a>", ip))))</span>
+            </td>
+        </tr>
+    }
+</table>

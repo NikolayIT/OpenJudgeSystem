@@ -12,7 +12,7 @@
 
         public int? PracticeResult { get; set; }
 
-        public int ContestMaximumPoints { get; set; }
+        public int? ContestMaximumPoints { get; set; }
 
         public DateTime RegistrationTime { get; set; }
     }

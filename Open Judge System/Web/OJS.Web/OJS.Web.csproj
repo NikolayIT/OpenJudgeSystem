@@ -737,6 +737,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\AntiCheatController.cs" />
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
@@ -755,6 +756,8 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AntiCheat\AntiCheatByIpAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AntiCheat\IpSubmissionsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestCategory\ContestCategoryAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestQuestionAnswer\ContestQuestionAnswerViewModel.cs" />
@@ -1121,6 +1124,8 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Files\Index.cshtml" />
     <Content Include="Content\KendoUI\BlueOpal\Thumbs.db" />
+    <Content Include="Areas\Administration\Views\AntiCheat\ByIP.cshtml" />
+    <Content Include="Areas\Administration\Views\AntiCheat\_IPGrid.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />

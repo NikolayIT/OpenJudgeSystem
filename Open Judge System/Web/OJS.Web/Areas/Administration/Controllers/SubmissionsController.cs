@@ -120,7 +120,7 @@
             if (submission == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
-                this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             ViewBag.SubmissionAction = "Update";
@@ -193,7 +193,7 @@
             if (submission == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
-                this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             return this.View(submission);
@@ -208,7 +208,7 @@
             if (submission == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
-                this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             foreach (var testRun in submission.TestRuns.ToList())
