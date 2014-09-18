@@ -68,7 +68,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (UserParticipationViewModel result in Model.Participations)
+            @foreach (var result in Model.Participations)
             {
                 <tr>
                     <td>
@@ -80,14 +80,13 @@
                     @if (this.User.Identity.Name == Model.Username || User.IsAdmin())
                     {
                         <td>
-                            @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints</span>
+                            @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>
                             <br />
-                            @Resource.Practice: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints</span>
+                            @Resource.Practice: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>
                         </td>
                     }
                 </tr>
             }
-
         </tbody>
     </table>
 </div>
