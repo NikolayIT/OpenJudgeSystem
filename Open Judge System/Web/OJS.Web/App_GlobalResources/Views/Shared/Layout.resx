@@ -153,6 +153,9 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="IpUsage" xml:space="preserve">
+    <value>IP Usage</value>
+  </data>
   <data name="Log" xml:space="preserve">
     <value>Log</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="Submissions" xml:space="preserve">
     <value>Submissions</value>
+  </data>
+  <data name="SubmissionSimilarity" xml:space="preserve">
+    <value>Submissions Similarity</value>
   </data>
   <data name="Test_files" xml:space="preserve">
     <value>Test files</value>
