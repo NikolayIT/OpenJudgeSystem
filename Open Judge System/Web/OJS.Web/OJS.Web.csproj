@@ -752,6 +752,7 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\AntiCheatByIpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\IpSubmissionsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Common\AdministrationViewModel.cs" />
