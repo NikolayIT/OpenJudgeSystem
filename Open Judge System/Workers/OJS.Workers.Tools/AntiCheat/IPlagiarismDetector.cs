@@ -2,6 +2,6 @@
 {
     public interface IPlagiarismDetector
     {
-        IPlagiarismResult DetectPlagiarism(string firstSource, string secondSource);
+        PlagiarismResult DetectPlagiarism(string firstSource, string secondSource);
     }
 }
