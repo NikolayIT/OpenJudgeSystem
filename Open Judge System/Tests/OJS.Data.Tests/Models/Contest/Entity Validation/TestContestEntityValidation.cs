@@ -4,8 +4,6 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
     using OJS.Data.Models;
 
     [TestClass]
@@ -32,9 +30,7 @@
 
             this.EmptyOjsData.SaveChanges();
 
-            var result = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Invalid")
-                .FirstOrDefault();
+            var result = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Invalid");
         }
     }
 }
