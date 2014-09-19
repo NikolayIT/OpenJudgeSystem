@@ -4,9 +4,9 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using OJS.Web.Controllers;
     using OJS.Data;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
+    using OJS.Web.Controllers;
 
     public class AntiCheatController : AdministrationController
     {
@@ -34,12 +34,12 @@
                         Value = c.Value.ToString()
                     });
 
-            return View(contests);
+            return this.View(contests);
         }
 
         public ActionResult RenderByIpGrid(int id, string excludeIps)
         {
-            var byIps = this.Data.Participants
+            var renderByIpAddress = this.Data.Participants
                 .All()
                 .Where(p => p.ContestId == id && p.IsOfficial)
                 .Select(AntiCheatByIpAdministrationViewModel.ViewModel)
@@ -62,10 +62,10 @@
                             .All(s => s.IpAddress != ip));
                 }
 
-                byIps.AddRange(withoutExcludeIps.Select(AntiCheatByIpAdministrationViewModel.ViewModel));
+                renderByIpAddress.AddRange(withoutExcludeIps.Select(AntiCheatByIpAdministrationViewModel.ViewModel));
             }
 
-            return this.PartialView("_IPGrid", byIps);
+            return this.PartialView("_IPGrid", renderByIpAddress);
         }
     }
 }
