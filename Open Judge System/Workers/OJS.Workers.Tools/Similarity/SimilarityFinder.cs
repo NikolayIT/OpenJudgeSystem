@@ -33,7 +33,7 @@
     /// completely deleted or inserted.
     /// 
     /// The result from a comparisation is stored in 2 arrays that flag for modified (deleted or inserted)
-    /// lines in the 2 data arrays. These bits are then analysed to produce a array of Item objects.
+    /// lines in the 2 data arrays. These bits are then analyzed to produce a array of Item objects.
     /// 
     /// Further possible optimizations:
     /// (first rule: don't do it; second: don't do it yet)
@@ -48,29 +48,6 @@
     /// diff.cs: A port of the algorithm to C#
     /// Copyright (c) by Matthias Hertel, http://www.mathertel.de
     /// This work is licensed under a BSD style license. See http://www.mathertel.de/License.aspx
-    /// 
-    /// Changes:
-    /// 2002.09.20 There was a "hang" in some situations.
-    /// Now I understand a little bit more of the SMS algorithm. 
-    /// There have been overlapping boxes; that where analyzed partial differently.
-    /// One return-point is enough.
-    /// A assertion was added in CreateDiffs when in debug-mode, that counts the number of equal (no modified) lines in both arrays.
-    /// They must be identical.
-    /// 
-    /// 2003.02.07 Out of bounds error in the Up/Down vector arrays in some situations.
-    /// The two vetors are now accessed using different offsets that are adjusted using the start k-Line. 
-    /// A test case is added. 
-    /// 
-    /// 2006.03.05 Some documentation and a direct Diff entry point.
-    /// 
-    /// 2006.03.08 Refactored the API to static methods on the Diff class to make usage simpler.
-    /// 2006.03.10 using the standard Debug class for self-test now.
-    ///            compile with: csc /target:exe /out:diffTest.exe /d:DEBUG /d:TRACE /d:SELFTEST Diff.cs
-    /// 2007.01.06 license agreement changed to a BSD style license.
-    /// 2007.06.03 added the Optimize method.
-    /// 2007.09.23 UpVector and DownVector optimization by Jan Stoklasa ().
-    /// 2008.05.31 Adjusted the testing code that failed because of the Optimize method (not a bug in the diff algorithm).
-    /// 2008.10.08 Fixing a test case and adding a new test case.
     /// </summary>
     public class SimilarityFinder
     {
@@ -123,8 +100,8 @@
         /// <summary>
         /// Find the difference in 2 arrays of integers.
         /// </summary>
-        /// <param name="arrayA">A-version of the numbers (usualy the old one)</param>
-        /// <param name="arrayB">B-version of the numbers (usualy the new one)</param>
+        /// <param name="arrayA">A-version of the numbers (usually the old one)</param>
+        /// <param name="arrayB">B-version of the numbers (usually the new one)</param>
         /// <returns>Returns a array of Items that describe the differences.</returns>
         public static Difference[] DiffInt(int[] arrayA, int[] arrayB)
         {
@@ -150,14 +127,16 @@
         /// This function converts all textlines of the text into unique numbers for every unique textline
         /// so further work can work only with simple numbers.
         /// </summary>
-        /// <param name="text">the input text</param>
-        /// <param name="h">This extern initialized hashtable is used for storing all ever used textlines.</param>
-        /// <param name="trimSpace">ignore leading and trailing space characters</param>
+        /// <param name="text">The input text</param>
+        /// <param name="usedTextlines">This extern initialized hashtable is used for storing all ever used textlines.</param>
+        /// <param name="trimSpace">Ignore leading and trailing space characters</param>
+        /// <param name="ignoreSpace">Ignore spaces</param>
+        /// <param name="ignoreCase">Ignore text case</param>
         /// <returns>a array of integers.</returns>
-        private static int[] DiffCodes(string text, Hashtable h, bool trimSpace, bool ignoreSpace, bool ignoreCase)
+        private static int[] DiffCodes(string text, Hashtable usedTextlines, bool trimSpace, bool ignoreSpace, bool ignoreCase)
         {
             // get all codes of the text
-            int lastUsedCode = h.Count;
+            int lastUsedCode = usedTextlines.Count;
 
             // strip off all cr, only use lf as textline separator.
             text = text.Replace("\r", string.Empty);
@@ -183,11 +162,11 @@
                     s = s.ToLower();
                 }
 
-                var code = h[s];
+                var code = usedTextlines[s];
                 if (code == null)
                 {
                     lastUsedCode++;
-                    h[s] = lastUsedCode;
+                    usedTextlines[s] = lastUsedCode;
                     codes[i] = lastUsedCode;
                 }
                 else
@@ -331,7 +310,7 @@
                 }
             }
 
-            throw new ApplicationException("the algorithm should never come here.");
+            throw new Exception("the algorithm should never come here.");
         }
 
         /// <summary>
@@ -392,7 +371,7 @@
             }
             else
             {
-                // Find the middle snakea and length of an optimal path for A and B
+                // Find the middle snake and length of an optimal path for A and B
                 var smsrd = ShortestMiddleSnake(dataA, lowerA, upperA, dataB, lowerB, upperB, downVector, upVector);
 
                 // Debug.Write(2, "MiddleSnakeData", String.Format("{0},{1}", smsrd.x, smsrd.y));
@@ -409,10 +388,10 @@
         /// dynamic array
         private static Difference[] CreateDiffs(DiffData dataA, DiffData dataB)
         {
-            var a = new ArrayList();
+            var differences = new ArrayList();
 
-            int lineA = 0;
-            int lineB = 0;
+            var lineA = 0;
+            var lineB = 0;
             while (lineA < dataA.Length || lineB < dataB.Length)
             {
                 if ((lineA < dataA.Length) && (!dataA.Modified[lineA]) && (lineB < dataB.Length)
@@ -425,8 +404,8 @@
                 else
                 {
                     // maybe deleted and/or inserted lines
-                    int startA = lineA;
-                    int startB = lineB;
+                    var startA = lineA;
+                    var startB = lineB;
 
                     // while (LineA < DataA.Length && DataA.modified[LineA])
                     while (lineA < dataA.Length && (lineB >= dataB.Length || dataA.Modified[lineA]))
@@ -450,13 +429,13 @@
                                                    DeletedA = lineA - startA,
                                                    InsertedB = lineB - startB
                                                };
-                        a.Add(item);
+                        differences.Add(item);
                     }
                 }
             }
 
-            var result = new Difference[a.Count];
-            a.CopyTo(result);
+            var result = new Difference[differences.Count];
+            differences.CopyTo(result);
 
             return result;
         }
