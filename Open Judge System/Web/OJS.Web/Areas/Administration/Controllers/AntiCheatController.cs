@@ -60,15 +60,16 @@
             return this.View(this.GetContestsListItems());
         }
 
+        [HttpPost]
         public ActionResult RenderSubmissionsSimilaritiesGrid(int[] ids)
         {
-            var orExpressionIds = ExpressionBuilder.BuildOrExpression<Submission, int>(ids, s => s.Id);
+            var orExpressionIds = ExpressionBuilder.BuildOrExpression<Submission, int>(ids, s => s.Participant.ContestId);
             var participantsSimilarSubmissionGroups = this.Data.Submissions
                 .All()
                 .Where(orExpressionIds)
                 .Where(s => s.Participant.IsOfficial && s.Points != 0)
-                .Select(s => 
-                    new 
+                .Select(s =>
+                    new
                     {
                         s.Id,
                         s.ProblemId,

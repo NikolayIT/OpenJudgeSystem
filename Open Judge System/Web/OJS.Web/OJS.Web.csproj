@@ -1101,6 +1101,9 @@
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\ByIp.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_IpGrid.cshtml" />
+    <Content Include="Areas\Administration\Views\AntiCheat\BySubmissionSimilarity.cshtml" />
+    <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />

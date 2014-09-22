@@ -1,0 +1,11 @@
+﻿@model IEnumerable<SelectListItem>
+@(Html.Kendo()
+    .ComboBox()
+    .Name("contests")
+    .BindTo(Model)
+    .Filter(FilterType.Contains)
+    .AutoBind(false)
+    .MinLength(3)
+    .Placeholder("Изберете или напишете състезание")
+    .Events(ev => ev.Change("selectContest"))
+    .HtmlAttributes(new { style = "width: 100%; height: 30px" }))
