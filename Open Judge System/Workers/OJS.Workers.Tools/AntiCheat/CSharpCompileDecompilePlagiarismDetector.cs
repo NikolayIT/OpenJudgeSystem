@@ -3,6 +3,7 @@
     using System.IO;
     using System.Linq;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Compilers;
     using OJS.Workers.Tools.Similarity;
 
@@ -20,14 +21,20 @@
 
         public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource)
         {
+            // TODO: Check for undeleted temporary files.
             var csharpCompiler = new CSharpCompiler();
-            var firstCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, firstSource, null);
+
+            var firstSourceFilePath = FileHelpers.SaveStringToTempFile(firstSource);
+            var firstCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, firstSourceFilePath, null);
+            File.Delete(firstSourceFilePath);
             if (!firstCompileResult.IsCompiledSuccessfully)
             {
                 return new PlagiarismResult(0);
             }
 
-            var secondCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, secondSource, null);
+            var secondSourceFilePath = FileHelpers.SaveStringToTempFile(secondSource);
+            var secondCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, secondSourceFilePath, null);
+            File.Delete(secondSourceFilePath);
             if (!secondCompileResult.IsCompiledSuccessfully)
             {
                 return new PlagiarismResult(0);
@@ -35,19 +42,24 @@
 
             var dotNetDisassembler = new DotNetDisassembler();
             var firstDisassemblerResult = dotNetDisassembler.Compile(this.dotNetDisassemblerPath, firstCompileResult.OutputFile, null);
+            File.Delete(firstCompileResult.OutputFile);
             if (!firstDisassemblerResult.IsCompiledSuccessfully)
             {
                 return new PlagiarismResult(0);
             }
 
-            var secondDisassemblerResult = dotNetDisassembler.Compile(this.dotNetDisassemblerPath, firstCompileResult.OutputFile, null);
+            var secondDisassemblerResult = dotNetDisassembler.Compile(this.dotNetDisassemblerPath, secondCompileResult.OutputFile, null);
+            File.Delete(secondCompileResult.OutputFile);
             if (!secondDisassemblerResult.IsCompiledSuccessfully)
             {
                 return new PlagiarismResult(0);
             }
 
             var firstFileContent = File.ReadAllText(firstDisassemblerResult.OutputFile);
+            File.Delete(firstDisassemblerResult.OutputFile);
+
             var secondFileContent = File.ReadAllText(secondDisassemblerResult.OutputFile);
+            File.Delete(secondDisassemblerResult.OutputFile);
 
             var similarityFinder = new SimilarityFinder();
             var differences = similarityFinder.DiffText(
