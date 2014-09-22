@@ -11,12 +11,16 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
     using OJS.Web.Controllers;
+    using OJS.Workers.Tools.AntiCheat;
 
     public class AntiCheatController : AdministrationController
     {
-        public AntiCheatController(IOjsData data)
+        private readonly IPlagiarismDetector plagiarismDetector;
+
+        public AntiCheatController(IOjsData data, IPlagiarismDetector detector)
             : base(data)
         {
+            this.plagiarismDetector = detector;
         }
 
         public ActionResult ByIp()
@@ -67,7 +71,7 @@
             var participantsSimilarSubmissionGroups = this.Data.Submissions
                 .All()
                 .Where(orExpressionIds)
-                .Where(s => s.Participant.IsOfficial && s.Points != 0)
+                .Where(s => s.Participant.IsOfficial && s.Points >= 20)
                 .Select(s =>
                     new
                     {
@@ -93,46 +97,28 @@
                 {
                     for (int j = i + 1; j < groupAsList.Count; j++)
                     {
-                        var result = this.plagiarismDetector.Check(groupAsList[i].Content.Decompress(), groupAsList[j].Content.Decompress());
-                        similarities.Add(new SubmissionSimilarityViewModel
+                        var result = this.plagiarismDetector.DetectPlagiarism(groupAsList[i].Content.Decompress(), groupAsList[j].Content.Decompress());
+                        if (result.SimilarityPercentage != 0)
                         {
-                            ProblemId = groupAsList[i].ProblemId.Value,
-                            ProblemName = groupAsList[i].ProblemName,
-                            Points = groupAsList[i].Points,
-                            Differences = result.Count(),
-                            FirstSubmissionId = groupAsList[i].Id,
-                            FirstParticipantName = groupAsList[i].ParticipantName,
-                            FirstSubmissionCreatedOn = groupAsList[i].CreatedOn,
-                            SecondSubmissionId = groupAsList[j].Id,
-                            SecondParticipantName = groupAsList[j].ParticipantName,
-                            SecondSubmissionCreatedOn = groupAsList[j].CreatedOn
-                        });
+                            similarities.Add(new SubmissionSimilarityViewModel
+                            {
+                                ProblemId = groupAsList[i].ProblemId.Value,
+                                ProblemName = groupAsList[i].ProblemName,
+                                Points = groupAsList[i].Points,
+                                Differences = result.Differences.Count(),
+                                FirstSubmissionId = groupAsList[i].Id,
+                                FirstParticipantName = groupAsList[i].ParticipantName,
+                                FirstSubmissionCreatedOn = groupAsList[i].CreatedOn,
+                                SecondSubmissionId = groupAsList[j].Id,
+                                SecondParticipantName = groupAsList[j].ParticipantName,
+                                SecondSubmissionCreatedOn = groupAsList[j].CreatedOn
+                            });
+                        }
                     }
                 }
             }
 
             return this.PartialView("_SubmissionsGrid", similarities.GroupBy(g => g.ProblemId));
-        }
-
-        private PlagiarismDetector plagiarismDetector = new PlagiarismDetector();
-
-        private class PlagiarismResult
-        {
-            public int StartFirst { get; set; }
-
-            public int StartSecond { get; set; }
-
-            public int DeletedFirst { get; set; }
-
-            public int InsertedSecond { get; set; }
-        }
-
-        private class PlagiarismDetector
-        {
-            public IEnumerable<PlagiarismResult> Check(string first, string second)
-            {
-                return new List<PlagiarismResult>();
-            }
         }
 
         private IEnumerable<SelectListItem> GetContestsListItems()

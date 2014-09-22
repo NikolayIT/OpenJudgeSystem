@@ -7,6 +7,7 @@
     using Ninject;
 
     using OJS.Data;
+    using OJS.Workers.Tools.AntiCheat;
 
     public class NinjectControllerFactory : DefaultControllerFactory, IDisposable
     {
@@ -39,6 +40,9 @@
         private void AddBindings()
         {
             this.ninjectKernel.Bind<IOjsData>().To<OjsData>();
+            this.ninjectKernel.Bind<IPlagiarismDetector>().To<CSharpCompileDecompilePlagiarismDetector>()
+                .WithConstructorArgument("csharpCompilerPath", Settings.CSharpCompilerPath)
+                .WithConstructorArgument("dotNetDisassemblerPath", Settings.DotNetDisassemblerPath);
         }
     }
 }
