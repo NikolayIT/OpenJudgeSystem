@@ -49,7 +49,7 @@
     /// Copyright (c) by Matthias Hertel, http://www.mathertel.de
     /// This work is licensed under a BSD style license. See http://www.mathertel.de/License.aspx
     /// </summary>
-    public class SimilarityFinder
+    public class SimilarityFinder : ISimilarityFinder
     {
         /// <summary>
         /// Find the difference in 2 text documents, comparing by textlines.
@@ -64,7 +64,7 @@
         /// <param name="ignoreSpace">When set to true, all whitespace characters are converted to a single space character before the comparation is done.</param>
         /// <param name="ignoreCase">When set to true, all characters are converted to their lowercase equivivalence before the comparation is done.</param>
         /// <returns>Returns a array of Items that describe the differences.</returns>
-        public static Difference[] DiffText(
+        public Difference[] DiffText(
             string textA,
             string textB,
             bool trimSpace,
@@ -103,7 +103,7 @@
         /// <param name="arrayA">A-version of the numbers (usually the old one)</param>
         /// <param name="arrayB">B-version of the numbers (usually the new one)</param>
         /// <returns>Returns a array of Items that describe the differences.</returns>
-        public static Difference[] DiffInt(int[] arrayA, int[] arrayB)
+        public Difference[] DiffInt(int[] arrayA, int[] arrayB)
         {
             // The A-Version of the data (original data) to be compared.
             var dataA = new DiffData(arrayA);
@@ -133,7 +133,7 @@
         /// <param name="ignoreSpace">Ignore spaces</param>
         /// <param name="ignoreCase">Ignore text case</param>
         /// <returns>a array of integers.</returns>
-        private static int[] DiffCodes(string text, Hashtable usedTextlines, bool trimSpace, bool ignoreSpace, bool ignoreCase)
+        private int[] DiffCodes(string text, Hashtable usedTextlines, bool trimSpace, bool ignoreSpace, bool ignoreCase)
         {
             // get all codes of the text
             int lastUsedCode = usedTextlines.Count;
@@ -190,7 +190,7 @@
         /// <param name="downVector">a vector for the (0,0) to (x,y) search. Passed as a parameter for speed reasons.</param>
         /// <param name="upVector">a vector for the (u,v) to (N,M) search. Passed as a parameter for speed reasons.</param>
         /// <returns>a MiddleSnakeData record containing x,y and u,v</returns>
-        private static ShortestMiddleSnakeReturnData ShortestMiddleSnake(
+        private ShortestMiddleSnakeReturnData ShortestMiddleSnake(
             DiffData dataA,
             int lowerA,
             int upperA,
@@ -327,7 +327,7 @@
         /// <param name="upperB">upper bound of the actual range in DataB (exclusive)</param>
         /// <param name="downVector">a vector for the (0,0) to (x,y) search. Passed as a parameter for speed reasons.</param>
         /// <param name="upVector">a vector for the (u,v) to (N,M) search. Passed as a parameter for speed reasons.</param>
-        private static void LongestCommonSubsequence(
+        private void LongestCommonSubsequence(
             DiffData dataA,
             int lowerA,
             int upperA,
@@ -386,7 +386,7 @@
         /// producing an edit script in forward order.  
         /// </summary>
         /// dynamic array
-        private static Difference[] CreateDiffs(DiffData dataA, DiffData dataB)
+        private Difference[] CreateDiffs(DiffData dataA, DiffData dataB)
         {
             var differences = new ArrayList();
 
@@ -447,7 +447,7 @@
         /// This leads to more readable diff sequences when comparing text files.
         /// </summary>
         /// <param name="data">A Diff data buffer containing the identified changes.</param>
-        private static void Optimize(DiffData data)
+        private void Optimize(DiffData data)
         {
             int startPos = 0;
             while (startPos < data.Length)
