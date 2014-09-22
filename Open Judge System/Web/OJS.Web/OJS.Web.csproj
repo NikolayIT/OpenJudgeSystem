@@ -1113,7 +1113,6 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Views\Account\ChangeUsername.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeCheckBoxes.cshtml" />
