@@ -1732,6 +1732,10 @@
       <Project>{c4144383-c1e4-4849-ba35-f063967314da}</Project>
       <Name>OJS.Tools.OldDatabaseMigration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj">
+      <Project>{a1f48412-495a-434c-bdd0-e70aedad6897}</Project>
+      <Name>OJS.Workers.Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OJS.Web.Common\OJS.Web.Common.csproj">
       <Project>{2e08e0af-0e51-47ca-947b-4c66086fa030}</Project>
       <Name>OJS.Web.Common</Name>
