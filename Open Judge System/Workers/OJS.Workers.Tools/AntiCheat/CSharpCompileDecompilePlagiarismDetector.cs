@@ -13,65 +13,37 @@
 
         private readonly string dotNetDisassemblerPath;
 
+        private readonly CSharpCompiler csharpCompiler;
+
+        private readonly DotNetDisassembler dotNetDisassembler;
+
         public CSharpCompileDecompilePlagiarismDetector(string csharpCompilerPath, string dotNetDisassemblerPath)
         {
             this.csharpCompilerPath = csharpCompilerPath;
             this.dotNetDisassemblerPath = dotNetDisassemblerPath;
+            this.csharpCompiler = new CSharpCompiler();
+            this.dotNetDisassembler = new DotNetDisassembler();
         }
 
         public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource)
         {
-            // TODO: Check for undeleted temporary files.
-            var csharpCompiler = new CSharpCompiler();
-
-            var firstSourceFilePath = FileHelpers.SaveStringToTempFile(firstSource);
-            var firstCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, firstSourceFilePath, null);
-            File.Delete(firstSourceFilePath);
-            if (!firstCompileResult.IsCompiledSuccessfully)
+            string firstFileContent;
+            if (!this.GetCilCode(firstSource, out firstFileContent))
             {
                 return new PlagiarismResult(0);
             }
 
-            var secondSourceFilePath = FileHelpers.SaveStringToTempFile(secondSource);
-            var secondCompileResult = csharpCompiler.Compile(this.csharpCompilerPath, secondSourceFilePath, null);
-            File.Delete(secondSourceFilePath);
-            if (!secondCompileResult.IsCompiledSuccessfully)
+            string secondFileContent;
+            if (!this.GetCilCode(secondSource, out secondFileContent))
             {
                 return new PlagiarismResult(0);
             }
-
-            var dotNetDisassembler = new DotNetDisassembler();
-            var firstDisassemblerResult = dotNetDisassembler.Compile(this.dotNetDisassemblerPath, firstCompileResult.OutputFile, null);
-            File.Delete(firstCompileResult.OutputFile);
-            if (!firstDisassemblerResult.IsCompiledSuccessfully)
-            {
-                return new PlagiarismResult(0);
-            }
-
-            var secondDisassemblerResult = dotNetDisassembler.Compile(this.dotNetDisassemblerPath, secondCompileResult.OutputFile, null);
-            File.Delete(secondCompileResult.OutputFile);
-            if (!secondDisassemblerResult.IsCompiledSuccessfully)
-            {
-                return new PlagiarismResult(0);
-            }
-
-            var firstFileContent = File.ReadAllText(firstDisassemblerResult.OutputFile);
-            File.Delete(firstDisassemblerResult.OutputFile);
-
-            var secondFileContent = File.ReadAllText(secondDisassemblerResult.OutputFile);
-            File.Delete(secondDisassemblerResult.OutputFile);
 
             var similarityFinder = new SimilarityFinder();
-            var differences = similarityFinder.DiffText(
-                firstFileContent,
-                secondFileContent,
-                true,
-                true,
-                true);
+            var differences = similarityFinder.DiffText(firstFileContent, secondFileContent, true, true, true);
 
             var differencesCount = differences.Sum(difference => difference.DeletedA + difference.InsertedB);
             var textLength = firstFileContent.Length + secondFileContent.Length;
-
             var percentage = ((decimal)differencesCount * 100) / textLength;
 
             return new PlagiarismResult(percentage)
@@ -80,6 +52,34 @@
                            FirstToCompare = firstFileContent,
                            SecondToCompare = secondFileContent
                        };
+        }
+
+        private bool GetCilCode(string originalSource, out string fileContent)
+        {
+            // TODO: Check for undeleted temporary files.
+            fileContent = null;
+
+            var sourceFilePath = FileHelpers.SaveStringToTempFile(originalSource);
+            var compileResult = this.csharpCompiler.Compile(this.csharpCompilerPath, sourceFilePath, null);
+            File.Delete(sourceFilePath);
+            if (!compileResult.IsCompiledSuccessfully)
+            {
+                return false;
+            }
+
+            var disassemblerResult = this.dotNetDisassembler.Compile(
+                this.dotNetDisassemblerPath,
+                compileResult.OutputFile,
+                null);
+            File.Delete(compileResult.OutputFile);
+            if (!disassemblerResult.IsCompiledSuccessfully)
+            {
+                return false;
+            }
+
+            fileContent = File.ReadAllText(disassemblerResult.OutputFile);
+            File.Delete(disassemblerResult.OutputFile);
+            return true;
         }
     }
 }
