@@ -106,6 +106,7 @@
                                 ProblemName = groupAsList[i].ProblemName,
                                 Points = groupAsList[i].Points,
                                 Differences = result.Differences.Count(),
+                                Percentage = result.SimilarityPercentage,
                                 FirstSubmissionId = groupAsList[i].Id,
                                 FirstParticipantName = groupAsList[i].ParticipantName,
                                 FirstSubmissionCreatedOn = groupAsList[i].CreatedOn,

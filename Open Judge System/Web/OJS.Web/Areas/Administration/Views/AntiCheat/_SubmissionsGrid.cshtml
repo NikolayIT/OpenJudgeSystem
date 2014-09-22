@@ -2,7 +2,7 @@
 
 @foreach (var groupedReport in Model.OrderBy(m => m.First().ProblemName))
 {
-    var sortedAndFilteredReports = groupedReport.Where(s => s.Points > 20).OrderBy(p => p.Differences).Take(500);
+    var sortedAndFilteredReports = groupedReport.Where(s => s.Points > 20).OrderBy(p => p.Percentage).Take(500);
     <h3 class="text-white">@groupedReport.First().ProblemName</h3>
     <table class="table table-striped">
         <tr>
