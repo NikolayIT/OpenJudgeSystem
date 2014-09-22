@@ -67,7 +67,10 @@
         [HttpPost]
         public ActionResult RenderSubmissionsSimilaritiesGrid(int[] ids)
         {
-            var orExpressionIds = ExpressionBuilder.BuildOrExpression<Submission, int>(ids, s => s.Participant.ContestId);
+            var orExpressionIds = ExpressionBuilder.BuildOrExpression<Submission, int>(
+                ids,
+                s => s.Participant.ContestId);
+
             var participantsSimilarSubmissionGroups = this.Data.Submissions
                 .All()
                 .Where(orExpressionIds)
