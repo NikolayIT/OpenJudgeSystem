@@ -77,7 +77,7 @@
             fileContent = null;
 
             var sourceFilePath = FileHelpers.SaveStringToTempFile(originalSource);
-            var compileResult = this.csharpCompiler.Compile(this.csharpCompilerPath, sourceFilePath, null);
+            var compileResult = this.csharpCompiler.Compile(this.csharpCompilerPath, sourceFilePath, "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll");
             File.Delete(sourceFilePath);
             if (!compileResult.IsCompiledSuccessfully)
             {
