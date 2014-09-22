@@ -23,5 +23,10 @@
 
             return arguments.ToString().Trim();
         }
+
+        public override string GetOutputFileName(string inputFileName)
+        {
+            return inputFileName + ".il";
+        }
     }
 }

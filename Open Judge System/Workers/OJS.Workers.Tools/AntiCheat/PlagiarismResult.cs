@@ -6,7 +6,12 @@
 
     public class PlagiarismResult
     {
-        public byte SimilarityPercentage { get; set; }
+        public PlagiarismResult(decimal similarityPercentage)
+        {
+            this.SimilarityPercentage = similarityPercentage;
+        }
+
+        public decimal SimilarityPercentage { get; set; }
 
         public string FirstToCompare { get; set; }
 
