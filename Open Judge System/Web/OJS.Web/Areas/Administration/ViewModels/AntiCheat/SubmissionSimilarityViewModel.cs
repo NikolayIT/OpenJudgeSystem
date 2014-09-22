@@ -12,6 +12,8 @@
 
         public int Differences { get; set; }
 
+        public decimal Percentage { get; set; }
+
         public int FirstSubmissionId { get; set; }
 
         public int SecondSubmissionId { get; set; }
