@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.Tools.AntiCheat
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
@@ -17,12 +18,23 @@
 
         private readonly DotNetDisassembler dotNetDisassembler;
 
+        private readonly ISimilarityFinder similarityFinder;
+
+        private readonly IDictionary<string, string> sourcesCache;
+
         public CSharpCompileDecompilePlagiarismDetector(string csharpCompilerPath, string dotNetDisassemblerPath)
+            : this(csharpCompilerPath, dotNetDisassemblerPath, new SimilarityFinder())
+        {
+        }
+
+        public CSharpCompileDecompilePlagiarismDetector(string csharpCompilerPath, string dotNetDisassemblerPath, ISimilarityFinder similarityFinder)
         {
             this.csharpCompilerPath = csharpCompilerPath;
             this.dotNetDisassemblerPath = dotNetDisassemblerPath;
             this.csharpCompiler = new CSharpCompiler();
             this.dotNetDisassembler = new DotNetDisassembler();
+            this.similarityFinder = similarityFinder;
+            this.sourcesCache = new Dictionary<string, string>();
         }
 
         public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource)
@@ -39,8 +51,7 @@
                 return new PlagiarismResult(0);
             }
 
-            var similarityFinder = new SimilarityFinder();
-            var differences = similarityFinder.DiffText(firstFileContent, secondFileContent, true, true, true);
+            var differences = this.similarityFinder.DiffText(firstFileContent, secondFileContent, true, true, true);
 
             var differencesCount = differences.Sum(difference => difference.DeletedA + difference.InsertedB);
             var textLength = firstFileContent.Length + secondFileContent.Length;
@@ -56,6 +67,12 @@
 
         private bool GetCilCode(string originalSource, out string fileContent)
         {
+            if (this.sourcesCache.ContainsKey(originalSource))
+            {
+                fileContent = this.sourcesCache[originalSource];
+                return true;
+            }
+
             // TODO: Check for undeleted temporary files.
             fileContent = null;
 
@@ -78,6 +95,7 @@
             }
 
             fileContent = File.ReadAllText(disassemblerResult.OutputFile);
+            this.sourcesCache.Add(originalSource, fileContent);
             File.Delete(disassemblerResult.OutputFile);
             return true;
         }
