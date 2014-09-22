@@ -75,10 +75,10 @@
             var h = new Hashtable(textA.Length + textB.Length);
 
             // The A-Version of the data (original data) to be compared.
-            var dataA = new DiffData(DiffCodes(textA, h, trimSpace, ignoreSpace, ignoreCase));
+            var dataA = new DiffData(this.DiffCodes(textA, h, trimSpace, ignoreSpace, ignoreCase));
 
             // The B-Version of the data (modified data) to be compared.
-            var dataB = new DiffData(DiffCodes(textB, h, trimSpace, ignoreSpace, ignoreCase));
+            var dataB = new DiffData(this.DiffCodes(textB, h, trimSpace, ignoreSpace, ignoreCase));
 
             h = null; // free up hashtable memory (maybe)
 
@@ -90,11 +90,11 @@
             // vector for the (u,v) to (N,M) search
             var upVector = new int[(2 * max) + 2];
 
-            LongestCommonSubsequence(dataA, 0, dataA.Length, dataB, 0, dataB.Length, downVector, upVector);
+            this.LongestCommonSubsequence(dataA, 0, dataA.Length, dataB, 0, dataB.Length, downVector, upVector);
 
-            Optimize(dataA);
-            Optimize(dataB);
-            return CreateDiffs(dataA, dataB);
+            this.Optimize(dataA);
+            this.Optimize(dataB);
+            return this.CreateDiffs(dataA, dataB);
         }
         
         /// <summary>
@@ -119,8 +119,8 @@
             // vector for the (u,v) to (N,M) search
             var upVector = new int[(2 * max) + 2];
 
-            LongestCommonSubsequence(dataA, 0, dataA.Length, dataB, 0, dataB.Length, downVector, upVector);
-            return CreateDiffs(dataA, dataB);
+            this.LongestCommonSubsequence(dataA, 0, dataA.Length, dataB, 0, dataB.Length, downVector, upVector);
+            return this.CreateDiffs(dataA, dataB);
         }
 
         /// <summary>
@@ -372,13 +372,13 @@
             else
             {
                 // Find the middle snake and length of an optimal path for A and B
-                var smsrd = ShortestMiddleSnake(dataA, lowerA, upperA, dataB, lowerB, upperB, downVector, upVector);
+                var smsrd = this.ShortestMiddleSnake(dataA, lowerA, upperA, dataB, lowerB, upperB, downVector, upVector);
 
                 // Debug.Write(2, "MiddleSnakeData", String.Format("{0},{1}", smsrd.x, smsrd.y));
 
                 // The path is from LowerX to (x,y) and (x,y) to UpperX
-                LongestCommonSubsequence(dataA, lowerA, smsrd.X, dataB, lowerB, smsrd.Y, downVector, upVector);
-                LongestCommonSubsequence(dataA, smsrd.X, upperA, dataB, smsrd.Y, upperB, downVector, upVector);
+                this.LongestCommonSubsequence(dataA, lowerA, smsrd.X, dataB, lowerB, smsrd.Y, downVector, upVector);
+                this.LongestCommonSubsequence(dataA, smsrd.X, upperA, dataB, smsrd.Y, upperB, downVector, upVector);
             }
         }
 

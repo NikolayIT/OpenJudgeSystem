@@ -55,6 +55,8 @@
 
             var differencesCount = differences.Sum(difference => difference.DeletedA + difference.InsertedB);
             var textLength = firstFileContent.Length + secondFileContent.Length;
+
+            // TODO: Revert the percentage
             var percentage = ((decimal)differencesCount * 100) / textLength;
 
             return new PlagiarismResult(percentage)

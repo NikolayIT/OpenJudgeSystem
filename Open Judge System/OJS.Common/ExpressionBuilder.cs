@@ -12,28 +12,30 @@
             Expression<Func<TElement, TValue>> valueSelector)
         {
             if (null == valueSelector)
+            {
                 throw new ArgumentNullException("valueSelector");
+            }
+
             if (null == values)
+            {
                 throw new ArgumentNullException("values");
-            ParameterExpression p = valueSelector.Parameters.Single();
+            }
+
+            var parameterExpression = valueSelector.Parameters.Single();
 
             if (!values.Any())
             {
                 return e => false;
             }
 
-            var equals = values.Select(value =>
-                (Expression)Expression.Equal(
-                     valueSelector.Body,
-                     Expression.Constant(
-                         value,
-                         typeof(TValue)
-                     )
-                )
-            );
-            var body = equals.Aggregate<Expression>((accumulate, equal) => Expression.Or(accumulate, equal));
+            var equals =
+                values.Select(
+                    value =>
+                    (Expression)Expression.Equal(valueSelector.Body, Expression.Constant(value, typeof(TValue))));
 
-            return Expression.Lambda<Func<TElement, bool>>(body, p);
+            var body = equals.Aggregate(Expression.Or);
+
+            return Expression.Lambda<Func<TElement, bool>>(body, parameterExpression);
         }
     }
 }
