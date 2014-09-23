@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntiCheat\CSharpCompileDecompilePlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\IDetectPlagiarismVisitor.cs" />
     <Compile Include="AntiCheat\IPlagiarismDetector.cs" />
     <Compile Include="AntiCheat\PlagiarismResult.cs" />
     <Compile Include="AntiCheat\PlainTextPlagiarismDetector.cs" />
