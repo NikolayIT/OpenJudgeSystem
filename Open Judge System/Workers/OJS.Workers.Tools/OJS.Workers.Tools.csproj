@@ -44,6 +44,7 @@
     <Compile Include="AntiCheat\IPlagiarismDetector.cs" />
     <Compile Include="AntiCheat\PlagiarismResult.cs" />
     <Compile Include="AntiCheat\PlainTextPlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\SortAndTrimLinesVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Similarity\DiffData.cs" />
     <Compile Include="Similarity\Difference.cs" />
