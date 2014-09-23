@@ -1112,6 +1112,10 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\KendoUI\2014.2.903\cultures\kendo.culture.bg.js" />
+    <Content Include="Scripts\KendoUI\2014.2.903\cultures\kendo.culture.en-GB.js" />
+    <Content Include="Scripts\KendoUI\2014.2.903\kendo.aspnetmvc.js" />
+    <Content Include="Scripts\KendoUI\2014.2.903\kendo.web.js" />
     <Content Include="Views\Account\ChangeUsername.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeCheckBoxes.cshtml" />
@@ -1141,10 +1145,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\KendoUI\2013.3.1119\cultures\kendo.culture.bg.js" />
-    <Content Include="Scripts\KendoUI\2013.3.1119\cultures\kendo.culture.en-GB.js" />
-    <Content Include="Scripts\KendoUI\2013.3.1119\kendo.all.js" />
-    <Content Include="Scripts\KendoUI\2013.3.1119\kendo.aspnetmvc.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

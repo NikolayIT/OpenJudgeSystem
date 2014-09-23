@@ -30,10 +30,10 @@
                       "~/Scripts/knockout-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
-                        "~/Scripts/KendoUI/2013.3.1119/kendo.all.js",
-                        "~/Scripts/KendoUI/2013.3.1119/kendo.aspnetmvc.js",
-                        "~/Scripts/KendoUI/2013.3.1119/cultures/kendo.culture.bg.js",
-                        "~/Scripts/KendoUI/2013.3.1119/cultures/kendo.culture.en-GB.js"));
+                        "~/Scripts/KendoUI/2014.2.903/kendo.web.js",
+                        "~/Scripts/KendoUI/2014.2.903/kendo.aspnetmvc.js",
+                        "~/Scripts/KendoUI/2014.2.903/cultures/kendo.culture.bg.js",
+                        "~/Scripts/KendoUI/2014.2.903/cultures/kendo.culture.en-GB.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
                         "~/Scripts/CodeMirror/codemirror.js",
