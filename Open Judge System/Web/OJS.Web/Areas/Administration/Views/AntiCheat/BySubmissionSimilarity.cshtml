@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SelectListItem>
+@{
+    ViewBag.Title = "By submission similarity";
+}
+
+<h2>@ViewBag.Title</h2>
+<div id="contests-combo-boxes">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.Partial("_ContestsComboBox", Model)
+        </div>
+    </div>
+</div>
+
+<br />
+<div id="similarity-grid">
+</div>
+
+@section scripts{
+    <script>
+        function selectContest() {
+            var contestId = $('#contests').val();
+            $("#similarity-grid").html('<h1 class="text-center">Loading...</h1>');
+
+            $.ajax({
+                url: '/Administration/AntiCheat/RenderSubmissionsSimilaritiesGrid',
+                data: { ids: [contestId] },
+                type: 'POST',
+                traditional: true,
+                success: function (data) {
+                    $("#similarity-grid").html(data);
+                }
+            });
+        }
+    </script>
+}

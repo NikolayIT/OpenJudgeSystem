@@ -10,7 +10,7 @@
     <title>@ViewBag.Title - SoftUni Judge</title>
     @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/css")
     @RenderSection("styles", required: false)
-    @Scripts.Render("~/bundles/modernizr", "~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
 </head>
 <body>
     <!-- Google Analytics -->
@@ -96,6 +96,10 @@
                                 <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new { area = "Administration" }, null)</li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Anti-cheat</li>
+                                <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>
+                                <li>@Html.ActionLink(Resource.SubmissionSimilarity, "BySubmissionSimilarity", "AntiCheat", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Debugging</li>
                                 <li><a href="/Glimpse.axd">Glimpse</a></li>

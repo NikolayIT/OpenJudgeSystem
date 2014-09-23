@@ -153,6 +153,9 @@
   <data name="Home" xml:space="preserve">
     <value>Начало</value>
   </data>
+  <data name="IpUsage" xml:space="preserve">
+    <value>Използвани IP-та</value>
+  </data>
   <data name="Log" xml:space="preserve">
     <value>Лог</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="Submissions" xml:space="preserve">
     <value>Решения</value>
+  </data>
+  <data name="SubmissionSimilarity" xml:space="preserve">
+    <value>Прилика на решения</value>
   </data>
   <data name="Test_files" xml:space="preserve">
     <value>Тестови файлове</value>
