@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AntiCheat\SortAndTrimLinesVisitorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Similarity\SimilarityFinderDiffTextTests.cs" />
   </ItemGroup>
