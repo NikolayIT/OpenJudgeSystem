@@ -746,6 +746,7 @@
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LabsController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
@@ -793,6 +794,7 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Areas\Contests\Controllers\ContestsController.cs" />
+    <Compile Include="Areas\Contests\Controllers\LabsController.cs" />
     <Compile Include="Areas\Contests\Controllers\ListController.cs" />
     <Compile Include="Areas\Contests\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Contests\Controllers\SubmissionsController.cs" />
@@ -1130,6 +1132,7 @@
     <Content Include="Areas\Administration\Views\AntiCheat\BySubmissionSimilarity.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
+    <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -1229,6 +1232,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
+    <Folder Include="Areas\Administration\Views\Labs\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
     <Folder Include="Scripts\CodeMirror\addon\" />

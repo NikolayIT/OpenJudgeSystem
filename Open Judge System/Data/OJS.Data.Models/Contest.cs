@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common.Models;
     using OJS.Data.Contracts;
 
     public class Contest : DeletableEntity, IValidatableObject, IOrderable
@@ -37,6 +38,8 @@
         public int? CategoryId { get; set; }
 
         public virtual ContestCategory Category { get; set; }
+
+        public ContestType Type { get; set; }
 
         /// <remarks>
         /// If StartTime is null the contest cannot be competed.
