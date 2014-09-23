@@ -746,7 +746,6 @@
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
-    <Compile Include="Areas\Administration\Controllers\LabsController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
@@ -826,6 +825,7 @@
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
+    <Compile Include="Areas\Lecturer\LecturerAreaRegistration.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
@@ -1133,6 +1133,7 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
+    <Content Include="Areas\Lecturer\Views\web.config" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -1232,7 +1233,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
-    <Folder Include="Areas\Administration\Views\Labs\" />
+    <Folder Include="Areas\Lecturer\Controllers\" />
+    <Folder Include="Areas\Lecturer\Models\" />
+    <Folder Include="Areas\Lecturer\Views\Shared\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
     <Folder Include="Scripts\CodeMirror\addon\" />
