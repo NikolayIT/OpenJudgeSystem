@@ -64,9 +64,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\..\packages\Glimpse.AspNet.1.9.1\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Glimpse.Core, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
