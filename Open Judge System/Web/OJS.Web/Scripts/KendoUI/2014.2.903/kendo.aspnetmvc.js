@@ -1,18 +1,14 @@
 /*
-* Kendo UI Complete v2013.3.1119 (http://kendoui.com)
-* Copyright 2013 Telerik AD. All rights reserved.
+* Kendo UI v2014.2.903 (http://www.telerik.com/kendo-ui)
+* Copyright 2014 Telerik AD. All rights reserved.
 *
-* Kendo UI Complete commercial licenses may be obtained at
-* https://www.kendoui.com/purchase/license-agreement/kendo-ui-complete-commercial.aspx
+* Kendo UI commercial licenses may be obtained at
+* http://www.telerik.com/purchase/license-agreement/kendo-ui-complete
 * If you do not own a commercial license, this file shall be governed by the trial license terms.
 */
-kendo_module({
-    id: "aspnetmvc",
-    name: "ASP.NET MVC",
-    category: "wrappers",
-    description: "Scripts required by Kendo UI for ASP.NET MVC",
-    depends: [ "data", "combobox", "multiselect", "validator" ] //define all dependencies here because all files are combined in kendo.aspnetmvc.js
-});
+(function(f, define){
+    define([ "./kendo.data", "./kendo.combobox", "./kendo.dropdownlist", "./kendo.multiselect", "./kendo.validator" ], f);
+})(function(){
 
 (function ($, undefined) {
     var kendo = window.kendo,
@@ -74,20 +70,12 @@ kendo_module({
            delete options.filter;
        }
 
-       if (operation != "read" ) {
-           if (options.models) {
-               serializeArray(result, options.models, "models", stringifyDates);
-           } else if (options) {
-               serializeItem(result, options, "", stringifyDates);
-           }
-
-           delete options.models;
-       }
-
        delete options.take;
        delete options.skip;
 
-       return extend({}, options, result);
+       serializeItem(result, options, "", stringifyDates);
+
+       return result;
     }
 
     function convertNumber(value){
@@ -225,7 +213,7 @@ kendo_module({
         schemas: {
             "aspnetmvc-ajax": {
                 groups: function(data) {
-                    return $.map(this.data(data), translateGroup);
+                    return $.map(this._dataAccessFunction(data), translateGroup);
                 },
                 aggregates: function(data) {
                     data = data.d || data;
@@ -249,8 +237,8 @@ kendo_module({
         transports: {
             "aspnetmvc-ajax": kendo.data.RemoteTransport.extend({
                 init: function(options) {
-                    var that = this;
-                    var stringifyDates = options.stringifyDates;
+                    var that = this,
+                        stringifyDates = (options || {}).stringifyDates;
 
                     kendo.data.RemoteTransport.fn.init.call(this,
                         extend(true, {}, this.options, options, {
@@ -289,6 +277,86 @@ kendo_module({
                     },
                     destroy: {
                         type: "POST"
+                    },
+                    parameterMap: parameterMap,
+                    prefix: ""
+                }
+            })
+        }
+    });
+
+    extend(true, kendo.data, {
+       schemas: {
+           "webapi": kendo.data.schemas["aspnetmvc-ajax"]
+       }
+    })
+
+    extend(true, kendo.data, {
+        transports: {
+            "webapi": kendo.data.RemoteTransport.extend({
+                init: function(options) {
+                    var that = this;
+                    var stringifyDates = (options || {}).stringifyDates;
+
+                    if (options.update) {
+                        var updateUrl = typeof options.update === "string" ? options.update : options.update.url;
+
+                        options.update = extend(options.update, {url: function (data) {
+                            return kendo.format(updateUrl, data[options.idField]);
+                        }});
+                    }
+
+                    if (options.destroy) {
+                        var destroyUrl = typeof options.destroy === "string" ? options.destroy : options.destroy.url;
+
+                        options.destroy = extend(options.destroy, {url: function (data) {
+                            return kendo.format(destroyUrl, data[options.idField]);
+                        }});
+                    }
+
+                    if(options.create && typeof options.create === "string") {
+                        options.create = {
+                            url: options.create
+                        };
+                    }
+
+                    kendo.data.RemoteTransport.fn.init.call(this,
+                        extend(true, {}, this.options, options, {
+                            parameterMap: function(options, operation) {
+                                return parameterMap.call(that, options, operation, false, stringifyDates);
+                            }
+                        })
+                    );
+                },
+                read: function(options) {
+                    var data = this.options.data,
+                        url = this.options.read.url;
+                    if (data) {
+                        if (url) {
+                            this.options.data = null;
+                        }
+
+                        if (!data.Data.length && url) {
+                            kendo.data.RemoteTransport.fn.read.call(this, options);
+                        } else {
+                            options.success(data);
+                        }
+                    } else {
+                        kendo.data.RemoteTransport.fn.read.call(this, options);
+                    }
+                },
+                options: {
+                    read: {
+                        type: "GET"
+                    },
+                    update: {
+                        type: "PUT"
+                    },
+                    create: {
+                        type: "POST"
+                    },
+                    destroy: {
+                        type: "DELETE"
                     },
                     parameterMap: parameterMap,
                     prefix: ""
@@ -355,6 +423,7 @@ kendo_module({
         }
     });
 })(window.kendo.jQuery);
+
 (function ($, undefined) {
     var kendo = window.kendo,
         ui = kendo.ui;
@@ -374,17 +443,43 @@ kendo_module({
     }
 
 })(window.kendo.jQuery);
+
+(function ($, undefined) {
+    var kendo = window.kendo,
+        ui = kendo.ui;
+
+    if (ui && ui.DropDownList) {
+        ui.DropDownList.requestData = function (selector) {
+            var dropdownlist = $(selector).data("kendoDropDownList"),
+                filters = dropdownlist.dataSource.filter(),
+                filterInput = dropdownlist.filterInput,
+                value = filterInput ? filterInput.val() : "";
+
+            if (!filters) {
+                value = "";
+            }
+
+            return { text: value };
+        };
+    }
+
+})(window.kendo.jQuery);
+
 (function ($, undefined) {
     var kendo = window.kendo,
         ui = kendo.ui;
 
     if (ui && ui.MultiSelect) {
         ui.MultiSelect.requestData = function (selector) {
-            return { text: $(selector).data("kendoMultiSelect").input.val() };
+            var multiselect = $(selector).data("kendoMultiSelect");
+            var text = multiselect.input.val();
+            
+            return { text: text !== multiselect.options.placeholder ? text : "" };
         };
     }
 
 })(window.kendo.jQuery);
+
 (function ($, undefined) {
     var kendo = window.kendo,
         ui = kendo.ui,
@@ -406,6 +501,12 @@ kendo_module({
                     }
                 }
             }
+        }
+    });
+
+    extend(true, kendo.data, {
+        schemas: {
+            "filebrowser-aspnetmvc": kendo.data.schemas["imagebrowser-aspnetmvc"]
         }
     });
 
@@ -460,8 +561,14 @@ kendo_module({
         }
     });
 
+    extend(true, kendo.data, {
+        transports: {
+            "filebrowser-aspnetmvc": kendo.data.transports["imagebrowser-aspnetmvc"]
+        }
+    });
 
 })(window.kendo.jQuery);
+
 (function ($, undefined) {
     var nameSpecialCharRegExp = /("|\%|'|\[|\]|\$|\.|\,|\:|\;|\+|\*|\&|\!|\#|\(|\)|<|>|\=|\?|\@|\^|\{|\}|\~|\/|\||`)/g;
 
@@ -593,7 +700,7 @@ kendo_module({
             return !(value === "" || !value);
         },
         number: function (input) {
-            return input.val() === "" || kendo.parseFloat(input.val()) !== null;
+            return input.val() === "" || input.val() == null || kendo.parseFloat(input.val()) !== null;
         },
         regex: function (input, params) {
             if (input.val() !== "") {
@@ -638,10 +745,10 @@ kendo_module({
             mvcLocator: {
                 locate: function (element, fieldName) {
                     fieldName = fieldName.replace(nameSpecialCharRegExp, "\\$1");
-                    return element.find(".field-validation-valid[data-valmsg-for=" + fieldName + "], .field-validation-error[data-valmsg-for=" + fieldName + "]");
+                    return element.find(".field-validation-valid[data-valmsg-for='" + fieldName + "'], .field-validation-error[data-valmsg-for='" + fieldName + "']");
                 },
                 decorate: function (message, fieldName) {
-                    message.addClass("field-validation-error").attr("data-val-msg-for", fieldName || "");
+                    message.addClass("field-validation-error").attr("data-valmsg-for", fieldName || "");
                 }
             },
             mvcMetadataLocator: {
@@ -673,3 +780,7 @@ kendo_module({
         }
     });
 })(window.kendo.jQuery);
+
+return window.kendo;
+
+}, typeof define == 'function' && define.amd ? define : function(_, f){ f(); });

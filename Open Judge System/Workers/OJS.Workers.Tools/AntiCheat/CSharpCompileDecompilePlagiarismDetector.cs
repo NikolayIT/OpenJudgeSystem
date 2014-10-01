@@ -37,7 +37,7 @@
             this.sourcesCache = new Dictionary<string, string>();
         }
 
-        public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource)
+        public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource, IEnumerable<IDetectPlagiarismVisitor> visitors = null)
         {
             string firstFileContent;
             if (!this.GetCilCode(firstSource, out firstFileContent))
@@ -49,6 +49,15 @@
             if (!this.GetCilCode(secondSource, out secondFileContent))
             {
                 return new PlagiarismResult(0);
+            }
+
+            if (visitors != null)
+            {
+                foreach (var visitor in visitors)
+                {
+                    firstFileContent = visitor.Visit(firstFileContent);
+                    secondFileContent = visitor.Visit(secondFileContent);
+                }
             }
 
             var differences = this.similarityFinder.DiffText(firstFileContent, secondFileContent, true, true, true);

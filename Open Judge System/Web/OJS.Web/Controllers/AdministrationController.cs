@@ -106,7 +106,7 @@
                         object propertyValue = item.GetType().GetProperty(property.Name).GetValue(item, null);
                         if (propertyValue == null)
                         {
-                            row.CreateCell(cellNumber).SetCellType(NPOI.SS.UserModel.CellType.BLANK);
+                            row.CreateCell(cellNumber).SetCellType(NPOI.SS.UserModel.CellType.Blank);
                         }
                         else
                         {
@@ -121,7 +121,7 @@
                             if (double.TryParse(propertyValue.ToString(), out value))
                             {
                                 cell.SetCellValue(value);
-                                cell.SetCellType(NPOI.SS.UserModel.CellType.NUMERIC);
+                                cell.SetCellType(NPOI.SS.UserModel.CellType.Numeric);
                             }
                             else if (typeCode == TypeCode.DateTime)
                             {
