@@ -1117,9 +1117,10 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -1156,7 +1157,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Scripts\Helpers\test-results.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
