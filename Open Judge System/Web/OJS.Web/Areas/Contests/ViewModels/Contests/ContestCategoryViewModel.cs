@@ -20,6 +20,7 @@
                         Contests = contestCategory.Contests.AsQueryable()
                                                                 .Where(x => x.IsVisible && !x.IsDeleted)
                                                                 .OrderBy(x => x.OrderBy)
+                                                                .ThenByDescending(x => x.EndTime)
                                                                 .Select(ContestViewModel.FromContest),
                         SubCategories = contestCategory.Children.AsQueryable()
                                                                 .Select(ContestCategoryListViewModel.FromCategory)
