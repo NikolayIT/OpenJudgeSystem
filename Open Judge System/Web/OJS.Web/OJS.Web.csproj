@@ -758,6 +758,7 @@
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersInContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
@@ -1245,6 +1246,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
+    <Folder Include="Areas\Administration\Views\LecturersInContests\" />
     <Folder Include="Areas\Lecturer\Controllers\" />
     <Folder Include="Areas\Lecturer\Models\" />
     <Folder Include="Areas\Lecturer\Views\Shared\" />
