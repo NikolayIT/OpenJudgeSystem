@@ -40,6 +40,8 @@
 
         IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
+        IDbSet<LecturerInContest> LecturersInContests { get; set; }
+
         DbContext DbContext { get; }
 
         int SaveChanges();

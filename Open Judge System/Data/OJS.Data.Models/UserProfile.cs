@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,8 @@
 
     public class UserProfile : IdentityUser, IDeletableEntity, IAuditInfo
     {
+        private ICollection<LecturerInContest> lecturerInContests; 
+
         public UserProfile()
             : this(string.Empty, string.Empty)
         {
@@ -23,6 +26,7 @@
         {
             this.Email = email;
             this.UserSettings = new UserSettings();
+            this.lecturerInContests = new HashSet<LecturerInContest>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -45,7 +49,13 @@
         public UserSettings UserSettings { get; set; }
 
         public Guid? ForgottenPasswordToken { get; set; }
-        
+
+        public virtual ICollection<LecturerInContest> LecturerInContests
+        {
+            get { return this.lecturerInContests; }
+            set { this.lecturerInContests = value; }
+        }
+
         #region IDeletableEntity
         public bool IsDeleted { get; set; }
 

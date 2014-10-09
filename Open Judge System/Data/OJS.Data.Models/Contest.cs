@@ -15,6 +15,7 @@
         private ICollection<Problem> problems;
         private ICollection<Participant> participants;
         private ICollection<SubmissionType> submissionTypes;
+        private ICollection<LecturerInContest> lecturers; 
 
         public Contest()
         {
@@ -22,6 +23,7 @@
             this.problems = new HashSet<Problem>();
             this.participants = new HashSet<Participant>();
             this.submissionTypes = new HashSet<SubmissionType>();
+            this.lecturers = new HashSet<LecturerInContest>();
         }
 
         [Key]
@@ -82,6 +84,12 @@
         public int OrderBy { get; set; }
 
         public string Description { get; set; }
+
+        public virtual ICollection<LecturerInContest> Lecturers
+        {
+            get { return this.lecturers; }
+            set { this.lecturers = value; }
+        }
 
         public virtual ICollection<ContestQuestion> Questions
         {

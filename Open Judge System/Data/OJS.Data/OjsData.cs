@@ -115,6 +115,14 @@
             }
         }
 
+        public IRepository<LecturerInContest> LecturersInContests
+        {
+            get
+            {
+                return this.GetRepository<LecturerInContest>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get

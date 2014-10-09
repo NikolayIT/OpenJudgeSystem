@@ -62,6 +62,8 @@
 
         public virtual IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
+        public virtual IDbSet<LecturerInContest> LecturersInContests { get; set; }
+
         public DbContext DbContext
         {
             get
