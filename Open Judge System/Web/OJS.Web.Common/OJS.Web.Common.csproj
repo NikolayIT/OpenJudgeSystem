@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AuthorizeRolesAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />

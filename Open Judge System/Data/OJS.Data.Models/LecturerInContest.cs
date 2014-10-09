@@ -9,7 +9,7 @@
     {
         [Key]
         [Column(Order = 1)]
-        public int LecturerId { get; set; }
+        public string LecturerId { get; set; }
 
         public virtual UserProfile Lecturer { get; set; }
 

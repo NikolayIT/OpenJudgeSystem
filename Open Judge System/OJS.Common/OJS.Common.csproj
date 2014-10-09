@@ -62,6 +62,7 @@
     <Compile Include="Models\ContestQuestionType.cs" />
     <Compile Include="Models\ContestType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
+    <Compile Include="Models\SystemRole.cs" />
     <Compile Include="Models\TestRunResultType.cs" />
     <Compile Include="Models\ProblemResourceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
