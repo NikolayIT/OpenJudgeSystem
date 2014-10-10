@@ -195,4 +195,7 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="LecturersInContests" xml:space="preserve">
+    <value>Lecturers In Contests</value>
+  </data>
 </root>

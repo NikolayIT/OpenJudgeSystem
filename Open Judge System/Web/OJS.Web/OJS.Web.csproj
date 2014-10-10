@@ -751,6 +751,10 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AntiCheatController.cs" />
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\BaseAdministrationGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseGridController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionsController.cs" />
@@ -769,6 +773,10 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
+    <Compile Include="Areas\Administration\Providers\Contracts\INewsProvider.cs" />
+    <Compile Include="Areas\Administration\Providers\InfoManNewsProvider.cs" />
+    <Compile Include="Areas\Administration\Providers\InfosNewsProvider.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\AntiCheatByIpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\IpSubmissionsAdministrationViewModel.cs" />
@@ -1252,6 +1260,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
+    <Folder Include="Areas\Administration\Views\AdministrationBase\" />
+    <Folder Include="Areas\Administration\Views\BaseAdministrationGrid\" />
+    <Folder Include="Areas\Administration\Views\LecturerBaseGrid\" />
+    <Folder Include="Areas\Administration\Views\LecturerBase\" />
     <Folder Include="Areas\Lecturer\Controllers\" />
     <Folder Include="Areas\Lecturer\Models\" />
     <Folder Include="Areas\Lecturer\Views\Shared\" />
