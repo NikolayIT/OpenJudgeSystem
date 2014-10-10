@@ -752,7 +752,7 @@
     <Compile Include="Areas\Administration\Controllers\AntiCheatController.cs" />
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseController.cs" />
-    <Compile Include="Areas\Administration\Controllers\Common\BaseAdministrationGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseGridController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseGridController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />

@@ -6,9 +6,9 @@
     using OJS.Web.Controllers;
 
     [AuthorizeRoles(SystemRole.Administrator)]
-    public abstract class BaseAdministrationGridController : KendoGridAdministrationController
+    public abstract class AdministrationBaseGridController : KendoGridAdministrationController
     {
-        protected BaseAdministrationGridController(IOjsData data)
+        protected AdministrationBaseGridController(IOjsData data)
             : base(data)
         {
         }

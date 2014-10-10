@@ -10,12 +10,13 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestCategory;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel;
 
-    public class ContestCategoriesController : KendoGridAdministrationController
+    public class ContestCategoriesController : AdministrationBaseGridController
     {
         public ContestCategoriesController(IOjsData data)
             : base(data)

@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -11,11 +10,11 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
+    using OJS.Web.Areas.Administration.Controllers.Common;
 
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileAdministrationViewModel;
 
-    public class UsersController : KendoGridAdministrationController
+    public class UsersController : AdministrationBaseGridController
     {
         public UsersController(IOjsData data)
             : base(data)

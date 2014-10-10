@@ -10,14 +10,14 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.LecturersInContests;
-    using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
 
     using DatabaseModelType = OJS.Data.Models.LecturerInContest;
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.LecturersInContests.LecturerInContestGridViewModel;
 
-    public class LecturersInContestsController : KendoGridAdministrationController
+    public class LecturersInContestsController : AdministrationBaseGridController
     {
         private const int MaxTrainigsToTake = 5;
 

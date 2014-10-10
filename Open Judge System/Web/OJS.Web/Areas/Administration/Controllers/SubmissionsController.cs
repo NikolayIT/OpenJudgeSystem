@@ -9,6 +9,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Controllers;
 
@@ -16,7 +17,7 @@
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
 
-    public class SubmissionsController : KendoGridAdministrationController
+    public class SubmissionsController : AdministrationBaseGridController
     {
         private const string SuccessfulCreationMessage = "Решението беше добавено успешно!";
         private const string SuccessfulEditMessage = "Решението беше променено успешно!";

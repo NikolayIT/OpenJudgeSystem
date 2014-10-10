@@ -11,14 +11,14 @@
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Roles;
-    using OJS.Web.Controllers;
 
     using DatabaseModelType = Microsoft.AspNet.Identity.EntityFramework.IdentityRole;
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
 
-    public class RolesController : KendoGridAdministrationController
+    public class RolesController : AdministrationBaseGridController
     {
         private const string EntityKeyName = "Id";
 

@@ -17,16 +17,16 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
     using OJS.Web.Common.ZippedTestManipulator;
-    using OJS.Web.Controllers;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
     /// </summary>
-    public class TestsController : AdministrationController
+    public class TestsController : LecturerBaseController
     {
         /// <summary>
         /// Instantiates the controller with database context as data

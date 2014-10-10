@@ -11,14 +11,14 @@
     using Newtonsoft.Json;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
-    using OJS.Web.Controllers;
 
     using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
     using DatabaseModelType = OJS.Data.Models.Participant;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel;
 
-    public class ParticipantsController : KendoGridAdministrationController
+    public class ParticipantsController : LecturerBaseGridController
     {
         public ParticipantsController(IOjsData data)
             : base(data)

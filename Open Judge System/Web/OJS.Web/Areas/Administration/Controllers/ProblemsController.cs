@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -17,16 +16,16 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common;
     using OJS.Web.Common.ZippedTestManipulator;
-    using OJS.Web.Controllers;
 
     // TODO: ShowResults property should be editable
-    public class ProblemsController : AdministrationController
+    public class ProblemsController : LecturerBaseController
     {
         public ProblemsController(IOjsData data)
             : base(data)

@@ -6,9 +6,10 @@
     using ElFinder;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Controllers;
 
-    public class FilesController : AdministrationController
+    public class FilesController : AdministrationBaseController
     {
         private Connector connector;
 

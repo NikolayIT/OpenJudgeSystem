@@ -9,11 +9,11 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
-    using OJS.Web.Controllers;
     using OJS.Workers.Tools.AntiCheat;
 
-    public class AntiCheatController : AdministrationController
+    public class AntiCheatController : AdministrationBaseController
     {
         private readonly IPlagiarismDetector plagiarismDetector;
 

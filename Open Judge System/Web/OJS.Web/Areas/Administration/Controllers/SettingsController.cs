@@ -7,12 +7,12 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
+    using OJS.Web.Areas.Administration.Controllers.Common;
 
     using DatabaseModelType = OJS.Data.Models.Setting;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Setting.SettingAdministrationViewModel;
 
-    public class SettingsController : KendoGridAdministrationController
+    public class SettingsController : AdministrationBaseGridController
     {
         public SettingsController(IOjsData data)
             : base(data)

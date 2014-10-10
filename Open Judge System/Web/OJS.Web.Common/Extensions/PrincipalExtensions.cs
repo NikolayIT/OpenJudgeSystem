@@ -15,5 +15,10 @@
         {
             return principal.IsInRole(GlobalConstants.AdministratorRoleName);
         }
+
+        public static bool IsLecturer(this IPrincipal principal)
+        {
+            return principal.IsInRole(GlobalConstants.LecturerRoleName);
+        }
     }
 }

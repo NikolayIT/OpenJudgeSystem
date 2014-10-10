@@ -60,6 +60,7 @@
         #region Other
 
         public const string AdministratorRoleName = "Administrator";
+        public const string LecturerRoleName = "Lecturer";
 
         public const int MinimumSearchTermLength = 3;
 

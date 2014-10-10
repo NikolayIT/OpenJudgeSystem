@@ -10,14 +10,18 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
+
+    using Resources.News.Views;
 
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
-    public class ContestsController : KendoGridAdministrationController
+    public class ContestsController : LecturerBaseGridController
     {
         private const string NoActiveContests = "Няма активни състезания";
         private const string NoFutureContests = "Няма бъдещи състезания";
@@ -30,9 +34,14 @@
 
         public override IEnumerable GetData()
         {
-            return this.Data.Contests
-                .All()
-                .Where(x => !x.IsDeleted)
+            var allContest = this.Data.Contests.All();
+
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
+            {
+                allContest = allContest.Where(x => x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+            }
+
+            return allContest
                 .Select(ViewModelType.ViewModel);
         }
 
@@ -63,6 +72,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(ViewModelType model)
         {
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             if (!this.IsValidContest(model))
             {
                 return this.View(model);
@@ -94,6 +109,12 @@
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            if (!this.CheckIfUserHasPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var contest = this.Data.Contests
                 .All()
                 .Where(con => con.Id == id)
@@ -117,6 +138,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ViewModelType model)
         {
+            if (model.Id == null || !this.CheckIfUserHasPermissions(model.Id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             if (!this.IsValidContest(model))
             {
                 return this.View(model);
@@ -157,6 +184,12 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
+            if (model.Id == null || !this.CheckIfUserHasPermissions(model.Id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             this.BaseDestroy(model.Id);
             return this.GridOperation(request, model);
         }
@@ -246,6 +279,18 @@
             }
 
             return isValid;
+        }
+
+        private bool CheckIfUserHasPermissions(int contestId)
+        {
+            var contest = this.Data.Contests.GetById(contestId);
+
+            if (contest == null)
+            {
+                return false;
+            }
+
+            return contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id);
         }
     }
 }

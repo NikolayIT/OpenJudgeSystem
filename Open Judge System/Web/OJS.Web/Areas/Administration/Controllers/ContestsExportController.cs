@@ -13,11 +13,10 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
-    using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common;
-    using OJS.Web.Controllers;
 
-    public class ContestsExportController : AdministrationController
+    public class ContestsExportController : AdministrationBaseController
     {
         public ContestsExportController(IOjsData data)
             : base(data)

@@ -9,13 +9,14 @@ namespace OJS.Web.Areas.Administration.Controllers
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.FeedbackReport;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.FeedbackReport;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.FeedbackReport.FeedbackReportViewModel;
 
-    public class FeedbackController : KendoGridAdministrationController
+    public class FeedbackController : AdministrationBaseGridController
     {
         public FeedbackController(IOjsData data)
             : base(data)

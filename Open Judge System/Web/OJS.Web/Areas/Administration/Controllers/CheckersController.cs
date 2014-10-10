@@ -7,12 +7,13 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.Checker;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Checker.CheckerAdministrationViewModel;
 
-    public class CheckersController : KendoGridAdministrationController
+    public class CheckersController : AdministrationBaseGridController
     {
         public CheckersController(IOjsData data)
             : base(data)

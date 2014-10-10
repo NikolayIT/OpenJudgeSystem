@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;
@@ -13,11 +12,11 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common;
-    using OJS.Web.Controllers;
 
-    public class ResourcesController : AdministrationController
+    public class ResourcesController : AdministrationBaseController
     {
         public ResourcesController(IOjsData data)
             : base(data)

@@ -1,31 +1,24 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Web;
     using System.Web.Mvc;
-
-    using HtmlAgilityPack;
 
     using Kendo.Mvc.UI;
 
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Providers;
     using OJS.Web.Areas.Administration.Providers.Contracts;
-    using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.News;
     using Resource = Resources.News;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
 
-    public class NewsController : KendoGridAdministrationController
+    public class NewsController : AdministrationBaseGridController
     {
         public NewsController(IOjsData data)
             : base(data)

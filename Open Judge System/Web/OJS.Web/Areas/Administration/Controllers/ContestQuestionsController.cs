@@ -10,13 +10,14 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Controllers;
 
     using DatabaseAnswerModelType = OJS.Data.Models.ContestQuestionAnswer;
     using DatabaseModelType = OJS.Data.Models.ContestQuestion;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel;
 
-    public class ContestQuestionsController : KendoGridAdministrationController
+    public class ContestQuestionsController : AdministrationBaseGridController
     {
         private int contestId;
 

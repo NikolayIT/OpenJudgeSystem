@@ -16,7 +16,6 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data;
 
-    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class AdministrationController : BaseController
     {
         public AdministrationController(IOjsData data)
