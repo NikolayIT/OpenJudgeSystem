@@ -31,7 +31,8 @@
         /// <summary>
         /// Instantiates the controller with database context as data
         /// </summary>
-        /// <param name="data">Open Judge System Database context for the controller to work with</param>
+        /// <param name="data">Open Judge System Database context for the control
+        /// ler to work with</param>
         public TestsController(IOjsData data)
             : base(data)
         {

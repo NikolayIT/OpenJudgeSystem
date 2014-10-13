@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -22,6 +23,7 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
 
     // TODO: ShowResults property should be editable
@@ -39,6 +41,12 @@
 
         public ActionResult Contest(int? id)
         {
+            if (id == null || !this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             this.ViewBag.ContestId = id;
 
             return this.View(GlobalConstants.Index);
@@ -46,6 +54,12 @@
 
         public ActionResult Resource(int? id)
         {
+            if (id == null || !this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var problem = this.Data.Problems
                 .All()
                 .FirstOrDefault(pr => pr.Id == id);
@@ -69,6 +83,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
@@ -111,6 +131,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, HttpPostedFileBase testArchive, DetailedProblemViewModel problem)
         {
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             if (problem.Resources != null && problem.Resources.Any())
             {
                 var validResources = problem.Resources
@@ -190,6 +216,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             // TODO: Fix this query to use the static method from DetailedProblemViewModel
             var selectedProblem = this.Data.Problems.All()
                 .Where(x => x.Id == id)
@@ -231,6 +263,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             if (problem != null && this.ModelState.IsValid)
             {
                 var existingProblem = this.Data.Problems.All()
@@ -262,6 +300,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var selectedProblem = this.Data.Problems.All()
@@ -336,6 +380,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var contest = this.Data.Contests.All()
                 .Where(x => x.Id == id)
                 .Select(ContestAdministrationViewModel.ViewModel)
@@ -356,6 +406,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var contest = this.Data.Contests.All()
@@ -395,8 +451,15 @@
 
             if (problem == null)
             {
+
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             return this.View(problem);
@@ -420,6 +483,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
             this.Data.SaveChanges();
 
@@ -430,12 +499,23 @@
         [HttpGet]
         public ActionResult GetSubmissions(int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.PartialView("_SubmissionsGrid", id);
         }
 
         [HttpPost]
         public JsonResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                return this.Json("No premissions");
+            }
+
             var submissions = this.Data.Submissions
                 .All()
                 .Where(s => s.ProblemId == id)
@@ -447,12 +527,24 @@
         [HttpGet]
         public ActionResult GetResources(int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.PartialView("_ResourcesGrid", id);
         }
 
         [HttpPost]
         public ActionResult ReadResources([DataSourceRequest]DataSourceRequest request, int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var resources = this.Data.Resources
                 .All()
                 .Where(r => r.ProblemId == id)
@@ -472,7 +564,7 @@
         [HttpGet]
         public JsonResult GetCascadeCategories()
         {
-            var result = this.Data.ContestCategories.All().Select(x => new { Id = x.Id, Name = x.Name });
+            var result = this.Data.ContestCategories.All().Select(x => new { x.Id, x.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -497,7 +589,7 @@
         [HttpGet]
         public JsonResult GetSearchedContests()
         {
-            var result = this.Data.Contests.All().Select(x => new { Id = x.Id, Name = x.Name });
+            var result = this.Data.Contests.All().Select(x => new { x.Id, x.Name });
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -506,6 +598,13 @@
         {
             // TODO: Add validation for Id
             var contestIdNumber = int.Parse(id);
+
+            if (!this.CheckIfUserHasContestPermissions(contestIdNumber))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premissions");
+            }
+
             var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == contestIdNumber);
 
             var contestId = contestIdNumber;
@@ -518,6 +617,12 @@
         [HttpGet]
         public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int contestId)
         {
+            if (!this.CheckIfUserHasContestPermissions(contestId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                throw new UnauthorizedAccessException("No premissions");
+            }
+
             return this.ExportToExcel(request, this.GetData(contestId));
         }
 
@@ -531,7 +636,7 @@
                 AllTypes = Enum.GetValues(typeof(ProblemResourceType)).Cast<ProblemResourceType>().Select(v => new SelectListItem
                 {
                     Text = v.GetDescription(),
-                    Value = ((int)v).ToString()
+                    Value = ((int)v).ToString(CultureInfo.InvariantCulture)
                 })
             };
 
@@ -540,6 +645,11 @@
 
         private IEnumerable GetData(int id)
         {
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                return new List<DetailedProblemViewModel>();
+            }
+
             var result = this.Data.Problems.All()
                 .Where(x => x.ContestId == id)
                 .OrderBy(x => x.Name)

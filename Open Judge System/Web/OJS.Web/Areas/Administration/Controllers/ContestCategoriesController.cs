@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -11,7 +10,6 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestCategory;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestCategory.ContestCategoryAdministrationViewModel;

@@ -109,7 +109,7 @@
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (!this.CheckIfUserHasPermissions(id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -138,7 +138,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ViewModelType model)
         {
-            if (model.Id == null || !this.CheckIfUserHasPermissions(model.Id.Value))
+            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -184,7 +184,7 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (model.Id == null || !this.CheckIfUserHasPermissions(model.Id.Value))
+            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -279,18 +279,6 @@
             }
 
             return isValid;
-        }
-
-        private bool CheckIfUserHasPermissions(int contestId)
-        {
-            var contest = this.Data.Contests.GetById(contestId);
-
-            if (contest == null)
-            {
-                return false;
-            }
-
-            return contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id);
         }
     }
 }
