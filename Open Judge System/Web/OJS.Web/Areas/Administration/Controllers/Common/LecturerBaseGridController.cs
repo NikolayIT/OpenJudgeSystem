@@ -18,14 +18,18 @@
 
         protected bool CheckIfUserHasContestPermissions(int contestId)
         {
-            var contest = this.Data.Contests.GetById(contestId);
+            return this.User.IsAdmin() ||
+                   this.Data.Contests
+                       .All()
+                       .Any(x => x.Id == contestId && x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+        }
 
-            if (contest == null)
-            {
-                return false;
-            }
-
-            return contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id) || this.User.IsAdmin();
+        protected bool CheckIfUserHasProblemPermissions(int problemId)
+        {
+            return this.User.IsAdmin() ||
+                   this.Data.Problems
+                       .All()
+                       .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.Lecturer.Id == this.UserProfile.Id));
         }
     }
 }

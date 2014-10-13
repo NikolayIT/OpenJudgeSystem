@@ -54,6 +54,12 @@
         /// <returns>View for /Administration/Tests/Problem/{id}</returns>
         public ActionResult Problem(int? id)
         {
+            if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             this.ViewBag.ProblemId = id;
 
             return this.View(GlobalConstants.Index);
@@ -71,6 +77,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
@@ -106,6 +118,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             if (test != null && this.ModelState.IsValid)
@@ -149,6 +167,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.View(test);
         }
 
@@ -165,10 +189,17 @@
             if (test != null && this.ModelState.IsValid)
             {
                 var existingTest = this.Data.Tests.GetById(id);
+
                 if (existingTest == null)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
                     return this.RedirectToAction("Problem", new { id });
+                }
+
+                if (!this.CheckIfUserHasProblemPermissions(existingTest.ProblemId))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
                 existingTest.InputData = test.InputData;
@@ -212,6 +243,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.View(test);
         }
 
@@ -235,6 +272,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             // delete all test runs for the current test
@@ -295,6 +338,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var problem = this.Data.Problems.All()
                 .Where(pr => pr.Id == id)
                 .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.Contest.Name })
@@ -322,6 +371,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var problem = this.Data.Problems.All()
                 .FirstOrDefault(pr => pr.Id == id);
 
@@ -331,7 +386,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
+            var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
             foreach (var test in tests)
             {
                 var testRuns = test.TestRuns.ToList();
@@ -375,6 +430,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.View(test);
         }
 
@@ -385,8 +446,13 @@
         /// <returns>Content as html of the test input</returns>
         public ActionResult FullInput(int id)
         {
-            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id).InputDataAsString;
-            return this.Content(HttpUtility.HtmlEncode(result), "text/html");
+            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
+            if (result != null)
+            {
+                return this.Content(HttpUtility.HtmlEncode(result.InputDataAsString), "text/html");
+            }
+
+            return new EmptyResult();
         }
 
         /// <summary>
@@ -396,8 +462,14 @@
         /// <returns>Content as html of the test output</returns>
         public ActionResult FullOutput(int id)
         {
-            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id).OutputDataAsString;
-            return this.Content(HttpUtility.HtmlEncode(result), "text/html");
+            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
+
+            if (result != null)
+            {
+                return this.Content(HttpUtility.HtmlEncode(result.OutputDataAsString), "text/html");
+            }
+
+            return new EmptyResult();
         }
 
         /// <summary>
@@ -423,7 +495,7 @@
         [HttpGet]
         public JsonResult GetCascadeCategories()
         {
-            var result = this.Data.ContestCategories.All().Select(cat => new { Id = cat.Id, Name = cat.Name });
+            var result = this.Data.ContestCategories.All().Select(cat => new { cat.Id, cat.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -431,7 +503,7 @@
         /// <summary>
         /// Returns all available contests in category by id
         /// </summary>
-        /// <param name="category">Id of category to get all contests from</param>
+        /// <param name="id">Id of category to get all contests from</param>
         /// <returns>JSON result of all contests in category as objects with Id and Name properties</returns>
         [HttpGet]
         public JsonResult GetCascadeContests(int id)
@@ -447,7 +519,7 @@
         /// <summary>
         /// Returns all available problems in contest by id
         /// </summary>
-        /// <param name="category">Id of contest to get all problem from</param>
+        /// <param name="id">Id of contest to get all problem from</param>
         /// <returns>JSON result of all problems in contest as objects with Id and Name properties</returns>
         [HttpGet]
         public JsonResult GetCascadeProblems(int id)
@@ -468,6 +540,12 @@
         [HttpGet]
         public JsonResult GetProblemInformation(int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premissions");
+            }
+
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
             var contestId = problem.ContestId;
@@ -524,6 +602,12 @@
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, "Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premissions");
             }
 
             if (file == null || file.ContentLength == 0)
@@ -610,9 +694,15 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premissions");
+            }
+
             var tests = problem.Tests.OrderBy(x => x.OrderBy);
 
-            ZipFile zip = new ZipFile(string.Format("{0}_Tests_{1}", problem.Name, DateTime.Now));
+            var zip = new ZipFile(string.Format("{0}_Tests_{1}", problem.Name, DateTime.Now));
 
             using (zip)
             {
@@ -652,6 +742,11 @@
 
         private IEnumerable GetData(int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                return new List<TestViewModel>();
+            }
+
             var result = this.Data.Tests
                 .All()
                 .Where(test => test.ProblemId == id)

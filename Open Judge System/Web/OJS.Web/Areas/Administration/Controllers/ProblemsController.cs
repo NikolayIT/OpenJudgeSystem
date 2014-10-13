@@ -23,7 +23,6 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common;
-    using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
 
     // TODO: ShowResults property should be editable
@@ -216,7 +215,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -263,7 +262,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, DetailedProblemViewModel problem)
         {
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!this.CheckIfUserHasProblemPermissions(id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -302,7 +301,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });

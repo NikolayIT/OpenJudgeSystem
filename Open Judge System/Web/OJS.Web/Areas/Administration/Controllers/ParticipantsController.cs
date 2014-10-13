@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,6 +11,7 @@
 
     using Newtonsoft.Json;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
@@ -51,6 +53,12 @@
 
         public ActionResult Contest(int id)
         {
+            if (this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.View(id);
         }
 
@@ -60,6 +68,12 @@
             if (id == null)
             {
                 return this.Read(request);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var participants = this.Data.Participants
@@ -75,6 +89,12 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
             var user = this.Data.Users.All().FirstOrDefault(u => u.Id == model.UserId);
 
@@ -148,6 +168,12 @@
         [HttpGet]
         public FileResult ExportToExcelByContest(DataSourceRequest request, int contestId)
         {
+            if (!this.CheckIfUserHasContestPermissions(contestId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                throw new UnauthorizedAccessException("No premissions");
+            }
+
             var data = ((IEnumerable<ViewModelType>)this.GetData()).Where(p => p.ContestId == contestId);
             return this.ExportToExcel(request, data);
         }
