@@ -18,14 +18,10 @@
 
         protected bool CheckIfUserHasContestPermissions(int contestId)
         {
-            var contest = this.Data.Contests.GetById(contestId);
-
-            if (contest == null)
-            {
-                return false;
-            }
-
-            return this.User.IsAdmin() || contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id);
+            return this.User.IsAdmin() ||
+                   this.Data.Contests
+                       .All()
+                       .Any(x => x.Id == contestId && x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
         }
 
         protected bool CheckIfUserHasProblemPermissions(int problemId)
