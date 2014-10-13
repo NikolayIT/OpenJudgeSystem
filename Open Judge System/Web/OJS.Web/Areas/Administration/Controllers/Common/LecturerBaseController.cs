@@ -25,19 +25,15 @@
                 return false;
             }
 
-            return contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id) || this.User.IsAdmin();
+            return this.User.IsAdmin() || contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id);
         }
 
         protected bool CheckIfUserHasProblemPermissions(int problemId)
         {
-            var problem = this.Data.Problems.GetById(problemId);
-
-            if (problem == null)
-            {
-                return false;
-            }
-
-            return problem.Contest.Lecturers.Any(x => x.LecturerId == this.UserProfile.Id) || this.User.IsAdmin();
+            return this.User.IsAdmin() || 
+                this.Data.Problems
+                    .All()
+                    .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.Lecturer.Id == this.UserProfile.Id));
         }
     }
 }
