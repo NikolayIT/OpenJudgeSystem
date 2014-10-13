@@ -8,7 +8,9 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
-    [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
+    [AuthorizeRoles(
+        SystemRole.Administrator, 
+        SystemRole.Lecturer)]
     public abstract class LecturerBaseGridController : KendoGridAdministrationController
     {
         protected LecturerBaseGridController(IOjsData data)

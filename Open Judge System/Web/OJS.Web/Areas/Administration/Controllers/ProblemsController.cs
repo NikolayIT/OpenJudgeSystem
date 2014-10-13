@@ -84,7 +84,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            if (this.CheckIfUserHasContestPermissions(id.Value))
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
