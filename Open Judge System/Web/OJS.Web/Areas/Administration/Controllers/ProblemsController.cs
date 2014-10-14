@@ -450,7 +450,6 @@
 
             if (problem == null)
             {
-
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
                 return this.RedirectToAction(GlobalConstants.Index);
             }
