@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;
@@ -16,7 +17,7 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common;
 
-    public class ResourcesController : AdministrationBaseController
+    public class ResourcesController : LecturerBaseController
     {
         public ResourcesController(IOjsData data)
             : base(data)
@@ -25,6 +26,12 @@
 
         public JsonResult GetAll(int id, [DataSourceRequest] DataSourceRequest request)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premmissions");
+            }
+
             var resources = this.Data.Resources
                 .All()
                 .Where(res => res.ProblemId == id)
@@ -37,6 +44,12 @@
         [HttpGet]
         public ActionResult Create(int id)
         {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
             if (problem == null)
@@ -48,7 +61,7 @@
             int orderBy;
             var resources = problem.Resources.Where(res => !res.IsDeleted);
 
-            if (resources == null || resources.Count() == 0)
+            if (resources == null || !resources.Any())
             {
                 orderBy = 0;
             }
@@ -75,7 +88,13 @@
             if (resource == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Ресурсът е невалиден";
-                return this.RedirectToAction("Resource", "Problems", new { id = id });
+                return this.RedirectToAction("Resource", "Problems", new { id });
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
@@ -135,6 +154,12 @@
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var existingResource = this.Data.Resources.All()
                 .Where(res => res.Id == id)
                 .Select(ProblemResourceViewModel.FromProblemResource)
@@ -159,6 +184,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             if (this.ModelState.IsValid)
@@ -221,10 +252,21 @@
                 return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
             }
 
-            var fileResult = resource.File.ToStream();
-            var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
+            if (problem != null && !this.CheckIfUserHasProblemPermissions(problem.Id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
 
-            return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
+            var fileResult = resource.File.ToStream();
+            if (problem != null)
+            {
+                var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
+
+                return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
+            }
+
+            throw new ArgumentOutOfRangeException("id", "No problem with that id");
         }
     }
 }
