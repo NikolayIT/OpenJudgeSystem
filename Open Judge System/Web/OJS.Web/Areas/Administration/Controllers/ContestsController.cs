@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
@@ -9,12 +10,14 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
+    using OJS.Web.ViewModels.Common;
 
     using Resources.News.Views;
 
@@ -26,6 +29,8 @@
         private const string NoActiveContests = "Няма активни състезания";
         private const string NoFutureContests = "Няма бъдещи състезания";
         private const string NoLatestContests = "Нямa последни състезaния";
+        private const int StartTimeDelayInSeconds = 15;
+        private const int LabDurationInSeconds = 30 * 60;
 
         public ContestsController(IOjsData data)
             : base(data)
@@ -54,6 +59,7 @@
 
         public ActionResult Index()
         {
+            this.PrepareViewBagData();
             return this.View();
         }
 
@@ -65,6 +71,7 @@
                 SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
             };
 
+            this.PrepareViewBagData();
             return this.View(newContest);
         }
 
@@ -103,6 +110,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            this.PrepareViewBagData();
             return this.View(model);
         }
 
@@ -131,6 +139,7 @@
                 .Select(SubmissionTypeViewModel.ViewModel)
                 .ForEach(SubmissionTypeViewModel.ApplySelectedTo(contest));
 
+            this.PrepareViewBagData();
             return this.View(contest);
         }
 
@@ -178,6 +187,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            this.PrepareViewBagData();
             return this.View(model);
         }
 
@@ -254,6 +264,32 @@
                 });
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult StartAsLab(int id)
+        {
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var contest = this.Data.Contests.GetById(id);
+
+            if (contest != null)
+            {
+                contest.StartTime = DateTime.Now.AddSeconds(StartTimeDelayInSeconds);
+                contest.EndTime = DateTime.Now.AddSeconds(StartTimeDelayInSeconds + LabDurationInSeconds);
+                contest.IsVisible = true;
+                this.Data.SaveChanges();
+            }
+
+            return new EmptyResult();
+        }
+
+        private void PrepareViewBagData()
+        {
+            this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
         }
 
         private bool IsValidContest(ViewModelType model)

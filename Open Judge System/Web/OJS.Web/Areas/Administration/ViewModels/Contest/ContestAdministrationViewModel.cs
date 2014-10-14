@@ -9,6 +9,7 @@
     using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
@@ -29,6 +30,7 @@
                 {
                     Id = contest.Id,
                     Name = contest.Name,
+                    Type = (int)contest.Type,
                     StartTime = contest.StartTime,
                     EndTime = contest.EndTime,
                     PracticeStartTime = contest.PracticeStartTime,
@@ -59,6 +61,11 @@
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Тип")]
+        [UIHint("DropDownListCustom")]
+        public int Type { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Начало")]
@@ -125,5 +132,14 @@
 
         [ExcludeFromExcel]
         public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
+
+        public override Contest GetEntityModel(Contest model = null)
+        {
+            model = model ?? new Contest();
+
+            model.Type = (ContestType)this.Type;
+
+            return base.GetEntityModel(model);
+        }
     }
 }

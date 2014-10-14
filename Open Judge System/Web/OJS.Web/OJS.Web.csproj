@@ -1160,6 +1160,8 @@
     <Content Include="Areas\Lecturer\Views\web.config" />
     <Content Include="Areas\Administration\Views\LecturersInContests\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -1260,10 +1262,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
-    <Folder Include="Areas\Administration\Views\AdministrationBase\" />
-    <Folder Include="Areas\Administration\Views\BaseAdministrationGrid\" />
-    <Folder Include="Areas\Administration\Views\LecturerBaseGrid\" />
-    <Folder Include="Areas\Administration\Views\LecturerBase\" />
     <Folder Include="Areas\Lecturer\Controllers\" />
     <Folder Include="Areas\Lecturer\Models\" />
     <Folder Include="Areas\Lecturer\Views\Shared\" />

@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
 
+    using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
 
     public class DropdownViewModel
@@ -40,7 +43,7 @@
             var yearsDropDownList = new List<DropdownViewModel>();
             for (var i = fromYear; i <= toYear; i++)
             {
-                yearsDropDownList.Add(new DropdownViewModel { Id = i, Name = i.ToString() });
+                yearsDropDownList.Add(new DropdownViewModel { Id = i, Name = i.ToString(CultureInfo.InvariantCulture) });
             }
 
             if (ascendingOrder)
@@ -49,6 +52,18 @@
             }
 
             return yearsDropDownList.OrderByDescending(x => x.Id);
+        }
+
+        public static IEnumerable<DropdownViewModel> GetEnumValues<T>() where T : struct, IConvertible
+        {
+            return Enum
+                    .GetValues(typeof(T))
+                    .Cast<T>()
+                    .Select(x => new DropdownViewModel
+                    {
+                        Id = Convert.ToInt32(x),
+                        Name = x.GetDescription()
+                    });
         }
 
         public override bool Equals(object obj)

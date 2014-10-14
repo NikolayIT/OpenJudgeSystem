@@ -2,7 +2,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@RenderBody()
+@section styles {
+    <style>
+        .container {
+            margin: 0;
+        }
+
+        div.administration-container {
+            width: 115%;
+        }
+    </style>
+}
+
+<div class="administration-container">
+    @RenderBody()
+</div>
 
 @section scripts {
     @RenderSection("scripts", required: false)
@@ -10,11 +24,11 @@
 
     <script type="text/x-kendo-template" id="model-state-errors-template">
         # if (errors.length) { #
-            <ul>
-                # for (var i = 0; i < errors.length; ++i) { #
-                <li>#= errors[i] #</li>
-                # } #
-            </ul>
+        <ul>
+            # for (var i = 0; i < errors.length; ++i) { #
+            <li>#= errors[i] #</li>
+            # } #
+        </ul>
         # } #
     </script>
 }
