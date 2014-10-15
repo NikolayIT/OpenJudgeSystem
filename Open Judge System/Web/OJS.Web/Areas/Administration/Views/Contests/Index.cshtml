@@ -1,4 +1,5 @@
-﻿@{
+﻿@using OJS.Web.Areas.Administration.InputModels.Contests
+@{
     ViewBag.Title = "Състезания";
     const string ContestControllerName = "Contests";
     const string ContestQuestionControllerName = "ContestQuestions";
@@ -19,7 +20,7 @@
             columns.Bound(x => x.IsVisible).Hidden();
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Custom("startAsLab").Text("Начало Лаб").Click("startAsLab")).Width(180);
+            columns.Command(command => command.Custom("Стартирай Лаб").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Лаб стартиране");
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
@@ -64,17 +65,61 @@
     )
 )
 
+@{ Html.RenderPartial("_LabStartPopupWindow", new LabStartInputModel()); }
+
 <script type="text/javascript">
     function onDataBound() {
         CreateExportToExcelButton();
     }
 
-    function startAsLab(e) {
-        e.preventDefault();
-        var dataItem = this.dataItem($(e.currentTarget).closest('tr'));
-        $.post('/Administration/Contests/StartAsLab/' + dataItem.Id, function () {
-            $(e.currentTarget).closest('tr').remove();
-        });
+    function onGridStartBtnClick(ev) {
+        ev.preventDefault();
+
+        var dataItem = this.dataItem($(ev.currentTarget).closest('tr'));
+        $("#ContestCreateId").val(dataItem.Id);
+
+
+        resetFormValues();
+
+        var startLabWindow = $('#lab-start-popup').kendoWindow({
+            height: 'auto',
+            width: '50%',
+            title: 'Стартиране на Лаб',
+            visible: false,
+            modal: 'true',
+            deactivate: resetFormValues
+        }).data('kendoWindow');
+
+        startLabWindow.center();
+        startLabWindow.open();
+
+        $('#lab-start-btn-cancel').click(closeLabStartPopupWindow);
+    }
+
+    function onStartLabSuccess() {
+        $("#DataGrid").data("kendoGrid").dataSource.read();
+
+        closeLabStartPopupWindow();
+    }
+
+    function closeLabStartPopupWindow() {
+        $('#lab-start-popup').data('kendoWindow').close();
+    }
+
+    function resetFormValues() {
+        document.getElementById('lab-start-form').reset();
+    }
+
+    function showErrorMessage(errorData) {
+        var errorObject = JSON.parse(errorData.responseText);
+        if (errorObject.Message) {
+            $('span[data-valmsg-for=Duration]')
+                .removeClass('field-validation-valid')
+                .addClass('field-validation-error')
+                .html(errorObject.Message);
+        } else {
+            alert('Възникна неочаквана грешка');
+        }
     }
 </script>
 
@@ -107,20 +152,14 @@
                 edit.Window(w => w.Title(ViewBag.Title));
                 edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
             })
-        .DataSource(data =>
-        {
-            data.Ajax()
-                .ServerOperation(true)
-                .Model(model =>
-                {
-                    model.Id(m => m.QuestionId);
-                })
-                .Sort(sort => sort.Add(field => field.CreatedOn))
-                .Create(create => create.Action("AddQuestionToContest", ContestQuestionControllerName, new { id = "#= Id #" }))
-                .Read(read => read.Action("QuestionsInContest", ContestQuestionControllerName, new { id = "#= Id #" }))
-                .Update(update => update.Action("UpdateQuestionInContest", ContestQuestionControllerName))
-                .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ContestQuestionControllerName));
-        })
+        .DataSource(data => data.Ajax()
+            .ServerOperation(true)
+            .Model(model => model.Id(m => m.QuestionId))
+            .Sort(sort => sort.Add(field => field.CreatedOn))
+            .Create(create => create.Action("AddQuestionToContest", ContestQuestionControllerName, new { id = "#= Id #" }))
+            .Read(read => read.Action("QuestionsInContest", ContestQuestionControllerName, new { id = "#= Id #" }))
+            .Update(update => update.Action("UpdateQuestionInContest", ContestQuestionControllerName))
+            .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ContestQuestionControllerName)))
         .ToClientTemplate())
 
     @(Html.Kendo().Window()

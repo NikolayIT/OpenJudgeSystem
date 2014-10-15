@@ -1,0 +1,27 @@
+﻿@model OJS.Web.Areas.Administration.InputModels.Contests.LabStartInputModel
+
+<div id="lab-start-popup" style="display: none">
+    @using (Ajax.BeginForm(
+        "StartAsLab",
+        "Contests",
+        new { area = "Administration" },
+        new AjaxOptions { HttpMethod = "POST", OnSuccess = "onStartLabSuccess", OnFailure = "showErrorMessage" },
+        new { id = "lab-start-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ContestCreateId)
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Duration)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Duration)
+            @Html.ValidationMessageFor(model => model.Duration)
+        </div>
+
+        <div class="small-margin-top">
+            <input type="submit" class="k-button" id="lab-start-btn-submit" value="Стартирай" />
+            <input type="button" class="k-button" id="lab-start-btn-cancel" value="Отказ" />
+        </div>
+    }
+</div>

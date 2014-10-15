@@ -773,6 +773,7 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\Contracts\INewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\InfoManNewsProvider.cs" />
@@ -1162,6 +1163,7 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />

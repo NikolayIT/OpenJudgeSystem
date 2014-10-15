@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common.Extensions;
@@ -266,15 +267,15 @@
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult StartAsLab(int id)
+        public ActionResult StartAsLab(LabStartInputModel inputModel)
         {
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!this.CheckIfUserHasContestPermissions(inputModel.ContestCreateId))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var contest = this.Data.Contests.GetById(id);
+            var contest = this.Data.Contests.GetById(inputModel.ContestCreateId);
 
             if (contest != null)
             {
