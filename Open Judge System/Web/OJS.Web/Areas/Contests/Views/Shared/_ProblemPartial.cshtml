@@ -142,13 +142,14 @@
                                         initFileInput();
                                     });
 
-                                    kendoUpload.bind('select', function () {
+                                    kendoUpload.bind('select', function() {
                                         initFileInput();
-                                    })
+                                    });
                                 }
 
                                 if (dataItem.AllowBinaryFilesUpload) {
-                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/") + '?returnProblem=' + getSelectedIndexFromHashtag());
+                                    var returnProblem = getSelectedIndexFromHashtag();
+                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/") + '?returnProblem=' + returnProblem);
                                     form.attr("data-ajax", "false");
                                     form.bind('submit', submitHandler);
                                     fileUpload.show();
@@ -164,12 +165,12 @@
                             }
                         </script>
                         @(Html.Kendo().DropDownList()
-                              .Name("SubmissionTypeId")
-                              .DataTextField("Text")
-                              .DataValueField("Value")
-                              .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange"))
-                              .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
-                              .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
+                            .Name("SubmissionTypeId")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange"))
+                            .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
+                            .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
                         <input type="submit" value="@Resource.Submit" class="k-button submision-submit-button" />
                     </div>
                 </div>

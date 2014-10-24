@@ -54,7 +54,7 @@
                         .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
                 }
 
-                if (Model.Contest.Problems.Count() == 0)
+                if (!Model.Contest.Problems.Any())
                 {
                     tabstrip.Add().Text("Няма задачи").Content("Все още няма добавени задачи към това състезание");
                 }
