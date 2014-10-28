@@ -17,10 +17,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common.Extensions;
-    using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
-
-    using Resources.News.Views;
 
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
@@ -30,7 +27,7 @@
         private const string NoActiveContests = "Няма активни състезания";
         private const string NoFutureContests = "Няма бъдещи състезания";
         private const string NoLatestContests = "Нямa последни състезaния";
-        private const int StartTimeDelayInSeconds = 15;
+        private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
 
         public ContestsController(IOjsData data)

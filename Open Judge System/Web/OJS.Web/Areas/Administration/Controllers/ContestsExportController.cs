@@ -191,12 +191,11 @@
                 {
                     // Find submission
                     var bestSubmission =
-                        this.Data.Submissions.All()
-                            .Where(
-                                submission =>
-                                submission.ParticipantId == participant.Id && submission.ProblemId == problem.Id)
+                        this.Data.Submissions
+                            .All()
+                            .Where(submission => submission.ParticipantId == participant.Id && submission.ProblemId == problem.Id)
                             .OrderByDescending(submission => submission.Points)
-                            .ThenByDescending(submission => submission.Id)
+                            .ThenByDescending(submission => submission.CreatedOn)
                             .FirstOrDefault();
 
                     // Create file if submission exists
