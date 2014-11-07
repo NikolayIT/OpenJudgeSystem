@@ -33,16 +33,19 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && submission.IsDeleted)
+            var userHasAdminPermissions = this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value);
+
+            if (!userHasAdminPermissions && submission.IsDeleted)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            if (!userHasAdminPermissions && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
 
+            submission.UserHasAdminPermission = userHasAdminPermissions;
             return this.View(submission);
         }
 

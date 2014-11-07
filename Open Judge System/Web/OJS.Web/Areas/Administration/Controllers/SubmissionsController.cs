@@ -123,6 +123,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!submission.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             ViewBag.SubmissionAction = "Update";
             return this.View(submission);
         }
@@ -133,6 +139,12 @@
         {
             if (model.Id.HasValue)
             {
+                if (!model.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(model.ProblemId.Value))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                }
+
                 var submission = this.Data.Submissions.GetById(model.Id.Value);
                 if (model.SubmissionTypeId.HasValue)
                 {
@@ -196,6 +208,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            if (!submission.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             return this.View(submission);
         }
 
@@ -209,6 +227,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
                 return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!submission.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             foreach (var testRun in submission.TestRuns.ToList())
@@ -255,6 +279,12 @@
             }
             else
             {
+                if (!submission.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                }
+
                 submission.Processed = false;
                 submission.Processing = false;
                 this.Data.SaveChanges();

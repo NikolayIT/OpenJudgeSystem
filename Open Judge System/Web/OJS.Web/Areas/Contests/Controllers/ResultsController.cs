@@ -157,11 +157,14 @@
             contestModel.CurrentPage = page.Value;
             contestModel.AllPages = totalPages;
 
-            if (User.IsAdmin())
+            var isUserLectureInCotnest = this.UserProfile.LecturerInContests.Any(x => x.ContestId == contestModel.Id);
+
+            if (User.IsAdmin() || isUserLectureInCotnest)
             {
                 contestModel.Results = contestModel.Results.OrderByDescending(x => x.AdminTotal);
             }
 
+            contestModel.UserIsLecturerInContest = isUserLectureInCotnest;
             this.ViewBag.IsOfficial = official;
 
             return this.View(contestModel);

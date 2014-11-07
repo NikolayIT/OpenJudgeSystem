@@ -39,6 +39,9 @@ namespace OJS.Web.Areas.Contests.Controllers
             this.ViewBag.ContestProblems = this.Data.Problems.All().Where(x => x.ContestId == id)
                 .Select(ProblemListItemViewModel.FromProblem);
 
+            contestViewModel.UserIsLecturerInContest =
+                this.UserProfile.LecturerInContests.Any(x => x.ContestId == contestViewModel.Id);
+
             return this.View(contestViewModel);
         }
 

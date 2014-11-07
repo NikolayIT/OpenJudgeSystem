@@ -48,7 +48,7 @@
                                                                     .Select(ContestProblemViewModel.FromProblem),
                                       LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                                       Description = contest.Description,
-                                      AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType)
+                                      AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType),
                                   };
             }
         }
@@ -221,5 +221,7 @@
                 }
             }
         }
+
+        public bool UserIsLecturerInContest { get; set; }
     }
 }

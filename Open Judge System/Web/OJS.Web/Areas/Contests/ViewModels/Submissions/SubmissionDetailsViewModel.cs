@@ -94,5 +94,7 @@
         public SubmissionType SubmissionType { get; set; }
 
         public bool ShowResults { get; set; }
+
+        public bool UserHasAdminPermission { get; set; }
     }
 }

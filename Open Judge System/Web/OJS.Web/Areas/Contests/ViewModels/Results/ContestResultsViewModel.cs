@@ -23,5 +23,7 @@
         public bool ContestCanBeCompeted { get; set; }
 
         public bool ContestCanBePracticed { get; set; }
+
+        public bool UserIsLecturerInContest { get; set; }
     }
 }

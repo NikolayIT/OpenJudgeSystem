@@ -111,7 +111,7 @@
         {
             @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
         }
-        @if (User.IsAdmin())
+        @if (User.IsAdmin() || Model.UserIsLecturerInContest)
         {
             <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Results</a>
             <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Full_results</a>

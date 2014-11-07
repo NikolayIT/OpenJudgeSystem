@@ -41,7 +41,7 @@
 
 <h2>@ViewBag.Title</h2>
 <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
-@if (User.IsAdmin())
+@if (Model.UserHasAdminPermission)
 {
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
     <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
@@ -174,7 +174,7 @@ else
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
         {
-            if (testResult.IsTrialTest || User.IsAdmin())
+            if (testResult.IsTrialTest || Model.UserHasAdminPermission)
             {
                 <pre>@testResult.CheckerComment</pre>
             }

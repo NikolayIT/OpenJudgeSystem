@@ -76,7 +76,7 @@
         [NonAction]
         public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
         {
-            if (!contest.SubmissionTypes.Any(submissionType => submissionType.Id == submissionTypeId))
+            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }

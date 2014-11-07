@@ -13,6 +13,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels;
 
     public class BaseController : Controller
@@ -105,6 +106,22 @@
                 Content = serializer.Serialize(data),
                 ContentType = "application/json",
             };
+        }
+
+        protected bool CheckIfUserHasContestPermissions(int contestId)
+        {
+            return this.User.IsAdmin() ||
+                   this.Data.Contests
+                       .All()
+                       .Any(x => x.Id == contestId && x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+        }
+
+        protected bool CheckIfUserHasProblemPermissions(int problemId)
+        {
+            return this.User.IsAdmin() ||
+                   this.Data.Problems
+                       .All()
+                       .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.Lecturer.Id == this.UserProfile.Id));
         }
 
         private SystemMessageCollection PrepareSystemMessages()

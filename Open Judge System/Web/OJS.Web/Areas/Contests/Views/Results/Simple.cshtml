@@ -53,7 +53,7 @@
             }
             @foreach (var problem in Model.Problems)
             {
-                if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin())
+                if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin() || Model.UserIsLecturerInContest)
                 {
                     <th class="text-center">
                         @if (displayLink)
@@ -83,7 +83,7 @@
                 <td>@participant.ParticipantFullName</td>
                 @foreach (var participantResult in participant.ProblemResults)
                 {
-                    if (User.IsAdmin())
+                    if (User.IsAdmin() || Model.UserIsLecturerInContest)
                     {
                         if (participantResult.BestSubmission == null)
                         {
@@ -106,7 +106,7 @@
                         }
                     }
                 }
-                @if (User.IsAdmin())
+                @if (User.IsAdmin() || Model.UserIsLecturerInContest)
                 {
                     <td>@participant.AdminTotal</td>
                 }
