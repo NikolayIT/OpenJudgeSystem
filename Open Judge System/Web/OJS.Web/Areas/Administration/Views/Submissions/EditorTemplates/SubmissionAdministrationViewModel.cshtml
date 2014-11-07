@@ -6,6 +6,7 @@
     #FileUploadSubmissionContainer {
         display: none;
     }
+
     #CodeSubmissionContainer {
         display: none;
     }
@@ -46,7 +47,7 @@
             @Html.ActionLink("Свали решението", "GetSubmissionFile", "Submissions", new { area = "Administration", submissionId = Model.Id }, null)
         </div>
     }
-        
+
     @Html.Label("Качи ново решение", new { @class = "control-label col-md-12" })
     <div class="col-md-12">
         @(Html.Kendo().Upload()
@@ -88,7 +89,7 @@
         var codeArea = $("#CodeSubmissionContainer");
         var formAction = form.attr("action");
 
-        debugger;
+        //debugger;
         if (dataItem.AllowBinaryFilesUpload === true) {
             form.attr("data-ajax", "false");
             fileUpload.show();
@@ -97,9 +98,7 @@
         } else if (dataItem.AllowBinaryFilesUpload === false) {
             fileUpload.hide();
             codeArea.show();
-        }
-        else
-        {
+        } else {
             fileUpload.hide();
             codeArea.hide();
         }

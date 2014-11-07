@@ -11,8 +11,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
-    using OJS.Web.Controllers;
-
+    
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;

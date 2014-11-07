@@ -320,7 +320,7 @@ function TabStripManager() {
 }
 
 function getSelectedIndexFromHashtag() {
-    return parseInt(window.location.hash.substr(1));
+    return parseInt(window.location.hash.substr(1) || '0');
 }
 
 $(document).ready(function() {

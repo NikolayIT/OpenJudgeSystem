@@ -93,7 +93,7 @@
 
             var isInContest =
                 this.Data.LecturersInContests.All()
-                    .Any(x => x.LecturerId == model.LecturerId && x.LecturerId == model.LecturerId);
+                    .Any(x => x.LecturerId == model.LecturerId && x.ContestId == model.ContestId);
 
             if (isInContest)
             {
@@ -110,7 +110,13 @@
                 this.Data.LecturersInContests.Add(lecturerInContest);
                 this.Data.SaveChanges();
 
-                model.ContestName = this.Data.Contests.GetById(model.ContestId).Name;
+                var contestName = this.Data.Contests
+                    .All()
+                    .Where(x => x.Id == model.ContestId)
+                    .Select(x => x.Name)
+                    .FirstOrDefault();
+
+                model.ContestName = contestName;
             }
 
             return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
