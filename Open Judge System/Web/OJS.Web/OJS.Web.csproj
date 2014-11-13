@@ -849,7 +849,6 @@
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
-    <Compile Include="Areas\Lecturer\LecturerAreaRegistration.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
@@ -1158,7 +1157,6 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
-    <Content Include="Areas\Lecturer\Views\web.config" />
     <Content Include="Areas\Administration\Views\LecturersInContests\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
@@ -1265,9 +1263,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
-    <Folder Include="Areas\Lecturer\Controllers\" />
-    <Folder Include="Areas\Lecturer\Models\" />
-    <Folder Include="Areas\Lecturer\Views\Shared\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
     <Folder Include="Scripts\CodeMirror\addon\" />
