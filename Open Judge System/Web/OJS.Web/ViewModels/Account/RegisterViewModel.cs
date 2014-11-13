@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.ViewModels.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     using Resource = Resources.Account.AccountViewModels;
 
@@ -15,6 +16,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
+        [AllowHtml]
         [Required(ErrorMessageResourceName = "Enter_password",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(100, ErrorMessageResourceName = "Password_length_validation_message",
@@ -23,9 +25,10 @@
         [Display(Name = "Password", ResourceType = typeof(Resource))]
         public string Password { get; set; }
 
+        [AllowHtml]
         [DataType(DataType.Password)]
         [Display(Name = "Password_confirm", ResourceType = typeof(Resource))]
-        [Compare("Password", ErrorMessageResourceName = "Passwords_dont_match",
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "Passwords_dont_match",
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }
 
