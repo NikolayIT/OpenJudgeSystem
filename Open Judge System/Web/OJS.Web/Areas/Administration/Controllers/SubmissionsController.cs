@@ -16,7 +16,7 @@
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
 
-    public class SubmissionsController : AdministrationBaseGridController
+    public class SubmissionsController : LecturerBaseGridController
     {
         private const string SuccessfulCreationMessage = "Решението беше добавено успешно!";
         private const string SuccessfulEditMessage = "Решението беше променено успешно!";
