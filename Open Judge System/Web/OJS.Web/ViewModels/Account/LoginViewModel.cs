@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.ViewModels.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     using OJS.Common;
 
@@ -20,6 +21,7 @@
         [RegularExpression(GlobalConstants.UsernameRegEx, ErrorMessage = "Невалиден формат на потребителското име.")]
         public string UserName { get; set; }
 
+        [AllowHtml]
         [Required(
                 ErrorMessageResourceName = "Enter_password",
                 ErrorMessageResourceType = typeof(Resource))]

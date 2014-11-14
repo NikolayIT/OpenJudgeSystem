@@ -1,11 +1,13 @@
 ﻿namespace OJS.Web.ViewModels.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     using Resource = Resources.Account.AccountViewModels;
 
     public class ChangeEmailViewModel
     {
+        [AllowHtml]
         [StringLength(int.MaxValue, MinimumLength = 1, ErrorMessageResourceName = "Password_required",
             ErrorMessageResourceType = typeof(Resource))]
         [Required(ErrorMessageResourceName = "Password_required",
@@ -28,7 +30,7 @@
         [Display(Name = "Email_confirm", ResourceType = typeof(Resource))]
         [EmailAddress(ErrorMessage = null, ErrorMessageResourceName = "Email_confirmation_required",
             ErrorMessageResourceType = typeof(Resource))]
-        [Compare("Email", ErrorMessageResourceName = "Email_confirmation_invalid",
+        [System.ComponentModel.DataAnnotations.Compare("Email", ErrorMessageResourceName = "Email_confirmation_invalid",
             ErrorMessageResourceType = typeof(Resource))]
         public string EmailConfirmation { get; set; }
     }

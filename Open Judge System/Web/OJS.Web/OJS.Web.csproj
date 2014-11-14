@@ -144,7 +144,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -176,10 +176,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -849,7 +846,6 @@
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\TestRunDetailsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionTypeViewModel.cs" />
-    <Compile Include="Areas\Lecturer\LecturerAreaRegistration.cs" />
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
@@ -1158,7 +1154,6 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
-    <Content Include="Areas\Lecturer\Views\web.config" />
     <Content Include="Areas\Administration\Views\LecturersInContests\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
@@ -1167,9 +1162,10 @@
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -1206,7 +1202,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Scripts\Helpers\test-results.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1265,9 +1260,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
-    <Folder Include="Areas\Lecturer\Controllers\" />
-    <Folder Include="Areas\Lecturer\Models\" />
-    <Folder Include="Areas\Lecturer\Views\Shared\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
     <Folder Include="Scripts\CodeMirror\addon\" />

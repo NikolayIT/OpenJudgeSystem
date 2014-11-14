@@ -9,10 +9,10 @@ namespace OJS.Web.Areas.Contests.Controllers
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Problems;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
@@ -26,20 +26,23 @@ namespace OJS.Web.Areas.Contests.Controllers
 
         public ActionResult Details(int id)
         {
-            var contestViewModel = this.Data.Contests.All()
-                                                .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
-                                                .Select(ContestViewModel.FromContest)
-                                                .FirstOrDefault();
+            var contestViewModel = this.Data.Contests
+                .All()
+                .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
+                .Select(ContestViewModel.FromContest)
+                .FirstOrDefault();
 
             if (contestViewModel == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            this.ViewBag.ContestProblems = this.Data.Problems.All().Where(x => x.ContestId == id)
+            this.ViewBag.ContestProblems = this.Data.Problems
+                .All()
+                .Where(x => x.ContestId == id)
                 .Select(ProblemListItemViewModel.FromProblem);
 
-            contestViewModel.UserIsLecturerInContest =
+            contestViewModel.UserIsLecturerInContest = this.User.IsLoggedIn() &&
                 this.UserProfile.LecturerInContests.Any(x => x.ContestId == contestViewModel.Id);
 
             return this.View(contestViewModel);
