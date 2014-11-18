@@ -5,10 +5,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Linq.Expressions;
+
+    using EntityFramework.Extensions;
 
     using OJS.Common.Extensions;
     using OJS.Data.Contracts;
@@ -64,6 +65,11 @@
             entry.State = EntityState.Modified;
         }
 
+        public virtual int Update(Expression<Func<T, bool>> filterExpression, Expression<Func<T, T>> updateExpression)
+        {
+            return this.DbSet.Where(filterExpression).Update(updateExpression);
+        }
+
         public virtual void Delete(T entity)
         {
             DbEntityEntry entry = this.Context.Entry(entity);
@@ -86,6 +92,11 @@
             {
                 this.Delete(entity);
             }
+        }
+
+        public virtual int Delete(Expression<Func<T, bool>> filterExpression)
+        {
+            return this.DbSet.Where(filterExpression).Delete();
         }
 
         public virtual void Detach(T entity)
@@ -128,7 +139,7 @@
             }
 
             // get current database values of the entity
-            var values = entry.GetDatabaseValues(); 
+            var values = entry.GetDatabaseValues();
             if (values == null)
             {
                 throw new InvalidOperationException("Object does not exists in ObjectStateDictionary. Entity Key|Id should be provided or valid.");
@@ -149,7 +160,7 @@
             typeof(T)
                 .GetProperties()
                 .Where(pr => !pr.GetCustomAttributes(typeof(NotMappedAttribute), true).Any())
-                .ForEach(prop => 
+                .ForEach(prop =>
                         {
                             if (members.Contains(prop.Name))
                             {

@@ -235,10 +235,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            foreach (var testRun in submission.TestRuns.ToList())
-            {
-                this.Data.TestRuns.Delete(testRun.Id);
-            }
+            this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
             this.Data.Submissions.Delete(id);
             this.Data.SaveChanges();

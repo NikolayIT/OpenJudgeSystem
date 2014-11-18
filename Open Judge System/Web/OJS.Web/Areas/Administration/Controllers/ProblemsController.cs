@@ -150,7 +150,7 @@
                 }
             }
 
-            if (problem != null && this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var newProblem = new Problem
                 {
@@ -249,12 +249,6 @@
 
             selectedProblem.AvailableCheckers = checkers;
 
-            if (selectedProblem == null)
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
-                return this.RedirectToAction(GlobalConstants.Index);
-            }
-
             return this.View(selectedProblem);
         }
 
@@ -352,18 +346,16 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            foreach (var resource in problem.Resources.ToList())
-            {
-                this.Data.Resources.Delete(resource.Id);
-            }
+            this.Data.Resources.Delete(r => r.ProblemId == id);
+            
+            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == id);
 
-            foreach (var submission in problem.Submissions.ToList())
-            {
-                this.Data.TestRuns.DeleteBySubmissionId(submission.Id);
-                this.Data.Submissions.Delete(submission.Id);
-            }
+            this.Data.Tests.Delete(t => t.ProblemId == id);
 
+            this.Data.Submissions.Delete(s => s.ProblemId == id);
+            
             this.Data.Problems.Delete(id.Value);
+            
             this.Data.SaveChanges();
 
             this.TempData[GlobalConstants.InfoMessage] = "Задачата беше изтрита успешно";
@@ -401,10 +393,10 @@
 
         public ActionResult ConfirmDeleteAll(int? id)
         {
-            if (id == null)
+            if (id == null || !this.Data.Contests.All().Any(x => x.Id == id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<ProblemsController>(x => x.Index());
             }
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
@@ -413,22 +405,16 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var contest = this.Data.Contests.All()
-                .FirstOrDefault(x => x.Id == id);
+            this.Data.Resources.Delete(r => r.Problem.ContestId == id);
 
-            if (contest == null)
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
-                return this.RedirectToAction(GlobalConstants.Index);
-            }
+            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ContestId == id);
 
-            // TODO: check for N + 1
-            foreach (var problem in contest.Problems.ToList())
-            {
-                // TODO: Add cascading deletion of submissions, tests, resources
-                this.Data.Problems.Delete(problem.Id);
-            }
+            this.Data.Tests.Delete(t => t.Problem.ContestId == id);
 
+            this.Data.Submissions.Delete(s => s.Problem.ContestId == id);
+
+            this.Data.Problems.Delete(p => p.ContestId == id);
+            
             this.Data.SaveChanges();
 
             this.TempData[GlobalConstants.InfoMessage] = "Задачите бяха изтрити успешно";

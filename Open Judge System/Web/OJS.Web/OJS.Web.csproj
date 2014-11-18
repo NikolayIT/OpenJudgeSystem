@@ -895,13 +895,15 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.css" />
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.css" />
     <Content Include="Content\bootstrap\bootstrap-theme-cyborg.min.css" />
-    <Content Include="Content\bootstrap\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.min.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cyborg.css" />
@@ -910,9 +912,7 @@
     <Content Include="Content\bootstrap\themes\bootstrap-theme-flatly.min.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
-    <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\CodeMirror\codemirror.css" />
     <Content Include="Content\CodeMirror\theme\3024-day.css" />
     <Content Include="Content\CodeMirror\theme\3024-night.css" />
@@ -1005,6 +1005,7 @@
     <Content Include="Content\KendoUI\textures\transparency.png" />
     <Content Include="Content\KendoUI\textures\transtexture.png" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Administration\Views\Web.Config" />
@@ -1160,15 +1161,18 @@
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
