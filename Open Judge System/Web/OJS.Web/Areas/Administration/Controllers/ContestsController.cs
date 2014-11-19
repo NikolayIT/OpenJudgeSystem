@@ -64,6 +64,12 @@
         [HttpGet]
         public ActionResult Create()
         {
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             var newContest = new ViewModelType
             {
                 SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
@@ -156,7 +162,7 @@
                 return this.View(model);
             }
 
-            if (model != null && this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
 

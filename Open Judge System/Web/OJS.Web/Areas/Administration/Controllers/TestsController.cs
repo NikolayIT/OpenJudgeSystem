@@ -139,7 +139,7 @@
 
                 this.Data.SaveChanges();
 
-                this.RetestSubmissions(problem);
+                this.RetestSubmissions(id);
 
                 this.TempData[GlobalConstants.InfoMessage] = "Тестът беше добавен успешно.";
                 return this.RedirectToAction("Problem", new { id });
@@ -209,7 +209,7 @@
 
                 this.Data.SaveChanges();
 
-                this.RetestSubmissions(existingTest.Problem);
+                this.RetestSubmissions(existingTest.Problem.Id);
 
                 this.TempData[GlobalConstants.InfoMessage] = "Тестът беше променен успешно.";
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
@@ -262,16 +262,14 @@
             if (id == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<TestsController>(x => x.Index());
             }
 
-            var test = this.Data.Tests.All()
-                .FirstOrDefault(t => t.Id == id);
-
+            var test = this.Data.Tests.GetById(id.Value);
             if (test == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалиден тест";
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<TestsController>(x => x.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
@@ -280,13 +278,8 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            // delete all test runs for the current test
-            var testRunsIdList = test.TestRuns.Select(t => t.Id).ToList();
-            foreach (var testRun in testRunsIdList)
-            {
-                this.Data.TestRuns.Delete(testRun);
-            }
-
+            // delete all test runs for the test
+            this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
             this.Data.SaveChanges();
 
             // delete the test
@@ -344,7 +337,8 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var problem = this.Data.Problems.All()
+            var problem = this.Data.Problems
+                .All()
                 .Where(pr => pr.Id == id)
                 .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.Contest.Name })
                 .FirstOrDefault();
@@ -365,10 +359,10 @@
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful deletion otherwise to /Administration/Test/ with proper error message</returns>
         public ActionResult ConfirmDeleteAll(int? id)
         {
-            if (id == null)
+            if (id == null || !this.Data.Problems.All().Any(p => p.Id == id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<TestsController>(x => x.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
@@ -377,30 +371,12 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var problem = this.Data.Problems.All()
-                .FirstOrDefault(pr => pr.Id == id);
-
-            if (problem == null)
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
-                return this.RedirectToAction(GlobalConstants.Index);
-            }
-
-            var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
-            foreach (var test in tests)
-            {
-                var testRuns = test.TestRuns.ToList();
-                foreach (var testRun in testRuns)
-                {
-                    this.Data.TestRuns.Delete(testRun);
-                }
-
-                this.Data.Tests.Delete(test.Id);
-            }
+            this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == id.Value);
+            this.Data.Tests.Delete(t => t.ProblemId == id.Value);
 
             this.Data.SaveChanges();
 
-            this.RetestSubmissions(problem);
+            this.RetestSubmissions(id.Value);
 
             this.TempData[GlobalConstants.InfoMessage] = "Тестовете бяха изтрити успешно";
             return this.RedirectToAction("Problem", new { id = id });
@@ -671,7 +647,7 @@
 
             if (retestTask)
             {
-                this.RetestSubmissions(problem);
+                this.RetestSubmissions(problem.Id);
             }
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Тестовете са добавени към задачата");
@@ -757,15 +733,11 @@
             return result;
         }
 
-        private void RetestSubmissions(Problem problem)
+        private void RetestSubmissions(int problemId)
         {
-            var submissionIds = problem.Submissions.Select(s => s.Id).ToList();
-            foreach (var submissionId in submissionIds)
-            {
-                var currentSubmission = this.Data.Submissions.GetById(submissionId);
-                currentSubmission.Processed = false;
-                currentSubmission.Processing = false;
-            }
+            this.Data.Submissions.Update(
+                s => s.ProblemId == problemId,
+                s => new Submission { Processed = false, Processing = false });
 
             this.Data.SaveChanges();
         }

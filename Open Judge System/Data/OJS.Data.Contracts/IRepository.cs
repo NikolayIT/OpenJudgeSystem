@@ -14,9 +14,13 @@
 
         void Update(T entity);
 
+        int Update(Expression<Func<T, bool>> filterExpression, Expression<Func<T, T>> updateExpression);
+
         void Delete(T entity);
 
         void Delete(int id);
+
+        int Delete(Expression<Func<T, bool>> filterExpression);
 
         void Detach(T entity);
 
