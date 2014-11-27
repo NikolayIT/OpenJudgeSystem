@@ -118,7 +118,7 @@
                     }
                     else
                     {
-                        row.CreateCell(cellNumber++, CellType.BLANK);
+                        row.CreateCell(cellNumber++, CellType.Blank);
                     }
                 }
 
