@@ -85,7 +85,8 @@
                         s.Content,
                         s.CreatedOn,
                         ParticipantName = s.Participant.User.UserName,
-                        ProblemName = s.Problem.Name
+                        ProblemName = s.Problem.Name,
+                        TestRuns = s.TestRuns.OrderBy(t => t.Id).Select(t => new { t.Id, t.ResultType })
                     })
                 .GroupBy(s => new { s.ProblemId, s.ParticipantId })
                 .Select(g => g.OrderByDescending(s => s.Points).ThenByDescending(s => s.CreatedOn).FirstOrDefault())
@@ -100,8 +101,21 @@
                 {
                     for (int j = i + 1; j < groupAsList.Count; j++)
                     {
-                        var result = this.plagiarismDetector.DetectPlagiarism(groupAsList[i].Content.Decompress(), groupAsList[j].Content.Decompress());
-                        if (result.SimilarityPercentage != 0)
+                        var result = this.plagiarismDetector.DetectPlagiarism(groupAsList[i].Content.Decompress(), groupAsList[j].Content.Decompress(), new List<IDetectPlagiarismVisitor> { new SortAndTrimLinesVisitor() });
+
+                        bool save = true;
+                        var firstTestRuns = groupAsList[i].TestRuns.ToList();
+                        var secondTestRuns = groupAsList[j].TestRuns.ToList();
+                        for (int k = 0; k < firstTestRuns.Count; k++)
+                        {
+                            if (firstTestRuns[k].ResultType != secondTestRuns[k].ResultType)
+                            {
+                                save = false;
+                                break;
+                            }
+                        }
+
+                        if (result.SimilarityPercentage != 0 && save)
                         {
                             similarities.Add(new SubmissionSimilarityViewModel
                             {
