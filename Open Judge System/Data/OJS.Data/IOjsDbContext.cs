@@ -42,6 +42,8 @@
 
         IDbSet<LecturerInContest> LecturersInContests { get; set; }
 
+        IDbSet<Ip> Ips { get; set; }
+        
         DbContext DbContext { get; }
 
         int SaveChanges();

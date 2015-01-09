@@ -50,6 +50,8 @@
 
         IRepository<LecturerInContest> LecturersInContests { get; }
 
+        IRepository<Ip> Ips { get; }
+
         IOjsDbContext Context { get; }
 
         int SaveChanges();

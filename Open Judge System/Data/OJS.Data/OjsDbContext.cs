@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Validation;
-    using System.Diagnostics;
     using System.Linq;
 
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -13,8 +11,6 @@
     using OJS.Data.Contracts;
     using OJS.Data.Contracts.CodeFirstConventions;
     using OJS.Data.Models;
-
-    using User = OJS.Data.Models.UserProfile;
 
     public class OjsDbContext : IdentityDbContext<UserProfile>, IOjsDbContext
     {
@@ -64,12 +60,11 @@
 
         public virtual IDbSet<LecturerInContest> LecturersInContests { get; set; }
 
+        public virtual IDbSet<Ip> Ips { get; set; }
+
         public DbContext DbContext
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
         }
 
         public override int SaveChanges()
@@ -101,7 +96,7 @@
             /*
             // Possible solution to foreign key deletes: http://www.ridgway.co.za/articles/174.aspx
             // The above solution does not work with cyclic relations.
-            */ 
+            */
 
             this.SaveChanges();
             var tableNames =
@@ -137,7 +132,7 @@
                 this.Database.ExecuteSqlCommand(string.Format("DELETE FROM {0}", tableName));
                 try
                 {
-                    this.Database.ExecuteSqlCommand(string.Format("DBCC CHECKIDENT ('{0}',RESEED, 0)", tableName));
+                    this.Database.ExecuteSqlCommand(string.Format("DBCC CHECKIDENT ('{0}', RESEED, 0)", tableName));
                 }
                 catch
                 {
@@ -165,11 +160,6 @@
             modelBuilder.Configurations.Add(new CheckerConfiguration());
 
             base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
         }
 
         private void ApplyAuditInfoRules()

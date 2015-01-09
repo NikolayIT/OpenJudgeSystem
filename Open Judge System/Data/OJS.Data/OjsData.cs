@@ -123,6 +123,14 @@
             }
         }
 
+        public IRepository<Ip> Ips
+        {
+            get
+            {
+                return this.GetRepository<Ip>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get

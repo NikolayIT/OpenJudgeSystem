@@ -15,7 +15,8 @@
         private ICollection<Problem> problems;
         private ICollection<Participant> participants;
         private ICollection<SubmissionType> submissionTypes;
-        private ICollection<LecturerInContest> lecturers; 
+        private ICollection<LecturerInContest> lecturers;
+        private ICollection<Ip> allowedIps;
 
         public Contest()
         {
@@ -24,6 +25,7 @@
             this.participants = new HashSet<Participant>();
             this.submissionTypes = new HashSet<SubmissionType>();
             this.lecturers = new HashSet<LecturerInContest>();
+            this.allowedIps = new HashSet<Ip>();
         }
 
         [Key]
@@ -66,6 +68,12 @@
         /// </remarks>
         [MaxLength(20)]
         public string PracticePassword { get; set; }
+
+        /// <remarks>
+        /// ConnectionPassword is user for allowing a new IP to be used for the contest.
+        /// </remarks>
+        [MaxLength(20)]
+        public string ConnectionPassword { get; set; }
 
         /// <remarks>
         /// If PracticeStartTime is null the contest cannot be practiced.
@@ -113,6 +121,12 @@
         {
             get { return this.submissionTypes; }
             set { this.submissionTypes = value; }
+        }
+
+        public virtual ICollection<Ip> AllowedIps
+        {
+            get { return this.allowedIps; }
+            set { this.allowedIps = value; }
         }
 
         [NotMapped]
