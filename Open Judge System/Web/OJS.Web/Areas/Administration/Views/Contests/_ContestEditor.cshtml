@@ -5,6 +5,7 @@
         @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
     </div>
 </div>
+
 <fieldset>
     <legend>Основна информация</legend>
     <div class="row">
@@ -21,7 +22,7 @@
             @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -36,7 +37,7 @@
             @Html.ValidationMessageFor(m => m.Type)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -51,7 +52,7 @@
             @Html.ValidationMessageFor(m => m.CategoryId)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -66,8 +67,9 @@
             @Html.ValidationMessageFor(m => m.Description)
         </div>
     </div>
-    <br />
+    <br/>
 </fieldset>
+
 <fieldset>
     <legend>Времетраене</legend>
     <div class="row">
@@ -84,7 +86,7 @@
             @Html.ValidationMessageFor(m => m.StartTime)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -99,7 +101,8 @@
             @Html.ValidationMessageFor(m => m.EndTime)
         </div>
     </div>
-    <br /><div class="row">
+    <br/>
+    <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
                 @Html.LabelFor(m => m.PracticeStartTime)
@@ -113,7 +116,7 @@
             @Html.ValidationMessageFor(m => m.PracticeStartTime)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -128,8 +131,9 @@
             @Html.ValidationMessageFor(m => m.PracticeEndTime)
         </div>
     </div>
-    <br />
+    <br/>
 </fieldset>
+
 <fieldset>
     <legend>Пароли</legend>
     <div class="row">
@@ -146,7 +150,7 @@
             @Html.ValidationMessageFor(m => m.ContestPassword)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -161,8 +165,24 @@
             @Html.ValidationMessageFor(m => m.PracticePassword)
         </div>
     </div>
-    <br />
+    <br/>
+    <div class="row">
+        <div class="editor-label col-xs-3">
+            <div class="pull-right">
+                @Html.LabelFor(m => m.NewIpPassword)
+            </div>
+        </div>
+        <div class="editor-field col-xs-4">
+            @Html.EditorFor(m => m.NewIpPassword, new { @class = "form-control pull-left full-editor" })
+        </div>
+        <div class="editor-field col-xs-4">
+            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете парола за ново IP" data-tooltip="true"></span>
+            @Html.ValidationMessageFor(m => m.NewIpPassword)
+        </div>
+    </div>
+    <br/>
 </fieldset>
+
 <fieldset>
     <legend>Опции</legend>
     <div class="row">
@@ -179,7 +199,7 @@
             @Html.ValidationMessageFor(m => m.LimitBetweenSubmissions)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -194,7 +214,7 @@
             @Html.ValidationMessageFor(m => m.OrderBy)
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -209,9 +229,44 @@
             @Html.ValidationMessageFor(m => m.IsVisible)
         </div>
     </div>
-    <br />
+    <br/>
+    <div class="row">
+        <div class="editor-label col-xs-3">
+            <div class="pull-right">
+                @Html.LabelFor(m => m.AllowedIps)
+            </div>
+        </div>
+        <div class="editor-field col-xs-4">
+            @(Html.Kendo().AutoCompleteFor(x => Model.AllowedIps)
+                .DataTextField("Value")
+                .Value(Model.RawAllowedIps)
+                .Placeholder("Въведете позволени IP-та (разделени със ',')")
+                .Filter(FilterType.Contains)
+                .Separator(",")
+                .DataSource(dataSource => dataSource
+                    .ServerFiltering(true)
+                    .Read(read => read.Action("ReadIpsContaining", "Contests").Data("onContestIpData")))
+                    .HtmlAttributes(new { style = "width: 100%" })
+            )
+        </div>
+        <div class="editor-field col-xs-4">
+            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете позволените IP-та за състезанието" data-tooltip="true"></span>
+            @Html.ValidationMessageFor(m => m.AllowedIps)
+        </div>
+    </div>
+    <br/>
 </fieldset>
+
 <fieldset>
     <legend>Видове решения</legend>
-    @Html.EditorFor(m => m.SubmisstionTypes)
+    @Html.EditorFor(m => m.SubmissionTypes)
 </fieldset>
+
+<script>
+    function onContestIpData() {
+        var ips = $('#AllowedIps').val().split(', ');
+        return {
+            value: ips.length ? ips[ips.length - 1] : ''
+        };
+    }
+</script>

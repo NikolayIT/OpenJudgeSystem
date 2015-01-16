@@ -29,7 +29,7 @@
         <th>@Resource.User</th>
         <th>@Resource.UserFullName</th>
         @{
-            string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
+            string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
             int problemNumber = 0;
         }
         @foreach (var problem in Model.Problems)

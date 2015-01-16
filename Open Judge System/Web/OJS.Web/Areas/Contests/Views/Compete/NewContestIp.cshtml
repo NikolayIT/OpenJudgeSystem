@@ -1,0 +1,38 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.NewContestIpViewModel
+
+@{
+    ViewBag.Title = "Регистрация на ново IP за състезание";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@ViewBag.Title</h1>
+    </div>
+</div>
+
+<div class="row text-white">
+    <div class="col-md-4">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ContestId)
+
+            <div class="form-group">
+                <div class="editor-field">
+                    <div class="editor-label">
+                        @Html.LabelFor(x => x.NewIpPassword)
+                    </div>
+
+                    @Html.PasswordFor(x => x.NewIpPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.NewIpPassword)
+                </div>
+            </div>
+            
+            <input type="submit" value="Потвърди" class="btn btn-default" />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

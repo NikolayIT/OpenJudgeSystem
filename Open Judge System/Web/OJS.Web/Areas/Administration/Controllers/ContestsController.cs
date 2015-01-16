@@ -12,6 +12,7 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -44,15 +45,12 @@
                 allContest = allContest.Where(x => x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
             }
 
-            return allContest
-                .Select(ViewModelType.ViewModel);
+            return allContest.Select(ViewModelType.ViewModel);
         }
 
         public override object GetById(object id)
         {
-            return this.Data.Contests
-                .All()
-                .FirstOrDefault(o => o.Id == (int)id);
+            return this.Data.Contests.All().FirstOrDefault(o => o.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -72,7 +70,7 @@
 
             var newContest = new ViewModelType
             {
-                SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
+                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
             };
 
             this.PrepareViewBagData();
@@ -98,19 +96,21 @@
             {
                 var contest = model.GetEntityModel();
 
-                model.SubmisstionTypes.ForEach(s =>
+                model.SubmissionTypes.ForEach(s =>
+                {
+                    if (s.IsChecked)
                     {
-                        if (s.IsChecked)
-                        {
-                            var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
-                            contest.SubmissionTypes.Add(submission);
-                        }
-                    });
+                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                        contest.SubmissionTypes.Add(submission);
+                    }
+                });
+
+                this.AddIpsToContest(contest, model.AllowedIps);
 
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -168,14 +168,14 @@
 
                 if (contest == null)
                 {
-                    TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                    this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
 
                 contest = model.GetEntityModel(contest);
                 contest.SubmissionTypes.Clear();
 
-                model.SubmisstionTypes.ForEach(s =>
+                model.SubmissionTypes.ForEach(s =>
                 {
                     if (s.IsChecked)
                     {
@@ -184,10 +184,13 @@
                     }
                 });
 
+                contest.AllowedIps.Clear();
+                this.AddIpsToContest(contest, model.AllowedIps);
+
                 this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -291,6 +294,21 @@
             return new EmptyResult();
         }
 
+        [HttpGet]
+        public ActionResult ReadIpsContaining(string value)
+        {
+            var ipEntries = this.Data.Ips.All();
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                var trimmedValue = value.Trim();
+                ipEntries = ipEntries.Where(x => x.Value.Contains(trimmedValue));
+            }
+
+            var ips = ipEntries.Take(10).Select(IpAdministrationViewModel.ViewModel);
+            return this.Json(ips, JsonRequestBehavior.AllowGet);
+        }
+
         private void PrepareViewBagData()
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
@@ -312,13 +330,32 @@
                 isValid = false;
             }
 
-            if (model.SubmisstionTypes == null || !model.SubmisstionTypes.Any(s => s.IsChecked))
+            if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
             {
                 this.ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
                 isValid = false;
             }
 
             return isValid;
+        }
+
+        private void AddIpsToContest(Contest contest, string mergedIps)
+        {
+            if (!string.IsNullOrWhiteSpace(mergedIps))
+            {
+                var ipValues = mergedIps.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var ipValue in ipValues)
+                {
+                    var ip = this.Data.Ips.All().FirstOrDefault(x => x.Value == ipValue);
+                    if (ip == null)
+                    {
+                        ip = new Ip { Value = ipValue };
+                        this.Data.Ips.Add(ip);
+                    }
+
+                    contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = true });
+                }
+            }
         }
     }
 }

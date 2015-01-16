@@ -42,22 +42,22 @@ namespace OJS.Web.Areas.Contests
 
             context.MapRoute(
                "Contests_results_compete",
-               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.CompeteUrl),
+               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.CompeteActionName),
                new { controller = "Results", action = "Simple", official = true, id = UrlParameter.Optional });
 
             context.MapRoute(
                "Contests_results_practice",
-               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.PracticeUrl),
+               string.Format("Contests/{0}/Results/{{action}}/{{id}}", CompeteController.PracticeActionName),
                new { controller = "Results", action = "Simple", official = false, id = UrlParameter.Optional });
 
             context.MapRoute(
                "Contests_compete",
-               string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.CompeteUrl),
+               string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.CompeteActionName),
                new { controller = "Compete", action = GlobalConstants.Index, official = true, id = UrlParameter.Optional });
 
             context.MapRoute(
                "Contests_practice",
-               string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.PracticeUrl),
+               string.Format("Contests/{0}/{{action}}/{{id}}", CompeteController.PracticeActionName),
                new { controller = "Compete", action = GlobalConstants.Index, official = false, id = UrlParameter.Optional });
 
             context.MapRoute(

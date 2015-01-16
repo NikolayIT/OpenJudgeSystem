@@ -783,6 +783,7 @@
     <Compile Include="Areas\Administration\ViewModels\ContestQuestionAnswer\ContestQuestionAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ContestQuestion\ContestQuestionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ContestViewModel.cs" />
@@ -828,6 +829,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\NewContestIpViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
@@ -1164,6 +1166,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Areas\Contests\Views\Compete\NewContestIp.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />

@@ -16,9 +16,12 @@
 
     public class ContestAdministrationViewModel : AdministrationViewModel<Contest>
     {
+        private IEnumerable<IpAdministrationViewModel> allowedIps;
+
         public ContestAdministrationViewModel()
         {
-            this.SubmisstionTypes = new List<SubmissionTypeViewModel>();
+            this.SubmissionTypes = new List<SubmissionTypeViewModel>();
+            this.allowedIps = new List<IpAdministrationViewModel>();
         }
 
         [ExcludeFromExcel]
@@ -39,6 +42,12 @@
                     CategoryId = contest.CategoryId.Value,
                     ContestPassword = contest.ContestPassword,
                     PracticePassword = contest.PracticePassword,
+                    NewIpPassword = contest.NewIpPassword,
+                    allowedIps = contest.AllowedIps
+                        .Where(y => y.IsOriginallyAllowed)
+                        .Select(y => y.Ip)
+                        .AsQueryable()
+                        .Select(IpAdministrationViewModel.ViewModel),
                     Description = contest.Description,
                     LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                     OrderBy = contest.OrderBy,
@@ -98,6 +107,11 @@
         public string PracticePassword { get; set; }
 
         [DatabaseProperty]
+        [Display(Name = "Парола за ново IP")]
+        [UIHint("SingleLineText")]
+        public string NewIpPassword { get; set; }
+
+        [DatabaseProperty]
         [Display(Name = "Описание")]
         [UIHint("MultiLineText")]
         public string Description { get; set; }
@@ -128,10 +142,18 @@
         [Display(Name = "Тип решения")]
         [ExcludeFromExcel]
         [UIHint("SubmissionTypeCheckBoxes")]
-        public IList<SubmissionTypeViewModel> SubmisstionTypes { get; set; }
+        public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; }
 
         [ExcludeFromExcel]
         public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
+
+        [Display(Name = "Позволени IP-та")]
+        public string AllowedIps { get; set; }
+
+        public string RawAllowedIps
+        {
+            get { return string.Join(", ", this.allowedIps.Select(x => x.Value)); }
+        }
 
         public override Contest GetEntityModel(Contest model = null)
         {

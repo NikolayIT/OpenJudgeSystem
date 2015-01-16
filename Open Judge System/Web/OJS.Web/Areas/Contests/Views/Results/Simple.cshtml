@@ -7,7 +7,7 @@
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
     ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.TotalResults);
-    string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteUrl : CompeteController.PracticeUrl;
+    string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
 }
 
 @section Styles {

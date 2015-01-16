@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -29,8 +30,8 @@
 
     public class CompeteController : BaseController
     {
-        public const string CompeteUrl = "Compete";
-        public const string PracticeUrl = "Practice";
+        public const string CompeteActionName = "Compete";
+        public const string PracticeActionName = "Practice";
 
         public CompeteController(IOjsData data)
             : base(data)
@@ -109,10 +110,15 @@
                 }
             }
 
+            if (!this.ValidateContestIp(this.Request.UserHostAddress, id))
+            {
+                return this.RedirectToAction("NewContestIp", new { id });
+            }
+
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
-            this.ViewBag.CompeteType = official ? CompeteUrl : PracticeUrl;
+            this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
 
             return this.View(participantViewModel);
         }
@@ -153,7 +159,7 @@
         /// Users only.
         /// </summary>
         //// TODO: Refactor
-        [HttpPost, Authorize]
+        [HttpPost, Authorize, ValidateAntiForgeryToken]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
             // check if the user has already registered for participation and redirect him to the correct action
@@ -231,11 +237,12 @@
                     }
                 }
 
-                participant.Answers.Add(new ParticipantAnswer
-                                                {
-                                                    ContestQuestionId = question.QuestionId,
-                                                    Answer = question.Answer
-                                                });
+                participant.Answers.Add(
+                    new ParticipantAnswer
+                    {
+                        ContestQuestionId = question.QuestionId,
+                        Answer = question.Answer
+                    });
 
                 counter++;
             }
@@ -274,6 +281,11 @@
             ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
+            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
+
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
                 throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -295,7 +307,7 @@
                 ProblemId = participantSubmission.ProblemId,
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
-                IpAddress = Request.UserHostAddress,
+                IpAddress = this.Request.UserHostAddress
             });
 
             this.Data.SaveChanges();
@@ -303,7 +315,7 @@
             return this.Json(participantSubmission.ProblemId);
         }
 
-        // TODO: Extract common logic between SubmitBinaryFile() and Submit()
+        // TODO: Extract common logic between SubmitBinaryFile and Submit methods
         public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official, int? returnProblem)
         {
             if (participantSubmission == null || participantSubmission.File == null)
@@ -325,6 +337,11 @@
 
             ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
+
+            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -373,7 +390,12 @@
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
-            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
+            return this.Redirect(
+                string.Format(
+                "/Contests/{2}/Index/{0}#{1}",
+                problem.ContestId,
+                returnProblem ?? 0,
+                official ? CompeteActionName : PracticeActionName));
         }
 
         /// <summary>
@@ -386,7 +408,7 @@
         public ActionResult Problem(int id, bool official)
         {
             this.ViewBag.IsOfficial = official;
-            this.ViewBag.CompeteType = official ? CompeteUrl : PracticeUrl;
+            this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
 
             var problem = this.Data.Problems.GetById(id);
 
@@ -400,6 +422,11 @@
             if (!this.Data.Participants.Any(problem.ContestId, this.UserProfile.Id, official))
             {
                 return this.RedirectToAction("Register", new { id = problem.ContestId, official });
+            }
+
+            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
             var problemViewModel = new ContestProblemViewModel(problem);
@@ -431,10 +458,10 @@
             }
 
             var userSubmissions = this.Data.Submissions.All()
-                                                            .Where(x =>
-                                                                    x.ProblemId == id &&
-                                                                    x.ParticipantId == participant.Id)
-                                                            .Select(SubmissionResultViewModel.FromSubmission);
+                                                       .Where(x =>
+                                                               x.ProblemId == id &&
+                                                               x.ParticipantId == participant.Id)
+                                                       .Select(SubmissionResultViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }
@@ -451,10 +478,10 @@
             }
 
             var userSubmissions = this.Data.Submissions.All()
-                                                            .Where(x =>
-                                                                    x.ProblemId == id &&
-                                                                    x.ParticipantId == participant.Id)
-                                                            .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
+                                                       .Where(x =>
+                                                               x.ProblemId == id &&
+                                                               x.ParticipantId == participant.Id)
+                                                       .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }
@@ -539,7 +566,10 @@
                     throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
                 }
 
-                return this.File(resource.File, "application/octet-stream", string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
+                return this.File(
+                    resource.File,
+                    "application/octet-stream",
+                    string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
             }
 
             if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))
@@ -574,6 +604,80 @@
             var contentString = submission.ContentAsString;
 
             return this.Json(contentString, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult NewContestIp(int id)
+        {
+            if (!this.Data.Participants.Any(id, this.UserProfile.Id, true))
+            {
+                return this.RedirectToAction("Register", new { id, official = true });
+            }
+
+            if (this.ValidateContestIp(this.Request.UserHostAddress, id))
+            {
+                return this.RedirectToAction(GlobalConstants.Index, new { id, official = true });
+            }
+
+            var contest = this.Data.Contests.GetById(id);
+
+            ValidateContest(contest, true);
+
+            var model = new NewContestIpViewModel { ContestId = id };
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewContestIp(NewContestIpViewModel model)
+        {
+            if (!this.Data.Participants.Any(model.ContestId, this.UserProfile.Id, true))
+            {
+                return this.RedirectToAction("Register", new { id = model.ContestId, official = true });
+            }
+
+            if (this.ValidateContestIp(this.Request.UserHostAddress, model.ContestId))
+            {
+                return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
+            }
+
+            var contest = this.Data.Contests.All().Include(x => x.AllowedIps).Include("AllowedIps.Ip").FirstOrDefault(x => x.Id == model.ContestId);
+
+            ValidateContest(contest, true);
+
+            if (!string.Equals(contest.NewIpPassword, model.NewIpPassword, StringComparison.InvariantCulture))
+            {
+                this.ModelState.AddModelError("NewIpPassword", "Невалидна парола.");
+                return this.View(model);
+            }
+
+            var currentUserIpAddress = this.Request.UserHostAddress;
+            if (contest.AllowedIps.All(y => y.Ip.Value != currentUserIpAddress))
+            {
+                var ip = this.Data.Ips.All().FirstOrDefault(x => x.Value == currentUserIpAddress);
+                if (ip == null)
+                {
+                    ip = new Ip { Value = currentUserIpAddress };
+                    this.Data.Ips.Add(ip);
+                }
+
+                contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = false });
+
+                this.Data.SaveChanges();
+            }
+
+            return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
+        }
+
+        private bool ValidateContestIp(string ip, int contestId)
+        {
+            var isValidIp = this.Data.Contests
+                .All()
+                .Any(x => x.Id == contestId && (!x.AllowedIps.Any() || x.AllowedIps.Any(y => y.Ip.Value == ip)));
+
+            return isValidIp;
         }
     }
 }

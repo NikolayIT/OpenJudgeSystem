@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = Model.ContestName;
 }
+
 <div class="row">
     <div class="col-md-12">
         <h1>@ViewBag.Title</h1>
@@ -15,7 +16,9 @@
     <div class="col-md-4">
         @using (Html.BeginForm())
         {
+            @Html.AntiForgeryToken()
             @Html.HiddenFor(x => x.ContestId)
+            
             if (Model.RequirePassword)
             {
                 <div class="form-group">

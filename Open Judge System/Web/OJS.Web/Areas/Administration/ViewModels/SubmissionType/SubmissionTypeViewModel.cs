@@ -47,7 +47,7 @@
                     submissionViewModel.IsChecked = true;
                 }
 
-                contest.SubmisstionTypes.Add(submissionViewModel);
+                contest.SubmissionTypes.Add(submissionViewModel);
             };
         }
 

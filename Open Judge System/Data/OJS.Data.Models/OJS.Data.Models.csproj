@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Checker.cs" />
+    <Compile Include="ContestIp.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Ip.cs" />
     <Compile Include="LecturerInContest.cs" />
