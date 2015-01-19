@@ -19,7 +19,7 @@
         {
             var document = this.GetXmlDocument(SoftUniUrl, SoftUniEncoding);
 
-            var aTenNamespace = XNamespace.Get("http://www.w3.org/2005/Atom");
+            var atomNamespace = XNamespace.Get("http://www.w3.org/2005/Atom");
 
             var items = document
                 .Element("rss")
@@ -33,7 +33,7 @@
                              Content = this.FixLinks(x.Element("description").Value),
                              PreserveCreatedOn = true,
                              IsVisible = true,
-                             CreatedOn = DateTime.Parse(x.Element(aTenNamespace + "updated").Value)
+                             CreatedOn = DateTime.Parse(x.Element(atomNamespace + "updated").Value)
                          })
                          .ToList();
 
