@@ -79,7 +79,8 @@
             var providers = new List<INewsProvider>
             {
                 new InfoManNewsProvider(), 
-                new InfosNewsProvider()
+                new InfosNewsProvider(),
+                new SoftUniNewsProvier()
             };
 
             var allNews = new List<News>();
