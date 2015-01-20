@@ -218,6 +218,7 @@
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
+          <Value>ip</Value>
           <Value>or</Value>
         </CollectionProperty>
       </AnalyzerSettings>
