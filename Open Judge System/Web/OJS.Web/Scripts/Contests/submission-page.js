@@ -1,5 +1,5 @@
 ﻿var countdownTimer = function (endingTime) {
-    "use strict";
+    'use strict';
 
     var endTime = new Date(
         endingTime.year,
@@ -16,6 +16,13 @@
     var minutesContainer = $('#minutes-remaining');
     var secondsContainer = $('#seconds-remaining');
     var countdownTimer = $('#countdown-timer');
+
+    function updateCountdown() {
+        hoursContainer.text(ts.hours);
+        minutesContainer.text(ts.minutes);
+        secondsContainer.text(ts.seconds);
+        countdownTimer.show();
+    }
 
     var start = function () {
         updateCountdown();
@@ -36,13 +43,6 @@
             ts = countdown(null, endTime, countdown.HOURS | countdown.MINUTES | countdown.SECONDS);
         }, 1000);
     };
-
-    function updateCountdown() {
-        hoursContainer.text(ts.hours);
-        minutesContainer.text(ts.minutes);
-        secondsContainer.text(ts.seconds);
-        countdownTimer.show();
-    }
 
     return {
         start: start
@@ -130,7 +130,7 @@ function getCodeMirrorInstance() {
     return codeMirrorInstance;
 }
 
-var displayMaximumValues = function(maxMemory, maxTime, memoryString, timeString) {
+var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeString) {
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
     var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
     var result = memoryString + ": " + memoryInMb + " MB <br />" + timeString + ": " + maxTimeInSeconds + " s";
@@ -203,9 +203,15 @@ function validateBinaryFileAllowedExtensions(fileInput, extensions) {
 var messageNotifier = new Notifier();
 
 // validate the submission time
-var submissionTimeValidator = function() {
+var submissionTimeValidator = function (initialServerTime) {
     var lastSubmissionTime;
-    var currentServerTime;
+    var currentServerTime = initialServerTime;
+
+    if (currentServerTime) {
+        setInterval(function () {
+            currentServerTime = new Date(currentServerTime.getTime() + 1000);
+        }, 1000);
+    }
 
     function validate(lastSubmit, limitBetweenSubmissions, serverTime) {
         if (!lastSubmissionTime) {
@@ -214,28 +220,24 @@ var submissionTimeValidator = function() {
 
         if (!currentServerTime) {
             currentServerTime = serverTime;
-            setInterval(function() {
+            setInterval(function () {
                 currentServerTime = new Date(currentServerTime.getTime() + 1000);
             }, 1000);
         }
 
-        var currentTime = currentServerTime;
-        var secondsForLastSubmission = (currentTime - lastSubmissionTime) / 1000;
+        if (lastSubmissionTime) {
+            var secondsForLastSubmission = (currentServerTime - lastSubmissionTime) / 1000;
 
-        if (!lastSubmissionTime) {
-            lastSubmissionTime = currentServerTime;
-            return true;
-        }
+            var differenceBetweenSubmissionAndLimit = parseInt(limitBetweenSubmissions - secondsForLastSubmission);
 
-        var differenceBetweenSubmissionAndLimit = parseInt(limitBetweenSubmissions - secondsForLastSubmission);
+            if (differenceBetweenSubmissionAndLimit > 0) {
+                messageNotifier.showMessage({
+                    message: 'Моля, изчакайте още ' + differenceBetweenSubmissionAndLimit + ' секунди преди да изпратите решение.',
+                    cssClass: 'alert alert-warning'
+                });
 
-        if (differenceBetweenSubmissionAndLimit > 0) {
-            messageNotifier.showMessage({
-                message: "Моля изчакайте още " + differenceBetweenSubmissionAndLimit + " секунди преди да изпратите решение.",
-                cssClass: "alert alert-warning"
-            });
-
-            return false;
+                return false;
+            }
         }
 
         lastSubmissionTime = currentServerTime;
@@ -255,6 +257,11 @@ function TabStripManager() {
 
     var self;
 
+    function selectTabWithIndex(ind) {
+        tabStrip.select(ind);
+        index = ind;
+    }
+
     function init(tabstrip) {
         self = this;
         tabStrip = tabstrip;
@@ -270,23 +277,12 @@ function TabStripManager() {
         }
     }
 
-    function selectTabWithIndex(ind) {
-        tabStrip.select(ind);
-        index = ind;
-    }
-
     function tabSelected() {
         if (tabStrip) {
             var selectedIndex = tabStrip.select().index();
             window.location.hash = selectedIndex;
         }
     }
-
-    function onContentLoad() {
-        createCodeMirrorForTextBox();
-        var hashTag = getSelectedIndexFromHashtag();
-        selectTabWithIndex(hashTag);
-    };
 
     function createCodeMirrorForTextBox() {
         var element = $('.code-for-problem:visible')[0];
@@ -306,6 +302,12 @@ function TabStripManager() {
         }
     };
 
+    function onContentLoad() {
+        createCodeMirrorForTextBox();
+        var hashTag = getSelectedIndexFromHashtag();
+        selectTabWithIndex(hashTag);
+    };
+
     function currentIndex() {
         return index;
     }
@@ -323,8 +325,8 @@ function getSelectedIndexFromHashtag() {
     return parseInt(window.location.hash.substr(1) || '0');
 }
 
-$(document).ready(function() {
-    $(window).on("hashchange", function() {
+$(document).ready(function () {
+    $(window).on("hashchange", function () {
         var hashIndex = getSelectedIndexFromHashtag();
         if (hashIndex !== tabStripManager.currentIndex()) {
             tabStripManager.selectTabWithIndex(hashIndex);

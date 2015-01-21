@@ -5,7 +5,7 @@
     using OJS.Data.Contracts;
     using OJS.Data.Models;
 
-    public interface IContestsRepository : IRepository<Contest>, IDeletableEntityRepository<Contest>
+    public interface IContestsRepository : IDeletableEntityRepository<Contest>
     {
         IQueryable<Contest> AllActive();
 

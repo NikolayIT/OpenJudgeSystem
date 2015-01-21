@@ -58,7 +58,7 @@
                 {
                     tabstrip.Add().Text("Няма задачи").Content("Все още няма добавени задачи към това състезание");
                 }
-                
+
                 if (User.IsAdmin())
                 {
                     tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
@@ -84,16 +84,17 @@
     <script src="/Scripts/Countdown/countdown.min.js"></script>
     <script src="/Scripts/Contests/submission-page.js"></script>
     <script type="text/javascript">
-        var timeValidator = new submissionTimeValidator();
+        var timeValidator = new submissionTimeValidator(new Date(Date.parse("@DateTime.Now.ToString("dd MMM yyyy HH:mm:ss")")));
 
         var validateSubmit = (function () {
             var submitTime;
 
-            @if(Model.LastSubmissionTime != null) {
+            @if (Model.LastSubmissionTime.HasValue)
+            {
                 <text>
-                    submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"))
+                    submitTime = new Date(Date.parse("@Model.LastSubmissionTime.Value.ToString("dd MMM yyyy HH:mm:ss")"));
                 </text>
-            };
+            }
 
             var serverTime = new Date(Date.parse("@DateTime.Now.ToString("dd MMM yyyy HH:mm:ss")"));
 

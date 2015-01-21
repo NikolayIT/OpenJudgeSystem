@@ -92,6 +92,11 @@
             var contest = this.Data.Contests.GetById(id);
             ValidateContest(contest, official);
 
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, id))
+            {
+                return this.RedirectToAction("NewContestIp", new { id });
+            }
+
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
 
             if (!participantFound)
@@ -109,12 +114,7 @@
                     return this.RedirectToAction("Register", new { id, official });
                 }
             }
-
-            if (!this.ValidateContestIp(this.Request.UserHostAddress, id))
-            {
-                return this.RedirectToAction("NewContestIp", new { id });
-            }
-
+            
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
@@ -272,6 +272,11 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
+
             var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
@@ -280,11 +285,6 @@
 
             ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
-
-            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
-            {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
-            }
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -329,6 +329,11 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
+
             var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
@@ -337,11 +342,6 @@
 
             ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
-
-            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
-            {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
-            }
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -378,24 +378,26 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
             }
 
-            this.Data.Submissions.Add(new Submission
+            var newSubmission = new Submission
             {
                 Content = participantSubmission.File.InputStream.ToByteArray(),
                 FileExtension = participantSubmission.File.FileName.GetFileExtension(),
                 ProblemId = participantSubmission.ProblemId,
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id
-            });
+            };
+
+            this.Data.Submissions.Add(newSubmission);
 
             this.Data.SaveChanges();
 
-            this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
+            this.TempData[GlobalConstants.InfoMessage] = "Solution uploaded.";
             return this.Redirect(
                 string.Format(
-                "/Contests/{2}/Index/{0}#{1}",
-                problem.ContestId,
-                returnProblem ?? 0,
-                official ? CompeteActionName : PracticeActionName));
+                    "/Contests/{2}/Index/{0}#{1}",
+                    problem.ContestId,
+                    returnProblem ?? 0,
+                    official ? CompeteActionName : PracticeActionName));
         }
 
         /// <summary>
@@ -424,7 +426,7 @@
                 return this.RedirectToAction("Register", new { id = problem.ContestId, official });
             }
 
-            if (!this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
