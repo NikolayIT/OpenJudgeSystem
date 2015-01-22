@@ -10,6 +10,7 @@
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Roles;
@@ -131,6 +132,11 @@
         {
             var user = this.Data.Users.GetById(model.UserId);
             var role = user.Roles.FirstOrDefault(r => r.RoleId == id);
+
+            if (role != null && role.Role.Name == GlobalConstants.LecturerRoleName)
+            {
+                this.Data.LecturersInContests.Delete(x => x.LecturerId == model.UserId);
+            }
 
             user.Roles.Remove(role);
             this.Data.SaveChanges();

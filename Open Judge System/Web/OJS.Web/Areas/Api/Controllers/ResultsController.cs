@@ -27,8 +27,12 @@
                 return this.Content(string.Format("ERROR: Invalid arguments"));
             }
 
-            var user = this.Data.Users.GetById(apiKey);
-            if (user == null || user.Roles.All(x => x.Role.Name != GlobalConstants.AdministratorRoleName))
+            var isValidApiKey = this.Data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+            if (!isValidApiKey)
             {
                 return this.Content(string.Format("ERROR: Invalid API key"));
             }
@@ -65,8 +69,12 @@
                 return this.Content(string.Format("ERROR: Invalid arguments"));
             }
 
-            var user = this.Data.Users.GetById(apiKey);
-            if (user == null || user.Roles.All(x => x.Role.Name != GlobalConstants.AdministratorRoleName))
+            var isValidApiKey = this.Data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+            if (!isValidApiKey)
             {
                 return this.Content(string.Format("ERROR: Invalid API key"));
             }
@@ -103,8 +111,12 @@
                 return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
             }
 
-            var user = this.Data.Users.GetById(apiKey);
-            if (user == null || user.Roles.All(x => x.Role.Name != GlobalConstants.AdministratorRoleName))
+            var isValidApiKey = this.Data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+            if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
             }
@@ -112,8 +124,7 @@
             var participants = this.Data.Participants
                 .All()
                 .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
-                .Select(participant =>
-                new
+                .Select(participant => new
                 {
                     participant.User.UserName,
                     participant.User.Email,
@@ -145,8 +156,12 @@
                 return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
             }
 
-            var user = this.Data.Users.GetById(apiKey);
-            if (user == null || user.Roles.All(x => x.Role.Name != GlobalConstants.AdministratorRoleName))
+            var isValidApiKey = this.Data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+            if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
             }
@@ -154,8 +169,7 @@
             var participants = this.Data.Participants
                 .All()
                 .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
-                .Select(participant =>
-                new
+                .Select(participant => new
                 {
                     participant.User.UserName,
                     participant.User.Email,

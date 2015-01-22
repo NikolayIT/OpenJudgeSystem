@@ -50,24 +50,22 @@
         }
 
         // TODO: Extract common validations between Download() and Details()
+        [Authorize]
         public FileResult Download(int id)
         {
-            var submission = this.Data.Submissions.All()
+            var submission = this.Data.Submissions
+                .All()
                 .Where(x => x.Id == id)
                 .Select(SubmissionDetailsViewModel.FromSubmission)
                 .FirstOrDefault();
 
-            if (submission == null)
+            if (submission == null || (submission.IsDeleted && !this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && submission.IsDeleted)
-            {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
-            }
-
-            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            var userHasRights = submission.UserId == this.UserProfile.Id || this.CheckIfUserHasProblemPermissions(submission.ProblemId ?? 0);
+            if (!userHasRights)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
