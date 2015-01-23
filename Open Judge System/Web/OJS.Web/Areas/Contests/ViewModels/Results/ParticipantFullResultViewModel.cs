@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    
+
     public class ParticipantFullResultViewModel
     {
         public string ParticipantUsername { get; set; }
@@ -38,6 +37,24 @@
 
                 return totalPoints;
             }
+        }
+
+        public double? GetContestTimeInMinutes(DateTime? contestStartTime)
+        {
+            var lastSubmission = this.ProblemResults
+                .Where(x => x.BestSubmission != null)
+                .OrderByDescending(x => x.BestSubmission.CreatedOn)
+                .Select(x => x.BestSubmission)
+                .FirstOrDefault();
+
+            if (contestStartTime.HasValue && lastSubmission != null)
+            {
+                var lastSubmissionTime = lastSubmission.CreatedOn;
+                var contestTimeInMinutes = (lastSubmissionTime - contestStartTime.Value).TotalMinutes;
+                return contestTimeInMinutes;
+            }
+
+            return null;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System.Data.Entity;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -10,14 +11,14 @@
 
     using OJS.Common;
     using OJS.Data;
-    using OJS.Web.Areas.Contests.ViewModels;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
-    
+
     public class ResultsController : BaseController
     {
         public const int ResultsPageSize = 300;
@@ -51,21 +52,17 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }
 
-            var results =
-                this.Data.Submissions.All()
-                    .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
-                    .GroupBy(x => x.Participant)
-                    .Select(
-                        submissionGrouping =>
-                        new ProblemResultViewModel
-                            {
-                                ProblemId = problem.Id,
-                                ParticipantName = submissionGrouping.Key.User.UserName,
-                                MaximumPoints = problem.MaximumPoints,
-                                Result =
-                                    submissionGrouping.Where(x => x.ProblemId == problem.Id)
-                                    .Max(x => x.Points)
-                            });
+            var results = this.Data.Submissions
+                .All()
+                .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
+                .GroupBy(x => x.Participant)
+                .Select(submissionGrouping => new ProblemResultViewModel
+                {
+                    ProblemId = problem.Id,
+                    ParticipantName = submissionGrouping.Key.User.UserName,
+                    MaximumPoints = problem.MaximumPoints,
+                    Result = submissionGrouping.Where(x => x.ProblemId == problem.Id).Max(x => x.Points)
+                });
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -80,14 +77,14 @@
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
         {
-            var contest = this.Data.Contests.GetById(id);
+            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
 
             if (contest == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            // if the results are not visible and the participant is not registered for the contest
+            // If the results are not visible and the participant is not registered for the contest
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
                 !this.Data.Participants.Any(id, this.UserProfile.Id, official) &&
@@ -96,46 +93,17 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
+            var isUserLecturerInContest =
+                this.Data.Users.All().Any(x => x.Id == this.UserProfile.Id && x.LecturerInContests.Any(y => y.ContestId == id));
+
+            var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
+
             // TODO: Extract choosing the best submission logic to separate repository method?
-            var contestModel = new ContestResultsViewModel
-            {
-                Id = contest.Id,
-                Name = contest.Name,
-                ContestCanBeCompeted = contest.CanBeCompeted,
-                ContestCanBePracticed = contest.CanBePracticed,
-                Problems = contest.Problems.AsQueryable().Where(x => !x.IsDeleted)
-                                        .Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
-                Results = this.Data.Participants.All()
-                    .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
-                    .Select(participant => new ParticipantResultViewModel
-                    {
-                        ParticipantUsername = participant.User.UserName,
-                        ParticipantFirstName = participant.User.UserSettings.FirstName,
-                        ParticipantLastName = participant.User.UserSettings.LastName, 
-                        ProblemResults = participant.Contest.Problems
-                            .Where(x => !x.IsDeleted)
-                            .Select(problem =>
-                                new ProblemResultPairViewModel
-                                {
-                                    Id = problem.Id,
-                                    ProblemName = problem.Name,
-                                    ProblemOrderBy = problem.OrderBy,
-                                    ShowResult = problem.ShowResults,
-                                    BestSubmission = problem.Submissions
-                                                        .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
-                                                        .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
-                                                        .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points })
-                                                        .FirstOrDefault()
-                                })
-                                .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
-                    })
-                    .ToList()
-                    .OrderByDescending(x => x.Total)
-            };
+            var contestResults = this.GetContestResults(contest, official, isUserAdminOrLecturerInContest);
 
             // calculate page information
-            contestModel.TotalResults = contestModel.Results.Count();
-            int totalResults = contestModel.TotalResults;
+            contestResults.TotalResults = contestResults.Results.Count();
+            int totalResults = contestResults.TotalResults;
             int totalPages = totalResults % ResultsPageSize == 0 ? totalResults / ResultsPageSize : (totalResults / ResultsPageSize) + 1;
 
             if (page == null || page < 1)
@@ -149,74 +117,144 @@
 
             // TODO: optimize if possible
             // query the paged result
-            contestModel.Results = contestModel.Results
-                    .Skip((page.Value - 1) * ResultsPageSize)
-                    .Take(ResultsPageSize);
-            
+            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * ResultsPageSize).Take(ResultsPageSize);
+
             // add page info to View Model
-            contestModel.CurrentPage = page.Value;
-            contestModel.AllPages = totalPages;
+            contestResults.CurrentPage = page.Value;
+            contestResults.AllPages = totalPages;
 
-            var isUserLectureInCotnest = this.UserProfile.LecturerInContests.Any(x => x.ContestId == contestModel.Id);
-
-            if (User.IsAdmin() || isUserLectureInCotnest)
-            {
-                contestModel.Results = contestModel.Results.OrderByDescending(x => x.AdminTotal);
-            }
-
-            contestModel.UserIsLecturerInContest = isUserLectureInCotnest;
+            contestResults.UserIsLecturerInContest = isUserLecturerInContest;
             this.ViewBag.IsOfficial = official;
 
-            return this.View(contestModel);
+            return this.View(contestResults);
         }
 
         // TODO: Unit test
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult Full(int id, bool official)
         {
-            var contest = this.Data.Contests.GetById(id);
+            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
 
             if (contest == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var model = new ContestFullResultsViewModel
-                {
-                    Id = contest.Id,
-                    Name = contest.Name,
-                    Problems = contest.Problems.AsQueryable().Where(pr => !pr.IsDeleted).Select(ContestProblemViewModel.FromProblem).OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
-                    Results = this.Data.Participants.All()
-                        .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
-                        .Select(participant => new ParticipantFullResultViewModel
-                        {
-                            ParticipantUsername = participant.User.UserName,
-                            ParticipantFirstName = participant.User.UserSettings.FirstName,
-                            ParticipantLastName = participant.User.UserSettings.LastName, 
-                            ProblemResults = participant.Contest.Problems
-                                .Where(x => !x.IsDeleted)
-                                .Select(problem =>
-                                    new ProblemFullResultViewModel
-                                    {
-                                        Id = problem.Id,
-                                        ProblemName = problem.Name,
-                                        ProblemOrderBy = problem.OrderBy,
-                                        MaximumPoints = problem.MaximumPoints,
-                                        BestSubmission = problem.Submissions.AsQueryable()
-                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
-                                                            .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
-                                                            .Select(SubmissionFullResultsViewModel.FromSubmission)
-                                                            .FirstOrDefault(),
-                                    })
-                                    .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName)
-                        })
-                        .ToList()
-                        .OrderByDescending(x => x.Total).ThenBy(x => x.ParticipantUsername)
-                };
+            var model = this.GetContestFullResults(contest, official);
 
             this.ViewBag.IsOfficial = official;
 
             return this.View(model);
+        }
+
+        private ContestResultsViewModel GetContestResults(Contest contest, bool official, bool isUserAdminOrLecturer)
+        {
+            var contestStartTime = official ? contest.StartTime : contest.PracticeStartTime;
+
+            var contestResults = new ContestResultsViewModel
+            {
+                Id = contest.Id,
+                Name = contest.Name,
+                ContestCanBeCompeted = contest.CanBeCompeted,
+                ContestCanBePracticed = contest.CanBePracticed,
+                Problems = contest.Problems
+                    .AsQueryable()
+                    .Where(x => !x.IsDeleted)
+                    .Select(ContestProblemViewModel.FromProblem)
+                    .OrderBy(x => x.OrderBy)
+                    .ThenBy(x => x.Name),
+                Results = this.Data.Participants
+                    .All()
+                    .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
+                    .Select(participant => new ParticipantResultViewModel
+                    {
+                        ParticipantUsername = participant.User.UserName,
+                        ParticipantFirstName = participant.User.UserSettings.FirstName,
+                        ParticipantLastName = participant.User.UserSettings.LastName,
+                        ProblemResults = participant.Contest.Problems
+                            .Where(x => !x.IsDeleted)
+                            .Select(problem => new ProblemResultPairViewModel
+                            {
+                                Id = problem.Id,
+                                ProblemName = problem.Name,
+                                ProblemOrderBy = problem.OrderBy,
+                                ShowResult = problem.ShowResults,
+                                BestSubmission = problem.Submissions
+                                    .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
+                                    .OrderByDescending(z => z.Points)
+                                    .ThenByDescending(z => z.Id)
+                                    .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points, CreatedOn = z.CreatedOn })
+                                    .FirstOrDefault()
+                            })
+                            .OrderBy(res => res.ProblemOrderBy)
+                            .ThenBy(res => res.ProblemName)
+                    })
+                    .ToList()
+            };
+
+            if (isUserAdminOrLecturer)
+            {
+                contestResults.Results = contestResults.Results
+                    .OrderByDescending(x => x.AdminTotal)
+                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime));
+            }
+            else
+            {
+                contestResults.Results = contestResults.Results
+                    .OrderByDescending(x => x.Total)
+                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime));
+            }
+
+            return contestResults;
+        }
+
+        private ContestFullResultsViewModel GetContestFullResults(Contest contest, bool official)
+        {
+            var contestStartTime = official ? contest.StartTime : contest.PracticeStartTime;
+
+            var contestFullResults = new ContestFullResultsViewModel
+            {
+                Id = contest.Id,
+                Name = contest.Name,
+                Problems = contest.Problems
+                    .AsQueryable()
+                    .Where(pr => !pr.IsDeleted)
+                    .Select(ContestProblemViewModel.FromProblem)
+                    .OrderBy(x => x.OrderBy)
+                    .ThenBy(x => x.Name),
+                Results = this.Data.Participants
+                    .All()
+                    .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == official)
+                    .Select(participant => new ParticipantFullResultViewModel
+                    {
+                        ParticipantUsername = participant.User.UserName,
+                        ParticipantFirstName = participant.User.UserSettings.FirstName,
+                        ParticipantLastName = participant.User.UserSettings.LastName,
+                        ProblemResults = participant.Contest.Problems
+                            .Where(x => !x.IsDeleted)
+                            .Select(problem => new ProblemFullResultViewModel
+                            {
+                                Id = problem.Id,
+                                ProblemName = problem.Name,
+                                ProblemOrderBy = problem.OrderBy,
+                                MaximumPoints = problem.MaximumPoints,
+                                BestSubmission = problem.Submissions
+                                    .AsQueryable()
+                                    .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
+                                    .OrderByDescending(z => z.Points)
+                                    .ThenByDescending(z => z.Id)
+                                    .Select(SubmissionFullResultsViewModel.FromSubmission)
+                                    .FirstOrDefault(),
+                            })
+                            .OrderBy(res => res.ProblemOrderBy)
+                            .ThenBy(res => res.ProblemName)
+                    })
+                    .ToList()
+                    .OrderByDescending(x => x.Total)
+                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime))
+            };
+
+            return contestFullResults;
         }
     }
 }

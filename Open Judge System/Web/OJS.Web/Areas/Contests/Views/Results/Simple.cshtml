@@ -49,7 +49,7 @@
             @{
                 int problemCounter = 0;
                 bool displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
-                var contestLink = Model.ContestCanBeCompeted ? "Compete" : "Practice";
+                var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
             }
             @foreach (var problem in Model.Problems)
             {

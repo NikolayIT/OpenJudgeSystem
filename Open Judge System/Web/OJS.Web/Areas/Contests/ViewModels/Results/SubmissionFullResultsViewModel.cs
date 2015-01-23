@@ -21,7 +21,8 @@
                     MaxMemoryUsed = submission.TestRuns.Max(x => x.MemoryUsed),
                     TestRuns = submission.TestRuns.AsQueryable().Select(TestRunFullResultsViewModel.FromTestRun),
                     Points = submission.Points,
-                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully
+                    IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
+                    CreatedOn = submission.CreatedOn
                 };
             }
         }
@@ -39,5 +40,7 @@
         public int Points { get; set; }
 
         public bool IsCompiledSuccessfully { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

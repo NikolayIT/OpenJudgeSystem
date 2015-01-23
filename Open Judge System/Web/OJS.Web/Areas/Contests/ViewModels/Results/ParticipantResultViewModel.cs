@@ -1,10 +1,16 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class ParticipantResultViewModel
     {
+        public ParticipantResultViewModel()
+        {
+            this.ProblemResults = new List<ProblemResultPairViewModel>();
+        }
+
         public string ParticipantUsername { get; set; }
 
         public string ParticipantFirstName { get; set; }
@@ -35,6 +41,24 @@
             {
                 return this.ProblemResults.Sum(x => x.BestSubmission == null ? 0 : x.BestSubmission.Points);
             }
+        }
+
+        public double? GetContestTimeInMinutes(DateTime? contestStartTime)
+        {
+            var lastSubmission = this.ProblemResults
+                .Where(x => x.ShowResult && x.BestSubmission != null)
+                .OrderByDescending(x => x.BestSubmission.CreatedOn)
+                .Select(x => x.BestSubmission)
+                .FirstOrDefault();
+
+            if (contestStartTime.HasValue && lastSubmission != null)
+            {
+                var lastSubmissionTime = lastSubmission.CreatedOn;
+                var contestTimeInMinutes = (lastSubmissionTime - contestStartTime.Value).TotalMinutes;
+                return contestTimeInMinutes;
+            }
+
+            return null;
         }
     }
 }

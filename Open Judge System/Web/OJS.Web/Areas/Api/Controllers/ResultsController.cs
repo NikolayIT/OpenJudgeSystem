@@ -130,13 +130,15 @@
                     participant.User.Email,
                     Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
                     Points = participant.Contest.Problems
+                        .Where(problem => !problem.IsDeleted)
                         .Select(problem => problem.Submissions
-                            .Where(z => z.ParticipantId == participant.Id)
+                            .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
                             .OrderByDescending(z => z.Points)
                             .Select(z => z.Points)
                             .FirstOrDefault())
                         .Sum(),
                     Minutes = participant.Submissions
+                        .Where(x => !x.IsDeleted)
                         .OrderByDescending(x => x.CreatedOn)
                         .Select(x => DbFunctions.DiffMinutes(participant.Contest.StartTime, x.CreatedOn))
                         .FirstOrDefault()
@@ -175,14 +177,15 @@
                     participant.User.Email,
                     Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
                     Points = participant.Contest.Problems
+                        .Where(problem => !problem.IsDeleted)
                         .Select(problem => problem.Submissions
-                            .Where(z => z.ParticipantId == participant.Id)
+                            .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
                             .OrderByDescending(z => z.Points)
                             .Select(z => z.Points)
                             .FirstOrDefault())
                         .Sum(),
                     ExamTimeInMinutes = participant.Submissions
-                        .Where(x => x.Problem.ContestId == contestId.Value)
+                        .Where(x => x.Problem.ContestId == contestId.Value && !x.IsDeleted)
                         .OrderByDescending(x => x.CreatedOn)
                         .Select(x => DbFunctions.DiffMinutes(participant.Contest.StartTime, x.CreatedOn))
                         .FirstOrDefault()
