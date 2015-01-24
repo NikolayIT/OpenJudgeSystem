@@ -196,13 +196,13 @@
             {
                 contestResults.Results = contestResults.Results
                     .OrderByDescending(x => x.AdminTotal)
-                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime));
+                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime));
             }
             else
             {
                 contestResults.Results = contestResults.Results
                     .OrderByDescending(x => x.Total)
-                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime));
+                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime));
             }
 
             return contestResults;
@@ -251,7 +251,7 @@
                     })
                     .ToList()
                     .OrderByDescending(x => x.Total)
-                    .ThenBy(x => x.GetContestTimeInMinutes(contestStartTime))
+                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime))
             };
 
             return contestFullResults;

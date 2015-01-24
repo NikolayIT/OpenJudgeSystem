@@ -12,10 +12,10 @@
             get
             {
                 return submission => new SubmissionTypeViewModel
-                                                            {
-                                                                Id = submission.Id,
-                                                                Name = submission.Name
-                                                            };
+                {
+                    Id = submission.Id,
+                    Name = submission.Name
+                };
             }
         }
 

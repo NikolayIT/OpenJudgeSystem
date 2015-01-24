@@ -39,19 +39,22 @@
             }
         }
 
-        public double? GetContestTimeInMinutes(DateTime? contestStartTime)
+        public double? GetContestTimeInSeconds(DateTime? contestStartTime)
         {
-            var lastSubmission = this.ProblemResults
-                .Where(x => x.BestSubmission != null)
-                .OrderByDescending(x => x.BestSubmission.CreatedOn)
-                .Select(x => x.BestSubmission)
-                .FirstOrDefault();
-
-            if (contestStartTime.HasValue && lastSubmission != null)
+            if (contestStartTime.HasValue)
             {
-                var lastSubmissionTime = lastSubmission.CreatedOn;
-                var contestTimeInMinutes = (lastSubmissionTime - contestStartTime.Value).TotalMinutes;
-                return contestTimeInMinutes;
+                var lastSubmission = this.ProblemResults
+                    .Where(x => x.BestSubmission != null)
+                    .OrderByDescending(x => x.BestSubmission.CreatedOn)
+                    .Select(x => x.BestSubmission)
+                    .FirstOrDefault();
+
+                if (lastSubmission != null)
+                {
+                    var lastSubmissionTime = lastSubmission.CreatedOn;
+                    var contestTimeInMinutes = (lastSubmissionTime - contestStartTime.Value).TotalSeconds;
+                    return contestTimeInMinutes;
+                }
             }
 
             return null;
