@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -9,7 +8,6 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestCategory;
@@ -97,7 +95,7 @@
             this.Data.SaveChanges();
         }
 
-        private void CascadeDeleteCategories(ContestCategory contest)
+        private void CascadeDeleteCategories(DatabaseModelType contest)
         {
             foreach (var children in contest.Children.ToList())
             {

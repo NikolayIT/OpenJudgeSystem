@@ -16,25 +16,24 @@
 
         public ActionResult Index()
         {
-            var indexViewModel = new IndexViewModel();
-            indexViewModel.ActiveContests =
-                this.Data.Contests.AllActive()
+            var indexViewModel = new IndexViewModel
+            {
+                ActiveContests = this.Data.Contests.AllActive()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
-                    .ToList();
-
-            indexViewModel.FutureContests =
-                this.Data.Contests.AllFuture()
+                    .ToList(),
+                FutureContests = this.Data.Contests.AllFuture()
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
-                    .ToList();
-
-            indexViewModel.PastContests =
-                this.Data.Contests.AllPast()
+                    .ToList(),
+                PastContests = this.Data.Contests.AllPast()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
-                    .ToList();
+                    .ToList()
+            };
+
+
 
             return this.View(indexViewModel);
         }

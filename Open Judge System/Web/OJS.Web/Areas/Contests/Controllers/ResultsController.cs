@@ -10,7 +10,6 @@
 
     using OJS.Common;
     using OJS.Data;
-    using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Extensions;

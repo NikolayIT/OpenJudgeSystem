@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -86,7 +85,7 @@
             var lastOrderBy = -1;
             var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == id);
 
-            if (lastProblem.Count() > 0)
+            if (lastProblem.Any())
             {
                 lastOrderBy = lastProblem.Max(x => x.OrderBy);
             }
@@ -111,7 +110,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, HttpPostedFileBase testArchive, DetailedProblemViewModel problem)
         {
-            if (problem.Resources != null && problem.Resources.Count() > 0)
+            if (problem.Resources != null && problem.Resources.Any())
             {
                 var validResources = problem.Resources
                 .All(res => !string.IsNullOrEmpty(res.Name) &&
@@ -137,10 +136,10 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
                     OrderBy = problem.OrderBy,
-                    Checker = this.Data.Checkers.All().Where(x => x.Name == problem.Checker).FirstOrDefault()
+                    Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker)
                 };
 
-                if (problem.Resources != null && problem.Resources.Count() > 0)
+                if (problem.Resources != null && problem.Resources.Any())
                 {
                     this.AddResourcesToProblem(newProblem, problem.Resources);
                 }
@@ -199,8 +198,8 @@
                     Name = problem.Name,
                     ContestId = problem.ContestId,
                     ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Where(x => x.IsTrialTest).Count(),
-                    CompeteTests = problem.Tests.AsQueryable().Where(x => !x.IsTrialTest).Count(),
+                    TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
+                    CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
                     MaximumPoints = problem.MaximumPoints,
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
@@ -272,8 +271,8 @@
                     Name = problem.Name,
                     ContestId = problem.ContestId,
                     ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Where(x => x.IsTrialTest).Count(),
-                    CompeteTests = problem.Tests.AsQueryable().Where(x => !x.IsTrialTest).Count(),
+                    TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
+                    CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
                     MaximumPoints = problem.MaximumPoints,
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,

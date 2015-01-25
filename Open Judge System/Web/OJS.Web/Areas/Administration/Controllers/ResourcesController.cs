@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;

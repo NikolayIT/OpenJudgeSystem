@@ -1,18 +1,12 @@
 ﻿namespace OJS.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
-    using HtmlAgilityPack;
-
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.ViewModels.News;
 
     using Resource = Resources.News;
@@ -89,7 +83,7 @@
 
             if (currentNews == null || currentNews.IsDeleted)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Views.Selected.Invalid_news_id);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resources.News.Views.Selected.Invalid_news_id);
             }
 
             var previousNews = this.Data.News.All()

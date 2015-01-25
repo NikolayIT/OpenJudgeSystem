@@ -1,25 +1,19 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Web;
     using System.Web.Mvc;
-
-    using HtmlAgilityPack;
 
     using Kendo.Mvc.UI;
 
     using OJS.Common;
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Providers;
     using OJS.Web.Areas.Administration.Providers.Contracts;
     using OJS.Web.Controllers;
+
+    using Resources.News.Views;
 
     using DatabaseModelType = OJS.Data.Models.News;
     using Resource = Resources.News;
@@ -89,7 +83,7 @@
                 new InfosNewsProvider()
             };
 
-            var allNews = new List<News>();
+            var allNews = new List<DatabaseModelType>();
 
             foreach (var newsProvider in providers)
             {
@@ -98,11 +92,11 @@
 
             this.PopulateDatabaseWithNews(allNews);
 
-            this.TempData[GlobalConstants.InfoMessage] = Resource.Views.All.News_successfully_added;
+            this.TempData[GlobalConstants.InfoMessage] = All.News_successfully_added;
             return this.RedirectToAction("All", "News", new { Area = string.Empty });
         }
 
-        private void PopulateDatabaseWithNews(IEnumerable<News> fetchedNews)
+        private void PopulateDatabaseWithNews(IEnumerable<DatabaseModelType> fetchedNews)
         {
             foreach (var news in fetchedNews)
             {

@@ -5,7 +5,6 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Extensions;

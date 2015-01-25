@@ -6,9 +6,7 @@ namespace OJS.Web.Areas.Contests.Controllers
     using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Common.Extensions;
     using OJS.Data;
-    using OJS.Web.Areas.Contests.ViewModels;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Controllers;
