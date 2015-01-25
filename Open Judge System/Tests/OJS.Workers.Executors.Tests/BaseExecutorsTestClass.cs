@@ -5,7 +5,7 @@
     using System.IO;
 
     using Microsoft.CSharp;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     public abstract class BaseExecutorsTestClass
     {
