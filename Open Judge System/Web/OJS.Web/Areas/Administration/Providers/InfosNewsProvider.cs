@@ -13,12 +13,12 @@
 
     public class InfosNewsProvider : BaseNewsProvider
     {
-        private const string InfosUrl = "http://www.math.bas.bg/infos/index.html";
-        private const string InfosEncoding = "windows-1251";
+        private const string ContentUrl = "http://www.math.bas.bg/infos/index.html";
+        private const string ContentEncoding = "windows-1251";
 
         public override IEnumerable<News> FetchNews()
         {
-            var document = this.GetHtmlDocument(InfosUrl, InfosEncoding);
+            var document = this.GetHtmlDocument(ContentUrl, ContentEncoding);
 
             var currentListOfNews = new List<News>();
 

@@ -27,11 +27,6 @@
 
     public class NewsController : KendoGridAdministrationController
     {
-        private const string InfoManUrl = "http://infoman.musala.com/feeds/";
-        private const string InfoManEncoding = "utf-8";
-        private const string InfosUrl = "http://www.math.bas.bg/infos/index.html";
-        private const string InfosEncoding = "windows-1251";
-
         public NewsController(IOjsData data)
             : base(data)
         {

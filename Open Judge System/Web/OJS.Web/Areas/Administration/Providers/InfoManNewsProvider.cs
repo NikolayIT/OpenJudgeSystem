@@ -10,12 +10,12 @@
 
     public class InfoManNewsProvider : BaseNewsProvider
     {
-        private const string InfoManUrl = "http://infoman.musala.com/feeds/";
-        private const string InfoManEncoding = "utf-8";
+        private const string ContentUrl = "http://infoman.musala.com/feeds/";
+        private const string ContentEncoding = "utf-8";
 
         public override IEnumerable<News> FetchNews()
         {
-            var document = this.GetHtmlDocument(InfoManUrl, InfoManEncoding);
+            var document = this.GetHtmlDocument(ContentUrl, ContentEncoding);
 
             var nodes = document.DocumentNode.SelectNodes("//rss//channel//item");
 
