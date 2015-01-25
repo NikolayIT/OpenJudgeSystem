@@ -1,21 +1,22 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
-    [TestClass]
+    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
+    [TestFixture]
     public class ProblemActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenIdIsInvalidAndTryingToPracticeShouldThrowException()
         {
             try
@@ -29,7 +30,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenIdIsInvalidAndTryingToCompeteShouldThrowException()
         {
             try
@@ -43,7 +44,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCannotBeCompetedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -68,7 +69,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCannotBePracticedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -92,7 +93,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCanBePracticedButUserIsNotRegisteredShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
@@ -113,7 +114,7 @@
             Assert.AreEqual("Register", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCanBeCompetedButUserIsNotRegisteredShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
@@ -134,7 +135,7 @@
             Assert.AreEqual("Register", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCanBeCompetedUserIsRegisteredAndProblemHasNoMaterialsShouldReturnPartialView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestNoPasswordOptions, this.InactiveContestOptions);
@@ -159,7 +160,7 @@
             Assert.AreEqual(problem.Resources.Count, model.Resources.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionWhenContestCanBeCompetedUserIsRegisteredAndProblemHasMaterialsShouldReturnPartialView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestNoPasswordOptions, this.InactiveContestOptions);

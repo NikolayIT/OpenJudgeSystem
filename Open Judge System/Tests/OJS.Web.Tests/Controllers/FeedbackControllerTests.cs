@@ -6,22 +6,23 @@
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Tests.Common;
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Feedback;
 
-    [TestClass]
+    [TestFixture]
     public class FeedbackControllerTests : TestClassBase
     {
         public const string LoggedUserName = "workshop";
 
         private HttpContextBase httpContextBasePostCached;
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnViewModel()
         {
             var controller = new FeedbackController(EmptyOjsData);
@@ -30,8 +31,8 @@
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [Test]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ExpectedException(typeof(NullReferenceException))]
         public void IndexActionShouldReturnTheModelIfPostIsNotValid()
         {
             var feedback = new FeedbackViewModel
@@ -62,7 +63,7 @@
             Assert.AreEqual(model.Content, feedback.Content);
         }
 
-        [TestMethod]
+        [Test]
         public void SubmittedShouldReturnNullViewModel()
         {
             var controller = new FeedbackController(EmptyOjsData);

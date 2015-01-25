@@ -1,13 +1,13 @@
 ﻿namespace OJS.Web.Tests.Routes
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Web.Areas.Administration;
 
-    [TestClass]
+    [TestFixture]
     public class AdministrationRoutesTests : RoutesTestsBase
     {
-        [TestMethod]
+        [Test]
         public void AdministrationNavigationShouldReturnProperControllerAndAction()
         {
             var routeData = this.GetAreaRouteData(
@@ -18,7 +18,7 @@
             Assert.AreEqual("Navigation", routeData.Values["controller"]);
         }
 
-        [TestMethod]
+        [Test]
         public void AdministrationNewsShouldReturnProperControllerAndAction()
         {
             var routeData = this.GetAreaRouteData(
@@ -29,7 +29,7 @@
             Assert.AreEqual("News", routeData.Values["controller"]);
         }
 
-        [TestMethod]
+        [Test]
         public void AdministrationContestsShouldReturnProperControllerAndAction()
         {
             var routeData = this.GetAreaRouteData(
@@ -40,7 +40,7 @@
             Assert.AreEqual("Contests", routeData.Values["controller"]);
         }
 
-        [TestMethod]
+        [Test]
         public void AdministrationContestsCategoriesReturnProperControllerAndAction()
         {
             var routeData = this.GetAreaRouteData(
@@ -51,7 +51,7 @@
             Assert.AreEqual("ContestCategories", routeData.Values["controller"]);
         }
 
-        [TestMethod]
+        [Test]
         public void AdministrationContestsCategoriesHierarchyReturnProperControllerAndAction()
         {
             var routeData = this.GetAreaRouteData(

@@ -1,14 +1,16 @@
 ﻿namespace OJS.Web.Tests.Routes
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
     using OJS.Web.Areas.Contests;
 
-    [TestClass]
+    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
+    [TestFixture]
     public class ContestsRoutesTests : RoutesTestsBase
     {
-        [TestMethod]
+        [Test]
         public void ContestsListUrlShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests", new ContestsAreaAreaRegistration());
@@ -18,7 +20,7 @@
             Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsDetailsUrlShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/123/some-contest", new ContestsAreaAreaRegistration());
@@ -30,7 +32,7 @@
             Assert.AreEqual("some-contest", routeData.Values["name"]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetContestsByCategoryShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/List/ByCategory/14", new ContestsAreaAreaRegistration());
@@ -41,7 +43,7 @@
             Assert.AreEqual("14", routeData.Values["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ReadContestsCategoriesShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/List/ReadCategories", new ContestsAreaAreaRegistration());
@@ -51,7 +53,7 @@
             Assert.AreEqual("ReadCategories", routeData.Values["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsCompeteLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Compete/Index/11", new ContestsAreaAreaRegistration());
@@ -63,7 +65,7 @@
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsPracticeLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Practice/Index/12", new ContestsAreaAreaRegistration());
@@ -75,7 +77,7 @@
             Assert.IsFalse((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsCompeteRegistrationLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Compete/Register/11", new ContestsAreaAreaRegistration());
@@ -87,7 +89,7 @@
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsPracticeRegistrationLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Practice/Register/12", new ContestsAreaAreaRegistration());
@@ -99,7 +101,7 @@
             Assert.IsFalse((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsCompeteResultsLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Compete/Results/Simple/11", new ContestsAreaAreaRegistration());
@@ -111,7 +113,7 @@
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsPracticeResultsLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Practice/Results/Simple/12", new ContestsAreaAreaRegistration());
@@ -123,7 +125,7 @@
             Assert.IsFalse((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsCompeteFullResultsLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Compete/Results/Full/11", new ContestsAreaAreaRegistration());
@@ -135,7 +137,7 @@
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsPracticeFullResultsLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Practice/Results/Full/12", new ContestsAreaAreaRegistration());
@@ -147,7 +149,7 @@
             Assert.IsFalse((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsCompeteGetResultsByProblemIdLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Compete/Results/ByProblem/11", new ContestsAreaAreaRegistration());
@@ -159,7 +161,7 @@
             Assert.IsTrue((bool)routeData.Values["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestsPracticeGetResultsByProblemIdLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Contests/Practice/Results/ByProblem/12", new ContestsAreaAreaRegistration());

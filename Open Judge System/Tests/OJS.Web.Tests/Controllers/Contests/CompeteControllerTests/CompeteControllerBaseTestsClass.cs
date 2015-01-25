@@ -2,20 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Moq;
+    using NUnit.Framework;
 
-    using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Tests.Common;
     using OJS.Web.Areas.Contests.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class CompeteControllerBaseTestsClass : BaseWebTests
     {
         protected readonly string DefaultCompetePassword = "competePassword";
@@ -84,7 +81,7 @@
         protected ContestInitializationOptions ActiveContestWithQuestionsOptions { get; set; }
         #endregion
 
-        [TestInitialize]
+        [SetUp]
         public virtual void TestInitialize()
         {
             this.InitializeController();

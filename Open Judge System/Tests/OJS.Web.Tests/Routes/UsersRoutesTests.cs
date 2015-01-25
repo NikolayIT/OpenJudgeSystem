@@ -1,14 +1,14 @@
 ﻿namespace OJS.Web.Tests.Routes
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
     using OJS.Web.Areas.Users;
 
-    [TestClass]
+    [TestFixture]
     public class UsersRoutesTests : RoutesTestsBase
     {
-        [TestMethod]
+        [Test]
         public void CurrentUserProfileLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Users/Profile", new UsersAreaAreaRegistration());
@@ -18,7 +18,7 @@
             Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void SettingsLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Users/Settings", new UsersAreaAreaRegistration());
@@ -28,7 +28,7 @@
             Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void UserProfileLinkShouldNavigateProperly()
         {
             var routeData = this.GetAreaRouteData("~/Users/Nikolay.IT", new UsersAreaAreaRegistration());

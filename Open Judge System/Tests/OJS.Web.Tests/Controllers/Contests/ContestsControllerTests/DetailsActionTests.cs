@@ -5,24 +5,24 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
-    [TestClass]
+    [TestFixture]
     public class DetailsActionTests : BaseWebTests, IDisposable
     {
         private ContestsController contestsController;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             this.contestsController = new ContestsController(this.EmptyOjsData);
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionWhenInvalidContestIdIsProvidedShouldThrowException()
         {
             try
@@ -35,7 +35,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionWhenContestIsNotVisibleShouldThrowException()
         {
             try
@@ -57,7 +57,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionWhenValidContestIdIsProvidedShouldReturnContest()
         {
             var contest = new Contest

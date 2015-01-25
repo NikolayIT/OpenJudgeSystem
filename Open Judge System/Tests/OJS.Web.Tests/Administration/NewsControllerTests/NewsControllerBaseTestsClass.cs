@@ -1,11 +1,13 @@
 ﻿namespace OJS.Web.Tests.Administration.NewsControllerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+
+    using NUnit.Framework;
+
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class NewsControllerBaseTestsClass : BaseWebTests
     {
         private readonly Mock<IOjsData> data;

@@ -4,15 +4,15 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
 
-    [TestClass]
+    [TestFixture]
     public class SubmitActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void SubmitActionWhenUserIsNotRegisteredToParticipateShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("someContest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -48,7 +48,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void SubmitActionWhenParticipantSendsAValidSubmitShouldReturnJson()
         {
             var contest = this.CreateAndSaveContest("test contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -79,7 +79,7 @@
             Assert.AreEqual(receivedContestId, contest.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void SubmitActionWhenParticipantSendsAnotherSubmissionBeforeLimitHasPassedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("test contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -122,7 +122,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void SubmitActionWhenParticipantSendsAnotherSubmissionAndThereIsNoLimitShouldReturnJson()
         {
             var contest = this.CreateAndSaveContest("test contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -162,7 +162,7 @@
             Assert.AreEqual(receivedContestId, secondSubmissionResultContestId);
         }
 
-        [TestMethod]
+        [Test]
         public void SubmitActionWhenParticipantSendsEmptySubmissionContestShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("test contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);

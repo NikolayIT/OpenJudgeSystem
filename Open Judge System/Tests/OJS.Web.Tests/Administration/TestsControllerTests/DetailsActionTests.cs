@@ -2,16 +2,17 @@
 {
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
-    [TestClass]
+    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
+    [TestFixture]
     public class DetailsActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void DetailsActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
@@ -20,7 +21,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Details(null) as RedirectToRouteResult;
@@ -33,7 +34,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionShouldReturnProperRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
@@ -42,7 +43,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionShouldReturnProperMessageWhenTestIsNull()
         {
             var redirectResult = this.TestsController.Details(100) as RedirectToRouteResult;
@@ -55,7 +56,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DetailsActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
             var viewResult = this.TestsController.Details(1) as ViewResult;

@@ -4,15 +4,15 @@
     using System.Net;
     using System.Web;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class ValidateContestTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsNotFoundShouldAndTryingToPracticeThrowException()
         {
             try
@@ -26,7 +26,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsNotFoundShouldAndTryingToCompeteThrowException()
         {
             try
@@ -40,7 +40,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsInvisibleAndTryingToCompeteShouldThrowException()
         {
             var contest = new Contest
@@ -59,7 +59,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsInvisibleAndTryingToPracticeShouldThrowException()
         {
             var contest = new Contest
@@ -78,7 +78,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsDeletedAndTryingToPracticeShouldThrowException()
         {
             var contest = new Contest
@@ -97,7 +97,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestIsDeletedAndTryingToCompeteShouldThrowException()
         {
             var contest = new Contest
@@ -116,7 +116,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCannotBeCompetedShouldThrowException()
         {
             var contest = new Contest
@@ -135,7 +135,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCannotBePracticedShouldThrowException()
         {
             var contest = new Contest
@@ -154,7 +154,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCanBePracticedShouldNotThrowAnException()
         {
             var contest = new Contest
@@ -166,7 +166,7 @@
             CompeteController.ValidateContest(contest, false);
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCanBeCompetedShouldNotThrowAnException()
         {
             var contest = new Contest
@@ -178,7 +178,7 @@
             CompeteController.ValidateContest(contest, true);
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCanBePracticedButTryingToCompeteItShouldThrowAnException()
         {
             var contest = new Contest
@@ -198,7 +198,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateContestWhenContestCanBeCompetedButTryingToPracticeItShouldThrowAnException()
         {
             var contest = new Contest

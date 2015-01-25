@@ -1,21 +1,22 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Models;
     using OJS.Data.Models;
 
-    [TestClass]
+    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
+    [TestFixture]
     public class GetAllowedSubmissionTypesTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void GetAllowedSubmissionTypesWhenAnInvalidContestIdIsProvidedShouldThrowAnException()
         {
             try
@@ -29,7 +30,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void GetAllowedSubmissionTypesWhenRequestIsValidShouldReturnSubmissionTypes()
         {
             var contest = this.CreateAndSaveContest("testName", this.ActiveContestWithPasswordAndQuestionsOptions, this.ActiveContestWithPasswordAndQuestionsOptions);

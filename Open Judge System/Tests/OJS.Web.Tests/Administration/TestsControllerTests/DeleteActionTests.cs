@@ -1,18 +1,17 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
     using System.Web.Mvc;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NUnit.Framework;
 
     using OJS.Common;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
-    [TestClass]
+    [TestFixture]
     public class DeleteActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void DeleteActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Delete(null) as RedirectToRouteResult;
@@ -21,7 +20,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Delete(null) as RedirectToRouteResult;
@@ -34,7 +33,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteActionShouldReturnProperRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.Delete(100) as RedirectToRouteResult;
@@ -43,7 +42,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteActionShouldReturnProperMessageWhenTestIsNull()
         {
             var redirectResult = this.TestsController.Delete(100) as RedirectToRouteResult;
@@ -56,7 +55,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
             var viewResult = this.TestsController.Delete(1) as ViewResult;
@@ -72,7 +71,7 @@
             Assert.AreEqual(5, model.OrderBy);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDelete(null) as RedirectToRouteResult;
@@ -81,7 +80,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDelete(null) as RedirectToRouteResult;
@@ -94,7 +93,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDelete(100) as RedirectToRouteResult;
@@ -103,7 +102,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteActionShouldReturnProperMessageWhenTestIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDelete(100) as RedirectToRouteResult;
@@ -116,7 +115,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteActionShouldReturnProperRedirectWhenTestIsCorrect()
         {
             var redirectResult = this.TestsController.ConfirmDelete(1) as RedirectToRouteResult;
@@ -131,7 +130,7 @@
             Assert.AreEqual("Теста беше изтрит успешно", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteAllActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.DeleteAll(null) as RedirectToRouteResult;
@@ -140,7 +139,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteAllActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.DeleteAll(null) as RedirectToRouteResult;
@@ -153,7 +152,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteAllActionShouldReturnProperRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.DeleteAll(100) as RedirectToRouteResult;
@@ -162,7 +161,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteAllActionShouldReturnProperMessageWhenTestIsNull()
         {
             var redirectResult = this.TestsController.DeleteAll(100) as RedirectToRouteResult;
@@ -175,7 +174,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void DeleteAllActionShouldReturnProperViewModelWhenIdIsCorrect()
         {
             var viewResult = this.TestsController.DeleteAll(1) as ViewResult;
@@ -189,7 +188,7 @@
             Assert.AreEqual(1, model.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
@@ -198,7 +197,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteAllActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDeleteAll(null) as RedirectToRouteResult;
@@ -211,7 +210,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
@@ -220,7 +219,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteAllActionShouldReturnProperMessageWhenTestIsNull()
         {
             var redirectResult = this.TestsController.ConfirmDeleteAll(100) as RedirectToRouteResult;
@@ -233,7 +232,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmDeleteAllActionShouldReturnProperRedirectWhenTestIsCorrect()
         {
             var redirectResult = this.TestsController.ConfirmDeleteAll(1) as RedirectToRouteResult;
