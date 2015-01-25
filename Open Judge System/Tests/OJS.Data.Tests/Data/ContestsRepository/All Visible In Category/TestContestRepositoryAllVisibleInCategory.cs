@@ -1,18 +1,15 @@
 ﻿namespace OJS.Data.Tests.Data.ContestsRepository.AllVisibleInCategory
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
+    using NUnit.Framework;
+
     using OJS.Data.Models;
+    using OJS.Data.Tests.Data.ContestsRepository.Base_Data;
     using OJS.Tests.Common.DataFakes;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestRepositoryAllVisibleInCategory : TestContestRepositoryBaseData
     {
         public TestContestRepositoryAllVisibleInCategory()
@@ -136,7 +133,7 @@
             EmptyOjsData.SaveChanges();
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperVisibleInCategoryContestsCount()
         {
             var categories = this.EmptyOjsData.ContestCategories.All().ToList();
@@ -149,7 +146,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperVisibleInCategoryContestsNames()
         {
             var categories = this.EmptyOjsData.ContestCategories.All().ToList();
@@ -165,7 +162,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperVisibleInCategoryVisibleProperty()
         {
             var categories = this.EmptyOjsData.ContestCategories.All().ToList();
@@ -181,7 +178,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperVisibleInCategoryIsDeleted()
         {
             var categories = this.EmptyOjsData.ContestCategories.All().ToList();

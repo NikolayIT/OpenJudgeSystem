@@ -1,14 +1,14 @@
-﻿namespace OJS.Data.Tests.Data.ContestsRepository
+﻿namespace OJS.Data.Tests.Data.ContestsRepository.Base_Data
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Data.Repositories;
     using OJS.Tests.Common;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestRepositoryBaseData : TestClassBase
     {
         public TestContestRepositoryBaseData()

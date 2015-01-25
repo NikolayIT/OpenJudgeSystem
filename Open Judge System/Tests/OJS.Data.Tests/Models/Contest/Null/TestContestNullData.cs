@@ -1,11 +1,12 @@
 ﻿namespace OJS.Data.Tests.Contest.Null
 {
-    using System;
     using System.Linq;
     
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
+    [TestFixture]
     public class TestContestNullData : TestContestBaseData
     {
         public TestContestNullData()
@@ -13,7 +14,7 @@
             this.PopulateEmptyDataBaseWithContest();
         }
 
-        [TestMethod]
+        [Test]
         public void CreatedContestShouldNotBeNull()
         {
             var result = EmptyOjsData.Contests.All()

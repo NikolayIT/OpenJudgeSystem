@@ -2,10 +2,10 @@
 {
     using System;
     using System.Linq;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass]
+    using NUnit.Framework;
+
+    [TestFixture]
     public class TestNewsModifiedOndata : TestNewsBaseData
     {
         public TestNewsModifiedOndata()
@@ -13,7 +13,7 @@
             this.PopulateEmptyDataBaseWithNews();
         }
 
-        [TestMethod]
+        [Test]
         public void ModifiedOnShouldBeNullOnCreation()
         {
             var result = this.EmptyOjsData.News.All()
@@ -27,7 +27,7 @@
             Assert.IsNull(result.ModifiedOn);
         }
 
-        [TestMethod]
+        [Test]
         public void ModifiedOnShouldBeCorrectOnModification()
         {
             this.EmptyOjsData.News.All()

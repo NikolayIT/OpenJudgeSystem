@@ -2,12 +2,12 @@
 {
     using System;
     using System.Linq;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NUnit.Framework;
 
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestToStringMethod : TestContestBaseData
     {
         public TestContestToStringMethod()
@@ -15,7 +15,7 @@
             this.FullCleanDatabase();
         }
 
-        [TestMethod]
+        [Test]
         public void ToStringMethodShouldReturnProperValue()
         {
             this.EmptyOjsData.Contests.Add(new Contest

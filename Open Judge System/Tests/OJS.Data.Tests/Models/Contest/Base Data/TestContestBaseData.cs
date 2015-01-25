@@ -1,18 +1,13 @@
 ﻿namespace OJS.Data.Tests.Contest
 {
     using System;
-    using System.Data.Entity;
-    using System.Linq;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
+    using NUnit.Framework;
+
     using OJS.Data.Models;
     using OJS.Tests.Common;
-    using OJS.Tests.Common.DataFakes;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestBaseData : TestClassBase
     {
         protected void PopulateEmptyDataBaseWithContest()

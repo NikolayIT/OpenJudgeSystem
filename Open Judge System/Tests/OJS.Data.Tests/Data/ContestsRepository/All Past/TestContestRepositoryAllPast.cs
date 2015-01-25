@@ -1,17 +1,15 @@
 ﻿namespace OJS.Data.Tests.Data.ContestsRepository.AllPast
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
     using OJS.Data.Models;
+    using OJS.Data.Tests.Data.ContestsRepository.Base_Data;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestRepositoryAllPast : TestContestRepositoryBaseData
     {
         public TestContestRepositoryAllPast()
@@ -22,13 +20,13 @@
 
         private IList<Contest> AllPast { get; set; }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()
         {
             Assert.AreEqual(20, this.AllPast.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveNames()
         {
             for (int i = 1; i <= this.AllPast.Count; i++)
@@ -37,7 +35,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsVisible()
         {
             for (int i = 1; i <= this.AllPast.Count; i++)
@@ -46,7 +44,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsDeleted()
         {
             for (int i = 1; i <= this.AllPast.Count; i++)
@@ -55,7 +53,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveStartTime()
         {
             for (int i = 1; i <= this.AllPast.Count; i++)
@@ -66,7 +64,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveEndTime()
         {
             for (int i = 1; i <= this.AllPast.Count; i++)

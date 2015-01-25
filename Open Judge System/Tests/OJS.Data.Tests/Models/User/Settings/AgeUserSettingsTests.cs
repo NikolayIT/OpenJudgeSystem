@@ -1,13 +1,15 @@
 ﻿namespace OJS.Data.Tests.Models.User.Settings
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NUnit.Framework;
+
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class AgeUserSettingsTests
     {
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnNullIfDateOfBirthHasNotValue()
         {
             UserSettings settings = new UserSettings();
@@ -17,7 +19,7 @@
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnZeroYearsIfUserIsMonthsOld()
         {
             UserSettings settings = new UserSettings()
@@ -31,7 +33,7 @@
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnZeroYearsIfUserIsDaysOld()
         {
             UserSettings settings = new UserSettings()
@@ -45,7 +47,7 @@
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnProperAgeIfCurrentYearBirthMonthHasPassed()
         {
             UserSettings settings = new UserSettings()
@@ -59,7 +61,7 @@
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnProperAgeIfCurrentYearBirthMonthHasNotPassed()
         {
             UserSettings settings = new UserSettings()
@@ -73,7 +75,7 @@
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnProperAgeIfCurrentYearBirthMonthIsTheSameAndDayHasPassed()
         {
             UserSettings settings = new UserSettings()
@@ -87,7 +89,7 @@
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AgeShouldReturnProperAgeIfCurrentYearBirthMonthIsTheSameAndDayHasNotPassed()
         {
             UserSettings settings = new UserSettings()
