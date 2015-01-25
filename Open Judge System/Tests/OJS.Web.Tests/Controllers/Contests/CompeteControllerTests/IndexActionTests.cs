@@ -1,18 +1,17 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class IndexActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void IndexActionForInvalidContestShouldThrowException()
         {
             try
@@ -26,7 +25,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionForInvalidPracticeShouldThrowException()
         {
             try
@@ -40,7 +39,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenContestCannotBeCompetedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -56,7 +55,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenContestCannotBePracticedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -72,7 +71,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenUserIsNotRegisteredToPracticeAndPracticeHasNoPasswordShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestNoPasswordOptions);
@@ -83,7 +82,7 @@
             Assert.IsNotNull(result.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenUserIsAlreadyRegisteredToCompeteShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
@@ -97,7 +96,7 @@
             Assert.IsNotNull(result.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenUserIsAlreadyRegisteredToPracticeShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestNoPasswordOptions);
@@ -111,7 +110,7 @@
             Assert.IsNotNull(result.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenUserIsRegisteredToPracticeButTriesToCompeteShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
@@ -127,7 +126,7 @@
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenContestHasQuestionsShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithQuestionsOptions, this.InactiveContestOptions);
@@ -143,7 +142,7 @@
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenPracticeHasQuestionsShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithQuestionsOptions);
@@ -156,7 +155,7 @@
             Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenPracticeHasPasswordShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -169,7 +168,7 @@
             Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionWhenContestHasPasswordShouldRedirectToRegistration()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.InactiveContestOptions);

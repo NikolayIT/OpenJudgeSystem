@@ -4,14 +4,14 @@
     using System.Linq;
     using System.Windows.Forms;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class RestrictedProcessSecurityTests : BaseExecutorsTestClass
     {
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldNotBeAbleToCreateFiles()
         {
             const string CreateFileSourceCode = @"using System;
@@ -32,7 +32,7 @@ class Program
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldNotBeAbleToReadClipboard()
         {
             const string ReadClipboardSourceCode = @"using System;
@@ -57,7 +57,7 @@ class Program
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldNotBeAbleToWriteToClipboard()
         {
             const string WriteToClipboardSourceCode = @"using System;
@@ -79,7 +79,7 @@ class Program
             Assert.AreNotEqual("i did it", Clipboard.GetText());
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldNotBeAbleToStartProcess()
         {
             const string StartNotepadProcessSourceCode = @"using System;

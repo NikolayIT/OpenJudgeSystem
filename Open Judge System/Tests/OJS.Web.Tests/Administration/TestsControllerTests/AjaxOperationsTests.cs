@@ -1,21 +1,19 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
 
-    [TestClass]
+    [TestFixture]
     public class AjaxOperationsTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void FullInputActionShouldReturnFullInputData()
         {
             var contentResult = this.TestsController.FullInput(1) as ContentResult;
@@ -24,7 +22,7 @@
             Assert.AreEqual("Sample test input", contentResult.Content);
         }
 
-        [TestMethod]
+        [Test]
         public void FullOutputActionShouldReturnFullOutputData()
         {
             var contentResult = this.TestsController.FullOutput(1) as ContentResult;
@@ -33,7 +31,7 @@
             Assert.AreEqual("Sample test output", contentResult.Content);
         }
 
-        [TestMethod]
+        [Test]
         public void GetTestRunsActionShouldReturnProperTestCount()
         {
             var jsonResult = this.TestsController.GetTestRuns(1) as JsonResult;
@@ -44,7 +42,7 @@
             Assert.AreEqual(1, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetGetCascadeCategoriesShouldReturnProperCategoriesCount()
         {
             var jsonResult = this.TestsController.GetCascadeCategories() as JsonResult;
@@ -55,7 +53,7 @@
             Assert.AreEqual(3, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetGetCascadeContestsShouldReturnProperContestsCount()
         {
             var jsonResult = this.TestsController.GetCascadeContests(1) as JsonResult;
@@ -66,7 +64,7 @@
             Assert.AreEqual(2, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetGetCascadeProblemsShouldReturnProperProblemsCount()
         {
             var jsonResult = this.TestsController.GetCascadeProblems(1) as JsonResult;
@@ -77,7 +75,7 @@
             Assert.AreEqual(4, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetProblemInformacionShouldReturnProperIds()
         {
             var jsonResult = this.TestsController.GetProblemInformation(1) as JsonResult;
@@ -92,7 +90,7 @@
             Assert.AreEqual(1, category);
         }
 
-        [TestMethod]
+        [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsValidAndCaseInsensitive()
         {
             var jsonResult = this.TestsController.GetSearchedProblems("pro") as JsonResult;
@@ -103,7 +101,7 @@
             Assert.AreEqual(2, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsValidAndParticular()
         {
             var jsonResult = this.TestsController.GetSearchedProblems("other") as JsonResult;
@@ -114,7 +112,7 @@
             Assert.AreEqual(1, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsNotValid()
         {
             var jsonResult = this.TestsController.GetSearchedProblems("abv") as JsonResult;
@@ -125,7 +123,7 @@
             Assert.AreEqual(0, data.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemTestsShouldContainProperTestsCount()
         {
             var contentResult = this.TestsController.ProblemTests(1) as ContentResult;

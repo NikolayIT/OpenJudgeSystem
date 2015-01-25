@@ -1,20 +1,19 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class DownloadResourceActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticeAndInvalidResourceIdIsProvidedShouldThrowException()
         {
             try
@@ -28,7 +27,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenCompeteAndInvalidResourceIdIsProvidedShouldThrowException()
         {
             try
@@ -42,7 +41,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticeAndUserNotLoggedInShouldRegirectToLoginPage()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -69,7 +68,7 @@
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticeAndUserNotRegisteredForPracticeShouldRegirectToRegistrationPage()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -95,7 +94,7 @@
             Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenCompeteAndUserNotRegisteredForCompeteShouldRegirectToRegistrationPage()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -121,7 +120,7 @@
             Assert.AreEqual(this.IsPractice, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticingButPracticeNotAllowedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -151,7 +150,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticingResourceIsAvailableAndUserIsRegisteredForPracticeShouldReturnResource()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -182,7 +181,7 @@
             Assert.IsTrue(resource.File.SequenceEqual(result.FileContents));
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenCompetingResourceIsAvailableAndUserIsRegisteredForCompeteShouldReturnResource()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
@@ -213,7 +212,7 @@
             Assert.IsTrue(resource.File.SequenceEqual(result.FileContents));
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticingResourceIsNullAndUserIsRegisteredForContestShouldThrowAnException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -243,7 +242,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticingWhenNoFileExtensionAndUserIsRegisteredForContestShouldThrowAnException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -277,7 +276,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadResourceActionWhenPracticingWhenFileHasNoContentAndUserIsRegisteredForContestShouldThrowAnException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);

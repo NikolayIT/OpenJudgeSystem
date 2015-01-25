@@ -2,12 +2,12 @@
 {
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class ProblemActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void ProblemActionShouldReturnViewWithNullModel()
         {
             var result = this.TestsController.Problem(null) as ViewResult;
@@ -16,7 +16,7 @@
             Assert.IsNull(model);
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionShouldReturnNullViewBagIfIdIsNotDefined()
         {
             var view = this.TestsController.Problem(null) as ViewResult;
@@ -25,7 +25,7 @@
             Assert.IsNull(viewBagProblem);
         }
 
-        [TestMethod]
+        [Test]
         public void ProblemActionShouldReturnValueInViewBagIfIdDefined()
         {
             var view = this.TestsController.Problem(10) as ViewResult;

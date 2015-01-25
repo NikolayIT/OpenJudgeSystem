@@ -1,20 +1,16 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
-    using OJS.Web.Areas.Administration.ViewModels;
 
-    [TestClass]
+    [TestFixture]
     public class CreateActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void CreateGetActionShouldReturnProperRedirectWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
@@ -23,7 +19,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateGetActionShouldReturnProperMessageWhenIdIsNull()
         {
             var redirectResult = this.TestsController.Create(null) as RedirectToRouteResult;
@@ -36,7 +32,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateGetActionShouldReturnProperRedirectWhenProblemIsNull()
         {
             var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
@@ -45,7 +41,7 @@
             Assert.AreEqual(GlobalConstants.Index, redirectResult.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateGetActionShouldReturnProperMessageWhenProblemIsNull()
         {
             var redirectResult = this.TestsController.Create(100) as RedirectToRouteResult;
@@ -58,7 +54,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldReturnProperRedirectAndMessageWhenProblemDoesNotExist()
         {
             var redirectResult = this.TestsController.Create(100, null) as RedirectToRouteResult;
@@ -71,7 +67,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldReturnViewWhenPostedProblemIsNull()
         {
             var viewResult = this.TestsController.Create(1, null) as ViewResult;
@@ -79,7 +75,7 @@
             Assert.IsNull(viewResult.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldReturnProperMessageWhenModelStateIsValid()
         {
             var viewResult = this.TestsController.Create(1, this.TestViewModel) as RedirectToRouteResult;
@@ -92,7 +88,7 @@
             Assert.AreEqual("Теста беше добавен успешно", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldReturnProperRedirectWhenModelStateIsValid()
         {
             var viewResult = this.TestsController.Create(1, this.TestViewModel) as RedirectToRouteResult;
@@ -107,7 +103,7 @@
             Assert.AreEqual(1, routeId);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldNotAddTestIfInputIsNullOrEmpty()
         {
             this.TestsController.ViewData.ModelState.Clear();
@@ -127,7 +123,7 @@
             Assert.IsTrue(modelState.Values.ToList()[1].Errors.First().ErrorMessage == "Входа е задължителен!");
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePostActionShouldNotAddTestIfOutputIsNullOrEmpty()
         {
             this.TestsController.ViewData.ModelState.Clear();

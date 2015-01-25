@@ -4,12 +4,12 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.News;
 
-    [TestClass]
+    [TestFixture]
     public class LatestNewsActionTests : NewsTestBaseClass
     {
         public LatestNewsActionTests()
@@ -17,7 +17,7 @@
         {
         }
 
-        [TestMethod]
+        [Test]
         public void LatestNewsShouldReturnProperNewsCount()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -27,7 +27,7 @@
             Assert.AreEqual(5, model.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void LatestNewsShouldReturnProperNewsCountWithCustomNewsNumber()
         {
             var controller = new NewsController(this.EmptyOjsData);

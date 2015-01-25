@@ -1,22 +1,24 @@
 ﻿namespace OJS.Data.Tests.Contest.EntityValidation
 {
     using System;
+    using System.Data.Entity.Validation;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NUnit.Framework;
 
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestEntityValidation : TestContestBaseData
     {
-        [TestInitialize]
+        [SetUp]
         public void CleanDatabase()
         {
             this.FullCleanDatabase();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.Data.Entity.Validation.DbEntityValidationException))]
+        [Test]
+        [ExpectedException(typeof(DbEntityValidationException))]
         public void ContestShouldNotBeAddedIfStartTimeIsLaterThanEndTime()
         {
             this.EmptyOjsData.Contests.Add(new Contest

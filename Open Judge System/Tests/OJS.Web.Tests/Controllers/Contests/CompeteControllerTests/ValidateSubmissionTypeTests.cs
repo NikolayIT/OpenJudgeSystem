@@ -4,15 +4,15 @@
     using System.Net;
     using System.Web;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class ValidateSubmissionTypeTests
     {
-        [TestMethod]
+        [Test]
         public void ValidateSubmissionTypeWhenSubmissionTypeIsNotFoundThrowException()
         {
             var contest = new Contest
@@ -34,7 +34,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ValidateSubmissionTypeWhenSubmissionTypeIsFoundShouldNotThrowException()
         {
             var contest = new Contest

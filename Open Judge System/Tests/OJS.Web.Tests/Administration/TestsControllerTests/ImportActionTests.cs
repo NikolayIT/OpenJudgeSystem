@@ -8,12 +8,13 @@
 
     using Ionic.Zip;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
+
+    using NUnit.Framework;
+
     using OJS.Common;
 
-    [TestClass]
+    [TestFixture]
     public class ImportActionTests : TestsControllerBaseTestsClass
     {
         public ImportActionTests()
@@ -23,7 +24,7 @@
 
         protected Mock<HttpPostedFileBase> File { get; set; }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWithIncorrectProblemId()
         {
             var redirectResult = this.TestsController.Import("invalid", null, false, false) as RedirectToRouteResult;
@@ -38,7 +39,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWhenProblemDoesNotExist()
         {
             var redirectResult = this.TestsController.Import("100", null, false, false) as RedirectToRouteResult;
@@ -53,7 +54,7 @@
             Assert.AreEqual("Невалидна задача", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileIsNull()
         {
             var redirectResult = this.TestsController.Import("1", null, false, false) as RedirectToRouteResult;
@@ -69,7 +70,7 @@
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileContentIsZero()
         {
             this.File.Setup(x => x.ContentLength).Returns(0);
@@ -87,7 +88,7 @@
             Assert.AreEqual("Файлът не може да бъде празен", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWhenFileIsNotZip()
         {
             this.File.Setup(x => x.ContentLength).Returns(1);
@@ -106,7 +107,7 @@
             Assert.AreEqual("Файлът трябва да бъде .ZIP файл", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldDeleteAllPreviousTestsIfSettingsAreSetToTrue()
         {
             this.File.Setup(x => x.ContentLength).Returns(1);
@@ -127,7 +128,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldReturnProperRedirectAndMessageIfZipFileIsNotValid()
         {
             this.File.Setup(x => x.ContentLength).Returns(1);
@@ -147,7 +148,7 @@
             Assert.AreEqual("Zip файлът е повреден", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportActionShouldAddTestsToProblemIfZipFileIsCorrect()
         {
             var zipFile = new ZipFile();

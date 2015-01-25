@@ -1,18 +1,14 @@
 ﻿namespace OJS.Web.Tests.Contollers.NewsControllerTests
 {
-    using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
-    using OJS.Data;
-    using OJS.Data.Models;
-    using OJS.Tests.Common;
+    using NUnit.Framework;
+
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.News;
 
-    [TestClass]
+    [TestFixture]
     public class AllNewsActionTests : NewsTestBaseClass
     {
         public AllNewsActionTests() 
@@ -20,7 +16,7 @@
         {
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnViewModel()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -33,7 +29,7 @@
             Assert.AreEqual(4, model.AllPages);
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountWithDefaultValues()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -43,7 +39,7 @@
             Assert.AreEqual(10, model.AllNews.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountWithSetInitialPage()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -53,7 +49,7 @@
             Assert.AreEqual(10, model.AllNews.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountWithSetPageSize()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -63,7 +59,7 @@
             Assert.AreEqual(15, model.AllNews.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountInLastPage()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -73,7 +69,7 @@
             Assert.AreEqual(9, model.AllNews.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountInLastPageWithCustomPageSize()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -83,7 +79,7 @@
             Assert.AreEqual(19, model.AllNews.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsCountAndFirstPageIfInvalidPage()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -94,7 +90,7 @@
             Assert.AreEqual(1, model.CurrentPage);
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectPageSizeIfInvalidNumber()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -104,7 +100,7 @@
             Assert.AreEqual(10, model.PageSize);
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnLastPageIfPassesParameterIsTooBig()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -114,7 +110,7 @@
             Assert.AreEqual(4, model.CurrentPage);
         }
 
-        [TestMethod]
+        [Test]
         public void AllActionShouldReturnCorrectNewsTitles()
         {
             var controller = new NewsController(this.EmptyOjsData);

@@ -2,16 +2,16 @@
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class MsBuildCompilerTests
     {
         private const string MsBuildCompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
 
-        [TestMethod]
+        [Test]
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedSolution()
         {
             var compiler = new MsBuildCompiler();
@@ -22,7 +22,7 @@
             Assert.IsTrue(result.OutputFile.EndsWith(".exe"), "Output file does not ends with .exe");
         }
 
-        [TestMethod]
+        [Test]
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedProjectInSingleFolder()
         {
             var compiler = new MsBuildCompiler();

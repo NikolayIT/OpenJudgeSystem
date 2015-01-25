@@ -1,13 +1,13 @@
 ﻿namespace OJS.Web.Tests.Routes
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
 
-    [TestClass]
+    [TestFixture]
     public class FeedbackReportsRoutesTests : RoutesTestsBase
     {
-        [TestMethod]
+        [Test]
         public void FeedbackReportsShouldReturnProperRoute()
         {
             var routeData = this.GetRouteData("~/Feedback/");
@@ -17,7 +17,7 @@
             Assert.AreEqual(GlobalConstants.Index, routeData.Values["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void FeedbackReportsSubmitShouldReturnProperRoute()
         {
             var routeData = this.GetRouteData("~/Feedback/Submitted");

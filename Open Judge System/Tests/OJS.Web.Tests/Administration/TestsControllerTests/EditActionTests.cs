@@ -1,19 +1,16 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System;
-    using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
-    using OJS.Web.Areas.Administration.ViewModels;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
-    [TestClass]
+    [TestFixture]
     public class EditActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void EditGetActionShouldReturnProperMessageAndRedirectWhenTestIsNull()
         {
             var redirectResult = this.TestsController.Edit(2) as RedirectToRouteResult;
@@ -27,7 +24,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void EditGetActionShouldReturnProperViewModelWhenTestIsValid()
         {
             var viewResult = this.TestsController.Edit(1) as ViewResult;
@@ -44,7 +41,7 @@
             Assert.AreEqual(1, model.TestRunsCount);
         }
 
-        [TestMethod]
+        [Test]
         public void EditPostActionShouldReturnProperMessageAndRedirectWhenTestDoesNotExist()
         {
             var redirectResult = this.TestsController.Edit(2, new TestViewModel()) as RedirectToRouteResult;
@@ -58,7 +55,7 @@
             Assert.AreEqual("Невалиден тест", tempDataMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void EditPostActionShouldReturnViewWithNullModelWhenPostedTestViewModelIsNull()
         {
             var viewResult = this.TestsController.Edit(1, null) as ViewResult;
@@ -68,7 +65,7 @@
             Assert.IsNull(model);
         }
 
-        [TestMethod]
+        [Test]
         public void EditPostActionShouldReturnProperRedirectAndMessageWhenPostedTestIsValid()
         {
             var redirectResult = this.TestsController.Edit(1, this.TestViewModel) as RedirectToRouteResult;

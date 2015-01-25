@@ -1,20 +1,18 @@
 ﻿namespace OJS.Web.Tests.Controllers
 {
-    using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;    
-    
-    using OJS.Data;
+    using NUnit.Framework;
+
     using OJS.Tests.Common;
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Home.Index;
 
-    [TestClass]
+    [TestFixture]
     public class HomeControllerTests : TestClassBase
     {
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnViewModel()
         {
             var controller = new HomeController(EmptyOjsData);
@@ -25,7 +23,7 @@
             Assert.AreEqual(0, model.FutureContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperActiveContestsCount()
         {
             var controller = new HomeController(OjsData);
@@ -34,7 +32,7 @@
             Assert.AreEqual(2, model.ActiveContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperPastContestsCount()
         {
             var controller = new HomeController(OjsData);
@@ -43,7 +41,7 @@
             Assert.AreEqual(3, model.PastContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperFutureContestsCount()
         {
             var controller = new HomeController(OjsData);
@@ -52,7 +50,7 @@
             Assert.AreEqual(4, model.FutureContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperActiveContestNames()
         {
             var controller = new HomeController(OjsData);
@@ -65,7 +63,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperPastContestNames()
         {
             var controller = new HomeController(OjsData);
@@ -78,7 +76,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperFutureContestNames()
         {
             var controller = new HomeController(OjsData);
@@ -91,7 +89,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperVisibleActiveContests()
         {
             var controller = new HomeController(OjsData);
@@ -101,7 +99,7 @@
             Assert.AreEqual(2, model.ActiveContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperVisiblePastContests()
         {
             var controller = new HomeController(OjsData);
@@ -111,7 +109,7 @@
             Assert.AreEqual(3, model.PastContests.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnProperVisibleFutureContests()
         {
             var controller = new HomeController(OjsData);

@@ -60,7 +60,6 @@ namespace OJS.Web.Areas.Users.Controllers
                     .ToList()
             };
 
-
             return this.View(userSettingsViewModel);
         }
     }

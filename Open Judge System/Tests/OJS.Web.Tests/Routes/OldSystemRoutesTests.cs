@@ -2,17 +2,17 @@
 {
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Controllers;
 
-    [TestClass]
+    [TestFixture]
     public class OldSystemRoutesTests : RoutesTestsBase
     {
-        [TestMethod]
+        [Test]
         public void HardcodedRedirectUrlsShouldNavigateProperly()
         {
             foreach (var oldSystemRedirect in RedirectsController.OldSystemRedirects)
@@ -21,7 +21,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestCompeteLinkShouldNavigateProperly()
         {
             var contest = new Contest { OldId = 1337, };
@@ -31,7 +31,7 @@
             this.VerifyUrlRedirection("~/Contest/Compete/1337", string.Format("/Contests/Compete/Index/{0}", contest.Id));
         }
 
-        [TestMethod]
+        [Test]
         public void ContestPracticeLinkShouldNavigateProperly()
         {
             var contest = new Contest { OldId = 1338, };
@@ -41,7 +41,7 @@
             this.VerifyUrlRedirection("~/Contest/Practice/1338", string.Format("/Contests/Practice/Index/{0}", contest.Id));
         }
 
-        [TestMethod]
+        [Test]
         public void ContestResultsLinkShouldNavigateProperly()
         {
             var contest = new Contest { OldId = 1339, };
@@ -51,7 +51,7 @@
             this.VerifyUrlRedirection("~/Contest/ContestResults/1339", string.Format("/Contests/Compete/Results/Simple/{0}", contest.Id));
         }
 
-        [TestMethod]
+        [Test]
         public void PracticeResultsLinkShouldNavigateProperly()
         {
             var contest = new Contest { OldId = 1340, };
@@ -61,7 +61,7 @@
             this.VerifyUrlRedirection("~/Contest/ContestResults/1340", string.Format("/Contests/Compete/Results/Simple/{0}", contest.Id));
         }
 
-        [TestMethod]
+        [Test]
         public void AccountProfileViewLinkShouldNavigateProperly()
         {
             this.EmptyOjsData.Users.Add(
@@ -71,7 +71,7 @@
             this.VerifyUrlRedirection("~/Account/ProfileView/1337", "/Users/Nikolay.IT");
         }
 
-        [TestMethod]
+        [Test]
         public void DownloadTaskLinkShouldNavigateProperly()
         {
             var contest = new Contest { Name = "1337", };

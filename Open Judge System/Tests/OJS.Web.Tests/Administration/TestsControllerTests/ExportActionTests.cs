@@ -1,19 +1,18 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System.IO;
     using System.Linq;
     using System.Web.Mvc;
     
     using Ionic.Zip;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NUnit.Framework;
 
     using OJS.Web.Common.ZippedTestManipulator;
 
-    [TestClass]
+    [TestFixture]
     public class ExportActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnNotNullableResult()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -26,7 +25,7 @@
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnZipFile()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -39,7 +38,7 @@
             Assert.IsTrue(zipFile is ZipFile);
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnZipFileWith24Files()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -52,7 +51,7 @@
             Assert.AreEqual(zipFile.Count, 26);
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnCorrectTrialTestFiles()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -70,7 +69,7 @@
             Assert.IsFalse(zipFile.EntryFileNames.Contains(string.Format("test.000.{0:D3}.out.txt", 3)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldNotHaveNotNeededTrialTestFiles()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -84,7 +83,7 @@
             Assert.IsFalse(zipFile.EntryFileNames.Contains(string.Format("test.000.{0:D3}.out.txt", 3)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnCorrectNonTrialTestFiles()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -101,7 +100,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldNotHaveNotNeededNonTrialTestFiles()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -115,7 +114,7 @@
             Assert.IsFalse(zipFile.EntryFileNames.Contains(string.Format("test.{0:D3}.out.txt", 12)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnCorrectTrialTestFileContent()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -131,7 +130,7 @@
             Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.out.txt").FirstOrDefault()), "Trial output test 2");
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnCorrectNonTrialTestFileContent()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
@@ -148,7 +147,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnOnlyTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
@@ -161,7 +160,7 @@
             Assert.AreEqual(2, zipFile.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnProperTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
@@ -175,7 +174,7 @@
             Assert.IsTrue(zipFile.EntryFileNames.Contains(string.Format("test.000.{0:D3}.out.txt", 1)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShoudlNotHaveNotNeededTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
@@ -189,7 +188,7 @@
             Assert.IsFalse(zipFile.EntryFileNames.Contains(string.Format("test.000.{0:D3}.out.txt", 2)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnProperTrialTestsContentIfTheProblemDoesNotHaveNonTrialTests()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
@@ -203,7 +202,7 @@
             Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second lint output");
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsIfProblemDoesNotHaveTrialOnes()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
@@ -216,7 +215,7 @@
             Assert.AreEqual(20, zipFile.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsNamesIfProblemDoesNotHaveTrialOnes()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
@@ -233,7 +232,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldNotReturnNotNeededFilesIfNoOnlyNonTrialTestsNamesIfProblemDoesNotHaveTrialOnes()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
@@ -247,7 +246,7 @@
             Assert.IsFalse(zipFile.EntryFileNames.Contains(string.Format("test.000.{0:D3}.out.txt", 1)));
         }
 
-        [TestMethod]
+        [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsContentIfProblemDoesNotHaveTrialOnes()
         {
             var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;

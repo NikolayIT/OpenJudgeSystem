@@ -5,11 +5,12 @@
     using System.Globalization;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
+    using OJS.Data.Tests.Data.ContestsRepository.Base_Data;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestRepositoryAllFuture : TestContestRepositoryBaseData
     {
         public TestContestRepositoryAllFuture()
@@ -20,13 +21,13 @@
 
         private IList<Contest> AllFuture { get; set; }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()
         {
             Assert.AreEqual(10, this.AllFuture.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveNames()
         {
             for (int i = 1; i <= this.AllFuture.Count; i++)
@@ -35,7 +36,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsVisible()
         {
             for (int i = 1; i <= this.AllFuture.Count; i++)
@@ -44,7 +45,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsDeleted()
         {
             for (int i = 1; i <= this.AllFuture.Count; i++)
@@ -53,7 +54,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveStartTime()
         {
             for (int i = 1; i <= this.AllFuture.Count; i++)
@@ -64,7 +65,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveEndTime()
         {
             for (int i = 1; i <= this.AllFuture.Count; i++)

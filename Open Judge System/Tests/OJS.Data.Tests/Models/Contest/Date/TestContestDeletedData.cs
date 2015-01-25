@@ -2,13 +2,12 @@
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
+    using NUnit.Framework;
+
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestDeletedData : TestContestBaseData
     {
         public TestContestDeletedData()
@@ -16,7 +15,7 @@
             this.PopulateEmptyDataBaseWithContest();
         }
 
-        [TestMethod]
+        [Test]
         public void IsDeletedShouldReturnProperValueAfterDeletion()
         {
             var result = this.EmptyOjsData.Contests.All()
@@ -32,7 +31,7 @@
             Assert.IsTrue(deletedOnActual);
         }
 
-        [TestMethod]
+        [Test]
         public void DeletedOnShouldReturnProperValueAfterDeletion()
         {
             this.EmptyOjsData.Contests.Add(new Contest

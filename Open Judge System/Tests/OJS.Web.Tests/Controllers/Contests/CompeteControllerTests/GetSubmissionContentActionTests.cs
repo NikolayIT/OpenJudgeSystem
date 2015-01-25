@@ -1,17 +1,16 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Net;
     using System.Web;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+    using NUnit.Framework;
+
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class GetSubmissionContentActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void GetSubmissionContentWhenInvalidSubmissionIdShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("sample Name", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -42,7 +41,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void GetSubmissionContentWhenSubmissionNotMadeByTheParticipantShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("sample Name", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -85,7 +84,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void GetSubmissionContentActionWhenInvalidSubmissionIdShouldThrowException()
         {
         }

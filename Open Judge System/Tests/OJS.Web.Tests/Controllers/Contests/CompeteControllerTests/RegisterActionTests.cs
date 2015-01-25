@@ -1,22 +1,21 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
-    [TestClass]
+    [TestFixture]
     public class RegisterActionTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void RegisterActionForInvalidContestShouldThrowException()
         {
             try
@@ -30,7 +29,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionForInvalidPracticeShouldThrowException()
         {
             try
@@ -44,7 +43,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenContestCannotBeCompetedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -60,7 +59,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenContestCannotBePracticedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -76,7 +75,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenContestCanBePracticedShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -91,7 +90,7 @@
             Assert.AreEqual(contest.Questions.Count, model.Questions.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenContestCanBeCompetedShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
@@ -106,7 +105,7 @@
             Assert.AreEqual(contest.Questions.Count, model.Questions.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenUserAlreadyRegisteredToCompeteShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.ActiveContestWithPasswordOptions);
@@ -120,7 +119,7 @@
             Assert.AreEqual(GlobalConstants.Index, result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenUserAlreadyRegisteredToPracticeAndTryingToRegisterForCompeteWhenCompeteNotAvailableShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -140,7 +139,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenUserAlreadyRegisteredToPracticeAndTryingToRegisterForCompeteShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.ActiveContestWithPasswordOptions);
@@ -158,7 +157,7 @@
             Assert.AreEqual(contest.Questions.Count, model.Questions.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPracticeHasNoPasswordShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);
@@ -172,7 +171,7 @@
             Assert.IsTrue(this.EmptyOjsData.Participants.Any(contest.Id, this.FakeUserProfile.Id, this.IsCompete));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataAndInvalidContestIdWasProvidedShouldThrowException()
         {
             try
@@ -186,7 +185,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataAndContestCannotBePracticedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -205,7 +204,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataAndContestCannotBeCompetedShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.InactiveContestOptions);
@@ -223,7 +222,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataAndUserAlreadyRegisteredShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.ActiveContestWithPasswordOptions);
@@ -242,7 +241,7 @@
             Assert.AreEqual(this.IsCompete, result.RouteValues["official"]);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataContestHasPasswordAndProvidedIncorrectPasswordShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
@@ -262,7 +261,7 @@
             Assert.IsTrue(model.RequirePassword);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataPracticeHasPasswordAndProvidedIncorrectPasswordShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -282,7 +281,7 @@
             Assert.IsTrue(model.RequirePassword);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataContestHasPasswordAndProvidedCorrectPasswordShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("contestName", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
@@ -299,7 +298,7 @@
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataPracticeHasPasswordAndProvidedCorrectPasswordShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("contestName", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
@@ -316,7 +315,7 @@
             Assert.AreEqual(contest.Id, result.RouteValues["id"]);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataContestHasPasswordAndQuestionsUnansweredShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.InactiveContestOptions);
@@ -334,7 +333,7 @@
             Assert.IsTrue(contest.HasContestPassword);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataPracticeHasPasswordAndQuestionsUnansweredShouldReturnView()
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
@@ -352,7 +351,7 @@
             Assert.IsTrue(contest.HasPracticePassword);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterActionWhenPostedDataContestHasPasswordAndAllQuestionsAnsweredShouldRedirectToIndex()
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithQuestionsOptions, this.InactiveContestOptions);

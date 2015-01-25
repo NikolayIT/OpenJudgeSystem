@@ -1,16 +1,13 @@
 ﻿namespace OJS.Web.Tests.Administration.TestsControllerTests
 {
-    using System;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
-    using OJS.Web.Areas.Administration.Controllers;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class IndexActionTests : TestsControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void IndexActionShouldReturnViewWithNullModel()
         {
             var result = this.TestsController.Index() as ViewResult;

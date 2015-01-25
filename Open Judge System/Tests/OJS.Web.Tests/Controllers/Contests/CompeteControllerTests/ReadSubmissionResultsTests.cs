@@ -1,20 +1,18 @@
 ﻿namespace OJS.Web.Tests.Controllers.Contests.CompeteControllerTests
 {
-    using System;
     using System.Net;
     using System.Web;
-    using System.Web.Mvc;
 
     using Kendo.Mvc.UI;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class ReadSubmissionResultsTests : CompeteControllerBaseTestsClass
     {
-        [TestMethod]
+        [Test]
         public void ReadSubmissionResultsWhenUserNotRegisteredForContestShouldThrowException()
         {
             var contest = this.CreateAndSaveContest("contest", this.ActiveContestNoPasswordOptions, this.ActiveContestNoPasswordOptions);

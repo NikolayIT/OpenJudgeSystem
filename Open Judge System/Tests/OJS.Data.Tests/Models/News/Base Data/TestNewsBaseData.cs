@@ -1,18 +1,11 @@
 ﻿namespace OJS.Data.Tests.News
 {
-    using System;
-    using System.Data.Entity;
-    using System.Linq;
-    
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Tests.Common;
-    using OJS.Tests.Common.DataFakes;
 
-    [TestClass]
+    [TestFixture]
     public class TestNewsBaseData : TestClassBase
     {
         protected void PopulateEmptyDataBaseWithNews()

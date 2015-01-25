@@ -2,9 +2,10 @@
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass]
+    using NUnit.Framework;
+
+    [TestFixture]
     public class TestContestDateData : TestNewsBaseData
     {
         public TestContestDateData()
@@ -12,7 +13,7 @@
             this.PopulateEmptyDataBaseWithNews();
         }
 
-        [TestMethod]
+        [Test]
         public void CreatedOnPropertyShouldBeInCorrectInterval()
         {
             var result = this.EmptyOjsData.News.All()
@@ -29,7 +30,7 @@
             Assert.IsTrue(expected);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatedOnShouldNotChangeAfterModification()
         {
             var createdBeforeModification = this.EmptyOjsData.News.All()

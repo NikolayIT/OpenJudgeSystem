@@ -1,14 +1,12 @@
 ﻿namespace OJS.Data.Tests.Contest.Competable
 {
     using System;
-    using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
+    using NUnit.Framework;
+
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestCanBeCompeted : TestContestBaseData
     {
         //// [TestInitialize]
@@ -17,7 +15,7 @@
         ////     base.FullCleanDatabase();
         //// }
 
-        [TestMethod]
+        [Test]
         public void NonVisibleContestShouldNotBeCompeted()
         {
             var contest = new Contest
@@ -34,7 +32,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void DeletedContestShouldNotBeCompeted()
         {
             var contest = new Contest
@@ -51,7 +49,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoStartTimeShouldNotBeCompeted()
         {
             var contest = new Contest
@@ -67,7 +65,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoEndTimeAndLaterStartTimeShouldNotBeCompeted()
         {
             var contest = new Contest
@@ -84,7 +82,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoEndTimeAndEarlyStartTimeShouldNotBeCompeted()
         {
             var contest = new Contest
@@ -101,7 +99,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithEarlyStartTimeAndLateEndTimeShouldBeCompeted()
         {
             var contest = new Contest
@@ -118,7 +116,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithEarlyStartTimeAndEarlyEndTimeShouldNotBeCompeted()
         {
             var contest = new Contest

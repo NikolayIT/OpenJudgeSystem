@@ -33,8 +33,6 @@
                     .ToList()
             };
 
-
-
             return this.View(indexViewModel);
         }
 

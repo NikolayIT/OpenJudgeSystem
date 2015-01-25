@@ -2,13 +2,10 @@
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
-    using OJS.Data.Models;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestCreatedOnData : TestContestBaseData
     {
         public TestContestCreatedOnData()
@@ -16,7 +13,7 @@
             this.PopulateEmptyDataBaseWithContest();
         }
 
-        [TestMethod]
+        [Test]
         public void CreatedOnPropertyShouldBeInCorrectInterval()
         {
             var result = this.EmptyOjsData.Contests.All()
@@ -33,7 +30,7 @@
             Assert.IsTrue(expected);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatedOnShouldNotChangeAfterModification()
         {
             var createdBeforeModification = this.EmptyOjsData.Contests.All()
@@ -63,7 +60,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void PreserveCreatedOnShouldNotAllowChangeInCreatedOn()
         {
             this.EmptyOjsData.Contests.All()

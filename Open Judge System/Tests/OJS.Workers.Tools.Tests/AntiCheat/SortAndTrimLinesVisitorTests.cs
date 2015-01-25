@@ -3,14 +3,14 @@
     using System;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Tools.AntiCheat;
 
-    [TestClass]
+    [TestFixture]
     public class SortAndTrimLinesVisitorTests
     {
-        [TestMethod]
+        [Test]
         public void TestWith9LinesInRevertedOrder()
         {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };

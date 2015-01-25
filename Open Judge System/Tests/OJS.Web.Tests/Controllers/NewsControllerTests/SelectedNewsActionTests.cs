@@ -1,20 +1,16 @@
 ﻿namespace OJS.Web.Tests.Contollers.NewsControllerTests
 {
-    using System.Data.Entity;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    using OJS.Data;
-    using OJS.Data.Models;
-    using OJS.Tests.Common;
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.News;
 
-    [TestClass]
+    [TestFixture]
     public class SelectedNewsActionTests : NewsTestBaseClass
     {
         public SelectedNewsActionTests()
@@ -22,7 +18,7 @@
         {
         }
 
-        [TestMethod]
+        [Test]
         public void SelectedActionShouldReturnViewModel()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -34,7 +30,7 @@
             Assert.AreEqual("News Content ", model.Content.Substring(0, 13));
         }
 
-        [TestMethod]
+        [Test]
         public void SelectedActionShouldReturnViewWithMessageWhenSelectedNewsIsNull()
         {
             try
@@ -49,7 +45,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void SelectedNewsShouldReturnProperPreviousNews()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -64,7 +60,7 @@
             Assert.IsTrue(finalResult);
         }
 
-        [TestMethod]
+        [Test]
         public void SelectedNewsShouldReturnProperNextNews()
         {
             var controller = new NewsController(this.EmptyOjsData);
@@ -79,7 +75,7 @@
             Assert.IsTrue(finalResult);
         }
 
-        [TestMethod]
+        [Test]
         public void SelectedNewsShouldReturnCorrectNews()
         {
             var controller = new NewsController(this.EmptyOjsData);

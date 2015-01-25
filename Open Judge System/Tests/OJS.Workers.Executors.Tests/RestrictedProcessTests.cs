@@ -2,11 +2,11 @@
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class RestrictedProcessTests : BaseExecutorsTestClass
     {
         private const string ReadInputAndThenOutputSourceCode = @"using System;
@@ -34,7 +34,7 @@ class Program
     }
 }";
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldStopProgramAfterTimeIsEnded()
         {
             const string TimeLimitSourceCode = @"using System;
@@ -55,7 +55,7 @@ class Program
             Assert.IsTrue(result.Type == ProcessExecutionResultType.TimeLimit);
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldSendInputDataToProcess()
         {
             var exePath = this.CreateExe("RestrictedProcessShouldSendInputDataToProcess.exe", ReadInputAndThenOutputSourceCode);
@@ -68,7 +68,7 @@ class Program
             Assert.AreEqual(InputData.Trim(), result.ReceivedOutput.Trim());
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldWorkWithCyrillic()
         {
             var exePath = this.CreateExe("RestrictedProcessShouldWorkWithCyrillic.exe", ReadInputAndThenOutputSourceCode);
@@ -81,7 +81,7 @@ class Program
             Assert.AreEqual(InputData.Trim(), result.ReceivedOutput.Trim());
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldOutputProperLengthForCyrillicText()
         {
             const string ReadInputAndThenOutputTheLengthSourceCode = @"using System;
@@ -103,7 +103,7 @@ class Program
             Assert.AreEqual("7", result.ReceivedOutput.Trim());
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldReceiveCyrillicText()
         {
             const string ReadInputAndThenCheckTheTextToContainCyrillicLettersSourceCode = @"using System;
@@ -125,7 +125,7 @@ class Program
             Assert.AreEqual("True", result.ReceivedOutput.Trim());
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldNotBlockWhenEnterEndlessLoop()
         {
             const string EndlessLoopSourceCode = @"using System;
@@ -145,7 +145,7 @@ class Program
             Assert.IsTrue(result.Type == ProcessExecutionResultType.TimeLimit);
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessStandardErrorContentShouldContainExceptions()
         {
             const string ThrowExceptionSourceCode = @"using System;
@@ -167,7 +167,7 @@ class Program
             Assert.IsTrue(result.ErrorOutput.Contains("Exception message!"));
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldReturnCorrectAmountOfUsedMemory()
         {
             var exePath = this.CreateExe("RestrictedProcessShouldReturnCorrectAmountOfUsedMemory.exe", Consuming50MbOfMemorySourceCode);
@@ -181,7 +181,7 @@ class Program
             Assert.IsTrue(result.MemoryUsed > 50 * 1024 * 1024);
         }
 
-        [TestMethod]
+        [Test]
         public void RestrictedProcessShouldReturnMemoryLimitWhenNeeded()
         {
             var exePath = this.CreateExe("RestrictedProcessShouldReturnMemoryLimitWhenNeeded.exe", Consuming50MbOfMemorySourceCode);

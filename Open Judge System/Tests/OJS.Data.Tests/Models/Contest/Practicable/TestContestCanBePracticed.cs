@@ -1,18 +1,15 @@
 ﻿namespace OJS.Data.Tests.Contest.Practicable
 {
     using System;
-    using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
     using OJS.Data.Models;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestCanBePracticed : TestContestBaseData
     {
-        [TestMethod]
+        [Test]
         public void NonVisibleContestShouldNotBePracticed()
         {
             var contest = new Contest
@@ -29,7 +26,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void DeletedContestShouldNotBePracticed()
         {
             var contest = new Contest
@@ -46,7 +43,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoStartTimeShouldNotBePracticed()
         {
             var contest = new Contest
@@ -62,7 +59,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoEndTimeAndLaterStartTimeShouldNotBePracticed()
         {
             var contest = new Contest
@@ -79,7 +76,7 @@
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithNoEndTimeAndEarlyStartTimeShouldNotBePracticed()
         {
             var contest = new Contest
@@ -96,7 +93,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithEarlyStartTimeAndLateEndTimeShouldBePracticed()
         {
             var contest = new Contest
@@ -113,7 +110,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestWithEarlyStartTimeAndEarlyEndTimeShouldBePracticed()
         {
             var contest = new Contest

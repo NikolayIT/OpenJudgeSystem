@@ -2,12 +2,12 @@
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class CSharpCodeCheckerTests
     {
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void CallingCheckMethodBeforeSetParameterShouldThrowAnException()
         {
@@ -15,7 +15,7 @@
             checker.Check(string.Empty, string.Empty, string.Empty, false);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenGivenInvalidCode()
         {
@@ -23,7 +23,7 @@
             checker.SetParameter(@".");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenNotGivenICheckerImplementation()
         {
@@ -31,7 +31,7 @@
             checker.SetParameter(@"public class MyChecker { }");
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenGivenMoreThanOneICheckerImplementation()
         {
@@ -70,7 +70,7 @@
                 }");
         }
 
-        [TestMethod]
+        [Test]
         public void CheckMethodWorksCorrectlyWithSomeCheckerCode()
         {
             var checker = new CSharpCodeChecker();
@@ -99,7 +99,7 @@
             Assert.AreEqual("It was me", checkerResult.CheckerDetails);
         }
 
-        [TestMethod]
+        [Test]
         public void CheckMethodReceivesCorrectParameters()
         {
             var checker = new CSharpCodeChecker();

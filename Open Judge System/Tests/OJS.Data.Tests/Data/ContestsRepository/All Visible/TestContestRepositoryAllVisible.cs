@@ -1,16 +1,14 @@
 ﻿namespace OJS.Data.Tests.Data.ContestsRepository.AllVisible
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using OJS.Data;
-    using OJS.Data.Contracts;
+    using NUnit.Framework;
+
     using OJS.Data.Models;
+    using OJS.Data.Tests.Data.ContestsRepository.Base_Data;
 
-    [TestClass]
+    [TestFixture]
     public class TestContestRepositoryAllVisible : TestContestRepositoryBaseData
     {
         public TestContestRepositoryAllVisible()
@@ -21,13 +19,13 @@
 
         private IList<Contest> AllVisible { get; set; }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperActiveContestsCount()
         {
             Assert.AreEqual(40, this.AllVisible.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveNames()
         {
             for (int i = 1; i <= this.AllVisible.Count; i++)
@@ -36,7 +34,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsVisible()
         {
             for (int i = 1; i <= this.AllVisible.Count; i++)
@@ -45,7 +43,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ContestRepositoryShouldReturnProperAllActiveIsDeleted()
         {
             for (int i = 1; i <= this.AllVisible.Count; i++)

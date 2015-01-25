@@ -7,9 +7,9 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
+
+    using NUnit.Framework;
 
     using OJS.Common.Models;
     using OJS.Data;
@@ -18,8 +18,8 @@
     using OJS.Data.Repositories.Contracts;
     using OJS.Web.Areas.Administration.Controllers;
     using OJS.Web.Areas.Administration.ViewModels.Test;
-    
-    [TestClass]
+
+    [TestFixture]
     public class TestsControllerBaseTestsClass : BaseWebTests
     {
         private readonly Mock<IOjsData> data;
