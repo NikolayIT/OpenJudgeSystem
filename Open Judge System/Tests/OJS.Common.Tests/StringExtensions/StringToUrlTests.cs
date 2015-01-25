@@ -4,8 +4,6 @@
 
     using OJS.Common.Extensions;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class StringToUrlTests
     {

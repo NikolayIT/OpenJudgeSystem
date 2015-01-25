@@ -11,8 +11,6 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class GetAllowedSubmissionTypesTests : CompeteControllerBaseTestsClass
     {

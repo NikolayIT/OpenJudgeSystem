@@ -2,14 +2,14 @@
 {
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class TrimCheckerTests
     {
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnTrueWhenGivenExactStrings()
         {
             string receivedOutput = "Ивайло";
@@ -23,7 +23,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnTrueWhenGivenExactStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Ивайло\n";
@@ -37,7 +37,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnTrueWhenGivenExactMultiLineStrings()
         {
             string receivedOutput = "Ивайло\nFoo\nBar";
@@ -51,7 +51,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnTrueWhenGivenExactMultiLineStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Ивайло\nFoo\nBar";
@@ -65,7 +65,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldRespectsTextCasing()
         {
             string receivedOutput = "Ивайло";
@@ -79,7 +79,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldRespectsDecimalSeparators()
         {
             string receivedOutput = "1,1";
@@ -93,7 +93,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnFalseWhenGivenDifferentStrings()
         {
             string receivedOutput = "Foo";
@@ -107,7 +107,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckershouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLines()
         {
             string receivedOutput = "Bar\nFoo";
@@ -121,7 +121,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnInvalidNumberOfLinesWhenExpectedOutputHasMoreLines()
         {
             string receivedOutput = "Bar";
@@ -135,7 +135,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenGivenDifferentMultiLineStringsWithSameText()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -149,7 +149,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenGivenDifferentMultiLineStringsWithSameTextDifferentBlankLines()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -163,7 +163,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerInBiggerSameTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -189,7 +189,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnWrongAnswerInBiggerDifferentTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -215,7 +215,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerInBiggerDifferentNumberOfLinesTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -241,7 +241,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenWhitespaceIsDifferentAtTheEndOfStrings()
         {
             string receivedOutput = "Ивайло ";
@@ -255,7 +255,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenWhitespaceIsDifferentAtTheStartOfStrings()
         {
             string receivedOutput = "   Ивайло";
@@ -269,7 +269,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenWhitespaceIsDifferentAtTheStartAndEndOfStrings()
         {
             string receivedOutput = "   Ивайло  ";
@@ -283,7 +283,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenWhitespaceIsDifferentAtTheStartAndEndOfStringsAndDifferentEndLines()
         {
             string receivedOutput = "   Ивайло  \n";
@@ -297,7 +297,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenWhitespaceIsDifferentAtTheStartAndEndOfStringsAndTwoDifferentEndLines()
         {
             string receivedOutput = "   Ивайло     ";
@@ -311,7 +311,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenEveryLineHasDifferentWhiteSpace()
         {
             string receivedOutput = "   Ивайло   \n      Кенов   \n   Е \n     Пич     \n";
@@ -325,7 +325,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenLastLineHasDifferentWhiteSpace()
         {
             string receivedOutput = "   Ивайло   \n      Кенов   \n   Е \n     Пич     \n      ";
@@ -339,7 +339,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenLastExpectedLineHasDifferentWhiteSpace()
         {
             string receivedOutput = "   Ивайло   \n      Кенов   \n   Е \n     Пич     \n      ";
@@ -353,7 +353,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldRespectsTextCasingWithWhiteSpace()
         {
             string receivedOutput = " Николай   ";
@@ -367,7 +367,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldRespectsDecimalSeparatorsWithSpacing()
         {
             string receivedOutput = "  1,1  ";
@@ -381,7 +381,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnFalseWhenGivenDifferentStringsWithSpacing()
         {
             string receivedOutput = "   Foo  ";
@@ -395,7 +395,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLinesWithSpacing()
         {
             string receivedOutput = "Bar  \n   Foo ";
@@ -409,7 +409,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenGivenDifferentMultiLineStringsWithSameTextWithSpacing()
         {
             string receivedOutput = "Bar   \n     Foo \n   \n  \n \n\n";
@@ -423,7 +423,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnCorrectAnswerWhenGivenDifferentMultiLineStringsWithSameTextDifferentBlankLinesTest()
         {
             string receivedOutput = "   Bar   \n   Foo   \n  \n  ";
@@ -437,7 +437,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckShouldReturnCorrectAnswerInBiggerSameTextsWithDifferentWhiteSpaceTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -465,7 +465,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void TrimCheckerShouldReturnWrongAnswerInBiggerTextsWithLastLineDifferentTest()
         {
             StringBuilder receivedOutput = new StringBuilder();

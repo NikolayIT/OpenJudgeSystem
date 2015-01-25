@@ -4,8 +4,6 @@
     
     using NUnit.Framework;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class TestContestNullData : TestContestBaseData
     {

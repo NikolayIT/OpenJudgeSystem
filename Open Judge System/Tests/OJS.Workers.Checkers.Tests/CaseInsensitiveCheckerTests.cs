@@ -2,14 +2,14 @@
 {
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+    using NUnit.Framework;
+
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class CaseInsensitiveCheckerTests
     {
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnTrueWhenGivenCaseInsensitiveStrings()
         {
             string receivedOutput = "НиколАй";
@@ -23,7 +23,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnTrueWhenGivenCaseInsensitiveStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "НикоЛай\n";
@@ -37,7 +37,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnTrueWhenGivenCaseInsensitiveMultiLineStrings()
         {
             string receivedOutput = "НикОлай\nFoo\nBAr";
@@ -51,7 +51,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnTrueWhenGivenCaseInsensitiveMultiLineStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Николай\nFOo\nBar";
@@ -65,7 +65,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldNotRespectsTextCasing()
         {
             string receivedOutput = "Николай";
@@ -79,7 +79,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldRespectsDecimalSeparators()
         {
             string receivedOutput = "1,1";
@@ -93,7 +93,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnFalseWhenGivenDifferentStrings()
         {
             string receivedOutput = "Foo";
@@ -107,7 +107,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLines()
         {
             string receivedOutput = "Bar\nFoo";
@@ -121,7 +121,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnInvalidNumberOfLinesWhenExpectedOutputHasMoreLines()
         {
             string receivedOutput = "Bar";
@@ -135,7 +135,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnInvalidNumberOfLinesWhenGivenDifferentMultiLineStringsWithSameText()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -149,7 +149,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnWrongAnswerWhenGivenDifferentMultiLineStringsWithSameTextDifferentBlankLines()
         {
             string receivedOutput = "BAr\nFoo\n\n";
@@ -163,7 +163,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckShouldReturnCorrectAnswerInBiggerSameTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -189,7 +189,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnWrongAnswerInBiggerDifferentTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -215,7 +215,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnInvalidNumberOfLinesInBiggerDifferentNumberOfLinesTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -241,7 +241,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckerShouldReturnWrongAnswerInBiggerTextsWithLastLineDifferentTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -271,7 +271,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void CaseInsensitiveCheckShouldReturnCorrectAnswerInBiggerSameTextsDifferentCaseTest()
         {
             StringBuilder receivedOutput = new StringBuilder();

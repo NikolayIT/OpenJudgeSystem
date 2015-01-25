@@ -11,8 +11,6 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class ProblemActionTests : CompeteControllerBaseTestsClass
     {

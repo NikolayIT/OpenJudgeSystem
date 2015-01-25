@@ -2,14 +2,14 @@
 {
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class SortCheckerTests
     {
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenGivenExactStrings()
         {
             string receivedOutput = "Ивайло";
@@ -23,7 +23,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenGivenExactStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Ивайло\n";
@@ -37,7 +37,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenGivenExactMultiLineStrings()
         {
             string receivedOutput = "Ивайло\nFoo\nBar";
@@ -51,7 +51,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenGivenExactMultiLineStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Ивайло\nFoo\nBar";
@@ -65,7 +65,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldRespectsTextCasing()
         {
             string receivedOutput = "Ивайло";
@@ -79,7 +79,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldRespectsDecimalSeparators()
         {
             string receivedOutput = "1,1";
@@ -93,7 +93,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnFalseWhenGivenDifferentStrings()
         {
             string receivedOutput = "Foo";
@@ -107,7 +107,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckershouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLines()
         {
             string receivedOutput = "Bar\nFoo";
@@ -121,7 +121,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnInvalidNumberOfLinesWhenExpectedOutputHasMoreLines()
         {
             string receivedOutput = "Bar";
@@ -135,7 +135,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnIncorrectNumberOfLinesWhenGivenDifferentMultiLineStringsWithSameText()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -149,7 +149,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnInvalidNumberOfLinesWhenGivenDifferentMultiLineStringsWithSameTextDifferentBlankLines()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -163,7 +163,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnCorrectAnswerInBiggerSameTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -189,7 +189,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnWrongAnswerInBiggerDifferentTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -215,7 +215,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnInvalidNumberOfLinesInBiggerDifferentNumberOfLinesTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -241,7 +241,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnCorrectAnswerInBiggerReversedTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -267,7 +267,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenGivenSameResultsUnsortedMultiLineStrings()
         {
             string receivedOutput = "Ивайло\nFoo\nBar";
@@ -281,7 +281,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenReceivedIsSortedAndExpectedIsNotStrings()
         {
             string receivedOutput = "1\n2\n3";
@@ -295,7 +295,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenReceivedIsUnSortedAndExpectedIsSortedStrings()
         {
             string receivedOutput = "2\n1\n3";
@@ -309,7 +309,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenBothTextsAreUnsortedStrings()
         {
             string receivedOutput = "2\n1\n3";
@@ -323,7 +323,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenReceivedIsSortedAndExpectedIsAlmostStrings()
         {
             string receivedOutput = "1\n2\n3\n4\n5\n6\n7\n8\n9";
@@ -337,7 +337,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenReceivedIsAlmostSortedAndExpectedIsFullSortedStrings()
         {
             string receivedOutput = "1\n2\n3\n4\n6\n5\n7\n8\n9";
@@ -351,7 +351,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void SortCheckerShouldReturnTrueWhenBothAreTotallyUnsortedStrings()
         {
             string receivedOutput = "9\n2\n3\n4\n5\n8\n6\n1\n7";

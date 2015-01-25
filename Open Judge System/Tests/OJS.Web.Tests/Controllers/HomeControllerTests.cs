@@ -9,8 +9,6 @@
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Home.Index;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class HomeControllerTests : TestClassBase
     {

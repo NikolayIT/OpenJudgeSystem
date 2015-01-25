@@ -7,8 +7,6 @@
     using OJS.Common;
     using OJS.Web.Areas.Administration.ViewModels.Test;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class EditActionTests : TestsControllerBaseTestsClass
     {

@@ -32,7 +32,7 @@
         }
 
         [Test]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void IndexActionShouldReturnTheModelIfPostIsNotValid()
         {
             var feedback = new FeedbackViewModel

@@ -5,8 +5,6 @@
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using NUnit.Framework;
 
     using OJS.Data.Models;

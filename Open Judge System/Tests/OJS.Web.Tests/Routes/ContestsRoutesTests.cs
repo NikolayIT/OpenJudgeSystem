@@ -5,8 +5,6 @@
     using OJS.Common;
     using OJS.Web.Areas.Contests;
 
-    using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
     [TestFixture]
     public class ContestsRoutesTests : RoutesTestsBase
     {
