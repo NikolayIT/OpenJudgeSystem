@@ -51,8 +51,10 @@
         [HttpGet]
         public ActionResult Create()
         {
-            var newContest = new ViewModelType();
-            newContest.SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
+            var newContest = new ViewModelType
+            {
+                SubmisstionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
+            };
 
             return this.View(newContest);
         }

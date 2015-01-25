@@ -1,10 +1,10 @@
 ﻿namespace OJS.Data.Repositories.Base
 {
+    using System;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Contracts;
-    using System;
-    using System.Data.Entity;
 
     public class DeletableEntityRepository<T> :
         GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity

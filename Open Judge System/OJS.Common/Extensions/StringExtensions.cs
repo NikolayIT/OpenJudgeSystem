@@ -10,6 +10,18 @@
 
     public static class StringExtensions
     {
+        public static DateTime TryGetDate(this string date)
+        {
+            try
+            {
+                return DateTime.ParseExact(date, "dd/MM/yyyy", null);
+            }
+            catch (Exception)
+            {
+                return new DateTime(2010, 1, 1);
+            }
+        }
+
         public static byte[] ToByteArray(this string sourceString)
         {
             var encoding = new UTF8Encoding();
