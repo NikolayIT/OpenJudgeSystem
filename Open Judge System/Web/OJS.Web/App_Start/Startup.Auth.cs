@@ -4,6 +4,8 @@
     using Microsoft.Owin;
     using Microsoft.Owin.Security.Cookies;
 
+    using OJS.Common;
+
     using Owin;
 
     public partial class Startup
@@ -15,7 +17,8 @@
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Login"),
+                CookieName = GlobalConstants.AuthCookieName
             });
             
             // Use a cookie to temporarily store information about a user logging in with a third party login provider

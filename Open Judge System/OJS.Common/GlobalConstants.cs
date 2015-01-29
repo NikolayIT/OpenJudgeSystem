@@ -64,6 +64,8 @@
 
         public const int MinimumSearchTermLength = 3;
 
+        public const string AuthCookieName = ".ASPSOFTUNIJUDGEAUTH";
+
         #endregion
     }
 }
