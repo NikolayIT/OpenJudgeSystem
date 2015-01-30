@@ -1,9 +1,7 @@
 ﻿namespace OJS.Common.Extensions
 {
     using System;
-    using System.Collections;
     using System.ComponentModel;
-    using System.Linq;
     using System.Reflection;
 
     public static class EnumExtensions

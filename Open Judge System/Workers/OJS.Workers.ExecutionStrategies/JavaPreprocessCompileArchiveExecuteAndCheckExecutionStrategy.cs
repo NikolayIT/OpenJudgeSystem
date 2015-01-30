@@ -58,16 +58,13 @@
             this.javaExecutablePath = javaExecutablePath;
             this.javaArchiverPath = javaArchiverPath;
             this.sandboxExecutorSourceFilePath = sandboxExecutorSourceFilePath;
-            this.workingDirectory = FileHelpers.CreateTempDirectory();
+            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
         ~JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy()
         {
-            if (Directory.Exists(this.workingDirectory))
-            {
-                Directory.Delete(this.workingDirectory, true);
-            }
+            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
