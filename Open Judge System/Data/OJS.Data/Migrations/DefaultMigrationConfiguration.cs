@@ -103,7 +103,7 @@ namespace OJS.Data.Migrations
 
             context.SaveChanges();
         }
-        
+
         protected void SeedSubmissionTypes(OjsDbContext context)
         {
             foreach (var entity in context.SubmissionTypes)
@@ -193,6 +193,16 @@ namespace OJS.Data.Migrations
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = string.Empty,
                     ExecutionStrategyType = ExecutionStrategyType.PhpCliExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
+                    Name = "Plain text",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.CheckOnly,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,
