@@ -254,6 +254,9 @@
                 case ExecutionStrategyType.RemoteExecution:
                     executionStrategy = new RemoteExecutionStrategy();
                     break;
+                case ExecutionStrategyType.CheckOnly:
+                    executionStrategy = new CheckOnlyExecutionStrategy();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

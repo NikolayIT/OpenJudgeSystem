@@ -23,11 +23,7 @@
             return checker;
         }
 
-        public abstract CheckerResult Check(
-            string inputData,
-            string receivedOutput,
-            string expectedOutput,
-            bool isTrialTest);
+        public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest);
 
         public virtual void SetParameter(string parameter)
         {
@@ -101,11 +97,11 @@
             }
 
             return new CheckerResult
-                       {
-                           IsCorrect = resultType == CheckerResultType.Ok,
-                           ResultType = resultType,
-                           CheckerDetails = checkerDetails
-                       };
+            {
+                IsCorrect = resultType == CheckerResultType.Ok,
+                ResultType = resultType,
+                CheckerDetails = checkerDetails
+            };
         }
 
         protected void NormalizeEndLines(ref string output)
