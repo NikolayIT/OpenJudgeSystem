@@ -1,7 +1,7 @@
 ﻿namespace OJS.Web
 {
     using System.Data.Entity;
-    using System.Net;
+    using System.Web;
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
@@ -9,14 +9,10 @@
     using OJS.Data;
     using OJS.Data.Migrations;
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
-            // TODO: Remove when an SSL certificate is added to the judge system
-            ServicePointManager.ServerCertificateValidationCallback +=
-                (s, cert, chain, sslPolicyErrors) => true;
-
             // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
             AreaRegistration.RegisterAllAreas();
