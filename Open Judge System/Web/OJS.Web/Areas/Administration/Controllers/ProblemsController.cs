@@ -53,7 +53,7 @@
 
         public ActionResult Resource(int? id)
         {
-            if (id == null || !this.CheckIfUserHasContestPermissions(id.Value))
+            if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -139,10 +139,10 @@
             if (problem.Resources != null && problem.Resources.Any())
             {
                 var validResources = problem.Resources
-                .All(res => !string.IsNullOrEmpty(res.Name) &&
-                    ((res.Type == ProblemResourceType.AuthorsSolution && res.File != null && res.File.ContentLength > 0) ||
-                    (res.Type == ProblemResourceType.ProblemDescription && res.File != null && res.File.ContentLength > 0) ||
-                    (res.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(res.Link))));
+                    .All(res => !string.IsNullOrEmpty(res.Name) &&
+                        ((res.Type == ProblemResourceType.AuthorsSolution && res.File != null && res.File.ContentLength > 0) ||
+                        (res.Type == ProblemResourceType.ProblemDescription && res.File != null && res.File.ContentLength > 0) ||
+                        (res.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(res.Link))));
 
                 if (!validResources)
                 {
@@ -264,8 +264,7 @@
 
             if (problem != null && this.ModelState.IsValid)
             {
-                var existingProblem = this.Data.Problems.All()
-                .FirstOrDefault(x => x.Id == id);
+                var existingProblem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
                 existingProblem.Name = problem.Name;
                 existingProblem.MaximumPoints = problem.MaximumPoints;
@@ -337,8 +336,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var problem = this.Data.Problems.All()
-                .FirstOrDefault(x => x.Id == id);
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
             if (problem == null)
             {

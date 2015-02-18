@@ -121,7 +121,7 @@
             return this.User.IsAdmin() ||
                    this.Data.Problems
                        .All()
-                       .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.Lecturer.Id == this.UserProfile.Id));
+                       .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
         }
 
         private SystemMessageCollection PrepareSystemMessages()

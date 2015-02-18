@@ -150,14 +150,8 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
-            }
-
-            if (!this.CheckIfUserHasProblemPermissions(id.Value))
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var existingResource = this.Data.Resources.All()
@@ -169,6 +163,12 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(existingResource.ProblemId))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             existingResource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
@@ -186,12 +186,6 @@
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
-            if (!this.CheckIfUserHasProblemPermissions(id.Value))
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
-            }
-
             if (this.ModelState.IsValid)
             {
                 var existingResource = this.Data.Resources
@@ -202,6 +196,12 @@
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
                     return this.RedirectToAction(GlobalConstants.Index, "Problems");
+                }
+
+                if (!this.CheckIfUserHasProblemPermissions(existingResource.ProblemId))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
                 existingResource.Name = resource.Name;
