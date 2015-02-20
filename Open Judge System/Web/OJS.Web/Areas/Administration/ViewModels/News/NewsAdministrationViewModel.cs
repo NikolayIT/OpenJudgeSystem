@@ -54,7 +54,7 @@
         [DatabaseProperty]
         [Display(Name = "Източник")]
         [Required(ErrorMessage = "Източникът е задължителен!")]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Source { get; set; }
 

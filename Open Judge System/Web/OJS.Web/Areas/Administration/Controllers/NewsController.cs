@@ -78,8 +78,8 @@
         {
             var providers = new List<INewsProvider>
             {
-                new InfoManNewsProvider(), 
-                new InfosNewsProvider(),
+                //// new InfoManNewsProvider(), 
+                //// new InfosNewsProvider(),
                 new SoftUniNewsProvier()
             };
 
@@ -100,7 +100,10 @@
         {
             foreach (var news in fetchedNews)
             {
-                if (!string.IsNullOrEmpty(news.Title) && !string.IsNullOrEmpty(news.Content) && news.Content.Length > 10 && !this.Data.News.All().Any(existingNews => existingNews.Title == news.Title))
+                if (!string.IsNullOrEmpty(news.Title) && 
+                    !string.IsNullOrEmpty(news.Content) && 
+                    news.Content.Length > 10 && 
+                    !this.Data.News.All().Any(existingNews => existingNews.Title == news.Title))
                 {
                     this.Data.News.Add(news);
                 }

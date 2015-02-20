@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="arrayA">A-version of the numbers (usually the old one)</param>
         /// <param name="arrayB">B-version of the numbers (usually the new one)</param>
-        /// <returns>Returns a array of Items that describe the differences.</returns>
+        /// <returns>Returns an array of Items that describe the differences.</returns>
         Difference[] DiffInt(int[] arrayA, int[] arrayB);
     }
 }
