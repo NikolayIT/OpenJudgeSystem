@@ -176,8 +176,8 @@ else
         }
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
-            !string.IsNullOrWhiteSpace(testResult.ExpectedOutputFragment) ||
-            !string.IsNullOrWhiteSpace(testResult.UserOutputFragment))
+            testResult.ExpectedOutputFragment != null ||
+            testResult.UserOutputFragment != null)
         {
             if (testResult.IsTrialTest || Model.UserHasAdminPermission)
             {
