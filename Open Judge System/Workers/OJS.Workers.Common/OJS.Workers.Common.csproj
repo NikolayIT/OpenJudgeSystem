@@ -41,6 +41,7 @@
     <Compile Include="Agents\AgentRequestData.cs" />
     <Compile Include="Agents\AgentResponseData.cs" />
     <Compile Include="Agents\TestResult.cs" />
+    <Compile Include="CheckerDetails.cs" />
     <Compile Include="CheckerResult.cs" />
     <Compile Include="CheckerResultType.cs" />
     <Compile Include="Communication\NetworkCommunicationException.cs" />

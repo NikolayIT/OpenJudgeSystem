@@ -9,6 +9,8 @@
 
     public abstract class Checker : IChecker
     {
+        protected bool IgnoreCharCasing { get; set; }
+
         public static IChecker CreateChecker(string assemblyName, string typeName, string parameter)
         {
             var assembly = Assembly.LoadFile(AppDomain.CurrentDomain.BaseDirectory + assemblyName);
@@ -29,7 +31,7 @@
         {
             throw new InvalidOperationException("This checker doesn't support parameters");
         }
-
+        
         protected CheckerResult CheckLineByLine(
             string inputData,
             string receivedOutput,
@@ -45,7 +47,7 @@
 
             CheckerResultType resultType;
 
-            string adminCheckerDetails = null;
+            var adminCheckerDetails = new CheckerDetails();
             int lineNumber = 0;
             using (userFileReader)
             {
@@ -90,7 +92,7 @@
                 }
             }
 
-            string checkerDetails = null;
+            var checkerDetails = new CheckerDetails();
             if (resultType != CheckerResultType.Ok)
             {
                 checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
@@ -127,64 +129,90 @@
             return userLine.ToLower().Equals(correctLine.ToLower(), StringComparison.InvariantCulture);
         }
 
-        protected virtual string PrepareAdminCheckerDetailsForDifferentLines(
+        protected virtual CheckerDetails PrepareAdminCheckerDetailsForDifferentLines(
             int lineNumber,
             string correctLine,
             string userLine)
         {
-            string adminCheckerDetails =
-                string.Format(
-                    "Line {1} is different.{0}{0}Expected line:{0}{2}{0}{0}User line:{0}{3}{0}",
-                    Environment.NewLine,
-                    lineNumber,
-                    correctLine.MaxLength(256),
-                    userLine.MaxLength(256));
+            const int FragmentMaxLength = 256;
+
+            var adminCheckerDetails = new CheckerDetails
+            {
+                Comment = string.Format("Line {0} is different.", lineNumber)
+            };
+
+            var firstDifferenceIndex = correctLine.GetFirstDifferenceIndexWith(userLine, this.IgnoreCharCasing);
+
+            if (correctLine != null)
+            {
+                adminCheckerDetails.ExpectedOutputFragment =
+                    PrepareOutputFragment(correctLine, firstDifferenceIndex, FragmentMaxLength);
+            }
+
+            if (userLine != null)
+            {
+                adminCheckerDetails.UserOutputFragment =
+                    PrepareOutputFragment(userLine, firstDifferenceIndex, FragmentMaxLength);
+            }
+
             return adminCheckerDetails;
         }
 
-        protected virtual string PrepareAdminCheckerDetailsForInvalidNumberOfLines(
+        protected virtual CheckerDetails PrepareAdminCheckerDetailsForInvalidNumberOfLines(
             int lineNumber,
             string userLine,
             string correctLine)
         {
-            string adminCheckerDetails = string.Format(
-                "Invalid number of lines on line {0}{1}{1}",
-                lineNumber,
-                Environment.NewLine);
-            if (userLine != null)
+            const int FragmentMaxLength = 256;
+
+            var adminCheckerDetails = new CheckerDetails
             {
-                adminCheckerDetails += string.Format(
-                    "Next user line:{1}{0}{1}",
-                    userLine.MaxLength(256),
-                    Environment.NewLine);
-            }
+                Comment = string.Format("Invalid number of lines on line {0}", lineNumber)
+            };
+
+            var firstDifferenceIndex = correctLine.GetFirstDifferenceIndexWith(userLine, this.IgnoreCharCasing);
 
             if (correctLine != null)
             {
-                adminCheckerDetails += string.Format(
-                    "Next correct line:{1}{0}{1}",
-                    correctLine.MaxLength(256),
-                    Environment.NewLine);
+                adminCheckerDetails.ExpectedOutputFragment =
+                    PrepareOutputFragment(correctLine, firstDifferenceIndex, FragmentMaxLength);
+            }
+
+            if (userLine != null)
+            {
+                adminCheckerDetails.UserOutputFragment =
+                    PrepareOutputFragment(userLine, firstDifferenceIndex, FragmentMaxLength);
             }
 
             return adminCheckerDetails;
         }
 
-        protected virtual string PrepareCheckerDetails(
+        protected virtual CheckerDetails PrepareCheckerDetails(
             string receivedOutput,
             string expectedOutput,
             bool isTrialTest,
-            string adminCheckerDetails)
+            CheckerDetails adminCheckerDetails)
         {
-            string checkerDetails;
+            CheckerDetails checkerDetails;
             if (isTrialTest)
             {
-                // Full test report for user
-                checkerDetails = string.Format(
-                    "Expected output:{0}{1}{0}Your output:{0}{2}",
-                    Environment.NewLine,
-                    expectedOutput.MaxLength(8192),
-                    receivedOutput.MaxLength(8192));
+                const int FragmentMaxLength = 4096;
+
+                checkerDetails = new CheckerDetails();
+
+                var firstDifferenceIndex = expectedOutput.GetFirstDifferenceIndexWith(receivedOutput, this.IgnoreCharCasing);
+
+                if (expectedOutput != null)
+                {
+                    checkerDetails.ExpectedOutputFragment =
+                        PrepareOutputFragment(expectedOutput, firstDifferenceIndex, FragmentMaxLength);
+                }
+
+                if (receivedOutput != null)
+                {
+                    checkerDetails.UserOutputFragment =
+                        PrepareOutputFragment(receivedOutput, firstDifferenceIndex, FragmentMaxLength);
+                }
             }
             else
             {
@@ -193,6 +221,16 @@
             }
 
             return checkerDetails;
+        }
+
+        private static string PrepareOutputFragment(string output, int firstDifferenceIndex, int fragmentMaxLength)
+        {
+            var fragmentStartIndex = Math.Max(firstDifferenceIndex - (fragmentMaxLength / 2), 0);
+            var fragmentEndIndex = Math.Min(firstDifferenceIndex + (fragmentMaxLength / 2), output.Length);
+
+            var fragment = output.GetStringWithEllipsisBetween(fragmentStartIndex, fragmentEndIndex);
+
+            return fragment;
         }
     }
 }

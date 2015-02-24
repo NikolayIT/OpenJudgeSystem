@@ -198,12 +198,14 @@
             {
                 var testRun = new TestRun
                 {
-                    CheckerComment = testResult.CheckerComment,
+                    CheckerComment = testResult.CheckerDetails.Comment,
                     ExecutionComment = testResult.ExecutionComment,
                     MemoryUsed = testResult.MemoryUsed,
                     ResultType = testResult.ResultType,
                     TestId = testResult.Id,
                     TimeUsed = testResult.TimeUsed,
+                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
+                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
                 };
                 submission.TestRuns.Add(testRun);
             }

@@ -26,5 +26,9 @@
         public string ExecutionComment { get; set; }
 
         public string CheckerComment { get; set; }
+
+        public string ExpectedOutputFragment { get; set; }
+
+        public string UserOutputFragment { get; set; }
     }
 }

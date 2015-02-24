@@ -1,0 +1,29 @@
+﻿.CodeMirror-merge, .CodeMirror-merge .CodeMirror {
+    height: 150px;
+}
+
+    .CodeMirror-merge .CodeMirror-code {
+        color: #fff;
+    }
+
+.CodeMirror-merge-l-chunk-end, .CodeMirror-merge-l-chunk-start {
+    border: none;
+}
+
+.CodeMirror-merge-l-chunk {
+    background: transparent;
+}
+
+.CodeMirror-merge-2pane .CodeMirror-merge-pane {
+    width: 50%;
+}
+
+.CodeMirror-merge-2pane .CodeMirror-merge-gap {
+    width: 0;
+}
+
+.diff {
+    padding: 10px;
+    background-color: #AAA;
+    border-color: #AAA;
+}

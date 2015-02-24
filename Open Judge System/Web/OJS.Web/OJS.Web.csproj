@@ -922,6 +922,7 @@
     <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
+    <Content Include="Content\CodeMirror\addon\merge.css" />
     <Content Include="Content\CodeMirror\codemirror.css" />
     <Content Include="Content\CodeMirror\theme\3024-day.css" />
     <Content Include="Content\CodeMirror\theme\3024-night.css" />
@@ -954,6 +955,7 @@
     <Content Include="Content\CodeMirror\theme\xq-light.css" />
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
+    <Content Include="Content\Contests\submission-view-page.css" />
     <Content Include="Content\docs.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\KendoUI\Black\editor.png" />
@@ -1034,6 +1036,8 @@
     <Content Include="Scripts\Administration\Tests\tests-index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CodeMirror\addon\diff_match_patch.js" />
+    <Content Include="Scripts\CodeMirror\addon\merge.js" />
     <Content Include="Scripts\CodeMirror\codemirror.js" />
     <Content Include="Scripts\CodeMirror\mode\clike.js" />
     <Content Include="Scripts\CodeMirror\mode\javascript.js" />
@@ -1280,7 +1284,6 @@
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
-    <Folder Include="Scripts\CodeMirror\addon\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
