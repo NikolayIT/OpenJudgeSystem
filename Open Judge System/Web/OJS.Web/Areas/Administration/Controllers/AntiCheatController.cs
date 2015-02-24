@@ -114,7 +114,8 @@
                                 FirstSubmissionCreatedOn = groupAsList[i].CreatedOn,
                                 SecondSubmissionId = groupAsList[j].Id,
                                 SecondParticipantName = groupAsList[j].ParticipantName,
-                                SecondSubmissionCreatedOn = groupAsList[j].CreatedOn
+                                SecondSubmissionCreatedOn = groupAsList[j].CreatedOn,
+                                Percentage = result.SimilarityPercentage
                             });
                         }
                     }
