@@ -98,7 +98,10 @@
 
                 if (this.ModelState.IsValid)
                 {
-                    this.BaseCreate(model.GetEntityModel());
+                    var entity = model.GetEntityModel();
+                    entity.Processed = false;
+                    entity.Processing = false;
+                    this.BaseCreate(entity);
                     this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -182,6 +185,9 @@
                 if (this.ModelState.IsValid)
                 {
                     var entity = this.GetById(model.Id) as DatabaseModelType;
+                    entity.Processed = false;
+                    entity.Processing = false;
+
                     this.UpdateAuditInfoValues(model, entity);
                     this.BaseUpdate(model.GetEntityModel(entity));
                     this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
