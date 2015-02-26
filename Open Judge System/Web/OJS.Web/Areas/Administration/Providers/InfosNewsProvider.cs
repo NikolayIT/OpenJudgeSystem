@@ -66,6 +66,11 @@
                 {
                     date = content.ToString().Substring(0, 10).TryGetDate();
                     string contentAsString = content.ToString().Trim().Substring(10);
+                    if (contentAsString.StartsWith("<br />"))
+                    {
+                        contentAsString = contentAsString.Substring(6);
+                    }
+
                     contentAsString = this.ConvertLinks(contentAsString, "http://www.math.bas.bg/infos/");
 
                     fetchedNews.Add(new News
@@ -87,6 +92,29 @@
                 else if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws12"))
                 {
                     content.Append(node.FirstChild.InnerHtml);
+                    var nestedNode = node.FirstChild.NextSibling;
+
+                    while (nestedNode != null)
+                    {
+                        if (nestedNode.Name == "#text")
+                        {
+                            nestedNode = nestedNode.NextSibling;
+                            continue;
+                        }
+
+                        if (nestedNode.Attributes.Any(x => x.Name == "class" && x.Value == "ws12"))
+                        {
+                            content.Append(nestedNode.InnerHtml);
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        nestedNode = nestedNode.NextSibling;
+                    }
+
+                    content.Append("<br />");
                 }
 
                 node = node.NextSibling;
