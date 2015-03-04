@@ -66,14 +66,15 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
-        public void ShouldThrowExceptionWhenValueIsNotNullAndStartIndexIsEqualToValueLength()
+        public void ShouldReturnEmptyStringWhenValueIsNotNullAndStartIndexIsEqualToValueLength()
         {
             const string Value = "vladislav";
             var startIndex = Value.Length;
             var endIndex = Value.Length;
 
             var result = Value.GetStringWithEllipsisBetween(startIndex, endIndex);
+
+            Assert.AreEqual(string.Empty, result);
         }
         
         [TestMethod]

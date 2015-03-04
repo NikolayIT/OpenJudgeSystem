@@ -140,26 +140,6 @@
 
         public static string GetStringWithEllipsisBetween(this string input, int startIndex, int endIndex)
         {
-            if (startIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("startIndex", "startIndex cannot be negative.");
-            }
-
-            if (!string.IsNullOrEmpty(input) && startIndex >= input.Length)
-            {
-                throw new ArgumentOutOfRangeException("startIndex", "startIndex cannot be greater than or equal to the length of the string.");
-            }
-
-            if (endIndex < startIndex)
-            {
-                throw new ArgumentOutOfRangeException("endIndex", "endIndex cannot be less than the start index.");
-            }
-
-            if (input != null && endIndex > input.Length)
-            {
-                throw new ArgumentOutOfRangeException("endIndex", "endIndex cannot be greater than the length of the string.");
-            }
-
             string result = null;
 
             if (input != null)
