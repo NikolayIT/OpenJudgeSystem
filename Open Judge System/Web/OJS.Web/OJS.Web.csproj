@@ -776,6 +776,8 @@
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
+    <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
+    <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
     <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\Contracts\INewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\InfoManNewsProvider.cs" />
@@ -1174,6 +1176,7 @@
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
     <None Include="Areas\Contests\Views\Compete\NewContestIp.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,0 +1,37 @@
+﻿<div id="download-contest-submissions-popup" style="display: none;">
+    <form id="download-contest-submissions-form" method="GET" action="/Administration/ContestsExport/Solutions/">
+        <section>
+            <input type="hidden" id="contest-id" name="id" />
+        </section>
+
+        <div class="text-center">
+            <div class="editor-field">
+                <input type="radio" checked="checked" value="true" name="compete" id="compete-true" />
+                <label for="compete-true">Решения на състезанието</label>
+            </div>
+
+            <div class="editor-field">
+                <input type="radio" value="false" name="compete" id="compete-false" />
+                <label for="compete-false">Решения на упражненията</label>
+            </div>
+        </div>
+
+        <hr style="border-color: #94C0D2; width: 50%; margin-top: 5px; margin-bottom: 5px" />
+
+        <section class="text-center small-margin-top">
+            <div class="editor-field">
+                <input type="radio" checked="checked" name="bestSubmissions" value="true" id="best-submissions-true" />
+                <label for="best-submissions-true">Най-добри решения</label>
+            </div>
+
+            <div class="editor-field">
+                <input type="radio" name="bestSubmissions" value="false" id="best-submissions-false" />
+                <label for="best-submissions-false">Последни решения</label>
+            </div>
+        </section>
+
+        <section class="text-center small-margin-top">
+            <input type="submit" class="btn btn-success" value="Свали решенията" />
+        </section>
+    </form>
+</div>
