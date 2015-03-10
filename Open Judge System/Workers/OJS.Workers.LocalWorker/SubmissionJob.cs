@@ -214,7 +214,7 @@
         private void CalculatePointsForSubmission(Submission submission)
         {
             // Internal joke: submission.Points = new Random().Next(0, submission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
-            if (submission.Problem.Tests.Count == 0)
+            if (submission.Problem.Tests.Count == 0 || submission.TestsWithoutTrialTestsCount == 0)
             {
                 submission.Points = 0;
             }
