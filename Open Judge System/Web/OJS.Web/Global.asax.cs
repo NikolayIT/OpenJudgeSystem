@@ -20,6 +20,9 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            var viewEnginesConfig = new ViewEnginesConfig(ViewEngines.Engines);
+            viewEnginesConfig.RegisterViewEngines(new RazorViewEngine());
+
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }
     }
