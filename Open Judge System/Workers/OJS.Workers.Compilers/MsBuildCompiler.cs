@@ -15,21 +15,14 @@
 
         public MsBuildCompiler()
         {
-            this.inputPath = FileHelpers.CreateTempDirectory();
-            this.outputPath = FileHelpers.CreateTempDirectory();
+            this.inputPath = DirectoryHelpers.CreateTempDirectory();
+            this.outputPath = DirectoryHelpers.CreateTempDirectory();
         }
 
         ~MsBuildCompiler()
         {
-            if (Directory.Exists(this.inputPath))
-            {
-                Directory.Delete(this.inputPath, true);
-            }
-
-            if (Directory.Exists(this.outputPath))
-            {
-                Directory.Delete(this.outputPath, true);
-            }
+            DirectoryHelpers.SafeDeleteDirectory(this.inputPath, true);
+            DirectoryHelpers.SafeDeleteDirectory(this.outputPath, true);
         }
 
         public override string RenameInputFile(string inputFile)

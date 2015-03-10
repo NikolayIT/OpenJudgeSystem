@@ -32,16 +32,13 @@
             }
 
             this.javaExecutablePath = javaExecutablePath;
-            this.workingDirectory = FileHelpers.CreateTempDirectory();
+            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
         ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
         {
-            if (Directory.Exists(this.workingDirectory))
-            {
-                Directory.Delete(this.workingDirectory, true);
-            }
+            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
         private string SandboxExecutorCode
