@@ -59,7 +59,7 @@
     <Compile Include="DoNothingExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
-    <Compile Include="JavaPreprocessCompileArchiveExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />
