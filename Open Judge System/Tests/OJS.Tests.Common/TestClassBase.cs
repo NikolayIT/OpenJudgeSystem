@@ -1,9 +1,6 @@
 ﻿namespace OJS.Tests.Common
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
-    using System.Linq;
 
     using OJS.Data;
     using OJS.Tests.Common.DataFakes;
