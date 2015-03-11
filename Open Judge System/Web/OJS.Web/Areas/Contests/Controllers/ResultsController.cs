@@ -16,6 +16,8 @@
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
+    using System;
+    using System.Collections.Generic;
     
     public class ResultsController : BaseController
     {
@@ -213,6 +215,58 @@
             this.ViewBag.IsOfficial = official;
 
             return this.View(model);
+        }
+        
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult Stats(ContestFullResultsViewModel viewModel)
+        {
+            var maxResult = this.Data.Contests.All().Where(c => c.Id == viewModel.Id).FirstOrDefault().Problems.Sum(p => p.MaximumPoints);
+            var participantsCount = viewModel.Results.Count();
+            var statsModel = new ContestStatsViewModel();
+            statsModel.MinResultsCount = viewModel.Results.Count(r => r.Total == 0);
+            statsModel.MinResultsPercent = (double)statsModel.MinResultsCount / participantsCount;
+            statsModel.MaxResultsCount = viewModel.Results.Count(r => r.Total == maxResult);
+            statsModel.MaxResultsPercent = (double)statsModel.MaxResultsCount / participantsCount;
+            statsModel.AverageResult = (double)viewModel.Results.Sum(r => r.Total) / participantsCount;
+
+            int fromPoints = 0;
+            int toPoints = 0;
+            foreach (var problem in viewModel.Problems)
+	        {                
+                var maxResultsForProblem = viewModel.Results.Count(r => r.ProblemResults.Any(pr => pr.ProblemName == problem.Name && pr.BestSubmission != null && pr.BestSubmission.Points == pr.MaximumPoints));
+                var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
+                statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel 
+                    {
+                        Name = problem.Name, 
+                        MaxResultsCount = maxResultsForProblem, 
+                        MaxResultsPercent = maxResultsForProblemPercent,
+                        MaxPossiblePoints = problem.MaximumPoints
+                    });
+
+                if (toPoints == 0)
+                {
+                    toPoints = problem.MaximumPoints;
+                }
+                else
+                {
+                    toPoints += problem.MaximumPoints;
+                }
+
+                var participantsInPointsRange = viewModel.Results.Count(r => r.Total >= fromPoints && r.Total <= toPoints);
+                var participantsInPointsRangePercent = (double)participantsInPointsRange / participantsCount;
+
+                statsModel.StatsByPointsRange.Add(new ContestPointsRangeViewModel
+                    {
+                        PointsFrom = fromPoints,
+                        PointsTo = toPoints,
+                        Participants = participantsInPointsRange,
+                        PercentOfAllParticipants = participantsInPointsRangePercent
+                    });
+
+                fromPoints = toPoints + 1;
+            }
+                        
+            return this.PartialView("_StatsPartial", statsModel);
         }
     }
 }

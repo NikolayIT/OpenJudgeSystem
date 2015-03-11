@@ -1,0 +1,84 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.ContestStatsViewModel
+
+<br />
+<h4>Обща статистика</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                0 точки
+            </th>
+            <th>
+                Макс точки
+            </th>
+            <th>
+                Среден резултат
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.MinResultsCount участника - (<strong>@Model.MinResultsPercent.ToString("0.00%")</strong>)
+            </td>
+            <td>
+                @Model.MaxResultsCount участника - (<strong>@Model.MaxResultsPercent.ToString("0.00%")</strong>)
+            </td>
+            <td>
+                <strong>@Model.AverageResult.ToString("0.000")</strong> точки
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+<h4>Статистика по диапазон точки</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            @foreach (var item in Model.StatsByPointsRange)
+            {
+                <th>
+                    @item.PointsFrom - @item.PointsTo точки
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model.StatsByPointsRange)
+            {
+                <td>
+                    @item.Participants участника - (<strong>@item.PercentOfAllParticipants.ToString("0.00%")</strong>)
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+<br />
+<h4>Максимален резултат за всяка задача</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            @foreach (var item in Model.StatsByProblem)
+            {
+                <th>
+                    @item.Name - @item.MaxPossiblePoints точки макс
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model.StatsByProblem)
+            {
+                <td>
+                    @item.MaxResultsCount участника - (<strong>@item.MaxResultsPercent.ToString("0.##%")</strong>)
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+<br />

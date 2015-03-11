@@ -22,6 +22,8 @@
     <span>@Html.ActionLink(Resource.Public_results, "Simple", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
 </h2>
 
+@{Html.RenderAction("Stats", new { viewModel = Model });}
+
 <script src="/Scripts/Helpers/test-results.js"></script>
 <table class="table table-striped">
     <tr>
