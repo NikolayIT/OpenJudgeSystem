@@ -35,17 +35,25 @@
         }
 
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest] DataSourceRequest request)
+        public ActionResult ReadSubmissions([DataSourceRequest] DataSourceRequest request, string userId)
         {
             IQueryable<Submission> data;
 
             if (User.IsAdmin())
             {
                 data = this.Data.Submissions.All();
+                if (userId != null)
+                {
+                    data = data.Where(s => s.Participant.UserId == userId);
+                }
             }
             else
             {
                 data = this.Data.Submissions.AllPublic();
+                if (userId != null)
+                {
+                    data = data.Where(s => s.Participant.UserId == userId);
+                }
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);
