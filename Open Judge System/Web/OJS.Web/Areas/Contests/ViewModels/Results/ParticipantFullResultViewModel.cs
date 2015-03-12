@@ -52,8 +52,8 @@
                 if (lastSubmission != null)
                 {
                     var lastSubmissionTime = lastSubmission.CreatedOn;
-                    var contestTimeInMinutes = (lastSubmissionTime - contestStartTime.Value).TotalSeconds;
-                    return contestTimeInMinutes;
+                    var contestTimeInSeconds = (lastSubmissionTime - contestStartTime.Value).TotalSeconds;
+                    return contestTimeInSeconds;
                 }
             }
 
