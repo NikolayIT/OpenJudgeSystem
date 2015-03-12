@@ -94,7 +94,7 @@ else
     }
 }
 
-@if (Model.Processed && (Model.ShowResults || User.IsAdmin()))
+@if (Model.Processed && (Model.ShowResults || Model.UserHasAdminPermission))
 {
     foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
     {
@@ -136,7 +136,7 @@ else
                 @:@string.Format("{0}{1}", Resource.Test, testResult.Order)
             }
             (@testResultText)
-            @if (User.IsAdmin())
+            @if (Model.UserHasAdminPermission)
             {
                 <small>@string.Format("{0}{1}", Resource.Run, testResult.Id)</small>
                 <small><a href="/Administration/Tests/Details/@testResult.TestId">@string.Format("{0}{1}", Resource.Test, testResult.TestId)</a></small>
@@ -148,10 +148,11 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || User.IsAdmin())) // Temporally execution comments are visible only for administrators
+        // Temporary execution comments are visible only for administrators
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || Model.UserHasAdminPermission))
         {
             var executionComment = testResult.ExecutionComment;
-            if (!User.IsAdmin())
+            if (!Model.UserHasAdminPermission)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {

@@ -33,7 +33,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            var userHasAdminPermissions = this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value);
+            var userHasAdminPermissions = this.CheckIfUserHasProblemPermissions(submission.ProblemId ?? 0);
 
             if (!userHasAdminPermissions && submission.IsDeleted)
             {
