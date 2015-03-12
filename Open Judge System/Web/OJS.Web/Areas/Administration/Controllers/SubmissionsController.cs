@@ -11,7 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
-    
+    using OJS.Web.Common.Extensions;
+
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
@@ -34,6 +35,11 @@
         {
             var submissions = this.Data.Submissions.All();
 
+            if (this.User.IsLecturer())
+            {
+                submissions = submissions.Where(s => s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+            }
+
             if (this.contestId != null)
             {
                 submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
@@ -44,9 +50,7 @@
 
         public override object GetById(object id)
         {
-            return this.Data.Submissions
-                .All()
-                .FirstOrDefault(o => o.Id == (int)id);
+            return this.Data.Submissions.All().FirstOrDefault(o => o.Id == (int)id);
         }
 
         public override string GetEntityKeyName()
@@ -347,20 +351,20 @@
 
         public JsonResult Contests(string text)
         {
-            var contests = this.Data.Contests
-                .All()
-                .OrderByDescending(c => c.CreatedOn)
-                .Select(c => new
-                    {
-                        Id = c.Id,
-                        Name = c.Name
-                    });
-
+            var contestEntities = this.Data.Contests.All();
+                
             if (!string.IsNullOrEmpty(text))
             {
-                contests = contests.Where(c => c.Name.ToLower().Contains(text.ToLower()));
+                contestEntities = contestEntities.Where(c => c.Name.ToLower().Contains(text.ToLower()));
             }
 
+            if (this.User.IsLecturer())
+            {
+                contestEntities = contestEntities.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+            }
+
+            var contests = contestEntities.OrderByDescending(c => c.CreatedOn).Select(c => new { c.Id, c.Name });
+            
             return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
 
