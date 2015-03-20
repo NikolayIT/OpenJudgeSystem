@@ -24,6 +24,14 @@
 
 @{Html.RenderAction("Stats", new { viewModel = Model });}
 
+@if (ViewBag.IsOfficial)
+{
+    <h4>@Ajax.ActionLink("Среден резултат по минути", "StatsChart", new { contestId = Model.Id }, new AjaxOptions { UpdateTargetId = "StatsChartContainer", InsertionMode = InsertionMode.Replace })</h4>
+    <div id="StatsChartContainer"></div>
+}
+
+<br />
+
 <script src="/Scripts/Helpers/test-results.js"></script>
 <table class="table table-striped">
     <tr>

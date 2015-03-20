@@ -1,5 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -16,8 +18,6 @@
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
-    using System;
-    using System.Collections.Generic;
     
     public class ResultsController : BaseController
     {
@@ -201,7 +201,7 @@
                                         ProblemOrderBy = problem.OrderBy,
                                         MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
-                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
+                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted && submission.CreatedOn >= contest.StartTime)
                                                             .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                             .Select(SubmissionFullResultsViewModel.FromSubmission)
                                                             .FirstOrDefault(),
@@ -216,7 +216,65 @@
 
             return this.View(model);
         }
-        
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult GetParticipantsAveragePoints(int id)
+        {
+            var contestInfo = this.Data.Contests.All()
+                .Where(c => c.Id == id)
+                .Select(c => new 
+                    { 
+                        c.Id, 
+                        ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial), 
+                        c.StartTime, 
+                        c.EndTime 
+                    })
+                .FirstOrDefault();
+            
+            var submissions = this.Data.Participants.All()
+                    .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
+                    .SelectMany(participant =>
+                        participant.Contest.Problems
+                            .Where(pr => !pr.IsDeleted)
+                            .SelectMany(pr => pr.Submissions
+                                .Where(subm => !subm.IsDeleted && subm.ParticipantId == participant.Id)
+                                .Select(subm => new
+                                {
+                                    subm.Points,
+                                    subm.CreatedOn,
+                                    ParticipantId = participant.Id,
+                                    ProblemId = pr.Id
+                                })))
+                    .OrderBy(subm => subm.CreatedOn)
+                    .ToList();
+
+            List<ContestStatsChartViewModel> viewModel = new List<ContestStatsChartViewModel>();
+
+            for (DateTime time = contestInfo.StartTime.Value.AddMinutes(5); time <= contestInfo.EndTime.Value && time < DateTime.Now; time = time.AddMinutes(5))
+            {
+                var averagePointsLocal = submissions
+                    .Where(pr => pr.CreatedOn >= contestInfo.StartTime && pr.CreatedOn <= time)
+                    .GroupBy(pr => new { pr.ProblemId, pr.ParticipantId })
+                    .Select(gr => new
+                    {
+                        MaxPoints = gr.Max(pr => pr.Points),
+                        ParticipantId = gr.Key.ParticipantId
+                    })
+                    .GroupBy(pr => pr.ParticipantId)
+                    .Select(gr => gr.Sum(pr => pr.MaxPoints))
+                    .Aggregate((sum, el) => sum += el) / contestInfo.ParticipantsCount;
+
+                viewModel.Add(new ContestStatsChartViewModel
+                {
+                    AverageResult = averagePointsLocal,
+                    Minute = time.Minute,
+                    Hour = time.Hour
+                });
+            }
+            
+            return this.Json(viewModel);
+        }
+
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult Stats(ContestFullResultsViewModel viewModel)
         {
@@ -267,6 +325,12 @@
             }
                         
             return this.PartialView("_StatsPartial", statsModel);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult StatsChart(int contestId)
+        {
+            return this.PartialView("_StatsChartPartial", contestId);
         }
     }
 }

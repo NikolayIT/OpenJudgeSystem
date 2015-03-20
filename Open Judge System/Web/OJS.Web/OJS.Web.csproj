@@ -818,6 +818,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsChartViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
@@ -935,12 +936,12 @@
     <Content Include="Content\KendoUI\Black\loading-image.gif" />
     <Content Include="Content\KendoUI\Black\loading.gif" />
     <Content Include="Content\KendoUI\Black\loading_2x.gif" />
-    <Content Include="Content\KendoUI\Black\markers.png" />
-    <Content Include="Content\KendoUI\Black\markers_2x.png" />
     <Content Include="Content\KendoUI\Black\slider-h.gif" />
     <Content Include="Content\KendoUI\Black\slider-v.gif" />
     <Content Include="Content\KendoUI\Black\sprite.png" />
     <Content Include="Content\KendoUI\Black\sprite_2x.png" />
+    <Content Include="Content\KendoUI\Black\sprite_kpi.png" />
+    <Content Include="Content\KendoUI\Black\sprite_kpi_2x.png" />
     <Content Include="Content\KendoUI\kendo.black.css" />
     <Content Include="Content\KendoUI\kendo.common.css" />
     <Content Include="Content\KendoUI\textures\brushed-metal.png" />
@@ -1124,6 +1125,7 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_StatsPartial.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\_StatsChartPartial.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
@@ -1136,10 +1138,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\KendoUI\2014.2.903\cultures\kendo.culture.bg.js" />
-    <Content Include="Scripts\KendoUI\2014.2.903\cultures\kendo.culture.en-GB.js" />
-    <Content Include="Scripts\KendoUI\2014.2.903\kendo.aspnetmvc.js" />
-    <Content Include="Scripts\KendoUI\2014.2.903\kendo.web.js" />
+    <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.bg.js" />
+    <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.en-GB.js" />
+    <Content Include="Scripts\KendoUI\2014.3.1411\kendo.all.js" />
+    <Content Include="Scripts\KendoUI\2014.3.1411\kendo.aspnetmvc.js" />
     <Content Include="Views\Account\ChangeUsername.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeCheckBoxes.cshtml" />
