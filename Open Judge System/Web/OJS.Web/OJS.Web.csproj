@@ -1202,7 +1202,6 @@
     <Content Include="Views\News\Selected.cshtml" />
     <Content Include="Views\Shared\_LatestNews.cshtml" />
     <Content Include="_ViewStart.cshtml" />
-    <None Include="Settings.StyleCop" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Feedback\Submitted.cshtml" />
     <Content Include="Views\News\All.cshtml" />

@@ -115,7 +115,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Settings.StyleCop" />
     <None Include="OJS.Workers.Agent_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

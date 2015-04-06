@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">

@@ -52,11 +52,6 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
-        <Rule Name="ElementParameterDocumentationMustMatchElementParameters">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
         <Rule Name="ElementParameterDocumentationMustDeclareParameterName">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
@@ -73,11 +68,6 @@
           </RuleSettings>
         </Rule>
         <Rule Name="ElementReturnValueDocumentationMustHaveText">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
-        <Rule Name="VoidReturnValueMustNotBeDocumented">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
@@ -152,11 +142,6 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
-        <Rule Name="DocumentationHeadersMustNotContainBlankLines">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
         <Rule Name="IncludedDocumentationXPathDoesNotExist">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
@@ -218,7 +203,14 @@
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
+          <Value>at</Value>
+          <Value>db</Value>
           <Value>or</Value>
+          <Value>up</Value>
+          <Value>iq</Value>
+          <Value>it</Value>
+          <Value>un</Value>
+          <Value>bg</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>
