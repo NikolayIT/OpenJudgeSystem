@@ -79,7 +79,7 @@
             /*
             // Possible solution to foreign key deletes: http://www.ridgway.co.za/articles/174.aspx
             // The above solution does not work with cyclic relations.
-            */ 
+            */
 
             this.SaveChanges();
             var tableNames =
@@ -145,19 +145,12 @@
             base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
         private void ApplyAuditInfoRules()
         {
             // Approach via @julielerman: http://bit.ly/123661P
             foreach (var entry in
                 this.ChangeTracker.Entries()
-                    .Where(
-                        e =>
-                        e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
+                    .Where(e => e.Entity is IAuditInfo && (e.State == EntityState.Added || e.State == EntityState.Modified)))
             {
                 var entity = (IAuditInfo)entry.Entity;
 
@@ -178,10 +171,9 @@
         private void ApplyDeletableEntityRules()
         {
             // Approach via @julielerman: http://bit.ly/123661P
-            foreach (
-                var entry in
-                    this.ChangeTracker.Entries()
-                        .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
+            foreach (var entry in
+                this.ChangeTracker.Entries()
+                    .Where(e => e.Entity is IDeletableEntity && e.State == EntityState.Deleted))
             {
                 var entity = (IDeletableEntity)entry.Entity;
 

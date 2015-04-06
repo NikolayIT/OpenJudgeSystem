@@ -257,7 +257,8 @@
             return (IRepository<T>)this.repositories[typeof(T)];
         }
 
-        private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IDeletableEntity
+        private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() 
+            where T : class, IDeletableEntity, new()
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {

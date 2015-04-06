@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -12,11 +13,18 @@
 
         void Add(T entity);
 
+        /// <remarks>Use only with transaction scope</remarks>
+        void Add(IEnumerable<T> entities);
+
         void Update(T entity);
+
+        int Update(Expression<Func<T, bool>> filterExpression, Expression<Func<T, T>> updateExpression);
 
         void Delete(T entity);
 
         void Delete(int id);
+
+        int Delete(Expression<Func<T, bool>> filterExpression);
 
         void Detach(T entity);
 

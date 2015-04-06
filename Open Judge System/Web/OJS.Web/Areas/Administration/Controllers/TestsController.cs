@@ -120,7 +120,7 @@
 
                 this.Data.SaveChanges();
 
-                this.RetestSubmissions(problem);
+                this.RetestSubmissions(problem.Id);
 
                 this.TempData[GlobalConstants.InfoMessage] = "Тестът беше добавен успешно.";
                 return this.RedirectToAction("Problem", new { id });
@@ -180,7 +180,7 @@
 
                 this.Data.SaveChanges();
 
-                this.RetestSubmissions(existingTest.Problem);
+                this.RetestSubmissions(existingTest.ProblemId);
 
                 this.TempData[GlobalConstants.InfoMessage] = "Тестът беше променен успешно.";
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
@@ -230,8 +230,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var test = this.Data.Tests.All()
-                .FirstOrDefault(t => t.Id == id);
+            var test = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
 
             if (test == null)
             {
@@ -240,16 +239,12 @@
             }
 
             // delete all test runs for the current test
-            var testRunsIdList = test.TestRuns.Select(t => t.Id).ToList();
-            foreach (var testRun in testRunsIdList)
-            {
-                this.Data.TestRuns.Delete(testRun);
-            }
+            this.Data.TestRuns.Delete(testRun => testRun.TestId == id.Value);
 
             this.Data.SaveChanges();
 
             // delete the test
-            this.Data.Tests.Delete(id.Value);
+            this.Data.Tests.Delete(test);
             this.Data.SaveChanges();
 
             // recalculate submissions point
@@ -324,8 +319,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var problem = this.Data.Problems.All()
-                .FirstOrDefault(pr => pr.Id == id);
+            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
             if (problem == null)
             {
@@ -333,21 +327,13 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
-            foreach (var test in tests)
-            {
-                var testRuns = test.TestRuns.ToList();
-                foreach (var testRun in testRuns)
-                {
-                    this.Data.TestRuns.Delete(testRun);
-                }
-
-                this.Data.Tests.Delete(test.Id);
-            }
-
+            this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
             this.Data.SaveChanges();
 
-            this.RetestSubmissions(problem);
+            this.Data.Tests.Delete(test => test.ProblemId == id);
+            this.Data.SaveChanges();
+            
+            this.RetestSubmissions(problem.Id);
 
             this.TempData[GlobalConstants.InfoMessage] = "Тестовете бяха изтрити успешно";
             return this.RedirectToAction("Problem", new { id = id });
@@ -589,7 +575,7 @@
 
             if (retestTask)
             {
-                this.RetestSubmissions(problem);
+                this.RetestSubmissions(problem.Id);
             }
 
             this.TempData.Add(GlobalConstants.InfoMessage, "Тестовете са добавени към задачата");
@@ -604,7 +590,7 @@
         /// <returns>Zip file containing all tests in format {task}.{testNum}[.{zeroNum}].{in|out}.txt</returns>
         public ActionResult Export(int id)
         {
-            var problem = this.Data.Problems.All().Where(x => x.Id == id).FirstOrDefault();
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
             if (problem == null)
             {
@@ -663,15 +649,11 @@
             return result;
         }
 
-        private void RetestSubmissions(Problem problem)
+        private void RetestSubmissions(int problemId)
         {
-            var submissionIds = problem.Submissions.Select(s => new { Id = s.Id }).ToList();
-            foreach (var submissionId in submissionIds)
-            {
-                var currentSubmission = this.Data.Submissions.GetById(submissionId.Id);
-                currentSubmission.Processed = false;
-                currentSubmission.Processing = false;
-            }
+            this.Data.Submissions.Update(
+                submission => submission.ProblemId == problemId,
+                submission => new Submission { Processed = false, Processing = false });
 
             this.Data.SaveChanges();
         }

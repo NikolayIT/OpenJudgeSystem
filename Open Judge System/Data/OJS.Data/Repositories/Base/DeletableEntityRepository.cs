@@ -1,13 +1,15 @@
 ﻿namespace OJS.Data.Repositories.Base
 {
     using System;
-    using System.Data.Entity;
     using System.Linq;
+    using System.Linq.Expressions;
+
+    using EntityFramework.Extensions;
 
     using OJS.Data.Contracts;
 
-    public class DeletableEntityRepository<T> :
-        GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity
+    public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T>
+        where T : class, IDeletableEntity, new()
     {
         public DeletableEntityRepository(IOjsDbContext context)
             : base(context)
@@ -28,18 +30,23 @@
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.Now;
-            var entry = this.Context.Entry(entity);
-            if (entry.State == EntityState.Detached)
-            {
-                this.DbSet.Attach(entity);
-            }
 
-            entry.State = EntityState.Modified;
+            this.Update(entity);
+        }
+
+        public override int Delete(Expression<Func<T, bool>> filterExpression)
+        {
+            return this.DbSet.Where(filterExpression).Update(entity => new T { IsDeleted = true, DeletedOn = DateTime.Now });
         }
 
         public void HardDelete(T entity)
         {
             base.Delete(entity);
+        }
+
+        public int HardDelete(Expression<Func<T, bool>> filterExpression)
+        {
+            return base.Delete(filterExpression);
         }
     }
 }
