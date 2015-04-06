@@ -11,68 +11,7 @@
 </ol>
 
 <h1>@ViewBag.Title</h1>
-@(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
-    .Name("Submissions")
-    .Columns(columns =>
-        {
-            columns.Bound(s => s.Id).Title("№");
-            columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
-                "<div>" +
-                    "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
-                "</div>" +
-                "<div>" +
-                    "<small><span>#: kendo.toString(SubmitedOn, \"G\") #</span></small>" +
-                "</div>"
-                );
-            columns.Bound(s => s.ProblemName).Title("Задача").ClientTemplate(
-                    "<div>" +
-                        "<strong class=\"text-primary\">#: ProblemName #</strong>" +
-                    "</div>" +
-                    "<div>" +
-                        "<small>#: Contest #</small>" +
-                    "</div>"
-                );
-            columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
-                        "<div>" +
-                        "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
-                    "</div>"
-                ).Width("25%");
-            if (User.IsAdmin())
-            {
-                columns.Bound(s => s.Id).Title("Admin").ClientTemplate(@"
-                    <div class='text-center'>
-                        <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
-                        <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
-                        <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
-                        <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
-                        <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
-                    </div>");
-            }
-        }
-    )
-    .Events(ev => ev.DataBound("dataBound"))
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .ServerOperation(true)
-        .Batch(false)
-        .Model(model => model.Id(x => x.Id))
-        .Sort(sort => sort.Add(x => x.SubmitedOn).Descending())
-        .Read(read => read.Type(HttpVerbs.Post).Action("ReadSubmissions", "Submissions"))
-        .PageSize(25)
-    )
-    .Pageable(page => page.ButtonCount(10).Refresh(true))
-)
 
-<script>
-    function dataBound(e) {
-        var page = this.dataSource.page() - 1;
-        var pageSize = this.dataSource.pageSize();
-
-        var counter = 1;
-        $(this.wrapper).find(".indexColumn").each(function (e) {
-            var index = (pageSize * page) + counter;
-            $(this).html(index);
-            counter++;
-        });
-    }
-</script>
+@{
+    Html.RenderPartial("_AdvancedSubmissionsGridPartial");
+}

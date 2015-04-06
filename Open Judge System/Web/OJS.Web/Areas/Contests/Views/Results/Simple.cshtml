@@ -74,7 +74,7 @@
             string className = this.User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
             <tr class="@className">
                 <td>@((Model.CurrentPage - 1) * ResultsController.ResultsPageSize + i + 1)</td>
-                <td>@participant.ParticipantUsername</td>
+                <td><a href="/Users/Profile?id=@participant.ParticipantUsername">@participant.ParticipantUsername</a></td>
                 <td>@participant.ParticipantFullName</td>
                 @foreach (var participantResult in participant.ProblemResults)
                 {

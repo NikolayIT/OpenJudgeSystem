@@ -1,5 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -199,7 +201,7 @@
                                         ProblemOrderBy = problem.OrderBy,
                                         MaximumPoints = problem.MaximumPoints,
                                         BestSubmission = problem.Submissions.AsQueryable()
-                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
+                                                            .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted && submission.CreatedOn >= contest.StartTime)
                                                             .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
                                                             .Select(SubmissionFullResultsViewModel.FromSubmission)
                                                             .FirstOrDefault(),
@@ -213,6 +215,122 @@
             this.ViewBag.IsOfficial = official;
 
             return this.View(model);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult GetParticipantsAveragePoints(int id)
+        {
+            var contestInfo = this.Data.Contests.All()
+                .Where(c => c.Id == id)
+                .Select(c => new 
+                    { 
+                        c.Id, 
+                        ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial), 
+                        c.StartTime, 
+                        c.EndTime 
+                    })
+                .FirstOrDefault();
+            
+            var submissions = this.Data.Participants.All()
+                    .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
+                    .SelectMany(participant =>
+                        participant.Contest.Problems
+                            .Where(pr => !pr.IsDeleted)
+                            .SelectMany(pr => pr.Submissions
+                                .Where(subm => !subm.IsDeleted && subm.ParticipantId == participant.Id)
+                                .Select(subm => new
+                                {
+                                    subm.Points,
+                                    subm.CreatedOn,
+                                    ParticipantId = participant.Id,
+                                    ProblemId = pr.Id
+                                })))
+                    .OrderBy(subm => subm.CreatedOn)
+                    .ToList();
+
+            List<ContestStatsChartViewModel> viewModel = new List<ContestStatsChartViewModel>();
+
+            for (DateTime time = contestInfo.StartTime.Value.AddMinutes(5); time <= contestInfo.EndTime.Value && time < DateTime.Now; time = time.AddMinutes(5))
+            {
+                var averagePointsLocal = submissions
+                    .Where(pr => pr.CreatedOn >= contestInfo.StartTime && pr.CreatedOn <= time)
+                    .GroupBy(pr => new { pr.ProblemId, pr.ParticipantId })
+                    .Select(gr => new
+                    {
+                        MaxPoints = gr.Max(pr => pr.Points),
+                        ParticipantId = gr.Key.ParticipantId
+                    })
+                    .GroupBy(pr => pr.ParticipantId)
+                    .Select(gr => gr.Sum(pr => pr.MaxPoints))
+                    .Aggregate((sum, el) => sum += el) / contestInfo.ParticipantsCount;
+
+                viewModel.Add(new ContestStatsChartViewModel
+                {
+                    AverageResult = averagePointsLocal,
+                    Minute = time.Minute,
+                    Hour = time.Hour
+                });
+            }
+            
+            return this.Json(viewModel);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult Stats(ContestFullResultsViewModel viewModel)
+        {
+            var maxResult = this.Data.Contests.All().FirstOrDefault(c => c.Id == viewModel.Id).Problems.Sum(p => p.MaximumPoints);
+            var participantsCount = viewModel.Results.Count();
+            var statsModel = new ContestStatsViewModel();
+            statsModel.MinResultsCount = viewModel.Results.Count(r => r.Total == 0);
+            statsModel.MinResultsPercent = (double)statsModel.MinResultsCount / participantsCount;
+            statsModel.MaxResultsCount = viewModel.Results.Count(r => r.Total == maxResult);
+            statsModel.MaxResultsPercent = (double)statsModel.MaxResultsCount / participantsCount;
+            statsModel.AverageResult = (double)viewModel.Results.Sum(r => r.Total) / participantsCount;
+
+            int fromPoints = 0;
+            int toPoints = 0;
+            foreach (var problem in viewModel.Problems)
+            {
+                var maxResultsForProblem = viewModel.Results.Count(r => r.ProblemResults.Any(pr => pr.ProblemName == problem.Name && pr.BestSubmission != null && pr.BestSubmission.Points == pr.MaximumPoints));
+                var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
+                statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel 
+                    {
+                        Name = problem.Name, 
+                        MaxResultsCount = maxResultsForProblem, 
+                        MaxResultsPercent = maxResultsForProblemPercent,
+                        MaxPossiblePoints = problem.MaximumPoints
+                    });
+
+                if (toPoints == 0)
+                {
+                    toPoints = problem.MaximumPoints;
+                }
+                else
+                {
+                    toPoints += problem.MaximumPoints;
+                }
+
+                var participantsInPointsRange = viewModel.Results.Count(r => r.Total >= fromPoints && r.Total <= toPoints);
+                var participantsInPointsRangePercent = (double)participantsInPointsRange / participantsCount;
+
+                statsModel.StatsByPointsRange.Add(new ContestPointsRangeViewModel
+                    {
+                        PointsFrom = fromPoints,
+                        PointsTo = toPoints,
+                        Participants = participantsInPointsRange,
+                        PercentOfAllParticipants = participantsInPointsRangePercent
+                    });
+
+                fromPoints = toPoints + 1;
+            }
+                        
+            return this.PartialView("_StatsPartial", statsModel);
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public ActionResult StatsChart(int contestId)
+        {
+            return this.PartialView("_StatsChartPartial", contestId);
         }
     }
 }

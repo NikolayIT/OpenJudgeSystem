@@ -53,6 +53,16 @@
     }
 </div>
 <br />
+
+@if (this.User.IsAdmin() || this.User.Identity.Name == Model.Username)
+{
+    <div class="col-md-12">
+        <h2>Решения</h2>
+        @{Html.RenderPartial("_AdvancedSubmissionsGridPartial", Model.Id);}
+    </div>
+    <br />
+}
+
 <div class="col-md-12">
     <h2>@Resource.Participations</h2>
     <table class="table table-responsive table-striped">
