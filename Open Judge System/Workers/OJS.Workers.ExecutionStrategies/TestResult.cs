@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using OJS.Common.Models;
+    using OJS.Workers.Common;
 
     public class TestResult
     {
@@ -14,6 +15,6 @@
 
         public string ExecutionComment { get; set; }
 
-        public string CheckerComment { get; set; }
+        public CheckerDetails CheckerDetails { get; set; }
     }
 }

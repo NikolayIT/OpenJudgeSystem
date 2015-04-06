@@ -39,6 +39,10 @@
                         "~/Scripts/CodeMirror/codemirror.js",
                         "~/Scripts/CodeMirror/mode/clike.js",
                         "~/Scripts/CodeMirror/mode/javascript.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/codemirrormerge").Include(
+                        "~/Scripts/CodeMirror/addon/diff_match_patch.js",
+                        "~/Scripts/CodeMirror/addon/merge.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
@@ -60,6 +64,10 @@
 
             bundles.Add(new StyleBundle("~/Content/Contests/submission-page").Include(
                 "~/Content/Contests/submission-page.css"));
+
+            bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirrormerge").Include(
+                    "~/Content/CodeMirror/addon/merge.css",
+                    "~/Content/Contests/submission-view-page.css"));
         }
     }
 }

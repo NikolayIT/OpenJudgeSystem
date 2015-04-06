@@ -1,6 +1,7 @@
 ﻿@using OJS.Common.Extensions
 @using OJS.Common.Models
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView;
+
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
@@ -9,10 +10,12 @@
 
 @section styles {
     @Styles.Render("~/Content/CodeMirror/codemirror")
+    @Styles.Render("~/Content/CodeMirror/codemirrormerge")
 }
 
 @section scripts {
     @Scripts.Render("~/bundles/codemirror")
+    @Scripts.Render("~/bundles/codemirrormerge")
     <script type="text/javascript">
         $(function () {
             var textEditor = document.getElementById("code");
@@ -135,7 +138,7 @@ else
             (@testResultText)
             @if (User.IsAdmin())
             {
-                <small>@string.Format("{0}{1}",Resource.Run, testResult.Id)</small>
+                <small>@string.Format("{0}{1}", Resource.Run, testResult.Id)</small>
                 <small><a href="/Administration/Tests/Details/@testResult.TestId">@string.Format("{0}{1}", Resource.Test, testResult.TestId)</a></small>
             }
         </h3>
@@ -172,11 +175,50 @@ else
             <pre>@executionComment</pre>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
+        if (!string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
+            testResult.ExpectedOutputFragment != null ||
+            testResult.UserOutputFragment != null)
         {
             if (testResult.IsTrialTest || User.IsAdmin())
             {
-                <pre>@testResult.CheckerComment</pre>
+                <div class="diff">
+                    @if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
+                    {
+                        <pre>@testResult.CheckerComment</pre>
+                    }
+
+                    @if (testResult.ExpectedOutputFragment != null || testResult.UserOutputFragment != null)
+                    {
+                        <div class="row">
+                            <div class="col-md-6 ">Expected output:</div>
+                            <div class="col-md-6">Your output:</div>
+                        </div>
+                        <div id="diff-@testResult.Id"></div>
+                        <script>
+                            $(function () {
+                                var diffContainer = document.getElementById('diff-@testResult.Id');
+                                var mergeView = CodeMirror.MergeView(diffContainer, {
+                                    origLeft: @Html.Raw(Json.Encode(testResult.ExpectedOutputFragment)) || '',
+                                    value: @Html.Raw(Json.Encode(testResult.UserOutputFragment)) || '',
+                                    mode: 'text/x-diff',
+                                    lineNumbers: true,
+                                    lockScroll: true,
+                                    connect: 'align',
+                                    theme: 'the-matrix',
+                                    highlightDifferences: true,
+                                    revertButtons: false,
+                                    allowEditingOriginals: false,
+                                    lineWrapping: true,
+                                    collapseIdentical: false,
+                                    readOnly: true,
+                                    autofocus: false
+                                });
+
+                                mergeView.left.gap.innerText = '';
+                            });
+                        </script>
+                    }
+                </div>
             }
         }
 

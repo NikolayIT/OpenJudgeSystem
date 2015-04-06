@@ -89,7 +89,7 @@
                 }
 
                 // TODO: Do something with checkerResult.ResultType
-                testResult.CheckerComment = checkerResult.CheckerDetails;
+                testResult.CheckerDetails = checkerResult.CheckerDetails;
             }
             else
             {
