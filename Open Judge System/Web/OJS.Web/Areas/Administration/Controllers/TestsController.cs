@@ -433,7 +433,7 @@
         /// <summary>
         /// Returns all available contests in category by id
         /// </summary>
-        /// <param name="category">Id of category to get all contests from</param>
+        /// <param name="id">Id of category to get all contests from</param>
         /// <returns>JSON result of all contests in category as objects with Id and Name properties</returns>
         [HttpGet]
         public JsonResult GetCascadeContests(int id)
@@ -449,7 +449,7 @@
         /// <summary>
         /// Returns all available problems in contest by id
         /// </summary>
-        /// <param name="category">Id of contest to get all problem from</param>
+        /// <param name="id">Id of contest to get all problem from</param>
         /// <returns>JSON result of all problems in contest as objects with Id and Name properties</returns>
         [HttpGet]
         public JsonResult GetCascadeProblems(int id)

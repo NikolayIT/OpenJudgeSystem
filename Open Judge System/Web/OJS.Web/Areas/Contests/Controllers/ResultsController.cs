@@ -278,7 +278,7 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult Stats(ContestFullResultsViewModel viewModel)
         {
-            var maxResult = this.Data.Contests.All().Where(c => c.Id == viewModel.Id).FirstOrDefault().Problems.Sum(p => p.MaximumPoints);
+            var maxResult = this.Data.Contests.All().FirstOrDefault(c => c.Id == viewModel.Id).Problems.Sum(p => p.MaximumPoints);
             var participantsCount = viewModel.Results.Count();
             var statsModel = new ContestStatsViewModel();
             statsModel.MinResultsCount = viewModel.Results.Count(r => r.Total == 0);
@@ -290,7 +290,7 @@
             int fromPoints = 0;
             int toPoints = 0;
             foreach (var problem in viewModel.Problems)
-	        {                
+            {
                 var maxResultsForProblem = viewModel.Results.Count(r => r.ProblemResults.Any(pr => pr.ProblemName == problem.Name && pr.BestSubmission != null && pr.BestSubmission.Points == pr.MaximumPoints));
                 var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
                 statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel 

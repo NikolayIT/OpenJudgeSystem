@@ -8,7 +8,6 @@
     /// This Class implements the Difference Algorithm published in
     /// "An O(ND) Difference Algorithm and its Variations" by Eugene Myers
     /// Algorithmica Vol. 1 No. 2, 1986, p 251.  
-    /// 
     /// There are many C, Java, Lisp implementations public available but they all seem to come
     /// from the same source (diffutils) that is under the (unfree) GNU public License
     /// and cannot be reused as a sourcecode for a commercial application.
@@ -20,10 +19,8 @@
     /// make it available without the GNU license limitations.
     /// I do not need a high performance diff tool because it is used only sometimes.
     /// I will do some performace tweaking when needed.
-    /// 
     /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
     /// each line is converted into a (hash) number. See DiffText(). 
-    /// 
     /// Some chages to the original algorithm:
     /// The original algorithm was described using a recursive approach and comparing zero indexed arrays.
     /// Extracting sub-arrays and rejoining them is very performance and memory intensive so the same
@@ -31,10 +28,8 @@
     /// This circumstance makes the LCS and SMS functions more complicate.
     /// I added some code to the LCS function to get a fast response on sub-arrays that are identical,
     /// completely deleted or inserted.
-    /// 
     /// The result from a comparisation is stored in 2 arrays that flag for modified (deleted or inserted)
     /// lines in the 2 data arrays. These bits are then analyzed to produce a array of Item objects.
-    /// 
     /// Further possible optimizations:
     /// (first rule: don't do it; second: don't do it yet)
     /// The arrays DataA and DataB are passed as parameters, but are never changed after the creation
@@ -44,7 +39,6 @@
     /// The DownVector and UpVector arrays are always created and destroyed each time the SMS gets called.
     /// It is possible to reuse them when transferring them to members of the class.
     /// See TODO: hints.
-    /// 
     /// diff.cs: A port of the algorithm to C#
     /// Copyright (c) by Matthias Hertel, http://www.mathertel.de
     /// This work is licensed under a BSD style license. See http://www.mathertel.de/License.aspx
