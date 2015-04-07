@@ -156,6 +156,7 @@
                                 x.User.UserName,
                                 x.User.UserSettings.FirstName,
                                 x.User.UserSettings.LastName,
+                                x.User.Email,
                                 StudentsNumber =
                                     x.Answers.Select(a => a.Answer).FirstOrDefault(a => a.Length == 7)
                                     ?? this.Data.Context.ParticipantAnswers.Where(
@@ -197,7 +198,7 @@
             {
                 // Create directory with the participants name
                 var directoryName =
-                    string.Format("{0} ({1} {2}) [{3}]", participant.UserName, participant.FirstName, participant.LastName, participant.StudentsNumber)
+                    string.Format("{0} [{1} {2}] [{3}] [{4}]", participant.UserName, participant.FirstName, participant.LastName, participant.Email, participant.StudentsNumber)
                         .ToValidFilePath();
                 file.AddDirectoryByName(directoryName);
 
