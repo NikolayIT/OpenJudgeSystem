@@ -27,3 +27,13 @@
     background-color: #AAA;
     border-color: #AAA;
 }
+
+span.CodeMirror-merge-l-deleted {
+    background: none;
+    background-color: rgb(199, 13, 13);
+}
+
+span.CodeMirror-merge-l-inserted {
+    background: none;
+    background-color: rgb(12, 108, 12);
+}
