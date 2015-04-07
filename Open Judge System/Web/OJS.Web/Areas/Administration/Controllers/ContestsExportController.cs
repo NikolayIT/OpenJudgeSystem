@@ -149,7 +149,21 @@
                 this.Data.Participants.All()
                     .Where(x => x.ContestId == id && x.IsOfficial == compete)
                     .Select(
-                        x => new { x.Id, x.User.UserName, x.User.UserSettings.FirstName, x.User.UserSettings.LastName, })
+                        x =>
+                        new
+                            {
+                                x.Id,
+                                x.User.UserName,
+                                x.User.UserSettings.FirstName,
+                                x.User.UserSettings.LastName,
+                                StudentsNumber =
+                                    x.Answers.Select(a => a.Answer).FirstOrDefault(a => a.Length == 7)
+                                    ?? this.Data.Context.ParticipantAnswers.Where(
+                                        a =>
+                                        a.Participant.UserId == x.UserId && a.Participant.IsOfficial && a.Answer.Length == 7)
+                                           .Select(a => a.Answer)
+                                           .FirstOrDefault()
+                            })
                     .ToList()
                     .OrderBy(x => x.UserName);
 
@@ -183,7 +197,7 @@
             {
                 // Create directory with the participants name
                 var directoryName =
-                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
+                    string.Format("{0} ({1} {2}) [{3}]", participant.UserName, participant.FirstName, participant.LastName, participant.StudentsNumber)
                         .ToValidFilePath();
                 file.AddDirectoryByName(directoryName);
 
