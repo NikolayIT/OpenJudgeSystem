@@ -152,7 +152,7 @@ else
         if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || Model.UserHasAdminPermission))
         {
             var executionComment = testResult.ExecutionComment;
-            if (!Model.UserHasAdminPermission)
+            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
