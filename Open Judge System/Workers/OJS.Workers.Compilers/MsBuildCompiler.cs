@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.Compilers
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -10,6 +11,8 @@
 
     public class MsBuildCompiler : Compiler
     {
+        private static readonly Random Rand = new Random();
+
         private readonly string inputPath;
         private readonly string outputPath;
 
@@ -23,12 +26,24 @@
         {
             if (Directory.Exists(this.inputPath))
             {
-                Directory.Delete(this.inputPath, true);
+                try
+                {
+                    Directory.Delete(this.inputPath, true);
+                }
+                catch
+                {
+                }
             }
 
             if (Directory.Exists(this.outputPath))
             {
-                Directory.Delete(this.outputPath, true);
+                try
+                {
+                    Directory.Delete(this.outputPath, true);
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -45,7 +60,7 @@
                 return null;
             }
 
-            var tempFile = Path.GetTempFileName();
+            var tempFile = Path.GetTempFileName() + Rand.Next();
             var tempExeFile = tempFile + ".exe";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
