@@ -7,7 +7,7 @@
 
     using Glimpse.Ado.AlternateType;
 
-    public class GlimpleConnectionEfSqlBulkInsertProvider : EfSqlBulkInsertProviderWithMappedDataReader
+    public class GlimpseConnectionEfSqlBulkInsertProvider : EfSqlBulkInsertProviderWithMappedDataReader
     {
         protected override string ConnectionString
         {

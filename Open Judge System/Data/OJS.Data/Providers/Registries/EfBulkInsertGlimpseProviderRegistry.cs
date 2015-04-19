@@ -6,7 +6,7 @@
     {
         public static void Register()
         {
-            ProviderFactory.Register<GlimpleConnectionEfSqlBulkInsertProvider>("Glimpse.Ado.AlternateType.GlimpseDbConnection");
+            ProviderFactory.Register<GlimpseConnectionEfSqlBulkInsertProvider>("Glimpse.Ado.AlternateType.GlimpseDbConnection");
         }
     }
 }
