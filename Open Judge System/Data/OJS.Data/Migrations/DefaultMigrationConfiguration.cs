@@ -159,6 +159,17 @@ namespace OJS.Data.Migrations
                 },
                 new SubmissionType
                 {
+                    Name = "JavaScript unit testing (NodeJS, Mocha & Chai)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = 
+                        "-R json",
+                    ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
                     Name = "C# project/solution",
                     CompilerType = CompilerType.MsBuild,
                     AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
