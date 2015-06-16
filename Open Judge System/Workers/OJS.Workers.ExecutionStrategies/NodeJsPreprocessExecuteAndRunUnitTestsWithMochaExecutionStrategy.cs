@@ -92,34 +92,8 @@ describe('TestScope', function() {
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, arguments);
-
-                JObject jsonTestResult = null;
-                var passed = false;
-                string error = null;
-
-                try
-                {
-                    jsonTestResult = JObject.Parse(processExecutionResult.ReceivedOutput.Trim());
-                    passed = (int)jsonTestResult["stats"]["passes"] == 1;
-                }
-                catch
-                {
-                    error = "Invalid console output!";
-                }
-
-                if (!passed)
-                {
-                    try
-                    {
-                        error = (string)jsonTestResult["failures"][0]["err"]["message"];
-                    }
-                    catch
-                    {
-                        error = "Invalid console output!";
-                    }
-                }
-                
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, passed ? "yes" : error);
+                var mochaResult = MochaExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, mochaResult.Passed ? "yes" : mochaResult.Error);
                 testResults.Add(testResult);
             }
 
