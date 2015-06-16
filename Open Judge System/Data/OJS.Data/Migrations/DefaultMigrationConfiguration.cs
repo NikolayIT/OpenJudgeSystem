@@ -159,7 +159,7 @@ namespace OJS.Data.Migrations
                 },
                 new SubmissionType
                 {
-                    Name = "JavaScript unit testing (NodeJS, Mocha & Chai)",
+                    Name = "JavaScript code (Mocha unit tests)",
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = 
                         "-R json",
