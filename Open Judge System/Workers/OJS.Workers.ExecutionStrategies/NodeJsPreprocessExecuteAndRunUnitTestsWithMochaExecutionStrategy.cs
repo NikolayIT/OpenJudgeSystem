@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using OJS.Workers.Common;
     using OJS.Workers.Checkers;
-    using Newtonsoft.Json.Linq;
+    using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
@@ -35,7 +34,7 @@
             get
             {
                 return @"
-var chai = require('" + chaiModulePath + @"'),
+var chai = require('" + this.chaiModulePath + @"'),
 	assert = chai.assert;
 	expect = chai.expect,
 	should = chai.should();";

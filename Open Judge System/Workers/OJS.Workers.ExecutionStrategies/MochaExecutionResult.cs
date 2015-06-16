@@ -4,6 +4,10 @@
 
     public class MochaExecutionResult
     {
+        public bool Passed { get; set; }
+
+        public string Error { get; set; }
+
         public static MochaExecutionResult Parse(string result)
         {
             JObject jsonTestResult = null;
@@ -38,9 +42,5 @@
                 Error = error
             };
         }
-
-        public bool Passed { get; set; }
-
-        public string Error { get; set; }
     }
 }
