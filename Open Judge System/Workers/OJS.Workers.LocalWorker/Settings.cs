@@ -46,6 +46,14 @@
             }
         }
 
+        public static string MochaExecutablePath
+        {
+            get
+            {
+                return GetSetting("MochaExecutablePath");
+            }
+        }
+
         public static string JavaCompilerPath
         {
             get
