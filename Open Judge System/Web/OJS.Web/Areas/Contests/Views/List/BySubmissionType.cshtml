@@ -17,7 +17,7 @@
         .BindTo(Model)
         .Columns(col =>
         {
-            col.Bound(x => x.Name).ClientTemplate("<a href='/Contests/#:Id#/#:Name#'>#:Name#</a>");
+            col.Bound(x => x.Name).ClientTemplate("<a href='/Contests/#:Id#/#:Name.replace(/ |\\.|[0-9]/g, '-')#'>#:Name#</a>");
         }).DataSource(data =>
         {
             data.Ajax().ServerOperation(false).PageSize(10);
