@@ -12,6 +12,8 @@
     public class NodeJsPreprocessExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
         private const string UserInputPlaceholder = "#userInput#";
+        private const string RequiredModules = "#requiredModule#";
+        private const string EvaluationPlaceholder = "#evaluationCode#";
 
         private readonly string nodeJsExecutablePath;
 
@@ -19,18 +21,47 @@
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
-                throw new ArgumentException(string.Format("NodeJS not found in: {0}", nodeJsExecutablePath), "nodeJsExecutablePath");
+                throw new ArgumentException(string.Format(this.NotFoundErrorMessage, nodeJsExecutablePath), "nodeJsExecutablePath");
             }
 
             this.nodeJsExecutablePath = nodeJsExecutablePath;
+        }
+
+        protected virtual string NotFoundErrorMessage
+        {
+            get
+            {
+                return "NodeJS not found in: {0}";
+            }
+        }
+
+        protected virtual string JsCodeRequiredModules
+        {
+            get
+            {
+                return @"
+var EOL = require('os').EOL;";
+            }
+        }
+
+        protected virtual string JsCodeEvaluation
+        {
+            get
+            {
+                return @"
+    var inputData = content.trim().split(EOL);
+    var result = code.run(inputData);
+    if (result !== undefined) {
+        console.log(result);
+    }";
+            }
         }
 
         private string JsCodeTemplate
         {
             get
             {
-                return @"
-var EOL = require('os').EOL;
+                return RequiredModules + @"
 
 DataView = undefined;
 DTRACE_NET_SERVER_CONNECTION = undefined;
@@ -105,11 +136,7 @@ var content = '';
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
-    var inputData = content.trim().split(EOL);
-    var result = code.run(inputData);
-    if (result !== undefined) {
-        console.log(result);
-    }
+    " + EvaluationPlaceholder + @"
 });
 
 var code = {
@@ -134,16 +161,8 @@ var code = {
 
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
-            result.TestResults = new List<TestResult>();
-
-            foreach (var test in executionContext.Tests)
-            {
-                var processExecutionResult = executor.Execute(this.nodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
-                result.TestResults.Add(testResult);
-            }
+            result.TestResults = this.ProcessTest(executionContext, executor, codeSavePath);
 
             // Clean up
             File.Delete(codeSavePath);
@@ -151,9 +170,28 @@ var code = {
             return result;
         }
 
+        protected virtual List<TestResult> ProcessTest(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
+        {
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+
+            var testResults = new List<TestResult>();
+
+            foreach (var test in executionContext.Tests)
+            {
+                var processExecutionResult = executor.Execute(this.nodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+                testResults.Add(testResult);
+            }
+
+            return testResults;
+        }
+
         private string PreprocessJsSubmission(string template, string code)
         {
-            var processedCode = template.Replace(UserInputPlaceholder, code);
+            var processedCode = template
+                .Replace(RequiredModules, this.JsCodeRequiredModules)
+                .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                .Replace(UserInputPlaceholder, code);
 
             return processedCode;
         }
