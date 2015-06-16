@@ -252,6 +252,11 @@
 
             for (DateTime time = contestInfo.StartTime.Value.AddMinutes(5); time <= contestInfo.EndTime.Value && time < DateTime.Now; time = time.AddMinutes(5))
             {
+                if (!submissions.Any(pr => pr.CreatedOn >= contestInfo.StartTime && pr.CreatedOn <= time))
+                {
+                    continue;
+                }
+
                 var averagePointsLocal = submissions
                     .Where(pr => pr.CreatedOn >= contestInfo.StartTime && pr.CreatedOn <= time)
                     .GroupBy(pr => new { pr.ProblemId, pr.ParticipantId })
