@@ -46,11 +46,19 @@
             }
         }
 
-        public static string MochaExecutablePath
+        public static string MochaModulePath
         {
             get
             {
-                return GetSetting("MochaExecutablePath");
+                return GetSetting("MochaModulePath");
+            }
+        }
+
+        public static string ChaiModulePath
+        {
+            get
+            {
+                return GetSetting("ChaiModulePath");
             }
         }
 
