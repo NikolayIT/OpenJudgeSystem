@@ -13,27 +13,21 @@
     {
         private const string UserInputPlaceholder = "#userInput#";
         private const string RequiredModules = "#requiredModule#";
+        private const string PreevaluationPlaceholder = "#preevaluationCode#";
+        private const string PostevaluationPlaceholder = "#postevaluationCode#";
         private const string EvaluationPlaceholder = "#evaluationCode#";
-
-        private readonly string nodeJsExecutablePath;
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath)
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
-                throw new ArgumentException(string.Format(this.NotFoundErrorMessage, nodeJsExecutablePath), "nodeJsExecutablePath");
+                throw new ArgumentException(string.Format("NodeJS not found in: {0}", nodeJsExecutablePath), "nodeJsExecutablePath");
             }
 
-            this.nodeJsExecutablePath = nodeJsExecutablePath;
+            this.NodeJsExecutablePath = nodeJsExecutablePath;
         }
 
-        protected virtual string NotFoundErrorMessage
-        {
-            get
-            {
-                return "NodeJS not found in: {0}";
-            }
-        }
+        protected readonly string NodeJsExecutablePath { get; private set; }
 
         protected virtual string JsCodeRequiredModules
         {
@@ -41,6 +35,23 @@
             {
                 return @"
 var EOL = require('os').EOL;";
+            }
+        }
+
+        protected virtual string JsCodePreevaulationCode
+        {
+            get
+            {
+                return @"
+var content = ''";
+            }
+        }
+
+        protected virtual string JsCodePostevaulationCode
+        {
+            get
+            {
+                return string.Empty;
             }
         }
 
@@ -132,12 +143,14 @@ delete module;
 delete require;
 delete msg;
 
-var content = '';
+" + PreevaluationPlaceholder + @"
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
     " + EvaluationPlaceholder + @"
 });
+
+" + PostevaluationPlaceholder + @"
 
 var code = {
     run: " + UserInputPlaceholder + @"
@@ -162,7 +175,7 @@ var code = {
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
 
-            result.TestResults = this.ProcessTest(executionContext, executor, codeSavePath);
+            result.TestResults = this.ProcessTests(executionContext, executor, codeSavePath);
 
             // Clean up
             File.Delete(codeSavePath);
@@ -170,7 +183,7 @@ var code = {
             return result;
         }
 
-        protected virtual List<TestResult> ProcessTest(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
+        protected virtual List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
         {
             IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
@@ -178,7 +191,7 @@ var code = {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(this.nodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
+                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
             }
@@ -190,7 +203,9 @@ var code = {
         {
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
+                .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
                 .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
                 .Replace(UserInputPlaceholder, code);
 
             return processedCode;

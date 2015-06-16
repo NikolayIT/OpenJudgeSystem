@@ -1,18 +1,32 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using OJS.Workers.Common;
+    using OJS.Workers.Checkers;
+
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
-        public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(string mochaExecutablePath)
-            : base(mochaExecutablePath)
-        {
-        }
+        private string mochaModulePath;
+        private string chaiModulePath;
 
-        protected override string NotFoundErrorMessage
+        public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(string nodeJsExecutablePath, string mochaModulePath, string chaiModulePath)
+            : base(nodeJsExecutablePath)
         {
-            get
+            if (!File.Exists(nodeJsExecutablePath))
             {
-                return "Mocha not found in: {0}";
+                throw new ArgumentException(string.Format("Mocha not found in: {0}", nodeJsExecutablePath), "mochaModulePath");
             }
+
+            if (!Directory.Exists(chaiModulePath))
+            {
+                throw new ArgumentException(string.Format("Chai not found in: {0}", nodeJsExecutablePath), "chaiModulePath");
+            }
+
+            this.mochaModulePath = mochaModulePath;
+            this.chaiModulePath = chaiModulePath.Replace('\\', '/');
         }
 
         protected override string JsCodeRequiredModules
@@ -20,10 +34,21 @@
             get
             {
                 return @"
-var chai = require('chai'),
+var chai = require('" + chaiModulePath + @"'),
 	assert = chai.assert;
 	expect = chai.expect,
 	should = chai.should();";
+            }
+        }
+
+        protected override string JsCodePreevaulationCode
+        {
+            get
+            {
+                return @"
+describe('TestScope', function() {
+	it('Test', function(done) {
+		var content = '';";
             }
         }
 
@@ -35,16 +60,36 @@ var chai = require('chai'),
     var inputData = content.trim();
     var result = code.run();
 	
-	var testFunc = new Function('assert', 'expect', 'should', ""var result = this.valueOf(); "" + inputData)
-	it('Test', function() {
-		testFunc.call(result, assert, expect, should);
-	});";
+	testFunc = new Function('assert', 'expect', 'should', ""var result = this.valueOf();"" + inputData);
+    testFunc.call(result, assert, expect, should);
+	done();";
             }
         }
 
-        public override ExecutionResult Execute(ExecutionContext executionContext)
+        protected override string JsCodePostevaulationCode
         {
-            throw new System.NotImplementedException();
+            get
+            {
+                return @"
+    });
+});";
+            }
+        }
+
+        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
+        {
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+
+            var testResults = new List<TestResult>();
+
+            foreach (var test in executionContext.Tests)
+            {
+                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { this.mochaModulePath, codeSavePath });
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+                testResults.Add(testResult);
+            }
+
+            return testResults;
         }
     }
 }
