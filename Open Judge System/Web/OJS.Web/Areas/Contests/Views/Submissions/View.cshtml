@@ -145,10 +145,10 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || User.IsAdmin())) // Temporally execution comments are visible only for administrators
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || User.IsAdmin() || Model.ShowDetailedFeedback)) // Temporally execution comments are visible only for administrators
         {
             var executionComment = testResult.ExecutionComment;
-            if (!User.IsAdmin())
+            if (!User.IsAdmin() && !Model.ShowDetailedFeedback)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
@@ -174,7 +174,7 @@ else
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
         {
-            if (testResult.IsTrialTest || User.IsAdmin())
+            if (testResult.IsTrialTest || User.IsAdmin() || Model.ShowDetailedFeedback)
             {
                 <pre>@testResult.CheckerComment</pre>
             }

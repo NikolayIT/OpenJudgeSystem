@@ -34,6 +34,7 @@
                     SubmissionType = submission.SubmissionType,
                     TestRuns = submission.TestRuns.AsQueryable().Select(TestRunDetailsViewModel.FromTestRun),
                     ShowResults = submission.Problem.ShowResults,
+                    ShowDetailedFeedback = submission.Problem.ShowDetailedFeedback
                 };
             }
         }
@@ -94,5 +95,7 @@
         public SubmissionType SubmissionType { get; set; }
 
         public bool ShowResults { get; set; }
+
+        public bool ShowDetailedFeedback { get; set; }
     }
 }
