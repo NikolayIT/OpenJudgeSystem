@@ -15,14 +15,14 @@
         public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(string nodeJsExecutablePath, string mochaModulePath, string chaiModulePath)
             : base(nodeJsExecutablePath)
         {
-            if (!File.Exists(nodeJsExecutablePath))
+            if (!File.Exists(mochaModulePath))
             {
-                throw new ArgumentException(string.Format("Mocha not found in: {0}", nodeJsExecutablePath), "mochaModulePath");
+                throw new ArgumentException(string.Format("Mocha not found in: {0}", mochaModulePath), "mochaModulePath");
             }
 
             if (!Directory.Exists(chaiModulePath))
             {
-                throw new ArgumentException(string.Format("Chai not found in: {0}", nodeJsExecutablePath), "chaiModulePath");
+                throw new ArgumentException(string.Format("Chai not found in: {0}", chaiModulePath), "chaiModulePath");
             }
 
             this.mochaModulePath = mochaModulePath;
