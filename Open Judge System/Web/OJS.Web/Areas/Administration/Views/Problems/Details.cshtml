@@ -75,6 +75,19 @@
             <text>Резултатите не са видими</text>
         }
     </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.ShowDetailedFeedback)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @if (Model.ShowDetailedFeedback)
+        {
+            <text>Пълният feedback е видим</text>
+        }
+        else
+        {
+            <text>Пълният feedback е видим</text>
+        }
+    </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.OrderBy)

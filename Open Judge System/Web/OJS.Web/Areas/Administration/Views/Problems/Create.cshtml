@@ -173,6 +173,21 @@
                     @Html.ValidationMessageFor(m => m.ShowResults)
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.ShowDetailedFeedback)
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    @Html.EditorFor(m => m.ShowDetailedFeedback)
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете дали участниците ще могат да си виждат пълен feedback на решенията си, както го виждат администраторите" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.ShowDetailedFeedback)
+                </div>
+            </div>
         </fieldset>
         <br />
         <fieldset>

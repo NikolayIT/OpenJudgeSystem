@@ -60,6 +60,9 @@
         [DefaultValue(true)]
         public bool ShowResults { get; set; }
 
+        [DefaultValue(false)]
+        public bool ShowDetailedFeedback { get; set; }
+
         public virtual ICollection<Test> Tests
         {
             get { return this.tests; }
