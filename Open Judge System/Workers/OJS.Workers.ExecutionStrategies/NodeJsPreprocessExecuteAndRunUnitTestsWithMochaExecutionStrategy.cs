@@ -76,15 +76,18 @@ describe('TestScope', function() {
             }
         }
 
-        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
+        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
         {
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
-
             var testResults = new List<TestResult>();
+
+            var arguments = new List<string>();
+            arguments.Add(this.mochaModulePath);
+            arguments.Add(codeSavePath);
+            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { this.mochaModulePath, codeSavePath });
+                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, arguments);
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
             }

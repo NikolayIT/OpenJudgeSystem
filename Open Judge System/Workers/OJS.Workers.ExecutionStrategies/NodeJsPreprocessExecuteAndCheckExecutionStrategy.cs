@@ -27,7 +27,7 @@
             this.NodeJsExecutablePath = nodeJsExecutablePath;
         }
 
-        protected readonly string NodeJsExecutablePath { get; private set; }
+        protected string NodeJsExecutablePath { get; private set; }
 
         protected virtual string JsCodeRequiredModules
         {
@@ -174,8 +174,9 @@ var code = {
 
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
+            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
-            result.TestResults = this.ProcessTests(executionContext, executor, codeSavePath);
+            result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
 
             // Clean up
             File.Delete(codeSavePath);
@@ -183,10 +184,8 @@ var code = {
             return result;
         }
 
-        protected virtual List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, string codeSavePath)
+        protected virtual List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
         {
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
-
             var testResults = new List<TestResult>();
 
             foreach (var test in executionContext.Tests)
