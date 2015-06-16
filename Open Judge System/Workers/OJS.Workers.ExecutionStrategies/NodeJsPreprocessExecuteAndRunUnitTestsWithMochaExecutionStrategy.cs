@@ -6,6 +6,7 @@
 
     using OJS.Workers.Common;
     using OJS.Workers.Checkers;
+    using Newtonsoft.Json.Linq;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
@@ -59,6 +60,9 @@ describe('TestScope', function() {
                 return @"
     var inputData = content.trim();
     var result = code.run();
+    if (result == undefined) {
+        result = 'Invalid!';
+    }
 	
 	testFunc = new Function('assert', 'expect', 'should', ""var result = this.valueOf();"" + inputData);
     testFunc.call(result, assert, expect, should);
@@ -88,7 +92,34 @@ describe('TestScope', function() {
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, arguments);
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+
+                JObject jsonTestResult = null;
+                var passed = false;
+                string error = null;
+
+                try
+                {
+                    jsonTestResult = JObject.Parse(processExecutionResult.ReceivedOutput.Trim());
+                    passed = (int)jsonTestResult["stats"]["passes"] == 1;
+                }
+                catch
+                {
+                    error = "Invalid console output!";
+                }
+
+                if (!passed)
+                {
+                    try
+                    {
+                        error = (string)jsonTestResult["failures"][0]["err"]["message"];
+                    }
+                    catch
+                    {
+                        error = "Invalid console output!";
+                    }
+                }
+                
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, passed ? "yes" : error);
                 testResults.Add(testResult);
             }
 
