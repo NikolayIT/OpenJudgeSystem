@@ -24,7 +24,6 @@
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
 
-    // TODO: ShowResults property should be editable
     public class ProblemsController : AdministrationController
     {
         public ProblemsController(IOjsData data)
@@ -101,6 +100,7 @@
                 ContestId = contest.Id,
                 ContestName = contest.Name,
                 ShowResults = true,
+                ShowDetailedFeedback = false,
             };
 
             return this.View(problem);
@@ -124,7 +124,7 @@
                 }
             }
 
-            if (problem != null && this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var newProblem = new Problem
                 {
@@ -135,6 +135,7 @@
                     TimeLimit = problem.TimeLimit,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     OrderBy = problem.OrderBy,
                     Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker)
                 };
@@ -162,7 +163,7 @@
                                         Importance = 0
                                     }
                                 };
-                        ViewBag.SystemMessages = systemMessages;
+                        this.ViewBag.SystemMessages = systemMessages;
                         problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
                         return this.View(problem);
                     }
@@ -171,7 +172,7 @@
                 this.Data.Problems.Add(newProblem);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
                 return this.RedirectToAction("Contest", new { id = id });
             }
 
@@ -204,6 +205,7 @@
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
                     ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy
@@ -241,6 +243,7 @@
                 existingProblem.MemoryLimit = problem.MemoryLimit;
                 existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
                 existingProblem.ShowResults = problem.ShowResults;
+                existingProblem.ShowDetailedFeedback = problem.ShowDetailedFeedback;
                 existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
                 existingProblem.OrderBy = problem.OrderBy;
 
@@ -278,7 +281,9 @@
                     MemoryLimit = problem.MemoryLimit,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy
+                    OrderBy = problem.OrderBy,
+                    ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback
                 })
                 .FirstOrDefault();
 

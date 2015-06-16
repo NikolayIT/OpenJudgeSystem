@@ -25,12 +25,13 @@
                     Name = problem.Name,
                     ContestId = problem.ContestId,
                     ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Where(x => x.IsTrialTest).Count(),
-                    CompeteTests = problem.Tests.AsQueryable().Where(x => !x.IsTrialTest).Count(),
+                    TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
+                    CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
                     MaximumPoints = problem.MaximumPoints,
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
                     ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy
@@ -89,6 +90,9 @@
 
         [Display(Name = "Видими резултати")]
         public bool ShowResults { get; set; }
+
+        [Display(Name = "Покажи пълния feedback")]
+        public bool ShowDetailedFeedback { get; set; }
 
         [ExcludeFromExcel]
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }
