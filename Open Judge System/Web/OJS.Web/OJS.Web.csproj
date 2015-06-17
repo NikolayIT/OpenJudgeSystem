@@ -790,6 +790,7 @@
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\UserInRoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Setting\SettingAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Submission\SubmissionAdministrationGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Submission\SubmissionAdministrationViewModel.cs" />
