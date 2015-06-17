@@ -28,7 +28,7 @@
 
         public override object GetById(object id)
         {
-            return this.Data.Checkers
+            return this.Data.SubmissionTypes
                 .All()
                 .FirstOrDefault(o => o.Id == (int)id);
         }
@@ -48,7 +48,6 @@
         {
             var databaseModel = model.GetEntityModel();
             model.Id = (int)this.BaseCreate(databaseModel);
-            this.UpdateAuditInfoValues(model, databaseModel);
             return this.GridOperation(request, model);
         }
 
@@ -57,7 +56,6 @@
         {
             var entity = this.GetById(model.Id) as DatabaseModelType;
             this.BaseUpdate(model.GetEntityModel(entity));
-            this.UpdateAuditInfoValues(model, entity);
             return this.GridOperation(request, model);
         }
 

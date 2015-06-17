@@ -11,7 +11,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class SubmissionTypeAdministrationViewModel : AdministrationViewModel<SubmissionType>
+    public class SubmissionTypeAdministrationViewModel
     {
         [ExcludeFromExcel]
         public static Expression<Func<SubmissionType, SubmissionTypeAdministrationViewModel>> ViewModel
@@ -52,18 +52,22 @@
 
         [DatabaseProperty]
         [Display(Name = "Execution стратегия")]
+        [UIHint("Enum")]
         public ExecutionStrategyType ExecutionStrategyType { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Компилатор")]
+        [UIHint("Enum")]
         public CompilerType CompilerType { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Допълнителни аргументи")]
+        [UIHint("SingleLineText")]
         public string AdditionalCompilerArguments { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Описание")]
+        [UIHint("MultiLineText")]
         public string Description { get; set; }
 
         [DatabaseProperty]
@@ -72,6 +76,22 @@
 
         [DatabaseProperty]
         [Display(Name = "Позволени файлове")]
+        [UIHint("SingleLineText")]
         public string AllowedFileExtensions { get; set; }
+
+        public SubmissionType GetEntityModel(SubmissionType model = null)
+        {
+            model = model ?? new SubmissionType();
+            model.Id = this.Id;
+            model.Name = this.Name;
+            model.IsSelectedByDefault = this.IsSelectedByDefault;
+            model.ExecutionStrategyType = this.ExecutionStrategyType;
+            model.CompilerType = this.CompilerType;
+            model.AdditionalCompilerArguments = this.AdditionalCompilerArguments;
+            model.Description = this.Description;
+            model.AllowBinaryFilesUpload = this.AllowBinaryFilesUpload;
+            model.AllowedFileExtensions = this.AllowedFileExtensions;
+            return model;
+        }
     }
 }
