@@ -11,7 +11,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    public class SubmissionTypeAdministrationViewModel : AdministrationViewModel<Submission>
+    public class SubmissionTypeAdministrationViewModel : AdministrationViewModel<SubmissionType>
     {
         [ExcludeFromExcel]
         public static Expression<Func<SubmissionType, SubmissionTypeAdministrationViewModel>> ViewModel

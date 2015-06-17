@@ -762,6 +762,7 @@
     <Compile Include="Areas\Administration\Controllers\RolesController.cs" />
     <Compile Include="Areas\Administration\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Administration\Controllers\SubmissionsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\SubmissionTypesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
