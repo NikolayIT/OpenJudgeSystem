@@ -101,6 +101,7 @@ process.config = undefined;
 process.openStdin = undefined;
 process.chdir = undefined;
 process.cwd = undefined;
+process.exit = undefined;
 process.umask = undefined;
 GLOBAL = undefined;
 root = undefined;
@@ -130,6 +131,7 @@ delete COUNTER_HTTP_SERVER_RESPONSE;
 delete COUNTER_HTTP_CLIENT_REQUEST;
 delete COUNTER_HTTP_CLIENT_RESPONSE;
 delete process.argv;
+delete process.exit;
 delete process.versions;
 delete GLOBAL;
 delete root;
@@ -142,6 +144,8 @@ delete clearImmediate;
 delete module;
 delete require;
 delete msg;
+
+process.exit = function () {};
 
 " + PreevaluationPlaceholder + @"
 process.stdin.resume();
