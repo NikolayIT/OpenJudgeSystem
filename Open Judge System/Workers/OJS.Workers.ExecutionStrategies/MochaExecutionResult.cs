@@ -5,6 +5,8 @@
 
     public class MochaExecutionResult
     {
+        private const string InvalidJsonReplace = "]}[},!^@,Invalid,!^@,{]{[";
+
         public bool Passed { get; set; }
 
         public string Error { get; set; }
@@ -17,7 +19,7 @@
 
             try
             {
-                jsonTestResult = JObject.Parse(result.Trim().Replace("/*", string.Empty).Replace("*/", string.Empty));
+                jsonTestResult = JObject.Parse(result.Trim().Replace("/*", InvalidJsonReplace).Replace("*/", InvalidJsonReplace));
                 passed = (int)jsonTestResult["stats"]["passes"] == 1;
             }
             catch
