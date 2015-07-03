@@ -92,7 +92,7 @@ describe('TestScope', function() {
             {
                 var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, arguments);
                 var mochaResult = MochaExecutionResult.Parse(processExecutionResult.ReceivedOutput);
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, mochaResult.Passed ? "yes" : string.Format("Enexpected error: {0}", mochaResult.Error));
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, mochaResult.Passed ? "yes" : string.Format("Unexpected error: {0}", mochaResult.Error));
                 testResults.Add(testResult);
             }
 
