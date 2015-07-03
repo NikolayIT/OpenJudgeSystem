@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public class MochaExecutionResult
@@ -16,7 +17,7 @@
 
             try
             {
-                jsonTestResult = JObject.Parse(result.Trim());
+                jsonTestResult = JObject.Parse(result.Trim().Replace("/*", string.Empty).Replace("*/", string.Empty));
                 passed = (int)jsonTestResult["stats"]["passes"] == 1;
             }
             catch
