@@ -171,7 +171,7 @@ var code = {
             result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code);
+            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code.Trim(';'));
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
