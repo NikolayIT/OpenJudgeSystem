@@ -125,3 +125,6 @@ $tf/
 # JustMock configuration files
 /Open Judge System/*.jmconfig
 /Research/Sandbox/Thumbs.db
+
+# Visual Studio folder
+.vs
