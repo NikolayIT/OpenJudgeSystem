@@ -124,6 +124,11 @@
             return userLine.Trim().Equals(correctLine.Trim(), StringComparison.InvariantCulture);
         }
 
+        protected bool AreEqualEndTrimmedLines(string userLine, string correctLine)
+        {
+            return userLine.TrimEnd().Equals(correctLine.TrimEnd(), StringComparison.InvariantCulture);
+        }
+
         protected bool AreEqualCaseInsensitiveLines(string userLine, string correctLine)
         {
             return userLine.ToLower().Equals(correctLine.ToLower(), StringComparison.InvariantCulture);
