@@ -35,7 +35,7 @@
         {
             var submissions = this.Data.Submissions.All();
 
-            if (this.User.IsLecturer())
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
                 submissions = submissions.Where(s => s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
             }
