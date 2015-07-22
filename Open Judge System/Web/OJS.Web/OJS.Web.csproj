@@ -753,7 +753,6 @@
     <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
-    <Compile Include="Areas\Administration\Controllers\FilesController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
@@ -1119,7 +1118,6 @@
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_AdministrationLayout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Administration\Views\Files\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\ByIp.cshtml" />
