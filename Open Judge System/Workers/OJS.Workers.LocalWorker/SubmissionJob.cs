@@ -238,6 +238,9 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
                     executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(Settings.NodeJsExecutablePath, Settings.MochaModulePath, Settings.ChaiModulePath);
                     break;
+                case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests:
+                    executionStrategy = new NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(Settings.NodeJsExecutablePath, Settings.MochaModulePath, Settings.ChaiModulePath, Settings.JsDomModulePath, Settings.JQueryModulePath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;

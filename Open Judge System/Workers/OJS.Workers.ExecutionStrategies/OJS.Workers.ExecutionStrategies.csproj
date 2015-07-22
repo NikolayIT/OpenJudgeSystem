@@ -61,6 +61,7 @@
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="MochaExecutionResult.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />
