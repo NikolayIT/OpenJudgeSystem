@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Contracts", "Data\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{3003E3B3-84A6-48E8-8252-B532A5086EB1}"
 	ProjectSection(SolutionItems) = preProject
-		External Libraries\ElFinder.Net-readme.txt = External Libraries\ElFinder.Net-readme.txt
-		External Libraries\ElFinder.Net.dll = External Libraries\ElFinder.Net.dll
 		External Libraries\Ionic.Zip.dll = External Libraries\Ionic.Zip.dll
 		External Libraries\Ionic.Zip.xml = External Libraries\Ionic.Zip.xml
 		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
