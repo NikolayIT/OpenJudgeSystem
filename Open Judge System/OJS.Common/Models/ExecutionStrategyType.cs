@@ -6,6 +6,7 @@
         CompileExecuteAndCheck = 1,
         NodeJsPreprocessExecuteAndCheck = 2,
         NodeJsPreprocessExecuteAndRunUnitTestsWithMocha = 7,
+        NodeJsPreprocessExecuteAndRunJsDomUnitTests = 8,
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
         PhpCgiExecuteAndCheck = 5,
