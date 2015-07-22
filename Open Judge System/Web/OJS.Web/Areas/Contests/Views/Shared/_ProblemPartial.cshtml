@@ -26,14 +26,7 @@
 
 @{
     string className;
-    if (Model.ShowResults)
-    {
-        className = "col-lg-8";
-    }
-    else
-    {
-        className = "col-lg-12";
-    }
+    className = Model.ShowResults ? "col-lg-8" : "col-lg-12";
 }
 
 <div class="row">

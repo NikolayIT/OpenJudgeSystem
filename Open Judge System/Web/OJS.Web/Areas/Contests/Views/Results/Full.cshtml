@@ -72,16 +72,7 @@
                         }
                         foreach (var testRun in problemResult.BestSubmission.TestRuns)
                         {
-                            string style;
-                            if (testRun.IsZeroTest)
-                            {
-                                style = "-ms-opacity: 0.3; opacity: 0.3";
-                            }
-                            else
-                            {
-                                style = string.Empty;
-                            }
-
+                            var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
                             switch (testRun.ResultType)
                             {
                                 case TestRunResultType.CorrectAnswer:<span style="@style" class="glyphicon glyphicon-ok text-success" title=@Resource.Answer_correct></span>break;

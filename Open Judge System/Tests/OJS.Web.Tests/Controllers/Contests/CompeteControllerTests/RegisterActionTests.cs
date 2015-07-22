@@ -192,8 +192,10 @@
 
             try
             {
-                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-                contestRegistrationModel.ContestId = contest.Id;
+                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                                   {
+                                                       ContestId = contest.Id
+                                                   };
 
                 this.CompeteController.Register(this.IsPractice, contestRegistrationModel);
                 Assert.Fail("Expected exception trying to register to practice contest, when practice is not available");
@@ -211,8 +213,10 @@
 
             try
             {
-                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-                contestRegistrationModel.ContestId = contest.Id;
+                var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                                   {
+                                                       ContestId = contest.Id
+                                                   };
                 this.CompeteController.Register(this.IsCompete, contestRegistrationModel);
                 Assert.Fail("Expected exception trying to register to compete in a contest, when compete is not available");
             }
@@ -230,8 +234,7 @@
             this.EmptyOjsData.Participants.Add(new Participant(contest.Id, this.FakeUserProfile.Id, this.IsCompete));
             this.EmptyOjsData.SaveChanges();
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData) { ContestId = contest.Id };
 
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
@@ -246,9 +249,11 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = "invalidPassword";
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password = "invalidPassword",
+                                                   ContestId = contest.Id
+                                               };
 
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as ViewResult;
             var model = result.Model as ContestRegistrationViewModel;
@@ -266,9 +271,12 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = "invalidPassword";
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password =
+                                                       "invalidPassword",
+                                                   ContestId = contest.Id
+                                               };
 
             var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as ViewResult;
             var model = result.Model as ContestRegistrationViewModel;
@@ -286,9 +294,11 @@
         {
             var contest = this.CreateAndSaveContest("contestName", this.ActiveContestWithPasswordOptions, this.InactiveContestOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = this.DefaultCompetePassword;
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password = this.DefaultCompetePassword,
+                                                   ContestId = contest.Id
+                                               };
 
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as RedirectToRouteResult;
 
@@ -303,9 +313,11 @@
         {
             var contest = this.CreateAndSaveContest("contestName", this.InactiveContestOptions, this.ActiveContestWithPasswordOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = this.DefaultPracticePassword;
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password = this.DefaultPracticePassword,
+                                                   ContestId = contest.Id
+                                               };
 
             var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as RedirectToRouteResult;
 
@@ -320,9 +332,11 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.ActiveContestWithPasswordAndQuestionsOptions, this.InactiveContestOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = this.DefaultCompetePassword;
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password = this.DefaultCompetePassword,
+                                                   ContestId = contest.Id
+                                               };
 
             this.TryValidateModel(contestRegistrationModel, this.CompeteController);
             var result = this.CompeteController.Register(this.IsCompete, contestRegistrationModel) as ViewResult;
@@ -338,9 +352,11 @@
         {
             var contest = this.CreateAndSaveContest("testContest", this.InactiveContestOptions, this.ActiveContestWithPasswordAndQuestionsOptions);
 
-            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData);
-            contestRegistrationModel.Password = this.DefaultPracticePassword;
-            contestRegistrationModel.ContestId = contest.Id;
+            var contestRegistrationModel = new ContestRegistrationModel(this.EmptyOjsData)
+                                               {
+                                                   Password = this.DefaultPracticePassword,
+                                                   ContestId = contest.Id
+                                               };
 
             this.TryValidateModel(contestRegistrationModel, this.CompeteController);
             var result = this.CompeteController.Register(this.IsPractice, contestRegistrationModel) as ViewResult;
