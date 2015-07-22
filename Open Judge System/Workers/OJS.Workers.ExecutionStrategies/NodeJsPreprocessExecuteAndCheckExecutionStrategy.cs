@@ -34,7 +34,7 @@
             get
             {
                 return @"
-var EOL = require('os').EOL;";
+var EOL = require('os').EOL";
             }
         }
 
@@ -68,11 +68,11 @@ var content = ''";
             }
         }
 
-        private string JsCodeTemplate
+        protected virtual string JsCodeTemplate
         {
             get
             {
-                return RequiredModules + @"
+                return RequiredModules + @";
 
 DataView = undefined;
 DTRACE_NET_SERVER_CONNECTION = undefined;

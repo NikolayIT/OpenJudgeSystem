@@ -26,7 +26,7 @@
             }
 
             this.mochaModulePath = mochaModulePath;
-            this.chaiModulePath = chaiModulePath.Replace('\\', '/');
+            this.chaiModulePath = this.ProcessModulePath(chaiModulePath);
         }
 
         protected override string JsCodeRequiredModules
@@ -35,9 +35,9 @@
             {
                 return @"
 var chai = require('" + this.chaiModulePath + @"'),
-	assert = chai.assert;
+	assert = chai.assert,
 	expect = chai.expect,
-	should = chai.should();";
+	should = chai.should()";
             }
         }
 
@@ -97,6 +97,11 @@ describe('TestScope', function() {
             }
 
             return testResults;
+        }
+
+        protected string ProcessModulePath(string path)
+        {
+            return path.Replace('\\', '/');
         }
     }
 }
