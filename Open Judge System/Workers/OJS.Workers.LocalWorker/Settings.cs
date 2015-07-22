@@ -62,6 +62,22 @@
             }
         }
 
+        public static string JsDomModulePath
+        {
+            get
+            {
+                return GetSetting("JsDomModulePath");
+            }
+        }
+
+        public static string JQueryModulePath
+        {
+            get
+            {
+                return GetSetting("JQueryModulePath");
+            }
+        }
+
         public static string JavaCompilerPath
         {
             get
