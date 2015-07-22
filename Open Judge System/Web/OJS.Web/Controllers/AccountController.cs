@@ -136,7 +136,7 @@
         {
             IdentityResult result =
                 await
-                this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+                this.UserManager.RemoveLoginAsync(this.User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Disassociate.External_login_removed;
@@ -153,7 +153,7 @@
         public ActionResult Manage()
         {
             this.ViewBag.HasLocalPassword = this.HasPassword();
-            this.ViewBag.ReturnUrl = Url.Action("Manage");
+            this.ViewBag.ReturnUrl = this.Url.Action("Manage");
             return this.View();
         }
 
@@ -164,14 +164,14 @@
         {
             bool hasPassword = this.HasPassword();
             this.ViewBag.HasLocalPassword = hasPassword;
-            this.ViewBag.ReturnUrl = Url.Action("Manage");
+            this.ViewBag.ReturnUrl = this.Url.Action("Manage");
             if (hasPassword)
             {
                 if (this.ModelState.IsValid)
                 {
                     IdentityResult result =
                         await
-                        this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                        this.UserManager.ChangePasswordAsync(this.User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
                         this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
@@ -184,7 +184,7 @@
             else
             {
                 // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
+                ModelState state = this.ModelState["OldPassword"];
                 if (state != null)
                 {
                     state.Errors.Clear();
@@ -192,8 +192,8 @@
 
                 if (this.ModelState.IsValid)
                 {
-                    IdentityResult result =
-                        await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                    var result =
+                        await this.UserManager.AddPasswordAsync(this.User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
                         this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
@@ -217,7 +217,7 @@
             // Request a redirect to the external login provider
             return new ChallengeResult(
                 provider,
-                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+                this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         // GET: /Account/ExternalLoginCallback
@@ -263,16 +263,16 @@
         public ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
-            return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
+            return new ChallengeResult(provider, this.Url.Action("LinkLoginCallback", "Account"), this.User.Identity.GetUserId());
         }
 
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, this.User.Identity.GetUserId());
             if (loginInfo != null)
             {
-                var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+                var result = await this.UserManager.AddLoginAsync(this.User.Identity.GetUserId(), loginInfo.Login);
                 if (result.Succeeded)
                 {
                     return this.RedirectToAction("Manage");
@@ -291,7 +291,7 @@
             ExternalLoginConfirmationViewModel model,
             string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Manage");
             }
@@ -359,7 +359,7 @@
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
-            var linkedAccounts = this.UserManager.GetLogins(User.Identity.GetUserId());
+            var linkedAccounts = this.UserManager.GetLogins(this.User.Identity.GetUserId());
             this.ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
             return this.PartialView("_RemoveAccountPartial", linkedAccounts);
         }
@@ -458,15 +458,10 @@
 
             if (this.ModelState.IsValid)
             {
-                IdentityResult removePassword =
-                                        await
-                                        this.UserManager.RemovePasswordAsync(user.Id);
+                var removePassword = await this.UserManager.RemovePasswordAsync(user.Id);
                 if (removePassword.Succeeded)
                 {
-                    IdentityResult changePassword =
-                                        await
-                                        this.UserManager.AddPasswordAsync(user.Id, model.Password);
-
+                    var changePassword = await this.UserManager.AddPasswordAsync(user.Id, model.Password);
                     if (changePassword.Succeeded)
                     {
                         user.ForgottenPasswordToken = null;
@@ -583,11 +578,11 @@
             var forgottenPasswordEmailBody = string.Format(
                                                 Resources.Account.AccountEmails.Forgotten_password_body,
                                                 user.UserName,
-                                                Url.Action(
+                                                this.Url.Action(
                                                         "ChangePassword",
                                                         "Account",
                                                         new { token = user.ForgottenPasswordToken },
-                                                        Request.Url.Scheme));
+                                                        this.Request.Url.Scheme));
 
             mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }
@@ -610,7 +605,7 @@
 
         private bool HasPassword()
         {
-            var user = this.UserManager.FindById(User.Identity.GetUserId());
+            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -621,7 +616,7 @@
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (this.Url.IsLocalUrl(returnUrl))
             {
                 return this.Redirect(returnUrl);
             }

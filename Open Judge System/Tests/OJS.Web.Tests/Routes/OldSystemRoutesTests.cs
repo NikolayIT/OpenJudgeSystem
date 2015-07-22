@@ -91,7 +91,7 @@
             Assert.AreEqual("Redirects", routeData.Values["controller"], "Invalid controller when redirecting from: {0}", oldUrl);
             Assert.IsNotNull(routeData.Values["id"], "Invalid action id when redirecting from: {0}", oldUrl);
 
-            var controller = new RedirectsController(EmptyOjsData);
+            var controller = new RedirectsController(this.EmptyOjsData);
             var id = routeData.Values["id"].ToString().ToInteger();
             var actionName = routeData.Values["action"].ToString();
             var type = controller.GetType();

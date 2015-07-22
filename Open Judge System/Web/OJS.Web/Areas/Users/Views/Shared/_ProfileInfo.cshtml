@@ -45,7 +45,7 @@
             </div>
         }
     </div>
-    @if (this.User.Identity.Name == Model.Username)
+    @if (User.Identity.Name == Model.Username)
     {
         <div class="col-md-offset-4 col-md-2">
             <a href="Settings/" class="btn btn-primary pull-right">@Resource.Settings</a>
@@ -54,7 +54,7 @@
 </div>
 <br />
 
-@if (this.User.IsAdmin() || this.User.Identity.Name == Model.Username)
+@if (User.IsAdmin() || User.Identity.Name == Model.Username)
 {
     <div class="col-md-12">
         <h2>Решения</h2>
@@ -71,7 +71,7 @@
                 <th>
                     @Resource.Contest
                 </th>
-                @if (this.User.Identity.Name == Model.Username || User.IsAdmin())
+                @if (User.Identity.Name == Model.Username || User.IsAdmin())
                 {
                     <th>@Resource.Results</th>
                 }
@@ -87,7 +87,7 @@
                         </a>
                     </td>
 
-                    @if (this.User.Identity.Name == Model.Username || User.IsAdmin())
+                    @if (User.Identity.Name == Model.Username || User.IsAdmin())
                     {
                         <td>
                             @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>

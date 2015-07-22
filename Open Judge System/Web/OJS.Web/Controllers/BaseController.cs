@@ -83,8 +83,8 @@
             }
             else
             {
-                var controllerName = ControllerContext.RouteData.Values["Controller"].ToString();
-                var actionName = ControllerContext.RouteData.Values["Action"].ToString();
+                var controllerName = this.ControllerContext.RouteData.Values["Controller"].ToString();
+                var actionName = this.ControllerContext.RouteData.Values["Action"].ToString();
                 this.View("Error", new HandleErrorInfo(filterContext.Exception, controllerName, actionName)).ExecuteResult(this.ControllerContext);
             }
 

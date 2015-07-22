@@ -61,7 +61,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ViewModelType model)
+        public ActionResult Create(ContestAdministrationViewModel model)
         {
             if (!this.IsValidContest(model))
             {
@@ -84,7 +84,7 @@
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -102,7 +102,7 @@
 
             if (contest == null)
             {
-                TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -115,7 +115,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ViewModelType model)
+        public ActionResult Edit(ContestAdministrationViewModel model)
         {
             if (!this.IsValidContest(model))
             {
@@ -128,7 +128,7 @@
 
                 if (contest == null)
                 {
-                    TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                    this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
 
@@ -147,7 +147,7 @@
                 this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -155,7 +155,7 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ContestAdministrationViewModel model)
         {
             this.BaseDestroy(model.Id);
             return this.GridOperation(request, model);
@@ -216,14 +216,14 @@
                 .ToList()
                 .Select(cat => new SelectListItem
                 {
-                    Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
+                    Text = cat.Name, 
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture), 
                 });
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
-        private bool IsValidContest(ViewModelType model)
+        private bool IsValidContest(ContestAdministrationViewModel model)
         {
             bool isValid = true;
 

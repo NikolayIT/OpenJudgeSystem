@@ -33,12 +33,12 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && submission.IsDeleted)
+            if (!this.User.IsAdmin() && submission.IsDeleted)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            if (!this.User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
@@ -59,12 +59,12 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && submission.IsDeleted)
+            if (!this.User.IsAdmin() && submission.IsDeleted)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_not_found);
             }
 
-            if (!User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
+            if (!this.User.IsAdmin() && this.UserProfile != null && submission.UserId != this.UserProfile.Id)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }

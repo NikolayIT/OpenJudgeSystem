@@ -23,7 +23,7 @@
 
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
                 return this.View("AdvancedSubmissions");
             }
@@ -39,7 +39,7 @@
         {
             IQueryable<Submission> data;
 
-            if (User.IsAdmin())
+            if (this.User.IsAdmin())
             {
                 data = this.Data.Submissions.All();
                 if (userId != null)
