@@ -1,9 +1,9 @@
 ﻿function getTypeName(type) {
     switch (type) {
-        case 0: return "Default"; break;
-        case 1: return "Drop-down list"; break;
-        case 2: return "Single line text"; break;
-        case 3: return "Multi-line text"; break;
+        case 0: return "Default";
+        case 1: return "Drop-down list";
+        case 2: return "Single line text";
+        case 3: return "Multi-line text";
     }
 }
 

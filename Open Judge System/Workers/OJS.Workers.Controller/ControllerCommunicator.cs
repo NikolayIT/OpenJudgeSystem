@@ -21,10 +21,12 @@
 
         public void Start()
         {
+            this.logger.Info("Start()");
         }
 
         public void Stop()
         {
+            this.logger.Info("Stop()");
         }
     }
 }

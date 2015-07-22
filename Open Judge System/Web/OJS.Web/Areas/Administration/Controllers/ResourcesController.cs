@@ -48,7 +48,7 @@
             int orderBy;
             var resources = problem.Resources.Where(res => !res.IsDeleted);
 
-            if (resources == null || resources.Count() == 0)
+            if (!resources.Any())
             {
                 orderBy = 0;
             }
@@ -75,7 +75,7 @@
             if (resource == null)
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Ресурсът е невалиден";
-                return this.RedirectToAction("Resource", "Problems", new { id = id });
+                return this.RedirectToAction("Resource", "Problems", new { id });
             }
 
             if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
@@ -119,7 +119,7 @@
                 problem.Resources.Add(newResource);
                 this.Data.SaveChanges();
 
-                return this.RedirectToAction("Resource", "Problems", new { id = id });
+                return this.RedirectToAction("Resource", "Problems", new { id });
             }
 
             resource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();

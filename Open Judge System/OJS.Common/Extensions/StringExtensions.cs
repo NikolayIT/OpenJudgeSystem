@@ -139,18 +139,6 @@
         }
 
         // TODO: Test
-        public static SecureString ToSecureString(this string sourceString)
-        {
-            var secureString = new SecureString();
-            foreach (var character in sourceString)
-            {
-                secureString.AppendChar(character);
-            }
-
-            return secureString;
-        }
-
-        // TODO: Test
         public static string ToValidFileName(this string input)
         {
             var invalidCharacters = Path.GetInvalidFileNameChars();

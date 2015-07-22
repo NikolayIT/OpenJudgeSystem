@@ -7,7 +7,6 @@
     public class NullDisplayFormatAttribute : DisplayFormatAttribute
     {
         public NullDisplayFormatAttribute()
-            : base()
         {
             this.NullDisplayText = Resource.No_information;
         }

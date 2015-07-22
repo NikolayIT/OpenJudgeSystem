@@ -34,7 +34,7 @@
         [Test]
         public void GetTestRunsActionShouldReturnProperTestCount()
         {
-            var jsonResult = this.TestsController.GetTestRuns(1) as JsonResult;
+            var jsonResult = this.TestsController.GetTestRuns(1);
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<TestRunViewModel>;
@@ -45,7 +45,7 @@
         [Test]
         public void GetGetCascadeCategoriesShouldReturnProperCategoriesCount()
         {
-            var jsonResult = this.TestsController.GetCascadeCategories() as JsonResult;
+            var jsonResult = this.TestsController.GetCascadeCategories();
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -56,7 +56,7 @@
         [Test]
         public void GetGetCascadeContestsShouldReturnProperContestsCount()
         {
-            var jsonResult = this.TestsController.GetCascadeContests(1) as JsonResult;
+            var jsonResult = this.TestsController.GetCascadeContests(1);
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -67,7 +67,7 @@
         [Test]
         public void GetGetCascadeProblemsShouldReturnProperProblemsCount()
         {
-            var jsonResult = this.TestsController.GetCascadeProblems(1) as JsonResult;
+            var jsonResult = this.TestsController.GetCascadeProblems(1);
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -78,7 +78,7 @@
         [Test]
         public void GetProblemInformacionShouldReturnProperIds()
         {
-            var jsonResult = this.TestsController.GetProblemInformation(1) as JsonResult;
+            var jsonResult = this.TestsController.GetProblemInformation(1);
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data;
@@ -93,7 +93,7 @@
         [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsValidAndCaseInsensitive()
         {
-            var jsonResult = this.TestsController.GetSearchedProblems("pro") as JsonResult;
+            var jsonResult = this.TestsController.GetSearchedProblems("pro");
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -104,7 +104,7 @@
         [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsValidAndParticular()
         {
-            var jsonResult = this.TestsController.GetSearchedProblems("other") as JsonResult;
+            var jsonResult = this.TestsController.GetSearchedProblems("other");
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -115,7 +115,7 @@
         [Test]
         public void GetSearchedProblemsShouldReturnProperProblemsCountIfTextIsNotValid()
         {
-            var jsonResult = this.TestsController.GetSearchedProblems("abv") as JsonResult;
+            var jsonResult = this.TestsController.GetSearchedProblems("abv");
             Assert.IsNotNull(jsonResult);
 
             var data = jsonResult.Data as IQueryable<object>;
@@ -126,7 +126,7 @@
         [Test]
         public void ProblemTestsShouldContainProperTestsCount()
         {
-            var contentResult = this.TestsController.ProblemTests(1) as ContentResult;
+            var contentResult = this.TestsController.ProblemTests(1);
             Assert.IsNotNull(contentResult);
 
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 };

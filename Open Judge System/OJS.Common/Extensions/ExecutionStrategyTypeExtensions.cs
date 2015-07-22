@@ -1,7 +1,5 @@
 ﻿namespace OJS.Common.Extensions
 {
-    using System;
-
     using OJS.Common.Models;
 
     public static class ExecutionStrategyTypeExtensions

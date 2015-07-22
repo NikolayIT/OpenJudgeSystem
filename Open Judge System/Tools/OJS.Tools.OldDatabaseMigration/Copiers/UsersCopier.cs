@@ -1,6 +1,5 @@
 ﻿namespace OJS.Tools.OldDatabaseMigration.Copiers
 {
-    using System;
     using System.Linq;
 
     using OJS.Common.Extensions;
@@ -64,15 +63,7 @@
                 context.Users.Add(user);
             }
 
-            try
-            {
-                context.SaveChanges();
-            }
-            catch
-            {
-                // ((System.Data.Entity.Validation.DbEntityValidationException)$exception).EntityValidationErrors.First().ValidationErrors.First()
-                throw;
-            }
+            context.SaveChanges();
 
             context.Configuration.AutoDetectChangesEnabled = true;
         }

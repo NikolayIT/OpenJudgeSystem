@@ -65,12 +65,12 @@
 )
 
 <script>
-    function dataBound(e) {
+    function dataBound() {
         var page = this.dataSource.page() - 1;
         var pageSize = this.dataSource.pageSize();
 
         var counter = 1;
-        $(this.wrapper).find(".indexColumn").each(function (e) {
+        $(this.wrapper).find(".indexColumn").each(function() {
             var index = (pageSize * page) + counter;
             $(this).html(index);
             counter++;

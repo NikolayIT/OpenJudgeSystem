@@ -1,5 +1,4 @@
-﻿@using OJS.Web.Common
-@using OJS.Web.ViewModels
+﻿@using OJS.Web.ViewModels
 @using Resource = Resources.Views.Shared.Layout;
 
 <!DOCTYPE html>
@@ -96,7 +95,6 @@
                                 <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.SubmissionTypes, GlobalConstants.Index, "SubmissionTypes", new { area = "Administration" }, null)</li>
                                 <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
-                                <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new { area = "Administration" }, null)</li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Anti-cheat</li>
                                 <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>

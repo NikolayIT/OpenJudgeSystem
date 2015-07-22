@@ -86,30 +86,30 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resources.News.Views.Selected.Invalid_news_id);
             }
 
-            var previousNews = this.Data.News.All()
+            var previousNews = this.Data.News
+                .All()
                 .OrderByDescending(x => x.Id)
-                .Where(x => x.Id < currentNews.Id && x.IsVisible && !x.IsDeleted)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.Id < currentNews.Id && x.IsVisible && !x.IsDeleted);
 
             if (previousNews == null)
             {
-                previousNews = this.Data.News.All()
+                previousNews = this.Data.News
+                    .All()
                     .OrderByDescending(x => x.Id)
-                    .Where(x => x.IsVisible && !x.IsDeleted)
-                    .First();
+                    .First(x => x.IsVisible && !x.IsDeleted);
             }
 
-            var nextNews = this.Data.News.All()
+            var nextNews = this.Data.News
+                .All()
                 .OrderBy(x => x.Id)
-                .Where(x => x.Id > currentNews.Id && x.IsVisible && !x.IsDeleted)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.Id > currentNews.Id && x.IsVisible && !x.IsDeleted);
 
             if (nextNews == null)
             {
-                nextNews = this.Data.News.All()
+                nextNews = this.Data.News
+                    .All()
                     .OrderBy(x => x.Id)
-                    .Where(x => x.IsVisible && !x.IsDeleted)
-                    .First();
+                    .First(x => x.IsVisible && !x.IsDeleted);
             }
 
             var newsContentViewModel = new SelectedNewsViewModel

@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.ViewModels.TestRun;
 
@@ -60,7 +59,7 @@
         {
             get
             {
-                if (this.TestRuns.Count() == 0)
+                if (!this.TestRuns.Any())
                 {
                     return null;
                 }
@@ -74,7 +73,7 @@
         {
             get
             {
-                if (this.TestRuns.Count() == 0)
+                if (!this.TestRuns.Any())
                 {
                     return null;
                 }

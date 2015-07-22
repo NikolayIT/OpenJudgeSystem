@@ -26,14 +26,7 @@
 
 @{
     string className;
-    if (Model.ShowResults)
-    {
-        className = "col-lg-8";
-    }
-    else
-    {
-        className = "col-lg-12";
-    }
+    className = Model.ShowResults ? "col-lg-8" : "col-lg-12";
 }
 
 <div class="row">
@@ -267,7 +260,7 @@ else
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<OJS.Web.Areas.Contests.ViewModels.Results.SubmissionResultIsCompiledViewModel>()
+            .Grid<SubmissionResultIsCompiledViewModel>()
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {

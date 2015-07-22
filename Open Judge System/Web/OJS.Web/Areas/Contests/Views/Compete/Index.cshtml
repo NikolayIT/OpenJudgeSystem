@@ -61,7 +61,7 @@
                 
                 if (User.IsAdmin())
                 {
-                    tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Id = Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
+                    tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
                 }
             })
             .Events(ev =>
