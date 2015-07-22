@@ -161,7 +161,7 @@
 
             var resource = new ProblemResource
             {
-                File = new byte[]
+                File = new[]
                 {
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue),
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue)
@@ -192,7 +192,7 @@
 
             var resource = new ProblemResource
             {
-                File = new byte[]
+                File = new[]
                 {
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue),
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue)
@@ -253,7 +253,7 @@
 
             var resource = new ProblemResource
             {
-                File = new byte[]
+                File = new[]
                 {
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue),
                     (byte)this.RandomGenerator.Next(0, byte.MaxValue)

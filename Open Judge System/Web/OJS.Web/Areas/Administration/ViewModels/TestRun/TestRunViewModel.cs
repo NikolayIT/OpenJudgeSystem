@@ -1,14 +1,10 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.TestRun
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
 
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
-    using OJS.Data.Models;
     using TestRunModel = OJS.Data.Models.TestRun;
 
     public class TestRunViewModel

@@ -9,7 +9,6 @@
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels.Common;
 
     public class SubmissionTypeAdministrationViewModel
     {

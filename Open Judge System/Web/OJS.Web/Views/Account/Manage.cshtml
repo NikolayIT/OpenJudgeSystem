@@ -1,6 +1,4 @@
-﻿@using OJS.Web.ViewModels.Account;
-@using Microsoft.AspNet.Identity;
-@using Resource = Resources.Account.Views.Manage
+﻿@using Resource = Resources.Account.Views.Manage
 
 @{
     ViewBag.Title = Resource.Change_password;
@@ -10,7 +8,7 @@
     <li><a href="/">Начало</a></li>
     <li>@Html.ActionLink("Профил", GlobalConstants.Index, new { controller = "Profile", area = "Users"})</li>
     <li>@Html.ActionLink("Настройки", GlobalConstants.Index, new { controller = "Settings", area = "Users" })</li>
-    </li><li class="active">@ViewBag.Title</li>
+    <li class="active">@ViewBag.Title</li>
 </ol>
 
 <h2>@ViewBag.Title</h2>

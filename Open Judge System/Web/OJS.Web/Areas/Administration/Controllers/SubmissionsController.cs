@@ -62,7 +62,7 @@
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.SubmissionAction = "Create";
+            this.ViewBag.SubmissionAction = "Create";
             var model = new SubmissionAdministrationViewModel();
             return this.View(model);
         }
@@ -91,7 +91,7 @@
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateSubmissionContentLength(model, problem);
                         this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
@@ -104,7 +104,7 @@
                 }
             }
 
-            ViewBag.SubmissionAction = "Create";
+            this.ViewBag.SubmissionAction = "Create";
             return this.View(model);
         }
 
@@ -123,7 +123,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            ViewBag.SubmissionAction = "Update";
+            this.ViewBag.SubmissionAction = "Update";
             return this.View(submission);
         }
 
@@ -141,15 +141,15 @@
                     {
                         model.Content = submission.Content;
                         model.FileExtension = submission.FileExtension;
-                        if (ModelState.ContainsKey("Content"))
+                        if (this.ModelState.ContainsKey("Content"))
                         {
-                            ModelState["Content"].Errors.Clear();
+                            this.ModelState["Content"].Errors.Clear();
                         }
                     }
                 }
             }
 
-            if (model != null && this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 if (model.ProblemId.HasValue)
                 {
@@ -162,7 +162,7 @@
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateSubmissionContentLength(model, problem);
                         this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
@@ -177,7 +177,7 @@
                 }
             }
 
-            ViewBag.SubmissionAction = "Update";
+            this.ViewBag.SubmissionAction = "Update";
             return this.View(model);
         }
 
@@ -228,12 +228,12 @@
 
             var submissionTypesSelectListItems = selectedProblemContest.SubmissionTypes
                 .ToList()
-                .Select(subm => new
+                .Select(submissionType => new
                 {
-                    Text = subm.Name,
-                    Value = subm.Id.ToString(),
-                    AllowBinaryFilesUpload = subm.AllowBinaryFilesUpload,
-                    AllowedFileExtensions = subm.AllowedFileExtensions
+                    Text = submissionType.Name,
+                    Value = submissionType.Id.ToString(),
+                    submissionType.AllowBinaryFilesUpload,
+                    submissionType.AllowedFileExtensions
                 });
 
             if (allowBinaryFilesUpload.HasValue)
@@ -314,14 +314,9 @@
 
         public JsonResult Contests(string text)
         {
-            var contests = this.Data.Contests
-                .All()
+            var contests = this.Data.Contests.All()
                 .OrderByDescending(c => c.CreatedOn)
-                .Select(c => new
-                    {
-                        Id = c.Id,
-                        Name = c.Name
-                    });
+                .Select(c => new { c.Id, c.Name });
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -365,11 +360,11 @@
             }
         }
 
-        private void ValidateSubmissionContentLenght(ModelType model, Problem problem)
+        private void ValidateSubmissionContentLength(ModelType model, Problem problem)
         {
             if (model.Content.Length > problem.SourceCodeSizeLimit)
             {
-                ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+                this.ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
             }
         }
 
@@ -377,14 +372,14 @@
         {
             if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
             {
-                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+                this.ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
             }
 
             if (submissionType.AllowedFileExtensions != null)
             {
                 if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
                 {
-                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                    this.ModelState.AddModelError("Content", "Невалидно разширение на файл!");
                 }
             }
         }

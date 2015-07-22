@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.Compilers
 {
-    using System.Diagnostics;
     using System.Text;
 
     public class CPlusPlusCompiler : Compiler

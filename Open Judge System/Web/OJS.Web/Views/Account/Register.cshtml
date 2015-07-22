@@ -64,7 +64,7 @@
     }
     <div class="col-md-offset-1 col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ViewBag.ReturnUrl })
         </section>
     </div>
 </div>

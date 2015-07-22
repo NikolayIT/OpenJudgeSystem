@@ -15,13 +15,11 @@
         [Test]
         public void CreatedContestShouldNotBeNull()
         {
-            var result = EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .Select(x => new
-                {
-                    CreatedOn = x.CreatedOn
-                })
-                .FirstOrDefault();
+            var result =
+                EmptyOjsData.Contests.All()
+                    .Where(x => x.Name == "Created")
+                    .Select(x => new { x.CreatedOn })
+                    .FirstOrDefault();
 
             Assert.IsNotNull(result);
         }

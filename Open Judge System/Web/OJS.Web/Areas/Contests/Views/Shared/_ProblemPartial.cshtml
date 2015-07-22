@@ -267,7 +267,7 @@ else
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<OJS.Web.Areas.Contests.ViewModels.Results.SubmissionResultIsCompiledViewModel>()
+            .Grid<SubmissionResultIsCompiledViewModel>()
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {

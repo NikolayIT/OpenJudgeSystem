@@ -74,8 +74,6 @@
             // The B-Version of the data (modified data) to be compared.
             var dataB = new DiffData(this.DiffCodes(textB, h, trimSpace, ignoreSpace, ignoreCase));
 
-            h = null; // free up hashtable memory (maybe)
-
             var max = dataA.Length + dataB.Length + 1;
 
             // vector for the (0,0) to (x,y) search

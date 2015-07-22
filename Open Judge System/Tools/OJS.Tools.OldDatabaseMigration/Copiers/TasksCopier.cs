@@ -37,7 +37,7 @@
                                               {
                                                   CreatedOn = task.AddedOn,
                                                   PreserveCreatedOn = true,
-                                                  Name = string.Format("Условие на задачата"),
+                                                  Name = "Условие на задачата",
                                                   Type = ProblemResourceType.ProblemDescription,
                                               };
 

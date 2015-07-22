@@ -1,10 +1,7 @@
 ﻿namespace OJS.Web.ViewModels.News
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Web;
     using NewsModel = OJS.Data.Models.News;
 
     public class SelectedNewsViewModel

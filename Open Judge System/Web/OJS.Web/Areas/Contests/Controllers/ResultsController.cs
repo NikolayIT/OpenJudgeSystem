@@ -248,7 +248,7 @@
                     .OrderBy(subm => subm.CreatedOn)
                     .ToList();
 
-            List<ContestStatsChartViewModel> viewModel = new List<ContestStatsChartViewModel>();
+            var viewModel = new List<ContestStatsChartViewModel>();
 
             for (DateTime time = contestInfo.StartTime.Value.AddMinutes(5); time <= contestInfo.EndTime.Value && time < DateTime.Now; time = time.AddMinutes(5))
             {
@@ -263,11 +263,11 @@
                     .Select(gr => new
                     {
                         MaxPoints = gr.Max(pr => pr.Points),
-                        ParticipantId = gr.Key.ParticipantId
+                         gr.Key.ParticipantId
                     })
                     .GroupBy(pr => pr.ParticipantId)
                     .Select(gr => gr.Sum(pr => pr.MaxPoints))
-                    .Aggregate((sum, el) => sum += el) / contestInfo.ParticipantsCount;
+                    .Aggregate((sum, el) => sum + el) / contestInfo.ParticipantsCount;
 
                 viewModel.Add(new ContestStatsChartViewModel
                 {

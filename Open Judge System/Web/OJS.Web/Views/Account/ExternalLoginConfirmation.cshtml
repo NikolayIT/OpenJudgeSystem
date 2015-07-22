@@ -22,7 +22,7 @@
 @using (Html.BeginForm(
                     "ExternalLoginConfirmation",
                     "Account",
-                    new { ReturnUrl = ViewBag.ReturnUrl },
+                    new { ViewBag.ReturnUrl },
                     FormMethod.Post,
                     new { @class = "form-horizontal", role = "form" }))
 {

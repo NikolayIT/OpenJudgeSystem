@@ -100,15 +100,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             3,
                             StringSplitOptions.RemoveEmptyEntries);
 
-                        if (compilerParts.Count() > 2)
-                        {
-                            submission.CompilerComment = compilerParts[2].Trim(
-                                new[] { ' ', '\n', '\r', '\t', '-', '=' });
-                        }
-                        else
-                        {
-                            submission.CompilerComment = null;
-                        }
+                        submission.CompilerComment = compilerParts.Count() > 2 ? compilerParts[2].Trim(' ', '\n', '\r', '\t', '-', '=') : null;
                     }
                     else
                     {
@@ -117,15 +109,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             new[] { "\r\n" },
                             3,
                             StringSplitOptions.RemoveEmptyEntries);
-                        if (compilerParts.Count() > 2)
-                        {
-                            submission.CompilerComment = compilerParts[2].Trim(
-                                new[] { ' ', '\n', '\r', '\t', '-', '=' });
-                        }
-                        else
-                        {
-                            submission.CompilerComment = null;
-                        }
+                        submission.CompilerComment = compilerParts.Count() > 2 ? compilerParts[2].Trim(' ', '\n', '\r', '\t', '-', '=') : null;
 
                         for (int j = 2; j < reportFragments.Length - 1; j++)
                         {
@@ -133,15 +117,7 @@ namespace OJS.Tools.OldDatabaseMigration.Copiers
                             var testRunTextParts = testRunText.Split(new[] { this.contentFooter }, StringSplitOptions.None);
                             var testRunTitle = testRunTextParts[0].Trim();
                             var testRunDescription = testRunTextParts[1].Trim() + Environment.NewLine;
-                            bool isZeroTest;
-                            if (testRunTitle.StartsWith("Zero"))
-                            {
-                                isZeroTest = true;
-                            }
-                            else
-                            {
-                                isZeroTest = false;
-                            }
+                            var isZeroTest = testRunTitle.StartsWith("Zero");
 
                             var testOrderAsString = testRunTitle.GetStringBetween("¹", " ");
 

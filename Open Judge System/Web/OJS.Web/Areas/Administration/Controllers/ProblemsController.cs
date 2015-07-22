@@ -173,7 +173,7 @@
                 this.Data.SaveChanges();
 
                 this.TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
-                return this.RedirectToAction("Contest", new { id = id });
+                return this.RedirectToAction("Contest", new { id });
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
@@ -212,18 +212,18 @@
                 })
                 .FirstOrDefault();
 
+            if (selectedProblem == null)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                return this.RedirectToAction(GlobalConstants.Index);
+            }
+
             var checkers = this.Data.Checkers
                 .All()
                 .AsQueryable()
                 .Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
 
             selectedProblem.AvailableCheckers = checkers;
-
-            if (selectedProblem == null)
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
-                return this.RedirectToAction(GlobalConstants.Index);
-            }
 
             return this.View(selectedProblem);
         }
@@ -381,7 +381,7 @@
             this.Data.SaveChanges();
 
             this.TempData[GlobalConstants.InfoMessage] = "Задачите бяха изтрити успешно";
-            return this.RedirectToAction("Contest", new { id = id });
+            return this.RedirectToAction("Contest", new { id });
         }
 
         public ActionResult Details(int? id)
@@ -476,7 +476,7 @@
         [HttpGet]
         public JsonResult GetCascadeCategories()
         {
-            var result = this.Data.ContestCategories.All().Select(x => new { Id = x.Id, Name = x.Name });
+            var result = this.Data.ContestCategories.All().Select(x => new { x.Id, x.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -493,7 +493,7 @@
                 contests = contests.Where(x => x.CategoryId == categoryId);
             }
 
-            var result = contests.Select(x => new { Id = x.Id, Name = x.Name });
+            var result = contests.Select(x => new { x.Id, x.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -501,7 +501,7 @@
         [HttpGet]
         public JsonResult GetSearchedContests()
         {
-            var result = this.Data.Contests.All().Select(x => new { Id = x.Id, Name = x.Name });
+            var result = this.Data.Contests.All().Select(x => new { x.Id, x.Name });
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -569,7 +569,6 @@
                     });
 
                     orderCount++;
-                    continue;
                 }
                 else if (!string.IsNullOrEmpty(resource.Name) && resource.Type != ProblemResourceType.Video && resource.File != null)
                 {
@@ -583,7 +582,6 @@
                     });
 
                     orderCount++;
-                    continue;
                 }
             }
         }
@@ -602,9 +600,7 @@
                 testArchive.InputStream.CopyTo(memory);
                 memory.Position = 0;
 
-                var parsedTests = new TestsParseResult();
-
-                parsedTests = ZippedTestsManipulator.Parse(memory);
+                var parsedTests = ZippedTestsManipulator.Parse(memory);
 
                 if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
                 {

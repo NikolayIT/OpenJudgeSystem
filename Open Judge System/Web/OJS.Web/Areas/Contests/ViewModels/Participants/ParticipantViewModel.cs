@@ -1,9 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Participants
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;

@@ -7,7 +7,6 @@
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
     ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.Results.Count());
-    var style = string.Empty;
 }
 
 <ol class="breadcrumb">
@@ -73,6 +72,7 @@
                         }
                         foreach (var testRun in problemResult.BestSubmission.TestRuns)
                         {
+                            string style;
                             if (testRun.IsZeroTest)
                             {
                                 style = "-ms-opacity: 0.3; opacity: 0.3";

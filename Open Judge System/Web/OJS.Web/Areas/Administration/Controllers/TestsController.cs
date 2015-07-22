@@ -258,7 +258,7 @@
                 .Where(s => s.ProblemId == test.ProblemId)
                 .Select(s => new
                 {
-                    Id = s.Id,
+                    s.Id,
                     CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
                     AllTestRuns = s.TestRuns.Count(),
                     MaxPoints = s.Problem.MaximumPoints
@@ -333,7 +333,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
+            var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
             foreach (var test in tests)
             {
                 var testRuns = test.TestRuns.ToList();
@@ -350,7 +350,7 @@
             this.RetestSubmissions(problem);
 
             this.TempData[GlobalConstants.InfoMessage] = "Тестовете бяха изтрити успешно";
-            return this.RedirectToAction("Problem", new { id = id });
+            return this.RedirectToAction("Problem", new { id });
         }
 
         /// <summary>
@@ -425,7 +425,7 @@
         [HttpGet]
         public JsonResult GetCascadeCategories()
         {
-            var result = this.Data.ContestCategories.All().Select(cat => new { Id = cat.Id, Name = cat.Name });
+            var result = this.Data.ContestCategories.All().Select(cat => new { cat.Id, cat.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -441,7 +441,7 @@
             var contests = this.Data.Contests
                 .All()
                 .Where(con => con.CategoryId == id)
-                .Select(con => new { Id = con.Id, Name = con.Name });
+                .Select(con => new { con.Id, con.Name });
 
             return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
@@ -457,7 +457,7 @@
             var problems = this.Data.Problems
                 .All()
                 .Where(pr => pr.ContestId == id)
-                .Select(pr => new { Id = pr.Id, Name = pr.Name });
+                .Select(pr => new { pr.Id, pr.Name });
 
             return this.Json(problems, JsonRequestBehavior.AllowGet);
         }
@@ -492,7 +492,7 @@
             var result = this.Data.Problems
                 .All()
                 .Where(pr => pr.Name.ToLower().Contains(text.ToLower()))
-                .Select(pr => new { Id = pr.Id, Name = pr.Name });
+                .Select(pr => new { pr.Id, pr.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -531,7 +531,7 @@
             if (file == null || file.ContentLength == 0)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, "Файлът не може да бъде празен");
-                return this.RedirectToAction("Problem", new { id = id });
+                return this.RedirectToAction("Problem", new { id });
             }
 
             var extension = file.FileName.Substring(file.FileName.Length - 4, 4);
@@ -539,12 +539,12 @@
             if (extension != ".zip")
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, "Файлът трябва да бъде .ZIP файл");
-                return this.RedirectToAction("Problem", new { id = id });
+                return this.RedirectToAction("Problem", new { id });
             }
 
             if (deleteOldFiles)
             {
-                var tests = problem.Tests.Select(t => new { Id = t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
+                var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
                 foreach (var test in tests)
                 {
                     var testRuns = test.TestRuns.ToList();
@@ -604,7 +604,7 @@
         /// <returns>Zip file containing all tests in format {task}.{testNum}[.{zeroNum}].{in|out}.txt</returns>
         public ActionResult Export(int id)
         {
-            var problem = this.Data.Problems.All().Where(x => x.Id == id).FirstOrDefault();
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
             if (problem == null)
             {
@@ -614,9 +614,9 @@
 
             var tests = problem.Tests.OrderBy(x => x.OrderBy);
 
-            ZipFile zip = new ZipFile(string.Format("{0}_Tests_{1}", problem.Name, DateTime.Now));
+            var zipFile = new ZipFile(string.Format("{0}_Tests_{1}", problem.Name, DateTime.Now));
 
-            using (zip)
+            using (zipFile)
             {
                 int trialTestCounter = 1;
                 int testCounter = 1;
@@ -625,14 +625,14 @@
                 {
                     if (test.IsTrialTest)
                     {
-                        zip.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString);
-                        zip.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString);
+                        zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString);
                         trialTestCounter++;
                     }
                     else
                     {
-                        zip.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString);
-                        zip.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString);
+                        zipFile.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString);
                         testCounter++;
                     }
                 }
@@ -640,10 +640,10 @@
 
             var stream = new MemoryStream();
 
-            zip.Save(stream);
+            zipFile.Save(stream);
             stream.Position = 0;
 
-            return this.File(stream, MediaTypeNames.Application.Zip, zip.Name);
+            return this.File(stream, MediaTypeNames.Application.Zip, zipFile.Name);
         }
 
         [HttpGet]
@@ -665,7 +665,7 @@
 
         private void RetestSubmissions(Problem problem)
         {
-            var submissionIds = problem.Submissions.Select(s => new { Id = s.Id }).ToList();
+            var submissionIds = problem.Submissions.Select(s => new { s.Id }).ToList();
             foreach (var submissionId in submissionIds)
             {
                 var currentSubmission = this.Data.Submissions.GetById(submissionId.Id);

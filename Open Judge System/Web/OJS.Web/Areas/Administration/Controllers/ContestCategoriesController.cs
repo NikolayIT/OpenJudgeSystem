@@ -83,7 +83,7 @@
                     .Where(x => x.IsVisible)
                     .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
                     .OrderBy(x => x.OrderBy)
-                    .Select(x => new { id = x.Id, hasChildren = x.Children.Any(), Name = x.Name, });
+                    .Select(x => new { id = x.Id, hasChildren = x.Children.Any(), x.Name, });
 
             return this.Json(categories, JsonRequestBehavior.AllowGet);
         }
