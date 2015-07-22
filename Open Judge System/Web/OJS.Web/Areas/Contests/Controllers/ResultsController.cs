@@ -159,7 +159,7 @@
             contestModel.CurrentPage = page.Value;
             contestModel.AllPages = totalPages;
 
-            if (User.IsAdmin())
+            if (this.User.IsAdmin())
             {
                 contestModel.Results = contestModel.Results.OrderByDescending(x => x.AdminTotal);
             }

@@ -295,7 +295,7 @@
                 ProblemId = participantSubmission.ProblemId,
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
-                IpAddress = Request.UserHostAddress,
+                IpAddress = this.Request.UserHostAddress,
             });
 
             this.Data.SaveChanges();

@@ -16,7 +16,7 @@
         public void CreatedContestShouldNotBeNull()
         {
             var result =
-                EmptyOjsData.Contests.All()
+                this.EmptyOjsData.Contests.All()
                     .Where(x => x.Name == "Created")
                     .Select(x => new { x.CreatedOn })
                     .FirstOrDefault();
