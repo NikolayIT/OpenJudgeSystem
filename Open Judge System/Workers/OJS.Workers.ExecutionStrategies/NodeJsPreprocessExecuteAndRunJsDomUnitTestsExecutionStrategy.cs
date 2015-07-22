@@ -7,27 +7,35 @@
     {
         private string jsDomModulePath;
         private string jQueryModulePath;
+        private string handlebarsModulePath;
 
         public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath, 
             string chaiModulePath, 
             string jsDomModulePath, 
-            string jQueryModulePath)
+            string jQueryModulePath,
+            string handlebarsModulePath)
             : base(nodeJsExecutablePath, mochaModulePath, chaiModulePath)
         {
-            if (!File.Exists(jsDomModulePath))
+            if (!Directory.Exists(jsDomModulePath))
             {
                 throw new ArgumentException(string.Format("jsDom not found in: {0}", jsDomModulePath), "jsDomModulePath");
             }
 
-            if (!File.Exists(jQueryModulePath))
+            if (!Directory.Exists(jQueryModulePath))
             {
                 throw new ArgumentException(string.Format("jQuery not found in: {0}", jQueryModulePath), "jQueryModulePath");
             }
 
+            if (!File.Exists(handlebarsModulePath))
+            {
+                throw new ArgumentException(string.Format("Handlebars not found in: {0}", handlebarsModulePath), "handlebarsModulePath");
+            }
+
             this.jsDomModulePath = jsDomModulePath;
             this.jQueryModulePath = jQueryModulePath;
+            this.handlebarsModulePath = handlebarsModulePath;
         }
     }
 }
