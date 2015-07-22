@@ -77,6 +77,7 @@
         /// <param name="id">The contest id.</param>
         /// <param name="official">A flag, showing if the results are for practice
         /// or for competition</param>
+        /// <param name="page"></param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)

@@ -14,12 +14,6 @@
 
         private readonly string filename;
 
-        public ZipFileResult(ZipFile zip)
-        {
-            this.zip = zip;
-            this.filename = null;
-        }
-
         public ZipFileResult(ZipFile zip, string filename)
         {
             this.zip = zip;

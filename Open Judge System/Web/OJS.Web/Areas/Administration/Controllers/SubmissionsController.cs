@@ -262,7 +262,7 @@
                 this.TempData[GlobalConstants.InfoMessage] = RetestSuccessful;
             }
 
-            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id = id });
+            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
         }
 
         public JsonResult GetProblems(string text)

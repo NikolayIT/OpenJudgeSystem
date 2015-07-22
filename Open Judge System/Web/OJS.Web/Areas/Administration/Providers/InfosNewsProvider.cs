@@ -53,10 +53,9 @@
                     continue;
                 }
 
-                DateTime date;
                 if (node.FirstChild.InnerText == string.Empty)
                 {
-                    date = node.PreviousSibling.PreviousSibling.FirstChild.InnerText.TryGetDate();
+                    node.PreviousSibling.PreviousSibling.FirstChild.InnerText.TryGetDate();
                     node = node.NextSibling;
                     continue;
                 }
@@ -67,7 +66,7 @@
                 }
                 else if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws14") && content.Length > 0)
                 {
-                    date = content.ToString().Substring(0, 10).TryGetDate();
+                    var date = content.ToString().Substring(0, 10).TryGetDate();
                     var contentAsString = content.ToString().Trim().Substring(10);
                     if (contentAsString.StartsWith("<br />"))
                     {
