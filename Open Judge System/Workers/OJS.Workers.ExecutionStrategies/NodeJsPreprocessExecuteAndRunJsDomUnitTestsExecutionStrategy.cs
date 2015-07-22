@@ -5,27 +5,27 @@
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
-        private string jsDomModulePath;
-        private string jQueryModulePath;
+        private string jsdomModulePath;
+        private string jqueryModulePath;
         private string handlebarsModulePath;
 
         public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath, 
             string chaiModulePath, 
-            string jsDomModulePath, 
-            string jQueryModulePath,
+            string jsdomModulePath, 
+            string jqueryModulePath,
             string handlebarsModulePath)
             : base(nodeJsExecutablePath, mochaModulePath, chaiModulePath)
         {
-            if (!Directory.Exists(jsDomModulePath))
+            if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException(string.Format("jsDom not found in: {0}", jsDomModulePath), "jsDomModulePath");
+                throw new ArgumentException(string.Format("jsDom not found in: {0}", jsdomModulePath), "jsDomModulePath");
             }
 
-            if (!Directory.Exists(jQueryModulePath))
+            if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException(string.Format("jQuery not found in: {0}", jQueryModulePath), "jQueryModulePath");
+                throw new ArgumentException(string.Format("jQuery not found in: {0}", jqueryModulePath), "jQueryModulePath");
             }
 
             if (!Directory.Exists(handlebarsModulePath))
@@ -33,8 +33,8 @@
                 throw new ArgumentException(string.Format("Handlebars not found in: {0}", handlebarsModulePath), "handlebarsModulePath");
             }
 
-            this.jsDomModulePath = this.ProcessModulePath(jsDomModulePath);
-            this.jQueryModulePath = this.ProcessModulePath(jQueryModulePath);
+            this.jsdomModulePath = this.ProcessModulePath(jsdomModulePath);
+            this.jqueryModulePath = this.ProcessModulePath(jqueryModulePath);
             this.handlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
         }
 
@@ -43,8 +43,8 @@
             get
             {
                 return base.JsCodeRequiredModules + @",
-    jsdom = require('" + this.jsDomModulePath + @"'),
-    jq = require('" + this.jQueryModulePath + @"'),
+    jsdom = require('" + this.jsdomModulePath + @"'),
+    jq = require('" + this.jqueryModulePath + @"'),
     hs = require('" + this.handlebarsModulePath + @"')";
             }
         }
