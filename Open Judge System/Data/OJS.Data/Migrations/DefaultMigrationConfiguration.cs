@@ -170,6 +170,17 @@ namespace OJS.Data.Migrations
                 },
                 new SubmissionType
                 {
+                    Name = "JavaScript code (DOM unit tests)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments =
+                        "-R json",
+                    ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
                     Name = "C# project/solution",
                     CompilerType = CompilerType.MsBuild,
                     AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
