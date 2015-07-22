@@ -45,7 +45,7 @@
                 return base.JsCodeRequiredModules + @",
     jsdom = require('" + this.jsdomModulePath + @"'),
     jq = require('" + this.jqueryModulePath + @"'),
-    hs = require('" + this.handlebarsModulePath + @"')";
+    handlebars = require('" + this.handlebarsModulePath + @"')";
             }
         }
 
@@ -55,8 +55,6 @@
             {
                 return @"
 describe('TestDOMScope', function() {
-    var htmlTemplate = '<div id=""root""></div>';
-
     before(function(done) {
         jsdom.env({
             html: '',
@@ -64,13 +62,10 @@ describe('TestDOMScope', function() {
                 global.window = window;
                 global.document = window.document;
                 global.$ = jq(window);
+                global.handlebars = handlebars;
                 done();
             }
         });
-    });
-
-    beforeEach(function() {
-       document.body.innerHTML = htmlTemplate;
     });
 
 	it('Test', function(done) {
