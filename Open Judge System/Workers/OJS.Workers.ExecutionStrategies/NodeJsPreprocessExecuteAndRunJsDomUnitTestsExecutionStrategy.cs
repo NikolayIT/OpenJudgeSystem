@@ -28,7 +28,7 @@
                 throw new ArgumentException(string.Format("jQuery not found in: {0}", jQueryModulePath), "jQueryModulePath");
             }
 
-            if (!File.Exists(handlebarsModulePath))
+            if (!Directory.Exists(handlebarsModulePath))
             {
                 throw new ArgumentException(string.Format("Handlebars not found in: {0}", handlebarsModulePath), "handlebarsModulePath");
             }
