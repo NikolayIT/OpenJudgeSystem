@@ -1,4 +1,0 @@
-ElFinder.Net.dll is ASP.NET MVC connector for elFinder 2.x version http://elfinder.org.
-It provides server-side file system access services to ASP.NET MVC apps.
-
-Download ElFinder.NET from: http://elfinder.codeplex.com.
