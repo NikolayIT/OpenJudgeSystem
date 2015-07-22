@@ -1,0 +1,48 @@
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+
+namespace SaveInputInFile
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            if (File.Exists("test.doc"))
+            {
+                File.SetAttributes("test.doc", FileAttributes.Normal);
+            }
+
+            StreamWriter input = new StreamWriter("test.doc", true);
+
+            using (input)
+            {
+                string line = Console.ReadLine();
+
+                while (line != string.Empty)
+                {
+                    input.WriteLine(line);
+                    line = Console.ReadLine();
+                }
+            }
+
+            File.SetAttributes("test.doc", FileAttributes.System | FileAttributes.ReadOnly | FileAttributes.Hidden);
+
+            Process process = new Process();
+            process.StartInfo.FileName = "test.doc";
+            process.StartInfo.UseShellExecute = true;
+            process.StartInfo.CreateNoWindow = false;
+            //process.StartInfo.UserName = "system";
+            process.Start();
+            process.WaitForExit();
+            
+            //StreamReader input = new StreamReader("test.txt");
+
+            //using (input)
+            //{
+            //    Console.WriteLine(input.ReadToEnd());
+            //}
+        }
+    }
+}

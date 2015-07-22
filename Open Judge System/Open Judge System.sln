@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{BCDB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9DAC057C-7607-48F0-B961-70BAAF4C368A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{699277CE-89E7-4F00-A8BF-96A8450529E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Models", "Data\OJS.Data.Models\OJS.Data.Models.csproj", "{341CA732-D483-4487-923E-27ED2A6E9A4F}"
@@ -38,28 +36,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tools.OldDatabaseMigration", "Tools\OJS.Tools.OldDatabaseMigration\OJS.Tools.OldDatabaseMigration.csproj", "{C4144383-C1E4-4849-BA35-F063967314DA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executor.Security.Tests", "Executor.Security.Tests", "{29554AA1-87DF-4811-9084-071C4D6BEAAF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{7A010146-2DF8-49D5-8B21-EE73AE6422E6}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Executor.Security.Tests\CSharp\01. Shut Down With Diagnostics.txt = Documentation\Executor.Security.Tests\CSharp\01. Shut Down With Diagnostics.txt
-		Documentation\Executor.Security.Tests\CSharp\02. Shut Down With Win32 Method.txt = Documentation\Executor.Security.Tests\CSharp\02. Shut Down With Win32 Method.txt
-		Documentation\Executor.Security.Tests\CSharp\03. Shut Down With System.Management.txt = Documentation\Executor.Security.Tests\CSharp\03. Shut Down With System.Management.txt
-		Documentation\Executor.Security.Tests\CSharp\04. Reboot.txt = Documentation\Executor.Security.Tests\CSharp\04. Reboot.txt
-		Documentation\Executor.Security.Tests\CSharp\05. Kill Network.txt = Documentation\Executor.Security.Tests\CSharp\05. Kill Network.txt
-		Documentation\Executor.Security.Tests\CSharp\06. Registry Edit.txt = Documentation\Executor.Security.Tests\CSharp\06. Registry Edit.txt
-		Documentation\Executor.Security.Tests\CSharp\07. Kill Process - WORKS ON CURRENT VERSION!.txt = Documentation\Executor.Security.Tests\CSharp\07. Kill Process - WORKS ON CURRENT VERSION!.txt
-		Documentation\Executor.Security.Tests\CSharp\08. Execute Bat File - WORKS ON CURRENT VERSION.txt = Documentation\Executor.Security.Tests\CSharp\08. Execute Bat File - WORKS ON CURRENT VERSION.txt
-		Documentation\Executor.Security.Tests\CSharp\09. Create Folder Somewhere.txt = Documentation\Executor.Security.Tests\CSharp\09. Create Folder Somewhere.txt
-		Documentation\Executor.Security.Tests\CSharp\10. Try To Save Input In File.txt = Documentation\Executor.Security.Tests\CSharp\10. Try To Save Input In File.txt
-		Documentation\Executor.Security.Tests\CSharp\11. Using Windows Fork Bomb - WORKS ON CURRENT VERSION.txt = Documentation\Executor.Security.Tests\CSharp\11. Using Windows Fork Bomb - WORKS ON CURRENT VERSION.txt
-		Documentation\Executor.Security.Tests\CSharp\ToDo.txt = Documentation\Executor.Security.Tests\CSharp\ToDo.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C++", "C++", "{154179FB-ED7B-4C9D-89DE-77EEBDC7BD3A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript", "JavaScript", "{3BDB3472-E927-4660-AF50-3C8CACFFC012}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Common", "Workers\OJS.Workers.Common\OJS.Workers.Common.csproj", "{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}"
 EndProject
@@ -244,10 +220,6 @@ Global
 		{01CC0B02-529E-4D5F-B345-0B92F6920854} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{EA9D6519-EC81-4C8B-9385-455CF5C3544E} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{C4144383-C1E4-4849-BA35-F063967314DA} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
-		{29554AA1-87DF-4811-9084-071C4D6BEAAF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
-		{7A010146-2DF8-49D5-8B21-EE73AE6422E6} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
-		{154179FB-ED7B-4C9D-89DE-77EEBDC7BD3A} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
-		{3BDB3472-E927-4660-AF50-3C8CACFFC012} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{F4AD07BC-B932-4D09-82D8-9800C9260B33} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
