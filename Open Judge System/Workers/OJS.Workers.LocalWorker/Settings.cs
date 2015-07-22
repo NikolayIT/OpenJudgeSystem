@@ -78,6 +78,14 @@
             }
         }
 
+        public static string HandlebarsModulePath
+        {
+            get
+            {
+                return GetSetting("HandlebarsModulePath");
+            }
+        }
+
         public static string JavaCompilerPath
         {
             get
