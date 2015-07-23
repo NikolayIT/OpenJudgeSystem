@@ -85,9 +85,9 @@ $(document).ready(function () {
 
             $('#remove-resource').removeAttr('disabled');
 
-            $('#resources .required-resource-field').each(function () {
-                $(this).rules("add", { required: true, messages: { required: "Задължително поле" } })
-            })
+            $('#resources .required-resource-field').each(function() {
+                $(this).rules("add", { required: true, messages: { required: "Задължително поле" } });
+            });
         });
     });
 

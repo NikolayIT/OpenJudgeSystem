@@ -32,7 +32,7 @@
 
             try
             {
-                var result = this.CompeteController.GetSubmissionContent(-1);
+                this.CompeteController.GetSubmissionContent(-1);
                 Assert.Fail("Expected an exception when an invalid submission id is provided.");
             }
             catch (HttpException ex)
@@ -75,7 +75,7 @@
 
             try
             {
-                var result = this.CompeteController.GetSubmissionContent(submission.Id);
+                this.CompeteController.GetSubmissionContent(submission.Id);
                 Assert.Fail("Expected an exception when trying to download a submission that was not made by the participant that requested it.");
             }
             catch (HttpException ex)

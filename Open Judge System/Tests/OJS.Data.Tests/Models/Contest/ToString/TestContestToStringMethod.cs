@@ -29,9 +29,7 @@
 
             this.EmptyOjsData.SaveChanges();
 
-            var result = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Contest")
-                .FirstOrDefault().ToString();
+            var result = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Contest").ToString();
 
             result = result.Substring(result.Length - 7);
 

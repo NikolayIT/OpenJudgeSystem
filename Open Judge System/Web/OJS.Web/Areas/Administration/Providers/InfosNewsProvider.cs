@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Providers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;

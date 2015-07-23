@@ -32,7 +32,7 @@
 
             this.EmptyOjsData.SaveChanges();
 
-            var result = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Invalid");
+            this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Invalid");
         }
     }
 }

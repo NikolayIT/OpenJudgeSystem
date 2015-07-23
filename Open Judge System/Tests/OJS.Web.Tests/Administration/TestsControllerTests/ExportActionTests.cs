@@ -20,7 +20,7 @@
             var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
-            var zipFile = ZipFile.Read(result.FileStream);
+            ZipFile.Read(result.FileStream);
 
             Assert.IsNotNull(result);
         }

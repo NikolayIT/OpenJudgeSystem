@@ -9,8 +9,8 @@ function onSearchSelect(e) {
     populateDropDowns(contestId);
 }
 
-function onContestSelect(e) {
-    initializeGrid(parseInt($('#contests').val()))
+function onContestSelect() {
+    initializeGrid(parseInt($('#contests').val()));
 }
 
 function filterContests() {
@@ -23,7 +23,7 @@ function populateDropDowns(contestIdAsString) {
 
     var response;
 
-    $.get('/Administration/Problems/GetContestInformation/' + contestIdAsString, function (data) {
+    $.get('/Administration/Problems/GetContestInformation/' + contestIdAsString, function(data) {
         response = data;
 
         var categoryId = response.category;
@@ -50,24 +50,24 @@ function populateDropDowns(contestIdAsString) {
             }
         });
 
-        categoriesData.fetch(function () {
+        categoriesData.fetch(function() {
             categories.dataSource.data(categoriesData);
             categories.setDataSource(categoriesData);
             categories.refresh();
 
-            contestsData.fetch(function () {
+            contestsData.fetch(function() {
                 contests.dataSource.data(contestsData);
                 contests.refresh();
 
-                categories.select(function (dataItem) {
+                categories.select(function(dataItem) {
                     return dataItem.Id === categoryId;
                 });
 
                 // TODO: Improve by using success callback or promises, not setTimeout - Cascade event on widgets might work too
 
-                window.setTimeout(function () {
+                window.setTimeout(function() {
 
-                    contests.select(function (dataItem) {
+                    contests.select(function(dataItem) {
                         return dataItem.Id === contestId;
                     });
 
@@ -77,7 +77,7 @@ function populateDropDowns(contestIdAsString) {
         });
 
         initializeGrid(contestId);
-    })
+    });
 }
 
 function initializeGrid(contestId) {
@@ -162,20 +162,19 @@ function initializeGrid(contestId) {
             });
         }
 
-        $('.resource-btn').click(function (e) {
-            var target = $(e.target);
-            var tr = target.closest("tr");
-            var grid = $("#problems-grid").data("kendoGrid");
+            $('.resource-btn').click(function(e) {
+                var target = $(e.target);
+                var tr = target.closest("tr");
+                var grid = $("#problems-grid").data("kendoGrid");
 
-            if (target.data('expanded') == false) {
-                grid.collapseRow(tr);
-                target.removeData('expanded');
-            }
-            else {
-                grid.expandRow(tr);
-                target.data('expanded', false);
-            }
-        })
+                if (target.data('expanded') == false) {
+                    grid.collapseRow(tr);
+                    target.removeData('expanded');
+                } else {
+                    grid.expandRow(tr);
+                    target.data('expanded', false);
+                }
+            });
 
         if ($('#problemId').val()) {
             $('#resource-btn-' + $('#problemId').val()).click();

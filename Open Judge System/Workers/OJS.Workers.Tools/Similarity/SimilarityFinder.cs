@@ -265,7 +265,7 @@
                     // Debug.Write(0, "SMS", "extend reverse path " + k.ToString());
 
                     // find the only or better starting point
-                    int x, y;
+                    int x;
                     if (k == upK + d)
                     {
                         x = upVector[upOffset + k - 1]; // up
@@ -279,7 +279,7 @@
                         }
                     }
 
-                    y = x - k;
+                    var y = x - k;
 
                     while ((x > lowerA) && (y > lowerB) && (dataA.Data[x - 1] == dataB.Data[y - 1]))
                     {

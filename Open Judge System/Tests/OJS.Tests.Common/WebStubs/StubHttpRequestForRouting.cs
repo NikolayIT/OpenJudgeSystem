@@ -5,9 +5,9 @@
 
     public class StubHttpRequestForRouting : HttpRequestBase
     {
-        private string appPath;
+        private readonly string appPath;
 
-        private string requestUrl;
+        private readonly string requestUrl;
 
         public StubHttpRequestForRouting(string appPath, string requestUrl)
         {
