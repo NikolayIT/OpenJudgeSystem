@@ -19,7 +19,7 @@
         {
             try
             {
-                var result = this.CompeteController.GetAllowedSubmissionTypes(-1);
+                this.CompeteController.GetAllowedSubmissionTypes(-1);
                 Assert.Fail("Expected an exception when an invalid contest id is provided.");
             }
             catch (HttpException ex)

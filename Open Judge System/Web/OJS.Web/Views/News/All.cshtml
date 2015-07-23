@@ -45,8 +45,8 @@ else
     }
     else
     {
-        @Html.ActionLink("<<", "All", new { id = 1 }, new { @class = "btn btn-primary" });
-        @Html.ActionLink("<", "All", new { id = Model.CurrentPage - 1 }, new { @class = "btn btn-primary" });
+        @Html.ActionLink("<<", "All", new { id = 1 }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("<", "All", new { id = Model.CurrentPage - 1 }, new { @class = "btn btn-primary" })
     }
             }
 
@@ -79,7 +79,7 @@ else
             {
                 if (pageIndex != Model.CurrentPage)
                 {
-                    @Html.ActionLink(pageIndex.ToString(), "All", new { controller = "News", area = string.Empty, id = pageIndex }, new { @class = "btn btn-primary" });
+                    @Html.ActionLink(pageIndex.ToString(), "All", new { controller = "News", area = string.Empty, id = pageIndex }, new { @class = "btn btn-primary" })
                 }
                 else
                 {
@@ -102,8 +102,8 @@ else
     }
     else
     {
-        @Html.ActionLink(">", "All", new { id = Model.CurrentPage + 1 }, new { @class = "btn btn-primary" });
-                @Html.ActionLink(">>", "All", new { id = Model.AllPages }, new { @class = "btn btn-primary" });
+        @Html.ActionLink(">", "All", new { id = Model.CurrentPage + 1 }, new { @class = "btn btn-primary" })
+                @Html.ActionLink(">>", "All", new { id = Model.AllPages }, new { @class = "btn btn-primary" })
     }
             }
 

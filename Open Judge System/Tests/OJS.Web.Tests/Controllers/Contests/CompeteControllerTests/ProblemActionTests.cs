@@ -19,7 +19,7 @@
         {
             try
             {
-                var result = this.CompeteController.Problem(-1, this.IsPractice);
+                this.CompeteController.Problem(-1, this.IsPractice);
                 Assert.Fail("No exception was thrown when an invalid problem id was provided, but an exception was expected!");
             }
             catch (HttpException ex)
@@ -33,7 +33,7 @@
         {
             try
             {
-                var result = this.CompeteController.Problem(-1, this.IsCompete);
+                this.CompeteController.Problem(-1, this.IsCompete);
                 Assert.Fail("No exception was thrown when an invalid problem id was provided, but an exception was expected!");
             }
             catch (HttpException ex)

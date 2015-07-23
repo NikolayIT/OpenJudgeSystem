@@ -16,7 +16,7 @@
         {
             try
             {
-                var result = this.CompeteController.Index(-1, this.IsCompete);
+                this.CompeteController.Index(-1, this.IsCompete);
                 Assert.Fail("Expected an exception when an invalid contest id is provided!");
             }
             catch (HttpException ex)
@@ -30,7 +30,7 @@
         {
             try
             {
-                var result = this.CompeteController.Index(-1, this.IsPractice);
+                this.CompeteController.Index(-1, this.IsPractice);
                 Assert.Fail("Expected an exception when an invalid contest id is provided!");
             }
             catch (HttpException ex)
@@ -46,7 +46,7 @@
 
             try
             {
-                var result = this.CompeteController.Index(contest.Id, this.IsCompete);
+                this.CompeteController.Index(contest.Id, this.IsCompete);
                 Assert.Fail("Expected an exception when trying to compete a contest when contest cannot be competed!");
             }
             catch (HttpException ex)
@@ -62,7 +62,7 @@
 
             try
             {
-                var result = this.CompeteController.Index(contest.Id, this.IsPractice);
+                this.CompeteController.Index(contest.Id, this.IsPractice);
                 Assert.Fail("Expected an exception when trying to practice a contest when contest cannot be practiced!");
             }
             catch (HttpException ex)

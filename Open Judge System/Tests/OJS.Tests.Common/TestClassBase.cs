@@ -14,9 +14,9 @@
             this.InitializeEmptyOjsData();
         }
 
-        protected IOjsData EmptyOjsData { get; set; }
+        protected IOjsData EmptyOjsData { get; private set; }
 
-        protected IOjsData OjsData { get; set; }
+        protected IOjsData OjsData { get; private set; }
 
         protected void InitializeEmptyOjsData()
         {

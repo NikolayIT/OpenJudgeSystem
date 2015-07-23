@@ -12,11 +12,6 @@
     [TestFixture]
     public class LatestNewsActionTests : NewsTestBaseClass
     {
-        public LatestNewsActionTests()
-            : base()
-        {
-        }
-
         [Test]
         public void LatestNewsShouldReturnProperNewsCount()
         {

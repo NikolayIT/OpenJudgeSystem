@@ -13,11 +13,6 @@
     [TestFixture]
     public class SelectedNewsActionTests : NewsTestBaseClass
     {
-        public SelectedNewsActionTests()
-            : base()
-        {
-        }
-
         [Test]
         public void SelectedActionShouldReturnViewModel()
         {

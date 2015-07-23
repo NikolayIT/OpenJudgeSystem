@@ -19,7 +19,7 @@
             }
 
             // Tries to find a DescriptionAttribute for a potential friendly name for the enum
-            var memberInfo = type.GetMember(enumerationValue.ToString());
+            var memberInfo = type.GetMember(enumerationValue.ToString(CultureInfo.InvariantCulture));
             if (memberInfo.Length > 0)
             {
                 var attributes = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);

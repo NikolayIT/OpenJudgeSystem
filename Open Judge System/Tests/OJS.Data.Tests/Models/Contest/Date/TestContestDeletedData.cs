@@ -18,15 +18,12 @@
         [Test]
         public void IsDeletedShouldReturnProperValueAfterDeletion()
         {
-            var result = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault();
+            var result = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created");
 
             this.EmptyOjsData.Contests.Delete(result);
             this.EmptyOjsData.SaveChanges();
 
-            bool deletedOnActual = this.EmptyOjsData.Contests.AllWithDeleted()
-                .Where(x => x.Name == "Created").First().IsDeleted;
+            bool deletedOnActual = this.EmptyOjsData.Contests.AllWithDeleted().First(x => x.Name == "Created").IsDeleted;
 
             Assert.IsTrue(deletedOnActual);
         }
@@ -45,15 +42,13 @@
 
             this.EmptyOjsData.SaveChanges();
 
-            var result = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "ToBeDeleted")
-                .FirstOrDefault();
+            var result = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "ToBeDeleted");
 
             this.EmptyOjsData.Contests.Delete(result);
             this.EmptyOjsData.SaveChanges();
 
-            var deletedOnActual = this.EmptyOjsData.Contests.AllWithDeleted()
-                .Where(x => x.Name == "ToBeDeleted").First().DeletedOn;
+            var deletedOnActual =
+                this.EmptyOjsData.Contests.AllWithDeleted().First(x => x.Name == "ToBeDeleted").DeletedOn;
 
             bool expected = DateTime.Now.AddSeconds(-5) < deletedOnActual
                 && deletedOnActual < DateTime.Now.AddSeconds(5);

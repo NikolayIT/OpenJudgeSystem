@@ -18,12 +18,12 @@ $(document).ready(function () {
     var value = $('#Type').data('kendoDropDownList').value();
     hideInput(value);
 
-    $('#file-button-resource').click(function () {
+    $('#file-button-resource').click(function() {
         $('#input-file-resource').click();
-    })
+    });
 
-    $('#input-file-resource').change(function () {
+    $('#input-file-resource').change(function() {
         var fileName = this.files[0].name;
         $('#file-button-resource').text(fileName.length > 20 ? fileName.substring(0, 20) + '...' : fileName);
-    })
+    });
 });
