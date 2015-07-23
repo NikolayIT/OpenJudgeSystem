@@ -299,10 +299,10 @@
     });
 
     extend(true, kendo.data, {
-       schemas: {
-           "webapi": kendo.data.schemas["aspnetmvc-ajax"]
-       }
-    })
+        schemas: {
+            "webapi": kendo.data.schemas["aspnetmvc-ajax"]
+        }
+    });
 
     extend(true, kendo.data, {
         transports: {

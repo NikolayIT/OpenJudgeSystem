@@ -195,4 +195,7 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="SubmissionTypes" xml:space="preserve">
+    <value>Submission Types</value>
+  </data>
 </root>

@@ -14,16 +14,16 @@
     {
         public TestContestRepositoryAllVisibleInCategory()
         {
-            ContestCategory firstCategory = new ContestCategory();
-            ContestCategory secondCategory = new ContestCategory();
-            ContestCategory thirdCategory = new ContestCategory();
+            var firstCategory = new ContestCategory();
+            var secondCategory = new ContestCategory();
+            var thirdCategory = new ContestCategory();
 
-            ContestCategory firstInnerCategory = new ContestCategory();
-            ContestCategory secondInnerCategory = new ContestCategory();
-            ContestCategory thirdInnerCategory = new ContestCategory();
-            ContestCategory fourthInnerCategory = new ContestCategory();
-            ContestCategory fifthInnerCategory = new ContestCategory();
-            ContestCategory sixthInnerCategory = new ContestCategory();
+            var firstInnerCategory = new ContestCategory();
+            var secondInnerCategory = new ContestCategory();
+            var thirdInnerCategory = new ContestCategory();
+            var fourthInnerCategory = new ContestCategory();
+            var fifthInnerCategory = new ContestCategory();
+            var sixthInnerCategory = new ContestCategory();
 
             firstCategory.Children.Add(firstInnerCategory);
             firstCategory.Children.Add(secondInnerCategory);
@@ -32,54 +32,54 @@
             thirdCategory.Children.Add(fifthInnerCategory);
             thirdCategory.Children.Add(sixthInnerCategory);
 
-            EmptyOjsData.ContestCategories.Add(firstCategory);
-            EmptyOjsData.ContestCategories.Add(secondCategory);
-            EmptyOjsData.ContestCategories.Add(thirdCategory);
+            this.EmptyOjsData.ContestCategories.Add(firstCategory);
+            this.EmptyOjsData.ContestCategories.Add(secondCategory);
+            this.EmptyOjsData.ContestCategories.Add(thirdCategory);
 
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
-                Contest visibleActiveContest = new Contest
+                var visibleActiveContest = new Contest
                 {
-                    Name = "Visible",
-                    IsVisible = true,
-                    IsDeleted = false,
-                    StartTime = DateTime.Now.AddDays(-2),
+                    Name = "Visible", 
+                    IsVisible = true, 
+                    IsDeleted = false, 
+                    StartTime = DateTime.Now.AddDays(-2), 
                     EndTime = DateTime.Now.AddDays(2)
                 };
 
-                Contest visiblePastContest = new Contest
+                var visiblePastContest = new Contest
                 {
-                    Name = "Visible",
-                    IsVisible = true,
-                    IsDeleted = false,
-                    StartTime = DateTime.Now.AddDays(-2),
+                    Name = "Visible", 
+                    IsVisible = true, 
+                    IsDeleted = false, 
+                    StartTime = DateTime.Now.AddDays(-2), 
                     EndTime = DateTime.Now.AddDays(-1)
                 };
 
-                Contest visibleFutureContest = new Contest
+                var visibleFutureContest = new Contest
                 {
-                    Name = "Visible",
-                    IsVisible = true,
-                    IsDeleted = false,
-                    StartTime = DateTime.Now.AddDays(2),
+                    Name = "Visible", 
+                    IsVisible = true, 
+                    IsDeleted = false, 
+                    StartTime = DateTime.Now.AddDays(2), 
                     EndTime = DateTime.Now.AddDays(4)
                 };
 
-                Contest nonVisibleContest = new Contest
+                var nonVisibleContest = new Contest
                 {
-                    Name = "NonVisible",
-                    IsVisible = false,
-                    IsDeleted = false,
-                    StartTime = DateTime.Now.AddDays(-2),
+                    Name = "NonVisible", 
+                    IsVisible = false, 
+                    IsDeleted = false, 
+                    StartTime = DateTime.Now.AddDays(-2), 
                     EndTime = DateTime.Now.AddDays(4)
                 };
 
-                Contest deletedVisibleContest = new Contest
+                var deletedVisibleContest = new Contest
                 {
-                    Name = "DeletedVisible",
-                    IsVisible = true,
-                    IsDeleted = true,
-                    StartTime = DateTime.Now.AddDays(-2),
+                    Name = "DeletedVisible", 
+                    IsVisible = true, 
+                    IsDeleted = true, 
+                    StartTime = DateTime.Now.AddDays(-2), 
                     EndTime = DateTime.Now.AddDays(4)
                 };
 
@@ -130,7 +130,7 @@
                 sixthInnerCategory.Contests.Add((Contest)deletedVisibleContest.ObjectClone());
             }
 
-            EmptyOjsData.SaveChanges();
+            this.EmptyOjsData.SaveChanges();
         }
 
         [Test]

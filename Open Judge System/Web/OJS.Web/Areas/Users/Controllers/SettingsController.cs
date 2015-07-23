@@ -34,11 +34,11 @@
         {
             if (this.ModelState.IsValid)
             {
-                var user = this.Data.Users.GetByUsername(User.Identity.Name);
+                var user = this.Data.Users.GetByUsername(this.User.Identity.Name);
                 this.UpdateUserSettings(user.UserSettings, settings);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, Resource.Settings_were_saved);
+                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Settings_were_saved);
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
 

@@ -77,6 +77,7 @@
         /// <param name="id">The contest id.</param>
         /// <param name="official">A flag, showing if the results are for practice
         /// or for competition</param>
+        /// <param name="page"></param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
@@ -158,7 +159,7 @@
             contestModel.CurrentPage = page.Value;
             contestModel.AllPages = totalPages;
 
-            if (User.IsAdmin())
+            if (this.User.IsAdmin())
             {
                 contestModel.Results = contestModel.Results.OrderByDescending(x => x.AdminTotal);
             }
@@ -248,7 +249,7 @@
                     .OrderBy(subm => subm.CreatedOn)
                     .ToList();
 
-            List<ContestStatsChartViewModel> viewModel = new List<ContestStatsChartViewModel>();
+            var viewModel = new List<ContestStatsChartViewModel>();
 
             for (DateTime time = contestInfo.StartTime.Value.AddMinutes(5); time <= contestInfo.EndTime.Value && time < DateTime.Now; time = time.AddMinutes(5))
             {
@@ -263,11 +264,11 @@
                     .Select(gr => new
                     {
                         MaxPoints = gr.Max(pr => pr.Points),
-                        ParticipantId = gr.Key.ParticipantId
+                         gr.Key.ParticipantId
                     })
                     .GroupBy(pr => pr.ParticipantId)
                     .Select(gr => gr.Sum(pr => pr.MaxPoints))
-                    .Aggregate((sum, el) => sum += el) / contestInfo.ParticipantsCount;
+                    .Aggregate((sum, el) => sum + el) / contestInfo.ParticipantsCount;
 
                 viewModel.Add(new ContestStatsChartViewModel
                 {

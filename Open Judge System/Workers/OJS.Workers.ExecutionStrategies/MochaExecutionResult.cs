@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public class MochaExecutionResult

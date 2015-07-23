@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Security;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -136,18 +135,6 @@
             }
 
             return strings[0];
-        }
-
-        // TODO: Test
-        public static SecureString ToSecureString(this string sourceString)
-        {
-            var secureString = new SecureString();
-            foreach (var character in sourceString)
-            {
-                secureString.AppendChar(character);
-            }
-
-            return secureString;
         }
 
         // TODO: Test

@@ -2,11 +2,8 @@
 {
     using System;
     using System.IO;
-    using System.Net.Http;
 
     using Ionic.Zip;
-
-    using Newtonsoft.Json;
 
     public class RemoteExecutionStrategy : IExecutionStrategy
     {

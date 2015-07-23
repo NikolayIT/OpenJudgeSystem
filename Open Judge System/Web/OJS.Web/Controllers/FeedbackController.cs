@@ -42,9 +42,9 @@
                     Name = model.Name
                 };
 
-                if (User.Identity.IsAuthenticated)
+                if (this.User.Identity.IsAuthenticated)
                 {
-                    var userProfile = this.Data.Users.GetByUsername(User.Identity.Name);
+                    var userProfile = this.Data.Users.GetByUsername(this.User.Identity.Name);
                     report.User = userProfile;
                 }
 

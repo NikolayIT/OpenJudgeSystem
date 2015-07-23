@@ -1,10 +1,8 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    
+
     public class ParticipantFullResultViewModel
     {
         public string ParticipantUsername { get; set; }
@@ -27,16 +25,9 @@
         {
             get
             {
-                var totalPoints = 0;
-                foreach (var problemResult in this.ProblemResults)
-                {
-                    if (problemResult.BestSubmission != null)
-                    {
-                        totalPoints += problemResult.BestSubmission.Points;
-                    }
-                }
-
-                return totalPoints;
+                return
+                    this.ProblemResults.Where(problemResult => problemResult.BestSubmission != null)
+                        .Sum(problemResult => problemResult.BestSubmission.Points);
             }
         }
     }

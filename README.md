@@ -13,7 +13,6 @@ Originally developed by:
 * Nikolay Kostov (https://github.com/NikolayIT)
 * Ivaylo Kenov (https://github.com/ivaylokenov)
 * Vasil Dininski (https://github.com/dininski)
-* Todor Stoyanov (https://github.com/todorstoianov)
 
 Other contributors:
 * Vladislav Karamfilov (https://github.com/vladislav-karamfilov)

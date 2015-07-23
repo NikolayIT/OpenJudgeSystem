@@ -11,11 +11,6 @@
     [TestFixture]
     public class AllNewsActionTests : NewsTestBaseClass
     {
-        public AllNewsActionTests() 
-            : base()
-        {
-        }
-
         [Test]
         public void AllActionShouldReturnViewModel()
         {

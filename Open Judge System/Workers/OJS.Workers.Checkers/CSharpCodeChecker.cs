@@ -31,7 +31,7 @@
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
             compilerParameters.ReferencedAssemblies.Add("OJS.Workers.Common.dll");
-            var compilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, new[] { parameter });
+            var compilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, parameter);
             if (compilerResults.Errors.HasErrors)
             {
                 var errorsStringBuilder = new StringBuilder();

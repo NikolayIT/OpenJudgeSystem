@@ -12,7 +12,7 @@
         {
             var original = "SomeUrlWithC#InIt";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "SomeUrlWithCSharpInIt";
 
             Assert.AreEqual(expected, result);
@@ -23,7 +23,7 @@
         {
             var original = "SomeUrlWithC++InIt";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "SomeUrlWithCPlusPlusInIt";
 
             Assert.AreEqual(expected, result);
@@ -34,7 +34,7 @@
         {
             var original = "Some%Url&With!Ugly)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -45,7 +45,7 @@
         {
             var original = "Some%$Url&!With!^^^Ugly**)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -56,7 +56,7 @@
         {
             var original = "###Some%$Url&!With!^^^Ugly**)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -67,7 +67,7 @@
         {
             var original = "Some%$Url&!With!^^^Ugly**)Symbol*&*";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -78,7 +78,7 @@
         {
             var original = "  Some  Url  With  Ugly  Symbol  ";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -89,7 +89,7 @@
         {
             var original = "  Some  C++UrlC++  With  UglyC#C#  Symbol  ";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-CPlusPlusUrlCPlusPlus-With-UglyCSharpCSharp-Symbol";
 
             Assert.AreEqual(expected, result);
@@ -100,7 +100,7 @@
         {
             var original = "% Some  C++UrlC++  With  UglyC#C#  Symbol #";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-CPlusPlusUrlCPlusPlus-With-UglyCSharpCSharp-Symbol";
 
             Assert.AreEqual(expected, result);

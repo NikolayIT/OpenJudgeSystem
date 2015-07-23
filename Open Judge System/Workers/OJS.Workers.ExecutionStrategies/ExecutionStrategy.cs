@@ -79,14 +79,7 @@
             else if (processExecutionResult.Type == ProcessExecutionResultType.Success)
             {
                 var checkerResult = checker.Check(test.Input, receivedOutput, test.Output, test.IsTrialTest);
-                if (checkerResult.IsCorrect)
-                {
-                    testResult.ResultType = TestRunResultType.CorrectAnswer;
-                }
-                else
-                {
-                    testResult.ResultType = TestRunResultType.WrongAnswer;
-                }
+                testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
 
                 // TODO: Do something with checkerResult.ResultType
                 testResult.CheckerComment = checkerResult.CheckerDetails;

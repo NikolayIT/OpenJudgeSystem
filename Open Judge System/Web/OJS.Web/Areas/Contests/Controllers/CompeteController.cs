@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
-    using System;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -296,7 +295,7 @@
                 ProblemId = participantSubmission.ProblemId,
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
-                IpAddress = Request.UserHostAddress,
+                IpAddress = this.Request.UserHostAddress,
             });
 
             this.Data.SaveChanges();

@@ -1,11 +1,7 @@
 ﻿namespace OJS.Web.Areas.Users.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Web;
 
     using OJS.Data.Models;
     using OJS.Web.Areas.Users.Helpers;

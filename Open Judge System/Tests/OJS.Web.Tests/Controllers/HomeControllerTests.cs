@@ -15,7 +15,7 @@
         [Test]
         public void IndexActionShouldReturnViewModel()
         {
-            var controller = new HomeController(EmptyOjsData);
+            var controller = new HomeController(this.EmptyOjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
             Assert.AreEqual(0, model.ActiveContests.Count());
@@ -26,7 +26,7 @@
         [Test]
         public void IndexActionShouldReturnProperActiveContestsCount()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
             Assert.AreEqual(2, model.ActiveContests.Count());
@@ -35,7 +35,7 @@
         [Test]
         public void IndexActionShouldReturnProperPastContestsCount()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
             Assert.AreEqual(3, model.PastContests.Count());
@@ -44,7 +44,7 @@
         [Test]
         public void IndexActionShouldReturnProperFutureContestsCount()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
             Assert.AreEqual(4, model.FutureContests.Count());
@@ -53,7 +53,7 @@
         [Test]
         public void IndexActionShouldReturnProperActiveContestNames()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 
@@ -66,7 +66,7 @@
         [Test]
         public void IndexActionShouldReturnProperPastContestNames()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 
@@ -79,7 +79,7 @@
         [Test]
         public void IndexActionShouldReturnProperFutureContestNames()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 
@@ -92,7 +92,7 @@
         [Test]
         public void IndexActionShouldReturnProperVisibleActiveContests()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 
@@ -102,7 +102,7 @@
         [Test]
         public void IndexActionShouldReturnProperVisiblePastContests()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 
@@ -112,7 +112,7 @@
         [Test]
         public void IndexActionShouldReturnProperVisibleFutureContests()
         {
-            var controller = new HomeController(OjsData);
+            var controller = new HomeController(this.OjsData);
             var result = controller.Index() as ViewResult;
             var model = result.Model as IndexViewModel;
 

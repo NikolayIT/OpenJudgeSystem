@@ -1,8 +1,6 @@
 ﻿namespace OJS.Workers.Controller
 {
-    using System;
     using System.Configuration;
-    using System.Net.Sockets;
     using System.ServiceProcess;
     using System.Threading;
 

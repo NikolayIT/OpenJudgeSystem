@@ -5,7 +5,6 @@
     using System.Linq;
 
     using OJS.Data;
-    using OJS.Data.Migrations;
     using OJS.Tools.OldDatabaseMigration;
 
     internal class OldDatabaseMigrationExecutorProgram

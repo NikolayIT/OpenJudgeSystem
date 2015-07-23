@@ -1,7 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Contests
 {
-    using System;
-
     public class ContestStatsChartViewModel
     {
         public double AverageResult { get; set; }

@@ -195,4 +195,7 @@
   <data name="Users" xml:space="preserve">
     <value>Потребители</value>
   </data>
+  <data name="SubmissionTypes" xml:space="preserve">
+    <value>Типове решения</value>
+  </data>
 </root>

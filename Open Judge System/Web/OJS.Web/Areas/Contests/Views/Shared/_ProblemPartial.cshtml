@@ -25,15 +25,7 @@
 </div>
 
 @{
-    string className;
-    if (Model.ShowResults)
-    {
-        className = "col-lg-8";
-    }
-    else
-    {
-        className = "col-lg-12";
-    }
+    var className = Model.ShowResults ? "col-lg-8" : "col-lg-12";
 }
 
 <div class="row">
@@ -144,7 +136,7 @@
 
                                     kendoUpload.bind('select', function () {
                                         initFileInput();
-                                    })
+                                    });
                                 }
 
                                 if (dataItem.AllowBinaryFilesUpload) {
@@ -179,7 +171,7 @@
     </div>
 
     @{
-        var participantRowTemplate = "#= ParticipantName === '" + this.User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
+        var participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
             "<td>#:ParticipantName#</td>" + "<td>#:Result# / #:MaximumPoints#</td></tr>";
     }
 
@@ -267,7 +259,7 @@ else
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<OJS.Web.Areas.Contests.ViewModels.Results.SubmissionResultIsCompiledViewModel>()
+            .Grid<SubmissionResultIsCompiledViewModel>()
             .Name("Submissions_" + Model.ProblemId)
             .ToolBar(tool =>
             {

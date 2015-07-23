@@ -7,7 +7,6 @@
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
     ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.Results.Count());
-    var style = string.Empty;
 }
 
 <ol class="breadcrumb">
@@ -73,15 +72,7 @@
                         }
                         foreach (var testRun in problemResult.BestSubmission.TestRuns)
                         {
-                            if (testRun.IsZeroTest)
-                            {
-                                style = "-ms-opacity: 0.3; opacity: 0.3";
-                            }
-                            else
-                            {
-                                style = string.Empty;
-                            }
-
+                            var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
                             switch (testRun.ResultType)
                             {
                                 case TestRunResultType.CorrectAnswer:<span style="@style" class="glyphicon glyphicon-ok text-success" title=@Resource.Answer_correct></span>break;

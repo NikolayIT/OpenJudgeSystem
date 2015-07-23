@@ -10,12 +10,10 @@
     [TestFixture]
     public class NewsControllerBaseTestsClass : BaseWebTests
     {
-        private readonly Mock<IOjsData> data;
-
         public NewsControllerBaseTestsClass()
         {
-            this.data = new Mock<IOjsData>();
-            this.NewsController = new NewsController(this.data.Object);
+            var data = new Mock<IOjsData>();
+            this.NewsController = new NewsController(data.Object);
         }
 
         protected NewsController NewsController { get; set; }

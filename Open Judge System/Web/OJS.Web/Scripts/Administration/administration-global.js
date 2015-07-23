@@ -2,7 +2,7 @@
     if (args.errors) {
         var grid = $("#DataGrid").data("kendoGrid");
         var validationTemplate = kendo.template($("#model-state-errors-template").html());
-        $('.k-edit-form-container').prepend('<div id="errors" class="alert alert-danger"></div>')
+        $('.k-edit-form-container').prepend('<div id="errors" class="alert alert-danger"></div>');
         grid.one("dataBinding", function(e) {
             e.preventDefault();
 
@@ -11,10 +11,10 @@
                 grid.editable.element.find("#errors").append(renderedTemplate);
             });
 
-            $('.k-grid-update').click(function (ev) {
+            $('.k-grid-update').click(function(ev) {
                 ev.preventDefault();
-                $('#errors').remove()
-            })
+                $('#errors').remove();
+            });
         });
     }
 };

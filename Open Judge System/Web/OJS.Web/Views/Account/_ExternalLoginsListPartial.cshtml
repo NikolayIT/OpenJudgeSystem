@@ -5,7 +5,7 @@
 <hr />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
-    if (loginProviders.Count() == 0)
+    if (!loginProviders.Any())
     {
         <div>
             <p>

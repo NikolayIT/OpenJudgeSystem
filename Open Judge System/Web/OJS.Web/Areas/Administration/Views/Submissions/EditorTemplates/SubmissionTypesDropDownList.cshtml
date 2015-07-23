@@ -21,7 +21,7 @@
                     {
                         read.Action("GetSubmissionTypes", 
                                     "Submissions",
-                                    new { allowBinaryFilesUpload = allowBinaryFilesUpload })
+                                    new { allowBinaryFilesUpload })
                                     .Data(@<text> function () { return { problemId: $('#ProblemId').val() };} </text>);
                         });
         })

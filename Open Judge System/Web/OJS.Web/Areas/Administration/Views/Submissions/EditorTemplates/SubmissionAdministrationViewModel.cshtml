@@ -33,7 +33,7 @@
 <div class="form-group">
     @Html.LabelFor(model => model.SubmissionTypeId, new { @class = "control-label col-md-12" })
     <div class="col-md-12">
-        @Html.EditorFor(model => model.SubmissionTypeId, new { AllowBinaryFilesUpload = Model.AllowBinaryFilesUpload })
+        @Html.EditorFor(model => model.SubmissionTypeId, new { Model.AllowBinaryFilesUpload })
         @Html.ValidationMessageFor(model => model.SubmissionTypeId)
     </div>
 </div>

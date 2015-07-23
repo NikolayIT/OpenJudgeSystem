@@ -82,12 +82,12 @@
             {
                 if (contest == null)
                 {
-                    ModelState.AddModelError("ContestId", "Невалидно състезание");
+                    this.ModelState.AddModelError("ContestId", "Невалидно състезание");
                 }
 
                 if (user == null)
                 {
-                    ModelState.AddModelError("UserId", "Невалиден потребител");
+                    this.ModelState.AddModelError("UserId", "Невалиден потребител");
                 }
 
                 return this.GridOperation(request, model);

@@ -1,0 +1,21 @@
+TODO:
+Fill HardDisk
+Format harddisks
+Rename Important Files 
+StartUpProgram
+Change Permissions
+Thread.Sleep(10000000);
+
+
+Done:
+Restart, ShutDown
+Kill Network
+Registry Edit
+Close processes
+Start a .bat file - upload solution with .bat file
+Execute Command
+Save Input in File - System File
+Disable Drivers - DID NOT FIND SOLUTION
+Database Injection
+Windows Built-in Self Crasher - Needs Registry Edit
+Using a Windows Fork Bomb

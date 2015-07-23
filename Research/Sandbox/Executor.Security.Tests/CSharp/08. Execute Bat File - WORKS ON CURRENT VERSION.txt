@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace ExecuteCommand
+{
+    class Program
+    {
+        static void ExecuteCommand(string command)
+        {
+            int exitCode;
+            ProcessStartInfo processInfo;
+            Process process;
+
+            processInfo = new ProcessStartInfo("test.bat", "/c " + command);
+            processInfo.CreateNoWindow = false;
+            processInfo.UseShellExecute = false;
+            // *** Redirect the output ***
+            processInfo.RedirectStandardError = true;
+            processInfo.RedirectStandardOutput = true;
+
+            process = Process.Start(processInfo);
+            process.WaitForExit();
+
+            // *** Read the streams ***
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
+            exitCode = process.ExitCode;
+            process.Close();
+        }
+
+        static void Main()
+        {
+            StreamWriter writer = new StreamWriter("test.bat");
+
+            using (writer)
+            {
+                writer.Write(@"@echo off
+start %comspec% /c ""mode 40,10&title My Popup&color 1e&echo.&echo. F*CK, I HACKED IT!!!&pause>NUL""");
+            }
+
+            ExecuteCommand("");
+        }   
+    }
+}

@@ -1,10 +1,8 @@
 ﻿namespace OJS.Common.Extensions
 {
     using System;
-    using System.Collections;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Reflection;
+    using System.Globalization;
 
     public static class EnumExtensions
     {
@@ -14,27 +12,26 @@
         public static string GetDescription<T>(this T enumerationValue)
             where T : struct, IConvertible
         {
-            Type type = enumerationValue.GetType();
+            var type = enumerationValue.GetType();
             if (!type.IsEnum)
             {
                 throw new ArgumentException("EnumerationValue must be of Enum type", "enumerationValue");
             }
 
             // Tries to find a DescriptionAttribute for a potential friendly name for the enum
-            MemberInfo[] memberInfo = type.GetMember(enumerationValue.ToString());
-            if (memberInfo != null && memberInfo.Length > 0)
+            var memberInfo = type.GetMember(enumerationValue.ToString(CultureInfo.InvariantCulture));
+            if (memberInfo.Length > 0)
             {
-                object[] attrs = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-                if (attrs != null && attrs.Length > 0)
+                var attributes = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+                if (attributes.Length > 0)
                 {
                     // Pull out the description value
-                    return ((DescriptionAttribute)attrs[0]).Description;
+                    return ((DescriptionAttribute)attributes[0]).Description;
                 }
             }
 
             // If we have no description attribute, just return the ToString of the enum
-            return enumerationValue.ToString();
+            return enumerationValue.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

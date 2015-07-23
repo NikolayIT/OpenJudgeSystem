@@ -213,7 +213,7 @@
             {
                 if (this.EndTime.HasValue)
                 {
-                    return (double?)(this.EndTime.Value - DateTime.Now).TotalMilliseconds;
+                    return (this.EndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
                 else
                 {

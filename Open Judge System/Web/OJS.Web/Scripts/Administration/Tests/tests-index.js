@@ -29,7 +29,7 @@ function onProblemSelect(e) {
     if (problemId != "") {
         $('#controls').show();
         $('#problemId').val(problemId);
-        $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemId)
+        $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemId);
 
         initializeGrid(parseInt(problemId), parseInt($("#contests").val()));
         $('#grid').show();
@@ -43,11 +43,11 @@ function onProblemSelect(e) {
 function populateDropDowns(problemIdAsString) {
 
     $('#controls').show();
-    $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemIdAsString)
+    $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemIdAsString);
 
     var response;
 
-    $.get('/Administration/Tests/GetProblemInformation/' + problemIdAsString, function (data) {
+    $.get('/Administration/Tests/GetProblemInformation/' + problemIdAsString, function(data) {
         response = data;
 
         var categoryId = response.Category;
@@ -86,40 +86,40 @@ function populateDropDowns(problemIdAsString) {
         });
 
         function categoriesCascade() {
-            contests.dataSource.fetch(function () {
+            contests.dataSource.fetch(function() {
                 contests.dataSource.read();
 
-                contests.select(function (dataItem) {
+                contests.select(function(dataItem) {
                     return dataItem.Id == contestId;
                 });
             });
         }
 
         function contestsCascade() {
-            problems.dataSource.fetch(function () {
+            problems.dataSource.fetch(function() {
                 problems.dataSource.read();
 
-                problems.select(function (dataItem) {
+                problems.select(function(dataItem) {
                     return dataItem.Id == problemId;
-                })
+                });
             });
         }
 
         categories.bind("cascade", categoriesCascade);
         contests.bind("cascade", contestsCascade);
 
-        categoriesData.fetch(function () {
+        categoriesData.fetch(function() {
             categories.dataSource.data(categoriesData);
             categories.setDataSource(categoriesData);
             categories.refresh();
         });
 
-        categories.select(function (dataItem) {
+        categories.select(function(dataItem) {
             return dataItem.Id === categoryId;
         });
 
         initializeGrid(problemId, contestId);
-    })
+    });
 }
 
 function initializeGrid(problemId, contestId) {

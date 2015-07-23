@@ -22,7 +22,7 @@
             this.File = new Mock<HttpPostedFileBase>();
         }
 
-        protected Mock<HttpPostedFileBase> File { get; set; }
+        private Mock<HttpPostedFileBase> File { get; set; }
 
         [Test]
         public void ImportActionShouldShowProperRedirectAndMessageWithIncorrectProblemId()
@@ -113,7 +113,7 @@
             this.File.Setup(x => x.ContentLength).Returns(1);
             this.File.Setup(x => x.FileName).Returns("filename.zip");
 
-            var remainingTests = this.Data.Tests.All().Where(test => test.ProblemId == 1).Count();
+            var remainingTests = this.Data.Tests.All().Count(test => test.ProblemId == 1);
 
             Assert.AreEqual(13, remainingTests);
 
@@ -123,7 +123,7 @@
             }
             catch (Exception)
             {
-                remainingTests = this.Data.Tests.All().Where(test => test.ProblemId == 1).Count();
+                remainingTests = this.Data.Tests.All().Count(test => test.ProblemId == 1);
                 Assert.AreEqual(0, remainingTests);
             }
         }

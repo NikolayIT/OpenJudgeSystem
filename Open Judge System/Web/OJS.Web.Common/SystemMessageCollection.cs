@@ -24,11 +24,6 @@
             this.Add(message);
         }
 
-        public void Remove(SystemMessage message)
-        {
-            this.list.Remove(message);
-        }
-
         public IEnumerator<SystemMessage> GetEnumerator()
         {
             return this.list.OrderByDescending(x => x.Importance).ThenByDescending(x => x.Type).GetEnumerator();

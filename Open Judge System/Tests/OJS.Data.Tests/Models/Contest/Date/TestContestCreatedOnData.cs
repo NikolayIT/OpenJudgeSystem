@@ -1,9 +1,11 @@
-﻿namespace OJS.Data.Tests.Contest.Date
+﻿namespace OJS.Data.Tests.Models.Contest.Date
 {
     using System;
     using System.Linq;
 
     using NUnit.Framework;
+
+    using OJS.Data.Tests.Contest;
 
     [TestFixture]
     public class TestContestCreatedOnData : TestContestBaseData
@@ -20,11 +22,11 @@
                 .Where(x => x.Name == "Created")
                 .Select(x => new
                 {
-                    CreatedOn = x.CreatedOn
+                    x.CreatedOn
                 })
                 .FirstOrDefault();
 
-            bool expected = DateTime.Now.AddSeconds(-5) < result.CreatedOn
+            var expected = DateTime.Now.AddSeconds(-5) < result.CreatedOn
                 && result.CreatedOn < DateTime.Now.AddSeconds(5);
 
             Assert.IsTrue(expected);
@@ -33,29 +35,25 @@
         [Test]
         public void CreatedOnShouldNotChangeAfterModification()
         {
-            var createdBeforeModification = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .Select(x => new
-                {
-                    CreatedOn = x.CreatedOn
-                })
-                .FirstOrDefault().CreatedOn;
+            var createdBeforeModification =
+                this.EmptyOjsData.Contests.All()
+                    .Where(x => x.Name == "Created")
+                    .Select(x => new { x.CreatedOn })
+                    .FirstOrDefault()
+                    .CreatedOn;
 
-            this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault().Name = "Modified";
+            this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created").Name = "Modified";
 
             this.EmptyOjsData.SaveChanges();
 
-            var createdAfterModification = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Modified")
-                .Select(x => new
-                {
-                    CreatedOn = x.CreatedOn
-                })
-                .FirstOrDefault().CreatedOn;
+            var createdAfterModification =
+                this.EmptyOjsData.Contests.All()
+                    .Where(x => x.Name == "Modified")
+                    .Select(x => new { x.CreatedOn })
+                    .FirstOrDefault()
+                    .CreatedOn;
 
-            bool result = createdBeforeModification == createdAfterModification;
+            var result = createdBeforeModification == createdAfterModification;
 
             Assert.IsTrue(result);
         }
@@ -63,25 +61,17 @@
         [Test]
         public void PreserveCreatedOnShouldNotAllowChangeInCreatedOn()
         {
-            this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault().PreserveCreatedOn = true;
+            this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created").PreserveCreatedOn = true;
 
-            var originalCreatedOn = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault().CreatedOn;
+            var originalCreatedOn = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created").CreatedOn;
 
             this.EmptyOjsData.SaveChanges();
 
-            this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault().CreatedOn.AddDays(5);
+            this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created").CreatedOn.AddDays(5);
 
-            var createdOn = this.EmptyOjsData.Contests.All()
-                .Where(x => x.Name == "Created")
-                .FirstOrDefault().CreatedOn;
+            var createdOn = this.EmptyOjsData.Contests.All().FirstOrDefault(x => x.Name == "Created").CreatedOn;
 
-            bool expected = originalCreatedOn == createdOn;
+            var expected = originalCreatedOn == createdOn;
 
             Assert.IsTrue(expected);
         }

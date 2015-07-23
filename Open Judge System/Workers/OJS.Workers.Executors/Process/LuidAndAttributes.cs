@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.Executors.Process
 {
-    using System;
     using System.Runtime.InteropServices;
 
     /// <summary>

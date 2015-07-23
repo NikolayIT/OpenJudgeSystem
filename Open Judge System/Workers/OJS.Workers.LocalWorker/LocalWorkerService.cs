@@ -7,7 +7,6 @@
     using log4net;
 
     using OJS.Common;
-    using OJS.Data;
 
     internal class LocalWorkerService : ServiceBase
     {

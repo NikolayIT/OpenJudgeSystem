@@ -90,7 +90,7 @@
 
             if (question == null)
             {
-                throw new ArgumentNullException("Question could not be found by given Id");
+                throw new ArgumentException("Question could not be found by given Id", "id");
             }
 
             question.Answers.Select(a => a.Id).ToList().Each(a => this.Data.ContestQuestionAnswers.Delete(a));

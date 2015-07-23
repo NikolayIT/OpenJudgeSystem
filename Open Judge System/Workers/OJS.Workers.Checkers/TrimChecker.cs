@@ -6,7 +6,12 @@
     {
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
-            var result = this.CheckLineByLine(inputData, receivedOutput == null ? receivedOutput : receivedOutput.Trim(), expectedOutput == null ? expectedOutput : expectedOutput.Trim(), this.AreEqualTrimmedLines, isTrialTest);
+            var result = this.CheckLineByLine(
+                inputData,
+                receivedOutput == null ? null : receivedOutput.Trim(),
+                expectedOutput == null ? null : expectedOutput.Trim(),
+                this.AreEqualTrimmedLines,
+                isTrialTest);
             return result;
         }
     }

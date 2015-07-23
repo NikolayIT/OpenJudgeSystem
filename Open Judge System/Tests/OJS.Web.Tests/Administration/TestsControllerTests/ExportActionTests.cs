@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Web.Mvc;
-    
+
     using Ionic.Zip;
 
     using NUnit.Framework;
@@ -15,12 +15,12 @@
         [Test]
         public void ExportActionShouldReturnNotNullableResult()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
-            var zipFile = ZipFile.Read(result.FileStream);
+            ZipFile.Read(result.FileStream);
 
             Assert.IsNotNull(result);
         }
@@ -28,9 +28,9 @@
         [Test]
         public void ExportActionShouldReturnZipFile()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -41,9 +41,9 @@
         [Test]
         public void ExportActionShouldReturnZipFileWith24Files()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -54,9 +54,9 @@
         [Test]
         public void ExportActionShouldReturnCorrectTrialTestFiles()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -72,9 +72,9 @@
         [Test]
         public void ExportActionShouldNotHaveNotNeededTrialTestFiles()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -86,9 +86,9 @@
         [Test]
         public void ExportActionShouldReturnCorrectNonTrialTestFiles()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -103,9 +103,9 @@
         [Test]
         public void ExportActionShouldNotHaveNotNeededNonTrialTestFiles()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -117,42 +117,42 @@
         [Test]
         public void ExportActionShouldReturnCorrectTrialTestFileContent()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
 
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Trial input test 1");
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Trial output test 1");
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.in.txt").FirstOrDefault()), "Trial input test 2");
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.002.out.txt").FirstOrDefault()), "Trial output test 2");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.001.in.txt")), "Trial input test 1");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.001.out.txt")), "Trial output test 1");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.002.in.txt")), "Trial input test 2");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.002.out.txt")), "Trial output test 2");
         }
 
         [Test]
         public void ExportActionShouldReturnCorrectNonTrialTestFileContent()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "Problem").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "Problem").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
 
             for (int i = 0; i < 10; i++)
             {
-                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), i.ToString());
-                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), (i + 1).ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1))), i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1))), (i + 1).ToString());
             }
         }
 
         [Test]
         public void ExportActionShouldReturnOnlyTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyTrialTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -163,9 +163,9 @@
         [Test]
         public void ExportActionShouldReturnProperTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyTrialTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -177,9 +177,9 @@
         [Test]
         public void ExportActionShoudlNotHaveNotNeededTrialTestsIfTheProblemDoesNotHaveNonTrial()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyTrialTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -191,23 +191,23 @@
         [Test]
         public void ExportActionShouldReturnProperTrialTestsContentIfTheProblemDoesNotHaveNonTrialTests()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyTrialTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyTrialTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
 
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.in.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second line");
-            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == "test.000.001.out.txt").FirstOrDefault()), "Zero test 1\nZero test 1 second lint output");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.001.in.txt")), "Zero test 1\nZero test 1 second line");
+            Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == "test.000.001.out.txt")), "Zero test 1\nZero test 1 second lint output");
         }
 
         [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsIfProblemDoesNotHaveTrialOnes()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyNormalTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -218,9 +218,9 @@
         [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsNamesIfProblemDoesNotHaveTrialOnes()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyNormalTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -235,9 +235,9 @@
         [Test]
         public void ExportActionShouldNotReturnNotNeededFilesIfNoOnlyNonTrialTestsNamesIfProblemDoesNotHaveTrialOnes()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyNormalTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
@@ -249,17 +249,17 @@
         [Test]
         public void ExportActionShouldReturnOnlyNonTrialTestsContentIfProblemDoesNotHaveTrialOnes()
         {
-            var problemId = this.Data.Problems.All().Where(x => x.Name == "OnlyNormalTests").FirstOrDefault().Id;
+            var problemId = this.Data.Problems.All().FirstOrDefault(x => x.Name == "OnlyNormalTests").Id;
 
-            var result = TestsController
+            var result = this.TestsController
                 .Export(problemId) as FileStreamResult;
 
             var zipFile = ZipFile.Read(result.FileStream);
 
             for (int i = 0; i < 10; i++)
             {
-                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1)).FirstOrDefault()), "Only normal tests " + i.ToString());
-                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.Where(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1)).FirstOrDefault()), "Only normal tests output" + i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == string.Format("test.{0:D3}.in.txt", i + 1))), "Only normal tests " + i.ToString());
+                Assert.AreEqual(ZippedTestsManipulator.ExtractFileFromStream(zipFile.EntriesSorted.FirstOrDefault(x => x.FileName == string.Format("test.{0:D3}.out.txt", i + 1))), "Only normal tests output" + i.ToString());
             }
         }
     }

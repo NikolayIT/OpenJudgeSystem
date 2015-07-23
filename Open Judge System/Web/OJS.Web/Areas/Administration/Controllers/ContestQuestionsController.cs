@@ -93,7 +93,7 @@
                 .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new { Text = c.Name, Value = c.Id });
 
-            ViewBag.ContestId = id;
+            this.ViewBag.ContestId = id;
 
             return this.PartialView("_CopyQuestionsFromContest", contests);
         }

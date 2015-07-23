@@ -1,6 +1,5 @@
 ﻿namespace OJS.Data.Models
 {
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using OJS.Data.Contracts;

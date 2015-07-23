@@ -25,7 +25,7 @@
         [Test]
         public void IndexActionShouldReturnViewModel()
         {
-            var controller = new FeedbackController(EmptyOjsData);
+            var controller = new FeedbackController(this.EmptyOjsData);
             var result = controller.Index() as ViewResult;
 
             Assert.IsNotNull(result);
@@ -50,7 +50,7 @@
             this.EmptyOjsData.Users.Add(user);
             this.EmptyOjsData.SaveChanges();
 
-            var controller = new FeedbackController(EmptyOjsData);
+            var controller = new FeedbackController(this.EmptyOjsData);
 
             // assign the fake context
             var context = new ControllerContext(this.MockHttpContextBasePost(), new RouteData(), controller);
@@ -66,7 +66,7 @@
         [Test]
         public void SubmittedShouldReturnNullViewModel()
         {
-            var controller = new FeedbackController(EmptyOjsData);
+            var controller = new FeedbackController(this.EmptyOjsData);
             var result = controller.Submitted() as ViewResult;
             var model = result.Model as FeedbackReport;
 

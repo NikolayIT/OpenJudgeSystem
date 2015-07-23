@@ -4,13 +4,12 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using OJS.Workers.Checkers;
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
-        private string mochaModulePath;
-        private string chaiModulePath;
+        private readonly string mochaModulePath;
+        private readonly string chaiModulePath;
 
         public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(string nodeJsExecutablePath, string mochaModulePath, string chaiModulePath)
             : base(nodeJsExecutablePath)
