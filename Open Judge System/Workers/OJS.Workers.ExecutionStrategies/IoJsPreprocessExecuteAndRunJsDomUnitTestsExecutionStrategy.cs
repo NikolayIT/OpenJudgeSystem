@@ -10,13 +10,13 @@
         private string handlebarsModulePath;
 
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
-            string ioJsExecutablePath,
+            string iojsExecutablePath,
             string mochaModulePath, 
             string chaiModulePath, 
             string jsdomModulePath, 
             string jqueryModulePath,
             string handlebarsModulePath)
-            : base(ioJsExecutablePath, mochaModulePath, chaiModulePath)
+            : base(iojsExecutablePath, mochaModulePath, chaiModulePath)
         {
             if (!Directory.Exists(jsdomModulePath))
             {
