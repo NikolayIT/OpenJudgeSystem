@@ -174,7 +174,7 @@ namespace OJS.Data.Migrations
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments =
                         "-R json",
-                    ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests,
+                    ExecutionStrategyType = ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,

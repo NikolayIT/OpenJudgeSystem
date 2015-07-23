@@ -62,6 +62,14 @@
             }
         }
 
+        public static string IoJsExecutablePath
+        {
+            get
+            {
+                return GetSetting("IoJsExecutablePath");
+            }
+        }
+
         public static string JsDomModulePath
         {
             get

@@ -241,9 +241,9 @@
                         Settings.MochaModulePath, 
                         Settings.ChaiModulePath);
                     break;
-                case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests:
-                    executionStrategy = new NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
-                        Settings.NodeJsExecutablePath,
+                case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
+                    executionStrategy = new IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
+                        Settings.IoJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
                         Settings.JsDomModulePath, 

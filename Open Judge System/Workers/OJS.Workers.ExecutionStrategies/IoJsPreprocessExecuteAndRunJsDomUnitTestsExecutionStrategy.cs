@@ -3,20 +3,20 @@
     using System;
     using System.IO;
 
-    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
+    public class IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
         private string jsdomModulePath;
         private string jqueryModulePath;
         private string handlebarsModulePath;
 
-        public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
-            string nodeJsExecutablePath,
+        public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
+            string ioJsExecutablePath,
             string mochaModulePath, 
             string chaiModulePath, 
             string jsdomModulePath, 
             string jqueryModulePath,
             string handlebarsModulePath)
-            : base(nodeJsExecutablePath, mochaModulePath, chaiModulePath)
+            : base(ioJsExecutablePath, mochaModulePath, chaiModulePath)
         {
             if (!Directory.Exists(jsdomModulePath))
             {
