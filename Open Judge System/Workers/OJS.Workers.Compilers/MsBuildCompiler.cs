@@ -18,8 +18,8 @@
 
         public MsBuildCompiler()
         {
-            this.inputPath = FileHelpers.CreateTempDirectory();
-            this.outputPath = FileHelpers.CreateTempDirectory();
+            this.inputPath = DirectoryHelpers.CreateTempDirectory();
+            this.outputPath = DirectoryHelpers.CreateTempDirectory();
         }
 
         ~MsBuildCompiler()

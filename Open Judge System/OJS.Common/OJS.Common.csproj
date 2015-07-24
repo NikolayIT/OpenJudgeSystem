@@ -49,6 +49,7 @@
     <Compile Include="Extensions\CompilerTypeExtensions.cs" />
     <Compile Include="Extensions\CompressStringExtensions.cs" />
     <Compile Include="DataAnnotations\ExcludeFromExcelAttribute.cs" />
+    <Compile Include="Extensions\DirectoryHelpers.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ExecutionStrategyTypeExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

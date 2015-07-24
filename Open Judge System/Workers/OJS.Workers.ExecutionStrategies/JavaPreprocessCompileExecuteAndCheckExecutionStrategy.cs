@@ -14,7 +14,6 @@
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private const string JavaSourceFilesPattern = "*.java";
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
         private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,50})\s*{";
         private const string TimeMeasurementFileName = "_time.txt";
@@ -32,16 +31,13 @@
             }
 
             this.javaExecutablePath = javaExecutablePath;
-            this.workingDirectory = FileHelpers.CreateTempDirectory();
+            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
         ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
         {
-            if (Directory.Exists(this.workingDirectory))
-            {
-                Directory.Delete(this.workingDirectory, true);
-            }
+            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
         private string SandboxExecutorCode
@@ -175,17 +171,16 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             // Create a sandbox executor source file in the working directory
-            var sandboxExecutorSourceFilePath = string.Format("{0}\\{1}.{2}", this.workingDirectory, SandboxExecutorClassName, CompilerType.Java.GetFileExtension());
+            var sandboxExecutorSourceFilePath = string.Format("{0}\\{1}", this.workingDirectory, SandboxExecutorClassName);
             File.WriteAllText(sandboxExecutorSourceFilePath, this.SandboxExecutorCode);
 
-            // Compile all source files - sandbox executor and submission file(s)
+            // Compile all source files - sandbox executor and submission file
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
-            var sourceFilesToCompile = new DirectoryInfo(this.workingDirectory).GetFiles(JavaSourceFilesPattern).Select(x => x.FullName);
             var compilerResult = this.CompileSourceFiles(
                 executionContext.CompilerType,
                 compilerPath,
                 executionContext.AdditionalCompilerArguments,
-                sourceFilesToCompile);
+                new[] { submissionFilePath, sandboxExecutorSourceFilePath });
 
             // Assign compiled result info to the execution result
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
@@ -199,10 +194,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             var classPathArgument = string.Format("-classpath \"{0}\"", this.workingDirectory);
 
             var submissionFilePathLastIndexOfSlash = submissionFilePath.LastIndexOf('\\');
-            var submissionFilePathLastIndexOfDot = submissionFilePath.LastIndexOf('.');
-            var classToExecute = submissionFilePath.Substring(
-                submissionFilePathLastIndexOfSlash + 1,
-                submissionFilePathLastIndexOfDot - submissionFilePathLastIndexOfSlash - 1);
+            var classToExecute = submissionFilePath.Substring(submissionFilePathLastIndexOfSlash + 1);
 
             var timeMeasurementFilePath = string.Format("{0}\\{1}", this.workingDirectory, TimeMeasurementFileName);
 
@@ -264,7 +256,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             var className = classNameMatch.Groups[1].Value;
-            var submissionFilePath = string.Format("{0}\\{1}.{2}", this.workingDirectory, className, CompilerType.Java.GetFileExtension());
+            var submissionFilePath = string.Format("{0}\\{1}", this.workingDirectory, className);
 
             File.WriteAllText(submissionFilePath, submissionCode);
 

@@ -5,20 +5,6 @@
     // TODO: Unit test
     public static class FileHelpers
     {
-        public static string CreateTempDirectory()
-        {
-            while (true)
-            {
-                var randomDirectoryName = Path.GetRandomFileName();
-                var path = Path.Combine(Path.GetTempPath(), randomDirectoryName);
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                    return path;
-                }
-            }
-        }
-
         public static string SaveStringToTempFile(string stringToWrite)
         {
             var tempFilePath = Path.GetTempFileName();
