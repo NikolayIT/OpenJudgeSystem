@@ -214,7 +214,7 @@
         private void CalculatePointsForSubmission(Submission submission)
         {
             // Internal joke: submission.Points = new Random().Next(0, submission.Problem.MaximumPoints + 1) + Weather.Instance.Today("Sofia").IsCloudy ? 10 : 0;
-            if (submission.Problem.Tests.Count == 0)
+            if (submission.Problem.Tests.Count == 0 || submission.TestsWithoutTrialTestsCount == 0)
             {
                 submission.Points = 0;
             }
@@ -237,8 +237,8 @@
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
                     executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
-                        Settings.NodeJsExecutablePath, 
-                        Settings.MochaModulePath, 
+                        Settings.NodeJsExecutablePath,
+                        Settings.MochaModulePath,
                         Settings.ChaiModulePath);
                     break;
                 case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
@@ -246,7 +246,7 @@
                         Settings.IoJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
-                        Settings.JsDomModulePath, 
+                        Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.HandlebarsModulePath);
                     break;
