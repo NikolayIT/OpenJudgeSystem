@@ -17,5 +17,16 @@
                 }
             }
         }
+
+        public static void SafeDeleteDirectory(string path, bool recursive = false)
+        {
+            if (Directory.Exists(path))
+            {
+                var searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                Directory.EnumerateFileSystemEntries(path, "*", searchOption).ForEach(x => File.SetAttributes(x, FileAttributes.Normal));
+
+                Directory.Delete(path, recursive);
+            }
+        }
     }
 }
