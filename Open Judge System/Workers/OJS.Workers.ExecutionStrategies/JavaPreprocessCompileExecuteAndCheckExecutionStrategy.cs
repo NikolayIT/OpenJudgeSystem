@@ -32,7 +32,7 @@
             }
 
             this.javaExecutablePath = javaExecutablePath;
-            this.workingDirectory = FileHelpers.CreateTempDirectory();
+            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
