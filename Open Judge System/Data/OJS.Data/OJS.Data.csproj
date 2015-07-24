@@ -56,6 +56,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Ado, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Glimpse.Core, Version=1.8.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -77,6 +85,8 @@
     <Compile Include="Configurations\ParticipantAnswersConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
+    <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
+    <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
     <Compile Include="Repositories\ContestsRepository.cs" />
     <Compile Include="Repositories\Base\DeletableEntityRepository.cs" />
     <Compile Include="Repositories\Base\GenericRepository.cs" />
