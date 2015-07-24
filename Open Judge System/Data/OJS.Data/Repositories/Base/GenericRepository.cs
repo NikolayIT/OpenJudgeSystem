@@ -9,6 +9,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using EntityFramework.BulkInsert.Extensions;
+
     using OJS.Common.Extensions;
     using OJS.Data.Contracts;
 
@@ -50,6 +52,11 @@
             {
                 this.DbSet.Add(entity);
             }
+        }
+
+        public void Add(IEnumerable<T> entities)
+        {
+            this.Context.DbContext.BulkInsert(entities);
         }
 
         public virtual void Update(T entity)
