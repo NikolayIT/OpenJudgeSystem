@@ -19,6 +19,7 @@
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);
 
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }
