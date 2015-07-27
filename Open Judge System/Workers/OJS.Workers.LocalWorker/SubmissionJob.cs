@@ -198,7 +198,9 @@
             {
                 var testRun = new TestRun
                 {
-                    CheckerComment = testResult.CheckerComment,
+                    CheckerComment = testResult.CheckerDetails.Comment,
+                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
+                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
                     ExecutionComment = testResult.ExecutionComment,
                     MemoryUsed = testResult.MemoryUsed,
                     ResultType = testResult.ResultType,

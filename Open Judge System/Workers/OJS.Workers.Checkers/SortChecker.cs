@@ -20,7 +20,7 @@
 
             var resultType = CheckerResultType.Ok;
 
-            string adminCheckerDetails = null;
+            var adminCheckerDetails = new CheckerDetails();
             int lineNumber = 0;
             using (userFileReader)
             {
@@ -68,7 +68,7 @@
                 }
             }
 
-            string checkerDetails = null;
+            var checkerDetails = new CheckerDetails();
             if (resultType != CheckerResultType.Ok)
             {
                 checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
