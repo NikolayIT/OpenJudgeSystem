@@ -74,6 +74,7 @@
     <Compile Include="StringExtensions\CompressDecompressTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensions\GetFileExtensionTests.cs" />
+    <Compile Include="StringExtensions\GetFirstDifferenceIndexTests.cs" />
     <Compile Include="StringExtensions\GetStringBetweenTests.cs" />
     <Compile Include="StringExtensions\MaxLengthTests.cs" />
     <Compile Include="StringExtensions\PascalCaseToTextTests.cs" />
