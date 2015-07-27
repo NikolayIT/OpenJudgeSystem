@@ -9,6 +9,6 @@
         /// <summary>
         /// More detailed information visible only by administrators.
         /// </summary>
-        public string CheckerDetails { get; set; }
+        public CheckerDetails CheckerDetails { get; set; }
     }
 }

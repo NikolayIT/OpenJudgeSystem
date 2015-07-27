@@ -46,7 +46,7 @@
                                     {
                                         IsCorrect = true,
                                         ResultType = CheckerResultType.Ok,
-                                        CheckerDetails = string.Empty,
+                                        CheckerDetails = new CheckerDetails(),
                                     };
                     }
                     public void SetParameter(string parameter)
@@ -61,7 +61,7 @@
                                     {
                                         IsCorrect = true,
                                         ResultType = CheckerResultType.Ok,
-                                        CheckerDetails = string.Empty,
+                                        CheckerDetails = new CheckerDetails(),
                                     };
                     }
                     public void SetParameter(string parameter)
@@ -84,7 +84,7 @@
                                     {
                                         IsCorrect = true,
                                         ResultType = CheckerResultType.Ok,
-                                        CheckerDetails = ""It was me"",
+                                        CheckerDetails = new CheckerDetails { Comment = ""It was me"" },
                                     };
                     }
                     public void SetParameter(string parameter)
@@ -96,7 +96,7 @@
 
             Assert.IsNotNull(checkerResult);
             Assert.IsTrue(checkerResult.IsCorrect);
-            Assert.AreEqual("It was me", checkerResult.CheckerDetails);
+            Assert.AreEqual("It was me", checkerResult.CheckerDetails.Comment);
         }
 
         [Test]
@@ -119,7 +119,7 @@
                                     {
                                         IsCorrect = isCorrect,
                                         ResultType = CheckerResultType.Ok,
-                                        CheckerDetails = """",
+                                        CheckerDetails = new CheckerDetails(),
                                     };
                     }
                     public void SetParameter(string parameter)

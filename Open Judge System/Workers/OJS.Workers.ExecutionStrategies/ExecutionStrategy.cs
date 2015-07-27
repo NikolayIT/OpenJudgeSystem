@@ -82,7 +82,7 @@
                 testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
 
                 // TODO: Do something with checkerResult.ResultType
-                testResult.CheckerComment = checkerResult.CheckerDetails;
+                testResult.CheckerDetails = checkerResult.CheckerDetails;
             }
             else
             {
