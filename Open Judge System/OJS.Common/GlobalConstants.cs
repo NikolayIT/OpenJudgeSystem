@@ -35,6 +35,10 @@
 
         public const string EmailRegEx = "^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+        public const int FileExtentionMaxLength = 4;
+
+        public const int IpAdressMaxLength = 45;
+
         public const int MinimumSearchTermLength = 3;
 
         public const int FeedbackContentMinLength = 10;
@@ -64,7 +68,7 @@
 
         #region News
 
-        public const int NewsTitleMaxLength = 100;
+        public const int NewsTitleMaxLength = 200;
         public const int NewsTitleMinLength = 6;
 
         public const int NewsAuthorNameMaxLength = 25;
@@ -82,6 +86,8 @@
         public const int ContestNameMaxLength = 100;
         public const int ContestNameMinLength = 6;
 
+        public const int ContestPasswordMaxLength = 20;
+
         public const int ContestCategoryNameMaxLength = 100;
         public const int ContestCategoryNameMinLength = 6;
 
@@ -89,7 +95,7 @@
         public const int ContestQuestionMinLength = 5;
 
         public const int ContestQuestionAnswerMaxLength = 100;
-        public const int ContestQuestionAnsweronMinLength = 1;
+        public const int ContestQuestionAnswerMinLength = 1;
 
         #endregion
 

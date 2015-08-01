@@ -60,7 +60,7 @@
         [StringLength(
             GlobalConstants.ContestNameMaxLength, 
             MinimumLength = GlobalConstants.ContestNameMinLength, 
-            ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 

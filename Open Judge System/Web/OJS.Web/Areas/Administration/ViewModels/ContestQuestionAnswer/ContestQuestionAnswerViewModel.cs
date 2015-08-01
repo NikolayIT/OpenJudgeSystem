@@ -48,7 +48,7 @@
         [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
         [StringLength(
             GlobalConstants.ContestQuestionAnswerMaxLength, 
-            MinimumLength = GlobalConstants.ContestQuestionAnsweronMinLength)]
+            MinimumLength = GlobalConstants.ContestQuestionAnswerMinLength)]
         [UIHint("SingleLineText")]
         public string Text { get; set; }
     }

@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common;
     using OJS.Data.Contracts;
 
     public class Contest : DeletableEntity, IValidatableObject, IOrderable
@@ -28,7 +29,8 @@
 
         public int? OldId { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.ContestNameMaxLength)]
+        [MinLength(GlobalConstants.ContestNameMinLength)]
         public string Name { get; set; }
 
         [Required]
@@ -52,14 +54,14 @@
         /// If ContestPassword is null the contest can be competed by everyone without require a password.
         /// If the ContestPassword is not null the contest participant should provide a valid password.
         /// </remarks>
-        [MaxLength(20)]
+        [MaxLength(GlobalConstants.ContestPasswordMaxLength)]
         public string ContestPassword { get; set; }
 
         /// <remarks>
         /// If PracticePassword is null the contest can be practiced by everyone without require a password.
         /// If the PracticePassword is not null the practice participant should provide a valid password.
         /// </remarks>
-        [MaxLength(20)]
+        [MaxLength(GlobalConstants.ContestPasswordMaxLength)]
         public string PracticePassword { get; set; }
 
         /// <remarks>

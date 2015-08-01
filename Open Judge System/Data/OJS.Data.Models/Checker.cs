@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using OJS.Common;
     using OJS.Data.Contracts;
 
     public class Checker : DeletableEntity
@@ -10,6 +11,8 @@
         public int Id { get; set; }
 
         [Required]
+        [MinLength(GlobalConstants.CheckerNameMinLength)]
+        [MaxLength(GlobalConstants.CheckerNameMaxLength)]
         public string Name { get; set; }
 
         public string Description { get; set; }
