@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
@@ -41,7 +42,9 @@
         [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
-        [StringLength(100, MinimumLength = 1)]
+        [StringLength(
+            GlobalConstants.SubmissionTypeNameMaxLength, 
+            MinimumLength = GlobalConstants.SubmissionTypeNameMinLength)]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 

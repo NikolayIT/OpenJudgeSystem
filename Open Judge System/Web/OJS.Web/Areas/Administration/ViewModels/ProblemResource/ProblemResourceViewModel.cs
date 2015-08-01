@@ -8,6 +8,7 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data.Models;
 
@@ -33,8 +34,9 @@
 
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името на ресурса е задължително!", AllowEmptyStrings = false)]
-        [MinLength(3)]
-        [MaxLength(50)]
+        [StringLength(
+            GlobalConstants.ProblemResourceNameMaxLength, 
+            MinimumLength = GlobalConstants.ProblemResourceNameMinLength)]
         [DefaultValue("Име")]
         public string Name { get; set; }
 

@@ -6,6 +6,7 @@
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
@@ -40,7 +41,9 @@
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Входа е задължителен!", AllowEmptyStrings = false)]
-        [StringLength(int.MaxValue, MinimumLength = 1)]
+        [StringLength(
+            int.MaxValue, 
+            MinimumLength = GlobalConstants.TestInputMinLength)]
         public string Input
         {
             get
@@ -65,7 +68,9 @@
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Входа е задължителен!", AllowEmptyStrings = false)]
         [ScriptIgnore]
-        [StringLength(int.MaxValue, MinimumLength = 1)]
+        [StringLength(
+            int.MaxValue, 
+            MinimumLength = GlobalConstants.TestInputMinLength)]
         public string InputFull
         {
             get
@@ -89,7 +94,9 @@
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Изхода е задължителен!", AllowEmptyStrings = false)]
-        [StringLength(int.MaxValue, MinimumLength = 1)]
+        [StringLength(
+            int.MaxValue, 
+            MinimumLength = GlobalConstants.TestOutputMinLength)]
         public string Output
         {
             get
@@ -114,7 +121,9 @@
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Изхода е задължителен!", AllowEmptyStrings = false)]
         [ScriptIgnore]
-        [StringLength(int.MaxValue, MinimumLength = 1)]
+        [StringLength(
+            int.MaxValue, 
+            MinimumLength = GlobalConstants.TestOutputMinLength)]
         public string OutputFull
         {
             get

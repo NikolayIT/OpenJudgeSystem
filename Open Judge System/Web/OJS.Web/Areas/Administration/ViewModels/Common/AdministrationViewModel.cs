@@ -10,9 +10,6 @@
 
     public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T> where T : class, new()
     {
-        [ExcludeFromExcel]
-        public const string EmailValidationRegularExpression = "^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
         [DatabaseProperty]
         [Display(Name = "Дата на създаване")]
         [DataType(DataType.DateTime)]

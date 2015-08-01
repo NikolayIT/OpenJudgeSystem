@@ -8,6 +8,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
@@ -56,7 +57,10 @@
         [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [StringLength(
+            GlobalConstants.ContestNameMaxLength, 
+            MinimumLength = GlobalConstants.ContestNameMinLength, 
+            ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 

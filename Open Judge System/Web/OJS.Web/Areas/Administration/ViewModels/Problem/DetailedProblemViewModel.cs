@@ -8,6 +8,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
@@ -42,8 +43,12 @@
         public int Id { get; set; }
 
         [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
-        [MaxLength(50, ErrorMessage = "Максималната дължина е 50 символа!")]
+        [Required(
+            ErrorMessage = "Името е задължително!", 
+            AllowEmptyStrings = false)]
+        [MaxLength(
+            GlobalConstants.ProblemNameMaxLength, 
+            ErrorMessage = "Максималната дължина е 50 символа!")]
         [DefaultValue("Име")]
         public string Name { get; set; }
 
@@ -60,17 +65,17 @@
 
         [Display(Name = "Максимум точки")]
         [Required(ErrorMessage = "Максимум точките са задължителни!")]
-        [DefaultValue(100)]
+        [DefaultValue(GlobalConstants.ProblemDefaultMaximumPoints)]
         public short MaximumPoints { get; set; }
 
         [Display(Name = "Лимит на време")]
         [Required(ErrorMessage = "Лимита на време е задължителен!")]
-        [DefaultValue(1000)]
+        [DefaultValue(GlobalConstants.ProblemDefaultTimeLimit)]
         public int TimeLimit { get; set; }
 
         [Display(Name = "Лимит на памет")]
         [Required(ErrorMessage = "Лимита на памет е задължителен!")]
-        [DefaultValue(32 * 1024 * 1024)]
+        [DefaultValue(GlobalConstants.ProblemDefaultMemoryLimit)]
         public int MemoryLimit { get; set; }
         
         [Display(Name = "Чекер")]
