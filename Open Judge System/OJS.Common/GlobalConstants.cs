@@ -34,5 +34,16 @@
         public const int MinimumSearchTermLength = 3;
 
         #endregion
+
+        #region Account
+
+        public const int UserNameMaxLength = 15;
+        public const int UserNameMinLength = 5;
+        public const string UserNameRegEx = @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$";
+
+        public const int PasswordMinLength = 6;
+        public const int PasswordMaxLength = 100;
+
+        #endregion
     }
 }

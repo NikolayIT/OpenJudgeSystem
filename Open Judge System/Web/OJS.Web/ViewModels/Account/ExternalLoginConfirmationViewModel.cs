@@ -2,15 +2,17 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using OJS.Common;
+
     using Resource = Resources.Account.AccountViewModels;
 
     public class ExternalLoginConfirmationViewModel
     {
         [StringLength(
-                15,
+                GlobalConstants.UserNameMaxLength,
+                MinimumLength = GlobalConstants.UserNameMinLength,
                 ErrorMessageResourceName = "Username_validation",
-                ErrorMessageResourceType = typeof(Resource),
-                MinimumLength = 5)]
+                ErrorMessageResourceType = typeof(Resource))]
         [Required(
                 ErrorMessageResourceName = "Username_required",
                 ErrorMessageResourceType = typeof(Resource))]
@@ -18,7 +20,7 @@
                 Name = "Username",
                 ResourceType = typeof(Resource))]
         [RegularExpression(
-                @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$",
+                GlobalConstants.UserNameRegEx,
                 ErrorMessageResourceName = "Username_regex_validation",
                 ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
