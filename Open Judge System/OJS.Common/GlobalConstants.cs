@@ -33,6 +33,8 @@
 
         public const int MinimumSearchTermLength = 3;
 
+        public const int FeedbackContentMinLength = 10;
+
         #endregion
 
         #region Account
@@ -43,6 +45,16 @@
 
         public const int PasswordMinLength = 6;
         public const int PasswordMaxLength = 100;
+
+        public const int EmailMaxLength = 80;
+
+        public const int FirstNameMaxLength = 30;
+        public const int LastNameMaxLength = 30;
+        public const int CityNameMaxLength = 30;
+        public const int EducationalInstitutionMaxLength = 50;
+        public const int FacultyNumberMaxLength = 30;
+        public const int CompanyNameMaxLength = 30;
+        public const int JobTitleMaxLenth = 30;
 
         #endregion
     }
