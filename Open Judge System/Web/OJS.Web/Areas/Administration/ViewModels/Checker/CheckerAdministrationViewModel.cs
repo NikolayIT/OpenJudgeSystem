@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
@@ -40,7 +41,9 @@
         [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
-        [StringLength(100, MinimumLength = 1)]
+        [StringLength(
+            GlobalConstants.CheckerNameMaxLength, 
+            MinimumLength = GlobalConstants.CheckerNameMinLength)]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 

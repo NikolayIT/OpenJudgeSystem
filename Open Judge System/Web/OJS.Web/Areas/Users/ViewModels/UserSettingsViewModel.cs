@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using OJS.Common;
     using OJS.Data.Models;
     using OJS.Web.Areas.Users.Helpers;
 
@@ -32,16 +33,22 @@
         public string Username { get; set; }
 
         [Display(Name = "Email", ResourceType = typeof(Resource))]
-        [MaxLength(80)]
+        [MaxLength(GlobalConstants.EmailMaxLength)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "First_name_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.FirstNameMaxLength, 
+            ErrorMessageResourceName = "First_name_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FirstName { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "Family_name_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.LastNameMaxLength, 
+            ErrorMessageResourceName = "Family_name_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Family_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string LastName { get; set; }
@@ -51,33 +58,49 @@
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "City_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.CityNameMaxLength, 
+            ErrorMessageResourceName = "City_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "City", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string City { get; set; }
 
-        [MaxLength(50, ErrorMessageResourceName = "Education_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.EducationalInstitutionMaxLength, 
+            ErrorMessageResourceName = "Education_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Education_institution", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string EducationalInstitution { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "Faculty_number_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.FacultyNumberMaxLength, 
+            ErrorMessageResourceName = "Faculty_number_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Faculty_number", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FacultyNumber { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "Company_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.CompanyNameMaxLength, 
+            ErrorMessageResourceName = "Company_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Company", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string Company { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "Job_title_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.JobTitleMaxLenth, 
+            ErrorMessageResourceName = "Job_title_too_long", 
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Job_title", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string JobTitle { get; set; }
 
         [Display(Name = "Age", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
+        [Range(0, byte.MaxValue)]
         public byte? Age { get; set; }
     }
 }

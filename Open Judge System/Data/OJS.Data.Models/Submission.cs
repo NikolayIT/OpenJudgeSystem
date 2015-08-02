@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Contracts;
@@ -44,7 +45,7 @@
         /// </remarks>
         public string FileExtension { get; set; }
 
-        [StringLength(45)]
+        [StringLength(GlobalConstants.IpAdressMaxLength)]
         [Column(TypeName = "varchar")]
         public string IpAddress { get; set; }
 

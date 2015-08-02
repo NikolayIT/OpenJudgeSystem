@@ -46,9 +46,13 @@
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [RegularExpression(EmailValidationRegularExpression, ErrorMessage = "Невалиден имейл адрес")]
+        [RegularExpression(
+            GlobalConstants.EmailRegEx,
+            ErrorMessage = "Невалиден имейл адрес")]
         [Required(ErrorMessage = "Email-а е задължителен")]
-        [StringLength(30, ErrorMessage = "Въведеният e-mail е твърде дълъг")]
+        [StringLength(
+            GlobalConstants.EmailMaxLength, 
+            ErrorMessage = "Въведеният e-mail е твърде дълъг")]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 
@@ -57,31 +61,45 @@
         public bool IsGhostUser { get; set; }
 
         [Display(Name = "Име")]
-        [StringLength(30, ErrorMessage = "Въведеното име е твърде дълго")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [StringLength(
+            GlobalConstants.FirstNameMaxLength, 
+            ErrorMessage = "Въведеното име е твърде дълго")]
+        [DisplayFormat(
+            NullDisplayText = "Няма информация", 
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string FirstName { get; set; }
 
         [Display(Name = "Фамилия")]
-        [StringLength(30, ErrorMessage = "Въведената фамилия е твърде дълга")]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [StringLength(
+            GlobalConstants.LastNameMaxLength, 
+            ErrorMessage = "Въведената фамилия е твърде дълга")]
+        [DisplayFormat(
+            NullDisplayText = "Няма информация", 
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string LastName { get; set; }
 
         [Display(Name = "Град")]
-        [StringLength(30, ErrorMessage = "Въведеният град е твърде дълъг")]
+        [StringLength(
+            GlobalConstants.CityNameMaxLength, 
+            ErrorMessage = "Въведеният град е твърде дълъг")]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string City { get; set; }
 
         [Display(Name = "Образование")]
-        [StringLength(50, ErrorMessage = "Въведеното образование е твърде дълго")]
+        [StringLength(
+            GlobalConstants.EducationalInstitutionMaxLength, 
+            ErrorMessage = "Въведеното образование е твърде дълго")]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string EducationalInstitution { get; set; }
 
         [Display(Name = "Факултетен номер")]
-        [StringLength(30, ErrorMessage = "Въведеният факултетен номер е твърде дълъг")]
+        [StringLength(
+            GlobalConstants.EducationalInstitutionMaxLength, 
+            ErrorMessage = "Въведеният факултетен номер е твърде дълъг")]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("PositiveInteger")]
         public string FacultyNumber { get; set; }
@@ -93,13 +111,17 @@
         public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Месторабота")]
-        [StringLength(30, ErrorMessage = "Въведената месторабота е твърде дълга")]
+        [StringLength(
+            GlobalConstants.CompanyNameMaxLength, 
+            ErrorMessage = "Въведената месторабота е твърде дълга")]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string Company { get; set; }
 
         [Display(Name = "Позиция")]
-        [StringLength(30, ErrorMessage = "Въведената позиция е твърде дълга")]
+        [StringLength(
+            GlobalConstants.JobTitleMaxLenth, 
+            ErrorMessage = "Въведената позиция е твърде дълга")]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string JobTitle { get; set; }

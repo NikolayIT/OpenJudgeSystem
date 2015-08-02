@@ -6,13 +6,14 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
     public class NewsAdministrationViewModel : AdministrationViewModel<News>
     {
-        [ExcludeFromExcelAttribute]
+        [ExcludeFromExcel]
         public static Expression<Func<News, NewsAdministrationViewModel>> ViewModel
         {
             get
@@ -40,21 +41,30 @@
         [DatabaseProperty]
         [Display(Name = "Заглавие")]
         [Required(ErrorMessage = "Заглавието е задължително!")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [StringLength(
+            GlobalConstants.NewsTitleMaxLength, 
+            MinimumLength = GlobalConstants.NewsTitleMinLength, 
+            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Title { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Автор")]
         [Required(ErrorMessage = "Авторът е задължителен!")]
-        [StringLength(25, MinimumLength = 2, ErrorMessage = "Позволената дължина е между 2 и 25 символа")]
+        [StringLength(
+            GlobalConstants.NewsAuthorNameMaxLength, 
+            MinimumLength = GlobalConstants.NewsAuthorNameMinLength, 
+            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Author { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Източник")]
         [Required(ErrorMessage = "Източникът е задължителен!")]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [StringLength(
+            GlobalConstants.NewsSourceMaxLength, 
+            MinimumLength = GlobalConstants.NewsSourceMinLength, 
+            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Source { get; set; }
 
@@ -62,7 +72,10 @@
         [DatabaseProperty]
         [Display(Name = "Съдържание")]
         [Required(ErrorMessage = "Съдържанието е задължително!")]
-        [StringLength(int.MaxValue, MinimumLength = 100, ErrorMessage = "Съдържанието трябва да бъде поне 100 символа")]
+        [StringLength(
+            int.MaxValue, 
+            MinimumLength = GlobalConstants.NewsContentMinLength, 
+            ErrorMessage = "Съдържанието трябва да бъде поне {2} символа")]
         [DataType(DataType.MultilineText)]
         [UIHint("HtmlContent")]
         public string Content { get; set; }

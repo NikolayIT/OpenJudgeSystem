@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
@@ -46,7 +47,7 @@
         [DatabaseProperty]
         [Display(Name = "E-mail")]
         [DataType(DataType.EmailAddress)]
-        [RegularExpression(EmailValidationRegularExpression, ErrorMessage = "Невалиден имейл адрес")]
+        [RegularExpression(GlobalConstants.EmailRegEx, ErrorMessage = "Невалиден имейл адрес")]
         [Required(ErrorMessage = "Имейла е задължителен")]
         [UIHint("SingleLineText")]
         public string Email { get; set; }

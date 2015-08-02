@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
@@ -46,7 +47,9 @@
         [DatabaseProperty]
         [Display(Name = "Текст")]
         [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
-        [StringLength(100, MinimumLength = 5)]
+        [StringLength(
+            GlobalConstants.ContestQuestionMaxLength, 
+            MinimumLength = GlobalConstants.ContestQuestionMinLength)]
         [UIHint("SingleLineText")]
         public string Text { get; set; }
 

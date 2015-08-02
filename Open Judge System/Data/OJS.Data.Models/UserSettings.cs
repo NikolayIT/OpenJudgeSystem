@@ -15,23 +15,23 @@
         }
 
         [Column("FirstName")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.FirstNameMaxLength)]
         public string FirstName { get; set; }
 
         [Column("LastName")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.LastNameMaxLength)]
         public string LastName { get; set; }
 
         [Column("City")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.CityNameMaxLength)]
         public string City { get; set; }
 
         [Column("EducationalInstitution")]
-        [MaxLength(50)]
+        [MaxLength(GlobalConstants.EducationalInstitutionMaxLength)]
         public string EducationalInstitution { get; set; }
 
         [Column("FacultyNumber")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.FacultyNumberMaxLength)]
         public string FacultyNumber { get; set; }
 
         [Column("DateOfBirth")]
@@ -40,11 +40,11 @@
         public DateTime? DateOfBirth { get; set; }
 
         [Column("Company")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.CompanyNameMaxLength)]
         public string Company { get; set; }
 
         [Column("JobTitle")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.JobTitleMaxLenth)]
         public string JobTitle { get; set; }
         
         [NotMapped]

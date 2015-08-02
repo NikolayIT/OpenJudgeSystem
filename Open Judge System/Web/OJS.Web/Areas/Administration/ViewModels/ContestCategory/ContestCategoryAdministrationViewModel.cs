@@ -6,13 +6,14 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
     public class ContestCategoryAdministrationViewModel : AdministrationViewModel<ContestCategory>
     {
-        [ExcludeFromExcelAttribute]
+        [ExcludeFromExcel]
         public static Expression<Func<ContestCategory, ContestCategoryAdministrationViewModel>> ViewModel
         {
             get
@@ -38,7 +39,10 @@
         [DatabaseProperty]
         [Display(Name = "Име")]
         [Required(ErrorMessage = "Името е задължително!")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [StringLength(
+            GlobalConstants.ContestCategoryNameMaxLength, 
+            MinimumLength = GlobalConstants.ContestCategoryNameMinLength, 
+            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 

@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common;
     using OJS.Data.Contracts;
 
     public class ContestCategory : DeletableEntity, IOrderable
@@ -22,6 +23,9 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(GlobalConstants.ContestCategoryNameMaxLength)]
+        [MinLength(GlobalConstants.ContestCategoryNameMinLength)]
         public string Name { get; set; }
 
         [DefaultValue(0)]
