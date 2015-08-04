@@ -63,6 +63,12 @@ describe('TestDOMScope', function() {
                 global.document = window.document;
                 global.$ = jq(window);
                 global.handlebars = handlebars;
+                Object.keys(window)
+                    .filter(function (prop) {
+                        return prop.toLowerCase().indexOf('html') >= 0;
+                    }).forEach(function (prop) {
+                        global[prop] = window[prop];
+                    });
                 done();
             }
         });
