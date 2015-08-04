@@ -18,7 +18,10 @@
 
             this.RequirePassword = isOfficial ? contest.HasContestPassword : contest.HasPracticePassword;
 
-            this.Questions = contest.Questions.AsQueryable().Select(QuestionViewModel.FromQuestion);
+            this.Questions = contest.Questions
+                .Where(x => !x.IsDeleted)
+                .AsQueryable()
+                .Select(QuestionViewModel.FromQuestion);
         }
 
         public ContestRegistrationViewModel(Contest contest, ContestRegistrationModel userAnswers, bool isOfficial)
