@@ -17,8 +17,6 @@
             // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
 
-            ////GlobalFilters.Filters.Add(new LoggerFilterAttribute(new OjsData()));
-
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
             AreaRegistration.RegisterAllAreas();
