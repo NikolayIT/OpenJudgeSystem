@@ -118,3 +118,4 @@ $tf/
 
 # JustMock configuration files
 /Open Judge System/*.jmconfig
+/Open Judge System/.vs/config/applicationhost.config
