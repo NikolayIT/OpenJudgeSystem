@@ -8,7 +8,6 @@
     using OJS.Data;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
-    using OJS.Web.Common.Attributes;
 
     public class MvcApplication : System.Web.HttpApplication
     {
