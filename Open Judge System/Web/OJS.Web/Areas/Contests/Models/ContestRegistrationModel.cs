@@ -32,7 +32,9 @@
             var validationResults = new HashSet<ValidationResult>();
 
             var contest = this.data.Contests.GetById(this.ContestId);
-            var contestQuestions = contest.Questions.ToList();
+            var contestQuestions = contest.Questions
+                .Where(x => !x.IsDeleted)
+                .ToList();
 
             var counter = 0;
             foreach (var question in contestQuestions)
