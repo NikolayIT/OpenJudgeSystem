@@ -15,7 +15,6 @@
         {
             // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
-
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
             AreaRegistration.RegisterAllAreas();
