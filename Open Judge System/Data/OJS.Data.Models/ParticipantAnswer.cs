@@ -19,8 +19,6 @@
         [Required]
         public virtual ContestQuestion ContestQuestion { get; set; }
 
-        [MaxLength(GlobalConstants.ContestQuestionAnswerMaxLength)]
-        [MinLength(GlobalConstants.ContestQuestionAnswerMinLength)]
         public string Answer { get; set; }
     }
 }
