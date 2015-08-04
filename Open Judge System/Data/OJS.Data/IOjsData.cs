@@ -48,7 +48,7 @@
 
         IDeletableEntityRepository<SourceCode> SourceCodes { get; }
 
-        IRepository<AccessLog> UsageLogs { get; }
+        IRepository<AccessLog> AccessLogs { get; }
 
         IOjsDbContext Context { get; }
 

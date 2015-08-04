@@ -37,7 +37,7 @@
             }
 
             var request = filterContext.RequestContext.HttpContext.Request;
-            this.data.UsageLogs.Add(new AccessLog()
+            this.data.AccessLogs.Add(new AccessLog()
             {
                 IpAddress = request.UserHostAddress,
                 Url = request.RawUrl,

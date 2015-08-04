@@ -3,7 +3,7 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class LogAttribute : Attribute
+    public class LogAccessAttribute : Attribute
     {
     }
 }

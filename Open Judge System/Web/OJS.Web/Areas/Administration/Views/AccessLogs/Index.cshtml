@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Логове за достъп";
+    const string ControllerName = "AccessLogs";
+}
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.AccessLogs.AccessLogGridViewModel>()
+        .Name("DataGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(x => x.Id);
+            columns.Bound(x => x.UserName);
+            columns.Bound(x => x.IpAddress);
+            columns.Bound(x => x.RequestType);
+            columns.Bound(x => x.Url);
+            columns.Bound(x => x.PostParams);
+            columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text("Export To Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        })
+        .ColumnMenu()
+        .Events(e => e.DataBound("onDataBound"))
+        .Pageable(x => x.Refresh(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
+        .Reorderable(x => x.Columns(true))
+        .Resizable(x => x.Columns(true))
+        .DataSource(datasource => datasource
+            .Ajax()
+            .ServerOperation(true)
+            .Model(model =>
+            {
+                model.Id(x => x.Id);
+            })
+            .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+            .Read(read => read.Action("Read", ControllerName))
+            .Events(ev => ev.Error("validateModelStateErrors"))
+        )
+)
+
+<script type="text/javascript">
+    function onDataBound(e) {
+        CreateExportToExcelButton();
+    }
+</script>

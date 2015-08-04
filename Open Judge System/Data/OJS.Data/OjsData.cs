@@ -115,7 +115,7 @@
             }
         }
 
-        public IRepository<AccessLog> UsageLogs
+        public IRepository<AccessLog> AccessLogs
         {
             get
             {

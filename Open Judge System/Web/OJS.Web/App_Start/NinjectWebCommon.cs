@@ -13,7 +13,6 @@ namespace OJS.Web
     using Ninject.Web.Common;
 
     using OJS.Data;
-    using OJS.Web;
     using OJS.Workers.Tools.AntiCheat;
 
     public static class NinjectWebCommon

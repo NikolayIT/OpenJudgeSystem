@@ -7,6 +7,7 @@
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.ViewModels.News;
 
     using Resource = Resources.News;
