@@ -8,6 +8,7 @@
     using OJS.Data;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
+    using OJS.Web.Common.Attributes;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -15,6 +16,9 @@
         {
             // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<OjsDbContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
+
+            ////GlobalFilters.Filters.Add(new LoggerFilterAttribute(new OjsData()));
+
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
             AreaRegistration.RegisterAllAreas();
@@ -22,8 +26,6 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);
-
-            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }
     }
 }

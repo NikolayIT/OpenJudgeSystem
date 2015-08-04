@@ -4,7 +4,7 @@
 
     using OJS.Data.Contracts;
 
-    public class UsageLog : AuditInfo
+    public class AccessLog : AuditInfo
     {
         [Key]
         public long Id { get; set; }
@@ -20,7 +20,5 @@
         public string Url { get; set; }
 
         public string PostParams { get; set; }
-
-        ////public LogCategoryType Category { get; set; }
     }
 }

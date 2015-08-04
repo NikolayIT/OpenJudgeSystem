@@ -115,11 +115,11 @@
             }
         }
 
-        public IRepository<UsageLog> UsageLogs
+        public IRepository<AccessLog> UsageLogs
         {
             get
             {
-                return this.GetRepository<UsageLog>();
+                return this.GetRepository<AccessLog>();
             }
         }
 

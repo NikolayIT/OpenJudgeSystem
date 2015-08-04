@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\LogAttribute.cs" />
+    <Compile Include="Attributes\LoggerFilterAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />

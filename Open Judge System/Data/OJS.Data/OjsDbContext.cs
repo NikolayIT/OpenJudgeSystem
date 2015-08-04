@@ -60,7 +60,7 @@
 
         public virtual IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
-        public virtual IDbSet<UsageLog> UsageLogs { get; set; }
+        public virtual IDbSet<AccessLog> UsageLogs { get; set; }
 
         public DbContext DbContext
         {

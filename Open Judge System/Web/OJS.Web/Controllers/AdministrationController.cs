@@ -15,7 +15,9 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data;
+    using OJS.Web.Common.Attributes;
 
+    [Log]
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class AdministrationController : BaseController
     {

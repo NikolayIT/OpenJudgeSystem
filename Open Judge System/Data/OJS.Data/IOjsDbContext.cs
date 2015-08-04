@@ -40,7 +40,7 @@
 
         IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
-        IDbSet<UsageLog> UsageLogs { get; set; }
+        IDbSet<AccessLog> UsageLogs { get; set; }
 
         DbContext DbContext { get; }
 

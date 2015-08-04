@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Common.Attributes
 {
     using System;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
@@ -9,20 +10,25 @@
     using OJS.Data;
     using OJS.Data.Models;
 
-    public class LogAttribute : IActionFilter
+    public class LoggerFilterAttribute : IActionFilter
     {
-        private IOjsData data;
+        private readonly IOjsData data;
 
-        public LogAttribute(IOjsData data)
+        public LoggerFilterAttribute(IOjsData data)
         {
             this.data = data;
         }
 
-        public void OnActionExecuting(ActionExecutingContext filterContext)
+        public virtual void OnActionExecuting(ActionExecutingContext filterContext)
         {
         }
 
-        public void OnActionExecuted(ActionExecutedContext filterContext)
+        public virtual void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            this.LogAction(filterContext);
+        }
+
+        protected virtual void LogAction(ActionExecutedContext filterContext)
         {
             string userId = null;
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)
@@ -31,7 +37,7 @@
             }
 
             var request = filterContext.RequestContext.HttpContext.Request;
-            this.data.UsageLogs.Add(new UsageLog()
+            this.data.UsageLogs.Add(new AccessLog()
             {
                 IpAddress = request.UserHostAddress,
                 Url = request.RawUrl,
@@ -39,6 +45,8 @@
                 RequestType = request.RequestType,
                 PostParams = request.Form.ToString(),
             });
+
+            this.data.SaveChanges();
         }
     }
 }

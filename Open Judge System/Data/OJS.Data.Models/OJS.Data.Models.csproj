@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Checker.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="LogCategoryType.cs" />
     <Compile Include="ProblemResource.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SourceCode.cs" />
@@ -84,7 +83,7 @@
     <Compile Include="Tag.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestRun.cs" />
-    <Compile Include="UsageLog.cs" />
+    <Compile Include="AccessLog.cs" />
     <Compile Include="UserProfile.cs" />
     <Compile Include="UserSettings.cs" />
   </ItemGroup>
