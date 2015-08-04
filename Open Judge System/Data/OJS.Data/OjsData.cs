@@ -115,6 +115,14 @@
             }
         }
 
+        public IRepository<UsageLog> UsageLogs
+        {
+            get
+            {
+                return this.GetRepository<UsageLog>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get

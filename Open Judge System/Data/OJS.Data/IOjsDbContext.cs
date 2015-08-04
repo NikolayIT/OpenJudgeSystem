@@ -40,6 +40,8 @@
 
         IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
+        IDbSet<UsageLog> UsageLogs { get; set; }
+
         DbContext DbContext { get; }
 
         int SaveChanges();
