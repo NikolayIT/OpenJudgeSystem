@@ -192,15 +192,15 @@
             }
 
             var questionsToAnswerCount = official ?
-                contest.Questions.Count(x => x.AskOfficialParticipants) :
-                contest.Questions.Count(x => x.AskPracticeParticipants);
+                contest.Questions.Count(x => !x.IsDeleted && x.AskOfficialParticipants) :
+                contest.Questions.Count(x => !x.IsDeleted && x.AskPracticeParticipants);
 
             if (questionsToAnswerCount != registrationData.Questions.Count())
             {
                 this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
             }
 
-            var contestQuestions = contest.Questions.ToList();
+            var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
 
             var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
@@ -220,7 +220,7 @@
                 if (contestQuestion.Type == ContestQuestionType.DropDown)
                 {
                     int contestAnswerId;
-                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Any(x => x.Id == contestAnswerId))
+                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Where(x => !x.IsDeleted).Any(x => x.Id == contestAnswerId))
                     {
                         correctlyAnswered = true;
                     }
