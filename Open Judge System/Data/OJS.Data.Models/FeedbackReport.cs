@@ -15,8 +15,6 @@
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(GlobalConstants.FeedbackContentMinLength)]
         public string Content { get; set; }
 
         public virtual UserProfile User { get; set; }
