@@ -117,28 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back_to_navigation" xml:space="preserve">
-    <value>Back to navigation</value>
+  <data name="Class_name" xml:space="preserve">
+    <value>Class name</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="Class_name_required" xml:space="preserve">
+    <value>The class name is required!</value>
   </data>
-  <data name="Change" xml:space="preserve">
-    <value>Change</value>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="Dll_file" xml:space="preserve">
+    <value>DLL file</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Dll_file_required" xml:space="preserve">
+    <value>The DLL file is required!</value>
   </data>
-  <data name="Delete_prompt" xml:space="preserve">
-    <value>Do you want to delete this item?</value>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="Export_to_excel" xml:space="preserve">
-    <value>Export To Excel</value>
+  <data name="Name_length" xml:space="preserve">
+    <value>Name must be between {2} and {1} symbols</value>
   </data>
-  <data name="Group_by_message" xml:space="preserve">
-    <value>Drag and drop here the title of the column you wish to group by</value>
+  <data name="Name_required" xml:space="preserve">
+    <value>The name is required!</value>
+  </data>
+  <data name="Param" xml:space="preserve">
+    <value>Param</value>
   </data>
 </root>

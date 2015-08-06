@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Checkers.ViewModels.CheckerAdministrationViewModel;
+
     public class CheckerAdministrationViewModel : AdministrationViewModel<Checker>
     {
         [ExcludeFromExcel]
@@ -39,34 +41,45 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false, 
+            ErrorMessageResourceType = typeof(Resource), 
+            ErrorMessageResourceName = "Name_required")]
         [StringLength(
             GlobalConstants.CheckerNameMaxLength, 
-            MinimumLength = GlobalConstants.CheckerNameMinLength)]
+            MinimumLength = GlobalConstants.CheckerNameMinLength,
+            ErrorMessageResourceType = typeof(Resource),
+            ErrorMessageResourceName = "Name_length")]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Описание")]
+        [Display(Name = "Description", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string Description { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "DLL файл")]
-        [Required(ErrorMessage = "DLL файла е задължителен!", AllowEmptyStrings = false)]
+        [Display(Name = "Dll_file", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false,
+            ErrorMessageResourceType = typeof(Resource),
+            ErrorMessageResourceName = "Dll_file_required")]
         [UIHint("SingleLineText")]
         public string DllFile { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име на клас")]
-        [Required(ErrorMessage = "Името на класа е задължително!", AllowEmptyStrings = false)]
+        [Display(Name = "Class_name", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false,
+            ErrorMessageResourceType = typeof(Resource),
+            ErrorMessageResourceName = "Class_name_required")]
         [UIHint("SingleLineText")]
         public string ClassName { get; set; }
 
         [AllowHtml]
         [DatabaseProperty]
-        [Display(Name = "Параметър")]
+        [Display(Name = "Param", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string Parameter { get; set; }
     }

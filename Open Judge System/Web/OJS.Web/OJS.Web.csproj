@@ -462,6 +462,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AntiCheatViews.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Checkers\ViewModels\CheckerAdministrationViewModel.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckerAdministrationViewModel.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Checkers\ViewModels\CheckerAdministrationViewModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckerAdministrationViewModel.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Checkers\Views\CheckersIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckersIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Checkers\Views\CheckersIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckersIndex.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\ContestsGeneral.bg.Designer.cs">
       <DependentUpon>ContestsGeneral.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1250,6 +1270,26 @@
       <LastGenOutput>AntiCheatViews.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.AntiCheat.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Checkers\Views\CheckersIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckersIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Checkers.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Checkers\Views\CheckersIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckersIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Checkers.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Checkers\ViewModels\CheckerAdministrationViewModel.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckerAdministrationViewModel.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Checkers.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Checkers\ViewModels\CheckerAdministrationViewModel.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckerAdministrationViewModel.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Checkers.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StatsPartial.Designer.cs</LastGenOutput>
@@ -1321,7 +1361,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Checkers\" />
     <Folder Include="App_GlobalResources\Areas\Administration\ContestCategories\" />
     <Folder Include="App_GlobalResources\Areas\Administration\ContestQuestions\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />

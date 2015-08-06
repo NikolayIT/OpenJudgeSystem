@@ -1,6 +1,7 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.Checkers.Views.CheckersIndex;
 @{
-    ViewBag.Title = "Чекери";
+    ViewBag.Title = Resource.Page_title;
     const string ControllerName = "Checkers";
 }
 <h1>@ViewBag.Title</h1>
@@ -17,7 +18,7 @@
             columns.Bound(col => col.Parameter).ClientTemplate("#= substring(Parameter) #");
             columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
     .ToolBar(toolbar =>
@@ -37,11 +38,6 @@
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
     .Filterable(x => x.Enabled(true))
-        /*.Groupable(x =>
-        {
-            x.Enabled(true);
-            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
-        })*/
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))
     .DataSource(datasource => datasource

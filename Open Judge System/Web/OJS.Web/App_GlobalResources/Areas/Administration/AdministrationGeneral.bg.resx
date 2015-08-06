@@ -120,8 +120,17 @@
   <data name="Back_to_navigation" xml:space="preserve">
     <value>Обратно към навигацията</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отказ</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Създай</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтриване</value>
   </data>
   <data name="Delete_prompt" xml:space="preserve">
     <value>Наистина ли искате да изтриете елемента?</value>

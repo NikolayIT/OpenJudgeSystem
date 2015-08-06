@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration {
+namespace Resources.Areas.Administration.Checkers.ViewModels {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AdministrationGeneral {
+    public class CheckerAdministrationViewModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AdministrationGeneral() {
+        internal CheckerAdministrationViewModel() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Resources.Areas.Administration {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.AdministrationGeneral", typeof(AdministrationGeneral).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Checkers.ViewModels.CheckerAdmin" +
+                            "istrationViewModel", typeof(CheckerAdministrationViewModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +62,83 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to navigation.
+        ///   Looks up a localized string similar to Class name.
         /// </summary>
-        public static string Back_to_navigation {
+        public static string Class_name {
             get {
-                return ResourceManager.GetString("Back_to_navigation", resourceCulture);
+                return ResourceManager.GetString("Class_name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to The class name is required!.
         /// </summary>
-        public static string Cancel {
+        public static string Class_name_required {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("Class_name_required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string Change {
+        public static string Description {
             get {
-                return ResourceManager.GetString("Change", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
+        ///   Looks up a localized string similar to DLL file.
         /// </summary>
-        public static string Create {
+        public static string Dll_file {
             get {
-                return ResourceManager.GetString("Create", resourceCulture);
+                return ResourceManager.GetString("Dll_file", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to The DLL file is required!.
         /// </summary>
-        public static string Delete {
+        public static string Dll_file_required {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("Dll_file_required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete this item?.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string Delete_prompt {
+        public static string Name {
             get {
-                return ResourceManager.GetString("Delete_prompt", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export To Excel.
+        ///   Looks up a localized string similar to Name must be between {2} and {1} symbols.
         /// </summary>
-        public static string Export_to_excel {
+        public static string Name_length {
             get {
-                return ResourceManager.GetString("Export_to_excel", resourceCulture);
+                return ResourceManager.GetString("Name_length", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop here the title of the column you wish to group by.
+        ///   Looks up a localized string similar to The name is required!.
         /// </summary>
-        public static string Group_by_message {
+        public static string Name_required {
             get {
-                return ResourceManager.GetString("Group_by_message", resourceCulture);
+                return ResourceManager.GetString("Name_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Param.
+        /// </summary>
+        public static string Param {
+            get {
+                return ResourceManager.GetString("Param", resourceCulture);
             }
         }
     }
