@@ -83,6 +83,7 @@
     <Compile Include="Tag.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestRun.cs" />
+    <Compile Include="AccessLog.cs" />
     <Compile Include="UserProfile.cs" />
     <Compile Include="UserSettings.cs" />
   </ItemGroup>

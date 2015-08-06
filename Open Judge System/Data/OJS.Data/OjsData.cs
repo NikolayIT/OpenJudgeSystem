@@ -115,6 +115,14 @@
             }
         }
 
+        public IRepository<AccessLog> AccessLogs
+        {
+            get
+            {
+                return this.GetRepository<AccessLog>();
+            }
+        }
+
         public ITestRunsRepository TestRuns
         {
             get

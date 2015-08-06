@@ -60,6 +60,8 @@
 
         public virtual IDbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
+        public virtual IDbSet<AccessLog> AccessLogs { get; set; }
+
         public DbContext DbContext
         {
             get

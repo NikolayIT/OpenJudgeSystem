@@ -48,6 +48,8 @@
 
         IDeletableEntityRepository<SourceCode> SourceCodes { get; }
 
+        IRepository<AccessLog> AccessLogs { get; }
+
         IOjsDbContext Context { get; }
 
         int SaveChanges();
