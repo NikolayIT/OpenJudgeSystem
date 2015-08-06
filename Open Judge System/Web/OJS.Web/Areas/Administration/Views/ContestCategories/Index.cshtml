@@ -1,4 +1,5 @@
-﻿@{
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@{
     ViewBag.Title = "Категории състезания";
     const string ControllerName = "ContestCategories";
 }
@@ -19,9 +20,9 @@
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Create().Text("Създай");
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Create().Text(GeneralResource.Create);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
@@ -37,7 +38,7 @@
     .Groupable(x =>
     {
         x.Enabled(true);
-        x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        x.Messages(m => m.Empty(GeneralResource.Group_by_message));
     })
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))

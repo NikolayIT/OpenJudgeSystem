@@ -1,4 +1,5 @@
-﻿@{
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@{
     ViewBag.Title = "Състезания";
     const string ContestControllerName = "Contests";
     const string ContestQuestionControllerName = "ContestQuestions";
@@ -27,15 +28,15 @@
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Custom().Text("Създай").Action("Create", ContestControllerName);
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
     })
     .ColumnMenu()
     .ClientDetailTemplateId("questions-template")
@@ -46,7 +47,7 @@
     .Groupable(x =>
     {
         x.Enabled(true);
-        x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        x.Messages(m => m.Empty(GeneralResource.Group_by_message));
     })
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))
@@ -96,7 +97,7 @@
             {
                 edit.Mode(GridEditMode.PopUp);
                 edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
             })
         .DataSource(data =>
         {
@@ -147,7 +148,7 @@
             {
                 edit.Mode(GridEditMode.PopUp);
                 edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
             })
         .DataSource(data =>
         {

@@ -1,4 +1,5 @@
-﻿@model int?
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@model int?
 @{
     const string ControllerName = "Submissions";
 }
@@ -22,24 +23,19 @@
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text("Създай").Action("Create", ControllerName);
-            toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-            toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
         .Editable(editable =>
         {
-            editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
         .Events(e => e.DataBound("onDataBound"))
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
         .Filterable(x => x.Enabled(true))
-        /*.Groupable(x =>
-        {
-            x.Enabled(true);
-            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
-        })*/
         .Reorderable(x => x.Columns(true))
         .Resizable(x => x.Columns(true))
         .DataSource(datasource => datasource
