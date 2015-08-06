@@ -26,6 +26,7 @@
     padding: 10px;
     background-color: #AAA;
     border-color: #AAA;
+    color: black;
 }
 
 span.CodeMirror-merge-l-deleted {
