@@ -1,18 +1,19 @@
-﻿@model IEnumerable<OJS.Web.Areas.Administration.ViewModels.AntiCheat.AntiCheatByIpAdministrationViewModel>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
+@model IEnumerable<OJS.Web.Areas.Administration.ViewModels.AntiCheat.AntiCheatByIpAdministrationViewModel>
 
 <table class="table table-striped">
     <tr>
         <th>
-            Participant Id
+            @Resource.Participant_id
         </th>
         <th>
-            Username
+            @Resource.Username
         </th>
         <th>
-            Points
+            @Resource.Points
         </th>
         <th>
-            IP Addresses
+            @Resource.Ip_addresses
         </th>
     </tr>
     @foreach (var participant in Model)

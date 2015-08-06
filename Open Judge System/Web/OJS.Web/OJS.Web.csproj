@@ -452,6 +452,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AdministrationGeneral.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\AntiCheat\Views\AntiCheatViews.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AntiCheatViews.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\AntiCheat\Views\AntiCheatViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AntiCheatViews.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\ContestsGeneral.bg.Designer.cs">
       <DependentUpon>ContestsGeneral.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1230,6 +1240,16 @@
       <LastGenOutput>AdministrationGeneral.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AntiCheat\Views\AntiCheatViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AntiCheatViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.AntiCheat.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AntiCheat\Views\AntiCheatViews.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AntiCheatViews.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.AntiCheat.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StatsPartial.Designer.cs</LastGenOutput>
@@ -1301,7 +1321,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\AntiCheat\" />
     <Folder Include="App_GlobalResources\Areas\Administration\Checkers\" />
     <Folder Include="App_GlobalResources\Areas\Administration\ContestCategories\" />
     <Folder Include="App_GlobalResources\Areas\Administration\ContestQuestions\" />
