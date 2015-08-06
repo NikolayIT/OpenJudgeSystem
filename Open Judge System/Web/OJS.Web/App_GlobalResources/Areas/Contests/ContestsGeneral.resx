@@ -144,6 +144,9 @@
   <data name="Invalid_selection" xml:space="preserve">
     <value>Invalid selection</value>
   </data>
+  <data name="Main_categories" xml:space="preserve">
+    <value>Main categories</value>
+  </data>
   <data name="Problem_not_found" xml:space="preserve">
     <value>The problem was not found!</value>
   </data>

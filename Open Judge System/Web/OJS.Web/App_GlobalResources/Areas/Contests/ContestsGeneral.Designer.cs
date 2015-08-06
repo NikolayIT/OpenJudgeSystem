@@ -142,6 +142,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main categories.
+        /// </summary>
+        public static string Main_categories {
+            get {
+                return ResourceManager.GetString("Main_categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The problem was not found!.
         /// </summary>
         public static string Problem_not_found {
