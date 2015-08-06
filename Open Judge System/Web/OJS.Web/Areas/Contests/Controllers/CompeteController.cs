@@ -227,7 +227,7 @@
 
                     if (!correctlyAnswered)
                     {
-                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), "Invalid selection");
+                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), Resource.ContestsGeneral.Invalid_selection);
                     }
                 }
 
@@ -308,7 +308,7 @@
         {
             if (participantSubmission == null || participantSubmission.File == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Please upload file.");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Upload_file);
             }
 
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
@@ -346,14 +346,14 @@
             // Validate if binary files are allowed
             if (!submissionType.AllowBinaryFilesUpload)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "This submission type does not allow sending binary files");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
             }
 
             // Validate file extension
             if (!submissionType.AllowedFileExtensionsList.Contains(
                     participantSubmission.File.FileName.GetFileExtension()))
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid file extension");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_extention);
             }
 
             if (!this.ModelState.IsValid)
@@ -372,7 +372,7 @@
             
             this.Data.SaveChanges();
 
-            this.TempData.Add(GlobalConstants.InfoMessage, "Solution uploaded.");
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
             return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
         }
 

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Binary_files_not_allowed" xml:space="preserve">
+    <value>This submission type does not allow sending binary files</value>
+  </data>
   <data name="Category_not_found" xml:space="preserve">
     <value>This category does not exist!</value>
   </data>
@@ -132,8 +135,14 @@
   <data name="Contest_results_not_available" xml:space="preserve">
     <value>This contest results are not available!</value>
   </data>
+  <data name="Invalid_extention" xml:space="preserve">
+    <value>Invalid file extension</value>
+  </data>
   <data name="Invalid_request" xml:space="preserve">
     <value>Invalid request!</value>
+  </data>
+  <data name="Invalid_selection" xml:space="preserve">
+    <value>Invalid selection</value>
   </data>
   <data name="Problem_not_found" xml:space="preserve">
     <value>The problem was not found!</value>
@@ -143,6 +152,9 @@
   </data>
   <data name="Resource_cannot_be_downloaded" xml:space="preserve">
     <value>This resource cannot be downloaded!</value>
+  </data>
+  <data name="Solution_uploaded" xml:space="preserve">
+    <value>Solution uploaded.</value>
   </data>
   <data name="Submission_not_found" xml:space="preserve">
     <value>Invalid submission requested!</value>
@@ -158,6 +170,9 @@
   </data>
   <data name="Submission_was_sent_too_soon" xml:space="preserve">
     <value>Submission was sent too soon!</value>
+  </data>
+  <data name="Upload_file" xml:space="preserve">
+    <value>Please upload file.</value>
   </data>
   <data name="User_is_not_registered_for_exam" xml:space="preserve">
     <value>You are not registered for this exam!</value>

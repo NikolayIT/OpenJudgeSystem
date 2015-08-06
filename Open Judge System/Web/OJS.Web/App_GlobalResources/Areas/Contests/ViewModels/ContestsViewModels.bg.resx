@@ -129,4 +129,10 @@
   <data name="Question" xml:space="preserve">
     <value>Въпрос</value>
   </data>
+  <data name="Question_not_answered" xml:space="preserve">
+    <value>Въпрос с id {0} не е отговорен.</value>
+  </data>
+  <data name="Question_not_answered_correctly" xml:space="preserve">
+    <value>Въпрос с id {0} не е отговорен правилно.</value>
+  </data>
 </root>
