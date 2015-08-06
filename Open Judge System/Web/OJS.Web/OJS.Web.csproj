@@ -702,6 +702,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SearchResults.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\AdvancedSubmissions.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdvancedSubmissions.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\AdvancedSubmissions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdvancedSubmissions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\BasicSubmissions.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BasicSubmissions.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\BasicSubmissions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BasicSubmissions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\Partial\AdvancedSubmissionsGridPartial.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdvancedSubmissionsGridPartial.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Submissions\Views\Partial\AdvancedSubmissionsGridPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdvancedSubmissionsGridPartial.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Views\Shared\LoginPartial.bg.designer.cs">
       <DependentUpon>LoginPartial.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1192,6 +1222,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
+    <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
     <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
   </ItemGroup>
@@ -1658,6 +1689,36 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SearchResults.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Search.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\AdvancedSubmissions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdvancedSubmissions.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\AdvancedSubmissions.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdvancedSubmissions.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\BasicSubmissions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BasicSubmissions.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\BasicSubmissions.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BasicSubmissions.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\Partial\AdvancedSubmissionsGridPartial.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdvancedSubmissionsGridPartial.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views.Partial</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\Partial\AdvancedSubmissionsGridPartial.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdvancedSubmissionsGridPartial.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Submissions.Views.Partial</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Views\Shared\LoginPartial.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
