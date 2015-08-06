@@ -10,6 +10,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.AccessLogs.ViewModels.AccessLogGridViewModel;
+
     public class AccessLogGridViewModel : AdministrationViewModel<AccessLog>
     {
         [ExcludeFromExcel]
@@ -34,19 +36,19 @@
         [Display(Name = "№")]
         public long Id { get; set; }
 
-        [Display(Name = "Име")]
+        [Display(Name = "UserName", ResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
-        [Display(Name = "IP")]
+        [Display(Name = "Ip", ResourceType = typeof(Resource))]
         public string IpAddress { get; set; }
 
-        [Display(Name = "Заявка")]
+        [Display(Name = "Request_type", ResourceType = typeof(Resource))]
         public string RequestType { get; set; }
 
-        [Display(Name = "URL")]
+        [Display(Name = "Url", ResourceType = typeof(Resource))]
         public string Url { get; set; }
 
-        [Display(Name = "POST параметри")]
+        [Display(Name = "Post_params", ResourceType = typeof(Resource))]
         public string PostParams { get; set; }
     }
 }
