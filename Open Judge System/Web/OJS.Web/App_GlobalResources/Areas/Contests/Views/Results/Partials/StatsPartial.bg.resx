@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Answer_correct" xml:space="preserve">
-    <value>Правилен отговор</value>
+  <data name="Average_result" xml:space="preserve">
+    <value>Среден резултат</value>
   </data>
-  <data name="Answer_incorrect" xml:space="preserve">
-    <value>Грешен отговор</value>
+  <data name="Contestants" xml:space="preserve">
+    <value>участника</value>
   </data>
-  <data name="Average_result_by_minutes" xml:space="preserve">
-    <value>Среден резултат по минути</value>
+  <data name="General_statistics" xml:space="preserve">
+    <value>Обща статистика</value>
   </data>
-  <data name="Full_results" xml:space="preserve">
-    <value>Детайлни резултати</value>
+  <data name="Max_points" xml:space="preserve">
+    <value>Макс точки</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Начало</value>
+  <data name="Max_points_label" xml:space="preserve">
+    <value>точки макс</value>
   </data>
-  <data name="Memory_limit" xml:space="preserve">
-    <value>Лимит памет</value>
+  <data name="Max_result_for_task" xml:space="preserve">
+    <value>Максимален резултат за всяка задача</value>
   </data>
-  <data name="No_solution" xml:space="preserve">
-    <value>Няма решение</value>
+  <data name="Participants_by_points" xml:space="preserve">
+    <value>Статистика по диапазон точки</value>
   </data>
-  <data name="Public_results" xml:space="preserve">
-    <value>Публични резултати</value>
+  <data name="Points" xml:space="preserve">
+    <value>точки</value>
   </data>
-  <data name="Runtime_error" xml:space="preserve">
-    <value>Грешка при изпълнение</value>
+  <data name="Points_label" xml:space="preserve">
+    <value>Точки</value>
   </data>
-  <data name="Subtitle" xml:space="preserve">
-    <value>{0} участници</value>
-  </data>
-  <data name="Time_limit" xml:space="preserve">
-    <value>Лимит време</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Пълни резултати за {0}</value>
-  </data>
-  <data name="Total" xml:space="preserve">
-    <value>Общо</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>Потребител</value>
-  </data>
-  <data name="UserFullName" xml:space="preserve">
-    <value>Име</value>
+  <data name="Zero_points" xml:space="preserve">
+    <value>0 точки</value>
   </data>
 </root>

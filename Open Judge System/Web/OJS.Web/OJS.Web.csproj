@@ -502,6 +502,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CompeteRegister.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatsPartial.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatsPartial.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\Views\Contests\ContestsDetails.bg.designer.cs">
       <DependentUpon>ContestsDetails.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1160,6 +1170,16 @@
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\ContestQuestionType.cshtml" />
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StatsPartial.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StatsPartial.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Models\ContestQuestionTypeResource.bg.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestQuestionTypeResource.bg.Designer.cs</LastGenOutput>
@@ -1223,7 +1243,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
-    <Folder Include="Areas\Users\Models\" />
     <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>

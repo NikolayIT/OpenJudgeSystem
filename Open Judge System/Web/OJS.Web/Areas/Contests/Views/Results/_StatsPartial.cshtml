@@ -1,45 +1,46 @@
-﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.ContestStatsViewModel
+﻿@using Resource = Resources.Areas.Contests.Views.Partials.StatsPartial;
+@model OJS.Web.Areas.Contests.ViewModels.Contests.ContestStatsViewModel
 
 <br />
-<h4>Обща статистика</h4>
+<h4>@Resource.General_statistics</h4>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>
-                0 точки
+                @Resource.Zero_points
             </th>
             <th>
-                Макс точки
+                @Resource.Max_points
             </th>
             <th>
-                Среден резултат
+                @Resource.Average_result
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
-                @Model.MinResultsCount участника - (<strong>@Model.MinResultsPercent.ToString("0.00%")</strong>)
+                @Model.MinResultsCount @Resource.Contestants - (<strong>@Model.MinResultsPercent.ToString("0.00%")</strong>)
             </td>
             <td>
-                @Model.MaxResultsCount участника - (<strong>@Model.MaxResultsPercent.ToString("0.00%")</strong>)
+                @Model.MaxResultsCount @Resource.Contestants - (<strong>@Model.MaxResultsPercent.ToString("0.00%")</strong>)
             </td>
             <td>
-                <strong>@Model.AverageResult.ToString("0.000")</strong> точки
+                <strong>@Model.AverageResult.ToString("0.000")</strong> @Resource.Points
             </td>
         </tr>
     </tbody>
 </table>
 
 <br />
-<h4>Статистика по диапазон точки</h4>
+<h4>@Resource.Participants_by_points</h4>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             @foreach (var item in Model.StatsByPointsRange)
             {
                 <th>
-                    @item.PointsFrom - @item.PointsTo точки
+                    @item.PointsFrom - @item.PointsTo @Resource.Points
                 </th>
             }
         </tr>
@@ -49,7 +50,7 @@
             @foreach (var item in Model.StatsByPointsRange)
             {
                 <td>
-                    @item.Participants участника - (<strong>@item.PercentOfAllParticipants.ToString("0.00%")</strong>)
+                    @item.Participants @Resource.Contestants - (<strong>@item.PercentOfAllParticipants.ToString("0.00%")</strong>)
                 </td>
             }
         </tr>
@@ -57,14 +58,14 @@
 </table>
 
 <br />
-<h4>Максимален резултат за всяка задача</h4>
+<h4>@Resource.Max_result_for_task</h4>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             @foreach (var item in Model.StatsByProblem)
             {
                 <th>
-                    @item.Name - @item.MaxPossiblePoints точки макс
+                    @item.Name - @item.MaxPossiblePoints @Resource.Max_points_label
                 </th>
             }
         </tr>
@@ -74,7 +75,7 @@
             @foreach (var item in Model.StatsByProblem)
             {
                 <td>
-                    @item.MaxResultsCount участника - (<strong>@item.MaxResultsPercent.ToString("0.##%")</strong>)
+                    @item.MaxResultsCount @Resource.Contestants - (<strong>@item.MaxResultsPercent.ToString("0.##%")</strong>)
                 </td>
             }
         </tr>

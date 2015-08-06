@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_task" xml:space="preserve">
+    <value>Добави задача</value>
+  </data>
+  <data name="No_tasks" xml:space="preserve">
+    <value>Няма задачи</value>
+  </data>
+  <data name="No_tasks_added_yet" xml:space="preserve">
+    <value>Все още няма добавени задачи към това състезание</value>
+  </data>
   <data name="Practice_end_time" xml:space="preserve">
     <value>Край на практиката</value>
   </data>

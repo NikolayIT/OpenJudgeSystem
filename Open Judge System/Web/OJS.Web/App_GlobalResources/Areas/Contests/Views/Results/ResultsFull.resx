@@ -123,6 +123,9 @@
   <data name="Answer_incorrect" xml:space="preserve">
     <value>Wrong answer</value>
   </data>
+  <data name="Average_result_by_minutes" xml:space="preserve">
+    <value>Average result by minutes</value>
+  </data>
   <data name="Full_results" xml:space="preserve">
     <value>Detailed results</value>
   </data>

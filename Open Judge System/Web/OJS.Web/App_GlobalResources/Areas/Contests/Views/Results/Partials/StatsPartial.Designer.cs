@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.Views {
+namespace Resources.Areas.Contests.Views.Partials {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CompeteIndex {
+    public class StatsPartial {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CompeteIndex() {
+        internal StatsPartial() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.Compete.CompeteIndex", typeof(CompeteIndex).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.Results.Partials.StatsPartial", typeof(StatsPartial).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,92 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task.
+        ///   Looks up a localized string similar to Averege result.
         /// </summary>
-        public static string Add_task {
+        public static string Average_result {
             get {
-                return ResourceManager.GetString("Add_task", resourceCulture);
+                return ResourceManager.GetString("Average_result", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No tasks.
+        ///   Looks up a localized string similar to participants.
         /// </summary>
-        public static string No_tasks {
+        public static string Contestants {
             get {
-                return ResourceManager.GetString("No_tasks", resourceCulture);
+                return ResourceManager.GetString("Contestants", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are no tasks for this contest, yet.
+        ///   Looks up a localized string similar to General statistics.
         /// </summary>
-        public static string No_tasks_added_yet {
+        public static string General_statistics {
             get {
-                return ResourceManager.GetString("No_tasks_added_yet", resourceCulture);
+                return ResourceManager.GetString("General_statistics", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Practice end time.
+        ///   Looks up a localized string similar to Max points.
         /// </summary>
-        public static string Practice_end_time {
+        public static string Max_points {
             get {
-                return ResourceManager.GetString("Practice_end_time", resourceCulture);
+                return ResourceManager.GetString("Max_points", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remaining time {0} h, {1} m and {2} s.
+        ///   Looks up a localized string similar to max points.
         /// </summary>
-        public static string Remaining_time_format {
+        public static string Max_points_label {
             get {
-                return ResourceManager.GetString("Remaining_time_format", resourceCulture);
+                return ResourceManager.GetString("Max_points_label", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Results.
+        ///   Looks up a localized string similar to Max result for every task.
         /// </summary>
-        public static string Results {
+        public static string Max_result_for_task {
             get {
-                return ResourceManager.GetString("Results", resourceCulture);
+                return ResourceManager.GetString("Max_result_for_task", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submit a solution.
+        ///   Looks up a localized string similar to Participants in point ranges.
         /// </summary>
-        public static string Submit_solution {
+        public static string Participants_by_points {
             get {
-                return ResourceManager.GetString("Submit_solution", resourceCulture);
+                return ResourceManager.GetString("Participants_by_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to points.
+        /// </summary>
+        public static string Points {
+            get {
+                return ResourceManager.GetString("Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points.
+        /// </summary>
+        public static string Points_label {
+            get {
+                return ResourceManager.GetString("Points_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 points.
+        /// </summary>
+        public static string Zero_points {
+            get {
+                return ResourceManager.GetString("Zero_points", resourceCulture);
             }
         }
     }
