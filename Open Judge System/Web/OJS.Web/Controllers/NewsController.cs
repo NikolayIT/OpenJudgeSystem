@@ -83,7 +83,7 @@
 
             if (currentNews == null || currentNews.IsDeleted)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resources.News.Views.Selected.Invalid_news_id);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Views.Selected.Invalid_news_id);
             }
 
             var previousNews = this.Data.News

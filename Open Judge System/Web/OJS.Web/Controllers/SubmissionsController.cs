@@ -27,11 +27,13 @@
             {
                 return this.View("AdvancedSubmissions");
             }
-            else
-            {
-                IEnumerable<SubmissionViewModel> submissions = this.GetLastFiftySubmissions();
-                return this.View("BasicSubmissions", submissions.ToList());
-            }
+
+            var submissions = this.Data.Submissions
+                .GetLastFiftySubmissions()
+                .Select(SubmissionViewModel.FromSubmission)
+                .ToList();
+
+            return this.View("BasicSubmissions", submissions.ToList());
         }
 
         [HttpPost]
@@ -61,19 +63,6 @@
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             string json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
             return this.Content(json, "application/json");
-        }
-
-        // TODO: Extract this method in the submissions repository
-        private IEnumerable<SubmissionViewModel> GetLastFiftySubmissions()
-        {
-            // TODO: add language type
-            var submissions = this.Data.Submissions.AllPublic()
-                .OrderByDescending(x => x.CreatedOn)
-                .Take(50)
-                .Select(SubmissionViewModel.FromSubmission)
-                .ToList();
-
-            return submissions;
         }
     }
 }
