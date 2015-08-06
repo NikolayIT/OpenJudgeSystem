@@ -5,6 +5,7 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Extensions;
@@ -70,7 +71,7 @@
             }
 
             // TODO: When text content is saved, uncompressing should be performed
-            return this.File(submission.Content, "application/octet-stream", string.Format("Submission_{0}.{1}", submission.Id, submission.FileExtension));
+            return this.File(submission.Content, GlobalConstants.BinaryFileMimeType, string.Format("Submission_{0}.{1}", submission.Id, submission.FileExtension));
         }
     }
 }

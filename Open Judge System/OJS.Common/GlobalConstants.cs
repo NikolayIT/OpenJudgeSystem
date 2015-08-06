@@ -31,6 +31,9 @@
 
         #region Other
 
+        public const string ExcelMimeTyle = "application/vnd.ms-excel";
+        public const string JsonMimeType = "application/json";
+        public const string ZipMimeType = "application/zip";
         public const string BinaryFileMimeType = "application/octet-stream";
 
         public const string AdministratorRoleName = "Administrator";

@@ -332,7 +332,7 @@
 
             return this.File(
                 submission.Content,
-                "application/octet-stream",
+                GlobalConstants.BinaryFileMimeType,
                 string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
         }
 

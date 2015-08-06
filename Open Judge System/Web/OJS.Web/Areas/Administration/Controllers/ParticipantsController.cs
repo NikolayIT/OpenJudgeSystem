@@ -10,6 +10,7 @@
 
     using Newtonsoft.Json;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
     using OJS.Web.Controllers;
@@ -69,7 +70,7 @@
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var json = JsonConvert.SerializeObject(participants.ToDataSourceResult(request), Formatting.None, serializationSettings);
-            return this.Content(json, "application/json");
+            return this.Content(json, GlobalConstants.JsonMimeType);
         }
 
         [HttpPost]

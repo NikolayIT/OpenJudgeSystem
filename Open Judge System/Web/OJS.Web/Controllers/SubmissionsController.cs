@@ -8,6 +8,7 @@
 
     using Newtonsoft.Json;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Common.Extensions;
@@ -61,7 +62,7 @@
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             string json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
-            return this.Content(json, "application/json");
+            return this.Content(json, GlobalConstants.JsonMimeType);
         }
     }
 }

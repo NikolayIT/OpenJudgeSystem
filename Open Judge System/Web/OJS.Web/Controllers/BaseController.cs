@@ -103,7 +103,7 @@
             return new ContentResult
             {
                 Content = serializer.Serialize(data),
-                ContentType = "application/json",
+                ContentType = GlobalConstants.JsonMimeType,
             };
         }
 

@@ -10,6 +10,7 @@
     using NPOI.HSSF.UserModel;
     using NPOI.SS.UserModel;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
@@ -137,7 +138,7 @@
             // Return the result to the end user
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
-                "application/vnd.ms-excel", // MIME type of Excel files
+                GlobalConstants.ExcelMimeTyle, // MIME type of Excel files
                 string.Format("Класиране за {0} {1}.xls", compete ? "състезание" : "практика", contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 

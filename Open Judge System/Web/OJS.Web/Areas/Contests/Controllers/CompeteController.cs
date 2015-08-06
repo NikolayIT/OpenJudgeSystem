@@ -539,7 +539,7 @@
                     throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
                 }
 
-                return this.File(resource.File, "application/octet-stream", string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
+                return this.File(resource.File, GlobalConstants.BinaryFileMimeType, string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
             }
 
             if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))
