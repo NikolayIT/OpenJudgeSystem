@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration {
+namespace Resources.Areas.Administration.ContestCategories.ViewModels {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AdministrationGeneral {
+    public class ContestCategoryAdministrationViewModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AdministrationGeneral() {
+        internal ContestCategoryAdministrationViewModel() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Resources.Areas.Administration {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.AdministrationGeneral", typeof(AdministrationGeneral).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ContestCategories.ViewModels.Con" +
+                            "testCategoryAdministrationViewModel", typeof(ContestCategoryAdministrationViewModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +62,56 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to navigation.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string Back_to_navigation {
+        public static string Name {
             get {
-                return ResourceManager.GetString("Back_to_navigation", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Accepted length is betweeb {2} and {1} symbols.
         /// </summary>
-        public static string Cancel {
+        public static string Name_length {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("Name_length", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to Name is required!.
         /// </summary>
-        public static string Change {
+        public static string Name_required {
             get {
-                return ResourceManager.GetString("Change", resourceCulture);
+                return ResourceManager.GetString("Name_required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
+        ///   Looks up a localized string similar to Order.
         /// </summary>
-        public static string Create {
+        public static string Order_by {
             get {
-                return ResourceManager.GetString("Create", resourceCulture);
+                return ResourceManager.GetString("Order_by", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created on.
+        ///   Looks up a localized string similar to Order is required!.
         /// </summary>
-        public static string Created_on {
+        public static string Order_by_required {
             get {
-                return ResourceManager.GetString("Created_on", resourceCulture);
+                return ResourceManager.GetString("Order_by_required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Visibility.
         /// </summary>
-        public static string Delete {
+        public static string Visibility {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete this item?.
-        /// </summary>
-        public static string Delete_prompt {
-            get {
-                return ResourceManager.GetString("Delete_prompt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export To Excel.
-        /// </summary>
-        public static string Export_to_excel {
-            get {
-                return ResourceManager.GetString("Export_to_excel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Drag and drop here the title of the column you wish to group by.
-        /// </summary>
-        public static string Group_by_message {
-            get {
-                return ResourceManager.GetString("Group_by_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modified on.
-        /// </summary>
-        public static string Modified_on {
-            get {
-                return ResourceManager.GetString("Modified_on", resourceCulture);
+                return ResourceManager.GetString("Visibility", resourceCulture);
             }
         }
     }

@@ -117,34 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back_to_navigation" xml:space="preserve">
-    <value>Обратно към навигацията</value>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отказ</value>
+  <data name="Name_length" xml:space="preserve">
+    <value>Позволената дължина е между {2} и {1} символа</value>
   </data>
-  <data name="Change" xml:space="preserve">
-    <value>Промяна</value>
+  <data name="Name_required" xml:space="preserve">
+    <value>Името е задължително!</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Създай</value>
+  <data name="Order_by" xml:space="preserve">
+    <value>Подредба</value>
   </data>
-  <data name="Created_on" xml:space="preserve">
-    <value>Дата на създаване</value>
+  <data name="Order_by_required" xml:space="preserve">
+    <value>Подредбата е задължителна!</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Изтриване</value>
-  </data>
-  <data name="Delete_prompt" xml:space="preserve">
-    <value>Наистина ли искате да изтриете елемента?</value>
-  </data>
-  <data name="Export_to_excel" xml:space="preserve">
-    <value>Експортиране в Ексел</value>
-  </data>
-  <data name="Group_by_message" xml:space="preserve">
-    <value>Хванете заглавието на колона и го преместете тук, за да групирате по тази колона.</value>
-  </data>
-  <data name="Modified_on" xml:space="preserve">
-    <value>Дата на промяна</value>
+  <data name="Visibility" xml:space="preserve">
+    <value>Видимост</value>
   </data>
 </root>

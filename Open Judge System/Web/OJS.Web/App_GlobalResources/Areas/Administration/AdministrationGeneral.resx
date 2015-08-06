@@ -129,6 +129,9 @@
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="Created_on" xml:space="preserve">
+    <value>Created on</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -140,5 +143,8 @@
   </data>
   <data name="Group_by_message" xml:space="preserve">
     <value>Drag and drop here the title of the column you wish to group by</value>
+  </data>
+  <data name="Modified_on" xml:space="preserve">
+    <value>Modified on</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
-﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+﻿@using Resource = Resources.Areas.Administration.ContestCategories.Views.ContestCategoriesViews;
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
 @{
-    ViewBag.Title = "Категории състезания";
+    ViewBag.Title = Resource.Index_page_title;
     const string ControllerName = "ContestCategories";
 }
 <h1>@ViewBag.Title</h1>
@@ -28,7 +29,7 @@
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете категорията? Всичките подкатегории също ще бъдат изтрити!");
+        editable.DisplayDeleteConfirmation(Resource.Delete_prompt);
     })
     .ColumnMenu()
     .Events(e => e.DataBound("onDataBound"))

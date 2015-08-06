@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration {
+namespace Resources.Areas.Administration.ContestCategories.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AdministrationGeneral {
+    public class ContestCategoriesViews {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AdministrationGeneral() {
+        internal ContestCategoriesViews() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Resources.Areas.Administration {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.AdministrationGeneral", typeof(AdministrationGeneral).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ContestCategories.Views.ContestC" +
+                            "ategoriesViews", typeof(ContestCategoriesViews).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,61 +62,7 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to navigation.
-        /// </summary>
-        public static string Back_to_navigation {
-            get {
-                return ResourceManager.GetString("Back_to_navigation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        public static string Cancel {
-            get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Change.
-        /// </summary>
-        public static string Change {
-            get {
-                return ResourceManager.GetString("Change", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create.
-        /// </summary>
-        public static string Create {
-            get {
-                return ResourceManager.GetString("Create", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Created on.
-        /// </summary>
-        public static string Created_on {
-            get {
-                return ResourceManager.GetString("Created_on", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        public static string Delete {
-            get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete this item?.
+        ///   Looks up a localized string similar to Do you want to delete this category? All subcategories will be deleted!.
         /// </summary>
         public static string Delete_prompt {
             get {
@@ -124,29 +71,20 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export To Excel.
+        ///   Looks up a localized string similar to Contest categories heirarchy.
         /// </summary>
-        public static string Export_to_excel {
+        public static string Heirarchy_page_title {
             get {
-                return ResourceManager.GetString("Export_to_excel", resourceCulture);
+                return ResourceManager.GetString("Heirarchy_page_title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop here the title of the column you wish to group by.
+        ///   Looks up a localized string similar to Contest categories.
         /// </summary>
-        public static string Group_by_message {
+        public static string Index_page_title {
             get {
-                return ResourceManager.GetString("Group_by_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modified on.
-        /// </summary>
-        public static string Modified_on {
-            get {
-                return ResourceManager.GetString("Modified_on", resourceCulture);
+                return ResourceManager.GetString("Index_page_title", resourceCulture);
             }
         }
     }
