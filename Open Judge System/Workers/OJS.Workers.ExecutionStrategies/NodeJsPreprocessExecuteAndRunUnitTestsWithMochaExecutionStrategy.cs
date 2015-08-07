@@ -62,8 +62,21 @@ describe('TestScope', function() {
         result = 'Invalid!';
     }
 	
+    var bgCoderConsole = {};      
+    Object.keys(console)
+        .forEach(function (prop) {
+            bgCoderConsole[prop] = console[prop];
+            console[prop] = new Function('');
+        });
+
 	testFunc = new Function('assert', 'expect', 'should', ""var result = this.valueOf();"" + inputData);
     testFunc.call(result, assert, expect, should);
+
+    Object.keys(bgCoderConsole)
+        .forEach(function (prop) {
+            console[prop] = bgCoderConsole[prop];
+        });
+
 	done();";
             }
         }
