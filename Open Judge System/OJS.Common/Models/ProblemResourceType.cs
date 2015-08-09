@@ -1,16 +1,16 @@
 ﻿namespace OJS.Common.Models
 {
-    using System.ComponentModel;
+    using OJS.Common.Attributes;
 
     public enum ProblemResourceType
     {
-        [Description("Условие")]
+        [LocalizedDescription("Условие")]
         ProblemDescription = 1,
 
-        [Description("Авторско решение")]
+        [LocalizedDescription("Авторско решение")]
         AuthorsSolution = 2,
 
-        [Description("Видео")]
+        [LocalizedDescription("Видео")]
         Video = 3,
     }
 }

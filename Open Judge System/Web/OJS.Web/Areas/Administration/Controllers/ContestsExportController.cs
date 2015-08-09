@@ -17,6 +17,8 @@
     using OJS.Web.Common;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
+
     public class ContestsExportController : AdministrationController
     {
         public ContestsExportController(IOjsData data)
@@ -139,7 +141,7 @@
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
                 GlobalConstants.ExcelMimeTyle, // MIME type of Excel files
-                string.Format("Класиране за {0} {1}.xls", compete ? "състезание" : "практика", contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
+                string.Format(Resource.Report_excel_format, compete ? Resource.Contest : Resource.Practice, contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
         public ZipFileResult Solutions(int id, bool compete)

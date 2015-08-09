@@ -12,6 +12,7 @@
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestQuestionAnswer;
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel;
 
     public class ContestQuestionAnswersController : KendoGridAdministrationController
@@ -90,7 +91,7 @@
 
             if (question == null)
             {
-                throw new ArgumentException("Question could not be found by given Id", "id");
+                throw new ArgumentException(Resource.No_question_by_id, "id");
             }
 
             question.Answers.Select(a => a.Id).ToList().Each(a => this.Data.ContestQuestionAnswers.Delete(a));

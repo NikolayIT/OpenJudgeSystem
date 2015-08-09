@@ -1,8 +1,9 @@
-﻿@model int?
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.CategoryDropDown;
+@model int?
 
 @(Html.Kendo()
     .DropDownListFor(m => m)
-    .OptionLabel("Изберете категория")
+    .OptionLabel(Resource.Choose_category)
     .DataTextField("Text")
     .DataValueField("Value")
     .DataSource(data =>
