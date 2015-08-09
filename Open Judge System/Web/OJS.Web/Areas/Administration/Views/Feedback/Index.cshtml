@@ -1,7 +1,8 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.Feedback.Views.FeedbackIndexAdmin;
 
 @{
-		ViewBag.Title = "Обратна връзка";
+		ViewBag.Title = Resource.Page_title;
 		const string ControllerName = "Feedback";
 }
 <h1>@ViewBag.Title</h1>
@@ -17,7 +18,7 @@
                 columns.Bound(x => x.Username);
                 columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
                 columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-				columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+				columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
 				columns.Command(command => command.Destroy().Text(" ")).Width(80);
 			})
 		.ToolBar(toolbar =>
