@@ -59,5 +59,104 @@ namespace Resources.Areas.Administration.Problems.Views {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full feedback is invisible.
+        /// </summary>
+        public static string Full_feedback_invisible {
+            get {
+                return ResourceManager.GetString("Full_feedback_invisible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full feedback is visible.
+        /// </summary>
+        public static string Full_feedback_visible {
+            get {
+                return ResourceManager.GetString("Full_feedback_visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem details.
+        /// </summary>
+        public static string Page_title {
+            get {
+                return ResourceManager.GetString("Page_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submissions are invisible.
+        /// </summary>
+        public static string Results_invisible {
+            get {
+                return ResourceManager.GetString("Results_invisible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submissions are visible.
+        /// </summary>
+        public static string Results_visible {
+            get {
+                return ResourceManager.GetString("Results_visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show resources.
+        /// </summary>
+        public static string Show_resources {
+            get {
+                return ResourceManager.GetString("Show_resources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show submissions.
+        /// </summary>
+        public static string Show_submissions {
+            get {
+                return ResourceManager.GetString("Show_submissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tests.
+        /// </summary>
+        public static string Tests {
+            get {
+                return ResourceManager.GetString("Tests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlimited.
+        /// </summary>
+        public static string Unlimited {
+            get {
+                return ResourceManager.GetString("Unlimited", resourceCulture);
+            }
+        }
     }
 }

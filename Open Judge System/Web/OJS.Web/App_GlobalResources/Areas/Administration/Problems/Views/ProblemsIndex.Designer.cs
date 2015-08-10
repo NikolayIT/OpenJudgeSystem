@@ -59,5 +59,113 @@ namespace Resources.Areas.Administration.Problems.Views {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category:.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose category....
+        /// </summary>
+        public static string Choose_category {
+            get {
+                return ResourceManager.GetString("Choose_category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose contest....
+        /// </summary>
+        public static string Choose_contest {
+            get {
+                return ResourceManager.GetString("Choose_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contest:.
+        /// </summary>
+        public static string Contest {
+            get {
+                return ResourceManager.GetString("Contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter contest....
+        /// </summary>
+        public static string Enter_contest {
+            get {
+                return ResourceManager.GetString("Enter_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Future.
+        /// </summary>
+        public static string Future {
+            get {
+                return ResourceManager.GetString("Future", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latest.
+        /// </summary>
+        public static string Latest {
+            get {
+                return ResourceManager.GetString("Latest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problems.
+        /// </summary>
+        public static string Page_title {
+            get {
+                return ResourceManager.GetString("Page_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problems loading....
+        /// </summary>
+        public static string Problems_loading {
+            get {
+                return ResourceManager.GetString("Problems_loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contest quick access:.
+        /// </summary>
+        public static string Qucik_access_contest {
+            get {
+                return ResourceManager.GetString("Qucik_access_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search by contest.
+        /// </summary>
+        public static string Search_by_contest {
+            get {
+                return ResourceManager.GetString("Search_by_contest", resourceCulture);
+            }
+        }
     }
 }
