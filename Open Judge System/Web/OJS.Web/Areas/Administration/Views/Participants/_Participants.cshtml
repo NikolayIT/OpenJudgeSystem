@@ -1,4 +1,5 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.Participants.Views.Partials.Participants;
 @model int?
 @{
     const string ControllerName = "Participants";
@@ -18,7 +19,7 @@
         })
     .ToolBar(toolbar =>
     {
-        toolbar.Create().Text("Добавяне на участник");
+        toolbar.Create().Text(Resource.Add_participant);
         toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })

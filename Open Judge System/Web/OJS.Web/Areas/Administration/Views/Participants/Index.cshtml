@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Участници";
+﻿@using Resource = Resources.Areas.Administration.Participants.Views.ParticipantsIndex;
+@{
+    ViewBag.Title = Resource.Page_title;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -15,7 +16,7 @@
             .Filter(FilterType.Contains)
             .AutoBind(false)
             .MinLength(3)
-            .Placeholder("Изберете или напишете състезание")
+            .Placeholder(Resource.Choose_or_enter_contest)
             .Events(ev => ev.Change("selectContest"))
             .DataSource(dataSource =>
                 {
@@ -30,7 +31,7 @@
             .HtmlAttributes(new { style = "width: 100%;" }))
     </div>
     <div class="col-md-2 text-right">
-        @Ajax.ActionLink("Изчистване", "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "participants-grid", OnSuccess = "clearContestComboBox" }, new { @class = "btn btn-primary btn-sm" })
+        @Ajax.ActionLink(Resource.Clear, "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "participants-grid", OnSuccess = "clearContestComboBox" }, new { @class = "btn btn-primary btn-sm" })
     </div>
 </div>
 <br />
