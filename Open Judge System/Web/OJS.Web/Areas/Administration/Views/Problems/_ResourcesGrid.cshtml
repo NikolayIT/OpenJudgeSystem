@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
+@model int
 
 @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceGridViewModel>()
     .Name("submissions-grid")
@@ -8,7 +9,7 @@
         columns.Bound(model => model.Name);
         columns.Bound(model => model.Type).ClientTemplate("#= TypeName #");
         columns.Bound(model => model.OrderBy);
-        columns.Bound(model => model.Link).ClientTemplate("# if(Type == 3) { # <a href='#= Link #' class='btn btn-sm btn-primary' target='_blank'>Видео</a> # } else { # <a href='/Administration/Resources/Download/#= Id #' class='btn btn-sm btn-primary' >Свали</a> # } #");
+        columns.Bound(model => model.Link).ClientTemplate(string.Format("# if(Type == 3) {{ # <a href='#= Link #' class='btn btn-sm btn-primary' target='_blank'>{0}</a> # }} else {{ # <a href='/Administration/Resources/Download/#= Id #' class='btn btn-sm btn-primary' >{1}</a> # }} #", Resource.Video, Resource.Download));
     })
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))

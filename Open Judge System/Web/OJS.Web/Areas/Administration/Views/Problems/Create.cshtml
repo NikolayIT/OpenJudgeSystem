@@ -1,10 +1,11 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsCreate;
+@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
 
 @{
-    ViewBag.Title = "Създаване на задача";
+    ViewBag.Title = Resource.Page_title;
 }
 
-<h2>@ViewBag.Title към @Model.ContestName</h2>
+<h2>@ViewBag.Title @Resource.For @Model.ContestName</h2>
 <div id="create-form" class="container">
     @using (Html.BeginForm("Create", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -15,7 +16,7 @@
         @Html.HiddenFor(m => m.ContestId)
 
         <fieldset>
-            <legend>Основна информация</legend>
+            <legend>@Resource.General_info</legend>
             <div class="row">
                 <div class="editor-label col-xs-3">
                     <div class="pull-right">
@@ -26,7 +27,7 @@
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
                 </div>
                 <div class="editor-field col-xs-4">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете заглавие на задачата" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_name" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.Name)
                 </div>
             </div>
@@ -47,7 +48,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-4">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете максимален брой точки, които състезателят може да получи от задачата" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_max_points" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.MaximumPoints)
                 </div>
             </div>
@@ -68,7 +69,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-4">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете максимално време в милисекунди, които състезателят може да достигне с решението си върху задачата" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_time_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.TimeLimit)
                 </div>
             </div>
@@ -89,7 +90,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете максималнa памет в байтове, която състезателят може да достигне с решението си върху задачата" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_memory_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.MemoryLimit)
                 </div>
             </div>
@@ -113,13 +114,13 @@
                     .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете максимален размер на сорс код в байтове, която състезателят може да изпрати като решение на задачата" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_sorce_code_size_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
                 </div>
             </div>
         </fieldset>
         <fieldset>
-            <legend>Настройки</legend>
+            <legend>@Resource.Settings</legend>
             <div class="row">
                 <div class="editor-label col-xs-3">
                     <div class="pull-right">
@@ -154,7 +155,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете номер под ред на задачата в текущото състезание" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_order" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.OrderBy)
                 </div>
             </div>
@@ -169,7 +170,7 @@
                     @Html.EditorFor(m => m.ShowResults)
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете дали участниците ще могат да си виждат резултатите в реално време" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Show_results" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.ShowResults)
                 </div>
             </div>
@@ -184,23 +185,23 @@
                     @Html.EditorFor(m => m.ShowDetailedFeedback)
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете дали участниците ще могат да си виждат пълен feedback на решенията си, както го виждат администраторите" data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Show_detailed_feedback" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.ShowDetailedFeedback)
                 </div>
             </div>
         </fieldset>
         <br />
         <fieldset>
-            <legend>Ресурси</legend>
+            <legend>@Resource.Resources</legend>
             <div class="row">
                 <div class="container col-md-6">
                     <div class="pull-right">
-                        <button class="btn btn-primary" id="add-resource">Добави</button>
-                        <button class="btn btn-primary" id="remove-resource" disabled="disabled">Премахни</button>
+                        <button class="btn btn-primary" id="add-resource">@Resource.Add</button>
+                        <button class="btn btn-primary" id="remove-resource" disabled="disabled">@Resource.Remove</button>
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" title="Добавете или премахнете ресурс към задачата - условие, авторско решение или видео. Всеки ресурс има име, тип и файл/линк." data-tooltip="true"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Add_remove_resource" data-tooltip="true"></span>
                 </div>
             </div>
 
@@ -213,15 +214,15 @@
         </fieldset>
         <br />
         <fieldset>
-            <legend>Тестове</legend>
+            <legend>@Resource.Tests</legend>
             <div class="row">
                 <div class="editor-label col-xs-3">
                     <div class="pull-right">
-                        <strong>Тестове (.zip файл)</strong>
+                        <strong>@Resource.Tests_label</strong>
                     </div>
                 </div>
                 <div class="col-xs-3">
-                    <div id="tests-file-button" class="btn btn-sm btn-primary pull-right">Избери файл</div>
+                    <div id="tests-file-button" class="btn btn-sm btn-primary pull-right">@Resource.Choose_file</div>
                     <div class="hidden-file-upload">
                         <input type="file" name="testArchive" id="tests-upload-input" />
                     </div>
@@ -235,10 +236,10 @@
         <br />
         <div class="row">
             <div class="editor-label col-xs-5">
-                <button type="submit" id="create-submit" class="btn btn-primary pull-right">Създай</button>
+                <button type="submit" id="create-submit" class="btn btn-primary pull-right">@Resource.Create</button>
             </div>
             <div class="editor-label col-xs-3">
-                <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+                <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
             </div>
         </div>
     }
@@ -249,31 +250,28 @@
 <script type="text/x-kendo-template" id="checkers-template">
     <ul style="list-style-type: none">
         <li>
-            <strong>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</strong>
+            <strong>@Resource.Choose_code_checker</strong>
         </li>
         <li>
-            <strong>Exact</strong> - системата проверява резултатите на състезателя с очаквания изход символ по символ;
+            <strong>Exact</strong> @Resource.Exact_checker_description
         </li>
         <li>
-            <strong>Trim</strong> - системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;
+            <strong>Trim</strong> @Resource.Trim_checker_description
         </li>
         <li>
-            <strong>Sort</strong> - системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;
+            <strong>Sort</strong> @Resource.Sort_checker_description
         </li>
         <li>
-            <strong>Case-insensitive</strong> - системата не отчита разлика между главна и малка буква като сравнява символ по символ;
+            <strong>Case-insensitive</strong> @Resource.Case_insensitive_checker_description
         </li>
         <li>
-            <strong>Precision N</strong> - само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.
+            <strong>Precision N</strong> @Resource.Precision_checker_description
         </li>
     </ul>
 </script>
 
 <script type="text/x-kendo-template" id="tests-template">
-    Изберете .zip файл с тестове за вход и изход към задачата.
-    <br />
-    Можете да изтеглите примерен файл с тестове
-    <a href="/Content/Demos/DemoTests.zip">тук</a>.
+    @Html.Raw(Resource.Choose_zip_file)
 </script>
 
 @section scripts{

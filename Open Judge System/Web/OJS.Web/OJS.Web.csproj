@@ -702,6 +702,86 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DetailedProblem.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DetailedProblem.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsPartials.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsPartials.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsCreate.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsCreate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDelete.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDelete.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDelete.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDelete.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDeleteAll.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDeleteAll.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDeleteAll.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDeleteAll.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDetails.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDetails.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsEdit.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsEdit.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsEdit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsEdit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsIndex.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1750,6 +1830,86 @@
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DetailedProblem.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DetailedProblem.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsPartials.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsPartials.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsCreate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsCreate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDelete.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDelete.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDelete.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDelete.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDeleteAll.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDeleteAll.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDeleteAll.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDeleteAll.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDetails.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDetails.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsDetails.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsDetails.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsEdit.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsEdit.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsEdit.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsEdit.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserProfileAdministration.Designer.cs</LastGenOutput>
@@ -1841,7 +2001,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Problems\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
     <Folder Include="Files\" />
