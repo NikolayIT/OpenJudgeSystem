@@ -21,6 +21,7 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
 
@@ -51,7 +52,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -66,7 +67,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -74,7 +75,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -172,7 +173,7 @@
                 this.Data.Problems.Add(newProblem);
                 this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
+                this.TempData.AddInfoMessage("Задачата беше добавена успешно");
                 return this.RedirectToAction("Contest", new { id });
             }
 
@@ -186,7 +187,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -214,7 +215,7 @@
 
             if (selectedProblem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -249,7 +250,7 @@
 
                 this.Data.SaveChanges();
 
-                this.TempData[GlobalConstants.InfoMessage] = "Задачата беше променена успешно";
+                this.TempData.AddInfoMessage("Задачата беше променена успешно");
                 return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
             }
 
@@ -262,7 +263,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -289,7 +290,7 @@
 
             if (selectedProblem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -300,7 +301,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -309,7 +310,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -327,7 +328,7 @@
             this.Data.Problems.Delete(id.Value);
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше изтрита успешно";
+            this.TempData.AddInfoMessage("Задачата беше изтрита успешно");
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
@@ -336,7 +337,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -347,7 +348,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -358,7 +359,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -367,7 +368,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage("Невалидно състезание");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -380,7 +381,7 @@
 
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачите бяха изтрити успешно";
+            this.TempData.AddInfoMessage("Задачите бяха изтрити успешно");
             return this.RedirectToAction("Contest", new { id });
         }
 
@@ -388,7 +389,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -399,7 +400,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -410,7 +411,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -420,14 +421,14 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage("Невалидна задача");
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
             this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше ретествана успешно";
+            this.TempData.AddInfoMessage("Задачата беше ретествана успешно");
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 

@@ -19,7 +19,7 @@
                     columns.Bound(col => col.Description).Hidden();
                     columns.Bound(col => col.AllowBinaryFilesUpload).Hidden();
                     columns.Bound(col => col.AllowedFileExtensions).Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
     .ToolBar(toolbar =>
