@@ -6,6 +6,7 @@
     using System.Web.Mvc;
 
     using OJS.Common;
+    using OJS.Common.Attributes;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
@@ -71,8 +72,9 @@
             GlobalConstants.FirstNameMaxLength,
             ErrorMessageResourceName = "First_name_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(
-            NullDisplayText = "Няма информация", 
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string FirstName { get; set; }
@@ -82,8 +84,9 @@
             GlobalConstants.LastNameMaxLength,
             ErrorMessageResourceName = "Last_name_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(
-            NullDisplayText = "Няма информация", 
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string LastName { get; set; }
@@ -93,7 +96,10 @@
             GlobalConstants.CityNameMaxLength,
             ErrorMessageResourceName = "City_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string City { get; set; }
 
@@ -102,7 +108,10 @@
             GlobalConstants.EducationalInstitutionMaxLength,
             ErrorMessageResourceName = "Educational_institution_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string EducationalInstitution { get; set; }
 
@@ -111,12 +120,19 @@
             GlobalConstants.FacultyNumberMaxLength,
             ErrorMessageResourceName = "Faculty_number_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("PositiveInteger")]
         public string FacultyNumber { get; set; }
 
         [Display(Name = "Date_of_birth", ResourceType = typeof(Resource))]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true,
+            DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         [UIHint("Date")]
         public DateTime? DateOfBirth { get; set; }
@@ -126,7 +142,10 @@
             GlobalConstants.CompanyNameMaxLength,
             ErrorMessageResourceName = "Company_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string Company { get; set; }
 
@@ -135,12 +154,18 @@
             GlobalConstants.JobTitleMaxLenth,
             ErrorMessageResourceName = "Job_title_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string JobTitle { get; set; }
 
         [Display(Name = "Age", ResourceType = typeof(Resource))]
-        [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
+        [LocalizedDisplayFormat(
+            "Null_display_text",
+            typeof(Resource),
+            ConvertEmptyStringToNull = true)]
         [UIHint("NonEditable")]
         public byte Age
         {
