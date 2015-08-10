@@ -73,8 +73,8 @@
             ErrorMessageResourceName = "First_name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string FirstName { get; set; }
@@ -85,8 +85,8 @@
             ErrorMessageResourceName = "Last_name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string LastName { get; set; }
@@ -97,8 +97,8 @@
             ErrorMessageResourceName = "City_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string City { get; set; }
@@ -109,8 +109,8 @@
             ErrorMessageResourceName = "Educational_institution_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string EducationalInstitution { get; set; }
@@ -121,16 +121,16 @@
             ErrorMessageResourceName = "Faculty_number_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("PositiveInteger")]
         public string FacultyNumber { get; set; }
 
         [Display(Name = "Date_of_birth", ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true,
             DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
@@ -143,8 +143,8 @@
             ErrorMessageResourceName = "Company_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string Company { get; set; }
@@ -155,16 +155,16 @@
             ErrorMessageResourceName = "Job_title_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string JobTitle { get; set; }
 
         [Display(Name = "Age", ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            "Null_display_text",
-            typeof(Resource),
+            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("NonEditable")]
         public byte Age
