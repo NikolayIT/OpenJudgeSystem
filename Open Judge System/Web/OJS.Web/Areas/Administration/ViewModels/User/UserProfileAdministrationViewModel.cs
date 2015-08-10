@@ -10,6 +10,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Users.ViewModels.UserProfileAdministration;
+
     public class UserProfileAdministrationViewModel : AdministrationViewModel<UserProfile>
     {
         [ExcludeFromExcel]
@@ -41,92 +43,103 @@
         [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
 
-        [Display(Name = "Потребителско име")]
+        [Display(Name = "UserName", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [RegularExpression(
             GlobalConstants.EmailRegEx,
-            ErrorMessage = "Невалиден имейл адрес")]
-        [Required(ErrorMessage = "Email-а е задължителен")]
+            ErrorMessageResourceName = "Mail_invalid",
+            ErrorMessageResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Mail_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.EmailMaxLength, 
-            ErrorMessage = "Въведеният e-mail е твърде дълъг")]
+            GlobalConstants.EmailMaxLength,
+            ErrorMessageResourceName = "Mail_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 
-        [Display(Name = "От старата система?")]
+        [Display(Name = "Is_ghoust_user", ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public bool IsGhostUser { get; set; }
 
-        [Display(Name = "Име")]
+        [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.FirstNameMaxLength, 
-            ErrorMessage = "Въведеното име е твърде дълго")]
+            GlobalConstants.FirstNameMaxLength,
+            ErrorMessageResourceName = "First_name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(
             NullDisplayText = "Няма информация", 
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Фамилия")]
+        [Display(Name = "Last_name", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.LastNameMaxLength, 
-            ErrorMessage = "Въведената фамилия е твърде дълга")]
+            GlobalConstants.LastNameMaxLength,
+            ErrorMessageResourceName = "Last_name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(
             NullDisplayText = "Няма информация", 
             ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string LastName { get; set; }
 
-        [Display(Name = "Град")]
+        [Display(Name = "City", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.CityNameMaxLength, 
-            ErrorMessage = "Въведеният град е твърде дълъг")]
+            GlobalConstants.CityNameMaxLength,
+            ErrorMessageResourceName = "City_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string City { get; set; }
 
-        [Display(Name = "Образование")]
+        [Display(Name = "Educational_institution", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.EducationalInstitutionMaxLength, 
-            ErrorMessage = "Въведеното образование е твърде дълго")]
+            GlobalConstants.EducationalInstitutionMaxLength,
+            ErrorMessageResourceName = "Educational_institution_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string EducationalInstitution { get; set; }
 
-        [Display(Name = "Факултетен номер")]
+        [Display(Name = "Faculty_number", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.EducationalInstitutionMaxLength, 
-            ErrorMessage = "Въведеният факултетен номер е твърде дълъг")]
+            GlobalConstants.FacultyNumberMaxLength,
+            ErrorMessageResourceName = "Faculty_number_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("PositiveInteger")]
         public string FacultyNumber { get; set; }
 
-        [Display(Name = "Дата на раждане")]
+        [Display(Name = "Date_of_birth", ResourceType = typeof(Resource))]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [DataType(DataType.Date)]
         [UIHint("Date")]
         public DateTime? DateOfBirth { get; set; }
 
-        [Display(Name = "Месторабота")]
+        [Display(Name = "Company", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.CompanyNameMaxLength, 
-            ErrorMessage = "Въведената месторабота е твърде дълга")]
+            GlobalConstants.CompanyNameMaxLength,
+            ErrorMessageResourceName = "Company_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string Company { get; set; }
 
-        [Display(Name = "Позиция")]
+        [Display(Name = "Job_title", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.JobTitleMaxLenth, 
-            ErrorMessage = "Въведената позиция е твърде дълга")]
+            GlobalConstants.JobTitleMaxLenth,
+            ErrorMessageResourceName = "Job_title_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("SingleLineText")]
         public string JobTitle { get; set; }
 
-        [Display(Name = "Възраст")]
+        [Display(Name = "Age", ResourceType = typeof(Resource))]
         [DisplayFormat(NullDisplayText = "Няма информация", ConvertEmptyStringToNull = true)]
         [UIHint("NonEditable")]
         public byte Age

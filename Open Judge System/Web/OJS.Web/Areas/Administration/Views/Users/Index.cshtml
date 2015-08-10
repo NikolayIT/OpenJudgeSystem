@@ -1,7 +1,7 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
-
+@using Resource = Resources.Areas.Administration.Users.Views.UsersIndex;
 @{
-    ViewBag.Title = "Потребители";
+    ViewBag.Title = Resource.Page_title;
     const string ControllerName = "Users";
 }
 <h1>@ViewBag.Title</h1>
@@ -24,7 +24,7 @@
             columns.Bound(model => model.Age).Filterable(false);
             columns.Bound(model => model.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(model => model.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
         })
     .ToolBar(toolbar =>
     {

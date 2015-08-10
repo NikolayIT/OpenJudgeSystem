@@ -652,6 +652,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserProfileAdministration.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserProfileAdministration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Users\Views\UsersIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UsersIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Users\Views\UsersIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UsersIndex.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\ContestsGeneral.bg.Designer.cs">
       <DependentUpon>ContestsGeneral.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1629,6 +1649,26 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NewsAdministration.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.News.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserProfileAdministration.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Users.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserProfileAdministration.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Users.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\Views\UsersIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UsersIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Users.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\Views\UsersIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UsersIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Users.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
