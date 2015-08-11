@@ -1,21 +1,21 @@
 ﻿namespace OJS.Common.Models
 {
-    using System.ComponentModel;
-
     using OJS.Common.Attributes;
+
+    using Resource = Resources.Enums.EnumTranslations;
 
     public enum ContestQuestionType
     {
-        [LocalizedDescription("По подразбиране")]
+        [LocalizedDescription("Default", typeof(Resource))]
         Default = 0, // If possible answers available then DropDown, else text box
 
-        [LocalizedDescription("Dropdown лист")]
+        [LocalizedDescription("DropDown", typeof(Resource))]
         DropDown = 1,
 
-        [LocalizedDescription("Едноредов текст")]
+        [LocalizedDescription("TextBox", typeof(Resource))]
         TextBox = 2,
 
-        [LocalizedDescription("Многоредов текст")]
+        [LocalizedDescription("MultiLineTextBox", typeof(Resource))]
         MultiLineTextBox = 3,
     }
 }

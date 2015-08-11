@@ -2,15 +2,17 @@
 {
     using OJS.Common.Attributes;
 
+    using Resource = Resources.Enums.EnumTranslations;
+
     public enum ProblemResourceType
     {
-        [LocalizedDescription("Условие")]
+        [LocalizedDescription("ProblemDescription", typeof(Resource))]
         ProblemDescription = 1,
 
-        [LocalizedDescription("Авторско решение")]
+        [LocalizedDescription("AuthorsSolution", typeof(Resource))]
         AuthorsSolution = 2,
 
-        [LocalizedDescription("Видео")]
+        [LocalizedDescription("Video", typeof(Resource))]
         Video = 3,
     }
 }
