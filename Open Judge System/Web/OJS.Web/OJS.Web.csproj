@@ -702,6 +702,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProblemsControllers.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -792,6 +802,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\ResourcesControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\ResourcesControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesControllers.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -861,6 +881,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Partials.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\SubmissionsControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\SubmissionsControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsControllers.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Submissions\ViewModels\SubmissionAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -961,6 +991,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SubmissionTypesIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\TestsControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\TestsControllers.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsControllers.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Tests\ViewModels\TestAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2080,6 +2120,16 @@
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DetailedProblem.Designer.cs</LastGenOutput>
@@ -2170,6 +2220,16 @@
       <LastGenOutput>ProblemsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\ResourcesControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\ResourcesControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourcesCreate.Designer.cs</LastGenOutput>
@@ -2239,6 +2299,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Partials.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Shared.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\SubmissionsControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\SubmissionsControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\ViewModels\SubmissionAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2341,6 +2411,16 @@
       <LastGenOutput>SubmissionTypesIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.SubmissionTypes.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\TestsControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsControllers.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests</CustomToolNamespace>
+    </EmbeddedResource>
+    <Content Include="App_GlobalResources\Areas\Administration\Tests\TestsControllers.bg.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TestsControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests</CustomToolNamespace>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\ViewModels\TestAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestAdministration.Designer.cs</LastGenOutput>

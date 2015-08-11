@@ -10,19 +10,16 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
+    using Resource = Resources.Areas.Administration.Submissions.SubmissionsControllers;
 
     public class SubmissionsController : KendoGridAdministrationController
     {
-        private const string SuccessfulCreationMessage = "Решението беше добавено успешно!";
-        private const string SuccessfulEditMessage = "Решението беше променено успешно!";
-        private const string InvalidSubmissionMessage = "Невалидно решение!";
-        private const string RetestSuccessful = "Решението беше успешно пуснато за ретестване!";
-
         private int? contestId;
 
         public SubmissionsController(IOjsData data)
@@ -99,7 +96,7 @@
                 if (this.ModelState.IsValid)
                 {
                     this.BaseCreate(model.GetEntityModel());
-                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
+                    this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
             }
@@ -119,7 +116,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -172,7 +169,7 @@
                     var entity = this.GetById(model.Id) as DatabaseModelType;
                     this.UpdateAuditInfoValues(model, entity);
                     this.BaseUpdate(model.GetEntityModel(entity));
-                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
+                    this.TempData.AddInfoMessage(Resource.Successful_edit_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
             }
@@ -192,7 +189,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -207,7 +204,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -251,7 +248,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
             }
             else
             {
@@ -259,7 +256,7 @@
                 submission.Processing = false;
                 this.Data.SaveChanges();
 
-                this.TempData[GlobalConstants.InfoMessage] = RetestSuccessful;
+                this.TempData.AddInfoMessage(Resource.Retest_successful);
             }
 
             return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
@@ -345,7 +342,7 @@
                 return submissionType;
             }
 
-            this.ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
+            this.ModelState.AddModelError("SubmissionTypeId", Resource.Wrong_submision_type);
             return null;
         }
 
@@ -355,7 +352,7 @@
             {
                 if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
                 {
-                    this.ModelState.AddModelError("ParticipantId", "Задачата не е от състезанието, от което е избраният участник!");
+                    this.ModelState.AddModelError("ParticipantId", Resource.Invalid_task_for_participant);
                 }
             }
         }
@@ -364,7 +361,7 @@
         {
             if (model.Content.Length > problem.SourceCodeSizeLimit)
             {
-                this.ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+                this.ModelState.AddModelError("Content", Resource.Submission_content_length_invalid);
             }
         }
 
@@ -372,14 +369,14 @@
         {
             if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
             {
-                this.ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+                this.ModelState.AddModelError("SubmissionTypeId", Resource.Wrong_submision_type);
             }
 
             if (submissionType.AllowedFileExtensions != null)
             {
                 if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
                 {
-                    this.ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                    this.ModelState.AddModelError("Content", Resource.Invalid_file_extention);
                 }
             }
         }

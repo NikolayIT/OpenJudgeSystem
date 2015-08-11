@@ -17,6 +17,7 @@
 
     using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
     using DatabaseModelType = OJS.Data.Models.Participant;
+    using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel;
 
     public class ParticipantsController : KendoGridAdministrationController
@@ -83,12 +84,12 @@
             {
                 if (contest == null)
                 {
-                    this.ModelState.AddModelError("ContestId", "Невалидно състезание");
+                    this.ModelState.AddModelError("ContestId", GlobalResource.Invalid_contest);
                 }
 
                 if (user == null)
                 {
-                    this.ModelState.AddModelError("UserId", "Невалиден потребител");
+                    this.ModelState.AddModelError("UserId", GlobalResource.Invalid_user);
                 }
 
                 return this.GridOperation(request, model);
