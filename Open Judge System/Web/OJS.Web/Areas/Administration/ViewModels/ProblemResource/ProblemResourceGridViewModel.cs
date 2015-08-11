@@ -11,6 +11,8 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Administration.Problems.ViewModels.ProblemResources;
+
     public class ProblemResourceGridViewModel
     {
         [ExcludeFromExcel]
@@ -37,16 +39,16 @@
 
         public int ProblemId { get; set; }
 
-        [Display(Name = "Име")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string Name { get; set; }
 
-        [Display(Name = "Тип")]
+        [Display(Name = "Type", ResourceType = typeof(Resource))]
         public ProblemResourceType Type { get; set; }
 
-        [Display(Name = "Линк")]
+        [Display(Name = "Link", ResourceType = typeof(Resource))]
         public string Link { get; set; }
 
-        [Display(Name = "Подредба")]
+        [Display(Name = "Order", ResourceType = typeof(Resource))]
         public int OrderBy { get; set; }
 
         public string TypeName
