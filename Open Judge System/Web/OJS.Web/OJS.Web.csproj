@@ -792,6 +792,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesCreate.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesCreate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesEdit.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesEdit.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesEdit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesEdit.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Roles\ViewModels\RolesViewModels.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -801,6 +821,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RolesViewModels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Roles\Views\RolesIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RolesIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Roles\Views\RolesIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RolesIndex.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Settings\ViewModels\SettingAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -812,6 +842,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingAdministration.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Settings\Views\SettingsAdministrationIndex.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsAdministrationIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Settings\Views\SettingsAdministrationIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsAdministrationIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Partials.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Partials.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Submissions\ViewModels\SubmissionAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -821,6 +871,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SubmissionAdministration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionsGrid.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsGrid.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionsGrid.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsGrid.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\SubmissionTypes\ViewModels\SubmissionTypeAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -832,6 +892,76 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SubmissionTypeAdministration.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\EditorTemplates\SubmissionsEditorTemplates.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsEditorTemplates.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\EditorTemplates\SubmissionsEditorTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsEditorTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionForm.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionForm.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsCreate.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsCreate.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsCreate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsCreate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsDelete.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsDelete.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsDelete.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsDelete.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsUpdate.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsUpdate.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsUpdate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionsUpdate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\SubmissionTypes\Views\SubmissionTypesIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionTypesIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\SubmissionTypes\Views\SubmissionTypesIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionTypesIndex.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Tests\ViewModels\TestAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -841,6 +971,66 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestAdministration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsCreate.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsCreate.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDelete.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDelete.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDeleteAll.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDeleteAll.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDetails.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDetails.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDetails.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsCreate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsCreate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDelete.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDelete.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDeleteAll.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsDeleteAll.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsEdit.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsEdit.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsEdit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsEdit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsIndex.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsIndex.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsIndex.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsIndex.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1980,6 +2170,26 @@
       <LastGenOutput>ProblemsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesCreate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesEdit.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesEdit.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesCreate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesCreate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Resources\Views\ResourcesEdit.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesEdit.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Resources.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Roles\ViewModels\RolesViewModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RolesViewModels.Designer.cs</LastGenOutput>
@@ -1989,6 +2199,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RolesViewModels.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Roles.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Roles\Views\RolesIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RolesIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Roles.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Roles\Views\RolesIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RolesIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Roles.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Settings\ViewModels\SettingAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2000,6 +2220,26 @@
       <LastGenOutput>SettingAdministration.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Settings.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Settings\Views\SettingsAdministrationIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsAdministrationIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Settings.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Settings\Views\SettingsAdministrationIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsAdministrationIndex.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Settings.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Partials.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Shared.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Partials.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Shared.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\ViewModels\SubmissionAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SubmissionAdministration.Designer.cs</LastGenOutput>
@@ -2009,6 +2249,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SubmissionAdministration.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Submissions.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionsGrid.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsGrid.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionsGrid.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsGrid.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.Partials</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\SubmissionTypes\ViewModels\SubmissionTypeAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2021,6 +2271,76 @@
       <LastGenOutput>SubmissionTypeAdministration.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.SubmissionTypes.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\EditorTemplates\SubmissionsEditorTemplates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsEditorTemplates.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.EditorTemplates</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\EditorTemplates\SubmissionsEditorTemplates.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsEditorTemplates.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.EditorTemplates</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionForm.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionForm.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\Partials\SubmissionForm.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionForm.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsCreate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsCreate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsDelete.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsDelete.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsUpdate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsUpdate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsCreate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsCreate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsDelete.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsDelete.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Submissions\Views\SubmissionsUpdate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionsUpdate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Submissions.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\SubmissionTypes\Views\SubmissionTypesIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionTypesIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.SubmissionTypes.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\SubmissionTypes\Views\SubmissionTypesIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionTypesIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.SubmissionTypes.Views</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\ViewModels\TestAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestAdministration.Designer.cs</LastGenOutput>
@@ -2030,6 +2350,66 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestAdministration.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Tests.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsCreate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsCreate.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDelete.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDelete.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDeleteAll.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDeleteAll.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsEdit.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsEdit.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDetails.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDetails.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsIndex.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsCreate.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsCreate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDelete.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDelete.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDeleteAll.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDeleteAll.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsDetails.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsDetails.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsEdit.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsEdit.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Tests\Views\TestsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Tests.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Users\ViewModels\UserProfileAdministration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2122,11 +2502,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Roles\Views\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Settings\Views\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Submissions\Views\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\SubmissionTypes\Views\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Tests\Views\" />
+    <Folder Include="App_GlobalResources\Areas\Administration\Shared\Views\EditorTemplates\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
     <Folder Include="Files\" />

@@ -1,7 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel
+﻿@using Resource = Resources.Areas.Administration.Submissions.Views.SubmissionsDelete; 
+@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel
 
 @{
-    ViewBag.Title = "Изтрий решение на " + Model.ParticipantName;
+    ViewBag.Title = string.Format("{0} {1}", Resource.Page_title, Model.ParticipantName);
 }
 
 <h2>@ViewBag.Title</h2>
@@ -46,9 +47,9 @@
 
 <div class="row">
     <div class="editor-label col-xs-1">
-        @Html.ActionLink("Изтрий", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink(Resource.Delete, "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-primary" })
     </div>
     <div class="editor-label col-xs-1">
-        @Html.ActionLink("Назад", GlobalConstants.Index, null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(Resource.Back, GlobalConstants.Index, null, new { @class = "btn btn-primary" })
     </div>
 </div>

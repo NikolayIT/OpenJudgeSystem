@@ -1,15 +1,16 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
+﻿@using Resource = Resources.Areas.Administration.Shared.Views.Partials.Partials;
+@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
 
 <div class="resourceRow container" id="resource-row-@Model.Id">
     <br />
     <input type="hidden" id="Resources_@(Model.Id)__Id" class="hidden-field" name="Resources[@Model.Id].Id" />
     <div class="col-md-2">
-        <label for="Resources_@(Model.Id)__Name">Име</label>
+        <label for="Resources_@(Model.Id)__Name">@Resource.Name</label>
         @Html.TextBox("Resources[" + Model.Id + "].Name", null, new { id = "Resources_" + Model.Id + "__Name", @class = "form-control full-editor required-resource-field" })
         @Html.ValidationMessage("Resources[" + Model.Id + "].Name")
     </div>
     <div class="col-md-2">
-        <label for="Resources_@(Model.Id)__Type">Тип</label>
+        <label for="Resources_@(Model.Id)__Type">@Resource.Type</label>
         @(Html.Kendo()
         .DropDownList()
         .Name("Resources[" + Model.Id + "].Type")
@@ -19,8 +20,8 @@
     </div>
     <div class="col-md-2">
         <div class="pull-right" data-type="resource-content">
-            <div><strong>Файл</strong></div>
-            <div id="file-button-@Model.Id" data-file-upload-button="true" data-id="@Model.Id" class="btn btn-sm btn-primary" onclick="startUploadForm(this)">Избери ресурс</div>
+            <div><strong>@Resource.File</strong></div>
+            <div id="file-button-@Model.Id" data-file-upload-button="true" data-id="@Model.Id" class="btn btn-sm btn-primary" onclick="startUploadForm(this)">@Resource.Choose_resource</div>
             <div class="hidden-file-upload">
                 <input type="file" class="required-resource-field" name="Resources[@Model.Id].File" id="Resources_@(Model.Id)__File" data-id="@Model.Id" onchange="selectedFile(this)" />
             </div>

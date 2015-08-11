@@ -1,6 +1,7 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex;
 @{
-    ViewBag.Title = "Роли";
+    ViewBag.Title = Resource.Page_title;
     const string ControllerName = "Roles";
 }
 <h1>@ViewBag.Title</h1>
@@ -68,7 +69,7 @@
         })
         .ToolBar(tool => 
             {
-                tool.Create().Text("Добави потребител");
+                tool.Create().Text(Resource.Page_title);
             })
         .Editable(edit => 
             {

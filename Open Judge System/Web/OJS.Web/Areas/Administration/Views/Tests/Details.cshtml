@@ -1,7 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
+﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsDetails;
+@model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
 
 @{
-    ViewBag.Title = "Детайли";
+    ViewBag.Title = Resource.Page_title;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -21,7 +22,7 @@
 
         @if (Model.InputFull.Length > 200)
         {
-            @Ajax.ActionLink("Вижте още", "FullInput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-input", InsertionMode = InsertionMode.Replace, OnComplete = "removeInputAjaxLink" }, new { id = "ajax-input-link" })
+            @Ajax.ActionLink(Resource.See_more, "FullInput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-input", InsertionMode = InsertionMode.Replace, OnComplete = "removeInputAjaxLink" }, new { id = "ajax-input-link" })
         }
     </div>
     <br />
@@ -33,7 +34,7 @@
         
         @if (Model.OutputFull.Length > 200)
         {
-            @Ajax.ActionLink("Вижте още", "FullOutput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-output", InsertionMode = InsertionMode.Replace, OnComplete = "removeOutputAjaxLink" }, new { id = "ajax-output-link" })
+            @Ajax.ActionLink(Resource.See_more, "FullOutput", new { id = @Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "test-output", InsertionMode = InsertionMode.Replace, OnComplete = "removeOutputAjaxLink" }, new { id = "ajax-output-link" })
         }
     </div>
     <br />
@@ -54,11 +55,11 @@
     <div id="test-runs-grid">
 
     </div>
-    @Ajax.ActionLink("Покажи изпълненията", "GetTestRuns", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnComplete = "initilizeTestRuns" }, new { id = "test-runs-button", @class = "btn btn-primary" })
+    @Ajax.ActionLink(Resource.Show_executions, "GetTestRuns", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnComplete = "initilizeTestRuns" }, new { id = "test-runs-button", @class = "btn btn-primary" })
     <br />    
     <br />  
-    <a href="/Administration/Tests/Edit/@Model.Id" class="btn btn-primary">Промени</a>
-    <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">Назад</a>
+    <a href="/Administration/Tests/Edit/@Model.Id" class="btn btn-primary">@Resource.Edit</a>
+    <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">@Resource.Back</a>
 </div>
 
 @section scripts {
