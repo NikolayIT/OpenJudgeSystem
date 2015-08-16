@@ -7,6 +7,8 @@
 
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Administration.Participants.ViewModels.ParticipantViewModels;
+
     public class ParticipantAnswerViewModel
     {
         public static Expression<Func<ParticipantAnswer, ParticipantAnswerViewModel>> ViewModel
@@ -29,12 +31,14 @@
         [HiddenInput(DisplayValue = false)]
         public int ContestQuestionId { get; set; }
 
-        [Display(Name = "Въпрос")]
+        [Display(Name = "Question", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]
         public string QuestionText { get; set; }
 
-        [Display(Name = "Отговор")]
-        [Required(ErrorMessage = "Отговорът е задължителен!")]
+        [Display(Name = "Answer", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Answer_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Answer { get; set; }
     }

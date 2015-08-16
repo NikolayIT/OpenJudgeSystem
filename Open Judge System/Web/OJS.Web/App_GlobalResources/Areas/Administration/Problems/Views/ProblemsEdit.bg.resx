@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_remove_resource" xml:space="preserve">
+    <value>Добавете или премахнете ресурс към задачата - условие, авторско решение или видео. Всеки ресурс има име, тип и файл/линк.</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Case_insensitive_checker_description" xml:space="preserve">
+    <value>- системата не отчита разлика между главна и малка буква като сравнява символ по символ;</value>
+  </data>
+  <data name="Choose_code_checker" xml:space="preserve">
+    <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>
+  </data>
+  <data name="Choose_file" xml:space="preserve">
+    <value>Избери файл</value>
+  </data>
+  <data name="Choose_zip_file" xml:space="preserve">
+    <value>Изберете .zip файл с тестове за вход и изход към задачата.
+    &lt;br /&gt;
+    Можете да изтеглите примерен файл с тестове
+    &lt;a href="/Content/Demos/DemoTests.zip"&gt;тук&lt;/a&gt;.</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Създай</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
+  <data name="Enter_max_points" xml:space="preserve">
+    <value>Промяна на максималния брой точки, които състезателят може да получи от задачата</value>
+  </data>
+  <data name="Enter_memory_limit" xml:space="preserve">
+    <value>Промяна на максималнaта памет в байтове, която състезателят може да достигне с решението си върху задачата</value>
+  </data>
+  <data name="Enter_name" xml:space="preserve">
+    <value>Промяна на заглавието на задачата</value>
+  </data>
+  <data name="Enter_order" xml:space="preserve">
+    <value>Промяна на номер под ред на задачата в текущото състезание</value>
+  </data>
+  <data name="Enter_sorce_code_size_limit" xml:space="preserve">
+    <value>Промяна на максималния размер на сорс код в байтове, която състезателят може да изпрати като решение на задачата</value>
+  </data>
+  <data name="Enter_time_limit" xml:space="preserve">
+    <value>Промяна на максимално време в милисекунди, които състезателят може да достигне с решението си върху задачата</value>
+  </data>
+  <data name="Exact_checker_description" xml:space="preserve">
+    <value>- системата проверява резултатите на състезателя с очаквания изход символ по символ;</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>към</value>
+  </data>
+  <data name="General_info" xml:space="preserve">
+    <value>Основна информация</value>
+  </data>
+  <data name="Page_title" xml:space="preserve">
+    <value>Промяна на задача</value>
+  </data>
+  <data name="Precision_checker_description" xml:space="preserve">
+    <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Премахни</value>
+  </data>
+  <data name="Resources" xml:space="preserve">
+    <value>Ресурси</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Show_detailed_feedback" xml:space="preserve">
+    <value>Изберете дали участниците ще могат да си виждат пълен feedback на решенията си, както го виждат администраторите</value>
+  </data>
+  <data name="Show_results" xml:space="preserve">
+    <value>Изберете дали участниците ще могат да си виждат резултатите в реално време</value>
+  </data>
+  <data name="Sort_checker_description" xml:space="preserve">
+    <value>- системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;</value>
+  </data>
+  <data name="Tests" xml:space="preserve">
+    <value>Тестове</value>
+  </data>
+  <data name="Tests_label" xml:space="preserve">
+    <value>Тестове (.zip файл)</value>
+  </data>
+  <data name="Trim_checker_description" xml:space="preserve">
+    <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+</root>

@@ -1,5 +1,7 @@
-﻿@{
-    ViewBag.Title = "Състезания";
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@{
+    ViewBag.Title = Resource.Page_title;
     const string ContestControllerName = "Contests";
     const string ContestQuestionControllerName = "ContestQuestions";
     const string ContestQuestionAnswersControllerName = "ContestQuestionAnswers";
@@ -19,23 +21,23 @@
             columns.Bound(x => x.IsVisible).Hidden();
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Edit", "Contests") + "/#=Id#'>Промени</a>").Title("Промяна");
-            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Изтриване");
+            columns.Template(@<text></text>).ClientTemplate(string.Format("<a class='k-button' href='{0}/#=Id#?compete=true'>{1}</a><br /><a class='k-button' href='{0}/#=Id#?compete=false'>{2}</a>", Url.Action("Solutions", "ContestsExport"), Resource.For_contest, Resource.For_practice)).Title(Resource.Results).Width(200);
+            columns.Template(@<text></text>).ClientTemplate(string.Format("<a class='k-button' href='{0}/#=Id#?compete=true'>{1}</a><br /><a class='k-button' href='{0}/#=Id#?compete=false'>{2}</a>", Url.Action("Results", "ContestsExport"), Resource.For_contest, Resource.For_practice)).Title(Resource.Ranking).Width(200);
+            columns.Template(@<text></text>).ClientTemplate(string.Format("<a class='k-button' href='{0}/#=Id#'>{1}</a><br /><a class='k-button' href='{2}/#=Id#'>{3}</a>", Url.Action("Contest", "Problems"), Resource.Tasks, Url.Action("Contest", "Participants"), Resource.Participants)).Title(Resource.Other);
+            columns.Template(@<text></text>).ClientTemplate(string.Format("<a class='k-button' href='{0}/#=Id#'>{1}</a>", Url.Action("Edit", "Contests"), Resource.Edit)).Title(GeneralResource.Change);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Custom().Text("Създай").Action("Create", ContestControllerName);
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
     })
     .ColumnMenu()
     .ClientDetailTemplateId("questions-template")
@@ -46,7 +48,7 @@
     .Groupable(x =>
     {
         x.Enabled(true);
-        x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        x.Messages(m => m.Empty(GeneralResource.Group_by_message));
     })
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))
@@ -87,8 +89,8 @@
         })
         .ToolBar(tool =>
             {
-                tool.Create().Text("Добави въпрос");
-                tool.Custom().Text("Копирай от...").HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
+                tool.Create().Text(Resource.Add_question);
+                tool.Custom().Text(Resource.Copy_from).HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
             })
         .ColumnMenu()
         .ClientDetailTemplateId("answers-template")
@@ -96,7 +98,7 @@
             {
                 edit.Mode(GridEditMode.PopUp);
                 edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
             })
         .DataSource(data =>
         {
@@ -116,7 +118,7 @@
 
     @(Html.Kendo().Window()
         .Name("CopyFromContestWindow_#=Id#")
-        .Title("Копирай от друго състезание")
+        .Title(Resource.Copy_from_contest)
         .LoadContentFrom("/Administration/ContestQuestions/CopyFromAnotherContest/#=Id#")
         .Visible(false)
         .Modal(true)
@@ -139,15 +141,15 @@
         })
         .ToolBar(tool =>
             {
-                tool.Create().Text("Добави отговор");
-                tool.Custom().Text("Изтрий всички").HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
+                tool.Create().Text(Resource.Add_answer);
+                tool.Custom().Text(Resource.Delete_all).HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
             })
         .ColumnMenu()
         .Editable(edit =>
             {
                 edit.Mode(GridEditMode.PopUp);
                 edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
             })
         .DataSource(data =>
         {
@@ -166,7 +168,7 @@
         .ToClientTemplate())
     # }
     else { #
-    <div class="text-center">Избраният тип въпрос няма възможни отговори!</div>
+    <div class="text-center">@Resource.No_possible_answers</div>
     # } #
 </script>
 

@@ -103,7 +103,7 @@
             return new ContentResult
             {
                 Content = serializer.Serialize(data),
-                ContentType = "application/json",
+                ContentType = GlobalConstants.JsonMimeType,
             };
         }
 
@@ -129,7 +129,9 @@
                     messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
 
-                if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") || this.UserProfile.UserName.Length < 5 || this.UserProfile.UserName.Length > 15)
+                if (!Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx) 
+                    || this.UserProfile.UserName.Length < GlobalConstants.UserNameMinLength 
+                    || this.UserProfile.UserName.Length > GlobalConstants.UserNameMaxLength)
                 {
                     messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
                 }

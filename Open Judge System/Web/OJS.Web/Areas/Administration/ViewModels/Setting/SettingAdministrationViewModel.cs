@@ -6,6 +6,8 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Administration.Settings.ViewModels.SettingAdministration;
+
     public class SettingAdministrationViewModel
     {
         [ExcludeFromExcel]
@@ -22,14 +24,18 @@
         }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Стойност")]
-        [Required(ErrorMessage = "Стойността е задължителна!")]
+        [Display(Name = "Value", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Value_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string Value { get; set; }
 

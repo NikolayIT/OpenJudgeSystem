@@ -25,7 +25,7 @@
 
 @if (ViewBag.IsOfficial)
 {
-    <h4>@Ajax.ActionLink("Среден резултат по минути", "StatsChart", new { contestId = Model.Id }, new AjaxOptions { UpdateTargetId = "StatsChartContainer", InsertionMode = InsertionMode.Replace })</h4>
+    <h4>@Ajax.ActionLink(Resource.Average_result_by_minutes, "StatsChart", new { contestId = Model.Id }, new AjaxOptions { UpdateTargetId = "StatsChartContainer", InsertionMode = InsertionMode.Replace })</h4>
     <div id="StatsChartContainer"></div>
 }
 

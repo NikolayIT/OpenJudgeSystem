@@ -159,7 +159,7 @@
             // Return the result to the end user
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
-                "application/vnd.ms-excel", // MIME type of Excel files
+                GlobalConstants.ExcelMimeTyle, // MIME type of Excel files
                 string.Format("{0}.xls", this.GetType().Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
     }

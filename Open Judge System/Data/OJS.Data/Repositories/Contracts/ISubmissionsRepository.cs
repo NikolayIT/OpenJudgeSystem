@@ -4,12 +4,14 @@
     using OJS.Data.Contracts;
     using OJS.Data.Models;
 
-    public interface ISubmissionsRepository : IRepository<Submission>, IDeletableEntityRepository<Submission>
+    public interface ISubmissionsRepository : IDeletableEntityRepository<Submission>
     {
         IQueryable<Submission> AllPublic();
 
         Submission GetSubmissionForProcessing();
 
         bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions);
+
+        IQueryable<Submission> GetLastFiftySubmissions();
     }
 }

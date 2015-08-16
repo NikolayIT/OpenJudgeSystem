@@ -1,7 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDelete
+@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
 
 @{
-    ViewBag.Title = "Изтриване на задача";
+    ViewBag.Title = Resource.Page_title;
 }
 <h2>@ViewBag.Title @Model.Name</h2>
 <div class="container">
@@ -60,7 +61,7 @@
         @Model.OrderBy
     </div>
     <br />    
-    <a href="/Administration/Problems/ConfirmDelete/@Model.Id" class="btn btn-primary">Изтрий</a>
-    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+    <a href="/Administration/Problems/ConfirmDelete/@Model.Id" class="btn btn-primary">@Resource.Delete</a>
+    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
 </div>
 

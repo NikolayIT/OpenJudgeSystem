@@ -14,7 +14,10 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
+
+    using Resource = Resources.Areas.Administration.Resources.ResourcesControllers;
 
     public class ResourcesController : AdministrationController
     {
@@ -41,7 +44,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -74,17 +77,17 @@
         {
             if (resource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Ресурсът е невалиден";
+                this.TempData.AddDangerMessage(Resource.Invalid_resource);
                 return this.RedirectToAction("Resource", "Problems", new { id });
             }
 
             if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
             {
-                this.ModelState.AddModelError("Link", "Линкът не може да бъде празен");
+                this.ModelState.AddModelError("Link", Resource.Link_not_empty);
             }
             else if (resource.Type != ProblemResourceType.Video && (resource.File == null || resource.File.ContentLength == 0))
             {
-                this.ModelState.AddModelError("File", "Файлът е задължителен");
+                this.ModelState.AddModelError("File", Resource.File_required);
             }
 
             if (this.ModelState.IsValid)
@@ -95,7 +98,7 @@
 
                 if (problem == null)
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                    this.TempData.AddDangerMessage(Resource.Problem_not_found);
                     return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
@@ -131,7 +134,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -142,7 +145,7 @@
 
             if (existingResource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -157,7 +160,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -169,7 +172,7 @@
 
                 if (existingResource == null)
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
+                    this.TempData.AddDangerMessage(Resource.Resource_not_found);
                     return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
@@ -215,9 +218,15 @@
                 .All()
                 .FirstOrDefault(pr => pr.Id == resource.ProblemId);
 
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
+            }
+
             if (resource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Ресурса не е намерен";
+                this.TempData.AddDangerMessage(Resource.Resource_not_found);
                 return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
             }
 

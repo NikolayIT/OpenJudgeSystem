@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
 
@@ -60,6 +61,16 @@
             }
 
             return false;
+        }
+
+        public IQueryable<Submission> GetLastFiftySubmissions()
+        {
+            // TODO: add language type
+            var submissions = this.AllPublic()
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(50);
+
+            return submissions;
         }
     }
 }

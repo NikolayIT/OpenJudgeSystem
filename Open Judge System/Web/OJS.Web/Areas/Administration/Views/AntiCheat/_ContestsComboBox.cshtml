@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SelectListItem>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
+@model IEnumerable<SelectListItem>
 @(Html.Kendo()
     .ComboBox()
     .Name("contests")
@@ -6,6 +7,6 @@
     .Filter(FilterType.Contains)
     .AutoBind(false)
     .MinLength(3)
-    .Placeholder("Изберете или напишете състезание")
+    .Placeholder(Resource.Choose_or_enter_contest)
     .Events(ev => ev.Change("selectContest"))
     .HtmlAttributes(new { style = "width: 100%; height: 30px" }))

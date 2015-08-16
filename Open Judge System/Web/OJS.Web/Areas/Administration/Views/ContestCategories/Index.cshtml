@@ -1,5 +1,7 @@
-﻿@{
-    ViewBag.Title = "Категории състезания";
+﻿@using Resource = Resources.Areas.Administration.ContestCategories.Views.ContestCategoriesViews;
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@{
+    ViewBag.Title = Resource.Index_page_title;
     const string ControllerName = "ContestCategories";
 }
 <h1>@ViewBag.Title</h1>
@@ -14,20 +16,20 @@
         columns.Bound(x => x.OrderBy);
         columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
         columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-        columns.Command(command => command.Edit().Text(" ").UpdateText("Промяна").CancelText("Отказ")).Width(80).Title("Промяна");
-        columns.Command(command => command.Destroy().Text(" ")).Width(80).Title("Изтриване");
+        columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Change);
+        columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Create().Text("Създай");
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Create().Text(GeneralResource.Create);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете категорията? Всичките подкатегории също ще бъдат изтрити!");
+        editable.DisplayDeleteConfirmation(Resource.Delete_prompt);
     })
     .ColumnMenu()
     .Events(e => e.DataBound("onDataBound"))
@@ -37,7 +39,7 @@
     .Groupable(x =>
     {
         x.Enabled(true);
-        x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
+        x.Messages(m => m.Empty(GeneralResource.Group_by_message));
     })
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))

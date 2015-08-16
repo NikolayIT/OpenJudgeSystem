@@ -1,4 +1,5 @@
-﻿@model int?
+﻿@using Resource = Resources.Areas.Administration.Submissions.Views.EditorTemplates.SubmissionsEditorTemplates;
+@model int?
 
 @(Html.Kendo()
     .ComboBoxFor(m => m)
@@ -7,7 +8,7 @@
     .DataValueField("Value")
     .Filter(FilterType.Contains)
     .MinLength(1)
-    .Placeholder("Изберете участник")
+    .Placeholder(Resource.Choose_participant)
     .CascadeFrom("ProblemId")
     .Enable(false)
     .Events(ev=> ev.Cascade(@<text> function () {

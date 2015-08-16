@@ -1,4 +1,5 @@
-﻿@model int?
+﻿@using Resource = Resources.Areas.Administration.Submissions.Views.EditorTemplates.SubmissionsEditorTemplates;
+@model int?
 @{
     bool? allowBinaryFilesUpload = null;
     if (ViewData["AllowBinaryFilesUpload"] != null)
@@ -9,7 +10,7 @@
 
 @(Html.Kendo()
     .DropDownListFor(m => m)
-    .OptionLabel("Изберете тип събмисия")
+    .OptionLabel(Resource.Choose_submission_type)
     .DataTextField("Text")
     .DataValueField("Value")
     .CascadeFrom("ProblemId")

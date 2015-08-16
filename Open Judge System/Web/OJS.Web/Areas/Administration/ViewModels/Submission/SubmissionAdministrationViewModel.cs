@@ -12,6 +12,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Submissions.ViewModels.SubmissionAdministration;
+
     public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
     {
         private HttpPostedFileBase fileSubmission;
@@ -43,20 +45,26 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Задача")]
-        [Required(ErrorMessage = "Задачата е задължителна!")]
+        [Display(Name = "Problem", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Problem_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("ProblemComboBox")]
         public int? ProblemId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Потребител")]
-        [Required(ErrorMessage = "Потребителят е задължителен!")]
+        [Display(Name = "Participant", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Participant_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("ParticipantDropDownList")]
         public int? ParticipantId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Тип")]
-        [Required(ErrorMessage = "Типът е задължителен!")]
+        [Display(Name = "Type", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Type_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SubmissionTypesDropDownList")]
         public int? SubmissionTypeId { get; set; }
 
@@ -64,11 +72,13 @@
 
         [DatabaseProperty]
         [ScaffoldColumn(false)]
-        [Required(ErrorMessage = "Решението е задължително!")]
+        [Required(
+            ErrorMessageResourceName = "Content_required",
+            ErrorMessageResourceType = typeof(Resource))]
         public byte[] Content { get; set; }
 
         [AllowHtml]
-        [Display(Name = "Съдържание")]
+        [Display(Name = "Content_as_string", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string ContentAsString
         {
@@ -88,7 +98,7 @@
             }
         }
 
-        [Display(Name = "Файл с решение")]
+        [Display(Name = "File_submission", ResourceType = typeof(Resource))]
         [ScaffoldColumn(false)]
         public HttpPostedFileBase FileSubmission 
         {

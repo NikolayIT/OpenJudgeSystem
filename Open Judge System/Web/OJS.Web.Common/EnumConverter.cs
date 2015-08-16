@@ -21,7 +21,7 @@
 
             var allTypes = Enum.GetValues(type).Cast<T>().Select(v => new SelectListItem
             {
-                Text = v.GetDescription(),
+                Text = v.GetLocalizedDescription(),
                 Value = Convert.ChangeType(v, typeof(int)).ToString()
             });
 

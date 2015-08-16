@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.News.ViewModels.NewsAdministration;
+
     public class NewsAdministrationViewModel : AdministrationViewModel<News>
     {
         [ExcludeFromExcel]
@@ -39,48 +41,60 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Заглавие")]
-        [Required(ErrorMessage = "Заглавието е задължително!")]
+        [Display(Name = "Title", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Title_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NewsTitleMaxLength, 
             MinimumLength = GlobalConstants.NewsTitleMinLength, 
-            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
+            ErrorMessageResourceName = "Title_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Title { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Автор")]
-        [Required(ErrorMessage = "Авторът е задължителен!")]
+        [Display(Name = "Author", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Author_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NewsAuthorNameMaxLength, 
-            MinimumLength = GlobalConstants.NewsAuthorNameMinLength, 
-            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
+            MinimumLength = GlobalConstants.NewsAuthorNameMinLength,
+            ErrorMessageResourceName = "Author_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Author { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Източник")]
-        [Required(ErrorMessage = "Източникът е задължителен!")]
+        [Display(Name = "Source", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Source_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NewsSourceMaxLength, 
-            MinimumLength = GlobalConstants.NewsSourceMinLength, 
-            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
+            MinimumLength = GlobalConstants.NewsSourceMinLength,
+            ErrorMessageResourceName = "Source_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Source { get; set; }
 
         [AllowHtml]
         [DatabaseProperty]
-        [Display(Name = "Съдържание")]
-        [Required(ErrorMessage = "Съдържанието е задължително!")]
+        [Display(Name = "Content", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Content_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             int.MaxValue, 
-            MinimumLength = GlobalConstants.NewsContentMinLength, 
-            ErrorMessage = "Съдържанието трябва да бъде поне {2} символа")]
+            MinimumLength = GlobalConstants.NewsContentMinLength,
+            ErrorMessageResourceName = "Content_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.MultilineText)]
         [UIHint("HtmlContent")]
         public string Content { get; set; }
 
-        [Display(Name = "Видимост")]
+        [Display(Name = "Visibility", ResourceType = typeof(Resource))]
         [DatabaseProperty]
         public bool IsVisible { get; set; }
     }

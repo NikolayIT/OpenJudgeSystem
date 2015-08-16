@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeCalculator.cs" />
+    <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Attributes\LocalizedDisplayFormatAttribute.cs" />
     <Compile Include="DataAnnotations\DatabasePropertyAttribute.cs" />
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Extensions\CompilerTypeExtensions.cs" />
@@ -65,7 +68,29 @@
     <Compile Include="Models\ProblemResourceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Resources\Enums\EnumTranslations.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumTranslations.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Enums\EnumTranslations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumTranslations.resx</DependentUpon>
+    </Compile>
     <Compile Include="SynchronizedHashtable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Enums\EnumTranslations.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumTranslations.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Enums</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Enums\EnumTranslations.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumTranslations.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Enums</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

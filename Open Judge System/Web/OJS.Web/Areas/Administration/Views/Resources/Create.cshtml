@@ -1,10 +1,11 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
+﻿@using Resource = Resources.Areas.Administration.Resources.Views.ResourcesCreate;
+@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
 
 @{
-    ViewBag.Title = "Нов ресурс";
+    ViewBag.Title = Resource.Page_title;
 }
 
-<h2>@ViewBag.Title към @Model.ProblemName</h2>
+<h2>@ViewBag.Title @Resource.For @Model.ProblemName</h2>
 <div id="create-form" class="container">
     @using (Html.BeginForm("Create", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -22,7 +23,7 @@
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете име на ресурса" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_name" data-tooltip="true"></span>
                 @Html.ValidationMessageFor(m => m.Name)
             </div>
         </div>
@@ -41,7 +42,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или видео към задачата" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Choose_type" data-tooltip="true"></span>
                 @Html.ValidationMessageFor(m => m.Type)
             </div>
         </div>
@@ -62,7 +63,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете подредба на ресурса" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_order" data-tooltip="true"></span>
                 @Html.ValidationMessageFor(m => m.OrderBy)
             </div>
         </div>
@@ -77,22 +78,22 @@
                 @Html.TextBoxFor(m => m.Link, new { @class = "form-control pull-left full-editor" })
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк към видеото" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_video_link" data-tooltip="true"></span>
                 @Html.ValidationMessage("Link")
             </div>
         </div>
         <div class="row" id="file-select">
             <div class="editor-label col-xs-2">
-                <strong class="pull-right">Файл</strong>
+                <strong class="pull-right">@Resource.File</strong>
             </div>
             <div class="editor-field col-xs-4">
-                <div id="file-button-resource" class="btn btn-sm btn-primary full-editor">Избери файл</div>
+                <div id="file-button-resource" class="btn btn-sm btn-primary full-editor">@Resource.Choose_file</div>
                 <div class="hidden-file-upload">
                     <input type="file" name="File" id="input-file-resource" />
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете файл за ресурса" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Choose_file_for_resource" data-tooltip="true"></span>
                 @Html.ValidationMessage("File")
             </div>
         </div>
@@ -100,8 +101,8 @@
         <div class="row">
             <div class="editor-label col-xs-6">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-sm btn-primary">Създай</button>
-                    <a href="/Administration/Problems/Resource/@Model.ProblemId" class="btn btn-sm btn-primary">Назад</a>
+                    <button type="submit" class="btn btn-sm btn-primary">@Resource.Create</button>
+                    <a href="/Administration/Problems/Resource/@Model.ProblemId" class="btn btn-sm btn-primary">@Resource.Back</a>
                 </div>
             </div>
         </div>

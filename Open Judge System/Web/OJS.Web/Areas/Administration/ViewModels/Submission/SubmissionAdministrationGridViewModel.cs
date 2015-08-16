@@ -9,7 +9,9 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    
+
+    using Resource = Resources.Areas.Administration.Submissions.ViewModels.SubmissionAdministration;
+
     public class SubmissionAdministrationGridViewModel : AdministrationViewModel<Submission>
     {
         [ExcludeFromExcel]
@@ -40,16 +42,16 @@
 
         public int? ProblemId { get; set; }
 
-        [Display(Name = "Задача")]
+        [Display(Name = "Problem", ResourceType = typeof(Resource))]
         public string ProblemName { get; set; }
 
-        [Display(Name = "Потребител")]
+        [Display(Name = "Participant", ResourceType = typeof(Resource))]
         public string ParticipantName { get; set; }
 
-        [Display(Name = "Тип")]
+        [Display(Name = "Type", ResourceType = typeof(Resource))]
         public string SubmissionTypeName { get; set; }
 
-        [Display(Name = "Точки")]
+        [Display(Name = "Points", ResourceType = typeof(Resource))]
         public int? Points { get; set; }
 
         [ScaffoldColumn(false)]
@@ -58,26 +60,26 @@
         [ScaffoldColumn(false)]
         public bool Processed { get; set; }
 
-        [Display(Name = "Статус")]
+        [Display(Name = "Status", ResourceType = typeof(Resource))]
         public string Status
         {
             get
             {
                 if (!this.Processing && this.Processed)
                 {
-                    return "Изчислен";
+                    return Resource.Processed;
                 }
                 else if (this.Processing && !this.Processed)
                 {
-                    return "Изчислява се";
+                    return Resource.Processing;
                 }
                 else if (!this.Processing && !this.Processed)
                 {
-                    return "Предстои изчисляване";
+                    return Resource.Pending;
                 }
                 else
                 {
-                    throw new InvalidOperationException("Submission cannot be processed and processing at the same time.");
+                    throw new InvalidOperationException(Resource.Invalid_state);
                 }
             }
         }

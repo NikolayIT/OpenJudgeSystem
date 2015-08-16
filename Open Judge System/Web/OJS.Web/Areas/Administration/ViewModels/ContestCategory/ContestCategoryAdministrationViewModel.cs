@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.ContestCategories.ViewModels.ContestCategoryAdministrationViewModel;
+
     public class ContestCategoryAdministrationViewModel : AdministrationViewModel<ContestCategory>
     {
         [ExcludeFromExcel]
@@ -37,23 +39,28 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.ContestCategoryNameMaxLength, 
             MinimumLength = GlobalConstants.ContestCategoryNameMinLength, 
-            ErrorMessage = "Позволената дължина е между {2} и {1} символа")]
+            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Подредба")]
-        [Required(ErrorMessage = "Подредбата е задължителна!")]
+        [Display(Name = "Order_by", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Order_by_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("Integer")]
         public int OrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Видимост")]
+        [Display(Name = "Visibility", ResourceType = typeof(Resource))]
         public bool IsVisible { get; set; }
     }
 }

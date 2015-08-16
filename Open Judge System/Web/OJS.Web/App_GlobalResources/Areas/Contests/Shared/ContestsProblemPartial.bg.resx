@@ -171,4 +171,16 @@
   <data name="Trim_checker_description" xml:space="preserve">
     <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
   </data>
+  <data name="Change_admin_button" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
+  <data name="Delete_admin_button" xml:space="preserve">
+    <value>Изтриване</value>
+  </data>
+  <data name="Participants_admin_button" xml:space="preserve">
+    <value>Участници</value>
+  </data>
+  <data name="Tests_admin_button" xml:space="preserve">
+    <value>Тестове</value>
+  </data>
 </root>

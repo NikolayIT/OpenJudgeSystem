@@ -87,6 +87,7 @@
     <Compile Include="Attributes\LogAccessAttribute.cs" />
     <Compile Include="Attributes\LoggerFilterAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
+    <Compile Include="Extensions\TempDataExtentions.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />
     <Compile Include="Extensions\PrincipalExtensions.cs" />

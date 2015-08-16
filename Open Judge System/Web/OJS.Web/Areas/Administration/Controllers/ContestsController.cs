@@ -14,15 +14,12 @@
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Controllers;
 
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
     public class ContestsController : KendoGridAdministrationController
     {
-        private const string NoActiveContests = "Няма активни състезания";
-        private const string NoFutureContests = "Няма бъдещи състезания";
-        private const string NoLatestContests = "Нямa последни състезaния";
-
         public ContestsController(IOjsData data)
             : base(data)
         {
@@ -84,7 +81,7 @@
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -102,7 +99,7 @@
 
             if (contest == null)
             {
-                this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -128,7 +125,7 @@
 
                 if (contest == null)
                 {
-                    this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                    this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
 
@@ -147,7 +144,7 @@
                 this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -171,7 +168,7 @@
 
             if (!futureContests.Any())
             {
-                return this.Content(NoFutureContests);
+                return this.Content(Resource.No_future_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, futureContests);
@@ -187,7 +184,7 @@
 
             if (!activeContests.Any())
             {
-                return this.Content(NoActiveContests);
+                return this.Content(Resource.No_active_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, activeContests);
@@ -203,7 +200,7 @@
 
             if (!latestContests.Any())
             {
-                return this.Content(NoLatestContests);
+                return this.Content(Resource.No_latest_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, latestContests);
@@ -229,19 +226,19 @@
 
             if (model.StartTime >= model.EndTime)
             {
-                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Contest_start_date_before_end);
                 isValid = false;
             }
 
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
-                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Practice_start_date_before_end);
                 isValid = false;
             }
 
             if (model.SubmisstionTypes == null || !model.SubmisstionTypes.Any(s => s.IsChecked))
             {
-                this.ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
+                this.ModelState.AddModelError("SelectedSubmissionTypes", Resource.Select_one_submission_type);
                 isValid = false;
             }
 

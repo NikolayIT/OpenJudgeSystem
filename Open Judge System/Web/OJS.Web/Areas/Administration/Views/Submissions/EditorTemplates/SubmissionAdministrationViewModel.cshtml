@@ -1,4 +1,5 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel
+﻿@using Resource = Resources.Areas.Administration.Submissions.Views.EditorTemplates.SubmissionsEditorTemplates;
+@model OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel
 
 @Html.HiddenFor(model => model.Id)
 
@@ -53,7 +54,7 @@
             .Name("FileSubmission")
             .Multiple(false)
             .ShowFileList(true)
-            .Messages(message => message.Select("Избери файл.."))
+            .Messages(message => message.Select(Resource.Choose_file))
             .HtmlAttributes(new { id = "FileSubmission" }))
         @Html.ValidationMessageFor(model => model.Content)
     </div>

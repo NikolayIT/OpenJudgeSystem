@@ -1,4 +1,5 @@
-﻿@model string
+﻿@using Resource = Resources.Submissions.Views.Partial.AdvancedSubmissionsGridPartial;
+@model string
 
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
     .Name("Submissions")
@@ -7,7 +8,7 @@
             columns.Bound(s => s.Id).Title("№");
             if (Model == null)
             {
-                columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
+                columns.Bound(s => s.SubmitedOn).Title(Resource.Sent_from).ClientTemplate(
                     "<div>" +
                         "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
                     "</div>" +
@@ -18,14 +19,14 @@
             }
             else
             {
-                columns.Bound(s => s.SubmitedOn).Title("Изпратено на").ClientTemplate(                
+                columns.Bound(s => s.SubmitedOn).Title(Resource.Sent_on).ClientTemplate(                
                     "<div>" +
                         "<span>#: kendo.toString(SubmitedOn, \"G\") #</span>" +
                     "</div>"
                 );
             }
             
-            columns.Bound(s => s.ProblemName).Title("Задача").ClientTemplate(
+            columns.Bound(s => s.ProblemName).Title(Resource.Task).ClientTemplate(
                     "<div>" +
                         "<strong class=\"text-primary\">#: ProblemName #</strong>" +
                     "</div>" +
@@ -33,14 +34,14 @@
                         "<small>#: Contest #</small>" +
                     "</div>"
                 );
-            columns.Bound(s => s.Points).Title("Резултат").ClientTemplate(
+            columns.Bound(s => s.Points).Title(Resource.Result).ClientTemplate(
                         "<div>" +
                         "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
                     "</div>"
                 ).Width("25%");
             if (User.IsAdmin())
             {
-                columns.Bound(s => s.Id).Title("Admin").ClientTemplate(@"
+                columns.Bound(s => s.Id).Title(Resource.Admin).ClientTemplate(@"
                     <div class='text-center'>
                         <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
                         <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>

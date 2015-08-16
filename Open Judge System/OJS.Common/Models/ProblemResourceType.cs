@@ -1,16 +1,18 @@
 ﻿namespace OJS.Common.Models
 {
-    using System.ComponentModel;
+    using OJS.Common.Attributes;
+
+    using Resource = Resources.Enums.EnumTranslations;
 
     public enum ProblemResourceType
     {
-        [Description("Условие")]
+        [LocalizedDescription("ProblemDescription", typeof(Resource))]
         ProblemDescription = 1,
 
-        [Description("Авторско решение")]
+        [LocalizedDescription("AuthorsSolution", typeof(Resource))]
         AuthorsSolution = 2,
 
-        [Description("Видео")]
+        [LocalizedDescription("Video", typeof(Resource))]
         Video = 3,
     }
 }

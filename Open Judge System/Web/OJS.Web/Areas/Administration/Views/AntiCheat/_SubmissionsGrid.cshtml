@@ -1,4 +1,5 @@
-﻿@model IEnumerable<IGrouping<int, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
+@model IEnumerable<IGrouping<int, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
 
 @foreach (var groupedReport in Model.OrderBy(m => m.First().ProblemName))
 {
@@ -7,19 +8,19 @@
     <table class="table table-striped">
         <tr>
             <th>
-                First Participant
+                @Resource.First_participant
             </th>
             <th>
-                Second Participant
+                @Resource.Second_participant
             </th>
             <th>
-                Points
+                @Resource.Points
             </th>
             <th>
-                Differences
+                @Resource.Differences
             </th>
             <th>
-                Percentage
+                @Resource.Percentage
             </th>
         </tr>
         @foreach (var report in sortedAndFilteredReports)

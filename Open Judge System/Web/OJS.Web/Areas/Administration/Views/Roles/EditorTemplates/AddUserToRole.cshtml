@@ -1,5 +1,5 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel
-
+@using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex;
 @(Html.Kendo()
     .ComboBoxFor(m => m.UserName)
     .Name("UserId")
@@ -7,7 +7,7 @@
     .DataValueField("Value")
     .Filter(FilterType.Contains)
     .MinLength(1)
-    .Placeholder("Изберете потребител")
+    .Placeholder(Resource.Choose_user)
     .DataSource(data =>
     {
         data.ServerFiltering(true)

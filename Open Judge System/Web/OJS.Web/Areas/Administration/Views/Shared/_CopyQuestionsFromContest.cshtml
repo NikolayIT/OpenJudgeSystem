@@ -1,16 +1,17 @@
-﻿@model IEnumerable<object>
+﻿@using Resource = Resources.Areas.Administration.Shared.Views.Partials.Partials;
+@model IEnumerable<object>
 
 <form>
     @(Html.Kendo().ComboBox()
     .Name("ContestFrom")
     .DataTextField("Text")
     .DataValueField("Value")
-    .Placeholder("Изберете състезание...")
+    .Placeholder(Resource.Choose_contest)
     .HtmlAttributes(new { style = "width: 100%;", id = "CopyContests_" + ViewBag.ContestId })
     .BindTo(Model))
     <br />
     <input type="checkbox" id="deleteOld_@ViewBag.ContestId" name="deleteOld" value="true" />
-    <label for="deleteOld_@ViewBag.ContestId">Изтрий текущите въпроси</label>
+    <label for="deleteOld_@ViewBag.ContestId">@Resource.Delete_current_questions</label>
     <br />
-    <input class="k-button pull-right" type="submit" value="Копирай" />
+    <input class="k-button pull-right" type="submit" value="@Resource.Copy" />
 </form>

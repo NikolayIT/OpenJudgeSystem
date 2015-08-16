@@ -11,6 +11,8 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Administration.SubmissionTypes.ViewModels.SubmissionTypeAdministration;
+
     public class SubmissionTypeAdministrationViewModel
     {
         [ExcludeFromExcel]
@@ -40,44 +42,49 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!", AllowEmptyStrings = false)]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false,
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.SubmissionTypeNameMaxLength, 
-            MinimumLength = GlobalConstants.SubmissionTypeNameMinLength)]
+            MinimumLength = GlobalConstants.SubmissionTypeNameMinLength,
+            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Селектирано")]
+        [Display(Name = "Is_selected", ResourceType = typeof(Resource))]
         public bool IsSelectedByDefault { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Execution стратегия")]
+        [Display(Name = "Execution_strategy_type", ResourceType = typeof(Resource))]
         [UIHint("Enum")]
         public ExecutionStrategyType ExecutionStrategyType { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Компилатор")]
+        [Display(Name = "Compiler_type", ResourceType = typeof(Resource))]
         [UIHint("Enum")]
         public CompilerType CompilerType { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Допълнителни аргументи")]
+        [Display(Name = "Additional_compiler_arguments", ResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string AdditionalCompilerArguments { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Описание")]
+        [Display(Name = "Description", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string Description { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Позволи качване на файлове")]
+        [Display(Name = "Allow_binary_files_upload", ResourceType = typeof(Resource))]
         public bool AllowBinaryFilesUpload { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Позволени файлове")]
+        [Display(Name = "Allowed_file_extensions", ResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string AllowedFileExtensions { get; set; }
 

@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
+@model int
 
 @{
     const string ControllerName = "Submissions";
@@ -15,9 +16,9 @@
         columns.Bound(model => model.Points);
         columns.Bound(model => model.CreatedOn).Hidden();
         columns.Bound(model => model.ModifiedOn).Hidden();
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промяна</a>");
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтриване</a>");    
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>");
+        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Update", ControllerName), Resource.Edit));
+        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Delete", ControllerName), Resource.Delete));    
+        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext' target='_blank'>{1}</a>", Url.Action("Retest", ControllerName), Resource.Retest));
     })
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
