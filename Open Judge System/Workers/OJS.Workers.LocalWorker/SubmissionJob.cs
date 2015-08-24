@@ -250,7 +250,10 @@
                         Settings.ChaiModulePath,
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
-                        Settings.HandlebarsModulePath);
+                        Settings.HandlebarsModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
+                        Settings.UnderscoreModulePath);
                     break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);

@@ -94,6 +94,30 @@
             }
         }
 
+        public static string SinonModulePath
+        {
+            get
+            {
+                return GetSetting("SinonModulePath");
+            }
+        }
+
+        public static string SinonChaiModulePath
+        {
+            get
+            {
+                return GetSetting("SinonChaiModulePath");
+            }
+        }
+
+        public static string UnderscoreModulePath
+        {
+            get
+            {
+                return GetSetting("UnderscoreModulePath");
+            }
+        }
+
         public static string JavaCompilerPath
         {
             get

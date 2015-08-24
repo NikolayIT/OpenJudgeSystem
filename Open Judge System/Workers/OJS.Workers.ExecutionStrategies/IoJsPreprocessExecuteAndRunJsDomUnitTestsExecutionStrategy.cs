@@ -8,6 +8,9 @@
         private string jsdomModulePath;
         private string jqueryModulePath;
         private string handlebarsModulePath;
+        private string sinonModulePath;
+        private string sinonChaiModulePath;
+        private string underscoreModulePath;
 
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string iojsExecutablePath,
@@ -15,7 +18,10 @@
             string chaiModulePath, 
             string jsdomModulePath, 
             string jqueryModulePath,
-            string handlebarsModulePath)
+            string handlebarsModulePath,
+            string sinonModulePath,
+            string sinonChaiModulePath,
+            string underscoreModulePath) // TODO: make this modular by getting requires from test
             : base(iojsExecutablePath, mochaModulePath, chaiModulePath)
         {
             if (!Directory.Exists(jsdomModulePath))
@@ -33,9 +39,27 @@
                 throw new ArgumentException(string.Format("Handlebars not found in: {0}", handlebarsModulePath), "handlebarsModulePath");
             }
 
+            if (!Directory.Exists(sinonModulePath))
+            {
+                throw new ArgumentException(string.Format("Sinon not found in: {0}", sinonModulePath), "handlebarsModulePath");
+            }
+
+            if (!Directory.Exists(sinonChaiModulePath))
+            {
+                throw new ArgumentException(string.Format("Sinon-chai not found in: {0}", sinonChaiModulePath), "handlebarsModulePath");
+            }
+
+            if (!Directory.Exists(underscoreModulePath))
+            {
+                throw new ArgumentException(string.Format("Underscore not found in: {0}", underscoreModulePath), "handlebarsModulePath");
+            }
+
             this.jsdomModulePath = this.ProcessModulePath(jsdomModulePath);
             this.jqueryModulePath = this.ProcessModulePath(jqueryModulePath);
             this.handlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
+            this.sinonModulePath = this.ProcessModulePath(sinonModulePath);
+            this.sinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
+            this.underscoreModulePath = this.ProcessModulePath(underscoreModulePath);
         }
 
         protected override string JsCodeRequiredModules
@@ -45,6 +69,9 @@
                 return base.JsCodeRequiredModules + @",
     jsdom = require('" + this.jsdomModulePath + @"'),
     jq = require('" + this.jqueryModulePath + @"'),
+    sinon = require('" + this.sinonModulePath + @"'),
+    sinonChai = require('" + this.sinonChaiModulePath + @"'),
+    _ = require('" + this.underscoreModulePath + @"'),
     handlebars = require('" + this.handlebarsModulePath + @"')";
             }
         }
@@ -54,6 +81,8 @@
             get
             {
                 return @"
+chai.use(sinonChai);
+
 describe('TestDOMScope', function() {
     before(function(done) {
         jsdom.env({
