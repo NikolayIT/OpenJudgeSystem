@@ -130,9 +130,15 @@
         }
 
         // TODO: Unit test
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Authorize]
         public ActionResult Full(int id, bool official)
         {
+            if (!this.User.IsAdmin() && 
+                !this.Data.Contests.All().Any(c => c.Id == id && c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)))
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
+            }
+
             var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
 
             if (contest == null)
