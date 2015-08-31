@@ -69,8 +69,8 @@ describe('TestScope', function() {
             console[prop] = new Function('');
         });
 
-	testFunc = new Function('assert', 'expect', 'should', ""var result = this.valueOf();"" + inputData);
-    testFunc.call(result, assert, expect, should);
+	testFunc = new Function(" + this.TestFuncVariables +  @", ""var result = this.valueOf();"" + inputData);
+    testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
 
     Object.keys(bgCoderConsole)
         .forEach(function (prop) {
@@ -109,6 +109,11 @@ describe('TestScope', function() {
             }
 
             return testResults;
+        }
+
+        protected virtual string TestFuncVariables
+        {
+            get { return "'assert', 'expect', 'should'"; }
         }
 
         protected string ProcessModulePath(string path)

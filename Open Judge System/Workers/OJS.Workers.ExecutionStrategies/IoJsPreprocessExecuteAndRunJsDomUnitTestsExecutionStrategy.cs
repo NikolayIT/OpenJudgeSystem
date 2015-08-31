@@ -26,12 +26,12 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException(string.Format("jsDom not found in: {0}", jsdomModulePath), "jsDomModulePath");
+                throw new ArgumentException(string.Format("jsDom not found in: {0}", jsdomModulePath), "jsdomModulePath");
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException(string.Format("jQuery not found in: {0}", jqueryModulePath), "jQueryModulePath");
+                throw new ArgumentException(string.Format("jQuery not found in: {0}", jqueryModulePath), "jqueryModulePath");
             }
 
             if (!Directory.Exists(handlebarsModulePath))
@@ -117,6 +117,11 @@ describe('TestDOMScope', function() {
                     .Replace("setTimeout = undefined;", string.Empty)
                     .Replace("delete setTimeout;", string.Empty);
             }
+        }
+
+        protected override string TestFuncVariables
+        {
+            get { return base.TestFuncVariables + ", 'sinon', '_'"; }
         }
     }
 }
