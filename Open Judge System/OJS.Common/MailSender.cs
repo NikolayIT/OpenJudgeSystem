@@ -11,8 +11,8 @@
         private const string SendFromName = "BGCoder.com";
         private const string Password = "__YOUR_PASSWORD_HERE__";
 
-        private const string ServerAddress = "smtp.gmail.com";
-        private const int ServerPort = 587;
+        private const string ServerAddress = "127.0.0.1";
+        private const int ServerPort = 25;
 
         private static readonly object SyncRoot = new object();
 
@@ -21,14 +21,13 @@
 
         private MailSender()
         {
-            //// this.mailClient = new SmtpClient
-            //// {
-            ////     Credentials = new NetworkCredential(SendFrom, Password),
-            ////     Port = ServerPort,
-            ////     Host = ServerAddress,
-            ////     EnableSsl = true,
-            //// };
-            this.mailClient = new SmtpClient { DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis };
+            this.mailClient = new SmtpClient
+            {
+                Host = "127.0.0.1",
+                Port = 25,
+                DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+                PickupDirectoryLocation = @"C:\inetpub\mailroot\Pickup"
+            };
         }
 
         public static MailSender Instance
@@ -43,7 +42,7 @@
                         {
                             instance = new MailSender();
                         }
-                    }    
+                    }
                 }
 
                 return instance;
