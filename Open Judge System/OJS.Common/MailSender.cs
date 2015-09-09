@@ -7,7 +7,7 @@
     public sealed class MailSender
     {
         // TODO: Extract user, address and password as app.config settings
-        private const string SendFrom = "bgcoder.com@gmail.com";
+        private const string SendFrom = "telerikacademy@telerik.com";
         private const string SendFromName = "BGCoder.com";
         private const string Password = "__YOUR_PASSWORD_HERE__";
 
