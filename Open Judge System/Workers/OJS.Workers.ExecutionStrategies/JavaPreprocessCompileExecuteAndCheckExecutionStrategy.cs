@@ -98,6 +98,7 @@ public class " + SandboxExecutorClassName + @" {
 class _$SandboxSecurityManager extends SecurityManager {
     private static final String JAVA_HOME_DIR = System.getProperty(""java.home"");
     private static final String USER_DIR = System.getProperty(""user.dir"");
+    private static final String EXECUTING_FILE_PATH = _$SandboxSecurityManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
     @Override
     public void checkPermission(Permission permission) {
@@ -108,14 +109,17 @@ class _$SandboxSecurityManager extends SecurityManager {
 
         if (permission instanceof FilePermission) {
             FilePermission filePermission = (FilePermission) permission;
-            String filePath = filePermission.getName();
-            File file = new File(filePath);
-            if ((file.getPath().startsWith(JAVA_HOME_DIR) || file.getPath().startsWith(USER_DIR)) &&
-                    filePermission.getActions().equals(""read"")) {
-                // Allow reading Java system directories and user directories
-                return;
+            String fileName = filePermission.getName();
+            String filePath = new File(fileName).getPath();
+
+            if (filePermission.getActions().equals(""read"") &&
+                    (filePath.startsWith(JAVA_HOME_DIR) ||
+                        filePath.startsWith(USER_DIR) ||
+                        filePath.startsWith(new File(EXECUTING_FILE_PATH).getPath()))) {
+                    // Allow reading Java system directories and user directories
+                    return;
+                }
             }
-        }
 
         if (permission instanceof NetPermission) {
             if (permission.getName().equals(""specifyStreamHandler"")) {
