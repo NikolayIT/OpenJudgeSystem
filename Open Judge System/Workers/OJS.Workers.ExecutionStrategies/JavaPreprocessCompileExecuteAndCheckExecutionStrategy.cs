@@ -52,20 +52,15 @@ import java.lang.reflect.ReflectPermission;
 import java.net.NetPermission;
 import java.security.Permission;
 import java.util.PropertyPermission;
-
 public class " + SandboxExecutorClassName + @" {
     private static final String MAIN_METHOD_NAME = ""main"";
-
     public static void main(String[] args) throws Throwable {
         if (args.length == 0) {
             throw new IllegalArgumentException(""The name of the class to execute not provided!"");
         }
-
         String className = args[0];
         Class<?> userClass = Class.forName(className);
-
         Method mainMethod = userClass.getMethod(MAIN_METHOD_NAME, String[].class);
-
         FileWriter writer = null;
         long startTime = 0;
         try {
@@ -73,13 +68,10 @@ public class " + SandboxExecutorClassName + @" {
                 String timeFilePath = args[1];
                 writer = new FileWriter(timeFilePath, false);
             }
-
             // Set the sandbox security manager
             _$SandboxSecurityManager securityManager = new _$SandboxSecurityManager();
             System.setSecurityManager(securityManager);
-
             startTime = System.nanoTime();
-
             mainMethod.invoke(userClass, (Object) args);
         } catch (Throwable throwable) {
             Throwable cause = throwable.getCause();
@@ -93,43 +85,40 @@ public class " + SandboxExecutorClassName + @" {
         }
     }
 }
-
 class _$SandboxSecurityManager extends SecurityManager {
     private static final String JAVA_HOME_DIR = System.getProperty(""java.home"");
     private static final String USER_DIR = System.getProperty(""user.dir"");
-
+    private static final String EXECUTING_FILE_PATH = _$SandboxSecurityManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     @Override
     public void checkPermission(Permission permission) {
         if (permission instanceof PropertyPermission) {
             // Allow reading system properties
             return;
         }
-
         if (permission instanceof FilePermission) {
             FilePermission filePermission = (FilePermission) permission;
-            String filePath = filePermission.getName();
-            File file = new File(filePath);
-            if ((file.getPath().startsWith(JAVA_HOME_DIR) || file.getPath().startsWith(USER_DIR)) &&
-                    filePermission.getActions().equals(""read"")) {
-                // Allow reading Java system directories and user directories
-                return;
+            String fileName = filePermission.getName();
+            String filePath = new File(fileName).getPath();
+            if (filePermission.getActions().equals(""read"") &&
+                    (filePath.startsWith(JAVA_HOME_DIR) ||
+                        filePath.startsWith(USER_DIR) ||
+                        filePath.startsWith(new File(EXECUTING_FILE_PATH).getPath()))) {
+                    // Allow reading Java system directories and user directories
+                    return;
+                }
             }
-        }
-
         if (permission instanceof NetPermission) {
             if (permission.getName().equals(""specifyStreamHandler"")) {
                 // Allow specifyStreamHandler
                 return;
             }
         }
-
         if (permission instanceof ReflectPermission) {
             if (permission.getName().equals(""suppressAccessChecks"")) {
                 // Allow suppressAccessChecks
                 return;
             }
         }
-
         if (permission instanceof RuntimePermission) {
             if (permission.getName().equals(""createClassLoader"") ||
                     permission.getName().startsWith(""accessClassInPackage.sun."") ||
@@ -139,10 +128,8 @@ class _$SandboxSecurityManager extends SecurityManager {
                 return;
             }
         }
-
         throw new SecurityException(""Not allowed: "" + permission.getClass().getName());
     }
-
     @Override
     public void checkAccess(Thread thread) {
         throw new UnsupportedOperationException();
