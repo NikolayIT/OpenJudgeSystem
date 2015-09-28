@@ -17,20 +17,20 @@
             ErrorMessageResourceName = "Username_required",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(
-            Name = "Username", 
+            Name = "Username",
             ResourceType = typeof(Resource))]
         [RegularExpression(
-            GlobalConstants.UserNameRegEx, 
+            GlobalConstants.UserNameRegEx,
             ErrorMessageResourceName = "Username_regex_validation",
             ErrorMessageResourceType = typeof(Resource))]
         public string Username { get; set; }
 
         [Compare(
-            "Username", 
+            "Username",
             ErrorMessageResourceName = "Username_confirmation_incorrect",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(
-            Name = "Username_confirmation", 
+            Name = "Username_confirmation",
             ResourceType = typeof(Resource))]
         public string UsernameConfirmation { get; set; }
     }

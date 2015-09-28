@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Users.Controllers
+﻿namespace OJS.Web.Areas.Users.Controllers
 {
     using System.Linq;
     using System.Net;

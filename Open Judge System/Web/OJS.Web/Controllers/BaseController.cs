@@ -91,11 +91,11 @@
             filterContext.ExceptionHandled = true;
         }
 
-        /// <summary> 
-        /// Creates a JSON object with maximum size. 
-        /// </summary> 
-        /// <param name="data">JSON data.</param> 
-        /// <returns>Returns a JSON as content result.</returns> 
+        /// <summary>
+        /// Creates a JSON object with maximum size.
+        /// </summary>
+        /// <param name="data">JSON data.</param>
+        /// <returns>Returns a JSON as content result.</returns>
         protected ContentResult LargeJson(object data)
         {
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 };
@@ -129,8 +129,8 @@
                     messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
 
-                if (!Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx) 
-                    || this.UserProfile.UserName.Length < GlobalConstants.UserNameMinLength 
+                if (!Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx)
+                    || this.UserProfile.UserName.Length < GlobalConstants.UserNameMinLength
                     || this.UserProfile.UserName.Length > GlobalConstants.UserNameMaxLength)
                 {
                     messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);

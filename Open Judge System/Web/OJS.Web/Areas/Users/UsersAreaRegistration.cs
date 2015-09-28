@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Users
+﻿namespace OJS.Web.Areas.Users
 {
     using System.Web.Mvc;
 

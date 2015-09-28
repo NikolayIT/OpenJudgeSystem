@@ -11,7 +11,7 @@
             ErrorMessageResourceName = "Enter_new_password_validation",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(
-            Name = "Password", 
+            Name = "Password",
             ResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -20,10 +20,10 @@
             ErrorMessageResourceName = "Enter_new_password_confirmation",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(
-            Name = "Password_confirm", 
+            Name = "Password_confirm",
             ResourceType = typeof(Resource))]
         [Compare(
-            "Password", 
+            "Password",
             ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]

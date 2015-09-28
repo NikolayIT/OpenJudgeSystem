@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Administration.Controllers
+﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
     using System.Linq;

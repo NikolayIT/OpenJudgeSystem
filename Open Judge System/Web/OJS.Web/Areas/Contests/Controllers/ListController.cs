@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Contests.Controllers
+﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;

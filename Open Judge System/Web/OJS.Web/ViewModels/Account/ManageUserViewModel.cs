@@ -13,7 +13,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         [Display(
-            Name = "Current_password", 
+            Name = "Current_password",
             ResourceType = typeof(Resource))]
         public string OldPassword { get; set; }
 
@@ -34,10 +34,10 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         [Display(
-            Name = "New_password_confirmation", 
+            Name = "New_password_confirmation",
             ResourceType = typeof(Resource))]
         [Compare(
-            "NewPassword", 
+            "NewPassword",
             ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }
