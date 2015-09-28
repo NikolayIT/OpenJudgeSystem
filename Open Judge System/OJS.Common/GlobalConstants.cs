@@ -1,7 +1,5 @@
 ﻿namespace OJS.Common
 {
-    using System.Diagnostics.PerformanceData;
-
     public static class GlobalConstants
     {
         #region TempData dictionary keys
@@ -31,7 +29,7 @@
 
         #region Other
 
-        public const string ExcelMimeTyle = "application/vnd.ms-excel";
+        public const string ExcelMimeType = "application/vnd.ms-excel";
         public const string JsonMimeType = "application/json";
         public const string ZipMimeType = "application/zip";
         public const string BinaryFileMimeType = "application/octet-stream";

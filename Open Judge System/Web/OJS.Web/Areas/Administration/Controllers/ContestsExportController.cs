@@ -140,7 +140,7 @@
             // Return the result to the end user
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
-                GlobalConstants.ExcelMimeTyle, // MIME type of Excel files
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
                 string.Format(Resource.Report_excel_format, compete ? Resource.Contest : Resource.Practice, contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 

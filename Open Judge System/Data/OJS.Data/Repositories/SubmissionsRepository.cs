@@ -1,7 +1,6 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
 
