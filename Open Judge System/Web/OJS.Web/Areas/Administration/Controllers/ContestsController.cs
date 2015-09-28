@@ -213,8 +213,8 @@
                 .ToList()
                 .Select(cat => new SelectListItem
                 {
-                    Text = cat.Name, 
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture), 
+                    Text = cat.Name,
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
                 });
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);

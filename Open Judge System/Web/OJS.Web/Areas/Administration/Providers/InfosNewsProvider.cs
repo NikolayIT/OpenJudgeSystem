@@ -58,7 +58,7 @@
                     node = node.NextSibling;
                     continue;
                 }
-                
+
                 if (node.FirstChild.Attributes.Any(x => x.Name == "class" && x.Value == "ws14") && content.Length == 0)
                 {
                     title += node.FirstChild.InnerText + " ";

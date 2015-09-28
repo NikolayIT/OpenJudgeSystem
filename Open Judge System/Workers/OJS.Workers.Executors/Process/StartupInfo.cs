@@ -1,4 +1,4 @@
-namespace OJS.Workers.Executors.Process
+﻿namespace OJS.Workers.Executors.Process
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -7,10 +7,9 @@ namespace OJS.Workers.Executors.Process
     using Microsoft.Win32.SafeHandles;
 
     /// <summary>
-    /// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at creation time. 
+    /// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at creation time.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
-        Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
     [StructLayout(LayoutKind.Sequential)]
     public class StartupInfo
     {

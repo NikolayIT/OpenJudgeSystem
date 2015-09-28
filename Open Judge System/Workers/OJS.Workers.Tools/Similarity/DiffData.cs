@@ -6,7 +6,7 @@
     internal class DiffData
     {
         /// <summary>
-        /// Initialize the Diff-Data buffer.
+        /// Initializes a new instance of the <see cref="DiffData"/> class.
         /// </summary>
         /// <param name="initData">reference to the buffer</param>
         internal DiffData(int[] initData)

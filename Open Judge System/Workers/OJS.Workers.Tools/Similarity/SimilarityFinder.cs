@@ -192,7 +192,7 @@
             int[] downVector,
             int[] upVector)
         {
-            var ret = new ShortestMiddleSnakeReturnData();
+            var ret = default(ShortestMiddleSnakeReturnData);
             int max = dataA.Length + dataB.Length + 1;
 
             int downK = lowerA - lowerB; // the k-line to start the forward search

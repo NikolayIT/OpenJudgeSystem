@@ -48,7 +48,7 @@
             ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.SubmissionTypeNameMaxLength, 
+            GlobalConstants.SubmissionTypeNameMaxLength,
             MinimumLength = GlobalConstants.SubmissionTypeNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]

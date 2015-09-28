@@ -9,8 +9,8 @@
     public class ChangeEmailViewModel
     {
         [StringLength(
-            GlobalConstants.PasswordMaxLength, 
-            MinimumLength = GlobalConstants.PasswordMinLength, 
+            GlobalConstants.PasswordMaxLength,
+            MinimumLength = GlobalConstants.PasswordMinLength,
             ErrorMessageResourceName = "Password_required",
             ErrorMessageResourceType = typeof(Resource))]
         [Required(
@@ -25,10 +25,10 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [Display(
-            Name = "Email", 
+            Name = "Email",
             ResourceType = typeof(Resource))]
         [EmailAddress(
-            ErrorMessage = null, 
+            ErrorMessage = null,
             ErrorMessageResourceName = "Email_required",
             ErrorMessageResourceType = typeof(Resource))]
         public string Email { get; set; }
@@ -38,13 +38,15 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [Display(
-            Name = "Email_confirm", 
+            Name = "Email_confirm",
             ResourceType = typeof(Resource))]
         [EmailAddress(
-            ErrorMessage = null, 
+            ErrorMessage = null,
             ErrorMessageResourceName = "Email_confirmation_required",
             ErrorMessageResourceType = typeof(Resource))]
-        [Compare("Email", ErrorMessageResourceName = "Email_confirmation_invalid",
+        [Compare(
+            "Email",
+            ErrorMessageResourceName = "Email_confirmation_invalid",
             ErrorMessageResourceType = typeof(Resource))]
         public string EmailConfirmation { get; set; }
     }

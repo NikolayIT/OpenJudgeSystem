@@ -59,11 +59,11 @@
         [DatabaseProperty]
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required", 
+            ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.ContestNameMaxLength, 
-            MinimumLength = GlobalConstants.ContestNameMinLength, 
+            GlobalConstants.ContestNameMaxLength,
+            MinimumLength = GlobalConstants.ContestNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]

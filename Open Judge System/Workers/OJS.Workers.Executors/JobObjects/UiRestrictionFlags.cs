@@ -1,9 +1,9 @@
 ﻿namespace OJS.Workers.Executors.JobObjects
 {
     using System;
-    
+
     /// <summary>
-    /// The restriction class for the user interface. 
+    /// The restriction class for the user interface.
     /// <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684152%28v=vs.85%29.aspx">More information</see>
     /// </summary>
     [Flags]

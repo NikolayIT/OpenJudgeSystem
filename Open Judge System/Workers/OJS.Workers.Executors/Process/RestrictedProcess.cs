@@ -38,7 +38,7 @@
 
             var processSecurityAttributes = new SecurityAttributes();
             var threadSecurityAttributes = new SecurityAttributes();
-            this.processInformation = new ProcessInformation();
+            this.processInformation = default(ProcessInformation);
 
             const uint CreationFlags = (uint)(
                 CreateProcessFlags.CREATE_SUSPENDED |
@@ -241,7 +241,7 @@
         {
             get
             {
-                var counters = new ProcessMemoryCounters();
+                var counters = default(ProcessMemoryCounters);
                 NativeMethods.GetProcessMemoryInfo(this.Handle, out counters, (uint)Marshal.SizeOf(counters));
                 return (int)counters.PeakWorkingSetSize;
             }
@@ -251,7 +251,7 @@
         {
             get
             {
-                var counters = new ProcessMemoryCounters();
+                var counters = default(ProcessMemoryCounters);
                 NativeMethods.GetProcessMemoryInfo(this.Handle, out counters, (uint)Marshal.SizeOf(counters));
                 return (int)counters.PeakPagefileUsage;
             }
@@ -491,7 +491,7 @@
                 throw new Win32Exception();
             }
 
-            var tokenMandatoryLabel = new TokenMandatoryLabel { Label = new SidAndAttributes() };
+            var tokenMandatoryLabel = new TokenMandatoryLabel { Label = default(SidAndAttributes) };
             tokenMandatoryLabel.Label.Attributes = NativeMethods.SE_GROUP_INTEGRITY;
             tokenMandatoryLabel.Label.Sid = integritySid;
             //// Marshal the TOKEN_MANDATORY_LABEL structure to the native memory.
@@ -515,7 +515,7 @@
 
         private ProcessThreadTimes GetProcessTimes()
         {
-            var processTimes = new ProcessThreadTimes();
+            var processTimes = default(ProcessThreadTimes);
             if (!NativeMethods.GetProcessTimes(
                     this.safeProcessHandle,
                     out processTimes.Create,

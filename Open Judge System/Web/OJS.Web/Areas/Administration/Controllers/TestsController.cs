@@ -32,7 +32,7 @@
     public class TestsController : AdministrationController
     {
         /// <summary>
-        /// Instantiates the controller with database context as data
+        /// Initializes a new instance of the <see cref="TestsController"/> class.
         /// </summary>
         /// <param name="data">Open Judge System Database context for the controller to work with</param>
         public TestsController(IOjsData data)

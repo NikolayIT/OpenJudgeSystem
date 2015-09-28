@@ -26,7 +26,7 @@
                 };
             }
         }
-        
+
         [DatabaseProperty(Name = "Id")]
         [HiddenInput(DisplayValue = false)]
         public string RoleId { get; set; }

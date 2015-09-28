@@ -79,7 +79,7 @@
         {
             var providers = new List<INewsProvider>
             {
-                new InfoManNewsProvider(), 
+                new InfoManNewsProvider(),
                 new InfosNewsProvider()
             };
 

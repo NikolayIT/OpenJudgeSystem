@@ -21,7 +21,7 @@
         /// Windows Server 2003 and Windows XP:  This value is not supported.
         /// </summary>
         LUA_TOKEN = 0x4,
-        
+
         /// <summary>
         /// The new token contains restricting SIDs that are considered only when evaluating write access.
         /// Windows XP with SP2 and later:  The value of this constant is 0x4. For an application to be compatible with Windows XP with SP2 and later operating systems, the application should query the operating system by calling the GetVersionEx function to determine which value should be used.

@@ -31,7 +31,7 @@
 
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required", 
+            ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 

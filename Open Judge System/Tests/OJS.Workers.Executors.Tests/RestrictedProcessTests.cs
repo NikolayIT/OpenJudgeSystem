@@ -47,7 +47,7 @@ class Program
     }
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldStopProgramAfterTimeIsEnded.exe", TimeLimitSourceCode);
-            
+
             var process = new RestrictedProcessExecutor();
             var result = process.Execute(exePath, string.Empty, 100, 32 * 1024 * 1024);
 

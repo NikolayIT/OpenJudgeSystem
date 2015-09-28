@@ -64,7 +64,7 @@
             this.UpdateViewModelValues(model, answer);
             model.QuestionId = question.Id;
             model.QuestionText = question.Text;
-            
+
             return this.Json(new[] { model }.ToDataSourceResult(request));
         }
 

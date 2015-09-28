@@ -11,7 +11,7 @@
 
         public JobObject()
         {
-            var attr = new SecurityAttributes();
+            var attr = default(SecurityAttributes);
             this.handle = NativeMethods.CreateJobObject(ref attr, null);
         }
 
@@ -44,7 +44,7 @@
 
         public ExtendedLimitInformation GetExtendedLimitInformation()
         {
-            var extendedLimitInformation = new ExtendedLimitInformation();
+            var extendedLimitInformation = default(ExtendedLimitInformation);
             var length = Marshal.SizeOf(typeof(ExtendedLimitInformation));
             var extendedLimitInformationInfoPointer = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(extendedLimitInformation, extendedLimitInformationInfoPointer, false);

@@ -56,7 +56,7 @@
 
             CheckerResultType resultType;
 
-            var adminCheckerDetails = new CheckerDetails();
+            var adminCheckerDetails = default(CheckerDetails);
             int lineNumber = 0;
             using (userFileReader)
             {
@@ -101,7 +101,7 @@
                 }
             }
 
-            var checkerDetails = new CheckerDetails();
+            var checkerDetails = default(CheckerDetails);
             if (resultType != CheckerResultType.Ok)
             {
                 checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
@@ -207,7 +207,7 @@
             {
                 const int FragmentMaxLength = 4096;
 
-                checkerDetails = new CheckerDetails();
+                checkerDetails = default(CheckerDetails);
 
                 var firstDifferenceIndex = expectedOutput.GetFirstDifferenceIndexWith(receivedOutput, this.IgnoreCharCasing);
 

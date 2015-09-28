@@ -14,9 +14,9 @@
 
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string iojsExecutablePath,
-            string mochaModulePath, 
-            string chaiModulePath, 
-            string jsdomModulePath, 
+            string mochaModulePath,
+            string chaiModulePath,
+            string jsdomModulePath,
             string jqueryModulePath,
             string handlebarsModulePath,
             string sinonModulePath,

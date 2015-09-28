@@ -46,7 +46,7 @@
             ErrorMessageResourceName = "Title_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.NewsTitleMaxLength, 
+            GlobalConstants.NewsTitleMaxLength,
             MinimumLength = GlobalConstants.NewsTitleMinLength, 
             ErrorMessageResourceName = "Title_length",
             ErrorMessageResourceType = typeof(Resource))]

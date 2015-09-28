@@ -369,7 +369,7 @@
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id
             });
-            
+
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
@@ -490,7 +490,7 @@
         }
 
         /// <summary>
-        /// Gets a problem resource and sends it to the user. If the user is not logged in redirects him to the 
+        /// Gets a problem resource and sends it to the user. If the user is not logged in redirects him to the
         /// login page. If the user is not registered for the exam - redirects him to the appropriate page.
         /// </summary>
         /// <param name="id">The resource id.</param>

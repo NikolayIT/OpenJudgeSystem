@@ -13,7 +13,8 @@
     {
         private IOjsData data;
 
-        public ContestRegistrationModel() : this(new OjsData())
+        public ContestRegistrationModel()
+            : this(new OjsData())
         {
         }
 

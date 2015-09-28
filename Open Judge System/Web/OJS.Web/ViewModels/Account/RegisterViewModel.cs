@@ -13,7 +13,8 @@
             MinimumLength = GlobalConstants.UserNameMinLength,
             ErrorMessageResourceName = "Username_validation",
             ErrorMessageResourceType = typeof(Resource))]
-        [Required(ErrorMessageResourceName = "Username_required",
+        [Required(
+            ErrorMessageResourceName = "Username_required",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Username", ResourceType = typeof(Resource))]
         [RegularExpression(
@@ -22,7 +23,8 @@
             ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
-        [Required(ErrorMessageResourceName = "Enter_password",
+        [Required(
+            ErrorMessageResourceName = "Enter_password",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.PasswordMaxLength,
@@ -45,7 +47,8 @@
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessageResourceName = "Email_required",
+        [Required(
+            ErrorMessageResourceName = "Email_required",
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [EmailAddress(

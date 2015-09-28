@@ -14,7 +14,7 @@
 
         void Add(T entity);
 
-        /// <remarks>Use only in transaction scope</remarks>
+        // Use only in transaction scope
         void Add(IEnumerable<T> entities);
 
         void Update(T entity);

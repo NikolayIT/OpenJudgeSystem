@@ -40,7 +40,7 @@
         {
             var tempFile = Path.GetTempFileName();
             tempFile += ".zip"; // TODO: Useless?
-            
+
             var zip = new ZipFile(tempFile);
 
             zip.AddEntry("userCode.deflate", executionContext.FileContent);
