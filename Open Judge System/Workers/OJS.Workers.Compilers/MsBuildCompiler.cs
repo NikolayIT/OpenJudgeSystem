@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -11,6 +12,8 @@
 
     public class MsBuildCompiler : Compiler
     {
+        private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
+
         private static readonly Random Rand = new Random();
 
         private readonly string inputPath;
@@ -22,6 +25,7 @@
             this.outputPath = DirectoryHelpers.CreateTempDirectory();
         }
 
+        // TODO: delete the temp files manually somehow
         ~MsBuildCompiler()
         {
             if (Directory.Exists(this.inputPath))
@@ -57,7 +61,10 @@
             var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
             if (newOutputFile == null)
             {
-                return this.outputPath;
+                var tempDir = DirectoryHelpers.CreateTempDirectory();
+                Directory.Delete(tempDir);
+                Directory.Move(this.outputPath, tempDir);
+                return tempDir;
             }
 
             var tempFile = Path.GetTempFileName() + Rand.Next();
@@ -73,6 +80,11 @@
 
             UnzipFile(inputFile, this.inputPath);
             string solutionOrProjectFile = this.FindSolutionOrProjectFile();
+
+            if (solutionOrProjectFile.EndsWith(".sln"))
+            {
+                RestoreNugetPackages(solutionOrProjectFile);
+            }
 
             // Input file argument
             arguments.Append(string.Format("\"{0}\" ", solutionOrProjectFile));
@@ -94,6 +106,29 @@
                 {
                     entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
                 }
+            }
+        }
+
+        private static void RestoreNugetPackages(string solution)
+        {
+            var solutionFileInfo = new FileInfo(solution);
+
+            var processStartInfo = new ProcessStartInfo()
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                WorkingDirectory = solutionFileInfo.DirectoryName,
+                FileName = NuGetExecutablePath,
+                Arguments = string.Format("restore \"{0}\"", solutionFileInfo.Name)
+            };
+
+            using (var process = new Process())
+            {
+                process.StartInfo = processStartInfo;
+                process.Start();
+                process.WaitForExit();
             }
         }
 

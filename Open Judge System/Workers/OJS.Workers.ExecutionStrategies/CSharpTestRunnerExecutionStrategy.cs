@@ -54,6 +54,16 @@
                 {
                     allTypes.Add(type);
                 }
+
+                var referenced = assembly.GetReferencedAssemblies().Where(r => r.Name != ""mscorlib"" && r.Name != ""System.Core"");
+                foreach (var reference in referenced)
+                {
+                    var refAssembly = Assembly.Load(reference);
+                    foreach (var type in refAssembly.GetTypes())
+                    {
+                        allTypes.Add(type);
+                    }
+                }
             }
 
             var results = new List<FuncTestResult>();
@@ -114,8 +124,13 @@
             IExecutor executor = new RestrictedProcessExecutor();
             var processExecutionResult = executor.Execute(outputAssemblyPath, string.Empty, executionContext.TimeLimit, executionContext.MemoryLimit);
 
-            this.ProcessTests(processExecutionResult, executionContext, result);
+            var workingDirectory = compileResult.OutputFile;
+            if (Directory.Exists(workingDirectory))
+            {
+                Directory.Delete(workingDirectory, true);
+            }
 
+            this.ProcessTests(processExecutionResult, executionContext, result);
             return result;
         }
 
@@ -150,7 +165,7 @@
         {
             var jsonResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput, true, true);
 
-            var index = 1;
+            var index = 0;
             result.TestResults = new List<TestResult>();
             foreach (var test in executionContext.Tests)
             {
