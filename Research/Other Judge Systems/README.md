@@ -6,7 +6,7 @@
 
 # Similar web sites
 
-http://topcoder.com/tc
-http://arena.maycamp.com/
-http://www.codechef.com/
-http://en.wikipedia.org/wiki/Online_judge
+* http://topcoder.com/tc
+* http://arena.maycamp.com/
+* http://www.codechef.com/
+* http://en.wikipedia.org/wiki/Online_judge
