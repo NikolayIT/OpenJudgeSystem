@@ -5,7 +5,6 @@
 
     public static class NativeMethods
     {
-        #region Job Objects
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         internal static extern IntPtr CreateJobObject([In]ref SecurityAttributes jobAttributes, string name);
 
@@ -26,7 +25,6 @@
             out IntPtr jobObjectInfo,
             uint jobObjectInfoLength,
             IntPtr returnLength);
-        #endregion
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern uint GetWindowThreadProcessId(IntPtr windowHandler, out uint processId);

@@ -9,7 +9,7 @@
     [Flags]
     public enum LimitFlags
     {
-        #region Basic Limits
+        //// Basic Limits
 
         /// <summary>
         /// Causes all processes associated with the job to use the same minimum and maximum working set sizes. The MinimumWorkingSetSize and MaximumWorkingSetSize members contain additional information.
@@ -56,9 +56,8 @@
         /// If the job is nested, the effective scheduling class is the lowest scheduling class in the job chain.
         /// </summary>
         JOB_OBJECT_LIMIT_SCHEDULING_CLASS = 0x00000080,
-        #endregion
 
-        #region Extended Limits
+        //// Extended Limits
 
         /// <summary>
         /// Causes all processes associated with the job to limit their committed memory. When a process attempts to commit memory that would exceed the per-process limit, it fails. If the job object is associated with a completion port, a JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT message is sent to the completion port.
@@ -105,6 +104,5 @@
         /// Windows Server 2008, Windows Vista, Windows Server 2003, and Windows XP: This flag is supported starting with Windows 7 and Windows Server 2008 R2.
         /// </summary>
         JOB_OBJECT_LIMIT_SUBSET_AFFINITY = 0x00004000,
-        #endregion
     }
 }

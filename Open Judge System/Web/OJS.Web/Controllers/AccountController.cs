@@ -520,8 +520,8 @@
         [HttpGet]
         public ActionResult ChangeUsername()
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx) 
-                && this.UserProfile.UserName.Length >= GlobalConstants.UserNameMinLength 
+            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx)
+                && this.UserProfile.UserName.Length >= GlobalConstants.UserNameMinLength
                 && this.UserProfile.UserName.Length <= GlobalConstants.UserNameMaxLength)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
@@ -534,8 +534,8 @@
         [ValidateAntiForgeryToken]
         public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx) 
-                && this.UserProfile.UserName.Length >= GlobalConstants.UserNameMinLength 
+            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UserNameRegEx)
+                && this.UserProfile.UserName.Length >= GlobalConstants.UserNameMinLength
                 && this.UserProfile.UserName.Length <= GlobalConstants.UserNameMaxLength)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
@@ -580,18 +580,17 @@
                                                         user.UserName);
 
             var forgottenPasswordEmailBody = string.Format(
-                                                Resources.Account.AccountEmails.Forgotten_password_body,
-                                                user.UserName,
-                                                this.Url.Action(
-                                                        "ChangePassword",
-                                                        "Account",
-                                                        new { token = user.ForgottenPasswordToken },
-                                                        this.Request.Url.Scheme));
+                Resources.Account.AccountEmails.Forgotten_password_body,
+                user.UserName,
+                this.Url.Action(
+                    "ChangePassword",
+                    "Account",
+                    new { token = user.ForgottenPasswordToken },
+                    this.Request.Url.Scheme));
 
             mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }
 
-        #region Helpers
         private async Task SignInAsync(UserProfile user, bool isPersistent)
         {
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -654,6 +653,5 @@
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, this.LoginProvider);
             }
         }
-        #endregion
     }
 }
