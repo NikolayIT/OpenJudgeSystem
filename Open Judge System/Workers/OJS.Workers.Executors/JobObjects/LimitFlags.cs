@@ -10,6 +10,7 @@
     public enum LimitFlags
     {
         #region Basic Limits
+
         /// <summary>
         /// Causes all processes associated with the job to use the same minimum and maximum working set sizes. The MinimumWorkingSetSize and MaximumWorkingSetSize members contain additional information.
         /// If the job is nested, the effective working set size is the smallest working set size in the job chain.
@@ -35,7 +36,7 @@
 
         /// <summary>
         /// Causes all processes associated with the job to use the same processor affinity. The Affinity member contains additional information.
-        /// If the job is nested, the specified processor affinity must be a subset of the effective affinity of the parent job. If the specified affinity a superset of the affinity of the parent job, it is ignored and the affinity of the parent job is used. 
+        /// If the job is nested, the specified processor affinity must be a subset of the effective affinity of the parent job. If the specified affinity a superset of the affinity of the parent job, it is ignored and the affinity of the parent job is used.
         /// </summary>
         JOB_OBJECT_LIMIT_AFFINITY = 0x00000010,
 
@@ -58,6 +59,7 @@
         #endregion
 
         #region Extended Limits
+
         /// <summary>
         /// Causes all processes associated with the job to limit their committed memory. When a process attempts to commit memory that would exceed the per-process limit, it fails. If the job object is associated with a completion port, a JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT message is sent to the completion port.
         /// If the job is nested, the effective memory limit is the most restrictive memory limit in the job chain.

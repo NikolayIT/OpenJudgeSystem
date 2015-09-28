@@ -45,9 +45,9 @@
                 foreach (var ip in ipsToExclude)
                 {
                     withoutExcludeIps = withoutExcludeIps.Where(
-                        p => p.ContestId == id 
-                        && p.IsOfficial 
-                        && p.Submissions.AsQueryable().Count() > 1 
+                        p => p.ContestId == id
+                        && p.IsOfficial
+                        && p.Submissions.AsQueryable().Count() > 1
                         && p.Submissions.AsQueryable()
                             .Where(s => !s.IsDeleted && s.IpAddress != null)
                             .All(s => s.IpAddress != ip));

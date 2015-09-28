@@ -65,7 +65,7 @@
             get { return this.contests; }
             set { this.contests = value; }
         }
-        
+
         [NotMapped]
         public string FileNameExtension
         {

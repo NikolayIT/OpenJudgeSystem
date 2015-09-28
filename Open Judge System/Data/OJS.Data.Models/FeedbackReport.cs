@@ -1,7 +1,7 @@
 ﻿namespace OJS.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    
+
     using OJS.Data.Contracts;
 
     public class FeedbackReport : DeletableEntity

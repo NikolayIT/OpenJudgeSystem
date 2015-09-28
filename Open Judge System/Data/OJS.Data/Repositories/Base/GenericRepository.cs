@@ -15,7 +15,8 @@
     using OJS.Common.Extensions;
     using OJS.Data.Contracts;
 
-    public class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T>
+        where T : class
     {
         public GenericRepository(IOjsDbContext context)
         {

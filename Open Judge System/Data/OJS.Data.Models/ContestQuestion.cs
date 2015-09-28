@@ -30,7 +30,7 @@
         public int ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
-        
+
         [MaxLength(GlobalConstants.ContestQuestionMaxLength)]
         [MinLength(GlobalConstants.ContestQuestionMinLength)]
         public string Text { get; set; }

@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Administration
+﻿namespace OJS.Web.Areas.Administration
 {
     using System.Web.Mvc;
 

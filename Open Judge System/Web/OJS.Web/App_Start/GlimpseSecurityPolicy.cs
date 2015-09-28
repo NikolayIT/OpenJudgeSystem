@@ -1,4 +1,4 @@
-namespace OJS.Web
+﻿namespace OJS.Web
 {
     using Glimpse.AspNet.Extensions;
     using Glimpse.Core.Extensibility;

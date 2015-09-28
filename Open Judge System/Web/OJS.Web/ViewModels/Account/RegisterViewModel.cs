@@ -17,7 +17,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Username", ResourceType = typeof(Resource))]
         [RegularExpression(
-            GlobalConstants.UserNameRegEx, 
+            GlobalConstants.UserNameRegEx,
             ErrorMessageResourceName = "Username_regex_validation",
             ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
@@ -31,16 +31,16 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         [Display(
-            Name = "Password", 
+            Name = "Password",
             ResourceType = typeof(Resource))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(
-            Name = "Password_confirm", 
+            Name = "Password_confirm",
             ResourceType = typeof(Resource))]
         [Compare(
-            "Password", 
+            "Password",
             ErrorMessageResourceName = "Passwords_dont_match",
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }
@@ -49,7 +49,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [EmailAddress(
-            ErrorMessage = null, 
+            ErrorMessage = null,
             ErrorMessageResourceName = "Email_invalid",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Email", ResourceType = typeof(Resource))]

@@ -24,7 +24,7 @@
                     && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
                     && x.Problem.ShowResults);
         }
-        
+
         public Submission GetSubmissionForProcessing()
         {
             var submission =

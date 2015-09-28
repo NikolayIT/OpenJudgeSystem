@@ -9,7 +9,7 @@
     {
         [Key]
         public int Id { get; set; }
-        
+
         public int QuestionId { get; set; }
 
         public virtual ContestQuestion Question { get; set; }

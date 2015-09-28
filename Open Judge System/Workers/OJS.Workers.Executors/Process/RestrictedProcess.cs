@@ -73,7 +73,7 @@
                     commandLine,
                     processSecurityAttributes,
                     threadSecurityAttributes,
-                    true, // In order to standard input, output and error redirection work, the handles must be inheritable and the CreateProcess() API must specify that inheritable handles are to be inherited by the child process by specifying TRUE in the bInheritHandles parameter. 
+                    true, // In order to standard input, output and error redirection work, the handles must be inheritable and the CreateProcess() API must specify that inheritable handles are to be inherited by the child process by specifying TRUE in the bInheritHandles parameter.
                     CreationFlags,
                     IntPtr.Zero,
                     workingDirectory,
@@ -84,7 +84,7 @@
             }
 
             this.safeProcessHandle = new SafeProcessHandle(this.processInformation.Process);
-            
+
             // This is a very important line! Without disposing the startupInfo handles, reading the standard output (or error) will hang forever.
             // Same problem described here: http://social.msdn.microsoft.com/Forums/vstudio/en-US/3c25a2e8-b1ea-4fc4-927b-cb865d435147/how-does-processstart-work-in-getting-output
             startupInfo.Dispose();
@@ -139,12 +139,8 @@
                     return true;
                 }
 
-                if (NativeMethods.GetExitCodeProcess(this.safeProcessHandle, out this.exitCode) && this.exitCode != NativeMethods.STILL_ACTIVE)
-                {
-                    return true;
-                }
-                
-                return false;
+                return NativeMethods.GetExitCodeProcess(this.safeProcessHandle, out this.exitCode)
+                       && this.exitCode != NativeMethods.STILL_ACTIVE;
             }
         }
 
@@ -323,7 +319,7 @@
             SafeFileHandle standardErrorReadPipeHandle;
 
             // http://support.microsoft.com/kb/190351 (How to spawn console processes with redirected standard handles)
-            // If the dwFlags member is set to STARTF_USESTDHANDLES, then the following STARTUPINFO members specify the standard handles of the child console based process: 
+            // If the dwFlags member is set to STARTF_USESTDHANDLES, then the following STARTUPINFO members specify the standard handles of the child console based process:
             // HANDLE hStdInput - Standard input handle of the child process.
             // HANDLE hStdOutput - Standard output handle of the child process.
             // HANDLE hStdError - Standard error handle of the child process.
@@ -338,7 +334,7 @@
                                      };
             this.StandardOutput = new StreamReader(new FileStream(standardOutputReadPipeHandle, FileAccess.Read, bufferSize, false), Encoding.Default, true, bufferSize);
             this.StandardError = new StreamReader(new FileStream(standardErrorReadPipeHandle, FileAccess.Read, 4096, false), Encoding.Default, true, 4096);
-            
+
             /*
              * Child processes that use such C run-time functions as printf() and fprintf() can behave poorly when redirected.
              * The C run-time functions maintain separate IO buffers. When redirected, these buffers might not be flushed immediately after each IO call.
@@ -357,13 +353,13 @@
             }
         }
 
-        // Using synchronous Anonymous pipes for process input/output redirection means we would end up 
+        // Using synchronous Anonymous pipes for process input/output redirection means we would end up
         // wasting a worker thread pool thread per pipe instance. Overlapped pipe IO is desirable, since
-        // it will take advantage of the NT IO completion port infrastructure. But we can't really use 
+        // it will take advantage of the NT IO completion port infrastructure. But we can't really use
         // Overlapped I/O for process input/output as it would break Console apps (managed Console class
         // methods such as WriteLine as well as native CRT functions like printf) which are making an
         // assumption that the console standard handles (obtained via GetStdHandle()) are opened
-        // for synchronous I/O and hence they can work fine with ReadFile/WriteFile synchronously! 
+        // for synchronous I/O and hence they can work fine with ReadFile/WriteFile synchronously!
         [ResourceExposure(ResourceScope.None)]
         [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
         private void CreatePipe(out SafeFileHandle parentHandle, out SafeFileHandle childHandle, bool parentInputs, int bufferSize)
@@ -382,10 +378,10 @@
                     this.CreatePipeWithSecurityAttributes(out tempHandle, out childHandle, securityAttributesParent, bufferSize);
                 }
 
-                // Duplicate the parent handle to be non-inheritable so that the child process 
+                // Duplicate the parent handle to be non-inheritable so that the child process
                 // doesn't have access. This is done for correctness sake, exact reason is unclear.
-                // One potential theory is that child process can do something brain dead like 
-                // closing the parent end of the pipe and there by getting into a blocking situation 
+                // One potential theory is that child process can do something brain dead like
+                // closing the parent end of the pipe and there by getting into a blocking situation
                 // as parent will not be draining the pipe at the other end anymore.
 
                 // Create a duplicate of the output write handle for the std error write handle.
@@ -474,7 +470,7 @@
 
             return token;
         }
-        
+
         private void SetTokenMandatoryLabel(IntPtr token, SecurityMandatoryLabel securityMandatoryLabel)
         {
             // Create the low integrity SID.

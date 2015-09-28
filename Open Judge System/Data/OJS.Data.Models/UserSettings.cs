@@ -46,7 +46,7 @@
         [Column("JobTitle")]
         [MaxLength(GlobalConstants.JobTitleMaxLenth)]
         public string JobTitle { get; set; }
-        
+
         [NotMapped]
         public byte? Age
         {

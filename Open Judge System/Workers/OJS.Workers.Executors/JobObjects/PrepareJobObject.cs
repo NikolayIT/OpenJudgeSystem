@@ -8,8 +8,8 @@
         {
             var info = new BasicLimitInformation
             {
-                LimitFlags = (int)
-                    (LimitFlags.JOB_OBJECT_LIMIT_JOB_MEMORY
+                LimitFlags =
+                    (int)(LimitFlags.JOB_OBJECT_LIMIT_JOB_MEMORY
                      //// The following two flags are causing the process to have unexpected behavior
                      //// | LimitFlags.JOB_OBJECT_LIMIT_JOB_TIME
                      //// | LimitFlags.JOB_OBJECT_LIMIT_PROCESS_TIME
@@ -42,15 +42,14 @@
             var restrictions = new BasicUiRestrictions
                                    {
                                        UIRestrictionsClass =
-                                           (int)
-                                           (UiRestrictionFlags.JOB_OBJECT_UILIMIT_DESKTOP
+                                           (int)(UiRestrictionFlags.JOB_OBJECT_UILIMIT_DESKTOP
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_DISPLAYSETTINGS
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_EXITWINDOWS
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_GLOBALATOMS
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_HANDLES
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_READCLIPBOARD
                                             | UiRestrictionFlags.JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS
-                                            | UiRestrictionFlags.JOB_OBJECT_UILIMIT_WRITECLIPBOARD),
+                                            | UiRestrictionFlags.JOB_OBJECT_UILIMIT_WRITECLIPBOARD)
                                    };
 
             return restrictions;

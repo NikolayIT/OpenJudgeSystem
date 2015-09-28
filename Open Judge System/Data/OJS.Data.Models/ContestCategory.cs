@@ -12,7 +12,7 @@
     {
         private ICollection<ContestCategory> children;
 
-        private ICollection<Contest> contests; 
+        private ICollection<Contest> contests;
 
         public ContestCategory()
         {

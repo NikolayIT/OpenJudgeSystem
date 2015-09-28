@@ -1,7 +1,7 @@
 ﻿namespace OJS.Workers.Tools.Similarity
 {
     /// <summary>
-    /// Data on one input file being compared.  
+    /// Data on one input file being compared.
     /// </summary>
     internal class DiffData
     {

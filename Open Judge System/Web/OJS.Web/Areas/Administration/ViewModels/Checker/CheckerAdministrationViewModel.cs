@@ -43,11 +43,11 @@
         [DatabaseProperty]
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         [Required(
-            AllowEmptyStrings = false, 
-            ErrorMessageResourceType = typeof(Resource), 
+            AllowEmptyStrings = false,
+            ErrorMessageResourceType = typeof(Resource),
             ErrorMessageResourceName = "Name_required")]
         [StringLength(
-            GlobalConstants.CheckerNameMaxLength, 
+            GlobalConstants.CheckerNameMaxLength,
             MinimumLength = GlobalConstants.CheckerNameMinLength,
             ErrorMessageResourceType = typeof(Resource),
             ErrorMessageResourceName = "Name_length")]

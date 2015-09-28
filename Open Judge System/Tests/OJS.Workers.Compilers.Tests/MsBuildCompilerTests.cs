@@ -140,7 +140,7 @@ LnNsbgoAIAAAAAAAAQAYANrxiis8Ms8BzY+nJzwyzwHNj6cnPDLPAVBLAQIfABQAAAAIANGJWUT7
 vfgN5QgAAABMAAAWACQAAAAAAAAAIgAAACIKAABTYW1wbGVTb2x1dGlvbi52MTIuc3VvCgAgAAAA
 AAABABgA0PpASzwyzwH0GIsrPDLPAfQYiys8Ms8BUEsFBgAAAAAIAAgAYAMAADsTAAAAAA==");
         }
-        
+
         private byte[] GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()
         {
             return Convert.FromBase64String(

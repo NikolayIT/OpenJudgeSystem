@@ -10,7 +10,8 @@
 
     using Resource = Resources.Areas.Administration.AdministrationGeneral;
 
-    public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T> where T : class, new()
+    public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T>
+        where T : class, new()
     {
         [DatabaseProperty]
         [Display(Name = "Created_on", ResourceType = typeof(Resource))]
@@ -39,7 +40,7 @@
                 if (customAttributes.Any())
                 {
                     var name = (customAttributes.First() as DatabasePropertyAttribute).Name;
-                    
+
                     if (string.IsNullOrEmpty(name))
                     {
                         name = viewModelProperty.Name;

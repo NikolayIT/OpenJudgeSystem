@@ -30,7 +30,7 @@
             response.AddHeader(
                 "Content-Disposition",
                 "attachment;" + (string.IsNullOrEmpty(this.filename) ? string.Empty : "filename=" + this.filename));
-            
+
             this.zip.Save(response.OutputStream);
 
             response.End();

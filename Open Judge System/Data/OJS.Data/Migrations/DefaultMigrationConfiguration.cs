@@ -161,8 +161,7 @@
                 {
                     Name = "JavaScript code (Mocha unit tests)",
                     CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = 
-                        "-R json",
+                    AdditionalCompilerArguments = "-R json",
                     ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
@@ -172,8 +171,7 @@
                 {
                     Name = "JavaScript code (DOM unit tests)",
                     CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments =
-                        "-R json",
+                    AdditionalCompilerArguments = "-R json",
                     ExecutionStrategyType = ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,

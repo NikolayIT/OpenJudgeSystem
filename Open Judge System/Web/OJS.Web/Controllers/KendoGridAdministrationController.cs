@@ -101,7 +101,8 @@
                 .Name;
         }
 
-        protected void UpdateAuditInfoValues<T>(IAdministrationViewModel<T> viewModel, object databaseModel) where T : class, new()
+        protected void UpdateAuditInfoValues<T>(IAdministrationViewModel<T> viewModel, object databaseModel)
+            where T : class, new()
         {
             var entry = this.Data.Context.Entry(databaseModel);
             viewModel.CreatedOn = (DateTime?)entry.Property(CreatedOnPropertyName).CurrentValue;

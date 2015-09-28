@@ -7,7 +7,7 @@
     /// <summary>
     /// This Class implements the Difference Algorithm published in
     /// "An O(ND) Difference Algorithm and its Variations" by Eugene Myers
-    /// Algorithmica Vol. 1 No. 2, 1986, p 251.  
+    /// Algorithmica Vol. 1 No. 2, 1986, p 251.
     /// There are many C, Java, Lisp implementations public available but they all seem to come
     /// from the same source (diffutils) that is under the (unfree) GNU public License
     /// and cannot be reused as a sourcecode for a commercial application.
@@ -20,7 +20,7 @@
     /// I do not need a high performance diff tool because it is used only sometimes.
     /// I will do some performace tweaking when needed.
     /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
-    /// each line is converted into a (hash) number. See DiffText(). 
+    /// each line is converted into a (hash) number. See DiffText().
     /// Some chages to the original algorithm:
     /// The original algorithm was described using a recursive approach and comparing zero indexed arrays.
     /// Extracting sub-arrays and rejoining them is very performance and memory intensive so the same
@@ -49,7 +49,7 @@
         /// Find the difference in 2 text documents, comparing by textlines.
         /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
         /// each line is converted into a (hash) number. This hash-value is computed by storing all
-        /// textlines into a common hashtable so i can find duplicates in there, and generating a 
+        /// textlines into a common hashtable so i can find duplicates in there, and generating a
         /// new number each time a new textline is inserted.
         /// </summary>
         /// <param name="textA">A-version of the text (usually the old one)</param>
@@ -88,7 +88,7 @@
             this.Optimize(dataB);
             return this.CreateDiffs(dataA, dataB);
         }
-        
+
         /// <summary>
         /// Find the difference in 2 arrays of integers.
         /// </summary>
@@ -306,7 +306,7 @@
         }
 
         /// <summary>
-        /// This is the divide-and-conquer implementation of the longest common-subsequence (LCS) 
+        /// This is the divide-and-conquer implementation of the longest common-subsequence (LCS)
         /// algorithm.
         /// The published algorithm passes recursively parts of the A and B sequences.
         /// To avoid copying these arrays the lower and upper bounds are passed while the sequences stay constant.
@@ -375,7 +375,7 @@
         }
 
         /// <summary>Scan the tables of which lines are inserted and deleted,
-        /// producing an edit script in forward order.  
+        /// producing an edit script in forward order.
         /// </summary>
         /// dynamic array
         private Difference[] CreateDiffs(DiffData dataA, DiffData dataB)
@@ -431,7 +431,7 @@
 
             return result;
         }
-        
+
         /// <summary>
         /// If a sequence of modified lines starts with a line that contains the same content
         /// as the line that appends the changes, the difference sequence is modified so that the
