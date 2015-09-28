@@ -3,7 +3,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class MochaExecutionResultTests
+    public class JsonExecutionResultTests
     {
         private const string ParseErrorMessage = "Invalid console output!";
 
@@ -12,7 +12,7 @@
         {
             var jsonString = "{stats: {passes: 1}}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsTrue(result.Passed);
             Assert.IsNullOrEmpty(result.Error);
@@ -23,7 +23,7 @@
         {
             var jsonString = "{stats: {passes: 0}}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual(ParseErrorMessage, result.Error);
@@ -34,7 +34,7 @@
         {
             var jsonString = "{stats: {passes: 0}, failures: [{ err: { message: \"Custom error\" } }]}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual("Custom error", result.Error);
@@ -45,7 +45,7 @@
         {
             var jsonString = "{stats: {passes: 1}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual(ParseErrorMessage, result.Error);
@@ -56,7 +56,7 @@
         {
             var jsonString = "{stats: {passes: 1}} {stats: {passes: 1}}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual(ParseErrorMessage, result.Error);
@@ -67,7 +67,7 @@
         {
             var jsonString = "{stats: {passes: 1}} /* comment */ {stats: {passes: 1}}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual(ParseErrorMessage, result.Error);
@@ -78,7 +78,7 @@
         {
             var jsonString = "{stats: {passes: 1}} //** comment **// {stats: {passes: 1}}";
 
-            var result = MochaExecutionResult.Parse(jsonString);
+            var result = JsonExecutionResult.Parse(jsonString);
 
             Assert.IsFalse(result.Passed);
             Assert.AreEqual(ParseErrorMessage, result.Error);

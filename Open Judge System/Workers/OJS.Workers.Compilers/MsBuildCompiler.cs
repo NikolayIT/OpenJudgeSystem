@@ -57,7 +57,7 @@
             var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
             if (newOutputFile == null)
             {
-                return null;
+                return this.outputPath;
             }
 
             var tempFile = Path.GetTempFileName() + Rand.Next();

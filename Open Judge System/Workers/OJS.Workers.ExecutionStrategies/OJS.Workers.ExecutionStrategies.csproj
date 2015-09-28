@@ -55,11 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharpTestRunnerExecutionStrategy.cs" />
     <Compile Include="DoNothingExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
-    <Compile Include="MochaExecutionResult.cs" />
+    <Compile Include="JsonExecutionResult.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy.cs" />

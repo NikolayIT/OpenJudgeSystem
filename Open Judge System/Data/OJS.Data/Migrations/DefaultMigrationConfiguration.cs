@@ -191,6 +191,16 @@ namespace OJS.Data.Migrations
                 },
                 new SubmissionType
                 {
+                    Name = "C# test runner",
+                    CompilerType = CompilerType.MsBuild,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpTestRunner,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
                     Name = "Java code",
                     CompilerType = CompilerType.Java,
                     AdditionalCompilerArguments = string.Empty,

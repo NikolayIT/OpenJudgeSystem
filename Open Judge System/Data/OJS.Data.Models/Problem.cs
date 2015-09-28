@@ -60,6 +60,11 @@
 
         public int OrderBy { get; set; }
 
+        /// <summary>
+        /// Predefined skeleton for the task
+        /// </summary>
+        public byte[] SolutionSkeleton { get; set; }
+
         [DefaultValue(true)]
         public bool ShowResults { get; set; }
 

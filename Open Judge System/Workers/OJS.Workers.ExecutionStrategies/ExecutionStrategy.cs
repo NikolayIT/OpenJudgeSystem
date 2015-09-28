@@ -18,20 +18,7 @@
             var result = new ExecutionResult();
 
             // Compile the file
-            string submissionFilePath;
-            if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
-            {
-                submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
-            }
-            else
-            {
-                submissionFilePath = FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
-            }
-
-            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
-            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
-            result.CompilerComment = compilerResult.CompilerComment;
+            var compilerResult = this.ExecuteCompiling(executionContext, getCompilerPathFunc, result);
             if (!compilerResult.IsCompiledSuccessfully)
             {
                 return result;
@@ -90,6 +77,26 @@
             }
 
             return testResult;
+        }
+
+        protected CompileResult ExecuteCompiling(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, ExecutionResult result)
+        {
+            string submissionFilePath;
+            if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
+            {
+                submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
+            }
+            else
+            {
+                submissionFilePath = FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
+            }
+
+            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
+
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+            result.CompilerComment = compilerResult.CompilerComment;
+            return compilerResult;
         }
 
         protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)

@@ -163,7 +163,7 @@
                 AllowedFileExtensions = submission.SubmissionType.AllowedFileExtensions,
                 CompilerType = submission.SubmissionType.CompilerType,
                 MemoryLimit = submission.Problem.MemoryLimit,
-                TimeLimit = submission.Problem.TimeLimit,
+                TimeLimit = submission.Problem.TimeLimit
             };
 
             context.Tests = submission.Problem.Tests.ToList().Select(x => new TestContext
@@ -233,6 +233,9 @@
             {
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.CSharpTestRunner:
+                    executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);

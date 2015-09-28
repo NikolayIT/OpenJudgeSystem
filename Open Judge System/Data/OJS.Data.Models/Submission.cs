@@ -45,6 +45,8 @@
         /// </remarks>
         public string FileExtension { get; set; }
 
+        public byte[] SolutionSkeleton { get; set; }
+
         [StringLength(GlobalConstants.IpAdressMaxLength)]
         [Column(TypeName = "varchar")]
         public string IpAddress { get; set; }
