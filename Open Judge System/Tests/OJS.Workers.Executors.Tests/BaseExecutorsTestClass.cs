@@ -9,12 +9,12 @@
 
     public abstract class BaseExecutorsTestClass
     {
-        protected readonly string ExeDirectory = string.Format(@"{0}\Exe\", Environment.CurrentDirectory);
+        private readonly string exeDirectory = string.Format(@"{0}\Exe\", Environment.CurrentDirectory);
 
         public string CreateExe(string exeName, string sourceString)
         {
-            Directory.CreateDirectory(this.ExeDirectory);
-            var outputExePath = this.ExeDirectory + exeName;
+            Directory.CreateDirectory(this.exeDirectory);
+            var outputExePath = this.exeDirectory + exeName;
             if (File.Exists(outputExePath))
             {
                 File.Delete(outputExePath);

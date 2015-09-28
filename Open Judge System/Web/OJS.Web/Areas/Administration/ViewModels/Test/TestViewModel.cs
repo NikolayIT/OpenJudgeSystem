@@ -47,7 +47,7 @@
             ErrorMessageResourceName = "Input_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            int.MaxValue, 
+            int.MaxValue,
             MinimumLength = GlobalConstants.TestInputMinLength)]
         public string Input
         {
@@ -77,7 +77,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [ScriptIgnore]
         [StringLength(
-            int.MaxValue, 
+            int.MaxValue,
             MinimumLength = GlobalConstants.TestInputMinLength)]
         public string InputFull
         {
@@ -106,7 +106,7 @@
             ErrorMessageResourceName = "Output_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            int.MaxValue, 
+            int.MaxValue,
             MinimumLength = GlobalConstants.TestOutputMinLength)]
         public string Output
         {
@@ -136,7 +136,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [ScriptIgnore]
         [StringLength(
-            int.MaxValue, 
+            int.MaxValue,
             MinimumLength = GlobalConstants.TestOutputMinLength)]
         public string OutputFull
         {

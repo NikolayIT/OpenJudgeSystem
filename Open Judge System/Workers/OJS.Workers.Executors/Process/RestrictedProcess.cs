@@ -425,14 +425,11 @@
             if (!NativeMethods.CreateRestrictedToken(
                     processToken,
                     CreateRestrictedTokenFlags.SANDBOX_INERT, // TODO: DISABLE_MAX_PRIVILEGE ??
-                    //// Disable SID
-                    0,
+                    0, // Disable SID
                     null,
-                    //// Delete privilege
-                    0,
+                    0, // Delete privilege
                     null,
-                    //// Restricted SID
-                    0,
+                    0, // Restricted SID
                     null,
                     out restrictedToken))
             {

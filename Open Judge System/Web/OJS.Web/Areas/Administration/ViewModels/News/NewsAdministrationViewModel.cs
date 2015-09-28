@@ -47,7 +47,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NewsTitleMaxLength,
-            MinimumLength = GlobalConstants.NewsTitleMinLength, 
+            MinimumLength = GlobalConstants.NewsTitleMinLength,
             ErrorMessageResourceName = "Title_length",
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
@@ -59,7 +59,7 @@
             ErrorMessageResourceName = "Author_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.NewsAuthorNameMaxLength, 
+            GlobalConstants.NewsAuthorNameMaxLength,
             MinimumLength = GlobalConstants.NewsAuthorNameMinLength,
             ErrorMessageResourceName = "Author_length",
             ErrorMessageResourceType = typeof(Resource))]
@@ -72,7 +72,7 @@
             ErrorMessageResourceName = "Source_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.NewsSourceMaxLength, 
+            GlobalConstants.NewsSourceMaxLength,
             MinimumLength = GlobalConstants.NewsSourceMinLength,
             ErrorMessageResourceName = "Source_length",
             ErrorMessageResourceType = typeof(Resource))]
@@ -86,7 +86,7 @@
             ErrorMessageResourceName = "Content_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            int.MaxValue, 
+            int.MaxValue,
             MinimumLength = GlobalConstants.NewsContentMinLength,
             ErrorMessageResourceName = "Content_length",
             ErrorMessageResourceType = typeof(Resource))]

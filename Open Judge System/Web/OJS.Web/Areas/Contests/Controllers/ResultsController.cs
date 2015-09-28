@@ -18,7 +18,7 @@
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
-    
+
     public class ResultsController : BaseController
     {
         public const int ResultsPageSize = 300;
@@ -77,7 +77,6 @@
         /// <param name="id">The contest id.</param>
         /// <param name="official">A flag, showing if the results are for practice
         /// or for competition</param>
-        /// <param name="page"></param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
@@ -113,7 +112,7 @@
                     {
                         ParticipantUsername = participant.User.UserName,
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
-                        ParticipantLastName = participant.User.UserSettings.LastName, 
+                        ParticipantLastName = participant.User.UserSettings.LastName,
                         ProblemResults = participant.Contest.Problems
                             .Where(x => !x.IsDeleted)
                             .Select(problem =>
@@ -154,7 +153,7 @@
             contestModel.Results = contestModel.Results
                     .Skip((page.Value - 1) * ResultsPageSize)
                     .Take(ResultsPageSize);
-            
+
             // add page info to View Model
             contestModel.CurrentPage = page.Value;
             contestModel.AllPages = totalPages;
@@ -191,7 +190,7 @@
                         {
                             ParticipantUsername = participant.User.UserName,
                             ParticipantFirstName = participant.User.UserSettings.FirstName,
-                            ParticipantLastName = participant.User.UserSettings.LastName, 
+                            ParticipantLastName = participant.User.UserSettings.LastName,
                             ProblemResults = participant.Contest.Problems
                                 .Where(x => !x.IsDeleted)
                                 .Select(problem =>
@@ -221,17 +220,20 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
-            var contestInfo = this.Data.Contests.All()
-                .Where(c => c.Id == id)
-                .Select(c => new 
-                    { 
-                        c.Id, 
-                        ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial), 
-                        c.StartTime, 
-                        c.EndTime 
-                    })
-                .FirstOrDefault();
-            
+            var contestInfo =
+                this.Data.Contests.All()
+                    .Where(c => c.Id == id)
+                    .Select(
+                        c =>
+                        new
+                            {
+                                c.Id,
+                                ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial),
+                                c.StartTime,
+                                c.EndTime
+                            })
+                    .FirstOrDefault();
+
             var submissions = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                     .SelectMany(participant =>
@@ -277,7 +279,7 @@
                     Hour = time.Hour
                 });
             }
-            
+
             return this.Json(viewModel);
         }
 
@@ -299,10 +301,10 @@
             {
                 var maxResultsForProblem = viewModel.Results.Count(r => r.ProblemResults.Any(pr => pr.ProblemName == problem.Name && pr.BestSubmission != null && pr.BestSubmission.Points == pr.MaximumPoints));
                 var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
-                statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel 
+                statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel
                     {
-                        Name = problem.Name, 
-                        MaxResultsCount = maxResultsForProblem, 
+                        Name = problem.Name,
+                        MaxResultsCount = maxResultsForProblem,
                         MaxResultsPercent = maxResultsForProblemPercent,
                         MaxPossiblePoints = problem.MaximumPoints
                     });
@@ -329,7 +331,7 @@
 
                 fromPoints = toPoints + 1;
             }
-                        
+
             return this.PartialView("_StatsPartial", statsModel);
         }
 

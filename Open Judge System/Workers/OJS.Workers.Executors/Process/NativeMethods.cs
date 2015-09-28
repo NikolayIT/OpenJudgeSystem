@@ -151,7 +151,6 @@
         /// <param name="processHandle">A handle to the process whose access token is opened.</param>
         /// <param name="desiredAccess">Specifies an access mask that specifies the requested types of access to the access token.</param>
         /// <param name="tokenHandle">Outputs a handle that identifies the newly opened access token when the function returns.</param>
-        /// <returns></returns>
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr tokenHandle);
@@ -181,7 +180,6 @@
         /// <param name="tokenInfoClass">A value from the TOKEN_INFORMATION_CLASS enumerated type that identifies the type of information the function sets.</param>
         /// <param name="pTokenInfo">A pointer to a buffer that contains the information set in the access token.</param>
         /// <param name="tokenInfoLength">Specifies the length, in bytes, of the buffer pointed to by TokenInformation.</param>
-        /// <returns></returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool SetTokenInformation(
