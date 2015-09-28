@@ -87,7 +87,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultMemoryLimit)]
         public int MemoryLimit { get; set; }
-        
+
         [Display(Name = "Checker", ResourceType = typeof(Resource))]
         public string Checker { get; set; }
 

@@ -4,7 +4,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public interface IDeletableEntityRepository<T> : IRepository<T> where T : class
+    public interface IDeletableEntityRepository<T> : IRepository<T>
+        where T : class
     {
         IQueryable<T> AllWithDeleted();
 

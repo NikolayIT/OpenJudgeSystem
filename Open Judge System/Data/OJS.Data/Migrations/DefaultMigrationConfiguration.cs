@@ -1,4 +1,4 @@
-namespace OJS.Data.Migrations
+﻿namespace OJS.Data.Migrations
 {
     using System;
     using System.Collections.Generic;
@@ -103,7 +103,7 @@ namespace OJS.Data.Migrations
 
             context.SaveChanges();
         }
-        
+
         protected void SeedSubmissionTypes(OjsDbContext context)
         {
             foreach (var entity in context.SubmissionTypes)

@@ -40,7 +40,7 @@
             ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.ProblemResourceNameMaxLength, 
+            GlobalConstants.ProblemResourceNameMaxLength,
             MinimumLength = GlobalConstants.ProblemResourceNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]

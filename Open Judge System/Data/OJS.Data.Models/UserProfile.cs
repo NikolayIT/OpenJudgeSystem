@@ -42,15 +42,12 @@
         public UserSettings UserSettings { get; set; }
 
         public Guid? ForgottenPasswordToken { get; set; }
-        
-        #region IDeletableEntity
+
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
-        #endregion
 
-        #region IAuditInfo
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
@@ -62,6 +59,5 @@
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
-        #endregion
     }
 }

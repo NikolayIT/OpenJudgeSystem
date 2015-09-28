@@ -1,14 +1,11 @@
 ﻿namespace OJS.Common.Extensions
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
 
     public static class CompressStringExtensions
     {
-        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times",
-            Justification = "Reviewed. Suppression is OK here.")]
         public static byte[] Compress(this string stringToCompress)
         {
             if (stringToCompress == null)
@@ -32,8 +29,6 @@
             }
         }
 
-        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times",
-            Justification = "Reviewed. Suppression is OK here.")]
         public static string Decompress(this byte[] bytes)
         {
             if (bytes == null)

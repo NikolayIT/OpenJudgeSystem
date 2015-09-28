@@ -6,7 +6,7 @@
     public class Job
     {
         public bool ContainsTaskData { get; set; }
-        
+
         public byte[] TaskData { get; set; }
 
         public byte[] UserSolution { get; set; }

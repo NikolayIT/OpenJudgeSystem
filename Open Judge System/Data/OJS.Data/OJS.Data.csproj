@@ -87,6 +87,7 @@
     <Compile Include="Configurations\ParticipantAnswersConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
+    <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
     <Compile Include="Repositories\ContestsRepository.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="Repositories\Contracts\ITestRepository.cs" />
     <Compile Include="Repositories\Contracts\ITestRunsRepository.cs" />
     <Compile Include="Repositories\Contracts\IUsersRepository.cs" />
-    <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="OjsDbContext.cs" />
     <Compile Include="OjsData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
