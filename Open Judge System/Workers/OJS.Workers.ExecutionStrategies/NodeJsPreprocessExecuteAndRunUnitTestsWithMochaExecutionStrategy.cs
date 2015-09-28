@@ -69,7 +69,7 @@ describe('TestScope', function() {
             console[prop] = new Function('');
         });
 
-	testFunc = new Function(" + this.TestFuncVariables +  @", ""var result = this.valueOf();"" + inputData);
+	testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
     testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
 
     Object.keys(bgCoderConsole)
@@ -91,6 +91,11 @@ describe('TestScope', function() {
             }
         }
 
+        protected virtual string TestFuncVariables
+        {
+            get { return "'assert', 'expect', 'should'"; }
+        }
+
         protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
         {
             var testResults = new List<TestResult>();
@@ -109,11 +114,6 @@ describe('TestScope', function() {
             }
 
             return testResults;
-        }
-
-        protected virtual string TestFuncVariables
-        {
-            get { return "'assert', 'expect', 'should'"; }
         }
 
         protected string ProcessModulePath(string path)

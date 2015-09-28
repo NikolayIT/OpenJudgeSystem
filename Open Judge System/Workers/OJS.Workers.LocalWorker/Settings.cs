@@ -38,6 +38,14 @@
             }
         }
 
+        public static string NuGetExecutablePath
+        {
+            get
+            {
+                return GetSetting("NuGetExecutablePath");
+            }
+        }
+
         public static string NodeJsExecutablePath
         {
             get
