@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Contests
+﻿namespace OJS.Web.Areas.Contests
 {
     using System.Web.Mvc;
 

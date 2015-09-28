@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Collections;
     using System.Linq;
     using System.Web.Mvc;
@@ -12,7 +11,8 @@
 
     public class AccessLogsController : KendoGridAdministrationController
     {
-        public AccessLogsController(IOjsData data) : base(data)
+        public AccessLogsController(IOjsData data)
+            : base(data)
         {
         }
 

@@ -10,7 +10,7 @@
             this.ErrorOutput = string.Empty;
             this.ExitCode = 0;
             this.Type = ProcessExecutionResultType.Success;
-            this.TimeWorked = new TimeSpan();
+            this.TimeWorked = default(TimeSpan);
             this.MemoryUsed = 0;
         }
 

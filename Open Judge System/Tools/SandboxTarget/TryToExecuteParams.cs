@@ -1,4 +1,4 @@
-namespace SandboxTarget
+﻿namespace SandboxTarget
 {
     using System;
 

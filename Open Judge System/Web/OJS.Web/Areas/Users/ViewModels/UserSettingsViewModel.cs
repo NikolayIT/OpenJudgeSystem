@@ -38,16 +38,16 @@
         public string Email { get; set; }
 
         [MaxLength(
-            GlobalConstants.FirstNameMaxLength, 
-            ErrorMessageResourceName = "First_name_too_long", 
+            GlobalConstants.FirstNameMaxLength,
+            ErrorMessageResourceName = "First_name_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FirstName { get; set; }
 
         [MaxLength(
-            GlobalConstants.LastNameMaxLength, 
-            ErrorMessageResourceName = "Family_name_too_long", 
+            GlobalConstants.LastNameMaxLength,
+            ErrorMessageResourceName = "Family_name_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Family_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
@@ -59,40 +59,40 @@
         public DateTime? DateOfBirth { get; set; }
 
         [MaxLength(
-            GlobalConstants.CityNameMaxLength, 
-            ErrorMessageResourceName = "City_too_long", 
+            GlobalConstants.CityNameMaxLength,
+            ErrorMessageResourceName = "City_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "City", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string City { get; set; }
 
         [MaxLength(
-            GlobalConstants.EducationalInstitutionMaxLength, 
-            ErrorMessageResourceName = "Education_too_long", 
+            GlobalConstants.EducationalInstitutionMaxLength,
+            ErrorMessageResourceName = "Education_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Education_institution", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string EducationalInstitution { get; set; }
 
         [MaxLength(
-            GlobalConstants.FacultyNumberMaxLength, 
-            ErrorMessageResourceName = "Faculty_number_too_long", 
+            GlobalConstants.FacultyNumberMaxLength,
+            ErrorMessageResourceName = "Faculty_number_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Faculty_number", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FacultyNumber { get; set; }
 
         [MaxLength(
-            GlobalConstants.CompanyNameMaxLength, 
-            ErrorMessageResourceName = "Company_too_long", 
+            GlobalConstants.CompanyNameMaxLength,
+            ErrorMessageResourceName = "Company_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Company", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string Company { get; set; }
 
         [MaxLength(
-            GlobalConstants.JobTitleMaxLenth, 
-            ErrorMessageResourceName = "Job_title_too_long", 
+            GlobalConstants.JobTitleMaxLenth,
+            ErrorMessageResourceName = "Job_title_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Job_title", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]

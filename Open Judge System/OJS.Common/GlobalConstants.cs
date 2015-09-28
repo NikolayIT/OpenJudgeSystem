@@ -1,37 +1,22 @@
 ﻿namespace OJS.Common
 {
-    using System.Diagnostics.PerformanceData;
-
     public static class GlobalConstants
     {
-        #region TempData dictionary keys
-
+        // TempData dictionary keys
         public const string InfoMessage = "InfoMessage";
         public const string DangerMessage = "DangerMessage";
 
-        #endregion
-
-        #region ModelState dictionary keys
-
+        // ModelState dictionary keys
         public const string DateTimeError = "DateTimeError";
 
-        #endregion
-
-        #region Action names
-
+        // Action names
         public const string Index = "Index";
 
-        #endregion
-
-        #region Partial views
-
+        // Partial views
         public const string QuickContestsGrid = "_QuickContestsGrid";
 
-        #endregion
-
-        #region Other
-
-        public const string ExcelMimeTyle = "application/vnd.ms-excel";
+        // Other
+        public const string ExcelMimeType = "application/vnd.ms-excel";
         public const string JsonMimeType = "application/json";
         public const string ZipMimeType = "application/zip";
         public const string BinaryFileMimeType = "application/octet-stream";
@@ -50,10 +35,7 @@
 
         public const int FeedbackContentMinLength = 10;
 
-        #endregion
-
-        #region Account
-
+        // Account
         public const int UserNameMaxLength = 15;
         public const int UserNameMinLength = 5;
         public const string UserNameRegEx = @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$";
@@ -71,10 +53,7 @@
         public const int CompanyNameMaxLength = 30;
         public const int JobTitleMaxLenth = 30;
 
-        #endregion
-
-        #region News
-
+        // News
         public const int NewsTitleMaxLength = 200;
         public const int NewsTitleMinLength = 1;
 
@@ -86,10 +65,7 @@
 
         public const int NewsContentMinLength = 10;
 
-        #endregion
-
-        #region Contests
-
+        // Contests
         public const int ContestNameMaxLength = 100;
         public const int ContestNameMinLength = 4;
 
@@ -104,10 +80,7 @@
         public const int ContestQuestionAnswerMaxLength = 100;
         public const int ContestQuestionAnswerMinLength = 1;
 
-        #endregion
-
-        #region Administration
-
+        // Administration
         public const int CheckerNameMaxLength = 100;
         public const int CheckerNameMinLength = 1;
 
@@ -125,7 +98,5 @@
 
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
-
-        #endregion
     }
 }

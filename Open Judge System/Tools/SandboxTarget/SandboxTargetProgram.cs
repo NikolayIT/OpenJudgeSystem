@@ -29,7 +29,7 @@
             WriteLine(string.Format("Process.GetCurrentProcess().PriorityClass: {0}", Process.GetCurrentProcess().PriorityClass));
 
             //// ThreadStart();
-            
+
             ReadWriteConsole();
 
             var actions = new[]

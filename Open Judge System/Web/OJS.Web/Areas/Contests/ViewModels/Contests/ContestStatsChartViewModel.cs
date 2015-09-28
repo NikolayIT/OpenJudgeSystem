@@ -8,7 +8,7 @@
 
         public int Minute { get; set; }
 
-        public string DisplayValue 
+        public string DisplayValue
         {
             get
             {
