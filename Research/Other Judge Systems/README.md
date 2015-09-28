@@ -1,6 +1,7 @@
 # Similar systems
 
 * spoj0 - https://github.com/SourceCodeBackup/spoj0 (http://code.google.com/p/spoj0/)
+* DOMjudge - https://github.com/DOMjudge/domjudge (https://www.domjudge.org/)
 
 # Similar web sites
 
