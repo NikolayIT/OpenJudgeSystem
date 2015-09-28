@@ -88,7 +88,7 @@
                 {
                     return this.Content.Decompress();
                 }
-                
+
                 return null;
             }
 
@@ -100,9 +100,9 @@
 
         [Display(Name = "File_submission", ResourceType = typeof(Resource))]
         [ScaffoldColumn(false)]
-        public HttpPostedFileBase FileSubmission 
+        public HttpPostedFileBase FileSubmission
         {
-            get 
+            get
             {
                 return this.fileSubmission;
             }
@@ -114,7 +114,7 @@
                 this.FileExtension = value.FileName.GetFileExtension();
             }
         }
-        
+
         [DatabaseProperty]
         public string FileExtension { get; set; }
     }

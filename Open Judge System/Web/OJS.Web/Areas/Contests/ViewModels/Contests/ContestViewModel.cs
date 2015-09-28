@@ -11,7 +11,7 @@
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
 
     using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
-    
+
     public class ContestViewModel
     {
         private string contestName;

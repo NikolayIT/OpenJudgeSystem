@@ -44,8 +44,8 @@
             ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.ContestCategoryNameMaxLength, 
-            MinimumLength = GlobalConstants.ContestCategoryNameMinLength, 
+            GlobalConstants.ContestCategoryNameMaxLength,
+            MinimumLength = GlobalConstants.ContestCategoryNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]

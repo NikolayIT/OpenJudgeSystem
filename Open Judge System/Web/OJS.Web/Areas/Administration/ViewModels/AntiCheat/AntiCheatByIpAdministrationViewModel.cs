@@ -21,7 +21,7 @@
                             .AsQueryable()
                             .Where(s => !s.IsDeleted)
                             .GroupBy(s => s.ProblemId)
-                            .Sum(s => s.Max(z => z.Points)), 
+                            .Sum(s => s.Max(z => z.Points)),
                         DifferentIps = p.Submissions
                             .AsQueryable()
                             .Where(s => !s.IsDeleted && s.IpAddress != null)

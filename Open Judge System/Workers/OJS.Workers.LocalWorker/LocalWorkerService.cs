@@ -18,7 +18,7 @@
         {
             logger = LogManager.GetLogger("LocalWorkerService");
             logger.Info("LocalWorkerService initializing...");
-            
+
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
             var processingSubmissionIds = new SynchronizedHashtable();

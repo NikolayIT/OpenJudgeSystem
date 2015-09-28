@@ -52,7 +52,7 @@
         [Display(Name = "Mail", ResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [RegularExpression(
-            GlobalConstants.EmailRegEx, 
+            GlobalConstants.EmailRegEx,
             ErrorMessageResourceName = "Mail_invalid",
             ErrorMessageResourceType = typeof(Resource))]
         [Required(

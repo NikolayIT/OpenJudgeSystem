@@ -52,7 +52,7 @@
             ErrorMessageResourceName = "Text_required",
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.ContestQuestionAnswerMaxLength, 
+            GlobalConstants.ContestQuestionAnswerMaxLength,
             MinimumLength = GlobalConstants.ContestQuestionAnswerMinLength,
             ErrorMessageResourceName = "Text_length",
             ErrorMessageResourceType = typeof(Resource))]

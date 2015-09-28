@@ -582,11 +582,7 @@
             var forgottenPasswordEmailBody = string.Format(
                 Resources.Account.AccountEmails.Forgotten_password_body,
                 user.UserName,
-                this.Url.Action(
-                    "ChangePassword",
-                    "Account",
-                    new { token = user.ForgottenPasswordToken },
-                    this.Request.Url.Scheme));
+                this.Url.Action("ChangePassword", "Account", new { token = user.ForgottenPasswordToken }, this.Request.Url.Scheme));
 
             mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }

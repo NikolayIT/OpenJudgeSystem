@@ -30,26 +30,26 @@
         public string Email { get; set; }
 
         [MaxLength(
-            GlobalConstants.FirstNameMaxLength, 
-            ErrorMessageResourceName = "First_name_too_long", 
+            GlobalConstants.FirstNameMaxLength,
+            ErrorMessageResourceName = "First_name_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FirstName { get; set; }
 
         [MaxLength(
-            GlobalConstants.LastNameMaxLength, 
-            ErrorMessage = "Family_name_too_long", 
+            GlobalConstants.LastNameMaxLength,
+            ErrorMessage = "Family_name_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(
-            Name = "Family_name", 
+            Name = "Family_name",
             ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string LastName { get; set; }
 
         [MaxLength(
-            GlobalConstants.CityNameMaxLength, 
-            ErrorMessage = "City_too_long", 
+            GlobalConstants.CityNameMaxLength,
+            ErrorMessage = "City_too_long",
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "City", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]

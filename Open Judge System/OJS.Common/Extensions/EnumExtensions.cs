@@ -16,6 +16,7 @@
         /// <summary>
         /// Extends the enumeration so that if it has Description attribute on top of the value, it can be taken as a friendly text instead of the basic ToString method
         /// </summary>
+        /// <typeparam name="T">Type of the enumeration.</typeparam>
         /// <returns>Enum description</returns>
         public static string GetDescription<T>(this T enumerationValue)
             where T : struct

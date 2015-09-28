@@ -11,7 +11,7 @@
 
     public class UserInRoleAdministrationViewModel
     {
-        [ExcludeFromExcel]    
+        [ExcludeFromExcel]
         public static Expression<Func<UserProfile, UserInRoleAdministrationViewModel>> ViewModel
         {
             get

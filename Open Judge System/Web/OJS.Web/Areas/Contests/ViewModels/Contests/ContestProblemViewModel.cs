@@ -102,7 +102,7 @@
                 this.timeLimitInMs = (int)value;
             }
         }
-        
+
         public double? FileSizeLimit
         {
             get

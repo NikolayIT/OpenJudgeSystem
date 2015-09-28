@@ -56,8 +56,8 @@
         public ActionResult UserSubmissions([DataSourceRequest]DataSourceRequest request, int contestId)
         {
             var userSubmissions = this.Data.Submissions.All()
-                                                        .Where(x => 
-                                                            x.Participant.UserId == this.UserProfile.Id && 
+                                                        .Where(x =>
+                                                            x.Participant.UserId == this.UserProfile.Id &&
                                                             x.Problem.ContestId == contestId &&
                                                             x.Problem.ShowResults)
                                                         .Select(SubmissionResultViewModel.FromSubmission);
