@@ -24,7 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "Exter
 		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
 		External Libraries\Kendo.Mvc.README = External Libraries\Kendo.Mvc.README
 		External Libraries\Kendo.Mvc.xml = External Libraries\Kendo.Mvc.xml
-		External Libraries\TelerikContestSystem.DAL.dll = External Libraries\TelerikContestSystem.DAL.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tests.Common", "Tests\OJS.Tests.Common\OJS.Tests.Common.csproj", "{01CC0B02-529E-4D5F-B345-0B92F6920854}"
@@ -59,11 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{55BD5E
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Executors.Tests", "Tests\OJS.Workers.Executors.Tests\OJS.Workers.Executors.Tests.csproj", "{5054FE58-791D-41EA-9ED9-911788A7E631}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{042CF9B9-A029-4D72-A642-A1727F892D26}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Files\ApiMonitorApiFilters.xml = Tools\Files\ApiMonitorApiFilters.xml
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Web.Common", "Web\OJS.Web.Common\OJS.Web.Common.csproj", "{2E08E0AF-0E51-47CA-947B-4C66086FA030}"
 EndProject
@@ -204,7 +198,6 @@ Global
 		{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{D51F7D60-421C-44B2-9422-2610066CB82D} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{5054FE58-791D-41EA-9ED9-911788A7E631} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
-		{042CF9B9-A029-4D72-A642-A1727F892D26} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{2E08E0AF-0E51-47CA-947B-4C66086FA030} = {93034417-0AAA-4E72-84EA-767DB4EF5283}
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
