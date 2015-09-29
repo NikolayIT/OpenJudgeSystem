@@ -21,7 +21,8 @@
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
-                throw new ArgumentException(string.Format("NodeJS not found in: {0}", nodeJsExecutablePath), "nodeJsExecutablePath");
+                throw new ArgumentException(
+                    $"NodeJS not found in: {nodeJsExecutablePath}", nameof(nodeJsExecutablePath));
             }
 
             this.NodeJsExecutablePath = nodeJsExecutablePath;

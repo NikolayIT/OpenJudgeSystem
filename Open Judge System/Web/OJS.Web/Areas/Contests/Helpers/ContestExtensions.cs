@@ -9,7 +9,7 @@
         public static bool ShouldShowRegistrationForm(this Contest contest, bool isOfficialParticipant)
         {
             // Show registration form if contest password is required
-            bool showRegistrationForm = (isOfficialParticipant && contest.HasContestPassword) || (!isOfficialParticipant && contest.HasPracticePassword);
+            var showRegistrationForm = (isOfficialParticipant && contest.HasContestPassword) || (!isOfficialParticipant && contest.HasPracticePassword);
 
             // Show registration form if contest is official and questions should be asked
             if (isOfficialParticipant && contest.Questions.Any(x => x.AskOfficialParticipants))

@@ -40,22 +40,22 @@
         {
             if (compilerPath == null)
             {
-                throw new ArgumentNullException("compilerPath");
+                throw new ArgumentNullException(nameof(compilerPath));
             }
 
             if (inputFile == null)
             {
-                throw new ArgumentNullException("inputFile");
+                throw new ArgumentNullException(nameof(inputFile));
             }
 
             if (!File.Exists(compilerPath))
             {
-                return new CompileResult(false, string.Format("Compiler not found! Searched in: {0}", compilerPath));
+                return new CompileResult(false, $"Compiler not found! Searched in: {compilerPath}");
             }
 
             if (!File.Exists(inputFile))
             {
-                return new CompileResult(false, string.Format("Input file not found! Searched in: {0}", inputFile));
+                return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
 
             // Move source file if needed
@@ -74,7 +74,7 @@
             var directoryInfo = new FileInfo(compilerPath).Directory;
             if (directoryInfo == null)
             {
-                return new CompileResult(false, string.Format("Compiler directory is null. Compiler path value: {0}", compilerPath));
+                return new CompileResult(false, $"Compiler directory is null. Compiler path value: {compilerPath}");
             }
 
             // Prepare process start information
@@ -105,7 +105,7 @@
             if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
             {
                 // Compiled file is missing
-                return new CompileResult(false, string.Format("Compiled file is missing. Compiler output: {0}", compilerOutput.Output));
+                return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }
 
             if (!string.IsNullOrWhiteSpace(compilerOutput.Output))

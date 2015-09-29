@@ -26,7 +26,7 @@
         {
             if (!File.Exists(javaExecutablePath))
             {
-                throw new ArgumentException(string.Format("Java not found in: {0}!", javaExecutablePath), "javaExecutablePath");
+                throw new ArgumentException(string.Format("Java not found in: {0}!", javaExecutablePath), nameof(javaExecutablePath));
             }
 
             this.javaExecutablePath = javaExecutablePath;

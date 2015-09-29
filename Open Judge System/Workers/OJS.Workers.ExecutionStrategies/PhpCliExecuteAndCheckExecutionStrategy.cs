@@ -16,7 +16,7 @@
         {
             if (!File.Exists(phpCliExecutablePath))
             {
-                throw new ArgumentException(string.Format("PHP CLI not found in: {0}", phpCliExecutablePath), "phpCliExecutablePath");
+                throw new ArgumentException($"PHP CLI not found in: {phpCliExecutablePath}", nameof(phpCliExecutablePath));
             }
 
             this.phpCliExecutablePath = phpCliExecutablePath;

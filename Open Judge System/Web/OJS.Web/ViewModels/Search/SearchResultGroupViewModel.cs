@@ -26,12 +26,7 @@
 
             set
             {
-                if (value != null)
-                {
-                    value = value.Trim();
-                }
-
-                this.searchTerm = value;
+                this.searchTerm = value?.Trim();
             }
         }
 

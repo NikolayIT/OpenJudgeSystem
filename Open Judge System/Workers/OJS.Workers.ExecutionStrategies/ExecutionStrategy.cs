@@ -73,7 +73,7 @@
             }
             else
             {
-                throw new ArgumentOutOfRangeException("processExecutionResult", "Invalid ProcessExecutionResultType value.");
+                throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
             }
 
             return testResult;
@@ -102,7 +102,7 @@
 
             if (!File.Exists(compilerPath))
             {
-                throw new ArgumentException(string.Format("Compiler not found in: {0}", compilerPath), "compilerPath");
+                throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
             ICompiler compiler = Compiler.CreateCompiler(compilerType);

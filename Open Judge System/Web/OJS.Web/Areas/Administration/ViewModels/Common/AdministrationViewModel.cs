@@ -48,10 +48,7 @@
 
                     var databaseEntityProperty = model.GetType().GetProperties().FirstOrDefault(pr => pr.Name == name);
 
-                    if (databaseEntityProperty != null)
-                    {
-                        databaseEntityProperty.SetValue(model, viewModelProperty.GetValue(this));
-                    }
+                    databaseEntityProperty?.SetValue(model, viewModelProperty.GetValue(this));
                 }
             }
 
