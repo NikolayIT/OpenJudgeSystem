@@ -27,12 +27,6 @@
             return encoding.GetBytes(sourceString);
         }
 
-        public static string ToText(this byte[] bytes)
-        {
-            var encoding = new UTF8Encoding();
-            return encoding.GetString(bytes);
-        }
-
         public static int ToInteger(this string input)
         {
             int integerValue;
