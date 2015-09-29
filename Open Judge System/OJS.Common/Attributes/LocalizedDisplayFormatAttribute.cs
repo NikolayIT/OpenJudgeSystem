@@ -8,13 +8,10 @@
     {
         public LocalizedDisplayFormatAttribute()
         {
-            if (this.NullDisplayTextResourceType != null)
+            var resourceProperty = this.NullDisplayTextResourceType?.GetProperty(this.NullDisplayTextResourceName, BindingFlags.Static | BindingFlags.Public);
+            if (resourceProperty != null)
             {
-                var resourceProperty = this.NullDisplayTextResourceType.GetProperty(this.NullDisplayTextResourceName, BindingFlags.Static | BindingFlags.Public);
-                if (resourceProperty != null)
-                {
-                    this.NullDisplayText = (string)resourceProperty.GetValue(resourceProperty.DeclaringType, null);
-                }
+                this.NullDisplayText = (string)resourceProperty.GetValue(resourceProperty.DeclaringType, null);
             }
         }
 

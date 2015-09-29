@@ -67,7 +67,7 @@
 
         public static string Repeat(this string input, int count)
         {
-            var builder = new StringBuilder((input == null ? 0 : input.Length) * count);
+            var builder = new StringBuilder((input?.Length ?? 0) * count);
 
             for (int i = 0; i < count; i++)
             {

@@ -8,8 +8,8 @@
         {
             var result = this.CheckLineByLine(
                 inputData,
-                receivedOutput == null ? null : receivedOutput.Trim(),
-                expectedOutput == null ? null : expectedOutput.Trim(),
+                receivedOutput?.Trim(),
+                expectedOutput?.Trim(),
                 this.AreEqualTrimmedLines,
                 isTrialTest);
             return result;

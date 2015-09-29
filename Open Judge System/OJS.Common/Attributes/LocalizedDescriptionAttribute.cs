@@ -8,13 +8,10 @@
     {
         public LocalizedDescriptionAttribute(string resourceName, Type resourceType = null)
         {
-            if (resourceType != null)
+            var resourceProperty = resourceType?.GetProperty(resourceName, BindingFlags.Static | BindingFlags.Public);
+            if (resourceProperty != null)
             {
-                var resourceProperty = resourceType.GetProperty(resourceName, BindingFlags.Static | BindingFlags.Public);
-                if (resourceProperty != null)
-                {
-                    this.DescriptionValue = (string)resourceProperty.GetValue(resourceProperty.DeclaringType, null);
-                }
+                this.DescriptionValue = (string)resourceProperty.GetValue(resourceProperty.DeclaringType, null);
             }
         }
     }

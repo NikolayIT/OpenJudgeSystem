@@ -306,7 +306,7 @@
         // TODO: Extract common logic between SubmitBinaryFile() and Submit()
         public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official, int? returnProblem)
         {
-            if (participantSubmission == null || participantSubmission.File == null)
+            if (participantSubmission?.File == null)
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Upload_file);
             }

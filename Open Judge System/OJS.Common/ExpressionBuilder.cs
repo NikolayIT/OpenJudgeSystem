@@ -13,12 +13,12 @@
         {
             if (null == valueSelector)
             {
-                throw new ArgumentNullException("valueSelector");
+                throw new ArgumentNullException(nameof(valueSelector));
             }
 
             if (null == values)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             var parameterExpression = valueSelector.Parameters.Single();
