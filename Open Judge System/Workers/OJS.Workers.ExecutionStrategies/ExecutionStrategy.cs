@@ -81,15 +81,9 @@
 
         protected CompileResult ExecuteCompiling(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, ExecutionResult result)
         {
-            string submissionFilePath;
-            if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
-            {
-                submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
-            }
-            else
-            {
-                submissionFilePath = FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
-            }
+            var submissionFilePath = string.IsNullOrEmpty(executionContext.AllowedFileExtensions)
+                                         ? FileHelpers.SaveStringToTempFile(executionContext.Code)
+                                         : FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
 
             var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);

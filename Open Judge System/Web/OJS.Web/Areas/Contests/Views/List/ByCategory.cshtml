@@ -73,14 +73,7 @@
                 @foreach (var subCategory in Model.SubCategories)
                 {
                     string url;
-                    if (ViewBag.IsAjax)
-                    {
-                        url = string.Format("#!/List/ByCategory/{0}/{1}", subCategory.Id, subCategory.NameUrl);
-                    }
-                    else
-                    {
-                        url = string.Format("/Contests/List/ByCategory/{0}/{1}", subCategory.Id, subCategory.NameUrl);
-                    }
+                    url = string.Format(ViewBag.IsAjax ? "#!/List/ByCategory/{0}/{1}" : "/Contests/List/ByCategory/{0}/{1}", subCategory.Id, subCategory.NameUrl);
                     <tr>
                         <td>
                             <a href="@url" class='subcategory' data-id="@subCategory.Id">@subCategory.Name</a>

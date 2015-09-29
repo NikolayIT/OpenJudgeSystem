@@ -67,27 +67,13 @@
         @Html.LabelFor(m => m.ShowResults)
     </div>
     <div class="panel-body news-content editor-label">
-        @if (Model.ShowResults)
-        {
-            @Resource.Results_visible
-        }
-        else
-        {
-            @Resource.Results_invisible
-        }
+        @(Model.ShowResults ? Resource.Results_visible : Resource.Results_invisible)
     </div>
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowDetailedFeedback)
     </div>
     <div class="panel-body news-content editor-label">
-        @if (Model.ShowDetailedFeedback)
-        {
-            @Resource.Full_feedback_visible
-        }
-        else
-        {
-            @Resource.Full_feedback_invisible
-        }
+        @(Model.ShowDetailedFeedback ? Resource.Full_feedback_visible : Resource.Full_feedback_invisible)
     </div>
     <br />
     <div class="editor-label">

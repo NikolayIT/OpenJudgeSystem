@@ -29,50 +29,22 @@
 
         protected string NodeJsExecutablePath { get; private set; }
 
-        protected virtual string JsCodeRequiredModules
-        {
-            get
-            {
-                return @"
+        protected virtual string JsCodeRequiredModules => @"
 var EOL = require('os').EOL";
-            }
-        }
 
-        protected virtual string JsCodePreevaulationCode
-        {
-            get
-            {
-                return @"
+        protected virtual string JsCodePreevaulationCode => @"
 var content = ''";
-            }
-        }
 
-        protected virtual string JsCodePostevaulationCode
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        protected virtual string JsCodePostevaulationCode => string.Empty;
 
-        protected virtual string JsCodeEvaluation
-        {
-            get
-            {
-                return @"
+        protected virtual string JsCodeEvaluation => @"
     var inputData = content.trim().split(EOL);
     var result = code.run(inputData);
     if (result !== undefined) {
         console.log(result);
     }";
-            }
-        }
 
-        protected virtual string JsCodeTemplate
-        {
-            get
-            {
-                return RequiredModules + @";
+        protected virtual string JsCodeTemplate => RequiredModules + @";
 
 DataView = undefined;
 DTRACE_NET_SERVER_CONNECTION = undefined;
@@ -159,8 +131,6 @@ process.stdin.on('end', function() {
 var code = {
     run: " + UserInputPlaceholder + @"
 };";
-            }
-        }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {

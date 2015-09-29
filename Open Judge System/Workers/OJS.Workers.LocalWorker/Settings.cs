@@ -14,172 +14,52 @@
             Logger = LogManager.GetLogger("Settings");
         }
 
-        public static string CSharpCompilerPath
-        {
-            get
-            {
-                return GetSetting("CSharpCompilerPath");
-            }
-        }
+        public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
 
-        public static string CPlusPlusGccCompilerPath
-        {
-            get
-            {
-                return GetSetting("CPlusPlusGccCompilerPath");
-            }
-        }
+        public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
-        public static string MsBuildExecutablePath
-        {
-            get
-            {
-                return GetSetting("MsBuildExecutablePath");
-            }
-        }
+        public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
-        public static string NuGetExecutablePath
-        {
-            get
-            {
-                return GetSetting("NuGetExecutablePath");
-            }
-        }
+        public static string NuGetExecutablePath => GetSetting("NuGetExecutablePath");
 
-        public static string NodeJsExecutablePath
-        {
-            get
-            {
-                return GetSetting("NodeJsExecutablePath");
-            }
-        }
+        public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
 
-        public static string MochaModulePath
-        {
-            get
-            {
-                return GetSetting("MochaModulePath");
-            }
-        }
+        public static string MochaModulePath => GetSetting("MochaModulePath");
 
-        public static string ChaiModulePath
-        {
-            get
-            {
-                return GetSetting("ChaiModulePath");
-            }
-        }
+        public static string ChaiModulePath => GetSetting("ChaiModulePath");
 
-        public static string IoJsExecutablePath
-        {
-            get
-            {
-                return GetSetting("IoJsExecutablePath");
-            }
-        }
+        public static string IoJsExecutablePath => GetSetting("IoJsExecutablePath");
 
-        public static string JsDomModulePath
-        {
-            get
-            {
-                return GetSetting("JsDomModulePath");
-            }
-        }
+        public static string JsDomModulePath => GetSetting("JsDomModulePath");
 
-        public static string JQueryModulePath
-        {
-            get
-            {
-                return GetSetting("JQueryModulePath");
-            }
-        }
+        public static string JQueryModulePath => GetSetting("JQueryModulePath");
 
-        public static string HandlebarsModulePath
-        {
-            get
-            {
-                return GetSetting("HandlebarsModulePath");
-            }
-        }
+        public static string HandlebarsModulePath => GetSetting("HandlebarsModulePath");
 
-        public static string SinonModulePath
-        {
-            get
-            {
-                return GetSetting("SinonModulePath");
-            }
-        }
+        public static string SinonModulePath => GetSetting("SinonModulePath");
 
-        public static string SinonChaiModulePath
-        {
-            get
-            {
-                return GetSetting("SinonChaiModulePath");
-            }
-        }
+        public static string SinonChaiModulePath => GetSetting("SinonChaiModulePath");
 
-        public static string UnderscoreModulePath
-        {
-            get
-            {
-                return GetSetting("UnderscoreModulePath");
-            }
-        }
+        public static string UnderscoreModulePath => GetSetting("UnderscoreModulePath");
 
-        public static string JavaCompilerPath
-        {
-            get
-            {
-                return GetSetting("JavaCompilerPath");
-            }
-        }
+        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
 
-        public static string JavaExecutablePath
-        {
-            get
-            {
-                return GetSetting("JavaExecutablePath");
-            }
-        }
+        public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 
-        public static string JavaArchiverPath
-        {
-            get
-            {
-                return GetSetting("JavaArchiverPath");
-            }
-        }
+        public static string JavaArchiverPath => GetSetting("JavaArchiverPath");
 
-        public static string PhpCgiExecutablePath
-        {
-            get
-            {
-                return GetSetting("PhpCgiExecutablePath");
-            }
-        }
+        public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");
 
-        public static string PhpCliExecutablePath
-        {
-            get
-            {
-                return GetSetting("PhpCliExecutablePath");
-            }
-        }
+        public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
-        public static int ThreadsCount
-        {
-            get
-            {
-                return GetSettingOrDefault("ThreadsCount", 2);
-            }
-        }
+        public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
         private static string GetSetting(string settingName)
         {
             if (ConfigurationManager.AppSettings[settingName] == null)
             {
                 Logger.FatalFormat("{0} setting not found in App.config file!", settingName);
-                throw new Exception(string.Format("{0} setting not found in App.config file!", settingName));
+                throw new Exception($"{settingName} setting not found in App.config file!");
             }
 
             return ConfigurationManager.AppSettings[settingName];

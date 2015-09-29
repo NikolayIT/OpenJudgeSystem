@@ -4,19 +4,11 @@
 
     public class IsUnicodeAttribute : Attribute
     {
-        private readonly bool isUnicode;
-
         public IsUnicodeAttribute(bool isUnicode)
         {
-            this.isUnicode = isUnicode;
+            this.IsUnicode = isUnicode;
         }
 
-        public bool IsUnicode
-        {
-            get
-            {
-                return this.isUnicode;
-            }
-        }
+        public bool IsUnicode { get; }
     }
 }

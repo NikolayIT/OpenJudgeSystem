@@ -7,13 +7,7 @@
 
     public class ContestsAreaAreaRegistration : AreaRegistration
     {
-        public override string AreaName
-        {
-            get
-            {
-                return "Contests";
-            }
-        }
+        public override string AreaName => "Contests";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {

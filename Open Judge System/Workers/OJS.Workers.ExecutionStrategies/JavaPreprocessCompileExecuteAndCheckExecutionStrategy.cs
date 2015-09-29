@@ -39,11 +39,7 @@
             DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
-        private string SandboxExecutorCode
-        {
-            get
-            {
-                return @"
+        private string SandboxExecutorCode => @"
 import java.io.File;
 import java.io.FilePermission;
 import java.io.FileWriter;
@@ -152,8 +148,6 @@ class _$SandboxSecurityManager extends SecurityManager {
         throw new UnsupportedOperationException();
     }
 }";
-            }
-        }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -174,7 +168,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             // Create a sandbox executor source file in the working directory
-            var sandboxExecutorSourceFilePath = string.Format("{0}\\{1}", this.workingDirectory, SandboxExecutorClassName);
+            var sandboxExecutorSourceFilePath = $"{this.workingDirectory}\\{SandboxExecutorClassName}";
             File.WriteAllText(sandboxExecutorSourceFilePath, this.SandboxExecutorCode);
 
             // Compile all source files - sandbox executor and submission file
@@ -194,12 +188,12 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             // Prepare execution process arguments and time measurement info
-            var classPathArgument = string.Format("-classpath \"{0}\"", this.workingDirectory);
+            var classPathArgument = $"-classpath \"{this.workingDirectory}\"";
 
             var submissionFilePathLastIndexOfSlash = submissionFilePath.LastIndexOf('\\');
             var classToExecute = submissionFilePath.Substring(submissionFilePathLastIndexOfSlash + 1);
 
-            var timeMeasurementFilePath = string.Format("{0}\\{1}", this.workingDirectory, TimeMeasurementFileName);
+            var timeMeasurementFilePath = $"{this.workingDirectory}\\{TimeMeasurementFileName}";
 
             // Create an executor and a checker
             var executor = new StandardProcessExecutor();
@@ -213,7 +207,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, string.Format("\"{0}\"", timeMeasurementFilePath) });
+                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, $"\"{timeMeasurementFilePath}\"" });
 
                 UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
 
@@ -259,7 +253,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             }
 
             var className = classNameMatch.Groups[1].Value;
-            var submissionFilePath = string.Format("{0}\\{1}", this.workingDirectory, className);
+            var submissionFilePath = $"{this.workingDirectory}\\{className}";
 
             File.WriteAllText(submissionFilePath, submissionCode);
 

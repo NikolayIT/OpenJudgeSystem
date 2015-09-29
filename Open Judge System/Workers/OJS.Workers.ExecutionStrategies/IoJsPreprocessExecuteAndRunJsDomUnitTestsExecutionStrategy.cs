@@ -26,32 +26,32 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException(string.Format("jsDom not found in: {0}", jsdomModulePath), "jsdomModulePath");
+                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}", nameof(jsdomModulePath));
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException(string.Format("jQuery not found in: {0}", jqueryModulePath), "jqueryModulePath");
+                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}", nameof(jqueryModulePath));
             }
 
             if (!Directory.Exists(handlebarsModulePath))
             {
-                throw new ArgumentException(string.Format("Handlebars not found in: {0}", handlebarsModulePath), "handlebarsModulePath");
+                throw new ArgumentException($"Handlebars not found in: {handlebarsModulePath}", nameof(handlebarsModulePath));
             }
 
             if (!Directory.Exists(sinonModulePath))
             {
-                throw new ArgumentException(string.Format("Sinon not found in: {0}", sinonModulePath), "handlebarsModulePath");
+                throw new ArgumentException($"Sinon not found in: {sinonModulePath}", nameof(sinonModulePath));
             }
 
             if (!Directory.Exists(sinonChaiModulePath))
             {
-                throw new ArgumentException(string.Format("Sinon-chai not found in: {0}", sinonChaiModulePath), "handlebarsModulePath");
+                throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
             }
 
             if (!Directory.Exists(underscoreModulePath))
             {
-                throw new ArgumentException(string.Format("Underscore not found in: {0}", underscoreModulePath), "handlebarsModulePath");
+                throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
             }
 
             this.jsdomModulePath = this.ProcessModulePath(jsdomModulePath);
@@ -62,25 +62,15 @@
             this.underscoreModulePath = this.ProcessModulePath(underscoreModulePath);
         }
 
-        protected override string JsCodeRequiredModules
-        {
-            get
-            {
-                return base.JsCodeRequiredModules + @",
+        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
     jsdom = require('" + this.jsdomModulePath + @"'),
     jq = require('" + this.jqueryModulePath + @"'),
     sinon = require('" + this.sinonModulePath + @"'),
     sinonChai = require('" + this.sinonChaiModulePath + @"'),
     _ = require('" + this.underscoreModulePath + @"'),
     handlebars = require('" + this.handlebarsModulePath + @"')";
-            }
-        }
 
-        protected override string JsCodePreevaulationCode
-        {
-            get
-            {
-                return @"
+        protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
 
 describe('TestDOMScope', function() {
@@ -105,23 +95,12 @@ describe('TestDOMScope', function() {
 
 	it('Test', function(done) {
 		var content = '';";
-            }
-        }
 
-        protected override string JsCodeTemplate
-        {
-            get
-            {
-                return base.JsCodeTemplate
-                    .Replace("process.removeListener = undefined;", string.Empty)
-                    .Replace("setTimeout = undefined;", string.Empty)
-                    .Replace("delete setTimeout;", string.Empty);
-            }
-        }
+        protected override string JsCodeTemplate => base.JsCodeTemplate
+            .Replace("process.removeListener = undefined;", string.Empty)
+            .Replace("setTimeout = undefined;", string.Empty)
+            .Replace("delete setTimeout;", string.Empty);
 
-        protected override string TestFuncVariables
-        {
-            get { return base.TestFuncVariables + ", 'sinon', '_'"; }
-        }
+        protected override string TestFuncVariables => base.TestFuncVariables + ", 'sinon', '_'";
     }
 }

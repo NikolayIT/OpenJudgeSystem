@@ -8,12 +8,6 @@
 
         public int Minute { get; set; }
 
-        public string DisplayValue
-        {
-            get
-            {
-                return string.Format("{0:00}:{1:00}", this.Hour, this.Minute);
-            }
-        }
+        public string DisplayValue => $"{this.Hour:00}:{this.Minute:00}";
     }
 }

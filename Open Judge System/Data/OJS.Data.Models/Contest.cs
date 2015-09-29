@@ -194,22 +194,10 @@
         }
 
         [NotMapped]
-        public bool HasContestPassword
-        {
-            get
-            {
-                return this.ContestPassword != null;
-            }
-        }
+        public bool HasContestPassword => this.ContestPassword != null;
 
         [NotMapped]
-        public bool HasPracticePassword
-        {
-            get
-            {
-                return this.PracticePassword != null;
-            }
-        }
+        public bool HasPracticePassword => this.PracticePassword != null;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -232,7 +220,7 @@
 
         public override string ToString()
         {
-            return string.Format("#{0} {1}", this.Id, this.Name);
+            return $"#{this.Id} {this.Name}";
         }
     }
 }

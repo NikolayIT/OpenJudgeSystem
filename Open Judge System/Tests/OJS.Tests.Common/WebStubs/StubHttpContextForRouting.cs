@@ -14,20 +14,8 @@
             this.response = new StubHttpResponseForRouting();
         }
 
-        public override HttpRequestBase Request
-        {
-            get
-            {
-                return this.request;
-            }
-        }
+        public override HttpRequestBase Request => this.request;
 
-        public override HttpResponseBase Response
-        {
-            get
-            {
-                return this.response;
-            }
-        }
+        public override HttpResponseBase Response => this.response;
     }
 }

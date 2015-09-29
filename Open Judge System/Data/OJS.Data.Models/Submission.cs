@@ -52,13 +52,7 @@
         public string IpAddress { get; set; }
 
         [NotMapped]
-        public bool IsBinaryFile
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.FileExtension);
-            }
-        }
+        public bool IsBinaryFile => !string.IsNullOrWhiteSpace(this.FileExtension);
 
         [NotMapped]
         public string ContentAsString

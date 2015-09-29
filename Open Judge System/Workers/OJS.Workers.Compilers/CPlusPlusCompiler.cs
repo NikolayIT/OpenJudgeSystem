@@ -15,11 +15,11 @@
             var arguments = new StringBuilder();
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\"", inputFile));
+            arguments.Append($"\"{inputFile}\"");
             arguments.Append(' ');
 
             // Output file argument
-            arguments.Append(string.Format("-o \"{0}\"", outputFile));
+            arguments.Append($"-o \"{outputFile}\"");
             arguments.Append(' ');
 
             // Additional compiler arguments

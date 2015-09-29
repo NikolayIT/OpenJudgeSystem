@@ -40,13 +40,7 @@
 
         public UserManager<UserProfile> UserManager { get; private set; }
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return this.HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => this.HttpContext.GetOwinContext().Authentication;
 
         // GET: /Account/Login
         [AllowAnonymous]

@@ -28,34 +28,18 @@
             this.chaiModulePath = this.ProcessModulePath(chaiModulePath);
         }
 
-        protected override string JsCodeRequiredModules
-        {
-            get
-            {
-                return @"
+        protected override string JsCodeRequiredModules => @"
 var chai = require('" + this.chaiModulePath + @"'),
 	assert = chai.assert,
 	expect = chai.expect,
 	should = chai.should()";
-            }
-        }
 
-        protected override string JsCodePreevaulationCode
-        {
-            get
-            {
-                return @"
+        protected override string JsCodePreevaulationCode => @"
 describe('TestScope', function() {
 	it('Test', function(done) {
 		var content = '';";
-            }
-        }
 
-        protected override string JsCodeEvaluation
-        {
-            get
-            {
-                return @"
+        protected override string JsCodeEvaluation => @"
     var inputData = content.trim();
     var result = code.run();
     if (result == undefined) {
@@ -78,23 +62,12 @@ describe('TestScope', function() {
         });
 
 	done();";
-            }
-        }
 
-        protected override string JsCodePostevaulationCode
-        {
-            get
-            {
-                return @"
+        protected override string JsCodePostevaulationCode => @"
     });
 });";
-            }
-        }
 
-        protected virtual string TestFuncVariables
-        {
-            get { return "'assert', 'expect', 'should'"; }
-        }
+        protected virtual string TestFuncVariables => "'assert', 'expect', 'should'";
 
         protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
         {

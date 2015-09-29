@@ -1,10 +1,8 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.AccessLogs
 {
     using System;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
-    using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;

@@ -51,12 +51,6 @@
         [Display(Name = "Order", ResourceType = typeof(Resource))]
         public int OrderBy { get; set; }
 
-        public string TypeName
-        {
-            get
-            {
-                return this.Type.GetDescription();
-            }
-        }
+        public string TypeName => this.Type.GetDescription();
     }
 }

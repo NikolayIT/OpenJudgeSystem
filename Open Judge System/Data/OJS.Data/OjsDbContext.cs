@@ -62,13 +62,7 @@
 
         public virtual IDbSet<AccessLog> AccessLogs { get; set; }
 
-        public DbContext DbContext
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public DbContext DbContext => this;
 
         public override int SaveChanges()
         {

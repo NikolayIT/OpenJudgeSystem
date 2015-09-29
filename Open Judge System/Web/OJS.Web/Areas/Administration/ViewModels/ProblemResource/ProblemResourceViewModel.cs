@@ -58,13 +58,7 @@
         [DefaultValue(ProblemResourceType.ProblemDescription)]
         public ProblemResourceType Type { get; set; }
 
-        public int DropDownTypeIndex
-        {
-            get
-            {
-                return (int)this.Type - 1;
-            }
-        }
+        public int DropDownTypeIndex => (int)this.Type - 1;
 
         public IEnumerable<SelectListItem> AllTypes { get; set; }
 

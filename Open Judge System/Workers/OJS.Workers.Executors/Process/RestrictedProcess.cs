@@ -98,37 +98,13 @@
 
         public StreamReader StandardError { get; private set; }
 
-        public int Id
-        {
-            get
-            {
-                return this.processInformation.ProcessId;
-            }
-        }
+        public int Id => this.processInformation.ProcessId;
 
-        public int MainThreadId
-        {
-            get
-            {
-                return this.processInformation.ThreadId;
-            }
-        }
+        public int MainThreadId => this.processInformation.ThreadId;
 
-        public IntPtr Handle
-        {
-            get
-            {
-                return this.processInformation.Process;
-            }
-        }
+        public IntPtr Handle => this.processInformation.Process;
 
-        public IntPtr MainThreadHandle
-        {
-            get
-            {
-                return this.processInformation.Thread;
-            }
-        }
+        public IntPtr MainThreadHandle => this.processInformation.Thread;
 
         public bool HasExited
         {
@@ -157,68 +133,32 @@
             }
         }
 
-        public string ExitCodeAsString
-        {
-            get
-            {
-                return new Win32Exception(this.ExitCode).Message;
-            }
-        }
+        public string ExitCodeAsString => new Win32Exception(this.ExitCode).Message;
 
         /// <summary>
         /// Returns the time the process was started.
         /// </summary>
-        public DateTime StartTime
-        {
-            get
-            {
-                return this.GetProcessTimes().StartTime;
-            }
-        }
+        public DateTime StartTime => this.GetProcessTimes().StartTime;
 
         /// <summary>
         /// Gets the time that the process exited.
         /// </summary>
-        public DateTime ExitTime
-        {
-            get
-            {
-                return this.GetProcessTimes().ExitTime;
-            }
-        }
+        public DateTime ExitTime => this.GetProcessTimes().ExitTime;
 
         /// <summary>
         /// Returns the amount of time the process has spent running code inside the operating system core.
         /// </summary>
-        public TimeSpan PrivilegedProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().PrivilegedProcessorTime;
-            }
-        }
+        public TimeSpan PrivilegedProcessorTime => this.GetProcessTimes().PrivilegedProcessorTime;
 
         /// <summary>
         /// Returns the amount of time the associated process has spent running code inside the application portion of the process (not the operating system core).
         /// </summary>
-        public TimeSpan UserProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().UserProcessorTime;
-            }
-        }
+        public TimeSpan UserProcessorTime => this.GetProcessTimes().UserProcessorTime;
 
         /// <summary>
         /// Returns the amount of time the associated process has spent utilizing the CPU.
         /// </summary>
-        public TimeSpan TotalProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().TotalProcessorTime;
-            }
-        }
+        public TimeSpan TotalProcessorTime => this.GetProcessTimes().TotalProcessorTime;
 
         /// <summary>
         /// Warning: If two processes with the same name are created, this property may not return correct name!

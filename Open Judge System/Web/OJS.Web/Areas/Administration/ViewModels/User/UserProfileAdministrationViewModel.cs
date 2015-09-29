@@ -167,13 +167,7 @@
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
         [UIHint("NonEditable")]
-        public byte Age
-        {
-            get
-            {
-                return Calculator.Age(this.DateOfBirth) ?? default(byte);
-            }
-        }
+        public byte Age => Calculator.Age(this.DateOfBirth) ?? default(byte);
 
         public override UserProfile GetEntityModel(UserProfile model = null)
         {

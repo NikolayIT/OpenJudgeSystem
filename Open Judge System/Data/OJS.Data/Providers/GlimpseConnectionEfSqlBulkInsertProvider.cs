@@ -9,10 +9,7 @@
 
     internal class GlimpseConnectionEfSqlBulkInsertProvider : EfSqlBulkInsertProviderWithMappedDataReader
     {
-        protected override string ConnectionString
-        {
-            get { return this.GetConnectionStringWithPassword(); }
-        }
+        protected override string ConnectionString => this.GetConnectionStringWithPassword();
 
         private string GetConnectionStringWithPassword()
         {

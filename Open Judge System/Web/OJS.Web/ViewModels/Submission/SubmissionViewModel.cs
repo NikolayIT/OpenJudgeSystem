@@ -59,13 +59,7 @@
 
         public int Points { get; set; }
 
-        public bool HasFullPoints
-        {
-            get
-            {
-                return this.Points == this.ProblemMaximumPoints;
-            }
-        }
+        public bool HasFullPoints => this.Points == this.ProblemMaximumPoints;
 
         public int MaxUsedTime
         {

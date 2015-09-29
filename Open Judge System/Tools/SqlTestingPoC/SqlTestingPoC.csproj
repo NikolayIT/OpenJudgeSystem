@@ -64,7 +64,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlRunQueryAndCheckExecutionStrategy.cs" />
+    <Compile Include="SqlPrepareDatabaseAndRunQueriesExecutionStrategy.cs" />
+    <Compile Include="SqlRunQueryAndCheckDatabaseExecutionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

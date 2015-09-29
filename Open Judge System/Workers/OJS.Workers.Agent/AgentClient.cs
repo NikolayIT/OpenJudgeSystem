@@ -23,13 +23,7 @@
             this.tcpClient = new TcpClient();
         }
 
-        public Stream Stream
-        {
-            get
-            {
-                return this.tcpClient.GetStream();
-            }
-        }
+        public Stream Stream => this.tcpClient.GetStream();
 
         public void Start()
         {

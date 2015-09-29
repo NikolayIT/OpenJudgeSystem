@@ -155,7 +155,7 @@ function initializeGrid(problemId, contestId) {
                 { field: "TrialTestName", title: "Вид тест" },
                 { field: "OrderBy", title: "Подредба" },
                 { field: "TestRunsCount", title: "Изпълнения" },
-                { title: "Операции", width: "25%", template: '<a href="/Administration/Tests/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' },
+                { title: "Операции", width: "25%", template: '<a href="/Administration/Tests/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }
             ],
             sortable: true
         });

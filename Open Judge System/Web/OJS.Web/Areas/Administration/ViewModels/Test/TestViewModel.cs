@@ -158,13 +158,7 @@
         }
 
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
-        public string TrialTestName
-        {
-            get
-            {
-                return this.IsTrialTest ? Resource.Practice : Resource.Contest;
-            }
-        }
+        public string TrialTestName => this.IsTrialTest ? Resource.Practice : Resource.Contest;
 
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
         public bool IsTrialTest { get; set; }

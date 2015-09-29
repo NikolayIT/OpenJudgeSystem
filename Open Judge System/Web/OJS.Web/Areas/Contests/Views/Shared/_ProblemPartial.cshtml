@@ -33,15 +33,7 @@
         <div class="materials">
             @foreach (var resource in Model.Resources)
             {
-                string resourceLink;
-                if (resource.ProblemType == ProblemResourceType.Video)
-                {
-                    resourceLink = resource.Link;
-                }
-                else
-                {
-                    resourceLink = Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId });
-                }
+                var resourceLink = resource.ProblemType == ProblemResourceType.Video ? resource.Link : Url.Action("DownloadResource", new { controller = ViewBag.CompeteType, id = resource.ResourceId });
 
                 if (resource.ProblemType == ProblemResourceType.ProblemDescription)
                 {

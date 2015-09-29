@@ -11,13 +11,7 @@
 
         public string ParticipantLastName { get; set; }
 
-        public string ParticipantFullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", this.ParticipantFirstName, this.ParticipantLastName).Trim();
-            }
-        }
+        public string ParticipantFullName => $"{this.ParticipantFirstName} {this.ParticipantLastName}".Trim();
 
         public IEnumerable<ProblemResultPairViewModel> ProblemResults { get; set; }
 
@@ -25,7 +19,7 @@
         {
             get
             {
-                return this.ProblemResults.Where(x => x.ShowResult).Sum(x => x.BestSubmission == null ? 0 : x.BestSubmission.Points);
+                return this.ProblemResults.Where(x => x.ShowResult).Sum(x => x.BestSubmission?.Points ?? 0);
             }
         }
 
@@ -33,7 +27,7 @@
         {
             get
             {
-                return this.ProblemResults.Sum(x => x.BestSubmission == null ? 0 : x.BestSubmission.Points);
+                return this.ProblemResults.Sum(x => x.BestSubmission?.Points ?? 0);
             }
         }
     }

@@ -191,21 +191,9 @@
             }
         }
 
-        public bool HasContestPassword
-        {
-            get
-            {
-                return this.ContestPassword != null;
-            }
-        }
+        public bool HasContestPassword => this.ContestPassword != null;
 
-        public bool HasPracticePassword
-        {
-            get
-            {
-                return this.PracticePassword != null;
-            }
-        }
+        public bool HasPracticePassword => this.PracticePassword != null;
 
         public double? RemainingTimeInMilliseconds
         {

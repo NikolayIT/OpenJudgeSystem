@@ -12,12 +12,6 @@
 
         public string Output { get; set; }
 
-        public bool IsSuccessful
-        {
-            get
-            {
-                return this.ExitCode == 0;
-            }
-        }
+        public bool IsSuccessful => this.ExitCode == 0;
     }
 }

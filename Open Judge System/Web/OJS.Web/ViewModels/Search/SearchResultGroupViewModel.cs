@@ -35,21 +35,9 @@
             }
         }
 
-        public bool IsSearchTermValid
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.searchTerm) && this.searchTerm.Length >= MinimumTermLength;
-            }
-        }
+        public bool IsSearchTermValid => !string.IsNullOrWhiteSpace(this.searchTerm) && this.searchTerm.Length >= MinimumTermLength;
 
-        public int MinimumSearchTermLength
-        {
-            get
-            {
-                return MinimumTermLength;
-            }
-        }
+        public int MinimumSearchTermLength => MinimumTermLength;
 
         public IDictionary<SearchResultType, IEnumerable<SearchResultViewModel>> SearchResults { get; set; }
     }

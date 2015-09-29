@@ -30,12 +30,6 @@
 
         public TimeSpan UserProcessorTime { get; set; }
 
-        public TimeSpan TotalProcessorTime
-        {
-            get
-            {
-                return this.PrivilegedProcessorTime + this.UserProcessorTime;
-            }
-        }
+        public TimeSpan TotalProcessorTime => this.PrivilegedProcessorTime + this.UserProcessorTime;
     }
 }

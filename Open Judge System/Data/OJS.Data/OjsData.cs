@@ -27,173 +27,52 @@
             this.context = context;
         }
 
-        public IContestsRepository Contests
-        {
-            get
-            {
-                return (ContestsRepository)this.GetRepository<Contest>();
-            }
-        }
+        public IContestsRepository Contests => (ContestsRepository)this.GetRepository<Contest>();
 
-        public IDeletableEntityRepository<Problem> Problems
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<Problem>();
-            }
-        }
+        public IDeletableEntityRepository<Problem> Problems => this.GetDeletableEntityRepository<Problem>();
 
-        public ITestRepository Tests
-        {
-            get
-            {
-                return (TestRepository)this.GetRepository<Test>();
-            }
-        }
+        public ITestRepository Tests => (TestRepository)this.GetRepository<Test>();
 
-        public IDeletableEntityRepository<News> News
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<News>();
-            }
-        }
+        public IDeletableEntityRepository<News> News => this.GetDeletableEntityRepository<News>();
 
-        public IDeletableEntityRepository<Event> Events
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<Event>();
-            }
-        }
+        public IDeletableEntityRepository<Event> Events => this.GetDeletableEntityRepository<Event>();
 
         public IDeletableEntityRepository<ContestCategory> ContestCategories
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ContestCategory>();
-            }
-        }
+            => this.GetDeletableEntityRepository<ContestCategory>();
 
         public IDeletableEntityRepository<ContestQuestion> ContestQuestions
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ContestQuestion>();
-            }
-        }
+            => this.GetDeletableEntityRepository<ContestQuestion>();
 
         public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ContestQuestionAnswer>();
-            }
-        }
+            => this.GetDeletableEntityRepository<ContestQuestionAnswer>();
 
-        public ISubmissionsRepository Submissions
-        {
-            get
-            {
-                return (SubmissionsRepository)this.GetRepository<Submission>();
-            }
-        }
+        public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
-        public IRepository<SubmissionType> SubmissionTypes
-        {
-            get
-            {
-                return this.GetRepository<SubmissionType>();
-            }
-        }
+        public IRepository<SubmissionType> SubmissionTypes => this.GetRepository<SubmissionType>();
 
-        public IDeletableEntityRepository<SourceCode> SourceCodes
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<SourceCode>();
-            }
-        }
+        public IDeletableEntityRepository<SourceCode> SourceCodes => this.GetDeletableEntityRepository<SourceCode>();
 
-        public IRepository<AccessLog> AccessLogs
-        {
-            get
-            {
-                return this.GetRepository<AccessLog>();
-            }
-        }
+        public IRepository<AccessLog> AccessLogs => this.GetRepository<AccessLog>();
 
-        public ITestRunsRepository TestRuns
-        {
-            get
-            {
-                return (TestRunsRepository)this.GetRepository<TestRun>();
-            }
-        }
+        public ITestRunsRepository TestRuns => (TestRunsRepository)this.GetRepository<TestRun>();
 
-        public IParticipantsRepository Participants
-        {
-            get
-            {
-                return (ParticipantsRepository)this.GetRepository<Participant>();
-            }
-        }
+        public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
         public IDeletableEntityRepository<FeedbackReport> FeedbackReports
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<FeedbackReport>();
-            }
-        }
+            => this.GetDeletableEntityRepository<FeedbackReport>();
 
-        public IDeletableEntityRepository<Checker> Checkers
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<Checker>();
-            }
-        }
+        public IDeletableEntityRepository<Checker> Checkers => this.GetDeletableEntityRepository<Checker>();
 
         public IDeletableEntityRepository<ProblemResource> Resources
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ProblemResource>();
-            }
-        }
+            => this.GetDeletableEntityRepository<ProblemResource>();
 
-        public IRepository<Setting> Settings
-        {
-            get
-            {
-                return this.GetRepository<Setting>();
-            }
-        }
+        public IRepository<Setting> Settings => this.GetRepository<Setting>();
 
-        public IUsersRepository Users
-        {
-            get
-            {
-                return (UsersRepository)this.GetRepository<UserProfile>();
-            }
-        }
+        public IUsersRepository Users => (UsersRepository)this.GetRepository<UserProfile>();
 
-        public IRepository<IdentityRole> Roles
-        {
-            get
-            {
-                return this.GetRepository<IdentityRole>();
-            }
-        }
+        public IRepository<IdentityRole> Roles => this.GetRepository<IdentityRole>();
 
-        public IOjsDbContext Context
-        {
-            get
-            {
-                return this.context;
-            }
-        }
+        public IOjsDbContext Context => this.context;
 
         /// <summary>
         /// Saves all changes made in this context to the underlying database.
@@ -216,10 +95,7 @@
         {
             if (disposing)
             {
-                if (this.context != null)
-                {
-                    this.context.Dispose();
-                }
+                this.context?.Dispose();
             }
         }
 

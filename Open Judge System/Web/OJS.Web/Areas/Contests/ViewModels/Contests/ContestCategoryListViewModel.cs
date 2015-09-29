@@ -26,13 +26,7 @@
 
         public string Name { get; set; }
 
-        public string NameUrl
-        {
-            get
-            {
-                return this.Name.ToUrl();
-            }
-        }
+        public string NameUrl => this.Name.ToUrl();
 
         public bool HasChildren { get; set; }
     }
