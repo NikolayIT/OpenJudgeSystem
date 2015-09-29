@@ -4,7 +4,7 @@
 
     using OJS.Workers.ExecutionStrategies;
 
-    public class SqlRunQueryAndCheckExecutionStrategy : IExecutionStrategy
+    public class SqlPrepareDatabaseAndRunUserQueryExecutionStrategy : IExecutionStrategy
     {
         public ExecutionResult Execute(ExecutionContext executionContext)
         {
