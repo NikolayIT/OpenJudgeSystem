@@ -8,6 +8,9 @@
     {
         public ExecutionResult Execute(ExecutionContext executionContext)
         {
+            // Test input = prepare database (first queries)
+            // User code = query to execute
+            // Test output = expected result from user query
             throw new NotImplementedException();
         }
     }
