@@ -92,6 +92,9 @@
             // Output path argument
             arguments.Append(string.Format("/p:OutputPath=\"{0}\" ", this.outputPath));
 
+            // Disable pre and post build events
+            arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
+
             // Additional compiler arguments
             arguments.Append(additionalArguments);
 
