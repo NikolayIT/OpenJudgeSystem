@@ -29,7 +29,7 @@
         }
         @if (Model.CanBePracticed && Model.PracticeEndTime != null)
         {
-            <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("hh:mm d.M.yyy")</h5>
+            <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("HH:mm d.M.yyy")</h5>
         }
         @if (!string.IsNullOrEmpty(Model.Description))
         {
