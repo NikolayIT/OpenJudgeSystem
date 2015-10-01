@@ -24,7 +24,7 @@
         @if (Model.CanBeCompeted && Model.EndTime != null)
         {
             <h5>
-                @Resource.Competition_active_until: @Model.EndTime.Value.ToString("hh:mm d.M.yyy")
+                @Resource.Competition_active_until: @Model.EndTime.Value.ToString("HH:mm d.M.yyy")
             </h5>
         }
         @if (Model.CanBePracticed && Model.PracticeEndTime != null)
