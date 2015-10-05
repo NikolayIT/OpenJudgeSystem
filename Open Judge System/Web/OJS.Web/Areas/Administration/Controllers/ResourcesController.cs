@@ -97,11 +97,11 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            if (resource.Type == ProblemResourceType.Video && string.IsNullOrEmpty(resource.Link))
+            if (resource.Type == ProblemResourceType.Link && string.IsNullOrEmpty(resource.Link))
             {
                 this.ModelState.AddModelError("Link", "Линкът не може да бъде празен");
             }
-            else if (resource.Type != ProblemResourceType.Video && (resource.File == null || resource.File.ContentLength == 0))
+            else if (resource.Type != ProblemResourceType.Link && (resource.File == null || resource.File.ContentLength == 0))
             {
                 this.ModelState.AddModelError("File", "Файлът е задължителен");
             }
@@ -125,7 +125,7 @@
                     OrderBy = resource.OrderBy,
                 };
 
-                if (resource.Type == ProblemResourceType.Video)
+                if (resource.Type == ProblemResourceType.Link)
                 {
                     newResource.Link = resource.Link;
                 }
@@ -208,11 +208,11 @@
                 existingResource.Type = resource.Type;
                 existingResource.OrderBy = resource.OrderBy;
 
-                if (existingResource.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(resource.Link))
+                if (existingResource.Type == ProblemResourceType.Link && !string.IsNullOrEmpty(resource.Link))
                 {
                     existingResource.Link = resource.Link;
                 }
-                else if (resource.Type != ProblemResourceType.Video && resource.File != null && resource.File.ContentLength > 0)
+                else if (resource.Type != ProblemResourceType.Link && resource.File != null && resource.File.ContentLength > 0)
                 {
                     existingResource.File = resource.File.InputStream.ToByteArray();
                     existingResource.FileExtension = resource.FileExtension;

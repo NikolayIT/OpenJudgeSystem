@@ -42,7 +42,7 @@
             @foreach (var resource in Model.Resources)
             {
                 string resourceLink;
-                if (resource.ProblemType == ProblemResourceType.Video)
+                if (resource.ProblemType == ProblemResourceType.Link)
                 {
                     resourceLink = resource.Link;
                 }
@@ -59,7 +59,7 @@
                 {
                     <span class="glyphicon glyphicon-thumbs-up resource-glyph"></span>
                 }
-                else if (resource.ProblemType == ProblemResourceType.Video)
+                else if (resource.ProblemType == ProblemResourceType.Link)
                 {
                     <span class="glyphicon glyphicon-facetime-video resource-glyph"></span>
                 }

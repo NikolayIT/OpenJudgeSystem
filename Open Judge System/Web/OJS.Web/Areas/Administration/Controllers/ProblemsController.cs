@@ -142,7 +142,7 @@
                     .All(res => !string.IsNullOrEmpty(res.Name) &&
                         ((res.Type == ProblemResourceType.AuthorsSolution && res.File != null && res.File.ContentLength > 0) ||
                         (res.Type == ProblemResourceType.ProblemDescription && res.File != null && res.File.ContentLength > 0) ||
-                        (res.Type == ProblemResourceType.Video && !string.IsNullOrEmpty(res.Link))));
+                        (res.Type == ProblemResourceType.Link && !string.IsNullOrEmpty(res.Link))));
 
                 if (!validResources)
                 {
@@ -646,7 +646,7 @@
 
             foreach (var resource in resources)
             {
-                if (!string.IsNullOrEmpty(resource.Name) && resource.Type == ProblemResourceType.Video && resource.Link != null)
+                if (!string.IsNullOrEmpty(resource.Name) && resource.Type == ProblemResourceType.Link && resource.Link != null)
                 {
                     problem.Resources.Add(new ProblemResource
                     {
@@ -659,7 +659,7 @@
                     orderCount++;
                     continue;
                 }
-                else if (!string.IsNullOrEmpty(resource.Name) && resource.Type != ProblemResourceType.Video && resource.File != null)
+                else if (!string.IsNullOrEmpty(resource.Name) && resource.Type != ProblemResourceType.Link && resource.File != null)
                 {
                     problem.Resources.Add(new ProblemResource
                     {

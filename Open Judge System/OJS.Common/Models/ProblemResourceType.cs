@@ -10,7 +10,7 @@
         [Description("Авторско решение")]
         AuthorsSolution = 2,
 
-        [Description("Видео")]
-        Video = 3,
+        [Description("Линк")]
+        Link = 3,
     }
 }
