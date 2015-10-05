@@ -48,8 +48,14 @@
                 result.TestResults.Add(testResult);
             }
 
-            // Clean our mess
-            File.Delete(outputFile);
+            try
+            {
+                // Clean our mess
+                File.Delete(outputFile);
+            }
+            catch (Exception)
+            {
+            }
 
             return result;
         }
