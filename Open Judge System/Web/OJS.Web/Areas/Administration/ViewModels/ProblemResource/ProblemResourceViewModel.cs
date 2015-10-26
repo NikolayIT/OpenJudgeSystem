@@ -25,6 +25,7 @@
                     OrderBy = res.OrderBy,
                     ProblemId = res.ProblemId,
                     ProblemName = res.Problem.Name,
+                    RawLink = res.Link
                 };
             }
         }
@@ -47,13 +48,7 @@
         [DefaultValue(ProblemResourceType.ProblemDescription)]
         public ProblemResourceType Type { get; set; }
 
-        public int DropDownTypeIndex
-        {
-            get
-            {
-                return (int)this.Type - 1;
-            }
-        }
+        public int DropDownTypeIndex => (int)this.Type - 1;
 
         public IEnumerable<SelectListItem> AllTypes { get; set; }
 
@@ -70,10 +65,26 @@
 
         [Display(Name = "Линк")]
         [DefaultValue("http://")]
-        public string Link { get; set; }
+        public string RawLink { get; set; }
 
         [Display(Name = "Подредба")]
         [Required(ErrorMessage = "Подредбата е задължителна!")]
         public int OrderBy { get; set; }
+
+        public bool IsLinkFromSvn =>
+            !string.IsNullOrWhiteSpace(this.RawLink) && this.RawLink.StartsWith(Settings.SvnBaseUrl, StringComparison.OrdinalIgnoreCase);
+
+        public string Link
+        {
+            get
+            {
+                if (this.IsLinkFromSvn)
+                {
+                    return this.RawLink.Replace(Settings.SvnBaseUrl, Settings.LearningSystemSvnDownloadBaseUrl);
+                }
+
+                return this.RawLink;
+            }
+        }
     }
 }

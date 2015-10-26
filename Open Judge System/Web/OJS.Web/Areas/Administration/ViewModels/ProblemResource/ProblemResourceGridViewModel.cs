@@ -24,7 +24,7 @@
                     ProblemId = resource.ProblemId,
                     Name = resource.Name,
                     Type = resource.Type,
-                    Link = resource.Link,
+                    RawLink = resource.Link,
                     OrderBy = resource.OrderBy,
                 };
             }
@@ -43,17 +43,27 @@
         [Display(Name = "Тип")]
         public ProblemResourceType Type { get; set; }
 
-        [Display(Name = "Линк")]
-        public string Link { get; set; }
-
         [Display(Name = "Подредба")]
         public int OrderBy { get; set; }
 
-        public string TypeName
+        [Display(Name = "Линк")]
+        public string RawLink { get; set; }
+
+        public string TypeName => this.Type.GetDescription();
+
+        public bool IsLinkFromSvn => 
+            !string.IsNullOrWhiteSpace(this.RawLink) && this.RawLink.StartsWith(Settings.SvnBaseUrl, StringComparison.OrdinalIgnoreCase);
+
+        public string Link
         {
             get
             {
-                return this.Type.GetDescription();
+                if (this.IsLinkFromSvn)
+                {
+                    return this.RawLink.Replace(Settings.SvnBaseUrl, Settings.LearningSystemSvnDownloadBaseUrl);
+                }
+
+                return this.RawLink;
             }
         }
     }

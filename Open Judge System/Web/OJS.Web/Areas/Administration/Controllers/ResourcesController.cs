@@ -97,7 +97,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            if (resource.Type == ProblemResourceType.Link && string.IsNullOrEmpty(resource.Link))
+            if (resource.Type == ProblemResourceType.Link && string.IsNullOrEmpty(resource.RawLink))
             {
                 this.ModelState.AddModelError("Link", "Линкът не може да бъде празен");
             }
@@ -127,7 +127,7 @@
 
                 if (resource.Type == ProblemResourceType.Link)
                 {
-                    newResource.Link = resource.Link;
+                    newResource.Link = resource.RawLink;
                 }
                 else
                 {
@@ -208,9 +208,9 @@
                 existingResource.Type = resource.Type;
                 existingResource.OrderBy = resource.OrderBy;
 
-                if (existingResource.Type == ProblemResourceType.Link && !string.IsNullOrEmpty(resource.Link))
+                if (existingResource.Type == ProblemResourceType.Link && !string.IsNullOrEmpty(resource.RawLink))
                 {
-                    existingResource.Link = resource.Link;
+                    existingResource.Link = resource.RawLink;
                 }
                 else if (resource.Type != ProblemResourceType.Link && resource.File != null && resource.File.ContentLength > 0)
                 {

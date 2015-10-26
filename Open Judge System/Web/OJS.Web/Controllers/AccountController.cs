@@ -33,8 +33,8 @@
 
         private static readonly string GetExternalUserUrl = string.Format(
             "http{0}://{1}/Api/ExternalAuthentication/GetUserInfo",
-            ConfigurationManager.AppSettings["LearningSystemUrl"].StartsWith("localhost") ? string.Empty : "s",
-            ConfigurationManager.AppSettings["LearningSystemUrl"]);
+            Settings.LearningSystemUrl.StartsWith("localhost") ? string.Empty : "s",
+            Settings.LearningSystemUrl);
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))

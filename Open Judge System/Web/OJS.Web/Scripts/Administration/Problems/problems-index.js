@@ -156,7 +156,7 @@ function initializeGrid(contestId) {
                     { field: "Name", title: "Име" },
                     { field: "Type", title: "Тип", template: "#= TypeName #" },
                     { field: "OrderBy", title: "Подредба" },
-                    { title: "Линк", template: '# if(Type == 3) { # <a href="#= Link #" class="btn btn-sm btn-primary" target="_blank">Видео</a> # } else { # <a href="/Administration/Resources/Download/#= Id #" class="btn btn-sm btn-primary" >Свали</a> # } #' },
+                    { title: "Линк", template: '# if(Type == 3) { # <a href="#= Link #" class="btn btn-sm btn-primary" target="_blank">Линк</a> # } else { # <a href="/Administration/Resources/Download/#= Id #" class="btn btn-sm btn-primary" >Свали</a> # } #' },
                     { title: "Операции", template: "<a href='/Administration/Resources/Edit/#= Id #' class='btn btn-sm btn-primary'>Промяна</a> <a href='\\#' class='btn btn-sm btn-primary k-grid-delete'>Изтрий</a>" }
                 ]
             });

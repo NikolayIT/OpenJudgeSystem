@@ -1,4 +1,5 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
+﻿@using OJS.Web.Areas.Administration.ViewModels.ProblemResource
+@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
 
 @{
     ViewBag.Title = "Нов ресурс";
@@ -11,7 +12,7 @@
         @Html.AntiForgeryToken();
         @Html.HiddenFor(m => m.ProblemId);
         @Html.HiddenFor(m => m.ProblemName);
-        
+
         <div class="row">
             <div class="editor-label col-xs-2">
                 <div class="pull-right">
@@ -41,7 +42,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или видео към задачата" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или линк" data-tooltip="true"></span>
                 @Html.ValidationMessageFor(m => m.Type)
             </div>
         </div>
@@ -74,11 +75,11 @@
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.TextBoxFor(m => m.Link, new { @class = "form-control pull-left full-editor" })
+                @Html.TextBox(nameof(ProblemResourceViewModel.RawLink), Model.Link, new { @class = "form-control pull-left full-editor" })
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк към видеото" data-tooltip="true"></span>
-                @Html.ValidationMessage("Link")
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк" data-tooltip="true"></span>
+                @Html.ValidationMessage(nameof(ProblemResourceViewModel.RawLink))
             </div>
         </div>
         <div class="row" id="file-select">

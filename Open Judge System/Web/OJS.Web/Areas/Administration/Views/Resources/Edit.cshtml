@@ -1,10 +1,11 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
+﻿@using OJS.Web.Areas.Administration.ViewModels.ProblemResource
+@model OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceViewModel
 
 @{
     ViewBag.Title = "Промяна";
 }
 
-<h2>@ViewBag.Title на @Model.Name</h2>
+<h2>@ViewBag.Title на ресурс @Model.Name</h2>
 <div id="create-form" class="container">
     @using (Html.BeginForm("Edit", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -42,7 +43,7 @@
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или видео към задачата" data-tooltip="true"></span>
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Изберете тип ресурс - описание, авторско решение или линк" data-tooltip="true"></span>
                 @Html.ValidationMessageFor(m => m.Type)
             </div>
         </div>
@@ -75,11 +76,11 @@
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.TextBoxFor(m => m.Link, new { @class = "form-control pull-left full-editor" })
+                @Html.TextBox(nameof(ProblemResourceViewModel.RawLink), Model.Link, new { @class = "form-control pull-left full-editor"})
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк към видеото" data-tooltip="true"></span>
-                @Html.ValidationMessage("Link")
+                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете линк" data-tooltip="true"></span>
+                @Html.ValidationMessage(nameof(ProblemResourceViewModel.RawLink))
             </div>
         </div>
         <div class="row" id="file-select">

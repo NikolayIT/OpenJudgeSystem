@@ -16,7 +16,7 @@
                 {
                     ResourceId = resource.Id,
                     Name = resource.Name,
-                    Link = resource.Link,
+                    RawLink = resource.Link,
                     ProblemType = resource.Type
                 };
             }
@@ -26,8 +26,24 @@
 
         public string Name { get; set; }
 
-        public string Link { get; set; }
+        public string RawLink { get; set; }
 
         public ProblemResourceType ProblemType { get; set; }
+
+        public bool IsLinkFromSvn =>
+            !string.IsNullOrWhiteSpace(this.RawLink) && this.RawLink.StartsWith(Settings.SvnBaseUrl, StringComparison.OrdinalIgnoreCase);
+
+        public string Link
+        {
+            get
+            {
+                if (this.IsLinkFromSvn)
+                {
+                    return this.RawLink.Replace(Settings.SvnBaseUrl, Settings.LearningSystemSvnDownloadBaseUrl);
+                }
+
+                return this.RawLink;
+            }
+        }
     }
 }

@@ -8,14 +8,15 @@
         columns.Bound(model => model.Name);
         columns.Bound(model => model.Type).ClientTemplate("#= TypeName #");
         columns.Bound(model => model.OrderBy);
-        columns.Bound(model => model.Link).ClientTemplate("# if(Type == 3) { # <a href='#= Link #' class='btn btn-sm btn-primary' target='_blank'>Видео</a> # } else { # <a href='/Administration/Resources/Download/#= Id #' class='btn btn-sm btn-primary' >Свали</a> # } #");
+        columns.Bound(model => model.Link).ClientTemplate("# if(Type == 3) { # <a href='#= Link #' class='btn btn-sm btn-primary' target='_blank'>Линк</a> # } else { # <a href='/Administration/Resources/Download/#= Id #' class='btn btn-sm btn-primary'>Свали</a> # } #");
     })
-        .Pageable(x => x.Refresh(true))
-        .Sortable(x => x.Enabled(true).AllowUnsort(false))
-        .Filterable(x => x.Enabled(true))
-        .DataSource(datasource => datasource
-            .Ajax()
-            .ServerOperation(true)
-            .Sort(sort => sort.Add(x => x.Id))
-            .Read(read => read.Action("ReadResources", "Problems", new { id = Model }))
-        ))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Sort(sort => sort.Add(x => x.Id))
+        .Read(read => read.Action("ReadResources", "Problems", new { id = Model }))
+    )
+)
