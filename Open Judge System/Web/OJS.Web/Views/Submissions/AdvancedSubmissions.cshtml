@@ -58,6 +58,8 @@
         }
     )
     .Events(ev => ev.DataBound("dataBound"))
+    .Sortable()
+    .Filterable()
     .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
