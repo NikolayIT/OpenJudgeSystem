@@ -21,13 +21,13 @@
 <div class="row">
     <div class="col-md-8">
         <h3>@Resource.Contest_details</h3>
-        @if (Model.CanBeCompeted && Model.EndTime != null)
+        @if ((Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest) && Model.EndTime != null)
         {
             <h5>
                 @Resource.Competition_active_until: @Model.EndTime.Value.ToString("HH:mm d.M.yyy")
             </h5>
         }
-        @if (Model.CanBePracticed && Model.PracticeEndTime != null)
+        @if ((Model.CanBePracticed || User.IsAdmin() || Model.UserIsLecturerInContest) && Model.PracticeEndTime != null)
         {
             <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("HH:mm d.M.yyy")</h5>
         }
@@ -61,7 +61,7 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
-        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword))
+        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword) || (User.IsAdmin() || Model.UserIsLecturerInContest))
         {
             foreach (var problem in Model.Problems)
             {
@@ -103,7 +103,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        @if (Model.CanBeCompeted)
+        @if (Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest)
         {
             @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success" })
         }

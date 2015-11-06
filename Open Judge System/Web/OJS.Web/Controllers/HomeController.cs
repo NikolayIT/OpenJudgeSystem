@@ -1,10 +1,12 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Home.Index;
 
     public class HomeController : BaseController
@@ -16,6 +18,9 @@
 
         public ActionResult Index()
         {
+            var isAdmin = this.User.IsAdmin();
+            var userId = this.UserProfile?.Id;
+
             var indexViewModel = new IndexViewModel();
             indexViewModel.ActiveContests =
                 this.Data.Contests.AllActive()
@@ -24,7 +29,10 @@
                     .ToList();
 
             indexViewModel.FutureContests =
-                this.Data.Contests.AllFuture()
+                this.Data.Contests.All()
+                    .Where(x => x.StartTime > DateTime.Now  &&
+                        (x.IsVisible ||
+                            (x.Lecturers.Any(l => l.LecturerId == userId) || isAdmin)))
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList();

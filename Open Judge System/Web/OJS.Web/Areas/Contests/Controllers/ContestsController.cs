@@ -26,9 +26,16 @@ namespace OJS.Web.Areas.Contests.Controllers
 
         public ActionResult Details(int id)
         {
+            var isAdmin = this.User.IsAdmin();
+            var userId = this.UserProfile?.Id;
+
             var contestViewModel = this.Data.Contests
                 .All()
-                .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
+                .Where(x =>
+                    x.Id == id &&
+                    !x.IsDeleted &&
+                    (x.IsVisible ||
+                        (x.Lecturers.Any(l => l.LecturerId == userId) || isAdmin)))
                 .Select(ContestViewModel.FromContest)
                 .FirstOrDefault();
 
@@ -63,8 +70,8 @@ namespace OJS.Web.Areas.Contests.Controllers
         public ActionResult UserSubmissions([DataSourceRequest]DataSourceRequest request, int contestId)
         {
             var userSubmissions = this.Data.Submissions.All()
-                                                        .Where(x => 
-                                                            x.Participant.UserId == this.UserProfile.Id && 
+                                                        .Where(x =>
+                                                            x.Participant.UserId == this.UserProfile.Id &&
                                                             x.Problem.ContestId == contestId &&
                                                             x.Problem.ShowResults)
                                                         .Select(SubmissionResultViewModel.FromSubmission);

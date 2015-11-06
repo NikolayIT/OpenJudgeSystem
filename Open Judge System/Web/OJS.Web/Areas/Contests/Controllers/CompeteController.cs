@@ -50,14 +50,14 @@
         /// <param name="contest">Contest to validate.</param>
         /// <param name="official">A flag checking if the contest will be practiced or competed</param>
         [NonAction]
-        public static void ValidateContest(Contest contest, bool official)
+        public void ValidateContest(Contest contest, bool official)
         {
-            if (contest == null || contest.IsDeleted || !contest.IsVisible)
+            if (contest == null || contest.IsDeleted || !(contest.IsVisible || this.User.IsAdmin() || contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id)))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
             }
 
-            if (official && !contest.CanBeCompeted)
+            if ((official && !contest.CanBeCompeted) && !(this.User.IsAdmin() || contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id)))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
