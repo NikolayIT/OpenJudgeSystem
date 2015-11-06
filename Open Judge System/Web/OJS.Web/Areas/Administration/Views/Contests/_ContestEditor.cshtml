@@ -22,7 +22,7 @@
             @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -37,7 +37,7 @@
             @Html.ValidationMessageFor(m => m.Type)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -52,7 +52,7 @@
             @Html.ValidationMessageFor(m => m.CategoryId)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -67,7 +67,7 @@
             @Html.ValidationMessageFor(m => m.Description)
         </div>
     </div>
-    <br/>
+    <br />
 </fieldset>
 
 <fieldset>
@@ -86,7 +86,7 @@
             @Html.ValidationMessageFor(m => m.StartTime)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -101,7 +101,7 @@
             @Html.ValidationMessageFor(m => m.EndTime)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -116,7 +116,7 @@
             @Html.ValidationMessageFor(m => m.PracticeStartTime)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -131,7 +131,7 @@
             @Html.ValidationMessageFor(m => m.PracticeEndTime)
         </div>
     </div>
-    <br/>
+    <br />
 </fieldset>
 
 <fieldset>
@@ -150,7 +150,7 @@
             @Html.ValidationMessageFor(m => m.ContestPassword)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -165,7 +165,7 @@
             @Html.ValidationMessageFor(m => m.PracticePassword)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -180,7 +180,7 @@
             @Html.ValidationMessageFor(m => m.NewIpPassword)
         </div>
     </div>
-    <br/>
+    <br />
 </fieldset>
 
 <fieldset>
@@ -199,7 +199,7 @@
             @Html.ValidationMessageFor(m => m.LimitBetweenSubmissions)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -214,7 +214,7 @@
             @Html.ValidationMessageFor(m => m.OrderBy)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -229,7 +229,7 @@
             @Html.ValidationMessageFor(m => m.IsVisible)
         </div>
     </div>
-    <br/>
+    <br />
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -254,7 +254,7 @@
             @Html.ValidationMessageFor(m => m.AllowedIps)
         </div>
     </div>
-    <br/>
+    <br />
 </fieldset>
 
 <fieldset>
@@ -269,4 +269,8 @@
             value: ips.length ? ips[ips.length - 1] : ''
         };
     }
+
+    $(function () {
+        $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp');
+    });
 </script>

@@ -64,6 +64,8 @@
 
         public const int MinimumSearchTermLength = 3;
 
+        public const string DefaultPublicIp = "217.174.159.226";
+
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
 
         #endregion
