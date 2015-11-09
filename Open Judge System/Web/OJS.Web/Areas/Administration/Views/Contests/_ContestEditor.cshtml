@@ -195,7 +195,7 @@
             @Html.EditorFor(m => m.LimitBetweenSubmissions, new { @class = "form-control pull-left full-editor" })
         </div>
         <div class="editor-field col-xs-4">
-            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете лимит между изпращане на две последователни решения" data-tooltip="true"></span>
+            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете лимит между изпращане на две последователни решения в секунди" data-tooltip="true"></span>
             @Html.ValidationMessageFor(m => m.LimitBetweenSubmissions)
         </div>
     </div>
@@ -250,7 +250,7 @@
             )
         </div>
         <div class="editor-field col-xs-4">
-            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете позволените IP-та за състезанието" data-tooltip="true"></span>
+            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете позволените IP-та за състезанието (разделени със ',')" data-tooltip="true"></span>
             @Html.ValidationMessageFor(m => m.AllowedIps)
         </div>
     </div>
