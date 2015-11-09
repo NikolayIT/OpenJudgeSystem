@@ -35,7 +35,7 @@ namespace OJS.Web.Areas.Contests.Controllers
                     x.Id == id &&
                     !x.IsDeleted &&
                     (x.IsVisible ||
-                        (x.Lecturers.Any(l => l.LecturerId == userId) || isAdmin)))
+                        (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
                 .Select(ContestViewModel.FromContest)
                 .FirstOrDefault();
 

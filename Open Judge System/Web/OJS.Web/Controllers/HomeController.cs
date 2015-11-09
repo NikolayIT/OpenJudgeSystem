@@ -32,7 +32,7 @@
                 this.Data.Contests.All()
                     .Where(x => x.StartTime > DateTime.Now  &&
                         (x.IsVisible ||
-                            (x.Lecturers.Any(l => l.LecturerId == userId) || isAdmin)))
+                            (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList();
