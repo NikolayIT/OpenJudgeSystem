@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
+    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Common;
@@ -253,6 +255,24 @@
             return this.RedirectToAction(GlobalConstants.Index);
         }
 
+        public ActionResult BulkDeleteSubmissions([DataSourceRequest]DataSourceRequest request)
+        {
+            request.PageSize = 0;
+
+            var enumerable = this.GetData().ToDataSourceResult(request).Data as IEnumerable<GridModelType>;
+
+            var submissionIds = enumerable.Where(x => x.Id.HasValue).Select(x => (int)x.Id);
+
+            foreach (var submissionId in submissionIds)
+            {
+                this.Data.Submissions.Delete(submissionId);
+            }
+
+            this.Data.SaveChanges();
+            this.TempData[GlobalConstants.InfoMessage] = "Успешно изтрихте решенията";
+            return this.RedirectToAction("Index", "Submissions");
+        }
+
         public JsonResult GetSubmissionTypes(int problemId, bool? allowBinaryFilesUpload)
         {
             var selectedProblemContest = this.Data.Contests.All().FirstOrDefault(contest => contest.Problems.Any(problem => problem.Id == problemId));
@@ -352,7 +372,7 @@
         public JsonResult Contests(string text)
         {
             var contestEntities = this.Data.Contests.All();
-                
+
             if (!string.IsNullOrEmpty(text))
             {
                 contestEntities = contestEntities.Where(c => c.Name.ToLower().Contains(text.ToLower()));
@@ -364,7 +384,7 @@
             }
 
             var contests = contestEntities.OrderByDescending(c => c.CreatedOn).Select(c => new { c.Id, c.Name });
-            
+
             return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
 

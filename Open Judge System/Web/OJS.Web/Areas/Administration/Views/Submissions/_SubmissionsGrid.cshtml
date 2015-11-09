@@ -23,6 +23,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Text("Създай").Action("Create", ControllerName);
+            toolbar.Custom().Text("Изтрии избраните решения").HtmlAttributes(new { id = "delete-bulk-submission" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new {Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#"})).Name("custom-toolbar-button");
             toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
             toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
@@ -59,5 +60,6 @@
 <script type="text/javascript">
     function onDataBound(e) {
         CreateExportToExcelButton();
+        CreateKendoSubmitParamsButton('delete-bulk-submission');
     }
 </script>
