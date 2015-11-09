@@ -25,3 +25,9 @@
 </div>
 
 @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+
+<script>
+    $(function () {
+        $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp');
+    });
+</script>
