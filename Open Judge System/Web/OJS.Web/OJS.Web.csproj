@@ -1145,7 +1145,7 @@
     <Content Include="Areas\Contests\Views\Shared\_ProblemPartial.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_QuickContestsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ProblemResourceForm.cshtml" />
-    <Content Include="Content\Files\DemoTests.zip" />
+    <Content Include="Content\PublicFiles\DemoTests.zip" />
     <Content Include="Areas\Administration\Views\Resources\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
@@ -1197,7 +1197,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\Files\SoftUni-Judge-System-Guidelines.pdf" />
+    <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines.pdf" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
