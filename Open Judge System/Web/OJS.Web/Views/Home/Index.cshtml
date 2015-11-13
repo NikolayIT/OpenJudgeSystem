@@ -13,7 +13,19 @@
             <p class="lead">@Resource.Project_subtitle</p>
             @if (Model.ActiveContests.Any())
             {
-                <div class="fb-like" data-href="https://www.facebook.com/SoftwareUniversity" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
+                <div class="fb-page"
+                     data-href="https://www.facebook.com/SoftwareUniversity"
+                     data-width="100" data-small-header="true" data-adapt-container-width="true"
+                     data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
+
+                    <div class="fb-xfbml-parse-ignore">
+                        <blockquote cite="https://www.facebook.com/SoftwareUniversity">
+                            <a href="https://www.facebook.com/SoftwareUniversity">
+                                Software University
+                            </a>
+                        </blockquote>
+                    </div>
+                </div>
             }
         </div>
         <div class="pull-right col-md-6">
@@ -54,11 +66,23 @@
                         }
                     }
                 </table>
-            }
-            else
-            {
-                <div class="fb-like" data-href="https://www.facebook.com/SoftwareUniversity" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
-            }
+              }
+              else
+              {
+                  <div class="fb-page"
+                       data-href="https://www.facebook.com/SoftwareUniversity"
+                       data-width="100" data-small-header="true" data-adapt-container-width="true"
+                       data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
+
+                      <div class="fb-xfbml-parse-ignore">
+                          <blockquote cite="https://www.facebook.com/SoftwareUniversity">
+                              <a href="https://www.facebook.com/SoftwareUniversity">
+                                  Software University
+                              </a>
+                          </blockquote>
+                      </div>
+                  </div>
+              }
         </div>
     </div>
 </div>
