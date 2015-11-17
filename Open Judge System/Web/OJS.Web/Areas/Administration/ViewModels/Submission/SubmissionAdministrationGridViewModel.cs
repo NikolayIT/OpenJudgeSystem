@@ -1,4 +1,6 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels.Submission
+﻿using OJS.Common.Extensions;
+
+namespace OJS.Web.Areas.Administration.ViewModels.Submission
 {
     using System;
     using System.ComponentModel;
@@ -23,6 +25,8 @@
                     ParticipantName = sub.Participant.User.UserName,
                     ProblemId = sub.ProblemId,
                     ProblemName = sub.Problem.Name,
+                    ContestName = sub.Problem.Contest.Name,
+                    ContestId = sub.Problem.ContestId,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
                     Processed = sub.Processed,
@@ -42,6 +46,11 @@
 
         [Display(Name = "Задача")]
         public string ProblemName { get; set; }
+
+        [Display(Name = "Състезание")]
+        public string ContestName { get; set; }
+
+        public int ContestId { get; set; }
 
         [Display(Name = "Потребител")]
         public string ParticipantName { get; set; }
@@ -81,5 +90,7 @@
                 }
             }
         }
+
+        public string ContestUrlName => this.ContestName.ToUrl();
     }
 }
