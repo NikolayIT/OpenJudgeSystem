@@ -46,7 +46,7 @@
             {
                 submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
             }
-
+            
             return submissions.Select(GridModelType.ViewModel);
         }
 
@@ -259,18 +259,17 @@
         {
             request.PageSize = 0;
 
-            var enumerable = this.GetData().ToDataSourceResult(request).Data as IEnumerable<GridModelType>;
-
-            var submissionIds = enumerable.Where(x => x.Id.HasValue).Select(x => (int)x.Id);
-
-            foreach (var submissionId in submissionIds)
+            var submissions = this.GetData().ToDataSourceResult(request).Data;
+            
+            foreach (GridModelType submission in submissions)
             {
-                this.Data.Submissions.Delete(submissionId);
+                this.Data.Submissions.Delete(submission.Id);
             }
 
             this.Data.SaveChanges();
-            this.TempData[GlobalConstants.InfoMessage] = "Успешно изтрихте решенията";
-            return this.RedirectToAction("Index", "Submissions");
+
+            this.TempData[GlobalConstants.InfoMessage] = "Успешно изтрихте решенията.";
+            return this.RedirectToAction("Index");
         }
 
         public JsonResult GetSubmissionTypes(int problemId, bool? allowBinaryFilesUpload)
@@ -378,7 +377,7 @@
                 contestEntities = contestEntities.Where(c => c.Name.ToLower().Contains(text.ToLower()));
             }
 
-            if (this.User.IsLecturer())
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
                 contestEntities = contestEntities.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
             }

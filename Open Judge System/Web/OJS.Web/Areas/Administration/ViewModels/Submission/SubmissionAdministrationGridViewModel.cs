@@ -38,9 +38,8 @@ namespace OJS.Web.Areas.Administration.ViewModels.Submission
         }
 
         [Display(Name = "№")]
-        [DefaultValue(null)]
         [HiddenInput(DisplayValue = false)]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public int? ProblemId { get; set; }
 
