@@ -23,7 +23,7 @@
     .Columns(columns =>
         {
             columns.Bound(s => s.Id).Title("№");
-            columns.Bound(s => s.SubmitedOn).Title("Изпратено от").ClientTemplate(
+            columns.Bound(s => s.ParticipantName).Title("Изпратено от").ClientTemplate(
                 "<div>" +
                     "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
                 "</div>" +
@@ -44,6 +44,7 @@
                         "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
                     "</div>"
                 ).Width("25%");
+
             if (User.IsAdmin())
             {
                 columns.Bound(s => s.Id).Title("Admin").ClientTemplate(@"
@@ -53,8 +54,8 @@
                         <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
                         <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
                         <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
-                    </div>");
-            }
+                    </div>").Filterable(false);
+            }            
         }
     )
     .Events(ev => ev.DataBound("dataBound"))
