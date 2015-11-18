@@ -25,7 +25,7 @@
     .ToolBar(toolbar =>
     {
         toolbar.Custom().Text("Създай").Action("Create", ControllerName);
-        toolbar.Custom().Text("Изтрий избраните решения").HtmlAttributes(new { id = "delete-bulk-submission" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
+        toolbar.Custom().Text("Изтрий избраните решения").HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
         toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
@@ -62,6 +62,13 @@
 <script type="text/javascript">
     function onDataBound(e) {
         CreateExportToExcelButton();
-        CreateKendoSubmitParamsButton('delete-bulk-submission');
+        CreateKendoSubmitParamsButton('bulk-delete-submissions');
     }
+
+    $(function () {
+        $('#bulk-delete-submissions').click(function () {
+            var submissionsCount = $('#DataGrid').data('kendoGrid').dataSource.total();
+            return confirm('Сигурни ли сте, че искате да изтриете избраните ' + submissionsCount + ' решения? Моля, уверете се, че сте филтрирали коректно преди да продължите.');
+        });
+    });
 </script>

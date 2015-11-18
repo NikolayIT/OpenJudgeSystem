@@ -259,7 +259,8 @@
         {
             request.PageSize = 0;
 
-            var submissions = this.GetData().ToDataSourceResult(request).Data;
+            var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
+            var submissions = submissionsDataSourceResult.Data;
             
             foreach (GridModelType submission in submissions)
             {
@@ -268,7 +269,7 @@
 
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Успешно изтрихте решенията.";
+            this.TempData[GlobalConstants.InfoMessage] = $"Успешно изтрихте {submissionsDataSourceResult.Total} решения.";
             return this.RedirectToAction("Index");
         }
 
