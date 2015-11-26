@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Text;
 
-    using Ionic.Zip;
+    using ICSharpCode.SharpZipLib.Zip;
 
     using OJS.Common.Extensions;
 
@@ -66,13 +66,8 @@
 
         private static void UnzipFile(string fileToUnzip, string outputDirectory)
         {
-            using (var zipFile = ZipFile.Read(fileToUnzip))
-            {
-                foreach (var entry in zipFile)
-                {
-                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
+            var fastZip = new FastZip();
+            fastZip.ExtractZip(fileToUnzip, outputDirectory, null);
         }
 
         private string FindSolutionOrProjectFile()
