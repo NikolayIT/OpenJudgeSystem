@@ -107,9 +107,9 @@
 
             function validateBinarySubmit(fileInput, size, extensions) {
                 var validationResult = validateBinaryFileExists(fileInput)
-                                        && validateBinaryFileSize(fileInput, size)
-                                        && validateBinaryFileAllowedExtensions(fileInput, extensions)
-                                        && timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
+                    && validateBinaryFileSize(fileInput, size)
+                    && validateBinaryFileAllowedExtensions(fileInput, extensions)
+                    && timeValidator.validate(submitTime, limitBetweenSubmissions, serverTime);
                 return validationResult;
             }
 

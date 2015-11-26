@@ -79,11 +79,11 @@
             @using (Ajax.BeginForm("Submit",
                 new { controller = ViewBag.CompeteType, id = Model.ContestId },
                 new AjaxOptions
-                    {
-                        OnSuccess = "messageNotifier.notifySuccess",
-                        OnFailure = "messageNotifier.notifyFailure",
-                        OnBegin = "validateSubmit.content"
-                    },
+                {
+                    OnSuccess = "messageNotifier.notifySuccess",
+                    OnFailure = "messageNotifier.notifyFailure",
+                    OnBegin = "validateSubmit.content"
+                },
                 new { id = "problem_" + Model.ProblemId }))
             {
                 @Html.HiddenFor(x => x.ProblemId)
@@ -107,7 +107,7 @@
                             <strong>Size limit:</strong> @(string.Format("{0:0.00}", Model.FileSizeLimit.Value)) @:KB
                             <br />
                         }
-                        
+
                         <strong>Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span>
                         @if (!string.IsNullOrWhiteSpace(Model.CheckerDescription))
                         {
@@ -125,7 +125,7 @@
                                 var fileExtensionsInfo = $("#FileUploadAllowedFileExtensions_@Model.ProblemId");
                                 var fileInput;
                                 initFileInput();
-                                
+
                                 function submitHandler() {
                                     var size = parseFloat("@(Model.FileSizeLimit)") * 1024;
                                     var extensions = dataItem.AllowedFileExtensions.split(',');
@@ -142,7 +142,7 @@
                                         initFileInput();
                                     });
 
-                                    kendoUpload.bind('select', function() {
+                                    kendoUpload.bind('select', function () {
                                         initFileInput();
                                     });
                                 }
@@ -238,6 +238,7 @@
             {
                 tool.Template(Resource.Submissions);
             })
+            .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
             .DataSource(data =>
             {
                 data.Ajax()
@@ -274,6 +275,7 @@ else
             {
                 tool.Template(Resource.Submissions);
             })
+            .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
             .DataSource(data =>
             {
                 data.Ajax()
@@ -290,8 +292,7 @@ else
             {
                 col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? " + "'" + Resource.Compiled_successfully + "'" + " : '" + Resource.Compile_time_error + "' : '" + Resource.Not_processed + "' #");
                 col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
-            }).HtmlAttributes(new { @class = "problem_submit_grid" })
-            )
+            }).HtmlAttributes(new { @class = "problem_submit_grid" }))
         </div>
     </div>
 }

@@ -336,3 +336,13 @@ $(document).ready(function () {
     var tabStrip = $("#SubmissionsTabStrip").data("kendoTabStrip");
     tabStripManager.init(tabStrip);
 });
+
+function cloneSubmissionsGridPager() {
+    var submissionsGrid = this;
+    if (submissionsGrid.dataSource.total()) {
+        var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertAfter(submissionsGrid.element.find('.k-toolbar'));
+        submissionsGrid.pagerTop = new kendo.ui.Pager(wrapper, $.extend({}, submissionsGrid.options.pageable, { dataSource: submissionsGrid.dataSource }));
+        submissionsGrid.element.height('').find('.pagerTop').css('border-width', '0 0 1px 0');
+        submissionsGrid.element.find('.k-toolbar').css('border-width', '1px 0');
+    }
+}
