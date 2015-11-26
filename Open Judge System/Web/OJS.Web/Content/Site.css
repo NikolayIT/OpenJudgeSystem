@@ -43,7 +43,7 @@ input[type="checkbox"].input-validation-error {
     margin-top: 20px; /* its buggy without it */
 }
 
-    /*.jumbotron h1 {
+/*.jumbotron h1 {
         color: #FFF;
     }*/
 
@@ -136,7 +136,8 @@ input[type="checkbox"].input-validation-error {
 }
 
 .btn-search {
-    padding: 4px 12px;
+    padding: 5px 12px;
+    border-top: 1px;
 }
 
 .search-form {
@@ -180,4 +181,44 @@ input[type="checkbox"].input-validation-error {
 
 #cookies-notification-button {
     color: #00AA00;
+}
+
+.logged-user-wrap {
+    width: 150px;
+}
+
+@media (max-width: 1200px) {
+    .search-form {
+        padding: 0;
+        line-height: 1em;
+    }
+
+        .search-form form {
+            padding: 0;
+            margin-left: -5px;
+        }
+}
+
+@media (max-width: 992px) {
+    .btn-search {
+        margin-left: -35px;
+    }
+
+    .login-form {
+        float: none !important;
+    }
+
+        .login-form .nav {
+            float: none !important;
+            display: block;
+        }
+
+            .login-form .nav.navbar-right {
+                margin-right: 0 !important;
+                margin-left: -20px;
+            }
+
+                .login-form .nav.navbar-right a {
+                    padding: 10px;
+                }
 }
