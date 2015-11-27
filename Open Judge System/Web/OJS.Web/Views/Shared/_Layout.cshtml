@@ -80,8 +80,8 @@
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
                                 </ul>
                             }
 
@@ -89,55 +89,74 @@
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Categories, GlobalConstants.Index, "ContestCategories", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Category_hierarchy, "Hierarchy", "ContestCategories", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Participants, GlobalConstants.Index, "Participants", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Categories, GlobalConstants.Index, "ContestCategories", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Category_hierarchy, "Hierarchy", "ContestCategories", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Participants, GlobalConstants.Index, "Participants", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Problems</li>
-                                    <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Test_files, GlobalConstants.Index, "Tests", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Test_files, GlobalConstants.Index, "Tests", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Users</li>
-                                    <li>@Html.ActionLink(Resource.Users, GlobalConstants.Index, "Users", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Roles, GlobalConstants.Index, "Roles", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.LecturersInContests, GlobalConstants.Index, "LecturersInContests", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.Users, GlobalConstants.Index, "Users", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Roles, GlobalConstants.Index, "Roles", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.LecturersInContests, GlobalConstants.Index, "LecturersInContests", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Other</li>
-                                    <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Anti-cheat</li>
-                                    <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new {area = "Administration"}, null)</li>
-                                    <li>@Html.ActionLink(Resource.SubmissionSimilarity, "BySubmissionSimilarity", "AntiCheat", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.SubmissionSimilarity, "BySubmissionSimilarity", "AntiCheat", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Debugging</li>
                                     <li><a href="/Glimpse.axd">Glimpse</a></li>
                                     <li class="divider"></li>
-                                    <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new {area = "Administration"}, null)</li>
+                                    <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new { area = "Administration" }, null)</li>
                                 </ul>
                             }
                         </li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
-                <div class="col-md-3 hidden-sm navbar-left search-form">
-                    <form class="navbar-form" role="search" action="/Search/Results">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Administrator") && this.User.IsInRole("Lecturer"))
+                {
+                    <div class="col-md-3 navbar-left hidden-md search-form admin">
+                        <form class="navbar-form" role="search" action="/Search/Results">
+                            <div class="input-group">
+                                <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-sm-1 hidden-lg hidden-md hidden-xs btn navbar-left">
-                    <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
-                </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-1 hidden-lg hidden-sm hidden-xs btn navbar-left">
+                        <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-3 hidden-sm navbar-left search-form">
+                        <form class="navbar-form" role="search" action="/Search/Results">
+                            <div class="input-group">
+                                <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-1 hidden-lg hidden-md hidden-xs btn navbar-left">
+                        <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
+                    </div>
+                }
             </div>
         </div>
     </div>

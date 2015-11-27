@@ -187,38 +187,38 @@ input[type="checkbox"].input-validation-error {
     width: 150px;
 }
 
-@media (max-width: 1200px) {
-    .search-form {
+@media only screen and (max-width: 1200px) {
+    .admin.search-form {
         padding: 0;
         line-height: 1em;
+        margin-top: 5px;
     }
 
-        .search-form form {
+        .admin.search-form form {
             padding: 0;
             margin-left: -5px;
         }
 }
 
-@media (max-width: 992px) {
-    .btn-search {
-        margin-left: -35px;
-    }
-
+@media only screen and (max-width: 992px) {
     .login-form {
         float: none !important;
+        display: block;
     }
 
         .login-form .nav {
-            float: none !important;
             display: block;
         }
 
             .login-form .nav.navbar-right {
-                margin-right: 0 !important;
                 margin-left: -20px;
             }
 
-                .login-form .nav.navbar-right a {
-                    padding: 10px;
-                }
+    .admin.search-form {
+        display: inline-table !important;
+    }
+
+    .btn-search {
+        padding: 5px 15px;
+    }
 }
