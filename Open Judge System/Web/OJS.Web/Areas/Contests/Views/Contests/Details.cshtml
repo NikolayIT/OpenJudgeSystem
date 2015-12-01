@@ -109,34 +109,34 @@
     <div class="col-md-12 text-center">
         @if (Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest)
         {
-            @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new {controller = "Compete", id = Model.Id}, new {@class = "btn btn-sm btn-success"})
+            @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new {controller = "Compete", id = Model.Id}, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
 
             if (Model.OfficialParticipants > 0)
             {
-                <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Contest_results</a>
-                <a class="btn btn-sm btn-primary" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Contest_full_results</a>
+                <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Contest_results</a>
+                <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Contest_full_results</a>
                 if (Model.CanBePracticed)
                 {
-                    @:<div class="clearfix bottom-buffer-sm"></div>
+                    @:<div class="clearfix"></div>
                 }
             }
         }
 
         @if (Model.CanBePracticed)
         {
-            @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary bottom-buffer-sm" })
 
             if (User.IsAdmin() || Model.UserIsLecturerInContest)
             {
-                <a class="btn btn-sm btn-primary" href="/Contests/Practice/Results/Simple/@Model.Id">@Resource.Practice_results</a>
-                <a class="btn btn-sm btn-primary" href="/Contests/Practice/Results/Full/@Model.Id">@Resource.Practice_full_results</a>
+                <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Simple/@Model.Id">@Resource.Practice_results</a>
+                <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Full/@Model.Id">@Resource.Practice_full_results</a>
             }
         }
 
         @if (User.IsAdmin() || Model.UserIsLecturerInContest)
         {
-            <a class="btn btn-sm btn-primary" href="/Administration/Contests/Edit/@Model.Id">@Resource.Edit</a>
-            <a class="btn btn-sm btn-primary" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>
+            <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Contests/Edit/@Model.Id">@Resource.Edit</a>
+            <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>
         }
     </div>
 </div>
