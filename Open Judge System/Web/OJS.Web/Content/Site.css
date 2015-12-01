@@ -198,6 +198,10 @@ input[type="checkbox"].input-validation-error {
             padding: 0;
             margin-left: -5px;
         }
+
+    .jumbotron h1 {
+        font-size: 63.5px;
+    }
 }
 
 @media only screen and (max-width: 992px) {
@@ -225,4 +229,12 @@ input[type="checkbox"].input-validation-error {
     .btn-search {
         padding: 5px 15px;
     }
+}
+
+#fb-root {
+    display: none;
+}
+
+.fb-page, .fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] {
+    width: 100% !important;
 }
