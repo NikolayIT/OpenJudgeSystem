@@ -53,6 +53,32 @@ input[type="checkbox"].input-validation-error {
     }
 }
 
+@media (max-width: 1200px) {
+    .jumbotron h1 {
+        font-size: 63.5px;
+    }
+}
+
+.top-buffer {
+    margin-top: 10px;
+}
+
+.bottom-buffer {
+    margin-bottom: 10px;
+}
+
+.left-buffer {
+    margin-left: 10px;
+}
+
+.right-buffer {
+    margin-right: 10px;
+}
+
+.bottom-buffer-sm {
+    margin-bottom: 5px;
+}
+
 .news-content {
     background-color: #FFF;
     border: 1px solid #000;
@@ -198,10 +224,6 @@ input[type="checkbox"].input-validation-error {
             padding: 0;
             margin-left: -5px;
         }
-
-    .jumbotron h1 {
-        font-size: 63.5px;
-    }
 }
 
 @media only screen and (max-width: 992px) {

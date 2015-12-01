@@ -165,4 +165,16 @@
   <data name="Results" xml:space="preserve">
     <value>Results</value>
   </data>
+  <data name="Contest_full_results" xml:space="preserve">
+    <value>Contest full results</value>
+  </data>
+  <data name="Contest_results" xml:space="preserve">
+    <value>Contest results</value>
+  </data>
+  <data name="Practice_full_results" xml:space="preserve">
+    <value>Practice full results</value>
+  </data>
+  <data name="Practice_results" xml:space="preserve">
+    <value>Practice results</value>
+  </data>
 </root>
