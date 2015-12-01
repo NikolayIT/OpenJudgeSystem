@@ -214,6 +214,10 @@ input[type="checkbox"].input-validation-error {
                 margin-left: -20px;
             }
 
+    .logged-user-wrap {
+        width: auto;
+    }
+
     .admin.search-form {
         display: inline-table !important;
     }

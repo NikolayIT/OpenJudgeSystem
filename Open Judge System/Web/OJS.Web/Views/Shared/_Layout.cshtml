@@ -125,7 +125,7 @@
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
-                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Administrator") && this.User.IsInRole("Lecturer"))
+                @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Administrator") || this.User.IsInRole("Lecturer")))
                 {
                     <div class="col-md-3 navbar-left hidden-md search-form admin">
                         <form class="navbar-form" role="search" action="/Search/Results">
