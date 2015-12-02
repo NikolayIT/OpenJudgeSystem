@@ -13,6 +13,7 @@
     public class JavaZipCompiler : Compiler
     {
         private const string JavaCompiledFilesSearchPattern = "*.class";
+        private const string JavaSourceFilesSearchPattern = "*.java";
         private const string MainClassFileNameSuffix = "\\Main.class";
 
         private readonly string inputPath;
@@ -54,7 +55,7 @@
             UnzipFile(inputFile, this.inputPath);
 
             // Input files arguments
-            var filesToCompile = Directory.GetFiles(this.inputPath);
+            var filesToCompile = Directory.GetFiles(this.inputPath, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
             for (var i = 0; i < filesToCompile.Length; i++)
             {
                 arguments.Append($"\"{filesToCompile[i]}\"");
@@ -71,7 +72,7 @@
 
             var destinationDirectory = new FileInfo(outputFile).Directory.ToString();
 
-            compiledFiles.ForEach(file => File.Copy(file, Path.Combine(destinationDirectory, Path.GetFileName(file)), true));
+            DirectoryHelpers.Copy(this.outputPath, destinationDirectory);
 
             // TODO: Find the main class after analyzing which source file contains the main method
             var mainClassFile = compiledFiles
