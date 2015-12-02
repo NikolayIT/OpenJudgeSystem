@@ -103,6 +103,8 @@
                 if (!exited)
                 {
                     process.Kill();
+                    process.WaitForExit();
+
                     result.Type = ProcessExecutionResultType.TimeLimit;
                 }
 

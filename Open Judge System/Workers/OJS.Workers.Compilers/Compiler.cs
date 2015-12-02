@@ -31,6 +31,8 @@
                     return new MsBuildCompiler();
                 case CompilerType.Java:
                     return new JavaCompiler();
+                case CompilerType.JavaZip:
+                    return new JavaZipCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

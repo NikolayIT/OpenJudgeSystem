@@ -1,5 +1,8 @@
 ﻿namespace OJS.Common
 {
+    using OJS.Common.Extensions;
+    using OJS.Common.Models;
+
     public static class GlobalConstants
     {
         #region User Profile Constants
@@ -54,6 +57,16 @@
         #region Partial views
 
         public const string QuickContestsGrid = "_QuickContestsGrid";
+
+        #endregion
+
+        #region File extensions
+
+        public const string JavaCompiledFileExtension = ".class";
+        public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
+
+        public const string ZipFileExtension = ".zip";
+
 
         #endregion
 
