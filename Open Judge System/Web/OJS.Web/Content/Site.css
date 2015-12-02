@@ -261,12 +261,21 @@ input[type="checkbox"].input-validation-error {
     width: 100% !important;
 }
 
-.contests .results {
+.contests-by-category > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.contests-by-category .results {
     float: right;
     max-width: 90px;
     text-align: center;
 }
 
-.contests .results a {
+.contests-by-category .results a {
     display: table;
+}
+
+.contest-by-category .compete-button, .practice-button {
+    position: relative;
+    top: 10px;
 }
