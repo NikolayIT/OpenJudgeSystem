@@ -28,37 +28,45 @@
                             }
                         }
                         @* TODO: Refactor these checks *@
-                        @if (contest.CanBeCompeted || contest.ResultsArePubliclyVisible || User.IsAdmin())
+                        @if (contest.OfficialParticipants > 0)
                         {
-                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
-                        }
-                        @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
-                        {
-                            <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Results</a>
+                            if (contest.CanBeCompeted || contest.ResultsArePubliclyVisible || User.IsAdmin())
+                            {
+                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
+                            }
+
+                            if (contest.ResultsArePubliclyVisible || User.IsAdmin())
+                            {
+                                <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Results</a>
+                            }
                         }
                     </td>
                     <td>
                         @if (contest.CanBePracticed)
                         {
                             @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary" })
-                            <div class="results">
-                                @if (contest.HasPracticePassword)
-                                {
-                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
-                                }
 
-                                @if (contest.HasPracticeQuestions)
-                                {
-                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
-                                }
+                            if (contest.HasPracticePassword)
+                            {
+                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
+                            }
 
-                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                            if (contest.HasPracticeQuestions)
+                            {
+                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
+                            }
 
-                                @if (User.IsAdmin())
-                                {
+                            if (User.IsAdmin())
+                            {
+                                <div class="results">
+                                    <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
                                     <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
-                                }
-                            </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                            }
                         }
                     </td>
                     <td>
