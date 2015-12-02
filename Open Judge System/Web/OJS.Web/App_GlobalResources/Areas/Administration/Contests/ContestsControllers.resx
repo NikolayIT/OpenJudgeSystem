@@ -157,6 +157,6 @@
     <value>{1} submissions for {0}.zip</value>
   </data>
   <data name="Select_one_submission_type" xml:space="preserve">
-    <value>Choose atleast one submission type!</value>
+    <value>Choose at least one submission type!</value>
   </data>
 </root>
