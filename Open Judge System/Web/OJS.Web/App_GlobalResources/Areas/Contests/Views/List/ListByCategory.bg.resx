@@ -141,6 +141,9 @@
   <data name="Practice" xml:space="preserve">
     <value>Практикувай</value>
   </data>
+  <data name="Practice_results" xml:space="preserve">
+    <value>Резултати от практика</value>
+  </data>
   <data name="Problems" xml:space="preserve">
     <value>Задачи</value>
   </data>

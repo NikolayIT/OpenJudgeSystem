@@ -6,7 +6,7 @@
 <div>
     @if (Model.Contests.Any())
     {
-        <table class="table table-striped">
+        <table class="table table-striped contests">
             @foreach (var contest in Model.Contests)
             {
                 <tr>
@@ -21,7 +21,7 @@
                             {
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
                             }
-                            
+
                             if (contest.HasContestQuestions)
                             {
                                 <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
@@ -41,15 +41,24 @@
                         @if (contest.CanBePracticed)
                         {
                             @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary" })
-                            if (contest.HasPracticePassword)
-                            {
-                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
-                            }
-                            if (contest.HasPracticeQuestions)
-                            {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
-                            }
-                            <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                            <div class="results">
+                                @if (contest.HasPracticePassword)
+                                {
+                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
+                                }
+
+                                @if (contest.HasPracticeQuestions)
+                                {
+                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
+                                }
+
+                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+
+                                @if (User.IsAdmin())
+                                {
+                                    <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
+                                }
+                            </div>
                         }
                     </td>
                     <td>

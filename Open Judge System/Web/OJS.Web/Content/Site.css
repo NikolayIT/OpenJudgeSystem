@@ -260,3 +260,13 @@ input[type="checkbox"].input-validation-error {
 .fb-page, .fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] {
     width: 100% !important;
 }
+
+.contests .results {
+    float: right;
+    max-width: 90px;
+    text-align: center;
+}
+
+.contests .results a {
+    display: table;
+}
