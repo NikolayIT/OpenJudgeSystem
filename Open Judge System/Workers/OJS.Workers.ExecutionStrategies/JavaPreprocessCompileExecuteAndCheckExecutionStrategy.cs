@@ -191,6 +191,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             // Prepare execution process arguments and time measurement info
             var classPathArgument = $"-classpath \"{this.WorkingDirectory}\"";
 
+            // TODO: Support the case when the class to execute is in other directories nested to the directory where sandbox executor class is
             var classToExecute = Path.GetFileNameWithoutExtension(compilerResult.OutputFile);
 
             var timeMeasurementFilePath = $"{this.WorkingDirectory}\\{TimeMeasurementFileName}";
