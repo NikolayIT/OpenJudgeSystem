@@ -38,10 +38,12 @@
 
         public override string GetOutputFileName(string inputFileName)
         {
-            var indexOfJavaExtension = inputFileName.LastIndexOf(JavaSourceFileExtension, StringComparison.InvariantCultureIgnoreCase);
-            if (indexOfJavaExtension >= 0)
+            var indexOfJavaSourceFileExtension =
+                inputFileName.LastIndexOf(JavaSourceFileExtension, StringComparison.InvariantCultureIgnoreCase);
+
+            if (indexOfJavaSourceFileExtension >= 0)
             {
-                inputFileName = inputFileName.Substring(0, indexOfJavaExtension);
+                inputFileName = inputFileName.Substring(0, indexOfJavaSourceFileExtension);
             }
 
             return $"{inputFileName}{JavaCompiledFileExtension}";
