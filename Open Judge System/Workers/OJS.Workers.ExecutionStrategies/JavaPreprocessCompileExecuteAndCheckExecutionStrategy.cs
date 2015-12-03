@@ -5,7 +5,7 @@
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
-    
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -15,9 +15,10 @@
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
-        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,50})\s*{";
+        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,150})\s*{";
         private const string TimeMeasurementFileName = "_$time.txt";
         private const string SandboxExecutorClassName = "_$SandboxExecutor";
+        private const string JavaCompiledFileExtension = ".class";
         private const int ClassNameRegExGroup = 1;
 
         private readonly string javaExecutablePath;
@@ -191,8 +192,12 @@ class _$SandboxSecurityManager extends SecurityManager {
             // Prepare execution process arguments and time measurement info
             var classPathArgument = $"-classpath \"{this.WorkingDirectory}\"";
 
-            // TODO: Support the case when the class to execute is in other directories nested to the directory where sandbox executor class is
-            var classToExecute = Path.GetFileNameWithoutExtension(compilerResult.OutputFile);
+            var classToExecuteFilePath = compilerResult.OutputFile;
+            var classToExecute = classToExecuteFilePath
+                .Substring(
+                    this.WorkingDirectory.Length + 1,
+                    classToExecuteFilePath.Length - this.WorkingDirectory.Length - JavaCompiledFileExtension.Length - 1)
+                .Replace('\\', '.');
 
             var timeMeasurementFilePath = $"{this.WorkingDirectory}\\{TimeMeasurementFileName}";
 

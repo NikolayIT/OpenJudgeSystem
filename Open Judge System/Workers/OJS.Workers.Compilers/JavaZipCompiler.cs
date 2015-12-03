@@ -14,7 +14,7 @@
     {
         private const string JavaCompiledFilesSearchPattern = "*.class";
         private const string JavaSourceFilesSearchPattern = "*.java";
-        private const string MainClassFileNameSuffix = "\\Main.class";
+        private const string MainClassFilePathSuffix = "\\Main.class";
 
         private readonly string inputPath;
         private readonly string outputPath;
@@ -78,7 +78,7 @@
 
             // TODO: Find the main class after analyzing which source file contains the main method
             var mainClassFile = compiledFiles
-                .FirstOrDefault(file => file.EndsWith(MainClassFileNameSuffix, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(file => file.EndsWith(MainClassFilePathSuffix, StringComparison.InvariantCultureIgnoreCase));
 
             return mainClassFile;
         }
