@@ -6,7 +6,6 @@
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -16,9 +15,10 @@
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
         private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
-        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,50})\s*{";
+        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,150})\s*{";
         private const string TimeMeasurementFileName = "_$time.txt";
         private const string SandboxExecutorClassName = "_$SandboxExecutor";
+        private const string JavaCompiledFileExtension = ".class";
         private const int ClassNameRegExGroup = 1;
 
         private readonly string javaExecutablePath;
@@ -33,8 +33,8 @@
             this.javaExecutablePath = javaExecutablePath;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
-            this.SandboxExecutorSourceFilePath = 
-                $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{GlobalConstants.JavaSourceFileExtension}";
+            this.SandboxExecutorSourceFilePath =
+                $"{this.WorkingDirectory}\\{SandboxExecutorClassName}.{CompilerType.Java.GetFileExtension()}";
         }
 
         ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
@@ -47,7 +47,7 @@
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         protected string SandboxExecutorSourceFilePath { get; }
-        
+
         private string SandboxExecutorCode => @"
 import java.io.File;
 import java.io.FilePermission;
@@ -57,15 +57,20 @@ import java.lang.reflect.ReflectPermission;
 import java.net.NetPermission;
 import java.security.Permission;
 import java.util.PropertyPermission;
+
 public class " + SandboxExecutorClassName + @" {
     private static final String MAIN_METHOD_NAME = ""main"";
+
     public static void main(String[] args) throws Throwable {
         if (args.length == 0) {
             throw new IllegalArgumentException(""The name of the class to execute not provided!"");
         }
+
         String className = args[0];
         Class<?> userClass = Class.forName(className);
+
         Method mainMethod = userClass.getMethod(MAIN_METHOD_NAME, String[].class);
+
         FileWriter writer = null;
         long startTime = 0;
         try {
@@ -73,10 +78,13 @@ public class " + SandboxExecutorClassName + @" {
                 String timeFilePath = args[1];
                 writer = new FileWriter(timeFilePath, false);
             }
+
             // Set the sandbox security manager
             _$SandboxSecurityManager securityManager = new _$SandboxSecurityManager();
             System.setSecurityManager(securityManager);
+
             startTime = System.nanoTime();
+
             mainMethod.invoke(userClass, (Object) args);
         } catch (Throwable throwable) {
             Throwable cause = throwable.getCause();
@@ -90,20 +98,24 @@ public class " + SandboxExecutorClassName + @" {
         }
     }
 }
+
 class _$SandboxSecurityManager extends SecurityManager {
     private static final String JAVA_HOME_DIR = System.getProperty(""java.home"");
     private static final String USER_DIR = System.getProperty(""user.dir"");
     private static final String EXECUTING_FILE_PATH = _$SandboxSecurityManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
     @Override
     public void checkPermission(Permission permission) {
         if (permission instanceof PropertyPermission) {
             // Allow reading system properties
             return;
         }
+
         if (permission instanceof FilePermission) {
             FilePermission filePermission = (FilePermission) permission;
             String fileName = filePermission.getName();
             String filePath = new File(fileName).getPath();
+
             if (filePermission.getActions().equals(""read"") &&
                     (filePath.startsWith(JAVA_HOME_DIR) ||
                         filePath.startsWith(USER_DIR) ||
@@ -112,18 +124,21 @@ class _$SandboxSecurityManager extends SecurityManager {
                     return;
                 }
             }
+
         if (permission instanceof NetPermission) {
             if (permission.getName().equals(""specifyStreamHandler"")) {
                 // Allow specifyStreamHandler
                 return;
             }
         }
+
         if (permission instanceof ReflectPermission) {
             if (permission.getName().equals(""suppressAccessChecks"")) {
                 // Allow suppressAccessChecks
                 return;
             }
         }
+
         if (permission instanceof RuntimePermission) {
             if (permission.getName().equals(""createClassLoader"") ||
                     permission.getName().startsWith(""accessClassInPackage.sun."") ||
@@ -133,8 +148,10 @@ class _$SandboxSecurityManager extends SecurityManager {
                 return;
             }
         }
+
         throw new SecurityException(""Not allowed: "" + permission.getClass().getName());
     }
+
     @Override
     public void checkAccess(Thread thread) {
         throw new UnsupportedOperationException();
@@ -161,7 +178,7 @@ class _$SandboxSecurityManager extends SecurityManager {
 
                 return result;
             }
-            
+
             var compilerResult = this.DoCompile(executionContext, submissionFilePath);
 
             // Assign compiled result info to the execution result
@@ -175,11 +192,12 @@ class _$SandboxSecurityManager extends SecurityManager {
             // Prepare execution process arguments and time measurement info
             var classPathArgument = $"-classpath \"{this.WorkingDirectory}\"";
 
-            var compilerOutputFile = compilerResult.OutputFile;
-            var compiledFilePathLastIndexOfSlash = compilerOutputFile.LastIndexOf('\\');
-            var classToExecute = compilerOutputFile.Substring(
-                compiledFilePathLastIndexOfSlash + 1,
-                compilerOutputFile.Length - compiledFilePathLastIndexOfSlash - GlobalConstants.JavaCompiledFileExtension.Length - 1);
+            var classToExecuteFilePath = compilerResult.OutputFile;
+            var classToExecute = classToExecuteFilePath
+                .Substring(
+                    this.WorkingDirectory.Length + 1,
+                    classToExecuteFilePath.Length - this.WorkingDirectory.Length - JavaCompiledFileExtension.Length - 1)
+                .Replace('\\', '.');
 
             var timeMeasurementFilePath = $"{this.WorkingDirectory}\\{TimeMeasurementFileName}";
 
@@ -242,6 +260,28 @@ class _$SandboxSecurityManager extends SecurityManager {
             return compilerResult;
         }
 
+        private static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
+        {
+            if (File.Exists(timeMeasurementFilePath))
+            {
+                long timeInNanoseconds;
+                var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
+                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
+                {
+                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+
+                    if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
+                        processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
+                    {
+                        // The time from the time measurement file is under the time limit
+                        processExecutionResult.Type = ProcessExecutionResultType.Success;
+                    }
+                }
+
+                File.Delete(timeMeasurementFilePath);
+            }
+        }
+
         private CompileResult CompileSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilesToCompile)
         {
             var compilerResult = new CompileResult(false, null);
@@ -263,28 +303,6 @@ class _$SandboxSecurityManager extends SecurityManager {
             compilerResult.CompilerComment = compilerComment.Length > 0 ? compilerComment : null;
 
             return compilerResult;
-        }
-
-        private static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
-        {
-            if (File.Exists(timeMeasurementFilePath))
-            {
-                long timeInNanoseconds;
-                var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
-                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
-                {
-                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
-
-                    if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
-                        processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
-                    {
-                        // The time from the time measurement file is under the time limit
-                        processExecutionResult.Type = ProcessExecutionResultType.Success;
-                    }
-                }
-
-                File.Delete(timeMeasurementFilePath);
-            }
         }
     }
 }

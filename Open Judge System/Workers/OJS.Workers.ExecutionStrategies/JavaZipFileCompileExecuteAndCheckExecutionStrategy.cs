@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    using ICSharpCode.SharpZipLib.Zip;
+    using Ionic.Zip;
 
     using OJS.Common;
     using OJS.Common.Models;
@@ -11,7 +11,7 @@
 
     public class JavaZipFileCompileExecuteAndCheckExecutionStrategy : JavaPreprocessCompileExecuteAndCheckExecutionStrategy
     {
-        private const string SubmissionFileName = "_$Submission";
+        private const string SubmissionFileName = "_$submission";
 
         public JavaZipFileCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
             : base(javaExecutablePath, getCompilerPathFunc)
@@ -21,6 +21,7 @@
         protected override string CreateSubmissionFile(ExecutionContext executionContext)
         {
             var trimmedAllowedFileExtensions = executionContext.AllowedFileExtensions?.Trim();
+
             var allowedFileExtensions = (!trimmedAllowedFileExtensions?.StartsWith(".") ?? false)
                 ? $".{trimmedAllowedFileExtensions}"
                 : trimmedAllowedFileExtensions;
@@ -55,11 +56,9 @@
 
             using (var zipFile = new ZipFile(submissionFilePath))
             {
-                zipFile.BeginUpdate();
+                zipFile.AddFile(this.SandboxExecutorSourceFilePath, string.Empty);
 
-                zipFile.Add(this.SandboxExecutorSourceFilePath, Path.GetFileName(this.SandboxExecutorSourceFilePath));
-
-                zipFile.CommitUpdate();
+                zipFile.Save();
             }
 
             return submissionFilePath;

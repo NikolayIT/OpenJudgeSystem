@@ -6,7 +6,7 @@
     using System.Text;
 
     using ICSharpCode.SharpZipLib.Zip;
-
+    
     using OJS.Common;
     using OJS.Common.Extensions;
 
@@ -14,7 +14,7 @@
     {
         private const string JavaCompiledFilesSearchPattern = "*.class";
         private const string JavaSourceFilesSearchPattern = "*.java";
-        private const string MainClassFileNameSuffix = "\\Main.class";
+        private const string MainClassFilePathSuffix = "\\Main.class";
 
         private readonly string inputPath;
         private readonly string outputPath;
@@ -33,10 +33,12 @@
 
         public override string RenameInputFile(string inputFile)
         {
-            var inputFileExtension = inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase)
-               ? string.Empty
-               : GlobalConstants.ZipFileExtension;
-            return $"{inputFile}{inputFileExtension}";
+            if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return inputFile;
+            }
+
+            return $"{inputFile}{GlobalConstants.ZipFileExtension}";
         }
 
         public override string GetOutputFileName(string inputFileName) => inputFileName;
@@ -76,7 +78,7 @@
 
             // TODO: Find the main class after analyzing which source file contains the main method
             var mainClassFile = compiledFiles
-                .FirstOrDefault(file => file.EndsWith(MainClassFileNameSuffix, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(file => file.EndsWith(MainClassFilePathSuffix, StringComparison.InvariantCultureIgnoreCase));
 
             return mainClassFile;
         }
