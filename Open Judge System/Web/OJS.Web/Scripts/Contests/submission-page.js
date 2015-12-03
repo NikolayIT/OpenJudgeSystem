@@ -339,7 +339,7 @@ $(document).ready(function () {
 
 function cloneSubmissionsGridPager() {
     var submissionsGrid = this;
-    if (submissionsGrid.dataSource.total()) {
+    if (submissionsGrid.dataSource.total() && typeof(submissionsGrid.pagerTop) === "undefined") {
         var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertAfter(submissionsGrid.element.find('.k-toolbar'));
         submissionsGrid.pagerTop = new kendo.ui.Pager(wrapper, $.extend({}, submissionsGrid.options.pageable, { dataSource: submissionsGrid.dataSource }));
         submissionsGrid.element.height('').find('.pagerTop').css('border-width', '0 0 1px 0');
