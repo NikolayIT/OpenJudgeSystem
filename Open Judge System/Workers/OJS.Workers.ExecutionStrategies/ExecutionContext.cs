@@ -13,13 +13,7 @@
 
         public string AdditionalCompilerArguments { get; set; }
 
-        public string Code
-        {
-            get
-            {
-                return this.FileContent.Decompress();
-            }
-        }
+        public string Code => this.FileContent.Decompress();
 
         public byte[] FileContent { get; set; }
 

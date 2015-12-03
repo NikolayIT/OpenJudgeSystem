@@ -44,7 +44,7 @@
             {
                 if (process == null)
                 {
-                    var errorMessage = string.Format("Could not start process: {0}!", fileName);
+                    var errorMessage = $"Could not start process: {fileName}!";
                     throw new Exception(errorMessage);
                 }
 
@@ -102,7 +102,15 @@
                 var exited = process.WaitForExit((int)(timeLimit * 1.5));
                 if (!exited)
                 {
-                    process.Kill();
+                    // Double check if the process has exited before killing it
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+
+                        // Approach: https://msdn.microsoft.com/en-us/library/system.diagnostics.process.kill(v=vs.110).aspx#Anchor_2
+                        process.WaitForExit();
+                    }
+
                     result.Type = ProcessExecutionResultType.TimeLimit;
                 }
 

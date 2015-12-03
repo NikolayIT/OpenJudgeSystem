@@ -9,6 +9,7 @@
         JavaPreprocessCompileExecuteAndCheck = 4,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6,
-        CheckOnly = 7
+        CheckOnly = 7,
+        JavaZipFileCompileExecuteAndCheck = 8
     }
 }
