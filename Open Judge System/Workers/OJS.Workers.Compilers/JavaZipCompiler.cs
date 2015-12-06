@@ -16,19 +16,16 @@
         private const string JavaSourceFilesSearchPattern = "*.java";
         private const string MainClassFilePathSuffix = "\\Main.class";
 
-        private readonly string inputPath;
-        private readonly string outputPath;
+        private readonly string workingDirectory;
 
         public JavaZipCompiler()
         {
-            this.inputPath = DirectoryHelpers.CreateTempDirectory();
-            this.outputPath = DirectoryHelpers.CreateTempDirectory();
+            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
         ~JavaZipCompiler()
         {
-            DirectoryHelpers.SafeDeleteDirectory(this.inputPath, true);
-            DirectoryHelpers.SafeDeleteDirectory(this.outputPath, true);
+            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
         public override string RenameInputFile(string inputFile)
@@ -41,23 +38,24 @@
             return $"{inputFile}{GlobalConstants.ZipFileExtension}";
         }
 
-        public override string GetOutputFileName(string inputFileName) => inputFileName;
+        public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;
 
-        public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
+        public override string BuildCompilerArguments(string inputFile, string outputDirectory, string additionalArguments)
         {
             var arguments = new StringBuilder();
 
             // Output path argument
-            arguments.Append($"-d \"{this.outputPath}\" ");
+            arguments.Append($"-d \"{outputDirectory}\" ");
 
             // Additional compiler arguments
             arguments.Append(additionalArguments);
             arguments.Append(' ');
 
-            UnzipFile(inputFile, this.inputPath);
+            UnzipFile(inputFile, this.workingDirectory);
 
             // Input files arguments
-            var filesToCompile = Directory.GetFiles(this.inputPath, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
+            var filesToCompile =
+                Directory.GetFiles(this.workingDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
             for (var i = 0; i < filesToCompile.Length; i++)
             {
                 arguments.Append($"\"{filesToCompile[i]}\"");
@@ -67,14 +65,10 @@
             return arguments.ToString();
         }
 
-        public override string ChangeOutputFileAfterCompilation(string outputFile)
+        public override string ChangeOutputFileAfterCompilation(string outputDirectory)
         {
             var compiledFiles =
-                Directory.GetFiles(this.outputPath, JavaCompiledFilesSearchPattern, SearchOption.AllDirectories);
-
-            var destinationDirectory = new FileInfo(outputFile).Directory.ToString();
-
-            DirectoryHelpers.Copy(this.outputPath, destinationDirectory);
+                Directory.EnumerateFiles(outputDirectory, JavaCompiledFilesSearchPattern, SearchOption.AllDirectories);
 
             // TODO: Find the main class after analyzing which source file contains the main method
             var mainClassFile = compiledFiles
