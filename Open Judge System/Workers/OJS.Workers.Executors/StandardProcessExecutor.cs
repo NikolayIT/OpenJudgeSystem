@@ -44,9 +44,10 @@
             {
                 if (process == null)
                 {
-                    var errorMessage = $"Could not start process: {fileName}!";
-                    throw new Exception(errorMessage);
+                    throw new Exception($"Could not start process: {fileName}!");
                 }
+
+                process.PriorityClass = ProcessPriorityClass.High;
 
                 // Write to standard input using another thread
                 process.StandardInput.WriteLineAsync(inputData).ContinueWith(
@@ -83,11 +84,6 @@
                         while (true)
                         {
                             // ReSharper disable once AccessToDisposedClosure
-                            if (process.HasExited)
-                            {
-                                return;
-                            }
-
                             var peakWorkingSetSize = process.PeakWorkingSet64;
 
                             result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
