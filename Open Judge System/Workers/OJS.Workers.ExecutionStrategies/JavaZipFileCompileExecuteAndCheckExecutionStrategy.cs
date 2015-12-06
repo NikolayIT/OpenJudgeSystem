@@ -54,14 +54,19 @@
 
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
 
-            using (var zipFile = new ZipFile(submissionFilePath))
+            this.AddSandboxExecutorSourceFileToSubmissionZip(submissionFilePath);
+
+            return submissionFilePath;
+        }
+
+        private void AddSandboxExecutorSourceFileToSubmissionZip(string submissionZipFilePath)
+        {
+            using (var zipFile = new ZipFile(submissionZipFilePath))
             {
                 zipFile.AddFile(this.SandboxExecutorSourceFilePath, string.Empty);
 
                 zipFile.Save();
             }
-
-            return submissionFilePath;
         }
     }
 }
