@@ -271,11 +271,32 @@ input[type="checkbox"].input-validation-error {
     text-align: center;
 }
 
+.contests-by-category .compete-results {
+    display: inline-block;
+}
+
 .contests-by-category .results a {
     display: table;
 }
 
-.contest-by-category .compete-button, .practice-button {
-    position: relative;
-    top: 10px;
+.contests-by-category .practice-button {
+    margin: 5% 0 0 20%;
+}
+
+.contests-by-category .only-practice-button {
+    left: 0;
+}
+
+@media only screen and (max-width: 1200px) {
+    .contests-by-category .practice-button {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (max-width: 676px) {
+    .contests-by-category .practice-button {
+        display: block;
+        left: 10px;
+        margin: 0;
+    }
 }

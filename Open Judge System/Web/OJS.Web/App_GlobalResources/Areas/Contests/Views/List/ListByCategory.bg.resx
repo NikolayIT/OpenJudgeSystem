@@ -123,6 +123,9 @@
   <data name="Compete" xml:space="preserve">
     <value>Участвай</value>
   </data>
+  <data name="Contest_results" xml:space="preserve">
+    <value>Резултати от състезание</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Промяна</value>
   </data>
@@ -149,8 +152,5 @@
   </data>
   <data name="Problems_count" xml:space="preserve">
     <value>Брой задачи</value>
-  </data>
-  <data name="Results" xml:space="preserve">
-    <value>Резултати</value>
   </data>
 </root>

@@ -13,10 +13,11 @@
                     <td>
                         <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
                     </td>
-                    <td>
+                    <td @((!contest.CanBePracticed && contest.CanBeCompeted && contest.OfficialParticipants > 0) || (contest.CanBePracticed && !contest.CanBeCompeted && contest.OfficialParticipants <= 0) ? "colspan=2" : "")>
                         @if (contest.CanBeCompeted)
                         {
-                            @Html.RouteLink(Resource.Compete, "Contests_compete", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-success " + (User.IsAdmin() ? "compete-button" : "") })
+                            @Html.RouteLink(Resource.Compete, "Contests_compete", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-success compete-button" })
+
                             if (contest.HasContestPassword)
                             {
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
@@ -27,59 +28,79 @@
                                 <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                             }
                         }
-                        @* TODO: Refactor these checks *@
-                        @if (contest.OfficialParticipants > 0)
+                        else
                         {
-                            if (contest.CanBeCompeted || contest.ResultsArePubliclyVisible || User.IsAdmin())
+                            if (contest.OfficialParticipants <= 0)
                             {
-                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.OfficialParticipants</span>
-                            }
+                                @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary only-practice-button" })
 
-                            if (contest.ResultsArePubliclyVisible || User.IsAdmin())
-                            {
-                                <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Results</a>
-                            }
-                        }
-                    </td>
-                    <td>
-                        @if (contest.CanBePracticed)
-                        {
-                            @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary " + (User.IsAdmin() ? "practice-button" : "") })
+                                if (contest.HasPracticePassword)
+                                {
+                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
+                                }
 
-                            if (contest.HasPracticePassword)
-                            {
-                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
-                            }
+                                if (contest.HasPracticeQuestions)
+                                {
+                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
+                                }
 
-                            if (contest.HasPracticeQuestions)
-                            {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
-                            }
-
-                            if (User.IsAdmin())
-                            {
-                                <div class="results">
+                                <div class="compete-results">
                                     <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
                                     <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
                                 </div>
                             }
-                            else
-                            {
-                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
-                            }
                         }
-                    </td>
-                    <td>
-                        <div class="glyphicon glyphicon-file text-white" title="@Resource.Problems_count"></div> <span>@contest.ProblemsCount</span>
-                    </td>
-                    @if (User.IsAdmin())
-                    {
-                        <td>
-                            <a href="/Administration/Contests/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span></a>
-                            <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span></a>
+
+                        @* TODO: Refactor these checks *@
+                        @if (contest.OfficialParticipants > 0)
+                        {
+                            <div class="@(!contest.CanBeCompeted ? "results" : "compete-results")">
+                                @if (contest.CanBeCompeted || contest.ResultsArePubliclyVisible || User.IsAdmin())
+                                {
+                                    <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div>
+                                    <span>@contest.OfficialParticipants</span>
+                                }
+
+                                @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
+                                {
+                                    <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Contest_results</a>
+                                }
+                            </div>
+                        }
                         </td>
-                    }
-                </tr>
+
+                        @if (contest.CanBePracticed && (contest.CanBeCompeted || contest.OfficialParticipants > 0))
+                        {
+                            <td>
+                                @Html.RouteLink(Resource.Practice, "Contests_practice", new { id = contest.Id, action = GlobalConstants.Index }, new { @class = "btn btn-sm btn-primary practice-button" })
+
+                                @if (contest.HasPracticePassword)
+                                {
+                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
+                                }
+
+                                @if (contest.HasPracticeQuestions)
+                                {
+                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
+                                }
+
+                                <div class="@(contest.CanBeCompeted && contest.OfficialParticipants > 0 ? "compete-results" : "results")">
+                                    <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                                    <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
+                                </div>
+                            </td>
+                        }
+                        <td>
+                            <div class="glyphicon glyphicon-file text-white" title="@Resource.Problems_count"></div> <span>@contest.ProblemsCount</span>
+                        </td>
+                        @if (User.IsAdmin())
+                        {
+                            <td>
+                                <a href="/Administration/Contests/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span></a>
+                                <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span></a>
+                            </td>
+                        }
+                    </tr>
             }
         </table>
     }

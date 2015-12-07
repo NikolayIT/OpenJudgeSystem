@@ -79,6 +79,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest results.
+        /// </summary>
+        public static string Contest_results {
+            get {
+                return ResourceManager.GetString("Contest_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -156,15 +165,6 @@ namespace Resources.Areas.Contests.Views {
         public static string Problems_count {
             get {
                 return ResourceManager.GetString("Problems_count", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Results.
-        /// </summary>
-        public static string Results {
-            get {
-                return ResourceManager.GetString("Results", resourceCulture);
             }
         }
     }
