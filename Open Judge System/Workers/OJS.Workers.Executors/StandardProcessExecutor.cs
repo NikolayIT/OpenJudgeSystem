@@ -84,6 +84,12 @@
                         while (true)
                         {
                             // ReSharper disable once AccessToDisposedClosure
+                            if (process.HasExited)
+                            {
+                                return;
+                            }
+
+                            // ReSharper disable once AccessToDisposedClosure
                             var peakWorkingSetSize = process.PeakWorkingSet64;
 
                             result.MemoryUsed = Math.Max(result.MemoryUsed, peakWorkingSetSize);
