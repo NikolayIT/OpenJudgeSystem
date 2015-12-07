@@ -210,7 +210,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 .logged-user-wrap {
-    width: 150px;
+    width: 185px;
 }
 
 @media only screen and (max-width: 1200px) {
