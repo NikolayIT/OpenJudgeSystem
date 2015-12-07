@@ -140,6 +140,7 @@
                 case CompilerType.CPlusPlusGcc:
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:
+                case CompilerType.JavaZip:
                     return Settings.JavaCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
@@ -260,6 +261,9 @@
                     break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.JavaZipFileCompileExecuteAndCheck:
+                    executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);

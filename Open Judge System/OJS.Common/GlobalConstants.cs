@@ -21,7 +21,7 @@
         public const string ZipMimeType = "application/zip";
         public const string BinaryFileMimeType = "application/octet-stream";
 
-        public const string ZipExtention = ".zip";
+        public const string ZipFileExtension = ".zip";
 
         public const string AdministratorRoleName = "Administrator";
 

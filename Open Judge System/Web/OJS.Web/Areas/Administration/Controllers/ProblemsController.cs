@@ -593,7 +593,7 @@
         {
             var extension = testArchive.FileName.Substring(testArchive.FileName.Length - 4, 4);
 
-            if (extension != GlobalConstants.ZipExtention)
+            if (extension != GlobalConstants.ZipFileExtension)
             {
                 throw new ArgumentException(GlobalResource.Must_be_zip_file);
             }

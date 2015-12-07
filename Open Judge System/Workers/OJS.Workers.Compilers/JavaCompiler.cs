@@ -10,7 +10,7 @@
     {
         private const string JavaCompiledFileExtension = ".class";
 
-        private static readonly string JavaSourceFileExtension = string.Format(".{0}", CompilerType.Java.GetFileExtension());
+        private static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
@@ -21,26 +21,32 @@
             arguments.Append(' ');
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\"", inputFile));
+            arguments.Append($"\"{inputFile}\"");
 
             return arguments.ToString().Trim();
         }
 
         public override string RenameInputFile(string inputFile)
         {
-            var inputFileExtension = inputFile.EndsWith(JavaSourceFileExtension) ? string.Empty : JavaSourceFileExtension;
-            return string.Format("{0}{1}", inputFile, inputFileExtension);
+            if (inputFile.EndsWith(JavaSourceFileExtension, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return inputFile;
+            }
+
+            return $"{inputFile}{JavaSourceFileExtension}";
         }
 
         public override string GetOutputFileName(string inputFileName)
         {
-            var indexOfJavaExtension = inputFileName.LastIndexOf(JavaSourceFileExtension, StringComparison.InvariantCultureIgnoreCase);
-            if (indexOfJavaExtension >= 0)
+            var indexOfJavaSourceFileExtension =
+                inputFileName.LastIndexOf(JavaSourceFileExtension, StringComparison.InvariantCultureIgnoreCase);
+
+            if (indexOfJavaSourceFileExtension >= 0)
             {
-                inputFileName = inputFileName.Substring(0, indexOfJavaExtension);
+                inputFileName = inputFileName.Substring(0, indexOfJavaSourceFileExtension);
             }
 
-            return string.Format("{0}{1}", inputFileName, JavaCompiledFileExtension);
+            return $"{inputFileName}{JavaCompiledFileExtension}";
         }
     }
 }

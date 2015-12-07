@@ -178,7 +178,7 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose atleast one submission type!.
+        ///   Looks up a localized string similar to Choose at least one submission type!.
         /// </summary>
         public static string Select_one_submission_type {
             get {

@@ -10,6 +10,7 @@
         IoJsPreprocessExecuteAndRunJsDomUnitTests = 8,
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
+        JavaZipFileCompileExecuteAndCheck = 10,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6
     }
