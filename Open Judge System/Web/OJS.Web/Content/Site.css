@@ -210,17 +210,25 @@ input[type="checkbox"].input-validation-error {
 }
 
 .logged-user-wrap {
+    width: 260px;
+}
+
+.logged-user-wrap a{
+    float: right;
+}
+
+.admin.logged-user-wrap {
     width: 185px;
 }
 
 @media only screen and (max-width: 1200px) {
-    .admin.search-form {
+    .search-form {
         padding: 0;
         line-height: 1em;
         margin-top: 5px;
     }
 
-        .admin.search-form form {
+        .search-form form {
             padding: 0;
             margin-left: -5px;
         }
@@ -240,7 +248,7 @@ input[type="checkbox"].input-validation-error {
                 margin-left: -20px;
             }
 
-    .logged-user-wrap {
+    .admin.logged-user-wrap {
         width: auto;
     }
 

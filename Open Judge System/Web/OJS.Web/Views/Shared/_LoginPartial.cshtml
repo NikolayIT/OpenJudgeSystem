@@ -8,9 +8,9 @@
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
-            <li class="logged-user-wrap">
+            <li class="logged-user-wrap @(User.IsAdmin() || User.IsLecturer() ? "admin" : "")">
                 @{  
-                    string welcomeMessage = string.Format("{0}, {1}!", Resource.Welcome_message, User.Identity.Name);
+                    string welcomeMessage = $"{Resource.Welcome_message}, {User.Identity.Name}!";
                 }
                 @Html.ActionLink(welcomeMessage, GlobalConstants.Index, "Profile", new { area = "Users" }, new { title = Resource.Settings, @class = "text-primary" })
             </li>
