@@ -273,13 +273,25 @@ input[type="checkbox"].input-validation-error {
     vertical-align: middle;
 }
 
+.contests-by-category .paricipate-compete-buttons {
+    text-align: center;
+}
+
+.contests-by-category .paricipate-compete-buttons a {
+    display: block;
+}
+
+.contests-by-category .paricipate-compete-buttons .practice-only {
+    padding: 6px 0;
+}
+
 .contests-by-category .results {
     display: inline-block;
     max-width: 90px;
     text-align: center;
 }
 
-.contests-by-category .one-results {
+.contests-by-category .row-results {
     display: inline-block;
 }
 
@@ -287,50 +299,19 @@ input[type="checkbox"].input-validation-error {
     display: table;
 }
 
-.contests-by-category .practice-button {
-    margin-top: -5%;
-    position: relative;
-    top: 20px;
-}
-
-.contests-by-category .only-practice-button {
-    margin-top: 0;
-    top: 0;
-}
-
-/*.contests-by-category .practice-button {
-    margin: 5% 0 0 20%;
-}
-
-.contests-by-category .only-practice-button {
-    left: 0;
-}*/
-
 @media only screen and (max-width: 1200px) {
     .contests-by-category .results {
         max-width: 60px;
     }
 
-    .contests-by-category .one-results {
+    .contests-by-category .row-results {
         text-align: center;
         max-width: 90px;
     }
 
-        .contests-by-category .one-results a {
+        .contests-by-category .row-results a {
             display: table;
         }
-
-    .contests-by-category .only-practice-button,
-    .contests-by-category .only-compete-button {
-        display: inline-block;
-        margin-top: -5%;
-        position: relative;
-        top: 30px;
-    }
-
-    .contests-by-category .practice-button {
-        top: 30px;
-    }
 
     .contests-by-category .problems-count,
     .contests-by-category .edit-contest {
@@ -341,10 +322,5 @@ input[type="checkbox"].input-validation-error {
 @media only screen and (max-width: 767px) {
     .contests-by-category .results {
         max-width: 80px;
-    }
-
-    .contests-by-category .practice-button {
-        top: 5px;
-        margin-bottom: 5px;
     }
 }
