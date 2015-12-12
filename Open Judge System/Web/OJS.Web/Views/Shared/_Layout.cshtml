@@ -67,7 +67,11 @@
                         </ul>
                     </li>
                     <li><a href="/Submissions">@Resource.Submissions</a></li>
-                    <li><a href="/Feedback">@Resource.Feedback</a></li>
+                    @if (this.User.IsLoggedIn())
+                    {
+                        <li><a href="/Feedback">@Resource.Feedback</a></li>
+                    }
+                    
                     @if (this.User.IsAdmin() || this.User.IsLecturer())
                     {
                         <li class="dropdown">

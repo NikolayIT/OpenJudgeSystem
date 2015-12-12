@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{93034417-0AAA-4E72-84EA-767DB4EF5283}"
 EndProject
@@ -116,6 +116,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Tools", "Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj", "{A1F48412-495A-434C-BDD0-E70AEDAD6897}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Tools.Tests", "Tests\OJS.Workers.Tools.Tests\OJS.Workers.Tools.Tests.csproj", "{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04985A08-5825-4151-8B4F-5F95D4D2065E}"
+	ProjectSection(SolutionItems) = preProject
+		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
