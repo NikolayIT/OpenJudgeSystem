@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-
-namespace OJS.Web.Controllers
+﻿namespace OJS.Web.Controllers
 {
     using System.Web.Mvc;
 
@@ -17,7 +15,7 @@ namespace OJS.Web.Controllers
     {
         protected const int RequestsPerInterval = 3;
 
-        ////Restrict interval is 5 minutes.
+        // Restrict interval is 5 minutes.
         protected const int RestrictInterval = 300;
 
         public FeedbackController(IOjsData data)
@@ -56,7 +54,7 @@ namespace OJS.Web.Controllers
                     Content = model.Content,
                     Email = model.Email,
                     Name = model.Name,
-                    UserId = this.User.Identity.GetUserId()
+                    UserId = this.UserProfile.Id
                 };
                 
                 this.Data.FeedbackReports.Add(report);
