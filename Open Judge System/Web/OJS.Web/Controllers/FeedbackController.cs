@@ -1,11 +1,14 @@
-﻿namespace OJS.Web.Controllers
+﻿using Microsoft.AspNet.Identity;
+
+namespace OJS.Web.Controllers
 {
     using System.Web.Mvc;
 
     using OJS.Common;
-    using OJS.Web.Common.Attributes;
+
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.ViewModels.Feedback;
     using Resource = Resources.Feedback.Views;
 
@@ -13,6 +16,8 @@
     public class FeedbackController : BaseController
     {
         protected const int RequestsPerInterval = 3;
+
+        ////Restrict interval is 5 minutes.
         protected const int RestrictInterval = 300;
 
         public FeedbackController(IOjsData data)
@@ -23,7 +28,12 @@
         [HttpGet]
         public ActionResult Index()
         {
-            return this.View();
+            var inputViewModel = new FeedbackViewModel()
+            {
+                Name = $"{this.UserProfile.UserSettings.FirstName} {this.UserProfile.UserSettings.LastName}".Trim(),
+                Email = this.UserProfile.Email
+            };
+            return this.View(inputViewModel);
         }
 
         [HttpPost]
@@ -46,10 +56,9 @@
                     Content = model.Content,
                     Email = model.Email,
                     Name = model.Name,
-                    User = this.Data.Users.GetByUsername(User.Identity.Name)
+                    UserId = this.User.Identity.GetUserId()
                 };
-
-
+                
                 this.Data.FeedbackReports.Add(report);
                 this.Data.SaveChanges();
 
