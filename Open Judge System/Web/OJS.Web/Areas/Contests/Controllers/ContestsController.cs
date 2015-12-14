@@ -49,8 +49,8 @@ namespace OJS.Web.Areas.Contests.Controllers
                 .Where(x => x.ContestId == id)
                 .Select(ProblemListItemViewModel.FromProblem);
 
-            contestViewModel.UserIsLecturerInContest = this.User.IsLoggedIn() &&
-                this.UserProfile.LecturerInContests.Any(x => x.ContestId == contestViewModel.Id);
+            contestViewModel.UserIsLecturerInContest =
+                this.UserProfile?.LecturerInContests.Any(x => x.ContestId == contestViewModel.Id) ?? false;
 
             return this.View(contestViewModel);
         }

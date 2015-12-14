@@ -149,7 +149,14 @@
 
                                 if (dataItem.AllowBinaryFilesUpload) {
                                     var returnProblem = getSelectedIndexFromHashtag();
-                                    form.attr("action", form.attr("action").replace("/Submit/", "/SubmitBinaryFile/") + '?returnProblem=' + returnProblem);
+                                    var oldFormAction = form.attr("action");
+                                    var newFormAction = oldFormAction.replace("/Submit/", "/SubmitBinaryFile/");
+
+                                    if (oldFormAction !== newFormAction) {
+                                        newFormAction += ('?returnProblem=' + returnProblem);
+                                    }
+
+                                    form.attr("action", newFormAction);
                                     form.attr("data-ajax", "false");
                                     form.bind('submit', submitHandler);
                                     fileUpload.show();
@@ -180,7 +187,7 @@
     </div>
 
     @{
-        var participantRowTemplate = "#= ParticipantName === '" + this.User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
+        var participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
             "<td>#:ParticipantName#</td>" + "<td>#:Result# / #:MaximumPoints#</td></tr>";
     }
 
