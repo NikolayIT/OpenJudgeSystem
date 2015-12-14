@@ -109,9 +109,12 @@
     <div class="col-md-12 text-center">
         @if (Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest)
         {
-            @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
+            if (Model.CanBeCompeted)
+            {
+                @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
+            }
 
-            if (Model.OfficialParticipants > 0)
+            if (Model.OfficialParticipants > 0 && (User.IsAdmin() || Model.UserIsLecturerInContest))
             {
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Contest_results</a>
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Contest_full_results</a>
@@ -134,8 +137,8 @@
                 {
                     @:<div class="clearfix"></div>
                 }
-    }
-}
+            }
+        }
 
         @if (User.IsAdmin() || Model.UserIsLecturerInContest)
         {
