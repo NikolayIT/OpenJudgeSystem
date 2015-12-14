@@ -8,6 +8,7 @@
 
 @{
     ViewBag.Title = Model.Name;
+    var userHasAdminRights = User.IsAdmin() || Model.UserIsLecturerInContest;
 }
 
 <ol class="breadcrumb">
@@ -21,13 +22,13 @@
 <div class="row">
     <div class="col-md-8">
         <h3>@Resource.Contest_details</h3>
-        @if ((Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest) && Model.EndTime != null)
+        @if ((Model.CanBeCompeted || userHasAdminRights) && Model.EndTime != null)
         {
             <h5>
                 @Resource.Competition_active_until: @Model.EndTime.Value.ToString("HH:mm d.M.yyy")
             </h5>
         }
-        @if ((Model.CanBePracticed || User.IsAdmin() || Model.UserIsLecturerInContest) && Model.PracticeEndTime != null)
+        @if ((Model.CanBePracticed || userHasAdminRights) && Model.PracticeEndTime != null)
         {
             <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("HH:mm d.M.yyy")</h5>
         }
@@ -65,7 +66,7 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
-        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword) || (User.IsAdmin() || Model.UserIsLecturerInContest))
+        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword) || userHasAdminRights)
         {
             foreach (var problem in Model.Problems)
             {
@@ -107,14 +108,14 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        @if (Model.CanBeCompeted || User.IsAdmin() || Model.UserIsLecturerInContest)
+        @if (Model.CanBeCompeted || userHasAdminRights)
         {
-            if (Model.CanBeCompeted)
+            if (Model.CanBeCompeted || (userHasAdminRights && Model.StartTime > DateTime.Now))
             {
                 @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
             }
 
-            if (Model.OfficialParticipants > 0 && (User.IsAdmin() || Model.UserIsLecturerInContest))
+            if (Model.OfficialParticipants > 0 && userHasAdminRights)
             {
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Contest_results</a>
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Contest_full_results</a>
@@ -129,7 +130,7 @@
         {
             @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary bottom-buffer-sm" })
 
-            if (User.IsAdmin() || Model.UserIsLecturerInContest)
+            if (userHasAdminRights)
             {
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Simple/@Model.Id">@Resource.Practice_results</a>
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Full/@Model.Id">@Resource.Practice_full_results</a>
@@ -140,7 +141,7 @@
             }
         }
 
-        @if (User.IsAdmin() || Model.UserIsLecturerInContest)
+        @if (userHasAdminRights)
         {
             <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Contests/Edit/@Model.Id">@Resource.Edit</a>
             <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>

@@ -147,13 +147,14 @@
                                     });
                                 }
 
+                                var oldFormAction = form.attr("action");
+                                var newFormAction;
                                 if (dataItem.AllowBinaryFilesUpload) {
-                                    var returnProblem = getSelectedIndexFromHashtag();
-                                    var oldFormAction = form.attr("action");
-                                    var newFormAction = oldFormAction.replace("/Submit/", "/SubmitBinaryFile/");
+                                    newFormAction = oldFormAction.replace("/Submit/", "/SubmitBinaryFile/");
 
                                     if (oldFormAction !== newFormAction) {
-                                        newFormAction += ('?returnProblem=' + returnProblem);
+                                        var returnProblem = getSelectedIndexFromHashtag();
+                                        newFormAction += ("?returnProblem=" + returnProblem);
                                     }
 
                                     form.attr("action", newFormAction);
@@ -163,7 +164,13 @@
                                     codeArea.hide();
                                     fileExtensionsInfo.html("<b>Allowed file extensions:</b> " + dataItem.AllowedFileExtensions);
                                 } else {
-                                    form.attr("action", form.attr("action").replace("/SubmitBinaryFile/", "/Submit/"));
+                                    newFormAction = oldFormAction.replace("/SubmitBinaryFile/", "/Submit/");
+
+                                    if (oldFormAction !== newFormAction) {
+                                        newFormAction = newFormAction.substr(0, newFormAction.lastIndexOf("?"));
+                                    }
+
+                                    form.attr("action", newFormAction);
                                     form.attr("data-ajax", "true");
                                     form.unbind('submit', submitHandler);
                                     fileUpload.hide();
