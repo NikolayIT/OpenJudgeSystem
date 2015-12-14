@@ -1,5 +1,6 @@
-﻿@model OJS.Web.ViewModels.Feedback.FeedbackViewModel
-@using Resource = Resources.Feedback.Views.FeedbackIndex
+﻿@using Resource = Resources.Feedback.Views.FeedbackIndex
+
+@model OJS.Web.ViewModels.Feedback.FeedbackViewModel
 
 @{
     ViewBag.Title = Resource.Title;
@@ -20,7 +21,7 @@
                 <div class="editor-label">
                     @Html.LabelFor(m => m.Name)
                 </div>
-                <div class="editor-field">
+                <div class="editor-field feedback-editor-field">
                     @Html.EditorFor(m => m.Name)
                     @Html.ValidationMessageFor(m => m.Name)
                 </div>
@@ -30,9 +31,9 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="editor-label">
-                    @Html.LabelFor(m => m.Email, "Email")
+                    @Html.LabelFor(m => m.Email)
                 </div>
-                <div class="editor-field">
+                <div class="editor-field feedback-editor-field">
                     @Html.EditorFor(m => m.Email)
                     @Html.ValidationMessageFor(m => m.Email)
                 </div>

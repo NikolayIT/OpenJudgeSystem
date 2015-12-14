@@ -324,3 +324,7 @@ input[type="checkbox"].input-validation-error {
         max-width: 80px;
     }
 }
+
+.feedback-editor-field input {
+    width: 100%;
+}
