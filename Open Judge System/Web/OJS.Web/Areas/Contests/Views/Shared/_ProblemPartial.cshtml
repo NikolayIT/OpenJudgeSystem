@@ -2,6 +2,7 @@
 @using OJS.Web.Areas.Contests.ViewModels.Submissions
 @using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Common.Models;
+
 @using Resource = Resources.Areas.Contests.Shared.ContestsProblemPartial
 
 @model ContestProblemViewModel
@@ -122,29 +123,11 @@
                                 var form = $("#problem_@Model.ProblemId");
                                 var fileUpload = $("#FileUploadInputFields_@Model.ProblemId");
                                 var codeArea = $("#SourceCodeInputFields_@Model.ProblemId");
-                                var fileExtensionsInfo = $("#FileUploadAllowedFileExtensions_@Model.ProblemId");
-                                var fileInput;
-                                initFileInput();
-
+                                
                                 function submitHandler() {
                                     var size = parseFloat("@(Model.FileSizeLimit)") * 1024;
                                     var extensions = dataItem.AllowedFileExtensions.split(',');
-                                    return validateSubmit.binary(fileInput[0], size, extensions);
-                                }
-
-                                function initFileInput() {
-                                    fileInput = $('#file-problem-@Model.ProblemId');
-                                }
-
-                                if (fileInput.data('kendoUpload')) {
-                                    var kendoUpload = fileInput.data('kendoUpload');
-                                    kendoUpload.bind('remove', function () {
-                                        initFileInput();
-                                    });
-
-                                    kendoUpload.bind('select', function () {
-                                        initFileInput();
-                                    });
+                                    return validateSubmit.binary(form.find('input[type=file][name=File]')[0], size, extensions);
                                 }
 
                                 var oldFormAction = form.attr("action");
@@ -153,16 +136,21 @@
                                     newFormAction = oldFormAction.replace("/Submit/", "/SubmitBinaryFile/");
 
                                     if (oldFormAction !== newFormAction) {
+                                        tabStripManager.tabSelected();
                                         var returnProblem = getSelectedIndexFromHashtag();
                                         newFormAction += ("?returnProblem=" + returnProblem);
                                     }
 
-                                    form.attr("action", newFormAction);
-                                    form.attr("data-ajax", "false");
-                                    form.bind('submit', submitHandler);
+                                    form.attr("action", newFormAction)
+                                        .attr("data-ajax", "false")
+                                        .unbind("submit")
+                                        .bind("submit", submitHandler);
+
                                     fileUpload.show();
                                     codeArea.hide();
-                                    fileExtensionsInfo.html("<b>Allowed file extensions:</b> " + dataItem.AllowedFileExtensions);
+
+                                    $("#FileUploadAllowedFileExtensions_@Model.ProblemId")
+                                        .html("<b>Allowed file extensions:</b> " + dataItem.AllowedFileExtensions);
                                 } else {
                                     newFormAction = oldFormAction.replace("/SubmitBinaryFile/", "/Submit/");
 
@@ -170,9 +158,10 @@
                                         newFormAction = newFormAction.substr(0, newFormAction.lastIndexOf("?"));
                                     }
 
-                                    form.attr("action", newFormAction);
-                                    form.attr("data-ajax", "true");
-                                    form.unbind('submit', submitHandler);
+                                    form.attr("action", newFormAction)
+                                        .attr("data-ajax", "true")
+                                        .unbind("submit", submitHandler);
+
                                     fileUpload.hide();
                                     codeArea.show();
                                 }
@@ -201,7 +190,8 @@
     @if (Model.ShowResults)
     {
         <div class="col-lg-4 problem-result-container visible-lg">
-            @(Html.Kendo().Grid<ProblemResultViewModel>()
+            @(Html.Kendo()
+                .Grid<ProblemResultViewModel>()
                 .Name("ContestResults_" + Model.ProblemId)
                 .ToolBar(tool => tool.Template(Resource.Problem_results))
                 .Columns(col =>
@@ -213,10 +203,10 @@
                 {
                     data.Ajax()
                         .Sort(sort =>
-                            {
-                                sort.Add(x => x.Result).Descending();
-                                sort.Add(x => x.ParticipantName).Ascending();
-                            })
+                        {
+                            sort.Add(x => x.Result).Descending();
+                            sort.Add(x => x.ParticipantName).Ascending();
+                        })
                         .Read("ByProblem", "Results", new { official = ViewBag.IsOfficial, id = Model.ProblemId })
                         .PageSize(8);
                 })
@@ -237,8 +227,8 @@
 
 @{
     var clientTemplate = "#= IsCalculated ? IsCompiledSuccessfully ? displayTestRuns(TestRuns).concat(" +
-                                    " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints)) : " + "'" + Resource.Compile_time_error + "'" +
-                                            ":" + "'" + Resource.Not_processed + "'" + "#";
+        " SubmissionPoints.toString().concat(' / ').concat(MaximumPoints)) : " + "'" + Resource.Compile_time_error + "'" +
+                ":" + "'" + Resource.Not_processed + "'" + "#";
 }
 
 @if (Model.ShowResults)
@@ -246,34 +236,35 @@
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<SubmissionResultViewModel>()
-            .Name("Submissions_" + Model.ProblemId)
-            .ToolBar(tool =>
-            {
-                tool.Template(Resource.Submissions);
-            })
-            .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
-            .DataSource(data =>
-            {
-                data.Ajax()
-                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                    .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                    .PageSize(10);
-            })
-            .Pageable(page =>
-            {
-                page.Info(false);
-                page.Refresh(true);
-            })
-            .Columns(col =>
-            {
-                col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
-                col.Template(@<text></text>)
-                    .Title(Resource.Time_and_memory)
-                    .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed, '"
-                    + Resource.Memory + "','" + Resource.Time + "') : '---' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
-            }).HtmlAttributes(new { @class = "problem_submit_grid" })
+                .Grid<SubmissionResultViewModel>()
+                .Name("Submissions_" + Model.ProblemId)
+                .ToolBar(tool =>
+                {
+                    tool.Template(Resource.Submissions);
+                })
+                .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
+                .DataSource(data =>
+                {
+                    data.Ajax()
+                        .Sort(sort => sort.Add("SubmissionDate").Descending())
+                        .Read(read => read.Action("ReadSubmissionResults", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                        .PageSize(10);
+                })
+                .Pageable(page =>
+                {
+                    page.Info(false);
+                    page.Refresh(true);
+                })
+                .Columns(col =>
+                {
+                    col.Bound(model => model.SubmissionPoints).ClientTemplate(clientTemplate);
+                    col.Template(@<text></text>)
+                        .Title(Resource.Time_and_memory)
+                        .ClientTemplate("#= IsCalculated && IsCompiledSuccessfully ? displayMaximumValues(MaximumMemoryUsed, MaximumTimeUsed, '"
+                        + Resource.Memory + "','" + Resource.Time + "') : '---' #");
+                    col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=SubmissionId#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
+                })
+                .HtmlAttributes(new { @class = "problem_submit_grid" })
             )
         </div>
     </div>
@@ -283,30 +274,31 @@ else
     <div class="row">
         <div class="col-md-12">
             @(Html.Kendo()
-            .Grid<OJS.Web.Areas.Contests.ViewModels.Results.SubmissionResultIsCompiledViewModel>()
-            .Name("Submissions_" + Model.ProblemId)
-            .ToolBar(tool =>
-            {
-                tool.Template(Resource.Submissions);
-            })
-            .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
-            .DataSource(data =>
-            {
-                data.Ajax()
-                    .Sort(sort => sort.Add("SubmissionDate").Descending())
-                    .Read(read => read.Action("ReadSubmissionResultsAreCompiled", ViewBag.CompeteType, new { id = Model.ProblemId }))
-                    .PageSize(10);
-            })
-            .Pageable(page =>
-            {
-                page.Info(false);
-                page.Refresh(true);
-            })
-            .Columns(col =>
-            {
-                col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? " + "'" + Resource.Compiled_successfully + "'" + " : '" + Resource.Compile_time_error + "' : '" + Resource.Not_processed + "' #");
-                col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
-            }).HtmlAttributes(new { @class = "problem_submit_grid" }))
+                .Grid<SubmissionResultIsCompiledViewModel>()
+                .Name("Submissions_" + Model.ProblemId)
+                .ToolBar(tool =>
+                {
+                    tool.Template(Resource.Submissions);
+                })
+                .Events(ev => ev.DataBound("cloneSubmissionsGridPager"))
+                .DataSource(data =>
+                {
+                    data.Ajax()
+                        .Sort(sort => sort.Add("SubmissionDate").Descending())
+                        .Read(read => read.Action("ReadSubmissionResultsAreCompiled", ViewBag.CompeteType, new { id = Model.ProblemId }))
+                        .PageSize(10);
+                })
+                .Pageable(page =>
+                {
+                    page.Info(false);
+                    page.Refresh(true);
+                })
+                .Columns(col =>
+                {
+                    col.Bound(model => model.IsCompiledSuccessfully).ClientTemplate("#= IsCalculated ? IsCompiledSuccessfully ? " + "'" + Resource.Compiled_successfully + "'" + " : '" + Resource.Compile_time_error + "' : '" + Resource.Not_processed + "' #");
+                    col.Bound(model => model.SubmissionDate).Width(300).ClientTemplate("#= kendo.format('{0:HH:mm:ss dd.MM.yyyy}', SubmissionDate) # <a href='/Contests/Submissions/View/#=Id#' target='_blank' class='view-submission-button btn btn-default pull-right'>" + Resource.Details + "</div>");
+                })
+                .HtmlAttributes(new { @class = "problem_submit_grid" }))
         </div>
     </div>
 }
