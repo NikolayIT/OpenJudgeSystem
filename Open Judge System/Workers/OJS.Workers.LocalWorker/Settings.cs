@@ -46,7 +46,7 @@
 
         public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 
-        public static string JavaArchiverPath => GetSetting("JavaArchiverPath");
+        public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 
         public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");
 

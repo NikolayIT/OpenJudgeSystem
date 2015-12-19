@@ -76,6 +76,7 @@
     <Compile Include="CompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="ExecutionContext.cs" />
     <Compile Include="ExecutionResult.cs" />
+    <Compile Include="PythonExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="RemoteExecutionStrategy.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestResult.cs" />

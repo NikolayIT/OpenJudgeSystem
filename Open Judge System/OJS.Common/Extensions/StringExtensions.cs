@@ -79,7 +79,7 @@
             }
 
             string[] fileParts = fileName.Split(new[] { "." }, StringSplitOptions.None);
-            if (fileParts.Count() == 1 || string.IsNullOrEmpty(fileParts.Last()))
+            if (fileParts.Length == 1 || string.IsNullOrEmpty(fileParts.Last()))
             {
                 return string.Empty;
             }

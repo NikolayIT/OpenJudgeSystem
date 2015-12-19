@@ -12,6 +12,8 @@
                     return null; // The file extension depends on the compiler.
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     return "js";
+                case ExecutionStrategyType.PythonExecuteAndCheck:
+                    return "py";
                 default:
                     return null;
             }
