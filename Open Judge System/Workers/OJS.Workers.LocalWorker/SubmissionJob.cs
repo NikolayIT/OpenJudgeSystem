@@ -248,6 +248,9 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
                     break;
+                case ExecutionStrategyType.PythonExecuteAndCheck:
+                    executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);
+                    break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);
                     break;

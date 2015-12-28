@@ -14,93 +14,25 @@
             Logger = LogManager.GetLogger("Settings");
         }
 
-        public static string CSharpCompilerPath
-        {
-            get
-            {
-                return GetSetting("CSharpCompilerPath");
-            }
-        }
+        public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
 
-        public static string CPlusPlusGccCompilerPath
-        {
-            get
-            {
-                return GetSetting("CPlusPlusGccCompilerPath");
-            }
-        }
+        public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
-        public static string MsBuildExecutablePath
-        {
-            get
-            {
-                return GetSetting("MsBuildExecutablePath");
-            }
-        }
+        public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
-        public static string NodeJsExecutablePath
-        {
-            get
-            {
-                return GetSetting("NodeJsExecutablePath");
-            }
-        }
+        public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
 
-        public static string JavaCompilerPath
-        {
-            get
-            {
-                return GetSetting("JavaCompilerPath");
-            }
-        }
+        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
 
-        public static string JavaExecutablePath
-        {
-            get
-            {
-                return GetSetting("JavaExecutablePath");
-            }
-        }
+        public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 
-        public static string JavaArchiverPath
-        {
-            get
-            {
-                return GetSetting("JavaArchiverPath");
-            }
-        }
+        public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 
-        public static string JavaSandboxExecutorSourceFilePath
-        {
-            get
-            {
-                return GetSetting("JavaSandboxExecutorSourceFilePath");
-            }
-        }
+        public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");
 
-        public static string PhpCgiExecutablePath
-        {
-            get
-            {
-                return GetSetting("PhpCgiExecutablePath");
-            }
-        }
+        public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
-        public static string PhpCliExecutablePath
-        {
-            get
-            {
-                return GetSetting("PhpCliExecutablePath");
-            }
-        }
-
-        public static int ThreadsCount
-        {
-            get
-            {
-                return GetSettingOrDefault("ThreadsCount", 2);
-            }
-        }
+        public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
         private static string GetSetting(string settingName)
         {

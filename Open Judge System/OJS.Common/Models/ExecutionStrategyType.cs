@@ -7,9 +7,10 @@
         NodeJsPreprocessExecuteAndCheck = 2,
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
+        PythonExecuteAndCheck = 9,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6,
         CheckOnly = 7,
-        JavaZipFileCompileExecuteAndCheck = 8
+        JavaZipFileCompileExecuteAndCheck = 8,
     }
 }

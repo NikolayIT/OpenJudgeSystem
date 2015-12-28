@@ -14,6 +14,8 @@
                     return "js";
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     return "java";
+                case ExecutionStrategyType.PythonExecuteAndCheck:
+                    return "py";
                 default:
                     return null;
             }
