@@ -235,6 +235,18 @@
                                               },
                                           new SubmissionType
                                               {
+                                                  Name = "Python code",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .PythonExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
                                                   Name = "PHP code (CGI)",
                                                   CompilerType = CompilerType.None,
                                                   AdditionalCompilerArguments = string.Empty,

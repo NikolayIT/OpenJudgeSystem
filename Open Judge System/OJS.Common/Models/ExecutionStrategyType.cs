@@ -11,6 +11,7 @@
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
         JavaZipFileCompileExecuteAndCheck = 10,
+        PythonExecuteAndCheck = 11,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6
     }
