@@ -266,7 +266,7 @@
                 return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
             }
 
-            throw new ArgumentOutOfRangeException("id", "No problem with that id");
+            throw new ArgumentOutOfRangeException(nameof(id), "No problem with that id");
         }
     }
 }

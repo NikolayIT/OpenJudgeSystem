@@ -143,7 +143,7 @@
                 case CompilerType.JavaZip:
                     return Settings.JavaCompilerPath;
                 default:
-                    throw new ArgumentOutOfRangeException("type");
+                    throw new ArgumentOutOfRangeException(nameof(type));
             }
         }
 

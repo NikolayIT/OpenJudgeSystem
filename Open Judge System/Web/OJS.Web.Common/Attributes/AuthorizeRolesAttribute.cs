@@ -9,7 +9,7 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class AuthorizeRolesAttribute : AuthorizeAttribute
     {
         private readonly SystemRole[] allRoles;
@@ -23,7 +23,7 @@
         {
             if (httpContext == null)
             {
-                throw new ArgumentNullException("httpContext");
+                throw new ArgumentNullException(nameof(httpContext));
             }
 
             IPrincipal user = httpContext.User;

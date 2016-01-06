@@ -23,12 +23,12 @@
         {
             return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
 
-            string currentUserName = this.User.Identity.Name;
+            ////string currentUserName = this.User.Identity.Name;
 
-            var profile = this.Data.Users.GetByUsername(currentUserName);
-            var userProfileViewModel = new UserSettingsViewModel(profile);
+            ////var profile = this.Data.Users.GetByUsername(currentUserName);
+            ////var userProfileViewModel = new UserSettingsViewModel(profile);
 
-            return this.View(userProfileViewModel);
+            ////return this.View(userProfileViewModel);
         }
 
         [HttpPost]
