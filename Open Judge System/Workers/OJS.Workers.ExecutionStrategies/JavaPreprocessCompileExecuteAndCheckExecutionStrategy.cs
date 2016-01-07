@@ -211,7 +211,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                 var processExecutionResult = executor.Execute(
                     this.javaExecutablePath,
                     test.Input,
-                    executionContext.TimeLimit,
+                    executionContext.TimeLimit * 2, // Java virtual machine takes more time to start up
                     executionContext.MemoryLimit,
                     new[] { classPathArgument, SandboxExecutorClassName, classToExecute, $"\"{timeMeasurementFilePath}\"" });
 
@@ -275,6 +275,11 @@ class _$SandboxSecurityManager extends SecurityManager {
                     {
                         // The time from the time measurement file is under the time limit
                         processExecutionResult.Type = ProcessExecutionResultType.Success;
+                    }
+                    else if (processExecutionResult.Type == ProcessExecutionResultType.Success &&
+                        processExecutionResult.TimeWorked.TotalMilliseconds > timeLimit)
+                    {
+                        processExecutionResult.Type = ProcessExecutionResultType.TimeLimit;
                     }
                 }
 
