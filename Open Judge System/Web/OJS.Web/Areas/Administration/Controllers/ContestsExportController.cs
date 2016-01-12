@@ -16,9 +16,12 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Common;
+
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
 
     public class ContestsExportController : AdministrationBaseController
     {

@@ -69,7 +69,7 @@
 
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.FirstNameMaxLength,
+            GlobalConstants.NameMaxLength,
             ErrorMessageResourceName = "First_name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
@@ -81,7 +81,7 @@
 
         [Display(Name = "Last_name", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.LastNameMaxLength,
+            GlobalConstants.NameMaxLength,
             ErrorMessageResourceName = "Last_name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
@@ -93,7 +93,7 @@
 
         [Display(Name = "City", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.CityNameMaxLength,
+            GlobalConstants.CityMaxLength,
             ErrorMessageResourceName = "City_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
@@ -139,7 +139,7 @@
 
         [Display(Name = "Company", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.CompanyNameMaxLength,
+            GlobalConstants.CompanyMaxLength,
             ErrorMessageResourceName = "Company_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
@@ -151,7 +151,7 @@
 
         [Display(Name = "Job_title", ResourceType = typeof(Resource))]
         [StringLength(
-            GlobalConstants.JobTitleMaxLenth,
+            GlobalConstants.JobTitleMaxLength,
             ErrorMessageResourceName = "Job_title_length",
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(

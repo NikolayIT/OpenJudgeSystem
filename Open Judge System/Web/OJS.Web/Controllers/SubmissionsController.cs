@@ -42,7 +42,7 @@
         }
 
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request)
+        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId)
         {
             var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 

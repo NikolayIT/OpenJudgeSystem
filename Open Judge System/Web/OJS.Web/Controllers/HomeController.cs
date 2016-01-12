@@ -21,22 +21,20 @@
             var isAdmin = this.User.IsAdmin();
             var userId = this.UserProfile?.Id;
 
-            var indexViewModel = new IndexViewModel();
-            indexViewModel.ActiveContests =
-                this.Data.Contests.AllActive()
+            var indexViewModel = new IndexViewModel
+            {
+                ActiveContests = this.Data.Contests.AllActive()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
-                    .ToList();
-
-            indexViewModel.FutureContests =
-                this.Data.Contests.All()
-                    .Where(x => x.StartTime > DateTime.Now  &&
+                    .ToList(),
+                FutureContests = this.Data.Contests.All()
+                    .Where(x => x.StartTime > DateTime.Now &&
                         (x.IsVisible ||
                             (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
-                PastContests = this.Data.Contests.AllPast()
+            PastContests = this.Data.Contests.AllPast()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)

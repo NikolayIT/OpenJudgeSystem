@@ -37,14 +37,14 @@
 
         public IDeletableEntityRepository<Event> Events => this.GetDeletableEntityRepository<Event>();
 
-        public IDeletableEntityRepository<ContestCategory> ContestCategories
-            => this.GetDeletableEntityRepository<ContestCategory>();
+        public IDeletableEntityRepository<ContestCategory> ContestCategories => 
+            this.GetDeletableEntityRepository<ContestCategory>();
 
-        public IDeletableEntityRepository<ContestQuestion> ContestQuestions
-            => this.GetDeletableEntityRepository<ContestQuestion>();
+        public IDeletableEntityRepository<ContestQuestion> ContestQuestions => 
+            this.GetDeletableEntityRepository<ContestQuestion>();
 
-        public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers
-            => this.GetDeletableEntityRepository<ContestQuestionAnswer>();
+        public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers => 
+            this.GetDeletableEntityRepository<ContestQuestionAnswer>();
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
@@ -52,42 +52,23 @@
 
         public IDeletableEntityRepository<SourceCode> SourceCodes => this.GetDeletableEntityRepository<SourceCode>();
 
-        public IRepository<LecturerInContest> LecturersInContests
-        {
-            get
-            {
-                return this.GetRepository<LecturerInContest>();
-            }
-        }
+        public IRepository<LecturerInContest> LecturersInContests => this.GetRepository<LecturerInContest>();
 
-        public IRepository<Ip> Ips
-        {
-            get
-            {
-                return this.GetRepository<Ip>();
-            }
-        }
+        public IRepository<Ip> Ips => this.GetRepository<Ip>();
 
-        public ITestRunsRepository TestRuns
-        {
-            get
-            {
-                return (TestRunsRepository)this.GetRepository<TestRun>();
-            }
-        }
         public IRepository<AccessLog> AccessLogs => this.GetRepository<AccessLog>();
 
         public ITestRunsRepository TestRuns => (TestRunsRepository)this.GetRepository<TestRun>();
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
-        public IDeletableEntityRepository<FeedbackReport> FeedbackReports
-            => this.GetDeletableEntityRepository<FeedbackReport>();
+        public IDeletableEntityRepository<FeedbackReport> FeedbackReports => 
+            this.GetDeletableEntityRepository<FeedbackReport>();
 
         public IDeletableEntityRepository<Checker> Checkers => this.GetDeletableEntityRepository<Checker>();
 
-        public IDeletableEntityRepository<ProblemResource> Resources
-            => this.GetDeletableEntityRepository<ProblemResource>();
+        public IDeletableEntityRepository<ProblemResource> Resources => 
+            this.GetDeletableEntityRepository<ProblemResource>();
 
         public IRepository<Setting> Settings => this.GetRepository<Setting>();
 
@@ -104,15 +85,9 @@
         /// The number of objects written to the underlying database.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">Thrown if the context has been disposed.</exception>
-        public int SaveChanges()
-        {
-            return this.context.SaveChanges();
-        }
+        public int SaveChanges() => this.context.SaveChanges();
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
+        public void Dispose() => this.Dispose(true);
 
         protected virtual void Dispose(bool disposing)
         {

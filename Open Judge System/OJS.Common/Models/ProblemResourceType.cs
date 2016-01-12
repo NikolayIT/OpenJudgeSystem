@@ -1,5 +1,7 @@
 ﻿namespace OJS.Common.Models
 {
+    using System.ComponentModel;
+
     using OJS.Common.Attributes;
 
     using Resource = Resources.Enums.EnumTranslations;

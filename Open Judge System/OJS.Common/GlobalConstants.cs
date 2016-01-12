@@ -5,8 +5,7 @@
 
     public static class GlobalConstants
     {
-        #region User Profile Constants
-
+        // User Profile Constants
         public const int UsernameMinLength = 5;
         public const int UsernameMaxLength = 32;
         public const string UsernameRegEx = @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$";
@@ -14,8 +13,8 @@
         public const int PasswordMinLength = 6;
         public const int PasswordMaxLength = 1000;
 
-        public const int EmailMaxLength = 80;
         public const int EmailMinLength = 6;
+        public const int EmailMaxLength = 80;
         public const string EmailRegEx = "^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         public const int NameMinLength = 2;
@@ -28,15 +27,13 @@
         public const int CompanyMinLength = 2;
         public const int CompanyMaxLength = 100;
         public const string CompanyRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!""])*$";
-
         public const int JobTitleMinLength = 2;
         public const int JobTitleMaxLength = 100;
         public const string JobTitleRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!])*$";
-
-        #endregion
-
-        #region TempData dictionary keys
-
+        public const int EducationalInstitutionMaxLength = 50;
+        public const int FacultyNumberMaxLength = 30;
+        
+        // TempData dictionary keys
         public const string InfoMessage = "InfoMessage";
         public const string DangerMessage = "DangerMessage";
 
@@ -55,54 +52,26 @@
         public const string ZipMimeType = "application/zip";
         public const string BinaryFileMimeType = "application/octet-stream";
 
-        public const string ZipFileExtension = ".zip";
-
         public const string AdministratorRoleName = "Administrator";
-
-        public const string EmailRegEx = "^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
+        
         public const int FileExtentionMaxLength = 4;
 
         public const int IpAdressMaxLength = 45;
 
         public const int MinimumSearchTermLength = 3;
 
-        #region File extensions
-
+        public const int FeedbackContentMinLength = 10;
+        
+        // File extensions
         public const string JavaCompiledFileExtension = ".class";
-        public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
-
         public const string ZipFileExtension = ".zip";
-
-
-        #endregion
-
-        #region Other
-
-        // Account
-        public const int UserNameMaxLength = 15;
-        public const int UserNameMinLength = 5;
-        public const string UserNameRegEx = @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$";
+        public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
+        
+        // Other
         public const string LecturerRoleName = "Lecturer";
-
-        public const int PasswordMinLength = 6;
-        public const int PasswordMaxLength = 100;
-
         public const string DefaultPublicIp = "217.174.159.226";
-
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
-
-        #endregion
-        public const int EmailMaxLength = 80;
-
-        public const int FirstNameMaxLength = 30;
-        public const int LastNameMaxLength = 30;
-        public const int CityNameMaxLength = 30;
-        public const int EducationalInstitutionMaxLength = 50;
-        public const int FacultyNumberMaxLength = 30;
-        public const int CompanyNameMaxLength = 30;
-        public const int JobTitleMaxLenth = 30;
-
+        
         // News
         public const int NewsTitleMaxLength = 200;
         public const int NewsTitleMinLength = 1;

@@ -26,7 +26,7 @@
         [HttpGet]
         public ActionResult Index()
         {
-            var inputViewModel = new FeedbackViewModel()
+            var inputViewModel = new FeedbackViewModel
             {
                 Name = $"{this.UserProfile.UserSettings.FirstName} {this.UserProfile.UserSettings.LastName}".Trim(),
                 Email = this.UserProfile.Email

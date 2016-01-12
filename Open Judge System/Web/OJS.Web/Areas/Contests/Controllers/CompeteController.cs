@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
+    using System;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -391,7 +392,7 @@
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
-            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
+            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteActionName : PracticeActionName));
         }
 
         /// <summary>

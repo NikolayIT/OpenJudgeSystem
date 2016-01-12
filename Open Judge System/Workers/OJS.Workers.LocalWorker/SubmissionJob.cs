@@ -164,7 +164,7 @@
                 AllowedFileExtensions = submission.SubmissionType.AllowedFileExtensions,
                 CompilerType = submission.SubmissionType.CompilerType,
                 MemoryLimit = submission.Problem.MemoryLimit,
-                TimeLimit = submission.Problem.TimeLimit
+                TimeLimit = submission.Problem.TimeLimit,
                 Tests = submission.Problem.Tests.AsQueryable().Select(x =>
                         new TestContext
                         {
@@ -268,9 +268,6 @@
                         Settings.SinonModulePath,
                         Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath);
-                    break;
-                case ExecutionStrategyType.JavaZipFileCompileExecuteAndCheck:
-                    executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);

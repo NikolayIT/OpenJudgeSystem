@@ -21,20 +21,19 @@
         public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
         public static string NuGetExecutablePath => GetSetting("NuGetExecutablePath");
-        public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
 
         public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
 
         public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
+
+        public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
+
         public static string MochaModulePath => GetSetting("MochaModulePath");
 
         public static string ChaiModulePath => GetSetting("ChaiModulePath");
-        public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 
-        public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");
         public static string IoJsExecutablePath => GetSetting("IoJsExecutablePath");
 
-        public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
         public static string JsDomModulePath => GetSetting("JsDomModulePath");
 
         public static string JQueryModulePath => GetSetting("JQueryModulePath");
@@ -46,10 +45,6 @@
         public static string SinonChaiModulePath => GetSetting("SinonChaiModulePath");
 
         public static string UnderscoreModulePath => GetSetting("UnderscoreModulePath");
-
-        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
-
-        public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 
         public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 

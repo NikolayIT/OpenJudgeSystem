@@ -62,10 +62,6 @@
 
         public virtual IDbSet<Ip> Ips { get; set; }
 
-        public DbContext DbContext
-        {
-            get { return this; }
-        }
         public virtual IDbSet<AccessLog> AccessLogs { get; set; }
 
         public DbContext DbContext => this;

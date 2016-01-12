@@ -1,13 +1,13 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class GetFirstDifferenceIndexTests
     {
-        [TestMethod]
+        [Test]
         public void ShouldReturnMinusOneWhenBothStringsAreNull()
         {
             const string First = null;
@@ -18,7 +18,7 @@
             Assert.AreEqual(-1, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnZeroWhenParameterStringIsNull()
         {
             const string First = "test";
@@ -29,7 +29,7 @@
             Assert.AreEqual(0, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnZeroWhenInstanceStringIsNull()
         {
             const string First = null;
@@ -40,7 +40,7 @@
             Assert.AreEqual(0, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnZeroWhenStringsHaveDifferentFirstLetter()
         {
             const string First = "string";
@@ -51,7 +51,7 @@
             Assert.AreEqual(0, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectIndexWhenStringsAreDifferent()
         {
             const string First = "testing string";
@@ -62,7 +62,7 @@
             Assert.AreEqual(2, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnMinusOneWhenStringsAreDifferentAndIgnoresCase()
         {
             const string First = "testing string";
@@ -73,7 +73,7 @@
             Assert.AreEqual(-1, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnMinusOneWhenStringsAreEqual()
         {
             const string First = "testing string";
@@ -84,7 +84,7 @@
             Assert.AreEqual(-1, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectIndexWhenFirstInstanceStringIsLongerThanParameterString()
         {
             const string First = "testing string and more";
@@ -95,7 +95,7 @@
             Assert.AreEqual(Second.Length, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectIndexWhenParameterStringIsLongerThanInstanceString()
         {
             const string First = "testing string";
@@ -106,7 +106,7 @@
             Assert.AreEqual(First.Length, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnMinusOneWhenBothStringsAreNullAndIgnoresCase()
         {
             const string First = null;
@@ -117,7 +117,7 @@
             Assert.AreEqual(-1, firstDifferenceIndex);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectIndexWhenStringsAreDifferentAndIgnoresCase()
         {
             const string First = "Testing String";

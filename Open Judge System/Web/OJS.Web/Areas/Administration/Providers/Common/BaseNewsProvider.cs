@@ -4,6 +4,7 @@
     using System.IO;
     using System.Net;
     using System.Text;
+    using System.Xml.Linq;
 
     using HtmlAgilityPack;
 
@@ -56,6 +57,23 @@
             }
 
             document.OptionFixNestedTags = true;
+
+            return document;
+        }
+
+        protected XDocument GetXmlDocument(string url, string encoding)
+        {
+            var document = new XDocument();
+
+            using (var client = new WebClient())
+            {
+                using (var stream = client.OpenRead(url))
+                {
+                    var reader = new StreamReader(stream, Encoding.GetEncoding(encoding));
+                    var xml = reader.ReadToEnd();
+                    document = XDocument.Parse(xml);
+                }
+            }
 
             return document;
         }

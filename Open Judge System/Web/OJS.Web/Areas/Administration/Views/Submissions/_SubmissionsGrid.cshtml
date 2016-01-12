@@ -19,21 +19,21 @@
         columns.Bound(model => model.Points);
         columns.Bound(model => model.CreatedOn).Hidden();
         columns.Bound(model => model.ModifiedOn).Hidden();
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промени</a>").Title("Промяна");
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтрий</a>").Title("Изтриване");
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Прегледай</a>").Title("Преглед");
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>").Title("Ретест");
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промени</a>").Title(GeneralResource.Change);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтрий</a>").Title(GeneralResource.Delete);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Прегледай</a>").Title(Resource.Details);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
-        toolbar.Custom().Text("Създай").Action("Create", ControllerName);
+        toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
         toolbar.Custom().Text("Изтрий избраните решения").HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
     })
     .ColumnMenu()
     .Events(e => e.DataBound("onDataBound"))
@@ -52,48 +52,13 @@
         .ServerOperation(true)
         .Model(model =>
         {
-            columns.Bound(model => model.Id);
-            columns.Bound(model => model.ParticipantName);
-            columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
-            columns.Bound(model => model.SubmissionTypeName);
-            columns.Bound(model => model.Status);
-            columns.Bound(model => model.Points);
-            columns.Bound(model => model.CreatedOn).Hidden();
-            columns.Bound(model => model.ModifiedOn).Hidden();
-            columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Update", ControllerName), GeneralResource.Change)).Title(GeneralResource.Change);
-            columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Delete", ControllerName), GeneralResource.Delete)).Title(GeneralResource.Delete);
-            columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext' target='_blank'>{1}</a>", Url.Action("View", "Submissions", new { Area = "Contests" }), Resource.Details)).Title(Resource.Details);
-            columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext' target='_blank'>{1}</a>", Url.Action("Retest", ControllerName), Resource.Retest)).Title(Resource.Retest);
+            model.Id(m => m.Id);
         })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-            toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
-        })
-        .Editable(editable =>
-        {
-            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-        })
-        .ColumnMenu()
-        .Events(e => e.DataBound("onDataBound"))
-        .Pageable(x => x.Refresh(true))
-        .Sortable(x => x.Enabled(true).AllowUnsort(false))
-        .Filterable(x => x.Enabled(true))
-        .Reorderable(x => x.Columns(true))
-        .Resizable(x => x.Columns(true))
-        .DataSource(datasource => datasource
-            .Ajax()
-            .ServerOperation(true)
-            .Model(model =>
-                {
-                    model.Id(m => m.Id);
-                })
-            .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-            .Read(read => read.Action("ReadSubmissions", ControllerName, new { id = Model }))
-            .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-            .Events(ev => ev.Error("validateModelStateErrors"))
-        )
+        .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+        .Read(read => read.Action("ReadSubmissions", ControllerName, new { id = Model }))
+        .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
+    )
 )
 
 <script type="text/javascript">

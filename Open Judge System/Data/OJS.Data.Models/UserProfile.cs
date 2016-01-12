@@ -56,7 +56,6 @@
             set { this.lecturerInContests = value; }
         }
 
-        #region IDeletableEntity
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]

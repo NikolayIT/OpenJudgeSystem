@@ -10,8 +10,8 @@
     public class RegisterViewModel
     {
         [StringLength(
-            GlobalConstants.UserNameMaxLength,
-            MinimumLength = GlobalConstants.UserNameMinLength,
+            GlobalConstants.UsernameMaxLength,
+            MinimumLength = GlobalConstants.UsernameMinLength,
             ErrorMessageResourceName = "Username_validation",
             ErrorMessageResourceType = typeof(Resource))]
         [Required(
@@ -19,7 +19,7 @@
             ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Username", ResourceType = typeof(Resource))]
         [RegularExpression(
-            GlobalConstants.UserNameRegEx,
+            GlobalConstants.UsernameRegEx,
             ErrorMessageResourceName = "Username_regex_validation",
             ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
