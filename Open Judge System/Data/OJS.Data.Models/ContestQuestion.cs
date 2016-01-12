@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data.Contracts;
 
@@ -29,7 +30,9 @@
         public int ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
-        
+
+        [MaxLength(GlobalConstants.ContestQuestionMaxLength)]
+        [MinLength(GlobalConstants.ContestQuestionMinLength)]
         public string Text { get; set; }
 
         [DefaultValue(true)]

@@ -8,7 +8,6 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
 
     using DatabaseModelType = OJS.Data.Models.ContestCategory;
@@ -84,7 +83,7 @@
                     .Where(x => x.IsVisible)
                     .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
                     .OrderBy(x => x.OrderBy)
-                    .Select(x => new { id = x.Id, hasChildren = x.Children.Any(), Name = x.Name, });
+                    .Select(x => new { id = x.Id, hasChildren = x.Children.Any(), x.Name, });
 
             return this.Json(categories, JsonRequestBehavior.AllowGet);
         }
@@ -96,7 +95,7 @@
             this.Data.SaveChanges();
         }
 
-        private void CascadeDeleteCategories(ContestCategory contest)
+        private void CascadeDeleteCategories(DatabaseModelType contest)
         {
             foreach (var children in contest.Children.ToList())
             {

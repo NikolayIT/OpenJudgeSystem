@@ -56,12 +56,12 @@
 
                 if (!Model.Contest.Problems.Any())
                 {
-                    tabstrip.Add().Text("Няма задачи").Content("Все още няма добавени задачи към това състезание");
+                    tabstrip.Add().Text(Resource.No_tasks).Content(Resource.No_tasks_added_yet);
                 }
 
                 if (User.IsAdmin())
                 {
-                    tabstrip.Add().Text("Добави задача").Action("Create", "Problems", new { Area = "Administration", Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
+                    tabstrip.Add().Text(Resource.Add_task).Action("Create", "Problems", new { Area = "Administration", Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
                 }
             })
             .Events(ev =>

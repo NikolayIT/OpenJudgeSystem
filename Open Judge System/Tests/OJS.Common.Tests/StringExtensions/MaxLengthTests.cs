@@ -1,12 +1,13 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class MaxLengthTests
     {
-        [TestMethod]
+        [Test]
         public void MaxLengthShouldReturnEmptyStringWhenEmptyStringIsPassed()
         {
             string expected = string.Empty;
@@ -15,7 +16,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void MaxLengthShouldReturnProperStringWhenLongerStringIsPassed()
         {
             string expected = "12345";
@@ -24,7 +25,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void MaxLengthShouldReturnProperStringWhenShorterStringIsPassed()
         {
             string expected = "123";
@@ -33,7 +34,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void MaxLengthShouldReturnProperStringWhenStringWithTheSameLengthIsPassed()
         {
             string expected = "123";
@@ -42,7 +43,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void MaxLengthShouldReturnProperStringWhenZeroLengthIsPassed()
         {
             string expected = string.Empty;

@@ -31,10 +31,11 @@
         public string City { get; set; }
 
         [Column("EducationalInstitution")]
+        [MaxLength(GlobalConstants.EducationalInstitutionMaxLength)]
         public string EducationalInstitution { get; set; }
 
         [Column("FacultyNumber")]
-        [MaxLength(30)]
+        [MaxLength(GlobalConstants.FacultyNumberMaxLength)]
         public string FacultyNumber { get; set; }
 
         [Column("DateOfBirth")]
@@ -53,14 +54,8 @@
         [MinLength(GlobalConstants.JobTitleMinLength)]
         [RegularExpression(GlobalConstants.JobTitleRegEx)]
         public string JobTitle { get; set; }
-        
+
         [NotMapped]
-        public byte? Age
-        {
-            get
-            {
-                return Calculator.Age(this.DateOfBirth);
-            }
-        }
+        public byte? Age => Calculator.Age(this.DateOfBirth);
     }
 }

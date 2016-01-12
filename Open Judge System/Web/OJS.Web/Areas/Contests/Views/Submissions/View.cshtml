@@ -2,6 +2,7 @@
 @using OJS.Common.Models
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
 
+
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
@@ -148,11 +149,10 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        // Temporary execution comments are visible only for administrators
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || Model.UserHasAdminPermission))
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)) // Temporally execution comments are visible only for administrators
         {
             var executionComment = testResult.ExecutionComment;
-            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest)
+            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest && !Model.ShowDetailedFeedback)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
@@ -180,7 +180,7 @@ else
             testResult.ExpectedOutputFragment != null ||
             testResult.UserOutputFragment != null)
         {
-            if (testResult.IsTrialTest || Model.UserHasAdminPermission)
+            if (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
             {
                 <div class="diff">
                     @if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
@@ -194,7 +194,9 @@ else
                             <div class="col-md-6 ">Expected output:</div>
                             <div class="col-md-6">Your output:</div>
                         </div>
+                        
                         <div id="diff-@testResult.Id"></div>
+
                         <script>
                             $(function () {
                                 var diffContainer = document.getElementById('diff-@testResult.Id');

@@ -13,6 +13,7 @@
     using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.ContestQuestionAnswer;
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel;
 
     public class ContestQuestionAnswersController : AdministrationBaseGridController
@@ -64,7 +65,7 @@
             this.UpdateViewModelValues(model, answer);
             model.QuestionId = question.Id;
             model.QuestionText = question.Text;
-            
+
             return this.Json(new[] { model }.ToDataSourceResult(request));
         }
 
@@ -91,7 +92,7 @@
 
             if (question == null)
             {
-                throw new ArgumentNullException("Question could not be found by given Id");
+                throw new ArgumentException(Resource.No_question_by_id, nameof(id));
             }
 
             question.Answers.Select(a => a.Id).ToList().Each(a => this.Data.ContestQuestionAnswers.Delete(a));

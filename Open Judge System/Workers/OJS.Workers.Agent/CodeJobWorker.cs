@@ -6,10 +6,6 @@
 
     public class CodeJobWorker : IJobWorker
     {
-        public CodeJobWorker()
-        {
-        }
-
         public JobResult DoJob(Job job)
         {
             throw new NotImplementedException();

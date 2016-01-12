@@ -9,8 +9,8 @@ function onSearchSelect(e) {
     populateDropDowns(contestId);
 }
 
-function onContestSelect(e) {
-    initializeGrid(parseInt($('#contests').val()))
+function onContestSelect() {
+    initializeGrid(parseInt($('#contests').val()));
 }
 
 function filterContests() {
@@ -23,7 +23,7 @@ function populateDropDowns(contestIdAsString) {
 
     var response;
 
-    $.get('/Administration/Problems/GetContestInformation/' + contestIdAsString, function (data) {
+    $.get('/Administration/Problems/GetContestInformation/' + contestIdAsString, function(data) {
         response = data;
 
         var categoryId = response.category;
@@ -50,24 +50,24 @@ function populateDropDowns(contestIdAsString) {
             }
         });
 
-        categoriesData.fetch(function () {
+        categoriesData.fetch(function() {
             categories.dataSource.data(categoriesData);
             categories.setDataSource(categoriesData);
             categories.refresh();
 
-            contestsData.fetch(function () {
+            contestsData.fetch(function() {
                 contests.dataSource.data(contestsData);
                 contests.refresh();
 
-                categories.select(function (dataItem) {
+                categories.select(function(dataItem) {
                     return dataItem.Id === categoryId;
                 });
 
                 // TODO: Improve by using success callback or promises, not setTimeout - Cascade event on widgets might work too
 
-                window.setTimeout(function () {
+                window.setTimeout(function() {
 
-                    contests.select(function (dataItem) {
+                    contests.select(function(dataItem) {
                         return dataItem.Id === contestId;
                     });
 
@@ -77,7 +77,7 @@ function populateDropDowns(contestIdAsString) {
         });
 
         initializeGrid(contestId);
-    })
+    });
 }
 
 function initializeGrid(contestId) {
@@ -110,7 +110,7 @@ function initializeGrid(contestId) {
                 { field: "Name", title: "Име" },
                 { field: "ContestName", title: "Състезание" },
                 { title: "Тестове", template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
-                { title: "Операции", width: '50%', template: '<div class="text-center"><a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a></div>' },
+                { title: "Операции", width: '50%', template: '<div class="text-center"><a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a></div>' }
             ],
             detailInit: detailInit,
         });
@@ -162,20 +162,19 @@ function initializeGrid(contestId) {
             });
         }
 
-        $('.resource-btn').click(function (e) {
-            var target = $(e.target);
-            var tr = target.closest("tr");
-            var grid = $("#problems-grid").data("kendoGrid");
+            $('.resource-btn').click(function(e) {
+                var target = $(e.target);
+                var tr = target.closest("tr");
+                var grid = $("#problems-grid").data("kendoGrid");
 
-            if (target.data('expanded') == false) {
-                grid.collapseRow(tr);
-                target.removeData('expanded');
-            }
-            else {
-                grid.expandRow(tr);
-                target.data('expanded', false);
-            }
-        })
+                if (target.data('expanded') == false) {
+                    grid.collapseRow(tr);
+                    target.removeData('expanded');
+                } else {
+                    grid.expandRow(tr);
+                    target.data('expanded', false);
+                }
+            });
 
         if ($('#problemId').val()) {
             $('#resource-btn-' + $('#problemId').val()).click();

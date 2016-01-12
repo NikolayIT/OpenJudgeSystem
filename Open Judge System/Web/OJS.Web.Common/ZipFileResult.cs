@@ -4,6 +4,8 @@
 
     using Ionic.Zip;
 
+    using OJS.Common;
+
     /// <summary>
     /// A content result which can accepts a DotNetZip ZipFile object to write to the output stream
     /// As seen on http://whatschrisdoing.com/blog/2010/03/22/asp-net-mvc-and-ionic-zip/
@@ -13,12 +15,6 @@
         private readonly ZipFile zip;
 
         private readonly string filename;
-
-        public ZipFileResult(ZipFile zip)
-        {
-            this.zip = zip;
-            this.filename = null;
-        }
 
         public ZipFileResult(ZipFile zip, string filename)
         {
@@ -30,11 +26,11 @@
         {
             var response = context.HttpContext.Response;
 
-            response.ContentType = "application/zip";
+            response.ContentType = GlobalConstants.ZipMimeType;
             response.AddHeader(
                 "Content-Disposition",
                 "attachment;" + (string.IsNullOrEmpty(this.filename) ? string.Empty : "filename=" + this.filename));
-            
+
             this.zip.Save(response.OutputStream);
 
             response.End();

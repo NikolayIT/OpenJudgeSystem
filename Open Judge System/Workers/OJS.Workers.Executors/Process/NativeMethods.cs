@@ -127,7 +127,7 @@
             uint dwDesiredAccess,
             [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle,
             uint dwOptions);
-        
+
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.Machine)]
         internal static extern bool TerminateProcess(SafeProcessHandle processHandle, int exitCode);
@@ -151,7 +151,6 @@
         /// <param name="processHandle">A handle to the process whose access token is opened.</param>
         /// <param name="desiredAccess">Specifies an access mask that specifies the requested types of access to the access token.</param>
         /// <param name="tokenHandle">Outputs a handle that identifies the newly opened access token when the function returns.</param>
-        /// <returns></returns>
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr tokenHandle);
@@ -172,16 +171,15 @@
         internal static extern bool ConvertStringSidToSid(string StringSid, out IntPtr ptrSid);
 
         /// <summary>
-        /// The function sets various types of information for a specified 
-        /// access token. The information that this function sets replaces 
-        /// existing information. The calling process must have appropriate 
+        /// The function sets various types of information for a specified
+        /// access token. The information that this function sets replaces
+        /// existing information. The calling process must have appropriate
         /// access rights to set the information.
         /// </summary>
         /// <param name="hToken"> A handle to the access token for which information is to be set.</param>
         /// <param name="tokenInfoClass">A value from the TOKEN_INFORMATION_CLASS enumerated type that identifies the type of information the function sets.</param>
         /// <param name="pTokenInfo">A pointer to a buffer that contains the information set in the access token.</param>
         /// <param name="tokenInfoLength">Specifies the length, in bytes, of the buffer pointed to by TokenInformation.</param>
-        /// <returns></returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool SetTokenInformation(
@@ -191,19 +189,19 @@
             int tokenInfoLength);
 
         /// <summary>
-        /// The function returns the length, in bytes, of a valid security 
+        /// The function returns the length, in bytes, of a valid security
         /// identifier (SID).
         /// </summary>
         /// <param name="pSid">A pointer to the SID structure whose length is returned.</param>
         /// <returns>
-        /// If the SID structure is valid, the return value is the length, in 
+        /// If the SID structure is valid, the return value is the length, in
         /// bytes, of the SID structure.
         /// </returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern int GetLengthSid(IntPtr pSid);
 
         /// <summary>
-        /// The AllocateAndInitializeSid function allocates and initializes a 
+        /// The AllocateAndInitializeSid function allocates and initializes a
         /// security identifier (SID) with up to eight subauthorities.
         /// </summary>
         /// <param name="pIdentifierAuthority">A reference of a SID_IDENTIFIER_AUTHORITY structure. This structure provides the top-level identifier authority value to set in the SID.</param>
@@ -218,8 +216,8 @@
         /// <param name="dwSubAuthority7">Subauthority value to place in the SID.</param>
         /// <param name="pSid">Outputs the allocated and initialized SID structure.</param>
         /// <returns>
-        /// If the function succeeds, the return value is true. If the 
-        /// function fails, the return value is false. To get extended error 
+        /// If the function succeeds, the return value is true. If the
+        /// function fails, the return value is false. To get extended error
         /// information, call GetLastError.
         /// </returns>
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -240,7 +238,7 @@
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)]
         [ResourceExposure(ResourceScope.None)]
         internal static extern int NtQuerySystemInformation(int query, IntPtr dataPtr, int size, out int returnedSize);
-        
+
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [ResourceExposure(ResourceScope.Machine)]
         internal static extern SafeProcessHandle OpenProcess(int access, bool inherit, int processId);
@@ -257,7 +255,7 @@
 
         [DllImport("advapi32.dll", SetLastError = true)]
         internal static extern bool SaferComputeTokenFromLevel(IntPtr LevelHandle, IntPtr InAccessToken, out IntPtr OutAccessToken, int dwFlags, IntPtr lpReserved);
-        
+
         [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [ResourceExposure(ResourceScope.None)]
@@ -265,14 +263,13 @@
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
-        
-        #region SafeLocalMemHandle
+
+        // SafeLocalMemHandle
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)]
         internal static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string stringSecurityDescriptor, int stringSDRevision, out SafeLocalMemHandle securityDescriptor, IntPtr securityDescriptorSize);
-        
+
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [DllImport("kernel32.dll")]
         internal static extern IntPtr LocalFree(IntPtr memoryHandler);
-        #endregion
     }
 }

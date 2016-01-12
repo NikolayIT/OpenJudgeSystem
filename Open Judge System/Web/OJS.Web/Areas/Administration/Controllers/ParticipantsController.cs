@@ -18,6 +18,7 @@
 
     using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
     using DatabaseModelType = OJS.Data.Models.Participant;
+    using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel;
 
     public class ParticipantsController : LecturerBaseGridController
@@ -83,7 +84,7 @@
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var json = JsonConvert.SerializeObject(participants.ToDataSourceResult(request), Formatting.None, serializationSettings);
-            return this.Content(json, "application/json");
+            return this.Content(json, GlobalConstants.JsonMimeType);
         }
 
         [HttpPost]
@@ -102,12 +103,12 @@
             {
                 if (contest == null)
                 {
-                    ModelState.AddModelError("ContestId", "Невалидно състезание");
+                    this.ModelState.AddModelError("ContestId", GlobalResource.Invalid_contest);
                 }
 
                 if (user == null)
                 {
-                    ModelState.AddModelError("UserId", "Невалиден потребител");
+                    this.ModelState.AddModelError("UserId", GlobalResource.Invalid_user);
                 }
 
                 return this.GridOperation(request, model);

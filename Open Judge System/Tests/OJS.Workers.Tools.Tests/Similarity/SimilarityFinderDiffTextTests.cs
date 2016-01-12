@@ -3,17 +3,17 @@
     using System.Collections.Generic;
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Tools.Similarity;
 
     /// <summary>
     /// Tests are adapted from the original code (http://www.mathertel.de/Diff/)
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SimilarityFinderDiffTextTests
     {
-        [TestMethod]
+        [Test]
         public void TestWhenAllLinesAreDifferent()
         {
             var firstText = "a,b,c,d,e,f,g,h,i,j,k,l".Replace(',', '\n');
@@ -21,7 +21,7 @@
             Assert.AreEqual("12.10.0.0*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestWhenAllLinesAreTheSame()
         {
             const string TextForSplit = "a,b,c,d,e,f,g,h,i,j,k,l";
@@ -30,7 +30,7 @@
             Assert.AreEqual(string.Empty, TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestWhenSnakeCase()
         {
             var firstText = "a,b,c,d,e,f".Replace(',', '\n');
@@ -38,7 +38,7 @@
             Assert.AreEqual("1.0.0.0*0.1.6.5*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestOneChangeWithinLongChainOfRepeats()
         {
             var firstText = "a,a,a,a,a,a,a,a,a,a".Replace(',', '\n');
@@ -46,7 +46,7 @@
             Assert.AreEqual("0.1.4.4*1.0.9.10*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestSomeDifferences()
         {
             var firstText = "a,b,-,c,d,e,f,f".Replace(',', '\n');
@@ -54,7 +54,7 @@
             Assert.AreEqual("1.1.2.2*1.0.4.4*1.0.7.6*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestReproduceScenario20020920()
         {
             var firstText = "c1,a,c2,b,c,d,e,g,h,i,j,c3,k,l".Replace(',', '\n');
@@ -62,7 +62,7 @@
             Assert.AreEqual("1.1.0.0*1.1.2.2*0.2.7.7*1.1.11.13*0.1.13.15*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestReproduceScenario20030207()
         {
             var firstText = "F".Replace(',', '\n');
@@ -70,7 +70,7 @@
             Assert.AreEqual("0.1.0.0*0.7.1.2*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestReproduceScenarioMuegel()
         {
             var firstText = "HELLO\nWORLD".Replace(',', '\n');
@@ -78,7 +78,7 @@
             Assert.AreEqual("2.8.0.0*", TestHelper(new SimilarityFinder().DiffText(firstText, secondText, false, false, false)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestCaseInsensitiveWithTrimLines()
         {
             var firstText = "HELLO\nWORLD ".Replace(',', '\n');

@@ -8,11 +8,14 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+
+    using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
 
     public class ContestAdministrationViewModel : AdministrationViewModel<Contest>
     {
@@ -65,9 +68,15 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(
+            GlobalConstants.ContestNameMaxLength,
+            MinimumLength = GlobalConstants.ContestNameMinLength,
+            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
@@ -77,32 +86,32 @@
         public int Type { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Начало")]
+        [Display(Name = "Start_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? StartTime { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Край")]
+        [Display(Name = "End_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? EndTime { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Начало упражнение")]
+        [Display(Name = "Practice_start_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? PracticeStartTime { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Край упражнение")]
+        [Display(Name = "Practice_end_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? PracticeEndTime { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Парола за състезание")]
+        [Display(Name = "Contest_password", ResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string ContestPassword { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Парола за упражнение")]
+        [Display(Name = "Practice_password", ResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string PracticePassword { get; set; }
 
@@ -112,34 +121,38 @@
         public string NewIpPassword { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Описание")]
+        [Display(Name = "Description", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string Description { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Време между събмисии")]
+        [Display(Name = "Submissions_limit", ResourceType = typeof(Resource))]
         [UIHint("PositiveInteger")]
         [DefaultValue(0)]
         public int LimitBetweenSubmissions { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Подредба")]
-        [Required(ErrorMessage = "Подредбата е задължителна!")]
+        [Display(Name = "Order", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Order_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("Integer")]
         public int OrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Видимост")]
+        [Display(Name = "Visibility", ResourceType = typeof(Resource))]
         public bool IsVisible { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Категория")]
-        [Required(ErrorMessage = "Категорията е задължителна!")]
+        [Display(Name = "Category", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Category_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("CategoryDropDown")]
         [DefaultValue(null)]
         public int? CategoryId { get; set; }
 
-        [Display(Name = "Тип решения")]
+        [Display(Name = "Submision_types", ResourceType = typeof(Resource))]
         [ExcludeFromExcel]
         [UIHint("SubmissionTypeCheckBoxes")]
         public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; }

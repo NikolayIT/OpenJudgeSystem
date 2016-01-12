@@ -1,0 +1,22 @@
+﻿@using Resource = Resources.Areas.Contests.Views.Partials.StatsPartial;
+@model int
+
+@(Html.Kendo().Chart<OJS.Web.Areas.Contests.ViewModels.Contests.ContestStatsChartViewModel>()
+    .Name("AveragePointsChart")
+    .HtmlAttributes(new { style = "height: 400px;" })
+    .Title(Resource.Points_label)
+    .Legend(legend => legend.Visible(false))
+    .DataSource(ds => ds.Read(read => read.Action("GetParticipantsAveragePoints", "Results", new { id = Model })))
+    .Series(series =>
+    {
+        series.Line(model => model.AverageResult).Name(Resource.Points_label).Tooltip(x => x.Format("0.000"));
+    })    
+    .CategoryAxis(axis => axis
+        .Categories(model => model.DisplayValue)
+        .Labels(labels => labels.Rotation(-90))
+    )
+    .Tooltip(tooltip => tooltip
+        .Visible(true)
+        .Shared(true)
+    )
+)

@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
 
     public class ContestQuestionAnswerModel
     {

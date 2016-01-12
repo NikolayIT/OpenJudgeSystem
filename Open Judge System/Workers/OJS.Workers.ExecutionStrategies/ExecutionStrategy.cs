@@ -18,20 +18,7 @@
             var result = new ExecutionResult();
 
             // Compile the file
-            string submissionFilePath;
-            if (string.IsNullOrEmpty(executionContext.AllowedFileExtensions))
-            {
-                submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
-            }
-            else
-            {
-                submissionFilePath = FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
-            }
-
-            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
-            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
-            result.CompilerComment = compilerResult.CompilerComment;
+            var compilerResult = this.ExecuteCompiling(executionContext, getCompilerPathFunc, result);
             if (!compilerResult.IsCompiledSuccessfully)
             {
                 return result;
@@ -85,24 +72,31 @@
             else if (processExecutionResult.Type == ProcessExecutionResultType.Success)
             {
                 var checkerResult = checker.Check(test.Input, receivedOutput, test.Output, test.IsTrialTest);
-                if (checkerResult.IsCorrect)
-                {
-                    testResult.ResultType = TestRunResultType.CorrectAnswer;
-                }
-                else
-                {
-                    testResult.ResultType = TestRunResultType.WrongAnswer;
-                }
+                testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
 
                 // TODO: Do something with checkerResult.ResultType
                 testResult.CheckerDetails = checkerResult.CheckerDetails;
             }
             else
             {
-                throw new ArgumentOutOfRangeException("processExecutionResult", "Invalid ProcessExecutionResultType value.");
+                throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
             }
 
             return testResult;
+        }
+
+        protected CompileResult ExecuteCompiling(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, ExecutionResult result)
+        {
+            var submissionFilePath = string.IsNullOrEmpty(executionContext.AllowedFileExtensions)
+                                         ? FileHelpers.SaveStringToTempFile(executionContext.Code)
+                                         : FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
+
+            var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
+
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+            result.CompilerComment = compilerResult.CompilerComment;
+            return compilerResult;
         }
 
         protected CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
@@ -114,7 +108,7 @@
 
             if (!File.Exists(compilerPath))
             {
-                throw new ArgumentException(string.Format("Compiler not found in: {0}", compilerPath), "compilerPath");
+                throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
             ICompiler compiler = Compiler.CreateCompiler(compilerType);

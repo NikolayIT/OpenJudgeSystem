@@ -129,4 +129,10 @@
   <data name="Question" xml:space="preserve">
     <value>Question</value>
   </data>
+  <data name="Question_not_answered" xml:space="preserve">
+    <value>Question with id {0} was not answered.</value>
+  </data>
+  <data name="Question_not_answered_correctly" xml:space="preserve">
+    <value>Question with id {0} is not in the correct format.</value>
+  </data>
 </root>

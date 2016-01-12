@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Contests.Controllers
+﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -73,7 +73,7 @@ namespace OJS.Web.Areas.Contests.Controllers
             {
                 contestCategory = new ContestCategoryViewModel
                 {
-                    CategoryName = "Main categories",
+                    CategoryName = Resource.Main_categories,
                     Contests = new HashSet<ContestViewModel>(),
                     SubCategories = this.Data.ContestCategories.All()
                                         .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)

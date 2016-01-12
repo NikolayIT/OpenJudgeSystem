@@ -1,25 +1,26 @@
-﻿@model IEnumerable<IGrouping<int, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
+@model IEnumerable<IGrouping<int, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
 
 @foreach (var groupedReport in Model.OrderBy(m => m.First().ProblemName))
 {
-    var sortedAndFilteredReports = groupedReport.Where(s => s.Points > 20).OrderBy(p => p.Differences).Take(500);
+    var sortedAndFilteredReports = groupedReport.Where(s => s.Points > 20).OrderBy(p => p.Percentage).Take(500);
     <h3 class="text-white">@groupedReport.First().ProblemName</h3>
     <table class="table table-striped">
         <tr>
             <th>
-                First Participant
+                @Resource.First_participant
             </th>
             <th>
-                Second Participant
+                @Resource.Second_participant
             </th>
             <th>
-                Points
+                @Resource.Points
             </th>
             <th>
-                Differences
+                @Resource.Differences
             </th>
             <th>
-                Percentage
+                @Resource.Percentage
             </th>
         </tr>
         @foreach (var report in sortedAndFilteredReports)

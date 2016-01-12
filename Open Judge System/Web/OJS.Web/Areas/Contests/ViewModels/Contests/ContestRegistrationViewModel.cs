@@ -16,16 +16,12 @@
             this.ContestName = contest.Name;
             this.ContestId = contest.Id;
 
-            if (isOfficial)
-            {
-                this.RequirePassword = contest.HasContestPassword;
-            }
-            else
-            {
-                this.RequirePassword = contest.HasPracticePassword;
-            }
+            this.RequirePassword = isOfficial ? contest.HasContestPassword : contest.HasPracticePassword;
 
-            this.Questions = contest.Questions.AsQueryable().Select(QuestionViewModel.FromQuestion);
+            this.Questions = contest.Questions
+                .Where(x => !x.IsDeleted)
+                .AsQueryable()
+                .Select(QuestionViewModel.FromQuestion);
         }
 
         public ContestRegistrationViewModel(Contest contest, ContestRegistrationModel userAnswers, bool isOfficial)

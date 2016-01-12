@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Contracts;
@@ -44,18 +45,14 @@
         /// </remarks>
         public string FileExtension { get; set; }
 
-        [StringLength(45)]
+        public byte[] SolutionSkeleton { get; set; }
+
+        [StringLength(GlobalConstants.IpAdressMaxLength)]
         [Column(TypeName = "varchar")]
         public string IpAddress { get; set; }
 
         [NotMapped]
-        public bool IsBinaryFile
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.FileExtension);
-            }
-        }
+        public bool IsBinaryFile => !string.IsNullOrWhiteSpace(this.FileExtension);
 
         [NotMapped]
         public string ContentAsString

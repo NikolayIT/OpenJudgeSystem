@@ -14,18 +14,15 @@
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common.Extensions;
+    using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
+    using Resource = Resources.Areas.Administration.Submissions.SubmissionsControllers;
 
     public class SubmissionsController : LecturerBaseGridController
     {
-        private const string SuccessfulCreationMessage = "Решението беше добавено успешно!";
-        private const string SuccessfulEditMessage = "Решението беше променено успешно!";
-        private const string InvalidSubmissionMessage = "Невалидно решение!";
-        private const string RetestSuccessful = "Решението беше успешно пуснато за ретестване!";
-
         private int? contestId;
 
         public SubmissionsController(IOjsData data)
@@ -68,7 +65,7 @@
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.SubmissionAction = "Create";
+            this.ViewBag.SubmissionAction = "Create";
             var model = new SubmissionAdministrationViewModel();
             return this.View(model);
         }
@@ -97,7 +94,7 @@
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateSubmissionContentLength(model, problem);
                         this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
@@ -108,12 +105,12 @@
                     entity.Processed = false;
                     entity.Processing = false;
                     this.BaseCreate(entity);
-                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulCreationMessage;
+                    this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
             }
 
-            ViewBag.SubmissionAction = "Create";
+            this.ViewBag.SubmissionAction = "Create";
             return this.View(model);
         }
 
@@ -128,7 +125,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -162,9 +159,9 @@
                     {
                         model.Content = submission.Content;
                         model.FileExtension = submission.FileExtension;
-                        if (ModelState.ContainsKey("Content"))
+                        if (this.ModelState.ContainsKey("Content"))
                         {
-                            ModelState["Content"].Errors.Clear();
+                            this.ModelState["Content"].Errors.Clear();
                         }
                     }
                 }
@@ -183,7 +180,7 @@
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
                     if (submissionType != null)
                     {
-                        this.ValidateSubmissionContentLenght(model, problem);
+                        this.ValidateSubmissionContentLength(model, problem);
                         this.ValidateBinarySubmission(model, problem, submissionType);
                     }
                 }
@@ -196,12 +193,12 @@
 
                     this.UpdateAuditInfoValues(model, entity);
                     this.BaseUpdate(model.GetEntityModel(entity));
-                    this.TempData[GlobalConstants.InfoMessage] = SuccessfulEditMessage;
+                    this.TempData.AddInfoMessage(Resource.Successful_edit_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
             }
 
-            ViewBag.SubmissionAction = "Update";
+            this.ViewBag.SubmissionAction = "Update";
             return this.View(model);
         }
 
@@ -216,7 +213,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -237,7 +234,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -279,12 +276,12 @@
 
             var submissionTypesSelectListItems = selectedProblemContest.SubmissionTypes
                 .ToList()
-                .Select(subm => new
+                .Select(submissionType => new
                 {
-                    Text = subm.Name,
-                    Value = subm.Id.ToString(),
-                    AllowBinaryFilesUpload = subm.AllowBinaryFilesUpload,
-                    AllowedFileExtensions = subm.AllowedFileExtensions
+                    Text = submissionType.Name,
+                    Value = submissionType.Id.ToString(),
+                    submissionType.AllowBinaryFilesUpload,
+                    submissionType.AllowedFileExtensions
                 });
 
             if (allowBinaryFilesUpload.HasValue)
@@ -302,7 +299,7 @@
 
             if (submission == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = InvalidSubmissionMessage;
+                this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
             }
             else
             {
@@ -316,10 +313,10 @@
                 submission.Processing = false;
                 this.Data.SaveChanges();
 
-                this.TempData[GlobalConstants.InfoMessage] = RetestSuccessful;
+                this.TempData.AddInfoMessage(Resource.Retest_successful);
             }
 
-            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id = id });
+            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
         }
 
         public JsonResult GetProblems(string text)
@@ -394,7 +391,7 @@
 
             return this.File(
                 submission.Content,
-                "application/octet-stream",
+                GlobalConstants.BinaryFileMimeType,
                 string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
         }
 
@@ -407,7 +404,7 @@
                 return submissionType;
             }
 
-            this.ModelState.AddModelError("SubmissionTypeId", "Wrong submission type!");
+            this.ModelState.AddModelError("SubmissionTypeId", Resource.Wrong_submision_type);
             return null;
         }
 
@@ -417,16 +414,16 @@
             {
                 if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
                 {
-                    this.ModelState.AddModelError("ParticipantId", "Задачата не е от състезанието, от което е избраният участник!");
+                    this.ModelState.AddModelError("ParticipantId", Resource.Invalid_task_for_participant);
                 }
             }
         }
 
-        private void ValidateSubmissionContentLenght(ModelType model, Problem problem)
+        private void ValidateSubmissionContentLength(ModelType model, Problem problem)
         {
             if (model.Content.Length > problem.SourceCodeSizeLimit)
             {
-                ModelState.AddModelError("Content", "Решението надвишава лимита за големина!");
+                this.ModelState.AddModelError("Content", Resource.Submission_content_length_invalid);
             }
         }
 
@@ -434,14 +431,14 @@
         {
             if (submissionType.AllowBinaryFilesUpload && !string.IsNullOrEmpty(model.ContentAsString))
             {
-                ModelState.AddModelError("SubmissionTypeId", "Невалиден тип на решението!");
+                this.ModelState.AddModelError("SubmissionTypeId", Resource.Wrong_submision_type);
             }
 
             if (submissionType.AllowedFileExtensions != null)
             {
                 if (!submissionType.AllowedFileExtensionsList.Contains(model.FileExtension))
                 {
-                    ModelState.AddModelError("Content", "Невалидно разширение на файл!");
+                    this.ModelState.AddModelError("Content", Resource.Invalid_file_extention);
                 }
             }
         }

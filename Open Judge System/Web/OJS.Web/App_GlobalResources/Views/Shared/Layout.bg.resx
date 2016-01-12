@@ -198,4 +198,7 @@
   <data name="LecturersInContests" xml:space="preserve">
     <value>Лектори в състезания</value>
   </data>
+  <data name="SubmissionTypes" xml:space="preserve">
+    <value>Типове решения</value>
+  </data>
 </root>

@@ -10,6 +10,8 @@
     using OJS.Common.DataAnnotations;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Roles.ViewModels.RolesViewModels;
+
     public class RoleAdministrationViewModel : AdministrationViewModel<IdentityRole>
     {
         [ExcludeFromExcel]
@@ -24,14 +26,16 @@
                 };
             }
         }
-        
+
         [DatabaseProperty(Name = "Id")]
         [HiddenInput(DisplayValue = false)]
         public string RoleId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
     }

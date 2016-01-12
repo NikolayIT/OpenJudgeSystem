@@ -1,7 +1,5 @@
 ﻿namespace OJS.Workers.Common
 {
-    using System;
-
     public interface ICompiler
     {
         /// <summary>

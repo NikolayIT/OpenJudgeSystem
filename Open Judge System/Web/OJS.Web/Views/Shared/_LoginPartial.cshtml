@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-@using Resource = Resources.Views.Shared.LoginPartial
+﻿@using Resource = Resources.Views.Shared.LoginPartial
 
 @if (Request.IsAuthenticated)
 {
@@ -10,7 +9,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="logged-user-wrap @(User.IsAdmin() || User.IsLecturer() ? "admin" : "")">
                 @{  
-                    string welcomeMessage = $"{Resource.Welcome_message}, {User.Identity.Name}!";
+                    var welcomeMessage = string.Format("{0}, {1}!", Resource.Welcome_message, User.Identity.Name);
                 }
                 @Html.ActionLink(welcomeMessage, GlobalConstants.Index, "Profile", new { area = "Users" }, new { title = Resource.Settings, @class = "text-primary" })
             </li>

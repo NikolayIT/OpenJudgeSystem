@@ -1,11 +1,9 @@
-namespace OJS.Web.Areas.Administration.Controllers
+﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -27,7 +25,7 @@ namespace OJS.Web.Areas.Administration.Controllers
         {
             return this.Data.FeedbackReports
                 .All()
-                .Select(FeedbackReportViewModel.FromFeedbackReport);
+                .Select(ViewModelType.FromFeedbackReport);
         }
 
         public override object GetById(object id)

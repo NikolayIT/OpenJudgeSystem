@@ -13,13 +13,7 @@
             Directory.CreateDirectory(this.cacheFilesPath);
         }
 
-        public static FileCache Instance
-        {
-            get
-            {
-                return instance ?? (instance = new FileCache());
-            }
-        }
+        public static FileCache Instance => instance ?? (instance = new FileCache());
 
         public byte[] this[string key]
         {
@@ -42,7 +36,7 @@
 
         private string GetCacheLocation(string key)
         {
-            return string.Format("{0}{1}.cache", this.cacheFilesPath, key);
+            return $"{this.cacheFilesPath}{key}.cache";
         }
     }
 }

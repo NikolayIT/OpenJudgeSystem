@@ -9,22 +9,21 @@
     using OJS.Data;
     using OJS.Web.Areas.Api.Models;
 
-    // TODO: Introduce class ApiController
-    public class ResultsController : Controller
+    public class ResultsController : ApiController
     {
+        private readonly IOjsData data;
+
         public ResultsController(IOjsData data)
         {
-            this.Data = data;
+            this.data = data;
         }
-
-        protected IOjsData Data { get; set; }
 
         // TODO: Extract method from these two methods since 90% of their code is the same
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
         {
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(answer) || !contestId.HasValue)
             {
-                return this.Content(string.Format("ERROR: Invalid arguments"));
+                return this.Content("ERROR: Invalid arguments");
             }
 
             var isValidApiKey = this.Data.Users
@@ -34,21 +33,22 @@
                     x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
-                return this.Content(string.Format("ERROR: Invalid API key"));
+                return this.Content("ERROR: Invalid API key");
             }
 
             var participants = this.Data.Participants.All().Where(
                 x => x.IsOfficial && x.ContestId == contestId.Value && x.Answers.Any(a => a.Answer == answer));
+            
 
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
-                return this.Content(string.Format("ERROR: No participants found"));
+                return this.Content("ERROR: No participants found");
             }
 
             if (participants.Count() > 1)
             {
-                return this.Content(string.Format("ERROR: More than one participants found"));
+                return this.Content("ERROR: More than one participants found");
             }
 
             var points =
@@ -66,7 +66,7 @@
         {
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(email) || !contestId.HasValue)
             {
-                return this.Content(string.Format("ERROR: Invalid arguments"));
+                return this.Content("ERROR: Invalid arguments");
             }
 
             var isValidApiKey = this.Data.Users
@@ -76,21 +76,21 @@
                     x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
-                return this.Content(string.Format("ERROR: Invalid API key"));
+                return this.Content("ERROR: Invalid API key");
             }
 
-            var participants = this.Data.Participants.All().Where(
+            var participants = this.data.Participants.All().Where(
                 x => x.IsOfficial && x.ContestId == contestId.Value && x.User.Email == email);
 
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
-                return this.Content(string.Format("ERROR: No participants found"));
+                return this.Content("ERROR: No participants found");
             }
 
             if (participants.Count() > 1)
             {
-                return this.Content(string.Format("ERROR: More than one participants found"));
+                return this.Content("ERROR: More than one participants found");
             }
 
             var points =

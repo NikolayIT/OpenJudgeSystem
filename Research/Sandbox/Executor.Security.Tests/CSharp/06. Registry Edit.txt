@@ -1,0 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Win32;
+
+namespace RegistryHack
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Registry.LocalMachine.CreateSubKey("SOFTWARE\\My Registry Key");
+            RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\My Registry Key", true);
+            myKey.SetValue("My String Value", "Test Value", RegistryValueKind.String);
+        }
+    }
+}

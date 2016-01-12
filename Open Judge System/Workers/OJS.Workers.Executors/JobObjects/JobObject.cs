@@ -11,7 +11,7 @@
 
         public JobObject()
         {
-            var attr = new SecurityAttributes();
+            var attr = default(SecurityAttributes);
             this.handle = NativeMethods.CreateJobObject(ref attr, null);
         }
 
@@ -44,7 +44,7 @@
 
         public ExtendedLimitInformation GetExtendedLimitInformation()
         {
-            var extendedLimitInformation = new ExtendedLimitInformation();
+            var extendedLimitInformation = default(ExtendedLimitInformation);
             var length = Marshal.SizeOf(typeof(ExtendedLimitInformation));
             var extendedLimitInformationInfoPointer = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(extendedLimitInformation, extendedLimitInformationInfoPointer, false);
@@ -52,7 +52,7 @@
             return extendedLimitInformation;
         }
 
-        //// // The peak memory used by any process ever associated with the job. 
+        //// // The peak memory used by any process ever associated with the job.
         //// IntPtr PeakProcessMemoryUsed
         //// {
         ////     get
@@ -62,11 +62,11 @@
         ////         return System::IntPtr((void*)extendedLimitInformation.PeakProcessMemoryUsed);
         ////     }
         //// }
-    
+
         //// // The peak memory usage of all processes currently associated with the job.
         //// System::IntPtr JobObject::PeakJobMemoryUsed::get()
         //// {
-        ////     JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedLimitInformation = 
+        ////     JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedLimitInformation =
         ////         QueryJobInformation<JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation>(_hJob);
         ////     return System::IntPtr((void *)extendedLimitInformation.PeakJobMemoryUsed);
         //// }

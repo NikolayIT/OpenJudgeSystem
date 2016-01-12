@@ -198,4 +198,7 @@
   <data name="LecturersInContests" xml:space="preserve">
     <value>Lecturers In Contests</value>
   </data>
+  <data name="SubmissionTypes" xml:space="preserve">
+    <value>Submission Types</value>
+  </data>
 </root>

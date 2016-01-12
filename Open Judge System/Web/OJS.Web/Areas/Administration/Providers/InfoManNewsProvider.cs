@@ -10,12 +10,12 @@
 
     public class InfoManNewsProvider : BaseNewsProvider
     {
-        private const string InfoManUrl = "http://infoman.musala.com/feeds/";
-        private const string InfoManEncoding = "utf-8";
+        private const string ContentUrl = "http://infoman.musala.com/feeds/";
+        private const string ContentEncoding = "utf-8";
 
         public override IEnumerable<News> FetchNews()
         {
-            var document = this.GetHtmlDocument(InfoManUrl, InfoManEncoding);
+            var document = this.GetHtmlDocument(ContentUrl, ContentEncoding);
 
             var nodes = document.DocumentNode.SelectNodes("//rss//channel//item");
 
@@ -26,14 +26,17 @@
                 var title = node.ChildNodes.First(n => n.Name == "title").InnerHtml;
                 var description = node.ChildNodes.First(n => n.Name == "description").InnerHtml;
                 var date = node.ChildNodes.First(n => n.Name == "pubdate").InnerHtml;
+                var linkAddress = node.ChildNodes.First(n => n.Name == "guid").InnerHtml;
+                var link = string.Format("<a href=\"{0}\">{0}</a>", linkAddress);
 
                 var decodedDescription = HttpUtility.HtmlDecode(description);
+
                 var parsedDate = DateTime.Parse(date);
 
                 currentListOfNews.Add(new News
                 {
                     Title = title,
-                    Content = this.ConvertLinks(decodedDescription, "http://infoman.musala.com/"),
+                    Content = string.Format("{0}<br />{1}", this.ConvertLinks(decodedDescription, "http://infoman.musala.com/"), link),
                     Author = "ИнфоМан",
                     Source = "http://infoman.musala.com/",
                     IsVisible = true,

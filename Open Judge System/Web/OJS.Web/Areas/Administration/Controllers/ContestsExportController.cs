@@ -16,7 +16,6 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Common;
@@ -50,14 +49,14 @@
                             .Select(problem =>
                                 new
                                 {
-                                    Id = problem.Id,
+                                    problem.Id,
                                     ProblemName = problem.Name,
                                     ProblemOrderBy = problem.OrderBy,
                                     ShowResult = problem.ShowResults,
                                     BestSubmission = problem.Submissions
                                                         .Where(z => z.ParticipantId == participant.Id)
                                                         .OrderByDescending(z => z.Points).ThenByDescending(z => z.Id)
-                                                        .Select(z => new { Id = z.Id, Points = z.Points })
+                                                        .Select(z => new { z.Id, z.Points })
                                                         .FirstOrDefault()
                                 })
                                 .OrderBy(res => res.ProblemOrderBy).ThenBy(res => res.ProblemName),
@@ -88,16 +87,16 @@
             headerRow.CreateCell(columnNumber++).SetCellValue("Total");
 
             // All rows
-            int rowNumber = 1;
+            var rowNumber = 1;
             foreach (var result in data.Results)
             {
-                int cellNumber = 0;
+                var cellNumber = 0;
                 var row = sheet.CreateRow(rowNumber++);
                 row.CreateCell(cellNumber++).SetCellValue(result.Data.ParticipantUserName);
                 row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName).Trim());
                 foreach (var answer in result.Data.Answers)
                 {
-                    var answerId = 0;
+                    int answerId;
                     if (answer.ContestQuestion.Type == ContestQuestionType.DropDown && int.TryParse(answer.Answer, out answerId))
                     {
                         // TODO: N+1 query problem. Optimize it.
@@ -130,7 +129,7 @@
             }
 
             // Auto-size all columns
-            for (int i = 0; i < columnNumber; i++)
+            for (var i = 0; i < columnNumber; i++)
             {
                 sheet.AutoSizeColumn(i);
             }
@@ -142,8 +141,8 @@
             // Return the result to the end user
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
-                "application/vnd.ms-excel", // MIME type of Excel files
-                string.Format("Класиране за {0} {1}.xls", compete ? "състезание" : "практика", contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
+                string.Format(Resource.Report_excel_format, compete ? Resource.Contest : Resource.Practice, contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
         public ActionResult Solutions(int id, bool compete, bool bestSubmissions)
@@ -218,8 +217,8 @@
             {
                 // Create directory with the participants name
                 var directoryName =
-                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName).ToValidFilePath();
-
+                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
+                        .ToValidFilePath();
                 file.AddDirectoryByName(directoryName);
 
                 foreach (var problem in problems)

@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common;
     using OJS.Data.Contracts;
 
     public class Problem : DeletableEntity, IOrderable
@@ -31,6 +32,8 @@
 
         public virtual Contest Contest { get; set; }
 
+        [Required]
+        [MaxLength(GlobalConstants.ProblemNameMaxLength)]
         public string Name { get; set; }
 
         public short MaximumPoints { get; set; }
@@ -57,8 +60,16 @@
 
         public int OrderBy { get; set; }
 
+        /// <summary>
+        /// Predefined skeleton for the task
+        /// </summary>
+        public byte[] SolutionSkeleton { get; set; }
+
         [DefaultValue(true)]
         public bool ShowResults { get; set; }
+
+        [DefaultValue(false)]
+        public bool ShowDetailedFeedback { get; set; }
 
         public virtual ICollection<Test> Tests
         {

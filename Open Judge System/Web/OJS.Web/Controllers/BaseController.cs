@@ -84,19 +84,19 @@
             }
             else
             {
-                var controllerName = ControllerContext.RouteData.Values["Controller"].ToString();
-                var actionName = ControllerContext.RouteData.Values["Action"].ToString();
+                var controllerName = this.ControllerContext.RouteData.Values["Controller"].ToString();
+                var actionName = this.ControllerContext.RouteData.Values["Action"].ToString();
                 this.View("Error", new HandleErrorInfo(filterContext.Exception, controllerName, actionName)).ExecuteResult(this.ControllerContext);
             }
 
             filterContext.ExceptionHandled = true;
         }
 
-        /// <summary> 
-        /// Creates a JSON object with maximum size. 
-        /// </summary> 
-        /// <param name="data">JSON data.</param> 
-        /// <returns>Returns a JSON as content result.</returns> 
+        /// <summary>
+        /// Creates a JSON object with maximum size.
+        /// </summary>
+        /// <param name="data">JSON data.</param>
+        /// <returns>Returns a JSON as content result.</returns>
         protected ContentResult LargeJson(object data)
         {
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 };
@@ -104,7 +104,7 @@
             return new ContentResult
             {
                 Content = serializer.Serialize(data),
-                ContentType = "application/json",
+                ContentType = GlobalConstants.JsonMimeType,
             };
         }
 

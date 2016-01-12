@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
+@model int
 
 @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ProblemResource.ProblemResourceGridViewModel>()
     .Name("submissions-grid")

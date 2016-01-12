@@ -1,12 +1,12 @@
 ﻿namespace OJS.Workers.Tools.Similarity
 {
     /// <summary>
-    /// Data on one input file being compared.  
+    /// Data on one input file being compared.
     /// </summary>
     internal class DiffData
     {
         /// <summary>
-        /// Initialize the Diff-Data buffer.
+        /// Initializes a new instance of the <see cref="DiffData"/> class.
         /// </summary>
         /// <param name="initData">reference to the buffer</param>
         internal DiffData(int[] initData)

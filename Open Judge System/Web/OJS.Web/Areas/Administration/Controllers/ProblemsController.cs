@@ -23,9 +23,11 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
 
-    // TODO: ShowResults property should be editable
+    using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+
     public class ProblemsController : LecturerBaseController
     {
         public ProblemsController(IOjsData data)
@@ -65,7 +67,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -80,7 +82,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -94,7 +96,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -121,6 +123,7 @@
                 ContestName = contest.Name,
                 ShowResults = true,
                 SourceCodeSizeLimit = 16384,
+                ShowDetailedFeedback = false,
             };
 
             return this.View(problem);
@@ -146,7 +149,7 @@
 
                 if (!validResources)
                 {
-                    this.ModelState.AddModelError("Resources", "Ресурсите трябва да бъдат попълнени изцяло!");
+                    this.ModelState.AddModelError("Resources", GlobalResource.Resources_not_complete);
                 }
             }
 
@@ -161,6 +164,7 @@
                     TimeLimit = problem.TimeLimit,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     OrderBy = problem.OrderBy,
                     Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker)
                 };
@@ -188,7 +192,7 @@
                                         Importance = 0
                                     }
                                 };
-                        ViewBag.SystemMessages = systemMessages;
+                        this.ViewBag.SystemMessages = systemMessages;
                         problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
                         return this.View(problem);
                     }
@@ -197,8 +201,8 @@
                 this.Data.Problems.Add(newProblem);
                 this.Data.SaveChanges();
 
-                TempData.Add(GlobalConstants.InfoMessage, "Задачата беше добавена успешно");
-                return this.RedirectToAction("Contest", new { id = id });
+                this.TempData.AddInfoMessage(GlobalResource.Problem_added);
+                return this.RedirectToAction("Contest", new { id });
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
@@ -211,7 +215,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -236,11 +240,18 @@
                     TimeLimit = problem.TimeLimit,
                     MemoryLimit = problem.MemoryLimit,
                     ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy
                 })
                 .FirstOrDefault();
+
+            if (selectedProblem == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                return this.RedirectToAction(GlobalConstants.Index);
+            }
 
             var checkers = this.Data.Checkers
                 .All()
@@ -272,12 +283,13 @@
                 existingProblem.MemoryLimit = problem.MemoryLimit;
                 existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
                 existingProblem.ShowResults = problem.ShowResults;
+                existingProblem.ShowDetailedFeedback = problem.ShowDetailedFeedback;
                 existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
                 existingProblem.OrderBy = problem.OrderBy;
 
                 this.Data.SaveChanges();
 
-                this.TempData[GlobalConstants.InfoMessage] = "Задачата беше променена успешно";
+                this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
                 return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
             }
 
@@ -290,7 +302,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -315,13 +327,15 @@
                     MemoryLimit = problem.MemoryLimit,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy
+                    OrderBy = problem.OrderBy,
+                    ShowResults = problem.ShowResults,
+                    ShowDetailedFeedback = problem.ShowDetailedFeedback
                 })
                 .FirstOrDefault();
 
             if (selectedProblem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -332,7 +346,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -340,7 +354,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -356,7 +370,7 @@
             
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше изтрита успешно";
+            this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
@@ -365,7 +379,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -382,7 +396,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -393,14 +407,14 @@
         {
             if (id == null || !this.Data.Contests.All().Any(x => x.Id == id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидно състезание";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
                 return this.RedirectToAction<ProblemsController>(x => x.Index());
             }
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
             this.Data.Resources.Delete(r => r.Problem.ContestId == id);
@@ -415,15 +429,15 @@
             
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачите бяха изтрити успешно";
-            return this.RedirectToAction("Contest", new { id = id });
+            this.TempData.AddInfoMessage(GlobalResource.Problems_deleted);
+            return this.RedirectToAction("Contest", new { id });
         }
 
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -434,7 +448,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -451,7 +465,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -461,7 +475,7 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Невалидна задача";
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -474,7 +488,7 @@
             this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Задачата беше ретествана успешно";
+            this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
         }
 
@@ -563,7 +577,7 @@
                 contests = contests.Where(x => x.CategoryId == categoryId);
             }
 
-            var result = contests.Select(x => new { Id = x.Id, Name = x.Name });
+            var result = contests.Select(x => new { x.Id, x.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -657,7 +671,6 @@
                     });
 
                     orderCount++;
-                    continue;
                 }
                 else if (!string.IsNullOrEmpty(resource.Name) && resource.Type != ProblemResourceType.Link && resource.File != null)
                 {
@@ -671,7 +684,6 @@
                     });
 
                     orderCount++;
-                    continue;
                 }
             }
         }
@@ -680,9 +692,9 @@
         {
             var extension = testArchive.FileName.Substring(testArchive.FileName.Length - 4, 4);
 
-            if (extension != ".zip")
+            if (extension != GlobalConstants.ZipFileExtension)
             {
-                throw new ArgumentException("Тестовете трябва да бъдат в .ZIP файл");
+                throw new ArgumentException(GlobalResource.Must_be_zip_file);
             }
 
             using (var memory = new MemoryStream())
@@ -690,13 +702,11 @@
                 testArchive.InputStream.CopyTo(memory);
                 memory.Position = 0;
 
-                var parsedTests = new TestsParseResult();
-
-                parsedTests = ZippedTestsManipulator.Parse(memory);
+                var parsedTests = ZippedTestsManipulator.Parse(memory);
 
                 if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
                 {
-                    throw new ArgumentException("Невалидни тестове");
+                    throw new ArgumentException(GlobalResource.Invalid_tests);
                 }
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);

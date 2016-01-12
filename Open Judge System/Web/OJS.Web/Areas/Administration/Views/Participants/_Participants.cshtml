@@ -1,4 +1,6 @@
-﻿@model int?
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.Participants.Views.Partials.Participants;
+@model int?
 @{
     const string ControllerName = "Participants";
 }
@@ -17,15 +19,15 @@
         })
     .ToolBar(toolbar =>
     {
-        toolbar.Create().Text("Добавяне на участник");
-        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        toolbar.Create().Text(Resource.Add_participant);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
     {
         editable.Mode(GridEditMode.PopUp);
         editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
     })
     .ColumnMenu()
     .ClientDetailTemplateId("questions-answers-template")
@@ -33,11 +35,6 @@
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
     .Filterable(x => x.Enabled(true))
-        /*.Groupable(x =>
-        {
-            x.Enabled(true);
-            x.Messages(m => m.Empty("Хванете заглавието на колона и го преместете тук, за да групирате по тази колона."));
-        })*/
     .Reorderable(x => x.Columns(true))
     .Resizable(x => x.Columns(true))
     .DataSource(datasource => datasource
@@ -81,7 +78,7 @@
             {
                 edit.Mode(GridEditMode.PopUp);
                 edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
             })
         .DataSource(data =>
         {

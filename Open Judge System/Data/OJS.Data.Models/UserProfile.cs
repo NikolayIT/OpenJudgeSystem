@@ -61,9 +61,7 @@
 
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
-        #endregion
 
-        #region IAuditInfo
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
@@ -75,6 +73,5 @@
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
-        #endregion
     }
 }

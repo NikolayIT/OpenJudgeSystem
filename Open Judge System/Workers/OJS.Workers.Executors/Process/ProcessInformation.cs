@@ -1,4 +1,4 @@
-namespace OJS.Workers.Executors.Process
+﻿namespace OJS.Workers.Executors.Process
 {
     using System;
     using System.Runtime.InteropServices;

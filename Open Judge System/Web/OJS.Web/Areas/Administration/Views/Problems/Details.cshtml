@@ -1,7 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
+@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
 
 @{
-    ViewBag.Title = "Детайли за задача";
+    ViewBag.Title = Resource.Page_title;
 }
 
 <h2>@ViewBag.Title @Model.Name</h2>
@@ -40,7 +41,7 @@
     <div class="panel-body news-content editor-label">
         @if (Model.SourceCodeSizeLimit == null)
         {
-            <text>Неограничен</text>
+            @Resource.Unlimited
         }
         else
         {
@@ -66,14 +67,13 @@
         @Html.LabelFor(m => m.ShowResults)
     </div>
     <div class="panel-body news-content editor-label">
-        @if (Model.ShowResults)
-        {
-            <text>Резултатите са видими</text>
-        }
-        else
-        {
-            <text>Резултатите не са видими</text>
-        }
+        @(Model.ShowResults ? Resource.Results_visible : Resource.Results_invisible)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(m => m.ShowDetailedFeedback)
+    </div>
+    <div class="panel-body news-content editor-label">
+        @(Model.ShowDetailedFeedback ? Resource.Full_feedback_visible : Resource.Full_feedback_invisible)
     </div>
     <br />
     <div class="editor-label">
@@ -83,15 +83,15 @@
         @Model.OrderBy
     </div>
     <br />
-    @Ajax.ActionLink("Покажи решенията", "GetSubmissions", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
-    @Ajax.ActionLink("Покажи ресурсите", "GetResources", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
+    @Ajax.ActionLink(Resource.Show_submissions, "GetSubmissions", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
+    @Ajax.ActionLink(Resource.Show_resources, "GetResources", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "grid" }, new { @class = "btn btn-primary" })
     <br />
     <br />
     <div id="grid">
 
     </div>
     <br />
-    <a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">Тестове</a>
-    <a href="/Administration/Problems/Edit/@Model.Id" class="btn btn-primary">Промени</a>
-    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">Назад</a>
+    <a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">@Resource.Tests</a>
+    <a href="/Administration/Problems/Edit/@Model.Id" class="btn btn-primary">@Resource.Edit</a>
+    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
 </div>

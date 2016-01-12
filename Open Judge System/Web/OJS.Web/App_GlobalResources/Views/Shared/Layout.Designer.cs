@@ -286,6 +286,15 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submission Types.
+        /// </summary>
+        public static string SubmissionTypes {
+            get {
+                return ResourceManager.GetString("SubmissionTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test files.
         /// </summary>
         public static string Test_files {

@@ -31,6 +31,7 @@
             this.FileSizeLimit = problem.SourceCodeSizeLimit;
             this.CheckerName = problem.Checker.Name;
             this.CheckerDescription = problem.Checker.Description;
+            this.MaximumPoints = problem.MaximumPoints;
         }
 
         public ContestProblemViewModel()
@@ -55,6 +56,7 @@
                     ShowResults = problem.ShowResults,
                     CheckerName = problem.Checker.Name,
                     CheckerDescription = problem.Checker.Description,
+                    MaximumPoints = problem.MaximumPoints,
                     Resources = problem.Resources.AsQueryable()
                                                             .Where(x => !x.IsDeleted)
                                                             .OrderBy(x => x.OrderBy)
@@ -70,6 +72,8 @@
         public string Name { get; set; }
 
         public int OrderBy { get; set; }
+
+        public int MaximumPoints { get; set; }
 
         public bool ShowResults { get; set; }
 
@@ -98,7 +102,7 @@
                 this.timeLimitInMs = (int)value;
             }
         }
-        
+
         public double? FileSizeLimit
         {
             get

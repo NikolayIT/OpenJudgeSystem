@@ -1,17 +1,18 @@
-﻿@{
-    ViewBag.Title = "Тестови файлове";
+﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsIndex;
+@{
+    ViewBag.Title = Resource.Page_title;
 }
 
 <h2>@ViewBag.Title</h2>
 <div class="container">
     <div class="col-md-6">
         <div>
-            <label for="search">Търсене по задача: </label>
+            <label for="search">@Resource.Search_by_problem </label>
         </div>
         <div>
             @(@Html.Kendo().AutoComplete()
             .Name("search")
-            .Placeholder("Въведи задача...")
+            .Placeholder(Resource.Enter_problem)
             .HtmlAttributes(new { @class = "test-file-dropdown" })
             .DataTextField("Name")
             .MinLength(3)
@@ -38,12 +39,12 @@
 
         <div>
             <div>
-                <label for="categories">Категория: </label>
+                <label for="categories">@Resource.Category_label </label>
             </div>
             <div>
                 @(Html.Kendo().DropDownList()
                 .Name("categories")
-                .OptionLabel("Избери категория...")
+                .OptionLabel(Resource.Choose_category)
                 .HtmlAttributes(new { @class = "test-file-dropdown" })
                 .DataTextField("Name")
                 .DataValueField("Id")
@@ -57,12 +58,12 @@
             </div>
         </div>
         <div>
-            <label for="contests">Състезание: </label>
+            <label for="contests">@Resource.Contest_label </label>
         </div>
         <div>
             @(Html.Kendo().DropDownList()
             .Name("contests")
-            .OptionLabel("Избери състезание...")
+            .OptionLabel(Resource.Choose_contest)
             .HtmlAttributes(new { @class = "test-file-dropdown" })
             .DataTextField("Name")
             .DataValueField("Id")
@@ -81,12 +82,12 @@
             )
         </div>
         <div>
-            <label for="problems">Задача: </label>
+            <label for="problems">@Resource.Problem_label </label>
         </div>
         <div>
             @(Html.Kendo().DropDownList()
             .Name("problems")
-            .OptionLabel("Избери проблем...")
+            .OptionLabel(Resource.Choose_problem)
             .HtmlAttributes(new { @class = "test-file-dropdown" })
             .DataTextField("Name")
             .DataValueField("Id")
@@ -123,15 +124,15 @@
                     }
                     <div>
                         @Html.CheckBox("retestTask", false)
-                        @Html.Label("Ретестване на задачата", new { @for = "retestTask", style = "display: inline-block; " })
+                        @Html.Label(Resource.Retest_problem, new { @for = "retestTask", style = "display: inline-block; " })
                     </div>
                     <div>
                         @Html.CheckBox("deleteOldFiles", true)
-                        @Html.Label("Изтриване на стари тестове", new { @for = "deleteOldFiles", style = "display: inline-block; " })
+                        @Html.Label(Resource.Delete_old_tests, new { @for = "deleteOldFiles", style = "display: inline-block; " })
                     </div>
                     <p>
                         @Html.Kendo().Upload().Name("file").Multiple(false).HtmlAttributes(new { @class = "kendo-upload" })
-                        <input class="k-button" type="submit" value="Импортиране" />
+                        <input class="k-button" type="submit" value="@Resource.Import" />
                     </p>
                 </div>
             </div>
@@ -139,7 +140,7 @@
     </div>
 </div>
 <br />
-<div class="jumbotron text-center text-white" id="status">Тестовете се зареждат...</div>
+<div class="jumbotron text-center text-white" id="status">@Resource.Tests_loading</div>
 <div id="grid"></div>
 
 @section scripts{

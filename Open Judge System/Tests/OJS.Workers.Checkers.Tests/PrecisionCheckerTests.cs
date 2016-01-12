@@ -3,14 +3,14 @@
     using System.Globalization;
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class PrecisionCheckerTests
     {
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueWhenGivenExactDecimalWithDefaultPrecision()
         {
             string receivedOutput = "1.11111111111111111111111111";
@@ -24,7 +24,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueWhenGivenExactDecimalWithPrecisionOfFive()
         {
             string receivedOutput = "1.000004";
@@ -39,7 +39,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnWrongAnswerWhenGivenExactDecimalWithPrecisionOfSixAndDifferentDigitsBeforeTheSixthOne()
         {
             string receivedOutput = "1.000004";
@@ -54,7 +54,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnFalseIfNoNumberIsEntered()
         {
             string receivedOutput = "Foobar";
@@ -69,7 +69,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnCorrectIfTheAnswerRoundUp()
         {
             string receivedOutput = "1.00";
@@ -84,7 +84,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfTheAnswerRoundUpClose()
         {
             string receivedOutput = "1.00";
@@ -99,7 +99,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfTheAnswersAreSame()
         {
             string receivedOutput = "0.999999";
@@ -114,7 +114,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnFalseIfTheAnswersAreDifferent()
         {
             string receivedOutput = "0.123456";
@@ -129,7 +129,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfTheAnswersAreSameAndPrecisionIsBiggerThanTheNumbers()
         {
             string receivedOutput = "0.999999";
@@ -144,7 +144,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfTheAnswersAreHugeNumbersSameAndLowPrecision()
         {
             string receivedOutput = "1234567.99";
@@ -159,7 +159,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfAllLinesAreCorrect()
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("bg-BG");
@@ -176,7 +176,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnTrueIfAllLinesAreCorrectWithOneExtraEmptyLine()
         {
             string receivedOutput = "1.00\n15.89955\n9999.87";
@@ -191,7 +191,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldNotRespectsDecimalSeparators()
         {
             string receivedOutput = "1,1";
@@ -205,7 +205,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnCorrectAnswerIfCultureIsBulgarian()
         {
             string receivedOutput = "1,00\n15,89955\n9999,87\n";
@@ -220,7 +220,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnInvalidLineNumberIfAllLinesAreCorrectWithOneExtraFullLineOnReceivedOutput()
         {
             string receivedOutput = "1.00\n15.89955\n9999.87\n99.56";
@@ -235,7 +235,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnInvalidLineNumberIfAllLinesAreCorrectWithOneExtraFullLineOnExpectedOutput()
         {
             string receivedOutput = "1.00\n15.89955\n9999.87";
@@ -250,7 +250,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnInvalidLineNumberIfAllLinesAreCorrectWithALotOfExtraLine()
         {
             string receivedOutput = "1.00\n15.89955\n9999.87";
@@ -265,7 +265,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckerShouldReturnWrongAnsweIfAllLinesAreCorrectWithALotOfExtraLinesAtTheBeginningAndEnd()
         {
             string receivedOutput = "\n\n1.00\n15.89955\n9999.87";
@@ -280,7 +280,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckShouldReturnCorrectAnswerInBiggerSameTextsTest()
         {
             var receivedOutput = new StringBuilder();
@@ -307,7 +307,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckShouldReturnWrongAnswerInBiggerSameTextsWithOneDifferentLineTest()
         {
             var receivedOutput = new StringBuilder();
@@ -336,7 +336,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckShouldReturnWrongAnswerInBiggerSameTextsWithTotallyDifferentLinesTest()
         {
             var receivedOutput = new StringBuilder();
@@ -365,7 +365,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void PrecisionCheckShouldReturnCorrectAnswerInBiggerSameTextsWithDifferentPrecisionTest()
         {
             var receivedOutput = new StringBuilder();

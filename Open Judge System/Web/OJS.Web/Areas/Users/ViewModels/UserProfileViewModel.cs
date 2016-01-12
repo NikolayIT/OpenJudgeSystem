@@ -1,12 +1,9 @@
 ﻿namespace OJS.Web.Areas.Users.ViewModels
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Web;
 
+    using OJS.Common;
     using OJS.Data.Models;
     using OJS.Web.Areas.Users.Helpers;
 
@@ -32,17 +29,28 @@
 
         public string Email { get; set; }
 
-        [MaxLength(30, ErrorMessageResourceName = "First_name_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.FirstNameMaxLength,
+            ErrorMessageResourceName = "First_name_too_long",
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string FirstName { get; set; }
 
-        [MaxLength(30, ErrorMessage = "Family_name_too_long", ErrorMessageResourceType = typeof(Resource))]
-        [Display(Name = "Family_name", ResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.LastNameMaxLength,
+            ErrorMessage = "Family_name_too_long",
+            ErrorMessageResourceType = typeof(Resource))]
+        [Display(
+            Name = "Family_name",
+            ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string LastName { get; set; }
 
-        [MaxLength(30, ErrorMessage = "City_too_long", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.CityNameMaxLength,
+            ErrorMessage = "City_too_long",
+            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "City", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string City { get; set; }

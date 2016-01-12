@@ -1,0 +1,64 @@
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using Resource = Resources.Areas.Administration.SubmissionTypes.Views.SubmissionTypesIndex;
+@{
+    ViewBag.Title = Resource.Page_title;
+    const string ControllerName = "SubmissionTypes";
+}
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.SubmissionType.SubmissionTypeAdministrationViewModel>()
+    .Name("DataGrid")
+    .Columns(columns =>
+        {
+                    columns.Bound(col => col.Id);
+                    columns.Bound(col => col.Name);
+                    columns.Bound(col => col.IsSelectedByDefault).Hidden();
+                    columns.Bound(col => col.ExecutionStrategyType);
+                    columns.Bound(col => col.CompilerType);
+                    columns.Bound(col => col.AdditionalCompilerArguments).Hidden();
+                    columns.Bound(col => col.Description).Hidden();
+                    columns.Bound(col => col.AllowBinaryFilesUpload).Hidden();
+                    columns.Bound(col => col.AllowedFileExtensions).Hidden();
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80);
+        })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create().Text(GeneralResource.Create);
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+    })
+    .Editable(editable =>
+    {
+        editable.Mode(GridEditMode.PopUp);
+        editable.Window(w => w.Title(ViewBag.Title));
+        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+    })
+    .ColumnMenu()
+    .Events(e => e.DataBound("onDataBound"))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+    .Reorderable(x => x.Columns(true))
+    .Resizable(x => x.Columns(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Model(model =>
+            {
+                model.Id(m => m.Id);
+            })
+        .Sort(sort => sort.Add(x => x.Id).Descending())
+        .Create(create => create.Action("Create", ControllerName))
+        .Read(read => read.Action("Read", ControllerName))
+        .Update(update => update.Action("Update", ControllerName))
+        .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
+    )
+)
+
+<script type="text/javascript">
+    function onDataBound(e) {
+        CreateExportToExcelButton();
+    }
+</script>

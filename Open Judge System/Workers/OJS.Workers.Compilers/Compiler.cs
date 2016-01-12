@@ -42,22 +42,22 @@
         {
             if (compilerPath == null)
             {
-                throw new ArgumentNullException("compilerPath");
+                throw new ArgumentNullException(nameof(compilerPath));
             }
 
             if (inputFile == null)
             {
-                throw new ArgumentNullException("inputFile");
+                throw new ArgumentNullException(nameof(inputFile));
             }
 
             if (!File.Exists(compilerPath))
             {
-                return new CompileResult(false, string.Format("Compiler not found! Searched in: {0}", compilerPath));
+                return new CompileResult(false, $"Compiler not found! Searched in: {compilerPath}");
             }
 
             if (!File.Exists(inputFile))
             {
-                return new CompileResult(false, string.Format("Input file not found! Searched in: {0}", inputFile));
+                return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
 
             // Move source file if needed
@@ -76,7 +76,7 @@
             var directoryInfo = new FileInfo(compilerPath).Directory;
             if (directoryInfo == null)
             {
-                return new CompileResult(false, string.Format("Compiler directory is null. Compiler path value: {0}", compilerPath));
+                return new CompileResult(false, $"Compiler directory is null. Compiler path value: {compilerPath}");
             }
 
             // Prepare process start information
@@ -104,16 +104,16 @@
             }
 
             // Check results and return CompilerResult instance
-            if (!File.Exists(outputFile))
+            if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
             {
                 // Compiled file is missing
-                return new CompileResult(false, string.Format("Compiled file is missing. Compiler output: {0}", compilerOutput));
+                return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }
 
-            if (!string.IsNullOrWhiteSpace(compilerOutput))
+            if (!string.IsNullOrWhiteSpace(compilerOutput.Output))
             {
                 // Compile file is ready but the compiler has something on standard error (possibly compile warnings)
-                return new CompileResult(true, compilerOutput, outputFile);
+                return new CompileResult(true, compilerOutput.Output, outputFile);
             }
 
             // Compilation is ready without warnings
@@ -141,10 +141,11 @@
         {
         }
 
-        private static string ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        private static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
+            var exitCode = 0;
 
             using (var process = new Process())
             {
@@ -181,7 +182,7 @@
                         var started = process.Start();
                         if (!started)
                         {
-                            return "Could not start compiler.";
+                            return new CompilerOutput(1, "Could not start compiler.");
                         }
 
                         process.BeginOutputReadLine();
@@ -197,13 +198,15 @@
                         errorWaitHandle.WaitOne(100);
                     }
                 }
+
+                exitCode = process.ExitCode;
             }
 
             var output = outputBuilder.ToString().Trim();
             var errorOutput = errorOutputBuilder.ToString().Trim();
 
             var compilerOutput = string.Format("{0}{1}{2}", output, Environment.NewLine, errorOutput).Trim();
-            return compilerOutput;
+            return new CompilerOutput(exitCode, compilerOutput);
         }
     }
 }

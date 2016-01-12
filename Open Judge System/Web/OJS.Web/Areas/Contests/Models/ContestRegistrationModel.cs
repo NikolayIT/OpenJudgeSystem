@@ -7,11 +7,14 @@
 
     using OJS.Data;
 
+    using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
+
     public class ContestRegistrationModel : IValidatableObject
     {
         private IOjsData data;
 
-        public ContestRegistrationModel() : this(new OjsData())
+        public ContestRegistrationModel()
+            : this(new OjsData())
         {
         }
 
@@ -32,7 +35,9 @@
             var validationResults = new HashSet<ValidationResult>();
 
             var contest = this.data.Contests.GetById(this.ContestId);
-            var contestQuestions = contest.Questions.ToList();
+            var contestQuestions = contest.Questions
+                .Where(x => !x.IsDeleted)
+                .ToList();
 
             var counter = 0;
             foreach (var question in contestQuestions)
@@ -41,13 +46,13 @@
                 var memberName = string.Format("Questions[{0}].Answer", counter);
                 if (answer == null)
                 {
-                    var validationErrorMessage = string.Format("Question with id {0} was not answered.", question.Id);
+                    var validationErrorMessage = string.Format(Resource.Question_not_answered, question.Id);
                     var validationResult = new ValidationResult(validationErrorMessage, new[] { memberName });
                     validationResults.Add(validationResult);
                 }
                 else if (!string.IsNullOrWhiteSpace(question.RegularExpressionValidation) && !Regex.IsMatch(answer.Answer, question.RegularExpressionValidation))
                 {
-                    var validationErrorMessage = string.Format("Question with id {0} is not in the correct format.", question.Id);
+                    var validationErrorMessage = string.Format(Resource.Question_not_answered_correctly, question.Id);
                     var validationResult = new ValidationResult(validationErrorMessage, new[] { memberName });
                     validationResults.Add(validationResult);
                 }

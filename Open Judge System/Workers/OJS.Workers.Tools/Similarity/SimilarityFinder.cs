@@ -7,8 +7,7 @@
     /// <summary>
     /// This Class implements the Difference Algorithm published in
     /// "An O(ND) Difference Algorithm and its Variations" by Eugene Myers
-    /// Algorithmica Vol. 1 No. 2, 1986, p 251.  
-    /// 
+    /// Algorithmica Vol. 1 No. 2, 1986, p 251.
     /// There are many C, Java, Lisp implementations public available but they all seem to come
     /// from the same source (diffutils) that is under the (unfree) GNU public License
     /// and cannot be reused as a sourcecode for a commercial application.
@@ -20,10 +19,8 @@
     /// make it available without the GNU license limitations.
     /// I do not need a high performance diff tool because it is used only sometimes.
     /// I will do some performace tweaking when needed.
-    /// 
     /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
-    /// each line is converted into a (hash) number. See DiffText(). 
-    /// 
+    /// each line is converted into a (hash) number. See DiffText().
     /// Some chages to the original algorithm:
     /// The original algorithm was described using a recursive approach and comparing zero indexed arrays.
     /// Extracting sub-arrays and rejoining them is very performance and memory intensive so the same
@@ -31,10 +28,8 @@
     /// This circumstance makes the LCS and SMS functions more complicate.
     /// I added some code to the LCS function to get a fast response on sub-arrays that are identical,
     /// completely deleted or inserted.
-    /// 
     /// The result from a comparisation is stored in 2 arrays that flag for modified (deleted or inserted)
     /// lines in the 2 data arrays. These bits are then analyzed to produce a array of Item objects.
-    /// 
     /// Further possible optimizations:
     /// (first rule: don't do it; second: don't do it yet)
     /// The arrays DataA and DataB are passed as parameters, but are never changed after the creation
@@ -44,7 +39,6 @@
     /// The DownVector and UpVector arrays are always created and destroyed each time the SMS gets called.
     /// It is possible to reuse them when transferring them to members of the class.
     /// See TODO: hints.
-    /// 
     /// diff.cs: A port of the algorithm to C#
     /// Copyright (c) by Matthias Hertel, http://www.mathertel.de
     /// This work is licensed under a BSD style license. See http://www.mathertel.de/License.aspx
@@ -55,7 +49,7 @@
         /// Find the difference in 2 text documents, comparing by textlines.
         /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
         /// each line is converted into a (hash) number. This hash-value is computed by storing all
-        /// textlines into a common hashtable so i can find duplicates in there, and generating a 
+        /// textlines into a common hashtable so i can find duplicates in there, and generating a
         /// new number each time a new textline is inserted.
         /// </summary>
         /// <param name="textA">A-version of the text (usually the old one)</param>
@@ -80,8 +74,6 @@
             // The B-Version of the data (modified data) to be compared.
             var dataB = new DiffData(this.DiffCodes(textB, h, trimSpace, ignoreSpace, ignoreCase));
 
-            h = null; // free up hashtable memory (maybe)
-
             var max = dataA.Length + dataB.Length + 1;
 
             // vector for the (0,0) to (x,y) search
@@ -96,7 +88,7 @@
             this.Optimize(dataB);
             return this.CreateDiffs(dataA, dataB);
         }
-        
+
         /// <summary>
         /// Find the difference in 2 arrays of integers.
         /// </summary>
@@ -200,7 +192,7 @@
             int[] downVector,
             int[] upVector)
         {
-            var ret = new ShortestMiddleSnakeReturnData();
+            var ret = default(ShortestMiddleSnakeReturnData);
             int max = dataA.Length + dataB.Length + 1;
 
             int downK = lowerA - lowerB; // the k-line to start the forward search
@@ -273,7 +265,7 @@
                     // Debug.Write(0, "SMS", "extend reverse path " + k.ToString());
 
                     // find the only or better starting point
-                    int x, y;
+                    int x;
                     if (k == upK + d)
                     {
                         x = upVector[upOffset + k - 1]; // up
@@ -287,7 +279,7 @@
                         }
                     }
 
-                    y = x - k;
+                    var y = x - k;
 
                     while ((x > lowerA) && (y > lowerB) && (dataA.Data[x - 1] == dataB.Data[y - 1]))
                     {
@@ -314,7 +306,7 @@
         }
 
         /// <summary>
-        /// This is the divide-and-conquer implementation of the longest common-subsequence (LCS) 
+        /// This is the divide-and-conquer implementation of the longest common-subsequence (LCS)
         /// algorithm.
         /// The published algorithm passes recursively parts of the A and B sequences.
         /// To avoid copying these arrays the lower and upper bounds are passed while the sequences stay constant.
@@ -383,7 +375,7 @@
         }
 
         /// <summary>Scan the tables of which lines are inserted and deleted,
-        /// producing an edit script in forward order.  
+        /// producing an edit script in forward order.
         /// </summary>
         /// dynamic array
         private Difference[] CreateDiffs(DiffData dataA, DiffData dataB)
@@ -439,7 +431,7 @@
 
             return result;
         }
-        
+
         /// <summary>
         /// If a sequence of modified lines starts with a line that contains the same content
         /// as the line that appends the changes, the difference sequence is modified so that the

@@ -1,5 +1,4 @@
-﻿@using OJS.Web.Common
-@using OJS.Web.ViewModels
+﻿@using OJS.Web.ViewModels
 @using Resource = Resources.Views.Shared.Layout;
 
 <!DOCTYPE html>
@@ -8,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - SoftUni Judge</title>
+    <meta name="description" content="Online system for programming competitions" />
     @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/css")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
@@ -29,9 +29,9 @@
     <div id="fb-root"></div>
     <script>
         (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
+            var fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
+            var js = d.createElement(s); js.id = id;
             js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=140725269459425";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
@@ -112,8 +112,8 @@
                                     <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.SubmissionTypes, GlobalConstants.Index, "SubmissionTypes", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Files, GlobalConstants.Index, "Files", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Anti-cheat</li>
                                     <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>

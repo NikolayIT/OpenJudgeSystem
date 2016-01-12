@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;
@@ -17,6 +16,7 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common;
 
+    using Resource = Resources.Areas.Administration.Resources.ResourcesControllers;
     public class ResourcesController : LecturerBaseController
     {
         public ResourcesController(IOjsData data)
@@ -54,14 +54,14 @@
 
             if (problem == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
             int orderBy;
             var resources = problem.Resources.Where(res => !res.IsDeleted);
 
-            if (resources == null || !resources.Any())
+            if (!resources.Any())
             {
                 orderBy = 0;
             }
@@ -87,7 +87,7 @@
         {
             if (resource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Ресурсът е невалиден";
+                this.TempData.AddDangerMessage(Resource.Invalid_resource);
                 return this.RedirectToAction("Resource", "Problems", new { id });
             }
 
@@ -99,11 +99,11 @@
 
             if (resource.Type == ProblemResourceType.Link && string.IsNullOrEmpty(resource.RawLink))
             {
-                this.ModelState.AddModelError("Link", "Линкът не може да бъде празен");
+                this.ModelState.AddModelError("Link", Resource.Link_not_empty);
             }
             else if (resource.Type != ProblemResourceType.Link && (resource.File == null || resource.File.ContentLength == 0))
             {
-                this.ModelState.AddModelError("File", "Файлът е задължителен");
+                this.ModelState.AddModelError("File", Resource.File_required);
             }
 
             if (this.ModelState.IsValid)
@@ -114,7 +114,7 @@
 
                 if (problem == null)
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                    this.TempData.AddDangerMessage(Resource.Problem_not_found);
                     return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
@@ -138,7 +138,7 @@
                 problem.Resources.Add(newResource);
                 this.Data.SaveChanges();
 
-                return this.RedirectToAction("Resource", "Problems", new { id = id });
+                return this.RedirectToAction("Resource", "Problems", new { id });
             }
 
             resource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
@@ -150,7 +150,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -161,7 +161,7 @@
 
             if (existingResource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -182,7 +182,7 @@
         {
             if (id == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Задачата не е намерена";
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
                 return this.RedirectToAction(GlobalConstants.Index, "Problems");
             }
 
@@ -194,7 +194,7 @@
 
                 if (existingResource == null)
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Ресурсът не е намерен";
+                    this.TempData.AddDangerMessage(Resource.Resource_not_found);
                     return this.RedirectToAction(GlobalConstants.Index, "Problems");
                 }
 
@@ -246,9 +246,15 @@
                 .All()
                 .FirstOrDefault(pr => pr.Id == resource.ProblemId);
 
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(Resource.Problem_not_found);
+                return this.RedirectToAction(GlobalConstants.Index, "Problems");
+            }
+
             if (resource == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Ресурса не е намерен";
+                this.TempData.AddDangerMessage(Resource.Resource_not_found);
                 return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
             }
 

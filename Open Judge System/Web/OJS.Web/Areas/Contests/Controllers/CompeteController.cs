@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
-    using System;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -198,15 +197,15 @@
             }
 
             var questionsToAnswerCount = official ?
-                contest.Questions.Count(x => x.AskOfficialParticipants) :
-                contest.Questions.Count(x => x.AskPracticeParticipants);
+                contest.Questions.Count(x => !x.IsDeleted && x.AskOfficialParticipants) :
+                contest.Questions.Count(x => !x.IsDeleted && x.AskPracticeParticipants);
 
             if (questionsToAnswerCount != registrationData.Questions.Count())
             {
                 this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
             }
 
-            var contestQuestions = contest.Questions.ToList();
+            var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
 
             var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             this.Data.Participants.Add(participant);
@@ -226,14 +225,14 @@
                 if (contestQuestion.Type == ContestQuestionType.DropDown)
                 {
                     int contestAnswerId;
-                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Any(x => x.Id == contestAnswerId))
+                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Where(x => !x.IsDeleted).Any(x => x.Id == contestAnswerId))
                     {
                         correctlyAnswered = true;
                     }
 
                     if (!correctlyAnswered)
                     {
-                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), "Invalid selection");
+                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), Resource.ContestsGeneral.Invalid_selection);
                     }
                 }
 
@@ -307,7 +306,7 @@
                 ProblemId = participantSubmission.ProblemId,
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
-                IpAddress = this.Request.UserHostAddress
+                IpAddress = this.Request.UserHostAddress,
             });
 
             this.Data.SaveChanges();
@@ -318,9 +317,9 @@
         // TODO: Extract common logic between SubmitBinaryFile and Submit methods
         public ActionResult SubmitBinaryFile(BinarySubmissionModel participantSubmission, bool official, int? returnProblem)
         {
-            if (participantSubmission == null || participantSubmission.File == null)
+            if (participantSubmission?.File == null)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Please upload file.");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Upload_file);
             }
 
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
@@ -363,14 +362,14 @@
             // Validate if binary files are allowed
             if (!submissionType.AllowBinaryFilesUpload)
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "This submission type does not allow sending binary files");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
             }
 
             // Validate file extension
             if (!submissionType.AllowedFileExtensionsList.Contains(
                     participantSubmission.File.FileName.GetFileExtension()))
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid file extension");
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_extention);
             }
 
             if (!this.ModelState.IsValid)
@@ -391,13 +390,8 @@
 
             this.Data.SaveChanges();
 
-            this.TempData[GlobalConstants.InfoMessage] = "Solution uploaded.";
-            return this.Redirect(
-                string.Format(
-                    "/Contests/{2}/Index/{0}#{1}",
-                    problem.ContestId,
-                    returnProblem ?? 0,
-                    official ? CompeteActionName : PracticeActionName));
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
+            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteUrl : PracticeUrl));
         }
 
         /// <summary>
@@ -519,7 +513,7 @@
         }
 
         /// <summary>
-        /// Gets a problem resource and sends it to the user. If the user is not logged in redirects him to the 
+        /// Gets a problem resource and sends it to the user. If the user is not logged in redirects him to the
         /// login page. If the user is not registered for the exam - redirects him to the appropriate page.
         /// </summary>
         /// <param name="id">The resource id.</param>
@@ -568,10 +562,7 @@
                     throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Resource_cannot_be_downloaded);
                 }
 
-                return this.File(
-                    resource.File,
-                    "application/octet-stream",
-                    string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
+                return this.File(resource.File, GlobalConstants.BinaryFileMimeType, string.Format("{0}_{1}.{2}", resource.Problem.Name, resource.Name, resource.FileExtension));
             }
 
             if ((contest.CanBePracticed && !official) || (contest.CanBeCompeted && official))

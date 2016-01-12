@@ -6,9 +6,12 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
+    using Resource = Resources.Areas.Administration.Feedback.ViewModels.FeedbackReport;
 
     public class FeedbackReportViewModel : AdministrationViewModel<FeedbackReport>
     {
@@ -23,7 +26,7 @@
                     Name = feedback.Name,
                     Email = feedback.Email,
                     Content = feedback.Content,
-                    Username = feedback.User == null ? "Anonymous" : feedback.User.UserName,
+                    Username = feedback.User == null ? Resource.Anonymous : feedback.User.UserName,
                     IsFixed = feedback.IsFixed,
                     CreatedOn = feedback.CreatedOn,
                     ModifiedOn = feedback.ModifiedOn
@@ -38,32 +41,41 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "E-mail")]
+        [Display(Name = "Mail", ResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
-        [RegularExpression(EmailValidationRegularExpression, ErrorMessage = "Невалиден имейл адрес")]
-        [Required(ErrorMessage = "Имейла е задължителен")]
+        [RegularExpression(
+            GlobalConstants.EmailRegEx,
+            ErrorMessageResourceName = "Mail_invalid",
+            ErrorMessageResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Mail_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Съдържание")]
-        [Required(ErrorMessage = "Съдържанието е задължително")]
+        [Display(Name = "Contet", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Contet_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.MultilineText)]
         [UIHint("MultiLineText")]
         public string Content { get; set; }
 
-        [Display(Name = "Потребител")]
+        [Display(Name = "UserName", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]
         public string Username { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Поправен")]
+        [Display(Name = "Is_fixed", ResourceType = typeof(Resource))]
         public bool IsFixed { get; set; }
     }
 }

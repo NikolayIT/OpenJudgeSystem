@@ -9,6 +9,11 @@
 
     public abstract class Checker : IChecker
     {
+        protected Checker()
+        {
+            this.IgnoreCharCasing = false;
+        }
+
         protected bool IgnoreCharCasing { get; set; }
 
         public static IChecker CreateChecker(string assemblyName, string typeName, string parameter)
@@ -25,13 +30,17 @@
             return checker;
         }
 
-        public abstract CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest);
+        public abstract CheckerResult Check(
+            string inputData,
+            string receivedOutput,
+            string expectedOutput,
+            bool isTrialTest);
 
         public virtual void SetParameter(string parameter)
         {
             throw new InvalidOperationException("This checker doesn't support parameters");
         }
-        
+
         protected CheckerResult CheckLineByLine(
             string inputData,
             string receivedOutput,
@@ -47,7 +56,7 @@
 
             CheckerResultType resultType;
 
-            var adminCheckerDetails = new CheckerDetails();
+            var adminCheckerDetails = default(CheckerDetails);
             int lineNumber = 0;
             using (userFileReader)
             {
@@ -92,7 +101,7 @@
                 }
             }
 
-            var checkerDetails = new CheckerDetails();
+            var checkerDetails = default(CheckerDetails);
             if (resultType != CheckerResultType.Ok)
             {
                 checkerDetails = this.PrepareCheckerDetails(receivedOutput, expectedOutput, isTrialTest, adminCheckerDetails);
@@ -203,7 +212,7 @@
             {
                 const int FragmentMaxLength = 4096;
 
-                checkerDetails = new CheckerDetails();
+                checkerDetails = default(CheckerDetails);
 
                 var firstDifferenceIndex = expectedOutput.GetFirstDifferenceIndexWith(receivedOutput, this.IgnoreCharCasing);
 

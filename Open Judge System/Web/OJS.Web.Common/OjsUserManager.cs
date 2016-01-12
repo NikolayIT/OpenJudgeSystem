@@ -1,8 +1,9 @@
 ﻿namespace OJS.Web.Common
 {
     using Microsoft.AspNet.Identity;
-    
-    public class OjsUserManager<T> : UserManager<T> where T : IUser
+
+    public class OjsUserManager<T> : UserManager<T>
+        where T : IUser
     {
         public OjsUserManager(IUserStore<T> userStore)
             : base(userStore)

@@ -13,10 +13,10 @@
     @if (User.IsAdmin())
     {
         <div class="col-md-12">
-            @Html.ActionLink("Участници", "Contest", "Participants", new { Area = "Administration", Id = Model.ContestId }, new { @class = "btn btn-sm btn-primary" })
-            @Html.ActionLink("Тестове", "Problem", "Tests", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
-            @Html.ActionLink("Промяна", "Edit", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
-            @Html.ActionLink("Изтриване", "Delete", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Participants_admin_button, "Contest", "Participants", new { Area = "Administration", Id = Model.ContestId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Tests_admin_button, "Problem", "Tests", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Change_admin_button, "Edit", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
+            @Html.ActionLink(Resource.Delete_admin_button, "Delete", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
         </div>
     }
     <div class="col-md-12">
@@ -26,15 +26,7 @@
 </div>
 
 @{
-    string className;
-    if (Model.ShowResults)
-    {
-        className = "col-lg-8";
-    }
-    else
-    {
-        className = "col-lg-12";
-    }
+    var className = Model.ShowResults ? "col-lg-8" : "col-lg-12";
 }
 
 <div class="row">

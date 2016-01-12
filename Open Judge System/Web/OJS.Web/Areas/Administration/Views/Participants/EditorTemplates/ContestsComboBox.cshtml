@@ -1,4 +1,5 @@
-﻿@model int
+﻿@using Resource = Resources.Areas.Administration.Participants.Views.EditorTemplates.ParticipantEditorTemplates;
+@model int
 
 @(Html.Kendo()
     .ComboBoxFor(m => m)
@@ -7,8 +8,8 @@
     .DataValueField("Id")
     .Filter(FilterType.Contains)
     .MinLength(1)
-    .Placeholder("Изберете състезание")
-    .Value("Изберете състезание")
+    .Placeholder(Resource.Choose_contest)
+    .Value(Resource.Choose_contest)
     .DataSource(data =>
     {
         data.ServerFiltering(true)

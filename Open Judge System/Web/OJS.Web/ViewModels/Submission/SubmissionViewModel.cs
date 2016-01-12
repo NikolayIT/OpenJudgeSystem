@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -40,10 +39,8 @@
 
         public string ParticipantName { get; set; }
 
-        [Display(Name = "Изпратено на")]
         public DateTime SubmitedOn { get; set; }
 
-        [Display(Name = "Задача")]
         public int? ProblemId { get; set; }
 
         public string ProblemName { get; set; }
@@ -62,13 +59,7 @@
 
         public int Points { get; set; }
 
-        public bool HasFullPoints
-        {
-            get
-            {
-                return this.Points == this.ProblemMaximumPoints;
-            }
-        }
+        public bool HasFullPoints => this.Points == this.ProblemMaximumPoints;
 
         public int MaxUsedTime
         {

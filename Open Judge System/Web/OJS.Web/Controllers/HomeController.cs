@@ -35,14 +35,13 @@
                             (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
-                    .ToList();
-
-            indexViewModel.PastContests =
-                this.Data.Contests.AllPast()
+                    .ToList(),
+                PastContests = this.Data.Contests.AllPast()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
-                    .ToList();
+                    .ToList()
+            };
 
             return this.View(indexViewModel);
         }

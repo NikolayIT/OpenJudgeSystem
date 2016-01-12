@@ -15,7 +15,10 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data;
+    using OJS.Web.Common.Attributes;
 
+    [LogAccess]
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class AdministrationController : BaseController
     {
         public AdministrationController(IOjsData data)
@@ -156,7 +159,7 @@
             // Return the result to the end user
             return this.File(
                 outputStream.ToArray(), // The binary data of the XLS file
-                "application/vnd.ms-excel", // MIME type of Excel files
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
                 string.Format("{0}.xls", this.GetType().Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
     }

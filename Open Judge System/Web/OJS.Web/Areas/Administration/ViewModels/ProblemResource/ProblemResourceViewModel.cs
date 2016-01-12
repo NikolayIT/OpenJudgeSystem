@@ -8,8 +8,11 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data.Models;
+
+    using Resource = Resources.Areas.Administration.Problems.ViewModels.ProblemResources;
 
     public class ProblemResourceViewModel
     {
@@ -32,10 +35,16 @@
 
         public int? Id { get; set; }
 
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името на ресурса е задължително!", AllowEmptyStrings = false)]
-        [MinLength(3)]
-        [MaxLength(50)]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false,
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(
+            GlobalConstants.ProblemResourceNameMaxLength,
+            MinimumLength = GlobalConstants.ProblemResourceNameMinLength,
+            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue("Име")]
         public string Name { get; set; }
 
@@ -43,8 +52,10 @@
 
         public string ProblemName { get; set; }
 
-        [Display(Name = "Тип")]
-        [Required(ErrorMessage = "Типа е задължителен!")]
+        [Display(Name = "Type", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Type_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(ProblemResourceType.ProblemDescription)]
         public ProblemResourceType Type { get; set; }
 
@@ -63,12 +74,14 @@
             }
         }
 
-        [Display(Name = "Линк")]
+        [Display(Name = "Link", ResourceType = typeof(Resource))]
         [DefaultValue("http://")]
         public string RawLink { get; set; }
 
-        [Display(Name = "Подредба")]
-        [Required(ErrorMessage = "Подредбата е задължителна!")]
+        [Display(Name = "Order", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Order_required",
+            ErrorMessageResourceType = typeof(Resource))]
         public int OrderBy { get; set; }
 
         public bool IsLinkFromSvn =>

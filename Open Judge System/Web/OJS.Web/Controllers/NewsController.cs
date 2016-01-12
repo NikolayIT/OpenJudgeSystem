@@ -1,18 +1,12 @@
 ﻿namespace OJS.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
-    using HtmlAgilityPack;
-
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.ViewModels.News;
 
     using Resource = Resources.News;
@@ -92,31 +86,17 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Views.Selected.Invalid_news_id);
             }
 
-            var previousNews = this.Data.News.All()
-                .OrderByDescending(x => x.Id)
-                .Where(x => x.Id < currentNews.Id && x.IsVisible && !x.IsDeleted)
-                .FirstOrDefault();
-
-            if (previousNews == null)
-            {
-                previousNews = this.Data.News.All()
+            var previousNews =
+                this.Data.News.All()
                     .OrderByDescending(x => x.Id)
-                    .Where(x => x.IsVisible && !x.IsDeleted)
-                    .First();
-            }
+                    .FirstOrDefault(x => x.Id < currentNews.Id && x.IsVisible && !x.IsDeleted)
+                ?? this.Data.News.All().OrderByDescending(x => x.Id).First(x => x.IsVisible && !x.IsDeleted);
 
-            var nextNews = this.Data.News.All()
-                .OrderBy(x => x.Id)
-                .Where(x => x.Id > currentNews.Id && x.IsVisible && !x.IsDeleted)
-                .FirstOrDefault();
-
-            if (nextNews == null)
-            {
-                nextNews = this.Data.News.All()
+            var nextNews =
+                this.Data.News.All()
                     .OrderBy(x => x.Id)
-                    .Where(x => x.IsVisible && !x.IsDeleted)
-                    .First();
-            }
+                    .FirstOrDefault(x => x.Id > currentNews.Id && x.IsVisible && !x.IsDeleted)
+                ?? this.Data.News.All().OrderBy(x => x.Id).First(x => x.IsVisible && !x.IsDeleted);
 
             var newsContentViewModel = new SelectedNewsViewModel
             {

@@ -24,7 +24,7 @@
                     && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
                     && x.Problem.ShowResults);
         }
-        
+
         public Submission GetSubmissionForProcessing()
         {
             var submission =
@@ -60,6 +60,16 @@
             }
 
             return false;
+        }
+
+        public IQueryable<Submission> GetLastFiftySubmissions()
+        {
+            // TODO: add language type
+            var submissions = this.AllPublic()
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(50);
+
+            return submissions;
         }
     }
 }

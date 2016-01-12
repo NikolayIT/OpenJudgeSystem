@@ -1,15 +1,15 @@
 ﻿namespace OJS.Workers.Compilers.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class CSharpCompilerTests
     {
         private const string CSharpCompilerPath = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe";
 
-        [TestMethod]
+        [Test]
         public void CSharpCompilerShouldWorkWhenGivenValidSourceCode()
         {
             const string Source = @"using System;

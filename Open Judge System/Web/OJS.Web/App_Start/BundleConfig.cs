@@ -30,10 +30,10 @@
                       "~/Scripts/knockout-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
-                        "~/Scripts/KendoUI/2014.2.903/kendo.web.js",
-                        "~/Scripts/KendoUI/2014.2.903/kendo.aspnetmvc.js",
-                        "~/Scripts/KendoUI/2014.2.903/cultures/kendo.culture.bg.js",
-                        "~/Scripts/KendoUI/2014.2.903/cultures/kendo.culture.en-GB.js"));
+                        "~/Scripts/KendoUI/2014.3.1411/kendo.all.js",
+                        "~/Scripts/KendoUI/2014.3.1411/kendo.aspnetmvc.js",
+                        "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.bg.js",
+                        "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.en-GB.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
                         "~/Scripts/CodeMirror/codemirror.js",
@@ -61,6 +61,10 @@
                       "~/Content/CodeMirror/codemirror.css",
                       "~/Content/CodeMirror/theme/tomorrow-night-eighties.css",
                       "~/Content/CodeMirror/theme/the-matrix.css"));
+
+            bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirrormerge").Include(
+                      "~/Content/CodeMirror/addon/merge.css",
+                      "~/Content/Contests/submission-view-page.css"));
 
             bundles.Add(new StyleBundle("~/Content/Contests/submission-page").Include(
                       "~/Content/Contests/submission-page.css"));

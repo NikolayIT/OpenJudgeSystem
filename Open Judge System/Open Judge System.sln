@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{BCDB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9DAC057C-7607-48F0-B961-70BAAF4C368A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{699277CE-89E7-4F00-A8BF-96A8450529E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Models", "Data\OJS.Data.Models\OJS.Data.Models.csproj", "{341CA732-D483-4487-923E-27ED2A6E9A4F}"
@@ -23,49 +21,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Contracts", "Data\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{3003E3B3-84A6-48E8-8252-B532A5086EB1}"
 	ProjectSection(SolutionItems) = preProject
-		External Libraries\ElFinder.Net-readme.txt = External Libraries\ElFinder.Net-readme.txt
-		External Libraries\ElFinder.Net.dll = External Libraries\ElFinder.Net.dll
-		External Libraries\Ionic.Zip.dll = External Libraries\Ionic.Zip.dll
-		External Libraries\Ionic.Zip.xml = External Libraries\Ionic.Zip.xml
 		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
 		External Libraries\Kendo.Mvc.README = External Libraries\Kendo.Mvc.README
 		External Libraries\Kendo.Mvc.xml = External Libraries\Kendo.Mvc.xml
-		External Libraries\TelerikContestSystem.DAL.dll = External Libraries\TelerikContestSystem.DAL.dll
 	EndProjectSection
-EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "OJS.Diagrams", "Documentation\OJS.Diagrams\OJS.Diagrams.modelproj", "{04DE40D9-F362-4916-940F-712C165909AF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Web.Tests", "Tests\OJS.Web.Tests\OJS.Web.Tests.csproj", "{28647C4A-BD4B-4E1B-B48D-A397740B805C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tests.Common", "Tests\OJS.Tests.Common\OJS.Tests.Common.csproj", "{01CC0B02-529E-4D5F-B345-0B92F6920854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Tests", "Tests\OJS.Data.Tests\OJS.Data.Tests.csproj", "{EA9D6519-EC81-4C8B-9385-455CF5C3544E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tools.OldDatabaseMigration", "Tools\OJS.Tools.OldDatabaseMigration\OJS.Tools.OldDatabaseMigration.csproj", "{C4144383-C1E4-4849-BA35-F063967314DA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executor.Security.Tests", "Executor.Security.Tests", "{29554AA1-87DF-4811-9084-071C4D6BEAAF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{7A010146-2DF8-49D5-8B21-EE73AE6422E6}"
-	ProjectSection(SolutionItems) = preProject
-		Documentation\Executor.Security.Tests\CSharp\01. Shut Down With Diagnostics.txt = Documentation\Executor.Security.Tests\CSharp\01. Shut Down With Diagnostics.txt
-		Documentation\Executor.Security.Tests\CSharp\02. Shut Down With Win32 Method.txt = Documentation\Executor.Security.Tests\CSharp\02. Shut Down With Win32 Method.txt
-		Documentation\Executor.Security.Tests\CSharp\03. Shut Down With System.Management.txt = Documentation\Executor.Security.Tests\CSharp\03. Shut Down With System.Management.txt
-		Documentation\Executor.Security.Tests\CSharp\04. Reboot.txt = Documentation\Executor.Security.Tests\CSharp\04. Reboot.txt
-		Documentation\Executor.Security.Tests\CSharp\05. Kill Network.txt = Documentation\Executor.Security.Tests\CSharp\05. Kill Network.txt
-		Documentation\Executor.Security.Tests\CSharp\06. Registry Edit.txt = Documentation\Executor.Security.Tests\CSharp\06. Registry Edit.txt
-		Documentation\Executor.Security.Tests\CSharp\07. Kill Process - WORKS ON CURRENT VERSION!.txt = Documentation\Executor.Security.Tests\CSharp\07. Kill Process - WORKS ON CURRENT VERSION!.txt
-		Documentation\Executor.Security.Tests\CSharp\08. Execute Bat File - WORKS ON CURRENT VERSION.txt = Documentation\Executor.Security.Tests\CSharp\08. Execute Bat File - WORKS ON CURRENT VERSION.txt
-		Documentation\Executor.Security.Tests\CSharp\09. Create Folder Somewhere.txt = Documentation\Executor.Security.Tests\CSharp\09. Create Folder Somewhere.txt
-		Documentation\Executor.Security.Tests\CSharp\10. Try To Save Input In File.txt = Documentation\Executor.Security.Tests\CSharp\10. Try To Save Input In File.txt
-		Documentation\Executor.Security.Tests\CSharp\11. Using Windows Fork Bomb - WORKS ON CURRENT VERSION.txt = Documentation\Executor.Security.Tests\CSharp\11. Using Windows Fork Bomb - WORKS ON CURRENT VERSION.txt
-		Documentation\Executor.Security.Tests\CSharp\ToDo.txt = Documentation\Executor.Security.Tests\CSharp\ToDo.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C++", "C++", "{154179FB-ED7B-4C9D-89DE-77EEBDC7BD3A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript", "JavaScript", "{3BDB3472-E927-4660-AF50-3C8CACFFC012}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Common", "Workers\OJS.Workers.Common\OJS.Workers.Common.csproj", "{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}"
 EndProject
@@ -96,11 +59,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{55BD5E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Executors.Tests", "Tests\OJS.Workers.Executors.Tests\OJS.Workers.Executors.Tests.csproj", "{5054FE58-791D-41EA-9ED9-911788A7E631}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{042CF9B9-A029-4D72-A642-A1727F892D26}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Files\ApiMonitorApiFilters.xml = Tools\Files\ApiMonitorApiFilters.xml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Web.Common", "Web\OJS.Web.Common\OJS.Web.Common.csproj", "{2E08E0AF-0E51-47CA-947B-4C66086FA030}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Common", "OJS.Common\OJS.Common.csproj", "{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}"
@@ -109,13 +67,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.LocalWorker", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.ExecutionStrategies", "Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj", "{69966098-E5B2-46CD-88E9-1F79B245ADE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tools.OldDatabaseMigrationExecutor", "Tools\OJS.Tools.OldDatabaseMigrationExecutor\OJS.Tools.OldDatabaseMigrationExecutor.csproj", "{96C5F093-3A06-4D01-ACC6-3003D7111528}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Compilers.Tests", "Tests\OJS.Workers.Compilers.Tests\OJS.Workers.Compilers.Tests.csproj", "{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Tools", "Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj", "{A1F48412-495A-434C-BDD0-E70AEDAD6897}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Tools.Tests", "Tests\OJS.Workers.Tools.Tests\OJS.Workers.Tools.Tests.csproj", "{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.ExecutionStrategies.Tests", "Tests\OJS.Workers.ExecutionStrategies.Tests\OJS.Workers.ExecutionStrategies.Tests.csproj", "{1A12AF9D-5BD6-455E-924E-54E686A2F270}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlTestingPoC", "Tools\SqlTestingPoC\SqlTestingPoC.csproj", "{2AE356DA-FCD4-4601-A533-85042648D7F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,26 +99,10 @@ Global
 		{8C4BF453-24EF-46F3-B947-31505FB905DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C4BF453-24EF-46F3-B947-31505FB905DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C4BF453-24EF-46F3-B947-31505FB905DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04DE40D9-F362-4916-940F-712C165909AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04DE40D9-F362-4916-940F-712C165909AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04DE40D9-F362-4916-940F-712C165909AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04DE40D9-F362-4916-940F-712C165909AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28647C4A-BD4B-4E1B-B48D-A397740B805C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28647C4A-BD4B-4E1B-B48D-A397740B805C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28647C4A-BD4B-4E1B-B48D-A397740B805C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28647C4A-BD4B-4E1B-B48D-A397740B805C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01CC0B02-529E-4D5F-B345-0B92F6920854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01CC0B02-529E-4D5F-B345-0B92F6920854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01CC0B02-529E-4D5F-B345-0B92F6920854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01CC0B02-529E-4D5F-B345-0B92F6920854}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA9D6519-EC81-4C8B-9385-455CF5C3544E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA9D6519-EC81-4C8B-9385-455CF5C3544E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA9D6519-EC81-4C8B-9385-455CF5C3544E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA9D6519-EC81-4C8B-9385-455CF5C3544E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4144383-C1E4-4849-BA35-F063967314DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4144383-C1E4-4849-BA35-F063967314DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4144383-C1E4-4849-BA35-F063967314DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4144383-C1E4-4849-BA35-F063967314DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -219,10 +163,6 @@ Global
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96C5F093-3A06-4D01-ACC6-3003D7111528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96C5F093-3A06-4D01-ACC6-3003D7111528}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96C5F093-3A06-4D01-ACC6-3003D7111528}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96C5F093-3A06-4D01-ACC6-3003D7111528}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -235,6 +175,14 @@ Global
 		{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A12AF9D-5BD6-455E-924E-54E686A2F270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A12AF9D-5BD6-455E-924E-54E686A2F270}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A12AF9D-5BD6-455E-924E-54E686A2F270}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A12AF9D-5BD6-455E-924E-54E686A2F270}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,15 +192,7 @@ Global
 		{C2EF4F1B-A694-4E52-935C-7872F6CAD37C} = {93034417-0AAA-4E72-84EA-767DB4EF5283}
 		{1807194C-9E25-4365-B3BE-FE1DF627612B} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
 		{8C4BF453-24EF-46F3-B947-31505FB905DE} = {699277CE-89E7-4F00-A8BF-96A8450529E9}
-		{04DE40D9-F362-4916-940F-712C165909AF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
-		{28647C4A-BD4B-4E1B-B48D-A397740B805C} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{01CC0B02-529E-4D5F-B345-0B92F6920854} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
-		{EA9D6519-EC81-4C8B-9385-455CF5C3544E} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
-		{C4144383-C1E4-4849-BA35-F063967314DA} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
-		{29554AA1-87DF-4811-9084-071C4D6BEAAF} = {E2BF8DA5-DB42-4B88-B202-B60D7EE4A712}
-		{7A010146-2DF8-49D5-8B21-EE73AE6422E6} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
-		{154179FB-ED7B-4C9D-89DE-77EEBDC7BD3A} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
-		{3BDB3472-E927-4660-AF50-3C8CACFFC012} = {29554AA1-87DF-4811-9084-071C4D6BEAAF}
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{F4AD07BC-B932-4D09-82D8-9800C9260B33} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
@@ -264,13 +204,13 @@ Global
 		{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{D51F7D60-421C-44B2-9422-2610066CB82D} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{5054FE58-791D-41EA-9ED9-911788A7E631} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
-		{042CF9B9-A029-4D72-A642-A1727F892D26} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{2E08E0AF-0E51-47CA-947B-4C66086FA030} = {93034417-0AAA-4E72-84EA-767DB4EF5283}
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
-		{96C5F093-3A06-4D01-ACC6-3003D7111528} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{A1F48412-495A-434C-BDD0-E70AEDAD6897} = {BCDBCB6C-55D6-40E7-83FB-9A678E203A9E}
 		{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
+		{1A12AF9D-5BD6-455E-924E-54E686A2F270} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
+		{2AE356DA-FCD4-4601-A533-85042648D7F8} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 	EndGlobalSection
 EndGlobal

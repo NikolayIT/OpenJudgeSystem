@@ -29,7 +29,7 @@
             WriteLine(string.Format("Process.GetCurrentProcess().PriorityClass: {0}", Process.GetCurrentProcess().PriorityClass));
 
             //// ThreadStart();
-            
+
             ReadWriteConsole();
 
             var actions = new[]
@@ -45,7 +45,7 @@
                                   new TryToExecuteParams(x => Console.Write(Process.GetProcesses().Count()), "count processes", "\\?"),
                                   new TryToExecuteParams(x => new TcpClient().Connect(x, 80), "open socket", "google.com"),
                                   new TryToExecuteParams(x => new WebClient().DownloadString(x), "access http resource", "http://google.com"),
-                                  new TryToExecuteParams(x => Clipboard.SetText(x), "write to clipboard", "data"), // Unit tested
+                                  new TryToExecuteParams(Clipboard.SetText, "write to clipboard", "data"), // Unit tested
                                   new TryToExecuteParams(
                                       x =>
                                           {

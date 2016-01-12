@@ -1,12 +1,13 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class GetStringBetweenTests
     {
-        [TestMethod]
+        [Test]
         public void GetStringBetweenShouldReturnProperValueWhenCalledWithSingleCharacters()
         {
             const string Value = "Test №10 execution successful!";
@@ -14,8 +15,8 @@
             var actual = Value.GetStringBetween("№", " ");
             Assert.AreEqual(Expected, actual);
         }
-        
-        [TestMethod]
+
+        [Test]
         public void GetStringBetweenShouldReturnProperValueWhenCalledWithMultilineText()
         {
             const string Value = @"Answer incorrect!
@@ -39,7 +40,7 @@ Your output:
             Assert.AreEqual(Expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetStringBetweenShouldReturnProperValueWhenCalledWithNewLineAsSecondArgument()
         {
             const string Value = @"Answer correct!!!

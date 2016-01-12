@@ -5,46 +5,18 @@
 
     public class StubHttpRequestForRouting : HttpRequestBase
     {
-        private string appPath;
-
-        private string requestUrl;
-
         public StubHttpRequestForRouting(string appPath, string requestUrl)
         {
-            this.appPath = appPath;
-            this.requestUrl = requestUrl;
+            this.ApplicationPath = appPath;
+            this.AppRelativeCurrentExecutionFilePath = requestUrl;
         }
 
-        public override string ApplicationPath
-        {
-            get
-            {
-                return this.appPath;
-            }
-        }
+        public override string ApplicationPath { get; }
 
-        public override string AppRelativeCurrentExecutionFilePath
-        {
-            get
-            {
-                return this.requestUrl;
-            }
-        }
+        public override string AppRelativeCurrentExecutionFilePath { get; }
 
-        public override string PathInfo
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        public override string PathInfo => string.Empty;
 
-        public override NameValueCollection ServerVariables
-        {
-            get
-            {
-                return new NameValueCollection();
-            }
-        }
+        public override NameValueCollection ServerVariables => new NameValueCollection();
     }
 }

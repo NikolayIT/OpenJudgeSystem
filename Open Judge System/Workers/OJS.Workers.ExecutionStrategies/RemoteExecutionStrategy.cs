@@ -2,11 +2,8 @@
 {
     using System;
     using System.IO;
-    using System.Net.Http;
 
     using Ionic.Zip;
-
-    using Newtonsoft.Json;
 
     public class RemoteExecutionStrategy : IExecutionStrategy
     {
@@ -43,7 +40,7 @@
         {
             var tempFile = Path.GetTempFileName();
             tempFile += ".zip"; // TODO: Useless?
-            
+
             var zip = new ZipFile(tempFile);
 
             zip.AddEntry("userCode.deflate", executionContext.FileContent);

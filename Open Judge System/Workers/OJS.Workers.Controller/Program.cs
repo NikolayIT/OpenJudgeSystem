@@ -16,7 +16,7 @@ namespace OJS.Workers.Controller
         {
             try
             {
-                // Explicitly set App.config file location to prevent confusion 
+                // Explicitly set App.config file location to prevent confusion
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.Controller.exe.config");

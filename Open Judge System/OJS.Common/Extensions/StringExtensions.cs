@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Security;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -26,12 +25,6 @@
         {
             var encoding = new UTF8Encoding();
             return encoding.GetBytes(sourceString);
-        }
-
-        public static string ToText(this byte[] bytes)
-        {
-            var encoding = new UTF8Encoding();
-            return encoding.GetString(bytes);
         }
 
         public static int ToInteger(this string input)
@@ -68,7 +61,7 @@
 
         public static string Repeat(this string input, int count)
         {
-            var builder = new StringBuilder((input == null ? 0 : input.Length) * count);
+            var builder = new StringBuilder((input?.Length ?? 0) * count);
 
             for (int i = 0; i < count; i++)
             {
@@ -86,7 +79,7 @@
             }
 
             string[] fileParts = fileName.Split(new[] { "." }, StringSplitOptions.None);
-            if (fileParts.Count() == 1 || string.IsNullOrEmpty(fileParts.Last()))
+            if (fileParts.Length == 1 || string.IsNullOrEmpty(fileParts.Last()))
             {
                 return string.Empty;
             }
@@ -163,16 +156,37 @@
             return result;
         }
 
-        // TODO: Test
-        public static SecureString ToSecureString(this string sourceString)
+        public static int GetFirstDifferenceIndexWith(this string input, string other, bool ignoreCase = false)
         {
-            var secureString = new SecureString();
-            foreach (var character in sourceString)
+            var firstDifferenceIndex = -1;
+
+            if (input != null && other != null)
             {
-                secureString.AppendChar(character);
+                var maxIndex = Math.Min(input.Length, other.Length);
+                for (var i = 0; i < maxIndex; i++)
+                {
+                    var areEqualChars = ignoreCase ?
+                        char.ToUpperInvariant(input[i]) == char.ToUpperInvariant(other[i]) :
+                        input[i] == other[i];
+                    if (!areEqualChars)
+                    {
+                        firstDifferenceIndex = i;
+                        break;
+                    }
+                }
+
+                if (firstDifferenceIndex < 0 && input.Length != other.Length)
+                {
+                    firstDifferenceIndex = maxIndex;
+                }
             }
 
-            return secureString;
+            if (input == null ^ other == null)
+            {
+                firstDifferenceIndex = 0;
+            }
+
+            return firstDifferenceIndex;
         }
 
         // TODO: Test
@@ -263,39 +277,6 @@
             }
 
             return result.ToString();
-        }
-
-        public static int GetFirstDifferenceIndexWith(this string input, string other, bool ignoreCase = false)
-        {
-            var firstDifferenceIndex = -1;
-
-            if (input != null && other != null)
-            {
-                var maxIndex = Math.Min(input.Length, other.Length);
-                for (var i = 0; i < maxIndex; i++)
-                {
-                    var areEqualChars = ignoreCase ?
-                        char.ToUpperInvariant(input[i]) == char.ToUpperInvariant(other[i]) :
-                        input[i] == other[i];
-                    if (!areEqualChars)
-                    {
-                        firstDifferenceIndex = i;
-                        break;
-                    }
-                }
-
-                if (firstDifferenceIndex < 0 && input.Length != other.Length)
-                {
-                    firstDifferenceIndex = maxIndex;
-                }
-            }
-
-            if (input == null ^ other == null)
-            {
-                firstDifferenceIndex = 0;
-            }
-
-            return firstDifferenceIndex;
         }
     }
 }

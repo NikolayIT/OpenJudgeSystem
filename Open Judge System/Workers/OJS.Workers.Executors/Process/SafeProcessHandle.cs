@@ -11,7 +11,7 @@
     {
         private static SafeProcessHandle invalidHandle = new SafeProcessHandle(IntPtr.Zero);
 
-        // Note that OpenProcess returns 0 on failure 
+        // Note that OpenProcess returns 0 on failure
         internal SafeProcessHandle()
             : base(true)
         {
@@ -33,5 +33,5 @@
         {
             return NativeMethods.CloseHandle(this.handle);
         }
-    } 
+    }
 }

@@ -18,7 +18,7 @@
         {
             if (!File.Exists(phpCgiExecutablePath))
             {
-                throw new ArgumentException(string.Format("PHP CGI not found in: {0}", phpCgiExecutablePath), "phpCgiExecutablePath");
+                throw new ArgumentException($"PHP CGI not found in: {phpCgiExecutablePath}", nameof(phpCgiExecutablePath));
             }
 
             this.phpCgiExecutablePath = phpCgiExecutablePath;

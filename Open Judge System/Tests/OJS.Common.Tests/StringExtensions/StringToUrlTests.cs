@@ -1,106 +1,106 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class StringToUrlTests
     {
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldReturnProperCSharpText()
         {
             var original = "SomeUrlWithC#InIt";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "SomeUrlWithCSharpInIt";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldReturnProperCPlusPlusText()
         {
             var original = "SomeUrlWithC++InIt";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "SomeUrlWithCPlusPlusInIt";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldConvertUglySymbolsToDashInMiddle()
         {
             var original = "Some%Url&With!Ugly)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldConvertUglySymbolsToDashInMiddleWithRepeatitions()
         {
             var original = "Some%$Url&!With!^^^Ugly**)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldRemoveUglySymbolsInTheStartOfString()
         {
             var original = "###Some%$Url&!With!^^^Ugly**)Symbol";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldConvertUglySymbolsToDashInTheEndOfString()
         {
             var original = "Some%$Url&!With!^^^Ugly**)Symbol*&*";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldConvertSpacesToDash()
         {
             var original = "  Some  Url  With  Ugly  Symbol  ";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-Url-With-Ugly-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldConvertCSharpAndCPlusPlus()
         {
             var original = "  Some  C++UrlC++  With  UglyC#C#  Symbol  ";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-CPlusPlusUrlCPlusPlus-With-UglyCSharpCSharp-Symbol";
 
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ToUrlMethodShouldRemoveUglySymbolsAtBeginningAndEnd()
         {
             var original = "% Some  C++UrlC++  With  UglyC#C#  Symbol #";
 
-            var result = StringExtensions.ToUrl(original);
+            var result = original.ToUrl();
             var expected = "Some-CPlusPlusUrlCPlusPlus-With-UglyCSharpCSharp-Symbol";
 
             Assert.AreEqual(expected, result);

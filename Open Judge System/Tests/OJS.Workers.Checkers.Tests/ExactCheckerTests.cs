@@ -2,14 +2,14 @@
 {
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+    using NUnit.Framework;
+
     using OJS.Workers.Common;
 
-    [TestClass]
+    [TestFixture]
     public class ExactCheckerTests
     {
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnTrueWhenGivenExactStrings()
         {
             string receivedOutput = "Николай";
@@ -23,7 +23,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnTrueWhenGivenExactStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Николай\n";
@@ -37,7 +37,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnTrueWhenGivenExactMultiLineStrings()
         {
             string receivedOutput = "Николай\nFoo\nBar";
@@ -51,7 +51,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnTrueWhenGivenExactMultiLineStringsWithDifferentNewLineEndings()
         {
             string receivedOutput = "Николай\nFoo\nBar";
@@ -65,7 +65,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldRespectsTextCasing()
         {
             string receivedOutput = "Николай";
@@ -79,7 +79,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldRespectsDecimalSeparators()
         {
             string receivedOutput = "1,1";
@@ -93,7 +93,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnFalseWhenGivenDifferentStrings()
         {
             string receivedOutput = "Foo";
@@ -107,7 +107,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnInvalidNumberOfLinesWhenReceivedOutputHasMoreLines()
         {
             string receivedOutput = "Bar\nFoo";
@@ -121,7 +121,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnInvalidNumberOfLinesWhenExpectedOutputHasMoreLines()
         {
             string receivedOutput = "Bar";
@@ -135,7 +135,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnInvalidNumberOfLinesWhenGivenDifferentMultiLineStringsWithSameText()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -149,7 +149,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnWrongAnswerWhenGivenDifferentMultiLineStringsWithSameTextDifferentBlankLines()
         {
             string receivedOutput = "Bar\nFoo\n\n";
@@ -163,7 +163,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void ExacterCheckShouldReturnCorrectAnswerInBiggerSameTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -189,7 +189,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.Ok));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnWrongAnswerInBiggerDifferentTextsTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -215,7 +215,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.WrongAnswer));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnInvalidNumberOfLinesInBiggerDifferentNumberOfLinesTest()
         {
             StringBuilder receivedOutput = new StringBuilder();
@@ -241,7 +241,7 @@
             Assert.IsTrue(checkerResult.ResultType.HasFlag(CheckerResultType.InvalidNumberOfLines));
         }
 
-        [TestMethod]
+        [Test]
         public void ExactCheckerShouldReturnWrongAnswerInBiggerTextsWithLastLineDifferentTest()
         {
             StringBuilder receivedOutput = new StringBuilder();

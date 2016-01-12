@@ -1,7 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
+﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsEdit;
+@model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
 
 @{
-    ViewBag.Title = "Промяна на тест";
+    ViewBag.Title = Resource.Page_title;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -47,8 +48,8 @@
                 @Html.ValidationMessageFor(m => m.OrderBy)
             </div>
             <br />
-            <button type="submit" class="btn btn-primary">Промени</button>
-            <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">Назад</a>
+            <button type="submit" class="btn btn-primary">@Resource.Edit</button>
+            <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">@Resource.Back</a>
         </div>
     }
 </div>

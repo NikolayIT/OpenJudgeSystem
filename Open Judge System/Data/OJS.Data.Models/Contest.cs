@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data.Contracts;
 
@@ -33,7 +34,8 @@
 
         public int? OldId { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.ContestNameMaxLength)]
+        [MinLength(GlobalConstants.ContestNameMinLength)]
         public string Name { get; set; }
 
         [Required]
@@ -59,14 +61,14 @@
         /// If ContestPassword is null the contest can be competed by everyone without require a password.
         /// If the ContestPassword is not null the contest participant should provide a valid password.
         /// </remarks>
-        [MaxLength(20)]
+        [MaxLength(GlobalConstants.ContestPasswordMaxLength)]
         public string ContestPassword { get; set; }
 
         /// <remarks>
         /// If PracticePassword is null the contest can be practiced by everyone without require a password.
         /// If the PracticePassword is not null the practice participant should provide a valid password.
         /// </remarks>
-        [MaxLength(20)]
+        [MaxLength(GlobalConstants.ContestPasswordMaxLength)]
         public string PracticePassword { get; set; }
 
         /// <remarks>
@@ -217,22 +219,10 @@
         }
 
         [NotMapped]
-        public bool HasContestPassword
-        {
-            get
-            {
-                return this.ContestPassword != null;
-            }
-        }
+        public bool HasContestPassword => this.ContestPassword != null;
 
         [NotMapped]
-        public bool HasPracticePassword
-        {
-            get
-            {
-                return this.PracticePassword != null;
-            }
-        }
+        public bool HasPracticePassword => this.PracticePassword != null;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -255,7 +245,7 @@
 
         public override string ToString()
         {
-            return string.Format("#{0} {1}", this.Id, this.Name);
+            return $"#{this.Id} {this.Name}";
         }
     }
 }

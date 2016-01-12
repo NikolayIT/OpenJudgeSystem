@@ -1,13 +1,13 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class ToIntegerTests
     {
-        [TestMethod]
+        [Test]
         public void ZeroStringShouldReturnZero()
         {
             const int Expected = 0;
@@ -16,7 +16,7 @@
             Assert.AreEqual(Expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void InvalidInputShouldReturnZero()
         {
             const int Expected = 0;
@@ -25,7 +25,7 @@
             Assert.AreEqual(Expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void ValidInputShouldReturnSameValue()
         {
             const int Expected = 1234567890;

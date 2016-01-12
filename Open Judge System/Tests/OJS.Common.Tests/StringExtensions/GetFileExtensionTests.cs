@@ -1,21 +1,23 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class GetFileExtensionTests
     {
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnEmptyStringWhenEmptyStringIsPassed()
         {
             string expected = string.Empty;
             string value = string.Empty;
             string actual = value.GetFileExtension();
+
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnEmptyStringWhenNullIsPassed()
         {
             string expected = string.Empty;
@@ -23,7 +25,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnJpgWhenValidImageIsPassed()
         {
             string expected = "jpg";
@@ -32,7 +34,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnPngWhenValidImageWithManyDotsIsPassed()
         {
             string expected = "png";
@@ -41,7 +43,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnEmptyStringWhenFileDoesNotHaveExtension()
         {
             string expected = string.Empty;
@@ -50,7 +52,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnEmptyStringWhenFileEndsInADot()
         {
             string expected = string.Empty;
@@ -59,7 +61,7 @@
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void GetFileExtensionShouldReturnEmptyStringWhenFileContainsManyDotsAndEndsInADot()
         {
             string expected = string.Empty;

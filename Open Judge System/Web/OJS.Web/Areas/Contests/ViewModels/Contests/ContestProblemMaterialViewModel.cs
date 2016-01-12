@@ -5,7 +5,7 @@
 
     using OJS.Common.Models;
     using OJS.Data.Models;
-    
+
     public class ContestProblemResourceViewModel
     {
         public static Expression<Func<ProblemResource, ContestProblemResourceViewModel>> FromResource

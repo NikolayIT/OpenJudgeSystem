@@ -1,4 +1,4 @@
-namespace OJS.Web.Areas.Administration
+﻿namespace OJS.Web.Areas.Administration
 {
     using System.Web.Mvc;
 
@@ -6,13 +6,7 @@ namespace OJS.Web.Areas.Administration
 
     public class AdministrationAreaAreaRegistration : AreaRegistration
     {
-        public override string AreaName
-        {
-            get
-            {
-                return "Administration";
-            }
-        }
+        public override string AreaName => "Administration";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {

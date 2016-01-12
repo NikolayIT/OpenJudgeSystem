@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -12,13 +11,7 @@
 
         public string ParticipantLastName { get; set; }
 
-        public string ParticipantFullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", this.ParticipantFirstName, this.ParticipantLastName).Trim();
-            }
-        }
+        public string ParticipantFullName => $"{this.ParticipantFirstName} {this.ParticipantLastName}".Trim();
 
         public IEnumerable<ProblemFullResultViewModel> ProblemResults { get; set; }
 
@@ -26,16 +19,9 @@
         {
             get
             {
-                var totalPoints = 0;
-                foreach (var problemResult in this.ProblemResults)
-                {
-                    if (problemResult.BestSubmission != null)
-                    {
-                        totalPoints += problemResult.BestSubmission.Points;
-                    }
-                }
-
-                return totalPoints;
+                return
+                    this.ProblemResults.Where(problemResult => problemResult.BestSubmission != null)
+                        .Sum(problemResult => problemResult.BestSubmission.Points);
             }
         }
 

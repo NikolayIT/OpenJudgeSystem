@@ -38,7 +38,7 @@
 
             var processSecurityAttributes = new SecurityAttributes();
             var threadSecurityAttributes = new SecurityAttributes();
-            this.processInformation = new ProcessInformation();
+            this.processInformation = default(ProcessInformation);
 
             const uint CreationFlags = (uint)(
                 CreateProcessFlags.CREATE_SUSPENDED |
@@ -73,7 +73,7 @@
                     commandLine,
                     processSecurityAttributes,
                     threadSecurityAttributes,
-                    true, // In order to standard input, output and error redirection work, the handles must be inheritable and the CreateProcess() API must specify that inheritable handles are to be inherited by the child process by specifying TRUE in the bInheritHandles parameter. 
+                    true, // In order to standard input, output and error redirection work, the handles must be inheritable and the CreateProcess() API must specify that inheritable handles are to be inherited by the child process by specifying TRUE in the bInheritHandles parameter.
                     CreationFlags,
                     IntPtr.Zero,
                     workingDirectory,
@@ -84,7 +84,7 @@
             }
 
             this.safeProcessHandle = new SafeProcessHandle(this.processInformation.Process);
-            
+
             // This is a very important line! Without disposing the startupInfo handles, reading the standard output (or error) will hang forever.
             // Same problem described here: http://social.msdn.microsoft.com/Forums/vstudio/en-US/3c25a2e8-b1ea-4fc4-927b-cb865d435147/how-does-processstart-work-in-getting-output
             startupInfo.Dispose();
@@ -98,37 +98,13 @@
 
         public StreamReader StandardError { get; private set; }
 
-        public int Id
-        {
-            get
-            {
-                return this.processInformation.ProcessId;
-            }
-        }
+        public int Id => this.processInformation.ProcessId;
 
-        public int MainThreadId
-        {
-            get
-            {
-                return this.processInformation.ThreadId;
-            }
-        }
+        public int MainThreadId => this.processInformation.ThreadId;
 
-        public IntPtr Handle
-        {
-            get
-            {
-                return this.processInformation.Process;
-            }
-        }
+        public IntPtr Handle => this.processInformation.Process;
 
-        public IntPtr MainThreadHandle
-        {
-            get
-            {
-                return this.processInformation.Thread;
-            }
-        }
+        public IntPtr MainThreadHandle => this.processInformation.Thread;
 
         public bool HasExited
         {
@@ -139,12 +115,8 @@
                     return true;
                 }
 
-                if (NativeMethods.GetExitCodeProcess(this.safeProcessHandle, out this.exitCode) && this.exitCode != NativeMethods.STILL_ACTIVE)
-                {
-                    return true;
-                }
-                
-                return false;
+                return NativeMethods.GetExitCodeProcess(this.safeProcessHandle, out this.exitCode)
+                       && this.exitCode != NativeMethods.STILL_ACTIVE;
             }
         }
 
@@ -161,68 +133,32 @@
             }
         }
 
-        public string ExitCodeAsString
-        {
-            get
-            {
-                return new Win32Exception(this.ExitCode).Message;
-            }
-        }
+        public string ExitCodeAsString => new Win32Exception(this.ExitCode).Message;
 
         /// <summary>
         /// Returns the time the process was started.
         /// </summary>
-        public DateTime StartTime
-        {
-            get
-            {
-                return this.GetProcessTimes().StartTime;
-            }
-        }
+        public DateTime StartTime => this.GetProcessTimes().StartTime;
 
         /// <summary>
         /// Gets the time that the process exited.
         /// </summary>
-        public DateTime ExitTime
-        {
-            get
-            {
-                return this.GetProcessTimes().ExitTime;
-            }
-        }
+        public DateTime ExitTime => this.GetProcessTimes().ExitTime;
 
         /// <summary>
         /// Returns the amount of time the process has spent running code inside the operating system core.
         /// </summary>
-        public TimeSpan PrivilegedProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().PrivilegedProcessorTime;
-            }
-        }
+        public TimeSpan PrivilegedProcessorTime => this.GetProcessTimes().PrivilegedProcessorTime;
 
         /// <summary>
         /// Returns the amount of time the associated process has spent running code inside the application portion of the process (not the operating system core).
         /// </summary>
-        public TimeSpan UserProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().UserProcessorTime;
-            }
-        }
+        public TimeSpan UserProcessorTime => this.GetProcessTimes().UserProcessorTime;
 
         /// <summary>
         /// Returns the amount of time the associated process has spent utilizing the CPU.
         /// </summary>
-        public TimeSpan TotalProcessorTime
-        {
-            get
-            {
-                return this.GetProcessTimes().TotalProcessorTime;
-            }
-        }
+        public TimeSpan TotalProcessorTime => this.GetProcessTimes().TotalProcessorTime;
 
         /// <summary>
         /// Warning: If two processes with the same name are created, this property may not return correct name!
@@ -245,7 +181,7 @@
         {
             get
             {
-                var counters = new ProcessMemoryCounters();
+                var counters = default(ProcessMemoryCounters);
                 NativeMethods.GetProcessMemoryInfo(this.Handle, out counters, (uint)Marshal.SizeOf(counters));
                 return (int)counters.PeakWorkingSetSize;
             }
@@ -255,7 +191,7 @@
         {
             get
             {
-                var counters = new ProcessMemoryCounters();
+                var counters = default(ProcessMemoryCounters);
                 NativeMethods.GetProcessMemoryInfo(this.Handle, out counters, (uint)Marshal.SizeOf(counters));
                 return (int)counters.PeakPagefileUsage;
             }
@@ -323,7 +259,7 @@
             SafeFileHandle standardErrorReadPipeHandle;
 
             // http://support.microsoft.com/kb/190351 (How to spawn console processes with redirected standard handles)
-            // If the dwFlags member is set to STARTF_USESTDHANDLES, then the following STARTUPINFO members specify the standard handles of the child console based process: 
+            // If the dwFlags member is set to STARTF_USESTDHANDLES, then the following STARTUPINFO members specify the standard handles of the child console based process:
             // HANDLE hStdInput - Standard input handle of the child process.
             // HANDLE hStdOutput - Standard output handle of the child process.
             // HANDLE hStdError - Standard error handle of the child process.
@@ -338,7 +274,7 @@
                                      };
             this.StandardOutput = new StreamReader(new FileStream(standardOutputReadPipeHandle, FileAccess.Read, bufferSize, false), Encoding.Default, true, bufferSize);
             this.StandardError = new StreamReader(new FileStream(standardErrorReadPipeHandle, FileAccess.Read, 4096, false), Encoding.Default, true, 4096);
-            
+
             /*
              * Child processes that use such C run-time functions as printf() and fprintf() can behave poorly when redirected.
              * The C run-time functions maintain separate IO buffers. When redirected, these buffers might not be flushed immediately after each IO call.
@@ -357,13 +293,13 @@
             }
         }
 
-        // Using synchronous Anonymous pipes for process input/output redirection means we would end up 
+        // Using synchronous Anonymous pipes for process input/output redirection means we would end up
         // wasting a worker thread pool thread per pipe instance. Overlapped pipe IO is desirable, since
-        // it will take advantage of the NT IO completion port infrastructure. But we can't really use 
+        // it will take advantage of the NT IO completion port infrastructure. But we can't really use
         // Overlapped I/O for process input/output as it would break Console apps (managed Console class
         // methods such as WriteLine as well as native CRT functions like printf) which are making an
         // assumption that the console standard handles (obtained via GetStdHandle()) are opened
-        // for synchronous I/O and hence they can work fine with ReadFile/WriteFile synchronously! 
+        // for synchronous I/O and hence they can work fine with ReadFile/WriteFile synchronously!
         [ResourceExposure(ResourceScope.None)]
         [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
         private void CreatePipe(out SafeFileHandle parentHandle, out SafeFileHandle childHandle, bool parentInputs, int bufferSize)
@@ -382,10 +318,10 @@
                     this.CreatePipeWithSecurityAttributes(out tempHandle, out childHandle, securityAttributesParent, bufferSize);
                 }
 
-                // Duplicate the parent handle to be non-inheritable so that the child process 
+                // Duplicate the parent handle to be non-inheritable so that the child process
                 // doesn't have access. This is done for correctness sake, exact reason is unclear.
-                // One potential theory is that child process can do something brain dead like 
-                // closing the parent end of the pipe and there by getting into a blocking situation 
+                // One potential theory is that child process can do something brain dead like
+                // closing the parent end of the pipe and there by getting into a blocking situation
                 // as parent will not be draining the pipe at the other end anymore.
 
                 // Create a duplicate of the output write handle for the std error write handle.
@@ -429,14 +365,11 @@
             if (!NativeMethods.CreateRestrictedToken(
                     processToken,
                     CreateRestrictedTokenFlags.SANDBOX_INERT, // TODO: DISABLE_MAX_PRIVILEGE ??
-                    //// Disable SID
-                    0,
+                    0, // Disable SID
                     null,
-                    //// Delete privilege
-                    0,
+                    0, // Delete privilege
                     null,
-                    //// Restricted SID
-                    0,
+                    0, // Restricted SID
                     null,
                     out restrictedToken))
             {
@@ -474,7 +407,7 @@
 
             return token;
         }
-        
+
         private void SetTokenMandatoryLabel(IntPtr token, SecurityMandatoryLabel securityMandatoryLabel)
         {
             // Create the low integrity SID.
@@ -495,7 +428,7 @@
                 throw new Win32Exception();
             }
 
-            var tokenMandatoryLabel = new TokenMandatoryLabel { Label = new SidAndAttributes() };
+            var tokenMandatoryLabel = new TokenMandatoryLabel { Label = default(SidAndAttributes) };
             tokenMandatoryLabel.Label.Attributes = NativeMethods.SE_GROUP_INTEGRITY;
             tokenMandatoryLabel.Label.Sid = integritySid;
             //// Marshal the TOKEN_MANDATORY_LABEL structure to the native memory.
@@ -519,7 +452,7 @@
 
         private ProcessThreadTimes GetProcessTimes()
         {
-            var processTimes = new ProcessThreadTimes();
+            var processTimes = default(ProcessThreadTimes);
             if (!NativeMethods.GetProcessTimes(
                     this.safeProcessHandle,
                     out processTimes.Create,

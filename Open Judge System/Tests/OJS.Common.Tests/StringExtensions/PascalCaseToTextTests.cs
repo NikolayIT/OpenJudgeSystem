@@ -1,13 +1,13 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class PascalCaseToTextTests
     {
-        [TestMethod]
+        [Test]
         public void FewWordsStringShouldReturnProperResult()
         {
             const string Input = "PascalCaseExample";
@@ -16,7 +16,7 @@
             Assert.AreEqual(Expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void OneWordStringShouldReturnProperResult()
         {
             const string Input = "Pascal";
@@ -25,7 +25,7 @@
             Assert.AreEqual(Expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void MethodShouldNotChangeTheOtherPartsOfTheString()
         {
             const string Input = "  PascalCase a A OtherWord Word2 ";
@@ -34,7 +34,7 @@
             Assert.AreEqual(Expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AbbreviationsShouldBeKept()
         {
             const string Input = "Ivo knows SOLID";
@@ -43,7 +43,7 @@
             Assert.AreEqual(Expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void AbbreviationsShouldBeKeptIfNoOtherWords()
         {
             const string Input = "SOLID";
@@ -52,7 +52,7 @@
             Assert.AreEqual(Expected, result);
         }
 
-        [TestMethod]
+        [Test]
         public void NullStringShouldReturnNull()
         {
             const string Input = null;

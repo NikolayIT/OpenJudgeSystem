@@ -7,6 +7,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
@@ -22,6 +23,9 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(GlobalConstants.SubmissionTypeNameMaxLength)]
+        [MinLength(GlobalConstants.SubmissionTypeNameMinLength)]
         public string Name { get; set; }
 
         [DefaultValue(false)]
@@ -61,7 +65,7 @@
             get { return this.contests; }
             set { this.contests = value; }
         }
-        
+
         [NotMapped]
         public string FileNameExtension
         {

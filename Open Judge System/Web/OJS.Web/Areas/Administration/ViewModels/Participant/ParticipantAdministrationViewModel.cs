@@ -9,6 +9,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Participants.ViewModels.ParticipantViewModels;
+
     public class ParticipantAdministrationViewModel : AdministrationViewModel<Participant>
     {
         [ExcludeFromExcel]
@@ -36,27 +38,31 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Състезание")]
-        [Required(ErrorMessage = "Състезанието е задължително!")]
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Contest_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("ContestsComboBox")]
         public int ContestId { get; set; }
 
-        [Display(Name = "Състезание")]
+        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string ContestName { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Потребител")]
-        [Required(ErrorMessage = "Потребителят е задължителен!")]
+        [Display(Name = "User", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "User_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("UsersComboBox")]
         public string UserId { get; set; }
 
-        [Display(Name = "Потребител")]
+        [Display(Name = "UserName", ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string UserName { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Официално участие")]
+        [Display(Name = "Is_official", ResourceType = typeof(Resource))]
         public bool IsOfficial { get; set; }
     }
 }

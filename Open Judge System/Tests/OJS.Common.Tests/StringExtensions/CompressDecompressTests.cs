@@ -1,19 +1,20 @@
 ﻿namespace OJS.Common.Tests.StringExtensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class CompressDecompressTests
     {
-        [TestMethod]
+        [Test]
         public void DecompressShouldProduceTheOriginallyCompressedString()
         {
             const string InputString = "Николай";
             var compressed = InputString.Compress();
             var decompressed = compressed.Decompress();
 
-            Assert.AreEqual(InputString, decompressed);
+            Assert.That(InputString, Is.EqualTo(decompressed));
         }
     }
 }

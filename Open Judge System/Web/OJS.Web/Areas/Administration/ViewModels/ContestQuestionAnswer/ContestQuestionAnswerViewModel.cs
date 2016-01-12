@@ -6,9 +6,12 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
+    using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestQuestionAnswer;
 
     public class ContestQuestionAnswerViewModel : AdministrationViewModel<ContestQuestionAnswer>
     {
@@ -38,14 +41,21 @@
         [HiddenInput(DisplayValue = false)]
         public int? QuestionId { get; set; }
 
-        [Display(Name = "Въпрос")]
+        [Display(Name = "Question", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]
         public string QuestionText { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Текст")]
-        [Required(ErrorMessage = "Текста е задължителен!", AllowEmptyStrings = false)]
-        [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "Text", ResourceType = typeof(Resource))]
+        [Required(
+            AllowEmptyStrings = false,
+            ErrorMessageResourceName = "Text_required",
+            ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(
+            GlobalConstants.ContestQuestionAnswerMaxLength,
+            MinimumLength = GlobalConstants.ContestQuestionAnswerMinLength,
+            ErrorMessageResourceName = "Text_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Text { get; set; }
     }

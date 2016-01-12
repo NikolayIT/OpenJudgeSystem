@@ -164,7 +164,7 @@
                 AllowedFileExtensions = submission.SubmissionType.AllowedFileExtensions,
                 CompilerType = submission.SubmissionType.CompilerType,
                 MemoryLimit = submission.Problem.MemoryLimit,
-                TimeLimit = submission.Problem.TimeLimit,
+                TimeLimit = submission.Problem.TimeLimit
                 Tests = submission.Problem.Tests.AsQueryable().Select(x =>
                         new TestContext
                         {
@@ -200,13 +200,13 @@
                 var testRun = new TestRun
                 {
                     CheckerComment = testResult.CheckerDetails.Comment,
+                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
+                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
                     ExecutionComment = testResult.ExecutionComment,
                     MemoryUsed = testResult.MemoryUsed,
                     ResultType = testResult.ResultType,
                     TestId = testResult.Id,
                     TimeUsed = testResult.TimeUsed,
-                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
-                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
                 };
                 submission.TestRuns.Add(testRun);
             }
@@ -235,6 +235,9 @@
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CSharpTestRunner:
+                    executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
@@ -247,6 +250,27 @@
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
+                    break;
+                case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
+                    executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
+                        Settings.NodeJsExecutablePath,
+                        Settings.MochaModulePath,
+                        Settings.ChaiModulePath);
+                    break;
+                case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
+                    executionStrategy = new IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
+                        Settings.IoJsExecutablePath,
+                        Settings.MochaModulePath,
+                        Settings.ChaiModulePath,
+                        Settings.JsDomModulePath,
+                        Settings.JQueryModulePath,
+                        Settings.HandlebarsModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
+                        Settings.UnderscoreModulePath);
+                    break;
+                case ExecutionStrategyType.JavaZipFileCompileExecuteAndCheck:
+                    executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(Settings.JavaExecutablePath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);

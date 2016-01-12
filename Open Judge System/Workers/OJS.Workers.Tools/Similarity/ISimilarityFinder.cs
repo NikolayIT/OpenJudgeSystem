@@ -6,7 +6,7 @@
         /// Find the difference in 2 text documents, comparing by textlines.
         /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
         /// each line is converted into a (hash) number. This hash-value is computed by storing all
-        /// textlines into a common hashtable so i can find duplicates in there, and generating a 
+        /// textlines into a common hashtable so i can find duplicates in there, and generating a
         /// new number each time a new textline is inserted.
         /// </summary>
         /// <param name="textA">A-version of the text (usually the old one)</param>

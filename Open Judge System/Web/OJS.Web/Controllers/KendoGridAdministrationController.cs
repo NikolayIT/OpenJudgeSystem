@@ -12,6 +12,7 @@
 
     using Newtonsoft.Json;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Web.Common.Interfaces;
 
@@ -40,7 +41,7 @@
             var data = this.GetData();
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var json = JsonConvert.SerializeObject(data.ToDataSourceResult(request), Formatting.None, serializationSettings);
-            return this.Content(json, "application/json");
+            return this.Content(json, GlobalConstants.JsonMimeType);
         }
 
         [HttpGet]
@@ -100,7 +101,8 @@
                 .Name;
         }
 
-        protected void UpdateAuditInfoValues<T>(IAdministrationViewModel<T> viewModel, object databaseModel) where T : class, new()
+        protected void UpdateAuditInfoValues<T>(IAdministrationViewModel<T> viewModel, object databaseModel)
+            where T : class, new()
         {
             var entry = this.Data.Context.Entry(databaseModel);
             viewModel.CreatedOn = (DateTime?)entry.Property(CreatedOnPropertyName).CurrentValue;

@@ -12,5 +12,7 @@
         Submission GetSubmissionForProcessing();
 
         bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions);
+
+        IQueryable<Submission> GetLastFiftySubmissions();
     }
 }

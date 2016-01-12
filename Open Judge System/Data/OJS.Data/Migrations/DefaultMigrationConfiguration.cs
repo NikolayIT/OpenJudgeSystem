@@ -1,4 +1,4 @@
-namespace OJS.Data.Migrations
+﻿namespace OJS.Data.Migrations
 {
     using System;
     using System.Collections.Generic;
@@ -53,54 +53,55 @@ namespace OJS.Data.Migrations
 
         protected void SeedCheckers(OjsDbContext context)
         {
-            context.Checkers.AddOrUpdate(
-                x => x.Name,
-                new Checker
-                {
-                    Name = "Exact",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.ExactChecker",
-                },
-                new Checker
-                {
-                    Name = "Trim",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.TrimChecker",
-                },
-                new Checker
-                {
-                    Name = "Sort lines",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.SortChecker",
-                },
-                new Checker
-                {
-                    Name = "Case-insensitive",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
-                },
-                new Checker
-                {
-                    Name = "Precision checker - 14",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                    Parameter = "14",
-                },
-                new Checker
-                {
-                    Name = "Precision checker - 7",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                    Parameter = "7",
-                },
-                new Checker
-                {
-                    Name = "Precision checker - 3",
-                    DllFile = "OJS.Workers.Checkers.dll",
-                    ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                    Parameter = "3",
-                });
-
+            var checkers = new[]
+                               {
+                                   new Checker
+                                       {
+                                           Name = "Exact",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.ExactChecker",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Trim",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.TrimChecker",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Sort lines",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.SortChecker",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Case-insensitive",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Precision checker - 14",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                                           Parameter = "14",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Precision checker - 7",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                                           Parameter = "7",
+                                       },
+                                   new Checker
+                                       {
+                                           Name = "Precision checker - 3",
+                                           DllFile = "OJS.Workers.Checkers.dll",
+                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                                           Parameter = "3",
+                                       }
+                               };
+            context.Checkers.AddOrUpdate(x => x.Name, checkers);
             context.SaveChanges();
         }
 
@@ -113,101 +114,162 @@ namespace OJS.Data.Migrations
 
             context.SaveChanges();
 
-            context.SubmissionTypes.AddOrUpdate(
-                x => x.Name,
-                new SubmissionType
-                {
-                    Name = "File upload",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.DoNothing,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = "zip,rar",
-                    AllowBinaryFilesUpload = true,
-                },
-                new SubmissionType
-                {
-                    Name = "C# code",
-                    CompilerType = CompilerType.CSharp,
-                    AdditionalCompilerArguments =
-                        "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
-                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
-                    IsSelectedByDefault = true,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "C++ code",
-                    CompilerType = CompilerType.CPlusPlusGcc,
-                    AdditionalCompilerArguments =
-                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
-                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "JavaScript code (NodeJS)",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "C# project/solution",
-                    CompilerType = CompilerType.MsBuild,
-                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
-                    ExecutionStrategyType = ExecutionStrategyType.CompileExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = "zip",
-                    AllowBinaryFilesUpload = true,
-                },
-                new SubmissionType
-                {
-                    Name = "Java code",
-                    CompilerType = CompilerType.Java,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "PHP code (CGI)",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.PhpCgiExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "PHP code (CLI)",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.PhpCliExecuteAndCheck,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                },
-                new SubmissionType
-                {
-                    Name = "Plain text",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.CheckOnly,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = null,
-                    AllowBinaryFilesUpload = false,
-                });
+            var submissionTypes = new[]
+                                      {
+                                          new SubmissionType
+                                              {
+                                                  Name = "File upload",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType = ExecutionStrategyType.DoNothing,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = "zip,rar",
+                                                  AllowBinaryFilesUpload = true,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "C# code",
+                                                  CompilerType = CompilerType.CSharp,
+                                                  AdditionalCompilerArguments =
+                                                      "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.CompileExecuteAndCheck,
+                                                  IsSelectedByDefault = true,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "C++ code",
+                                                  CompilerType = CompilerType.CPlusPlusGcc,
+                                                  AdditionalCompilerArguments =
+                                                      "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.CompileExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (NodeJS)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (Mocha unit tests)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithMocha,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (DOM unit tests)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .IoJsPreprocessExecuteAndRunJsDomUnitTests,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "C# project/solution",
+                                                  CompilerType = CompilerType.MsBuild,
+                                                  AdditionalCompilerArguments =
+                                                      "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.CompileExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = "zip",
+                                                  AllowBinaryFilesUpload = true,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "C# test runner",
+                                                  CompilerType = CompilerType.MsBuild,
+                                                  AdditionalCompilerArguments =
+                                                      "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.CSharpTestRunner,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = "zip",
+                                                  AllowBinaryFilesUpload = true,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "Java code",
+                                                  CompilerType = CompilerType.Java,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .JavaPreprocessCompileExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "Java zip file",
+                                                  CompilerType = CompilerType.JavaZip,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .JavaZipFileCompileExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = "zip",
+                                                  AllowBinaryFilesUpload = true,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "Python code",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .PythonExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "PHP code (CGI)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.PhpCgiExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "PHP code (CLI)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = string.Empty,
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.PhpCliExecuteAndCheck,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              }
+                                      };
 
+            context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);
             context.SaveChanges();
         }
 

@@ -6,13 +6,16 @@
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.ContestCategories.ViewModels.ContestCategoryAdministrationViewModel;
+
     public class ContestCategoryAdministrationViewModel : AdministrationViewModel<ContestCategory>
     {
-        [ExcludeFromExcelAttribute]
+        [ExcludeFromExcel]
         public static Expression<Func<ContestCategory, ContestCategoryAdministrationViewModel>> ViewModel
         {
             get
@@ -36,20 +39,28 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Име")]
-        [Required(ErrorMessage = "Името е задължително!")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Позволената дължина е между 6 и 100 символа")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(
+            GlobalConstants.ContestCategoryNameMaxLength,
+            MinimumLength = GlobalConstants.ContestCategoryNameMinLength,
+            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Подредба")]
-        [Required(ErrorMessage = "Подредбата е задължителна!")]
+        [Display(Name = "Order_by", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "Order_by_required",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("Integer")]
         public int OrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Видимост")]
+        [Display(Name = "Visibility", ResourceType = typeof(Resource))]
         public bool IsVisible { get; set; }
     }
 }

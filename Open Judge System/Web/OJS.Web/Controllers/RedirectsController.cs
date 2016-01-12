@@ -9,29 +9,20 @@
 
     public class RedirectsController : BaseController
     {
-        private static readonly List<KeyValuePair<string, string>> OldSystemRedirectsList =
-            new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("Contest/List", "/Contests"),
-                new KeyValuePair<string, string>("Home/SubmissionLog", "/Submissions"),
-                new KeyValuePair<string, string>("Home/ReportBug", "/Feedback"),
-                new KeyValuePair<string, string>("Home/SendBugReport", "/Feedback"),
-                new KeyValuePair<string, string>("Account/LogOn", "/Account/Login"),
-                new KeyValuePair<string, string>("Account/Profile", "/Users/Profile"),
-            };
-
         public RedirectsController(IOjsData data)
             : base(data)
         {
         }
 
-        public static List<KeyValuePair<string, string>> OldSystemRedirects
-        {
-            get
-            {
-                return OldSystemRedirectsList;
-            }
-        }
+        public static List<KeyValuePair<string, string>> OldSystemRedirects { get; } = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("Contest/List", "/Contests"),
+                    new KeyValuePair<string, string>("Home/SubmissionLog", "/Submissions"),
+                    new KeyValuePair<string, string>("Home/ReportBug", "/Feedback"),
+                    new KeyValuePair<string, string>("Home/SendBugReport", "/Feedback"),
+                    new KeyValuePair<string, string>("Account/LogOn", "/Account/Login"),
+                    new KeyValuePair<string, string>("Account/Profile", "/Users/Profile"),
+                };
 
         public RedirectResult Index(int id)
         {
@@ -41,31 +32,31 @@
         public RedirectResult ProfileView(int id)
         {
             var username = this.Data.Users.All().Where(x => x.OldId == id).Select(x => x.UserName).FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Users/{0}", username));
+            return this.RedirectPermanent($"/Users/{username}");
         }
 
         public RedirectResult ContestCompete(int id)
         {
             var newId = this.Data.Contests.All().Where(x => x.OldId == id).Select(x => x.Id).FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Contests/Compete/Index/{0}", newId));
+            return this.RedirectPermanent($"/Contests/Compete/Index/{newId}");
         }
 
         public RedirectResult ContestPractice(int id)
         {
             var newId = this.Data.Contests.All().Where(x => x.OldId == id).Select(x => x.Id).FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Contests/Practice/Index/{0}", newId));
+            return this.RedirectPermanent($"/Contests/Practice/Index/{newId}");
         }
 
         public RedirectResult ContestResults(int id)
         {
             var newId = this.Data.Contests.All().Where(x => x.OldId == id).Select(x => x.Id).FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Contests/Compete/Results/Simple/{0}", newId));
+            return this.RedirectPermanent($"/Contests/Compete/Results/Simple/{newId}");
         }
 
         public RedirectResult PracticeResults(int id)
         {
             var newId = this.Data.Contests.All().Where(x => x.OldId == id).Select(x => x.Id).FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Contests/Practice/Results/Simple/{0}", newId));
+            return this.RedirectPermanent($"/Contests/Practice/Results/Simple/{newId}");
         }
 
         public RedirectResult DownloadTask(int id)
@@ -75,7 +66,7 @@
                     .Where(x => x.Problem.OldId == id && x.Type == ProblemResourceType.ProblemDescription)
                     .Select(x => x.Id)
                     .FirstOrDefault();
-            return this.RedirectPermanent(string.Format("/Contests/Practice/DownloadResource/{0}", resourceId));
+            return this.RedirectPermanent($"/Contests/Practice/DownloadResource/{resourceId}");
         }
     }
 }

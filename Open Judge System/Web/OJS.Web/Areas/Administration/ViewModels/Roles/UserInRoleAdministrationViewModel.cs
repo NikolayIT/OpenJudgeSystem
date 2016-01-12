@@ -7,9 +7,11 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
+    using Resource = Resources.Areas.Administration.Roles.ViewModels.RolesViewModels;
+
     public class UserInRoleAdministrationViewModel
     {
-        [ExcludeFromExcel]    
+        [ExcludeFromExcel]
         public static Expression<Func<UserProfile, UserInRoleAdministrationViewModel>> ViewModel
         {
             get
@@ -18,8 +20,8 @@
                 {
                     UserId = us.Id,
                     UserName = us.UserName,
-                    FirstName = us.UserSettings.FirstName ?? "Няма",
-                    LastName = us.UserSettings.LastName ?? "Няма",
+                    FirstName = us.UserSettings.FirstName ?? Resource.Not_entered,
+                    LastName = us.UserSettings.LastName ?? Resource.Not_entered,
                     Email = us.Email
                 };
             }
@@ -27,17 +29,19 @@
 
         public string UserId { get; set; }
 
-        [Display(Name = "Потребителско име")]
-        [Required(ErrorMessage = "Потребителското име е задължително!")]
+        [Display(Name = "UserName", ResourceType = typeof(Resource))]
+        [Required(
+            ErrorMessageResourceName = "UserName_required",
+            ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
-        [Display(Name = "Име")]
+        [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string FirstName { get; set; }
 
-        [Display(Name = "Фамилия")]
+        [Display(Name = "Last_name", ResourceType = typeof(Resource))]
         public string LastName { get; set; }
 
-        [Display(Name = "E-mail")]
+        [Display(Name = "Email", ResourceType = typeof(Resource))]
         public string Email { get; set; }
     }
 }

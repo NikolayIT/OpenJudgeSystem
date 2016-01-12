@@ -20,6 +20,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
+    using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
 
@@ -79,7 +80,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ViewModelType model)
+        public ActionResult Create(ContestAdministrationViewModel model)
         {
             if (!this.User.IsAdmin())
             {
@@ -110,7 +111,7 @@
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше добавено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -135,7 +136,7 @@
 
             if (contest == null)
             {
-                TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -149,7 +150,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ViewModelType model)
+        public ActionResult Edit(ContestAdministrationViewModel model)
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
@@ -168,7 +169,7 @@
 
                 if (contest == null)
                 {
-                    this.TempData.Add(GlobalConstants.DangerMessage, "Състезанието не е намерено");
+                    this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
 
@@ -190,7 +191,7 @@
                 this.Data.Contests.Update(contest);
                 this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, "Състезанието беше променено успешно");
+                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
@@ -199,7 +200,7 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ContestAdministrationViewModel model)
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
@@ -221,7 +222,7 @@
 
             if (!futureContests.Any())
             {
-                return this.Content(NoFutureContests);
+                return this.Content(Resource.No_future_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, futureContests);
@@ -237,7 +238,7 @@
 
             if (!activeContests.Any())
             {
-                return this.Content(NoActiveContests);
+                return this.Content(Resource.No_active_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, activeContests);
@@ -253,7 +254,7 @@
 
             if (!latestContests.Any())
             {
-                return this.Content(NoLatestContests);
+                return this.Content(Resource.No_latest_contests);
             }
 
             return this.PartialView(GlobalConstants.QuickContestsGrid, latestContests);
@@ -267,7 +268,7 @@
                 .Select(cat => new SelectListItem
                 {
                     Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
                 });
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
@@ -320,19 +321,19 @@
 
             if (model.StartTime >= model.EndTime)
             {
-                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата на състезанието не може да бъде след крайната дата на състезанието");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Contest_start_date_before_end);
                 isValid = false;
             }
 
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
-                this.ModelState.AddModelError(GlobalConstants.DateTimeError, "Началната дата за упражнения не може да бъде след крайната дата за упражнения");
+                this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Practice_start_date_before_end);
                 isValid = false;
             }
 
             if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
             {
-                this.ModelState.AddModelError("SelectedSubmissionTypes", "Изберете поне един вид решение!");
+                this.ModelState.AddModelError("SelectedSubmissionTypes", Resource.Select_one_submission_type);
                 isValid = false;
             }
 

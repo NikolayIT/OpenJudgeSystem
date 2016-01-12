@@ -2,47 +2,50 @@
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OJS.Common.Extensions;
 
-    [TestClass]
+    [TestFixture]
     public class GetStringWithEllipsisBetweenTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
+        [Test]
         public void ShouldThrowExceptionWhenValueIsNotNullAndStartIndexIsNegative()
         {
             const string Value = "vladislav";
             const int StartIndex = -2;
             const int EndIndex = 2;
 
-            var result = Value.GetStringWithEllipsisBetween(StartIndex, EndIndex);
+            Assert.Throws(
+                Is.InstanceOf<ArgumentException>(),
+                () => { var result = Value.GetStringWithEllipsisBetween(StartIndex, EndIndex); });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
+        [Test]
         public void ShouldThrowExceptionWhenValueIsNotNullAndStartIndexIsEqualToStringLength()
         {
             const string Value = "vladislav";
             var startIndex = Value.Length;
             const int EndIndex = 2;
 
-            var result = Value.GetStringWithEllipsisBetween(startIndex, EndIndex);
+            Assert.Throws(
+                Is.InstanceOf<ArgumentException>(),
+                () => { var result = Value.GetStringWithEllipsisBetween(startIndex, EndIndex); });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
+        [Test]
         public void ShouldThrowExceptionWhenValueIsNotNullAndStartIndexIsGreaterThanStringLength()
         {
             const string Value = "vladislav";
             var startIndex = Value.Length + 1;
             const int EndIndex = 2;
 
-            var result = Value.GetStringWithEllipsisBetween(startIndex, EndIndex);
+            Assert.Throws(
+                Is.InstanceOf<ArgumentException>(),
+                () => { var result = Value.GetStringWithEllipsisBetween(startIndex, EndIndex); });
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnNullWhenValueIsNullAndStartAndEndIndicesAreValid()
         {
             const string Value = null;
@@ -54,18 +57,19 @@
             Assert.IsNull(result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
+        [Test]
         public void ShouldThrowExceptionWhenValueIsNotNullAndStartIndexIsGreaterThanEndIndex()
         {
             const string Value = "vladislav";
             const int StartIndex = 5;
             const int EndIndex = 2;
 
-            var result = Value.GetStringWithEllipsisBetween(StartIndex, EndIndex);
+            Assert.Throws(
+                Is.InstanceOf<ArgumentException>(),
+                () => { var result = Value.GetStringWithEllipsisBetween(StartIndex, EndIndex); });
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnEmptyStringWhenValueIsNotNullAndStartIndexIsEqualToValueLength()
         {
             const string Value = "vladislav";
@@ -76,8 +80,8 @@
 
             Assert.AreEqual(string.Empty, result);
         }
-        
-        [TestMethod]
+
+        [Test]
         public void ShouldReturnEmptyStringWhenValueIsNotNullAndStartIndexIsEqualToEndIndex()
         {
             const string Value = "vladislav";
@@ -89,7 +93,7 @@
             Assert.AreEqual(string.Empty, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnNullWhenValueIsNullAndStartIndexIsEqualToEndIndex()
         {
             const string Value = null;
@@ -101,7 +105,7 @@
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnValueWhenValueIsNotNullAndStartIndexIsEqualToZeroAndEndIndexIsEqualToStringLength()
         {
             const string Value = "vladislav";
@@ -113,7 +117,7 @@
             Assert.AreEqual(Value, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithoutEllipsisWhenValueIsNotNullAndStartIndexIsLessThanEllipsisLength()
         {
             const string Value = "vladislav";
@@ -125,7 +129,7 @@
             Assert.AreEqual("adislav", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithoutEllipsisWhenValueIsNotNullAndStartIndexIsEqualToEllipsisLength()
         {
             const string Value = "vladislav";
@@ -137,7 +141,7 @@
             Assert.AreEqual("dislav", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithEllipsisWhenValueIsNotNullAndStartIndexIsGreaterThanEllipsisLength()
         {
             const string Value = "vladislav";
@@ -149,7 +153,7 @@
             Assert.AreEqual("...slav", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithoutEllipsisWhenValueIsNotNullAndEndIndexIsLessThanLengthMinusEllipsisLength()
         {
             const string Value = "vladislav";
@@ -161,7 +165,7 @@
             Assert.AreEqual("vladisl", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithoutEllipsisWhenValueIsNotNullAndEndIndexIsEqualToLengthMinusEllipsisLength()
         {
             const string Value = "vladislav";
@@ -173,7 +177,7 @@
             Assert.AreEqual("vladis", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithEllipsisWhenValueIsNotNullAndEndIndexIsGreaterThanLengthMinusEllipsisLength()
         {
             const string Value = "vladislav";
@@ -185,7 +189,7 @@
             Assert.AreEqual("vladi...", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnCorrectSubstringWithEllipsisOnBothSidesWhenStartIndexAndEndIndexAreAppropriate()
         {
             const string Value = "vladislav";
@@ -197,7 +201,7 @@
             Assert.AreEqual("...i...", result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnEmptyStringWhenStartIndexWhenStartIndexAndEndIndexAreEqualAndAppropriate()
         {
             const string Value = "vladislav";
@@ -209,7 +213,7 @@
             Assert.AreEqual(string.Empty, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnEmptyStringWhenValueIsEmptyString()
         {
             var value = string.Empty;
@@ -221,7 +225,7 @@
             Assert.AreEqual(value, result);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnSingleWhitespaceStringWhenValueIsSingleWhitespace()
         {
             const string Value = " ";

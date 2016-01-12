@@ -52,6 +52,8 @@
 
         IRepository<Ip> Ips { get; }
 
+        IRepository<AccessLog> AccessLogs { get; }
+
         IOjsDbContext Context { get; }
 
         int SaveChanges();
