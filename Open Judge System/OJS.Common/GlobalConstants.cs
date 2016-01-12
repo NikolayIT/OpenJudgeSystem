@@ -30,7 +30,6 @@
         public const int JobTitleMinLength = 2;
         public const int JobTitleMaxLength = 100;
         public const string JobTitleRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!])*$";
-        public const int EducationalInstitutionMaxLength = 50;
         public const int FacultyNumberMaxLength = 30;
         
         // TempData dictionary keys

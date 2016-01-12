@@ -66,10 +66,6 @@
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string City { get; set; }
 
-        [MaxLength(
-            GlobalConstants.EducationalInstitutionMaxLength,
-            ErrorMessageResourceName = "Education_too_long",
-            ErrorMessageResourceType = typeof(Resource))]
         [Display(Name = "Education_institution", ResourceType = typeof(Resource))]
         [NullDisplayFormat(ConvertEmptyStringToNull = true)]
         public string EducationalInstitution { get; set; }

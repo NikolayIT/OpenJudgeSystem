@@ -104,10 +104,10 @@
         public string City { get; set; }
 
         [Display(Name = "Educational_institution", ResourceType = typeof(Resource))]
-        [StringLength(
-            GlobalConstants.EducationalInstitutionMaxLength,
-            ErrorMessageResourceName = "Educational_institution_length",
-            ErrorMessageResourceType = typeof(Resource))]
+        ////[StringLength(
+        ////    GlobalConstants.EducationalInstitutionMaxLength,
+        ////    ErrorMessageResourceName = "Educational_institution_length",
+        ////    ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
             NullDisplayTextResourceName = "Null_display_text",
             NullDisplayTextResourceType = typeof(Resource),

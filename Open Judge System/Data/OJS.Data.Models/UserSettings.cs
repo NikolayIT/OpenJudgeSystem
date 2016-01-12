@@ -31,7 +31,6 @@
         public string City { get; set; }
 
         [Column("EducationalInstitution")]
-        [MaxLength(GlobalConstants.EducationalInstitutionMaxLength)]
         public string EducationalInstitution { get; set; }
 
         [Column("FacultyNumber")]
