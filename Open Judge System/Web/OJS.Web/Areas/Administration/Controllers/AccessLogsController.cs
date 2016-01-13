@@ -5,11 +5,11 @@
     using System.Web.Mvc;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
-
+    using OJS.Web.Areas.Administration.Controllers.Common;
+    
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.AccessLogs.AccessLogGridViewModel;
 
-    public class AccessLogsController : KendoGridAdministrationController
+    public class AccessLogsController : AdministrationBaseGridController
     {
         public AccessLogsController(IOjsData data)
             : base(data)

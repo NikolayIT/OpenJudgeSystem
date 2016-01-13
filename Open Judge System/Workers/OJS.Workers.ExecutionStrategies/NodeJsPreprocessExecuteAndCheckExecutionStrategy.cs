@@ -28,7 +28,7 @@
             this.NodeJsExecutablePath = nodeJsExecutablePath;
         }
 
-        protected string NodeJsExecutablePath { get; private set; }
+        protected string NodeJsExecutablePath { get; }
 
         protected virtual string JsCodeRequiredModules => @"
 var EOL = require('os').EOL";

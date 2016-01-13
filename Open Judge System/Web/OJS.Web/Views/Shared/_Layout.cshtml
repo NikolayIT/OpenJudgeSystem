@@ -88,8 +88,7 @@
                                     <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
                                 </ul>
                             }
-
-                            @if (this.User.IsAdmin())
+                            else if (this.User.IsAdmin())
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
@@ -114,6 +113,7 @@
                                     <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.SubmissionTypes, GlobalConstants.Index, "SubmissionTypes", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Log, GlobalConstants.Index, "AccessLogs", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Anti-cheat</li>
                                     <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>

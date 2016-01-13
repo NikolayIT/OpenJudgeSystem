@@ -18,10 +18,9 @@
     using OJS.Web.Common.Attributes;
 
     [LogAccess]
-    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-    public class AdministrationController : BaseController
+    public abstract class AdministrationController : BaseController
     {
-        public AdministrationController(IOjsData data)
+        protected AdministrationController(IOjsData data)
             : base(data)
         {
         }

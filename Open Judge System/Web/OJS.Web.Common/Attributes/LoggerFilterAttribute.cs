@@ -40,7 +40,7 @@
                 Url = request.RawUrl,
                 UserId = userId,
                 RequestType = request.RequestType,
-                PostParams = request.Form.ToString(),
+                PostParams = request.Unvalidated.Form.ToString(),
             });
 
             this.data.SaveChanges();

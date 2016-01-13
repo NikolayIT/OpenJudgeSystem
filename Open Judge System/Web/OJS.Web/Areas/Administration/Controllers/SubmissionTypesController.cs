@@ -7,12 +7,12 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
-    using OJS.Web.Controllers;
+    using OJS.Web.Areas.Administration.Controllers.Common;
 
     using DatabaseModelType = OJS.Data.Models.SubmissionType;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.SubmissionType.SubmissionTypeAdministrationViewModel;
 
-    public class SubmissionTypesController : KendoGridAdministrationController
+    public class SubmissionTypesController : AdministrationBaseGridController
     {
         public SubmissionTypesController(IOjsData data)
             : base(data)
