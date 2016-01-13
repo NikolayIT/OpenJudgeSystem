@@ -61,6 +61,15 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administration.
+        /// </summary>
+        public static string Administration {
+            get {
+                return ResourceManager.GetString("Administration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowed memory.
         /// </summary>
         public static string Allowed_memory {

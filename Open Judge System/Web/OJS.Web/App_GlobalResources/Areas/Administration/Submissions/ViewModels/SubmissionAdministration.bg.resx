@@ -162,4 +162,7 @@
   <data name="Type_required" xml:space="preserve">
     <value>Типът е задължителен!</value>
   </data>
+  <data name="Contest" xml:space="preserve">
+    <value>Състезание</value>
+  </data>
 </root>

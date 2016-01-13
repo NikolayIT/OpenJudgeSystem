@@ -171,6 +171,9 @@
   <data name="Trim_checker_description" xml:space="preserve">
     <value>- the system trims the whitespace before and after the sent code result and then compares symbol by symbol with the expected output</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
   <data name="Change_admin_button" xml:space="preserve">
     <value>Change</value>
   </data>

@@ -48,7 +48,7 @@ namespace OJS.Web.Areas.Administration.ViewModels.Submission
         [Display(Name = "Problem", ResourceType = typeof(Resource))]
         public string ProblemName { get; set; }
 
-        [Display(Name = "Състезание")]
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
 
         public int ContestId { get; set; }

@@ -65,7 +65,7 @@
 
             @if (User.IsInRole("Administrator"))
             {
-                <a href="/Administration/Problems/Resource/@Model.ProblemId" target="_blank" class="resource-link">Администрация</a>
+                <a href="/Administration/Problems/Resource/@Model.ProblemId" target="_blank" class="resource-link">@Resource.Administration</a>
             }
         </div>
         <div class="submision">

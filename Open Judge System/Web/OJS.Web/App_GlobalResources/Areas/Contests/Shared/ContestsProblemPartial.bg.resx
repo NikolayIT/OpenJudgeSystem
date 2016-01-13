@@ -183,4 +183,8 @@
   <data name="Tests_admin_button" xml:space="preserve">
     <value>Тестове</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Администрация</value>
+    <comment>Администрация</comment>
+  </data>
 </root>

@@ -80,6 +80,15 @@ namespace Resources.Areas.Administration.Submissions.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest.
+        /// </summary>
+        public static string Contest {
+            get {
+                return ResourceManager.GetString("Contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File submission.
         /// </summary>
         public static string File_submission {
