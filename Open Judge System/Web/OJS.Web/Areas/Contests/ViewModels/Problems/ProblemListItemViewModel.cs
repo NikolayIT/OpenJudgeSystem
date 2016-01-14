@@ -7,8 +7,6 @@
 
     public class ProblemListItemViewModel
     {
-        private string name;
-
         public static Expression<Func<Problem, ProblemListItemViewModel>> FromProblem
         {
             get
@@ -23,17 +21,6 @@
 
         public int ProblemId { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-
-            set
-            {
-                this.name = value.Replace("#", "\\#");
-            }
-        }
+        public string Name { get; set; }
     }
 }
