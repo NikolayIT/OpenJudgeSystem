@@ -249,13 +249,16 @@
                         GetCompilerPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
-                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(Settings.NodeJsExecutablePath);
+                    executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
+                        Settings.NodeJsExecutablePath,
+                        Settings.UnderscoreModulePath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
                     executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
-                        Settings.ChaiModulePath);
+                        Settings.ChaiModulePath,
+                        Settings.UnderscoreModulePath);
                     break;
                 case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
                     executionStrategy = new IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(

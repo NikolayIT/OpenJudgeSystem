@@ -17,7 +17,7 @@
         private const string PostevaluationPlaceholder = "#postevaluationCode#";
         private const string EvaluationPlaceholder = "#evaluationCode#";
 
-        public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath)
+        public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath, string underscoreModulePath)
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
@@ -25,13 +25,22 @@
                     $"NodeJS not found in: {nodeJsExecutablePath}", nameof(nodeJsExecutablePath));
             }
 
+            if (!Directory.Exists(underscoreModulePath))
+            {
+                throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
+            }
+
             this.NodeJsExecutablePath = nodeJsExecutablePath;
+            this.UnderscoreModulePath = this.ProcessModulePath(underscoreModulePath);
         }
 
         protected string NodeJsExecutablePath { get; }
 
-        protected virtual string JsCodeRequiredModules => @"
-var EOL = require('os').EOL";
+        protected string UnderscoreModulePath { get; }
+
+        protected virtual string JsCodeRequiredModules => $@"
+var EOL = require('os').EOL,
+_ = require('{this.UnderscoreModulePath}')";
 
         protected virtual string JsCodePreevaulationCode => @"
 var content = ''";
@@ -172,6 +181,8 @@ var code = {
 
             return testResults;
         }
+
+        protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
         private string PreprocessJsSubmission(string template, string code)
         {

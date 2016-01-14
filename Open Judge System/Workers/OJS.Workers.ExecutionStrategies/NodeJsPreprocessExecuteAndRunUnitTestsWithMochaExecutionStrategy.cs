@@ -11,8 +11,12 @@
         private readonly string mochaModulePath;
         private readonly string chaiModulePath;
 
-        public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(string nodeJsExecutablePath, string mochaModulePath, string chaiModulePath)
-            : base(nodeJsExecutablePath)
+        public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
+            string nodeJsExecutablePath,
+            string mochaModulePath,
+            string chaiModulePath,
+            string underscoreModulePath)
+            : base(nodeJsExecutablePath, underscoreModulePath)
         {
             if (!File.Exists(mochaModulePath))
             {
@@ -87,11 +91,6 @@ describe('TestScope', function() {
             }
 
             return testResults;
-        }
-
-        protected string ProcessModulePath(string path)
-        {
-            return path.Replace('\\', '/');
         }
     }
 }

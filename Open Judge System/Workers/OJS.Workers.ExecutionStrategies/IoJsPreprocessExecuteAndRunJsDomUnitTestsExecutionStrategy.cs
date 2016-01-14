@@ -10,7 +10,6 @@
         private string handlebarsModulePath;
         private string sinonModulePath;
         private string sinonChaiModulePath;
-        private string underscoreModulePath;
 
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string iojsExecutablePath,
@@ -22,7 +21,7 @@
             string sinonModulePath,
             string sinonChaiModulePath,
             string underscoreModulePath) // TODO: make this modular by getting requires from test
-            : base(iojsExecutablePath, mochaModulePath, chaiModulePath)
+            : base(iojsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath)
         {
             if (!Directory.Exists(jsdomModulePath))
             {
@@ -49,17 +48,11 @@
                 throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
             }
 
-            if (!Directory.Exists(underscoreModulePath))
-            {
-                throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
-            }
-
             this.jsdomModulePath = this.ProcessModulePath(jsdomModulePath);
             this.jqueryModulePath = this.ProcessModulePath(jqueryModulePath);
             this.handlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
             this.sinonModulePath = this.ProcessModulePath(sinonModulePath);
             this.sinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
-            this.underscoreModulePath = this.ProcessModulePath(underscoreModulePath);
         }
 
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
@@ -67,7 +60,6 @@
     jq = require('" + this.jqueryModulePath + @"'),
     sinon = require('" + this.sinonModulePath + @"'),
     sinonChai = require('" + this.sinonChaiModulePath + @"'),
-    _ = require('" + this.underscoreModulePath + @"'),
     handlebars = require('" + this.handlebarsModulePath + @"')";
 
         protected override string JsCodePreevaulationCode => @"
