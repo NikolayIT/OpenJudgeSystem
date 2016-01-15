@@ -187,7 +187,7 @@
     <value>Submissions</value>
   </data>
   <data name="SubmissionSimilarity" xml:space="preserve">
-    <value>Submissions Similarity</value>
+    <value>Submissions similarity</value>
   </data>
   <data name="Test_files" xml:space="preserve">
     <value>Test files</value>
@@ -195,10 +195,10 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
-  <data name="LecturersInContests" xml:space="preserve">
-    <value>Lecturers In Contests</value>
+  <data name="LecturersInContestAndCategories" xml:space="preserve">
+    <value>Lecturers in contests and categories</value>
   </data>
   <data name="SubmissionTypes" xml:space="preserve">
-    <value>Submission Types</value>
+    <value>Submission types</value>
   </data>
 </root>

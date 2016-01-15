@@ -60,6 +60,8 @@
 
         public virtual IDbSet<LecturerInContest> LecturersInContests { get; set; }
 
+        public virtual IDbSet<LecturerInContestCategory> LecturersInContestCategories { get; set; }
+
         public virtual IDbSet<Ip> Ips { get; set; }
 
         public virtual IDbSet<AccessLog> AccessLogs { get; set; }

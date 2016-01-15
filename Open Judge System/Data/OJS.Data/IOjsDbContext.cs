@@ -42,8 +42,10 @@
 
         IDbSet<LecturerInContest> LecturersInContests { get; set; }
 
+        IDbSet<LecturerInContestCategory> LecturersInContestCategories { get; set; }
+
         IDbSet<Ip> Ips { get; set; }
-        
+
         IDbSet<AccessLog> AccessLogs { get; set; }
 
         DbContext DbContext { get; }

@@ -17,7 +17,8 @@ Originally developed by:
 Other contributors:
 * Vladislav Karamfilov (https://github.com/vladislav-karamfilov)
 * Teodor Kurtev (https://github.com/teodor92)
-* Svetlin Nakov (https://github.com/nakov)
+* Kristian Mariyanov (https://github.com/KristianMariyanov)
+* Rositsa Popova (https://github.com/rozay)
 
 ## License
 

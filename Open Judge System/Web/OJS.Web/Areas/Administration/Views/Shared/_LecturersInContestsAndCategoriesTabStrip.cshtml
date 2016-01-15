@@ -1,0 +1,18 @@
+﻿<script type="text/x-kendo-template" id="lecturer-in-contests-and-categories-tab-strip-template">
+    @(Html.Kendo().TabStrip()
+        .Name("lecturer-in-contests-and-categories-tab-strip_#=UserId#")
+        .Items(tabstrip =>
+        {
+            tabstrip
+                .Add()
+                .Text("Състезания")
+                .Content(Html.Partial("~/Areas/Administration/Views/LecturersInContests/_LecturerInContestsGridTemplate.cshtml").ToHtmlString());
+            tabstrip
+                .Add()
+                .Text("Категории състезания")
+                .Content(Html.Partial("~/Areas/Administration/Views/LecturersInContestCategories/_LecturerInContestCategoriesGridTemplate.cshtml").ToHtmlString());
+        })
+        .SelectedIndex(0)
+        .ToClientTemplate()
+    )
+</script>

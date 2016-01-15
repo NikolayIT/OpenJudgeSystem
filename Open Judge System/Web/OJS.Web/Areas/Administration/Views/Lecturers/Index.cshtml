@@ -1,0 +1,49 @@
+﻿@using OJS.Web.Areas.Administration.ViewModels.Lecturers
+
+@{
+    ViewBag.Title = "Лектори в състезания и категории";
+
+    const string ControllerName = "Lecturers";
+    const string AreaName = "Administration";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@(Html.Kendo().Grid<LecturerGridViewModel>()
+    .Name("DataGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(m => m.UserName);
+        columns.Bound(m => m.FirstName);
+        columns.Bound(m => m.LastName);
+        columns.Bound(m => m.Email);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Custom().Text("Обратно към администрацията").Action("Navigation", "Administration", new { Area = string.Empty }).Name("custom-toolbar-button");
+        toolbar.Custom().Text("Експорт към Excel").Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+    })
+    .ColumnMenu()
+    .Events(e => e.DataBound("onDataBound"))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+    .Reorderable(x => x.Columns(true))
+    .Resizable(x => x.Columns(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Model(model => model.Id(m => m.UserId))
+        .Sort(sort => sort.Add(x => x.UserName))
+        .Read(read => read.Action("Read", ControllerName, new { area = AreaName }))
+    )
+    .ClientDetailTemplateId("lecturer-in-contests-and-categories-tab-strip-template")
+)
+
+@Html.Partial("_LecturersInContestsAndCategoriesTabStrip")
+
+<script type="text/javascript">
+    function onDataBound() {
+        CreateExportToExcelButton();
+    }
+</script>

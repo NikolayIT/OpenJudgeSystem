@@ -54,6 +54,8 @@
 
         public IRepository<LecturerInContest> LecturersInContests => this.GetRepository<LecturerInContest>();
 
+        public IRepository<LecturerInContestCategory> LecturersInContestCategories => this.GetRepository<LecturerInContestCategory>();
+
         public IRepository<Ip> Ips => this.GetRepository<Ip>();
 
         public IRepository<AccessLog> AccessLogs => this.GetRepository<AccessLog>();

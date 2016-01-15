@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels.LecturersInContests
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Lecturers
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -7,15 +7,15 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
-    public class LecturerInContestGridViewModel
+    public class LecturerGridViewModel
     {
         [ExcludeFromExcel]
-        public static Expression<Func<UserProfile, LecturerInContestGridViewModel>> ViewModel
+        public static Expression<Func<UserProfile, LecturerGridViewModel>> ViewModel
         {
             get
             {
                 return x =>
-                    new LecturerInContestGridViewModel
+                    new LecturerGridViewModel
                     {
                         UserId = x.Id,
                         UserName = x.UserName,

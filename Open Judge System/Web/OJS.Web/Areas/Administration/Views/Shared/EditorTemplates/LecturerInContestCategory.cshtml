@@ -1,0 +1,27 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.LecturersInContestCategories.LecturerInContestCategoryShortViewModel
+
+<div class="editor-label">
+    @Html.LabelFor(x => x.ContestCategoryName)
+</div>
+
+<div class="editor-field">
+    @(Html.Kendo().ComboBoxFor(m => m.ContestCategoryId)
+        .Name("ContestCategoryId")
+        .DataValueField("Id")
+        .DataTextField("Name")
+        .Filter(FilterType.Contains)
+        .MinLength(3)
+        .Placeholder("Изберете категория")
+        .DataSource(data => data
+            .ServerFiltering(true)
+            .Read(read =>
+            {
+                read.Action("AvailableContestCategories", "LecturersInContestCategories", new { area = "Administration" });
+                read.Data(@<text> function () { return { text: $('\\#ContestCategoryId').data('kendoComboBox').input.val() }; } </text>);
+            })
+        )
+        .HtmlAttributes(new { style = "width: 100%;" })
+    )
+    @Html.ValidationMessageFor(x => x.ContestCategoryId)
+</div>
+

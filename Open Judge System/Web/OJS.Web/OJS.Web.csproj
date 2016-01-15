@@ -1505,6 +1505,8 @@
     <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersInContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\LecturersInContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
@@ -1535,7 +1537,8 @@
     <Compile Include="Areas\Administration\ViewModels\ContestQuestion\ContestQuestionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestGridViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\LecturersInContestCategories\LecturerInContestCategoryShortViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Lecturers\LecturerGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ContestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
@@ -1863,13 +1866,17 @@
     <Content Include="Areas\Administration\Views\AntiCheat\_ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\AntiCheat\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\LecturersInContests\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Lecturers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
+    <Content Include="Areas\Administration\Views\LecturersInContests\_LecturerInContestsGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_LecturersInContestsAndCategoriesTabStrip.cshtml" />
+    <Content Include="Areas\Administration\Views\LecturersInContestCategories\_LecturerInContestCategoriesGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContestCategory.cshtml" />
     <None Include="Areas\Contests\Views\Compete\NewContestIp.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -2640,6 +2647,7 @@
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\News\Selected.cshtml" />
     <Content Include="Views\Shared\_LatestNews.cshtml" />
+    <Content Include="Xapp_offline.htm" />
     <Content Include="_ViewStart.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Feedback\Submitted.cshtml" />
@@ -3175,6 +3183,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Layout.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Views.Shared</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Views\Shared\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

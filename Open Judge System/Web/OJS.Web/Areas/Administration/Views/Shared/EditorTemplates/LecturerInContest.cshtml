@@ -6,10 +6,10 @@
 
 <div class="editor-field">
     @(Html.Kendo().ComboBoxFor(m => m.ContestId)
-                .Name("ContestId")
+        .Name("ContestId")
         .DataValueField("Id")
         .DataTextField("Name")
-        .Filter(FilterType.StartsWith)
+        .Filter(FilterType.Contains)
         .MinLength(3)
         .Placeholder("Изберете обучение")
         .DataSource(data => data

@@ -14,7 +14,8 @@
 
     public class UserProfile : IdentityUser, IDeletableEntity, IAuditInfo
     {
-        private ICollection<LecturerInContest> lecturerInContests; 
+        private ICollection<LecturerInContest> lecturerInContests;
+        private ICollection<LecturerInContestCategory> lecturerInContestCategories;
 
         public UserProfile()
             : this(string.Empty, string.Empty)
@@ -27,6 +28,7 @@
             this.Email = email;
             this.UserSettings = new UserSettings();
             this.lecturerInContests = new HashSet<LecturerInContest>();
+            this.lecturerInContestCategories = new HashSet<LecturerInContestCategory>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -54,6 +56,12 @@
         {
             get { return this.lecturerInContests; }
             set { this.lecturerInContests = value; }
+        }
+
+        public virtual ICollection<LecturerInContestCategory> LecturerInContestCategories
+        {
+            get { return this.lecturerInContestCategories; }
+            set { this.lecturerInContestCategories = value; }
         }
 
         public bool IsDeleted { get; set; }

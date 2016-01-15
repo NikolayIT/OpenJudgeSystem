@@ -11,13 +11,14 @@
     public class ContestCategory : DeletableEntity, IOrderable
     {
         private ICollection<ContestCategory> children;
-
         private ICollection<Contest> contests;
+        private ICollection<LecturerInContestCategory> lecturers;
 
         public ContestCategory()
         {
             this.children = new HashSet<ContestCategory>();
             this.contests = new HashSet<Contest>();
+            this.lecturers = new HashSet<LecturerInContestCategory>();
         }
 
         [Key]
@@ -47,6 +48,12 @@
         {
             get { return this.contests; }
             set { this.contests = value; }
+        }
+
+        public virtual ICollection<LecturerInContestCategory> Lecturers
+        {
+            get { return this.lecturers; }
+            set { this.lecturers = value; }
         }
 
         public bool IsVisible { get; set; }

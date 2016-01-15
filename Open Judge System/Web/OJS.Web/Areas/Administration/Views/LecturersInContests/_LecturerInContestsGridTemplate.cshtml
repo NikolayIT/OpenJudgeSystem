@@ -1,0 +1,37 @@
+﻿@using OJS.Web.Areas.Administration.ViewModels.LecturersInContests
+
+@{
+    const string ControllerName = "LecturersInContests";
+    const string AreaName = "Administration";
+}
+
+@(Html.Kendo().Grid<LecturerInContestShortViewModel>()
+    .Name("lecturer-in-contests-grid_#=UserId#")
+    .Columns(columns =>
+    {
+        columns.Bound(col => col.ContestId);
+        columns.Bound(col => col.ContestName);
+        columns.Command(command => command.Destroy().Text(" ")).Width(80);
+    })
+    .ColumnMenu()
+    .Pageable(x => x.Refresh(true))
+    .ToolBar(tool => tool.Create().Text("Добави състезание"))
+    .Editable(edit =>
+    {
+        edit.Mode(GridEditMode.PopUp);
+        edit.Window(w => w.Title("Състезания на лектор"));
+        edit.TemplateName("LecturerInContest");
+        edit.DisplayDeleteConfirmation("Наистина ли искате да изтриете елемента?");
+    })
+    .DataSource(dataSource => dataSource
+            .Ajax()
+            ////.Events(ev => ev.Error("sulsControls.Validation.displayAllValidationMessagesForGrid"))
+            .ServerOperation(true)
+            .Model(model => model.Id(m => m.ContestId))
+            .Sort(sort => sort.Add(m => m.ContestName))
+            .Create(create => create.Action("AddContestToLecturer", ControllerName, new { area = AreaName, userId = "#=UserId#" }))
+            .Read(read => read.Action("ReadContestsForLecturer", ControllerName, new { area = AreaName, lecturerId = "#=UserId#" }))
+            .Destroy(destroy => destroy.Action("DeleteContestForLecturer", ControllerName, new { area = AreaName }))
+    )
+    .ToClientTemplate()
+)

@@ -7,7 +7,6 @@
     using System.Linq.Expressions;
 
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Data.Models;
 
     public class DropdownViewModel
@@ -16,6 +15,14 @@
         private const char CapitalLetterA = 'A';
 
         public static Expression<Func<Contest, DropdownViewModel>> FromContest
+        {
+            get
+            {
+                return x => new DropdownViewModel { Id = x.Id, Name = x.Name };
+            }
+        }
+
+        public static Expression<Func<ContestCategory, DropdownViewModel>> FromContestCategory
         {
             get
             {
@@ -48,7 +55,7 @@
 
             if (ascendingOrder)
             {
-                return yearsDropDownList;                
+                return yearsDropDownList;
             }
 
             return yearsDropDownList.OrderByDescending(x => x.Id);

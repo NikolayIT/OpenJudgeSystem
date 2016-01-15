@@ -50,6 +50,8 @@
 
         IRepository<LecturerInContest> LecturersInContests { get; }
 
+        IRepository<LecturerInContestCategory> LecturersInContestCategories { get; }
+
         IRepository<Ip> Ips { get; }
 
         IRepository<AccessLog> AccessLogs { get; }
