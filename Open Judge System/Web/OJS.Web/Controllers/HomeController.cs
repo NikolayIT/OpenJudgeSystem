@@ -30,7 +30,9 @@
                 FutureContests = this.Data.Contests.All()
                     .Where(x => x.StartTime > DateTime.Now &&
                         (x.IsVisible ||
-                            (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
+                            isAdmin ||
+                            x.Lecturers.Any(l => l.LecturerId == userId) ||
+                            x.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),

@@ -136,6 +136,7 @@
             if (role != null && role.Role.Name == GlobalConstants.LecturerRoleName)
             {
                 this.Data.LecturersInContests.Delete(x => x.LecturerId == model.UserId);
+                this.Data.LecturersInContestCategories.Delete(x => x.LecturerId == model.UserId);
             }
 
             user.Roles.Remove(role);

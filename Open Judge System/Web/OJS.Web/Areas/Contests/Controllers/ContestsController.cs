@@ -35,7 +35,9 @@
                     x.Id == id &&
                     !x.IsDeleted &&
                     (x.IsVisible ||
-                        (isAdmin || x.Lecturers.Any(l => l.LecturerId == userId))))
+                        isAdmin ||
+                        x.Lecturers.Any(l => l.LecturerId == userId) ||
+                        x.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
                 .Select(ContestViewModel.FromContest)
                 .FirstOrDefault();
 

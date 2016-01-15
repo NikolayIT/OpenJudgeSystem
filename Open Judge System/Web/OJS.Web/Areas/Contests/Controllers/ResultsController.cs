@@ -135,8 +135,13 @@
         [Authorize]
         public ActionResult Full(int id, bool official)
         {
-            if (!this.User.IsAdmin() && 
-                !this.Data.Contests.All().Any(c => c.Id == id && c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)))
+            if (!this.User.IsAdmin() &&
+                !this.Data.Contests
+                    .All()
+                    .Any(c =>
+                        c.Id == id &&
+                        (c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                            c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }

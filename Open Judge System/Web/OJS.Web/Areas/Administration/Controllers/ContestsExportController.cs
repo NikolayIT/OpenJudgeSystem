@@ -20,18 +20,33 @@
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
 
     using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
 
-    public class ContestsExportController : AdministrationBaseController
+    public class ContestsExportController : LecturerBaseController
     {
         public ContestsExportController(IOjsData data)
             : base(data)
         {
         }
 
-        public FileResult Results(int id, bool compete)
+        public ActionResult Results(int id, bool compete)
         {
+            var userHasAccessToContest =
+                this.User.IsAdmin() ||
+                this.Data.Contests
+                    .All()
+                    .Any(c =>
+                        c.Id == id &&
+                        (c.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id) ||
+                            c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            if (!userHasAccessToContest)
+            {
+                this.TempData.AddDangerMessage("Нямате привилегиите за това действие");
+                return this.RedirectToAction("Index", "Contests");
+            }
+
             var contest = this.Data.Contests.GetById(id);
 
             var data = new
@@ -150,6 +165,20 @@
 
         public ActionResult Solutions(int id, bool compete, bool bestSubmissions)
         {
+            var userHasAccessToContest =
+                this.User.IsAdmin() ||
+                this.Data.Contests
+                    .All()
+                    .Any(c =>
+                        c.Id == id &&
+                        (c.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id) ||
+                            c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            if (!userHasAccessToContest)
+            {
+                this.TempData.AddDangerMessage("Нямате привилегиите за това действие");
+                return this.RedirectToAction("Index", "Contests");
+            }
+
             var contestName = this.Data.Contests.All().Where(x => x.Id == id).Select(c => c.Name).FirstOrDefault();
             if (string.IsNullOrWhiteSpace(contestName))
             {

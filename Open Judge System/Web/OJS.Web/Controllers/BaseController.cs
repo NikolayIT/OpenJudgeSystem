@@ -113,7 +113,10 @@
             return this.User.IsAdmin() ||
                    this.Data.Contests
                        .All()
-                       .Any(x => x.Id == contestId && x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+                       .Any(x =>
+                            x.Id == contestId &&
+                            (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                                x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
         }
 
         protected bool CheckIfUserHasProblemPermissions(int problemId)
@@ -121,7 +124,10 @@
             return this.User.IsAdmin() ||
                    this.Data.Problems
                        .All()
-                       .Any(x => x.Id == problemId && x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+                       .Any(x =>
+                            x.Id == problemId &&
+                            (x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                                x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
         }
 
         private SystemMessageCollection PrepareSystemMessages()

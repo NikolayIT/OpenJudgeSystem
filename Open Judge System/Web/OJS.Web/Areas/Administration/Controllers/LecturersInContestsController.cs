@@ -59,9 +59,9 @@
         {
             model.LecturerId = userId;
 
-            var isInContest =
-                this.Data.LecturersInContests.All()
-                    .Any(x => x.LecturerId == model.LecturerId && x.ContestId == model.ContestId);
+            var isInContest = this.Data.LecturersInContests
+                .All()
+                .Any(x => x.LecturerId == model.LecturerId && x.ContestId == model.ContestId);
 
             if (isInContest)
             {

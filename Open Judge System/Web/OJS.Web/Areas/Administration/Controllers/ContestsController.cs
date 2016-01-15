@@ -26,9 +26,6 @@
 
     public class ContestsController : LecturerBaseGridController
     {
-        private const string NoActiveContests = "Няма активни състезания";
-        private const string NoFutureContests = "Няма бъдещи състезания";
-        private const string NoLatestContests = "Нямa последни състезaния";
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
 
@@ -39,14 +36,16 @@
 
         public override IEnumerable GetData()
         {
-            var allContest = this.Data.Contests.All();
+            var allContests = this.Data.Contests.All();
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
-                allContest = allContest.Where(x => x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+                allContests = allContests.Where(x =>
+                    x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                    x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
-            return allContest.Select(ViewModelType.ViewModel);
+            return allContests.Select(ViewModelType.ViewModel);
         }
 
         public override object GetById(object id)

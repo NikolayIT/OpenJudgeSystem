@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -14,7 +13,6 @@
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common.Extensions;
-    using OJS.Web.Controllers;
 
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
@@ -36,14 +34,16 @@
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
-                submissions = submissions.Where(s => s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+                submissions = submissions.Where(s =>
+                    s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                    s.Problem.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
             if (this.contestId != null)
             {
                 submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
             }
-            
+
             return submissions.Select(GridModelType.ViewModel);
         }
 
@@ -377,7 +377,9 @@
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
-                contestEntities = contestEntities.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+                contestEntities = contestEntities.Where(c =>
+                    c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                    c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
             var contests = contestEntities.OrderByDescending(c => c.CreatedOn).Select(c => new { c.Id, c.Name });

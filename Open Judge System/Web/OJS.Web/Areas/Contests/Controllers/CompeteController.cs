@@ -52,12 +52,21 @@
         [NonAction]
         public void ValidateContest(Contest contest, bool official)
         {
-            if (contest == null || contest.IsDeleted || !(contest.IsVisible || this.User.IsAdmin() || contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id)))
+            if (contest == null ||
+                contest.IsDeleted ||
+                !(contest.IsVisible ||
+                    this.User.IsAdmin() ||
+                    contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
+                    contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id)))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
             }
 
-            if ((official && !contest.CanBeCompeted) && !(this.User.IsAdmin() || contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id)))
+            if (official &&
+                !contest.CanBeCompeted &&
+                !(this.User.IsAdmin() ||
+                    contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
+                    contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id)))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
