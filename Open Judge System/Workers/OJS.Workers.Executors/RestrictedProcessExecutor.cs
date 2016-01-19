@@ -94,6 +94,8 @@ namespace OJS.Workers.Executors
                 if (!exited)
                 {
                     restrictedProcess.Kill();
+                    restrictedProcess.WaitForExit(-1); // Wait indefinitely for the associated process to exit
+
                     result.Type = ProcessExecutionResultType.TimeLimit;
                 }
 
