@@ -35,14 +35,8 @@
                 result.TestResults.Add(testResult);
             }
 
-            try
-            {
-                // Clean our mess
-                File.Delete(outputFile);
-            }
-            catch (Exception)
-            {
-            }
+            // Clean our mess
+            File.Delete(outputFile);
 
             return result;
         }
