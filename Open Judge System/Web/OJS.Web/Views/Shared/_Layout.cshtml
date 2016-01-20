@@ -80,15 +80,7 @@
                                 <strong class="caret"></strong>
                             </a>
 
-                            @if (this.User.IsLecturer())
-                            {
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
-                                </ul>
-                            }
-                            else if (this.User.IsAdmin())
+                            @if (this.User.IsAdmin())
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
@@ -123,6 +115,14 @@
                                     <li><a href="/Glimpse.axd">Glimpse</a></li>
                                     <li class="divider"></li>
                                     <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new { area = "Administration" }, null)</li>
+                                </ul>
+                            }
+                            else if (this.User.IsLecturer())
+                            {
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">@Resource.Contests</li>
+                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
                                 </ul>
                             }
                         </li>
