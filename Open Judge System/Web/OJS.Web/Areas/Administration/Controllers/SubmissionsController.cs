@@ -8,11 +8,13 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Common.Extensions;
+    using OJS.Web.ViewModels.Common;
 
     using DatabaseModelType = OJS.Data.Models.Submission;
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
@@ -59,6 +61,7 @@
 
         public ActionResult Index()
         {
+            this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
             return this.View();
         }
 

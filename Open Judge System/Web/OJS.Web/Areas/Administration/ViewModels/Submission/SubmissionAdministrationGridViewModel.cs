@@ -1,14 +1,13 @@
-﻿using OJS.Common.Extensions;
-
-namespace OJS.Web.Areas.Administration.ViewModels.Submission
+﻿namespace OJS.Web.Areas.Administration.ViewModels.Submission
 {
     using System;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
     using OJS.Common.DataAnnotations;
+    using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
@@ -31,8 +30,13 @@ namespace OJS.Web.Areas.Administration.ViewModels.Submission
                     ContestId = sub.Problem.ContestId,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
-                    Processed = sub.Processed,
-                    Processing = sub.Processing,
+                    Status = !sub.Processing && sub.Processed
+                        ? SubmissionStatus.Processed
+                        : sub.Processing && !sub.Processed
+                            ? SubmissionStatus.Processing
+                            : !sub.Processing && !sub.Processed
+                                ? SubmissionStatus.Pending
+                                : SubmissionStatus.Invalid,
                     CreatedOn = sub.CreatedOn,
                     ModifiedOn = sub.ModifiedOn,
                 };
@@ -62,36 +66,9 @@ namespace OJS.Web.Areas.Administration.ViewModels.Submission
         [Display(Name = "Points", ResourceType = typeof(Resource))]
         public int? Points { get; set; }
 
-        [ScaffoldColumn(false)]
-        public bool Processing { get; set; }
-
-        [ScaffoldColumn(false)]
-        public bool Processed { get; set; }
-
         [Display(Name = "Status", ResourceType = typeof(Resource))]
-        public string Status
-        {
-            get
-            {
-                if (!this.Processing && this.Processed)
-                {
-                    return Resource.Processed;
-                }
-                else if (this.Processing && !this.Processed)
-                {
-                    return Resource.Processing;
-                }
-                else if (!this.Processing && !this.Processed)
-                {
-                    return Resource.Pending;
-                }
-                else
-                {
-                    throw new InvalidOperationException(Resource.Invalid_state);
-                }
-            }
-        }
+        public SubmissionStatus Status { get; set; }
 
-        public string ContestUrlName => this.ContestName.ToUrl();
+        public string ContestUrlName => this.ContestName?.ToUrl();
     }
 }

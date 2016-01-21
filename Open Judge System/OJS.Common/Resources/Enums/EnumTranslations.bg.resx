@@ -126,11 +126,23 @@
   <data name="DropDown" xml:space="preserve">
     <value>Dropdown лист</value>
   </data>
+  <data name="InvalidSubmissionStatus" xml:space="preserve">
+    <value>Невалиден</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>Многоредов текст</value>
   </data>
+  <data name="PendingSubmissionStatus" xml:space="preserve">
+    <value>Предстои изчисляване</value>
+  </data>
   <data name="ProblemDescription" xml:space="preserve">
     <value>Условие</value>
+  </data>
+  <data name="ProcessedSubmissionStatus" xml:space="preserve">
+    <value>Изчислен</value>
+  </data>
+  <data name="ProcessingSubmissionStatus" xml:space="preserve">
+    <value>Изчислява се</value>
   </data>
   <data name="TextBox" xml:space="preserve">
     <value>Едноредов текст</value>

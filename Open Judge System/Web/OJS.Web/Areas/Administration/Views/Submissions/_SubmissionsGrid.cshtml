@@ -1,5 +1,7 @@
-﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
-@using Resource = Resources.Areas.Administration.Submissions.Views.Partials.SubmissionsGrid;
+﻿@using System.Collections
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+@using Resource = Resources.Areas.Administration.Submissions.Views.Partials.SubmissionsGrid
+
 @model int?
 
 @{
@@ -15,19 +17,19 @@
         columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
         columns.Bound(model => model.ContestName).ClientTemplate("<a href='/Contests/#= ContestId #/#= ContestUrlName #'>#= ContestName #</a>");
         columns.Bound(model => model.SubmissionTypeName);
-        columns.Bound(model => model.Status);
+        columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
         columns.Bound(model => model.Points);
         columns.Bound(model => model.CreatedOn).Hidden();
         columns.Bound(model => model.ModifiedOn).Hidden();
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Промени</a>").Title(GeneralResource.Change);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>Изтрий</a>").Title(GeneralResource.Delete);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Прегледай</a>").Title(Resource.Details);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>Ретест</a>").Title(Resource.Retest);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Retest + "</a>").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
         toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
-        toolbar.Custom().Text("Изтрий избраните решения").HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
+        toolbar.Custom().Text(Resource.Delete_selected_submissions).HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })

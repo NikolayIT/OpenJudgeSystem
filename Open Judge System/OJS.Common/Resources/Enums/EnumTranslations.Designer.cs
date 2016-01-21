@@ -88,6 +88,15 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        public static string InvalidSubmissionStatus {
+            get {
+                return ResourceManager.GetString("InvalidSubmissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MultiLine TextBox.
         /// </summary>
         public static string MultiLineTextBox {
@@ -97,11 +106,38 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string PendingSubmissionStatus {
+            get {
+                return ResourceManager.GetString("PendingSubmissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem Description.
         /// </summary>
         public static string ProblemDescription {
             get {
                 return ResourceManager.GetString("ProblemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processed.
+        /// </summary>
+        public static string ProcessedSubmissionStatus {
+            get {
+                return ResourceManager.GetString("ProcessedSubmissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing.
+        /// </summary>
+        public static string ProcessingSubmissionStatus {
+            get {
+                return ResourceManager.GetString("ProcessingSubmissionStatus", resourceCulture);
             }
         }
         

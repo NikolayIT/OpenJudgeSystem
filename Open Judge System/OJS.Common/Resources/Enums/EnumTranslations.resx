@@ -126,11 +126,23 @@
   <data name="DropDown" xml:space="preserve">
     <value>DropDown</value>
   </data>
+  <data name="InvalidSubmissionStatus" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>MultiLine TextBox</value>
   </data>
+  <data name="PendingSubmissionStatus" xml:space="preserve">
+    <value>Pending</value>
+  </data>
   <data name="ProblemDescription" xml:space="preserve">
     <value>Problem Description</value>
+  </data>
+  <data name="ProcessedSubmissionStatus" xml:space="preserve">
+    <value>Processed</value>
+  </data>
+  <data name="ProcessingSubmissionStatus" xml:space="preserve">
+    <value>Processing</value>
   </data>
   <data name="TextBox" xml:space="preserve">
     <value>TextBox</value>

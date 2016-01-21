@@ -126,17 +126,11 @@
   <data name="File_submission" xml:space="preserve">
     <value>File submission</value>
   </data>
-  <data name="Invalid_state" xml:space="preserve">
-    <value>Решенията не мога да бъда изчислени и изчисляващи се едновременно</value>
-  </data>
   <data name="Participant" xml:space="preserve">
     <value>Participant</value>
   </data>
   <data name="Participant_required" xml:space="preserve">
     <value>The participant is required!</value>
-  </data>
-  <data name="Pending" xml:space="preserve">
-    <value>Предстои изчисляване</value>
   </data>
   <data name="Points" xml:space="preserve">
     <value>Points</value>
@@ -150,14 +144,8 @@
   <data name="Problem_required" xml:space="preserve">
     <value>The problem is required!</value>
   </data>
-  <data name="Processed" xml:space="preserve">
-    <value>Изчислен</value>
-  </data>
-  <data name="Processing" xml:space="preserve">
-    <value>Изчислява се</value>
-  </data>
   <data name="Status" xml:space="preserve">
-    <value>Статус</value>
+    <value>Status</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>

@@ -359,15 +359,15 @@
             }
 
             this.Data.Resources.Delete(r => r.ProblemId == id);
-            
+
             this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == id);
 
             this.Data.Tests.Delete(t => t.ProblemId == id);
 
             this.Data.Submissions.Delete(s => s.ProblemId == id);
-            
+
             this.Data.Problems.Delete(id.Value);
-            
+
             this.Data.SaveChanges();
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
@@ -426,7 +426,7 @@
             this.Data.Submissions.Delete(s => s.Problem.ContestId == id);
 
             this.Data.Problems.Delete(p => p.ContestId == id);
-            
+
             this.Data.SaveChanges();
 
             this.TempData.AddInfoMessage(GlobalResource.Problems_deleted);

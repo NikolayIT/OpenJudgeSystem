@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.Submissions.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete selected submissions.
+        /// </summary>
+        public static string Delete_selected_submissions {
+            get {
+                return ResourceManager.GetString("Delete_selected_submissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {

@@ -98,15 +98,6 @@ namespace Resources.Areas.Administration.Submissions.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Решенията не мога да бъда изчислени и изчисляващи се едновременно.
-        /// </summary>
-        public static string Invalid_state {
-            get {
-                return ResourceManager.GetString("Invalid_state", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Participant.
         /// </summary>
         public static string Participant {
@@ -121,15 +112,6 @@ namespace Resources.Areas.Administration.Submissions.ViewModels {
         public static string Participant_required {
             get {
                 return ResourceManager.GetString("Participant_required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Предстои изчисляване.
-        /// </summary>
-        public static string Pending {
-            get {
-                return ResourceManager.GetString("Pending", resourceCulture);
             }
         }
         
@@ -161,25 +143,7 @@ namespace Resources.Areas.Administration.Submissions.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Изчислен.
-        /// </summary>
-        public static string Processed {
-            get {
-                return ResourceManager.GetString("Processed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Изчислява се.
-        /// </summary>
-        public static string Processing {
-            get {
-                return ResourceManager.GetString("Processing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Статус.
+        ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
             get {
