@@ -66,7 +66,7 @@
         .Sort(sort => sort.Add(x => x.SubmitedOn).Descending())
         .Read(read => read
             .Type(HttpVerbs.Post)
-            .Action("ReadSubmissions", "Submissions", new { userId = Model.UserId, onlyProcessing = Model.OnlyProcessing, area = string.Empty }))
+            .Action("ReadSubmissions", "Submissions", new { userId = Model.UserId, notProcessedOnly = Model.NotProcessedOnly, area = string.Empty }))
         .PageSize(25)
     )
     .Pageable(page => page.ButtonCount(10).Refresh(true))

@@ -42,13 +42,13 @@
         }
 
         [Authorize]
-        public ActionResult GetSubmissionsGrid(bool onlyProcessing = false) =>
+        public ActionResult GetSubmissionsGrid(bool notProcessedOnly = false) =>
             this.PartialView(
                 "_AdvancedSubmissionsGridPartial",
-                new SubmissionsFilterViewModel { OnlyProcessing = this.User.IsAdmin() && onlyProcessing });
+                new SubmissionsFilterViewModel { NotProcessedOnly = this.User.IsAdmin() && notProcessedOnly });
 
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId, bool onlyProcessing = false)
+        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId, bool notProcessedOnly = false)
         {
             var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 
@@ -57,10 +57,10 @@
                 data = data.Where(s => s.Participant.UserId == userId);
             }
 
-            // OnlyProcessing filter is available only for administrators
-            if (this.User.IsAdmin() && onlyProcessing)
+            // NotProcessedOnly filter is available only for administrators
+            if (this.User.IsAdmin() && notProcessedOnly)
             {
-                data = data.Where(s => s.Processing);
+                data = data.Where(s => !s.Processed);
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);

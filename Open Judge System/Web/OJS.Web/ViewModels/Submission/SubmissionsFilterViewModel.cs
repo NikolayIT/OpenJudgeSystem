@@ -4,6 +4,6 @@
     {
         public string UserId { get; set; }
 
-        public bool OnlyProcessing { get; set; }
+        public bool NotProcessedOnly { get; set; }
     }
 }

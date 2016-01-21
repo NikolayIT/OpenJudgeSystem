@@ -123,7 +123,7 @@
                     return this.RedirectToAction("Register", new { id, official });
                 }
             }
-            
+
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
