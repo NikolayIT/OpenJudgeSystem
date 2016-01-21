@@ -25,6 +25,7 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
+    using OJS.Web.ViewModels.Common;
 
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
 
@@ -501,6 +502,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
+            this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
             return this.PartialView("_SubmissionsGrid", id);
         }
 
