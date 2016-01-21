@@ -38,18 +38,31 @@
                 .Select(SubmissionViewModel.FromSubmission)
                 .ToList();
 
-            return this.View("BasicSubmissions", submissions.ToList());
+            return this.View("BasicSubmissions", submissions);
         }
 
+        [Authorize]
+        public ActionResult GetSubmissionsGrid(bool onlyProcessing = false) =>
+            this.PartialView(
+                "_AdvancedSubmissionsGridPartial",
+                new SubmissionsFilterViewModel { OnlyProcessing = this.User.IsAdmin() && onlyProcessing });
+
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId)
+        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId, bool onlyProcessing = false)
         {
             var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 
-                if (userId != null)
-                {
-                    data = data.Where(s => s.Participant.UserId == userId);
-                }
+            if (userId != null)
+            {
+                data = data.Where(s => s.Participant.UserId == userId);
+            }
+
+            // OnlyProcessing filter is available only for administrators
+            if (this.User.IsAdmin() && onlyProcessing)
+            {
+                data = data.Where(s => s.Processing);
+            }
+
             var result = data.Select(SubmissionViewModel.FromSubmission);
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };

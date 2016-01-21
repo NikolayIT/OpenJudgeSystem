@@ -1653,6 +1653,7 @@
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
+    <Compile Include="ViewModels\Submission\SubmissionsFilterViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿@using Resource = Resources.Submissions.Views.Partial.AdvancedSubmissionsGridPartial
 
-@model string
+@model OJS.Web.ViewModels.Submission.SubmissionsFilterViewModel
 
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
     .Name("Submissions")
@@ -8,7 +8,7 @@
     {
         columns.Bound(s => s.Id).Title("№");
 
-        if (Model == null)
+        if (Model.UserId == null)
         {
             columns.Bound(s => s.ParticipantName).Title(Resource.Sent_from).ClientTemplate(
                 "<div>" +
@@ -37,7 +37,7 @@
                 "</div>"
             );
         columns.Bound(s => s.Points).Title(Resource.Result).ClientTemplate(
-                    "<div>" +
+                "<div>" +
                     "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
                 "</div>"
             ).Width("25%");
@@ -45,13 +45,13 @@
         if (User.IsAdmin())
         {
             columns.Bound(s => s.Id).Title(Resource.Admin).ClientTemplate(@"
-                    <div class='text-center'>
-                        <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
-                        <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
-                        <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
-                        <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
-                        <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
-                    </div>").Filterable(false);
+                <div class='text-center'>
+                    <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
+                    <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
+                    <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
+                    <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
+                    <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
+                </div>").Filterable(false);
         }
     }
     )
@@ -64,7 +64,9 @@
         .Batch(false)
         .Model(model => model.Id(x => x.Id))
         .Sort(sort => sort.Add(x => x.SubmitedOn).Descending())
-        .Read(read => read.Type(HttpVerbs.Post).Action("ReadSubmissions", "Submissions", new { userId = Model, area = "" }))
+        .Read(read => read
+            .Type(HttpVerbs.Post)
+            .Action("ReadSubmissions", "Submissions", new { userId = Model.UserId, onlyProcessing = Model.OnlyProcessing, area = string.Empty }))
         .PageSize(25)
     )
     .Pageable(page => page.ButtonCount(10).Refresh(true))

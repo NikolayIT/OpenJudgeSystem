@@ -1,4 +1,5 @@
 ﻿@using OJS.Web.Areas.Users.ViewModels
+@using OJS.Web.ViewModels.Submission
 @using Resource = Resources.Areas.Users.Shared.ProfileProfileInfo;
 
 @model UserProfileViewModel
@@ -58,7 +59,7 @@
 {
     <div class="col-md-12">
         <h2>Решения</h2>
-        @Html.Partial("_AdvancedSubmissionsGridPartial", Model.Id)
+        @Html.Partial("_AdvancedSubmissionsGridPartial", new SubmissionsFilterViewModel { UserId = Model.Id })
     </div>
     <br />
 }

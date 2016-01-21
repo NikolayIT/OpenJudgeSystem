@@ -1,4 +1,6 @@
-﻿@using Resource = Resources.Submissions.Views.AdvancedSubmissions
+﻿@using OJS.Web.Areas.Administration.Providers.Common
+@using OJS.Web.ViewModels.Submission
+@using Resource = Resources.Submissions.Views.AdvancedSubmissions
 
 @model OJS.Web.ViewModels.Submission.SubmissionViewModel
 
@@ -17,7 +19,20 @@
 
 @if (User.IsAdmin())
 {
-    <h4>Решения в опашката: @ViewBag.SubmissionsInQueue</h4>
+    <h4>
+        Решения в опашката: @ViewBag.SubmissionsInQueue
+        (@Ajax.ActionLink(
+             "Покажи решенията в опашката",
+             "GetSubmissionsGrid",
+             new { onlyProcessing = true },
+             new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-container" }) / 
+        @Ajax.ActionLink(
+             "Покажи всички решения",
+             "GetSubmissionsGrid",
+             new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-container" }))
+    </h4>
 }
 
-@Html.Partial("_AdvancedSubmissionsGridPartial")
+<div id="submissions-container">
+    @Html.Action("GetSubmissionsGrid")
+</div>
