@@ -1,58 +1,63 @@
-﻿@using Resource = Resources.Submissions.Views.Partial.AdvancedSubmissionsGridPartial;
+﻿@using Resource = Resources.Submissions.Views.Partial.AdvancedSubmissionsGridPartial
+
 @model string
 
 @(Html.Kendo().Grid<OJS.Web.ViewModels.Submission.SubmissionViewModel>()
     .Name("Submissions")
     .Columns(columns =>
+    {
+        columns.Bound(s => s.Id).Title("№");
+
+        if (Model == null)
         {
-            columns.Bound(s => s.Id).Title("№");
-            if (Model == null)
-            {
-                columns.Bound(s => s.SubmitedOn).Title(Resource.Sent_from).ClientTemplate(
+            columns.Bound(s => s.ParticipantName).Title(Resource.Sent_from).ClientTemplate(
+                "<div>" +
+                    "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
+                "</div>" +
+                "<div>" +
+                    "<small><span>#: kendo.toString(SubmitedOn, \"G\") #</span></small>" +
+                "</div>"
+            );
+        }
+        else
+        {
+            columns.Bound(s => s.SubmitedOn).Title(Resource.Sent_on).ClientTemplate(
+                "<div>" +
+                    "<span>#: kendo.toString(SubmitedOn, \"G\") #</span>" +
+                "</div>"
+            );
+        }
+
+        columns.Bound(s => s.ProblemName).Title(Resource.Task).ClientTemplate(
+                "<div>" +
+                    "<strong class=\"text-primary\">#: ProblemName #</strong>" +
+                "</div>" +
+                "<div>" +
+                    "<small>#: Contest #</small>" +
+                "</div>"
+            );
+        columns.Bound(s => s.Points).Title(Resource.Result).ClientTemplate(
                     "<div>" +
-                        "<strong><a href=\"/Users/#: ParticipantName #\">#: ParticipantName #</a></strong>" +
-                    "</div>" +
-                    "<div>" +
-                        "<small><span>#: kendo.toString(SubmitedOn, \"G\") #</span></small>" +
-                    "</div>"
-                );
-            }
-            else
-            {
-                columns.Bound(s => s.SubmitedOn).Title(Resource.Sent_on).ClientTemplate(                
-                    "<div>" +
-                        "<span>#: kendo.toString(SubmitedOn, \"G\") #</span>" +
-                    "</div>"
-                );
-            }
-            
-            columns.Bound(s => s.ProblemName).Title(Resource.Task).ClientTemplate(
-                    "<div>" +
-                        "<strong class=\"text-primary\">#: ProblemName #</strong>" +
-                    "</div>" +
-                    "<div>" +
-                        "<small>#: Contest #</small>" +
-                    "</div>"
-                );
-            columns.Bound(s => s.Points).Title(Resource.Result).ClientTemplate(
-                        "<div>" +
-                        "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
-                    "</div>"
-                ).Width("25%");
-            if (User.IsAdmin())
-            {
-                columns.Bound(s => s.Id).Title(Resource.Admin).ClientTemplate(@"
+                    "#= testResult(TestResults, Points, ProblemMaximumPoints, MaxUsedMemory, MaxUsedTime, Processed, IsCompiledSuccessfully, SubmissionType) #" +
+                "</div>"
+            ).Width("25%");
+
+        if (User.IsAdmin())
+        {
+            columns.Bound(s => s.Id).Title(Resource.Admin).ClientTemplate(@"
                     <div class='text-center'>
                         <a href='/Contests/Submissions/View/#:Id#'><span class='glyphicon glyphicon-align-justify text-primary' title='View'></span></a>
                         <a href='/Administration/Submissions/Update/#:Id#'><span class='glyphicon glyphicon-pencil text-primary' title='Edit'></span></a>
                         <a href='/Administration/Submissions/Delete/#:Id#'><span class='glyphicon glyphicon-remove text-primary' title='Delete'></span></a>
                         <a href='/Administration/Tests/Problem/#:ProblemId#'><span class='glyphicon glyphicon-list-alt text-primary' title='Tests'></span></a>
                         <a href='/Administration/Submissions/Retest/#:Id#'><span class='glyphicon glyphicon-refresh text-primary' title='Retest'></span></a>
-                    </div>");
-            }
+                    </div>").Filterable(false);
         }
+    }
     )
     .Events(ev => ev.DataBound("dataBound"))
+    .Sortable()
+    .Filterable()
     .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
@@ -71,11 +76,10 @@
         var pageSize = this.dataSource.pageSize();
 
         var counter = 1;
-        $(this.wrapper).find(".indexColumn").each(function() {
+        $(this.wrapper).find(".indexColumn").each(function () {
             var index = (pageSize * page) + counter;
             $(this).html(index);
             counter++;
         });
     }
 </script>
-
