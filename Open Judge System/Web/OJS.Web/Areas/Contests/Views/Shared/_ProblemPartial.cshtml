@@ -102,10 +102,6 @@
                         }
 
                         <strong>Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span>
-                        @if (!string.IsNullOrWhiteSpace(Model.CheckerDescription))
-                        {
-                            @:(@Model.CheckerDescription)
-                        }
                     </div>
                     <div class="submit-container pull-right">
                         <script>
@@ -295,7 +291,14 @@ else
     </div>
 }
 
-@Html.Kendo().Tooltip().For("#checkers-tooltip").ContentTemplateId("checkers-template").Position(TooltipPosition.Top).Width(700)
+@if (string.IsNullOrWhiteSpace(Model.CheckerDescription))
+{
+    @Html.Kendo().Tooltip().For("#checkers-tooltip").ContentTemplateId("checkers-template").Position(TooltipPosition.Top).Width(700)
+}
+else
+{
+    @Html.Kendo().Tooltip().For("#checkers-tooltip").Content(Model.CheckerDescription).Position(TooltipPosition.Top).Width(500)
+}
 
 <script type="text/x-kendo-template" id="checkers-template">
     <ul style="list-style-type: none">
