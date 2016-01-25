@@ -10,8 +10,7 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
-    using OJS.Common;
+    
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -135,15 +134,9 @@
         [Authorize]
         public ActionResult Full(int id, bool official)
         {
-            if (!this.User.IsAdmin() &&
-                !this.Data.Contests
-                    .All()
-                    .Any(c =>
-                        c.Id == id &&
-                        (c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                            c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))))
+            if (!this.UserHasAccessToContest(id))
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
             var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
@@ -160,9 +153,14 @@
             return this.View(model);
         }
 
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Authorize]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
+            if (!this.UserHasAccessToContest(id))
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
+            }
+
             var contestInfo =
                 this.Data.Contests.All()
                     .Where(c => c.Id == id)
@@ -226,9 +224,14 @@
             return this.Json(viewModel);
         }
 
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Authorize]
         public ActionResult Stats(ContestFullResultsViewModel viewModel)
         {
+            if (!this.UserHasAccessToContest(viewModel.Id))
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
+            }
+
             var maxResult = this.Data.Contests.All().FirstOrDefault(c => c.Id == viewModel.Id).Problems.Sum(p => p.MaximumPoints);
             var participantsCount = viewModel.Results.Count();
             var statsModel = new ContestStatsViewModel();
@@ -278,9 +281,14 @@
             return this.PartialView("_StatsPartial", statsModel);
         }
 
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [Authorize]
         public ActionResult StatsChart(int contestId)
         {
+            if (!this.UserHasAccessToContest(contestId))
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
+            }
+
             return this.PartialView("_StatsChartPartial", contestId);
         }
 
@@ -393,5 +401,14 @@
 
             return contestFullResults;
         }
+
+        private bool UserHasAccessToContest(int contestId) =>
+            this.User.IsAdmin() ||
+            this.Data.Contests
+                .All()
+                .Any(c =>
+                    c.Id == contestId &&
+                    (c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                        c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
     }
 }
