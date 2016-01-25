@@ -261,7 +261,7 @@
 
             var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
             var submissions = submissionsDataSourceResult.Data;
-            
+
             foreach (GridModelType submission in submissions)
             {
                 this.Data.Submissions.Delete(submission.Id);
@@ -366,6 +366,7 @@
 
         public ActionResult RenderGrid(int? id)
         {
+            this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
             return this.PartialView("_SubmissionsGrid", id);
         }
 
