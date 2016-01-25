@@ -75,19 +75,18 @@
                 .All()
                 .Where(orExpressionIds)
                 .Where(s => s.Participant.IsOfficial && s.Points >= 20)
-                .Select(s =>
-                    new
-                    {
-                        s.Id,
-                        s.ProblemId,
-                        s.ParticipantId,
-                        s.Points,
-                        s.Content,
-                        s.CreatedOn,
-                        ParticipantName = s.Participant.User.UserName,
-                        ProblemName = s.Problem.Name,
-                        TestRuns = s.TestRuns.OrderBy(t => t.Id).Select(t => new { t.Id, t.ResultType })
-                    })
+                .Select(s => new
+                {
+                    s.Id,
+                    s.ProblemId,
+                    s.ParticipantId,
+                    s.Points,
+                    s.Content,
+                    s.CreatedOn,
+                    ParticipantName = s.Participant.User.UserName,
+                    ProblemName = s.Problem.Name,
+                    TestRuns = s.TestRuns.OrderBy(t => t.Id).Select(t => new { t.Id, t.ResultType })
+                })
                 .GroupBy(s => new { s.ProblemId, s.ParticipantId })
                 .Select(g => g.OrderByDescending(s => s.Points).ThenByDescending(s => s.CreatedOn).FirstOrDefault())
                 .GroupBy(s => new { s.ProblemId, s.Points })
@@ -101,7 +100,10 @@
                 {
                     for (int j = i + 1; j < groupAsList.Count; j++)
                     {
-                        var result = this.plagiarismDetector.DetectPlagiarism(groupAsList[i].Content.Decompress(), groupAsList[j].Content.Decompress(), new List<IDetectPlagiarismVisitor> { new SortAndTrimLinesVisitor() });
+                        var result = this.plagiarismDetector.DetectPlagiarism(
+                            groupAsList[i].Content.Decompress(),
+                            groupAsList[j].Content.Decompress(),
+                            new List<IDetectPlagiarismVisitor> { new SortAndTrimLinesVisitor() });
 
                         bool save = true;
                         var firstTestRuns = groupAsList[i].TestRuns.ToList();
