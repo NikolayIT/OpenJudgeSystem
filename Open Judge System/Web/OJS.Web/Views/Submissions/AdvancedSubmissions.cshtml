@@ -1,8 +1,4 @@
-﻿@using OJS.Web.Areas.Administration.Providers.Common
-@using OJS.Web.ViewModels.Submission
-@using Resource = Resources.Submissions.Views.AdvancedSubmissions
-
-@model OJS.Web.ViewModels.Submission.SubmissionViewModel
+﻿@using Resource = Resources.Submissions.Views.AdvancedSubmissions
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -24,7 +20,7 @@
         (@Ajax.ActionLink(
              "Покажи решенията в опашката",
              "GetSubmissionsGrid",
-             new { onlyProcessing = true },
+             new { notProcessedOnly = true },
              new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-container" }) / 
         @Ajax.ActionLink(
              "Покажи всички решения",
