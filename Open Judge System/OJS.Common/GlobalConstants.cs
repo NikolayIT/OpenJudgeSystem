@@ -19,7 +19,7 @@
 
         public const int NameMinLength = 2;
         public const int NameMaxLength = 30;
-        
+
         public const int CityMinLength = 3;
         public const int CityMaxLength = 50;
         public const string CityRegEx = @"^[a-zA-Zа-яА-Я]+(?:[\s-][a-zA-Zа-яА-Я]+)*$";
@@ -31,7 +31,7 @@
         public const int JobTitleMaxLength = 100;
         public const string JobTitleRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!])*$";
         public const int FacultyNumberMaxLength = 30;
-        
+
         // TempData dictionary keys
         public const string InfoMessage = "InfoMessage";
         public const string DangerMessage = "DangerMessage";
@@ -52,7 +52,7 @@
         public const string BinaryFileMimeType = "application/octet-stream";
 
         public const string AdministratorRoleName = "Administrator";
-        
+
         public const int FileExtentionMaxLength = 4;
 
         public const int IpAdressMaxLength = 45;
@@ -60,17 +60,17 @@
         public const int MinimumSearchTermLength = 3;
 
         public const int FeedbackContentMinLength = 10;
-        
-        // File extensions
-        public const string JavaCompiledFileExtension = ".class";
-        public const string ZipFileExtension = ".zip";
-        public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
-        
-        // Other
+
         public const string LecturerRoleName = "Lecturer";
         public const string DefaultPublicIp = "217.174.159.226";
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
-        
+
+        public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
+
+        // File extensions
+        public const string JavaCompiledFileExtension = ".class";
+        public const string ZipFileExtension = ".zip";
+
         // News
         public const int NewsTitleMaxLength = 200;
         public const int NewsTitleMinLength = 1;
@@ -116,5 +116,8 @@
 
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
+
+        // Runtime constants
+        public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
     }
 }
