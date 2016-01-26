@@ -120,8 +120,8 @@
         private string FindSolutionOrProjectFile()
         {
             var solutionOrProjectFile = Directory
-                .EnumerateFiles(this.inputPath, "*.*", SearchOption.AllDirectories)
-                .FirstOrDefault(x => x.EndsWith(".sln", StringComparison.OrdinalIgnoreCase));
+                .EnumerateFiles(this.inputPath, "*.sln", SearchOption.AllDirectories)
+                .FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
