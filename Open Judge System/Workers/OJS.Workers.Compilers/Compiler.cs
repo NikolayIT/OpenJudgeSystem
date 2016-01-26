@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Workers.Common;
 
@@ -15,8 +16,6 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
-        private const int CompilerProcessExitTimeOut = 5000;
-
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -188,10 +187,15 @@
                         process.BeginOutputReadLine();
                         process.BeginErrorReadLine();
 
-                        var exited = process.WaitForExit(CompilerProcessExitTimeOut);
+                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
                         if (!exited)
                         {
+                            process.CancelOutputRead();
+                            process.CancelErrorRead();
+
                             process.Kill();
+
+                            return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
                         outputWaitHandle.WaitOne(100);
