@@ -8,6 +8,7 @@
 
     using Ionic.Zip;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
 
     public class MsBuildCompiler : Compiler
@@ -112,25 +113,23 @@
             {
                 process.StartInfo = processStartInfo;
                 process.Start();
-                process.WaitForExit();
+                process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
             }
         }
 
         private string FindSolutionOrProjectFile()
         {
-            var solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".sln"));
-            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
-            {
-                solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
-            }
+            var solutionOrProjectFile = Directory
+                .EnumerateFiles(this.inputPath, "*.*", SearchOption.AllDirectories)
+                .FirstOrDefault(x => x.EndsWith(".sln", StringComparison.OrdinalIgnoreCase));
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
-                var directory = Directory.GetDirectories(this.inputPath).FirstOrDefault();
-                if (directory != null)
-                {
-                    solutionOrProjectFile = Directory.GetFiles(directory).FirstOrDefault(x => x.EndsWith(".sln") || x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
-                }
+                solutionOrProjectFile = Directory
+                    .EnumerateFiles(this.inputPath, "*.*", SearchOption.AllDirectories)
+                    .FirstOrDefault(x =>
+                        x.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
+                        x.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase));
             }
 
             return solutionOrProjectFile;
