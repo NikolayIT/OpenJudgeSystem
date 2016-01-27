@@ -133,7 +133,6 @@ function initializeGrid(problemId, contestId) {
         response = data;
     })
     .then(function () {
-
         $('#status').hide();
         $('#grid').html('');
 
@@ -147,7 +146,8 @@ function initializeGrid(problemId, contestId) {
                     ' <a href="/Administration/Tests/DeleteAll/' + problemId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
                     ' <a href="/Administration/Problems/Contest/' + contestId + '" class="btn btn-sm btn-primary">Към задачата</a>' +
                     ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a  href="/Administration/Tests/Export/' + problemId + '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>',
+                    ' <a href="/Administration/Tests/Export/' + problemId + '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>' +
+                    ' <a href="/Contests/Practice/Index/' + contestId + '" class="btn btn-sm btn-primary">Изпрати решение/я</a>',
             }],
             columns: [
                 { field: "Input", title: "Вход" },
