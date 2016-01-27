@@ -33,10 +33,7 @@
             DirectoryHelpers.SafeDeleteDirectory(this.outputPath, true);
         }
 
-        public override string RenameInputFile(string inputFile)
-        {
-            return inputFile + ".zip";
-        }
+        public override string RenameInputFile(string inputFile) => inputFile + ".zip";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
@@ -61,7 +58,14 @@
             var arguments = new StringBuilder();
 
             UnzipFile(inputFile, this.inputPath);
-            string solutionOrProjectFile = this.FindSolutionOrProjectFile();
+            var solutionOrProjectFile = this.FindSolutionOrProjectFile();
+
+            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
+            {
+                throw new ArgumentException(
+                    "Input file does not contain a project or solution file.",
+                    nameof(inputFile));
+            }
 
             if (solutionOrProjectFile.EndsWith(".sln"))
             {
@@ -69,10 +73,10 @@
             }
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\" ", solutionOrProjectFile));
+            arguments.Append($"\"{solutionOrProjectFile}\" ");
 
             // Output path argument
-            arguments.Append(string.Format("/p:OutputPath=\"{0}\" ", this.outputPath));
+            arguments.Append($"/p:OutputPath=\"{this.outputPath}\" ");
 
             // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
@@ -98,7 +102,7 @@
         {
             var solutionFileInfo = new FileInfo(solution);
 
-            var processStartInfo = new ProcessStartInfo()
+            var processStartInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardError = true,
@@ -106,7 +110,7 @@
                 UseShellExecute = false,
                 WorkingDirectory = solutionFileInfo.DirectoryName,
                 FileName = NuGetExecutablePath,
-                Arguments = string.Format("restore \"{0}\"", solutionFileInfo.Name)
+                Arguments = $"restore \"{solutionFileInfo.Name}\""
             };
 
             using (var process = new Process())
