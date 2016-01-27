@@ -100,6 +100,12 @@
             {
                 ProblemId = problem.Id,
                 ProblemName = problem.Name,
+                OrderBy = this.Data.Tests
+                    .All()
+                    .Where(t => t.ProblemId == problem.Id && !t.IsTrialTest)
+                    .OrderByDescending(t => t.OrderBy)
+                    .Select(t => t.OrderBy)
+                    .FirstOrDefault() + 1
             };
 
             return this.View(test);

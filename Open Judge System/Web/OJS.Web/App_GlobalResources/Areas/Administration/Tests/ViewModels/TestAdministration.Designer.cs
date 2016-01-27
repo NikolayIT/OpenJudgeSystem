@@ -161,7 +161,7 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trial test name.
+        ///   Looks up a localized string similar to Trial test.
         /// </summary>
         public static string Trial_test_name {
             get {
