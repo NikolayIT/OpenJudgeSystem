@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -68,6 +69,51 @@
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             var json = JsonConvert.SerializeObject(result.ToDataSourceResult(request), Formatting.None, serializationSettings);
             return this.Content(json, GlobalConstants.JsonMimeType);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [ValidateAntiForgeryToken]
+        public ActionResult StartOjsLocalWorkerService()
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                ErrorDialog = false,
+                FileName = "cmd",
+                Arguments = "/c NET START \"OJS Local Worker Service\""
+            };
+
+            using (var cmdProcess = Process.Start(processStartInfo))
+            {
+                if (cmdProcess == null)
+                {
+                    this.TempData.AddDangerMessage("Couldn't start process.");
+                }
+                else
+                {
+                    cmdProcess.StartInfo = processStartInfo;
+                    cmdProcess.Start();
+                    cmdProcess.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+
+                    var error = cmdProcess.StandardError.ReadToEnd();
+                    if (string.IsNullOrWhiteSpace(error))
+                    {
+                        var output = cmdProcess.StandardOutput.ReadToEnd();
+                        this.TempData.AddInfoMessage(output);
+                    }
+                    else
+                    {
+                        this.TempData.AddDangerMessage(error);
+                    }
+                }
+            }
+
+            return this.RedirectToAction<SubmissionsController>(c => c.Index());
         }
     }
 }
