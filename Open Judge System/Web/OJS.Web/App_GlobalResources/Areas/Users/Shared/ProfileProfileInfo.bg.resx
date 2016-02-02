@@ -144,4 +144,8 @@
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
   </data>
+  <data name="Submissions" xml:space="preserve">
+    <value>Решения</value>
+    <comment>Решения</comment>
+  </data>
 </root>

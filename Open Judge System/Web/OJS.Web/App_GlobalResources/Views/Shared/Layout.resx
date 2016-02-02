@@ -189,8 +189,8 @@
   <data name="SubmissionSimilarity" xml:space="preserve">
     <value>Submissions similarity</value>
   </data>
-  <data name="Test_files" xml:space="preserve">
-    <value>Test files</value>
+  <data name="Tests" xml:space="preserve">
+    <value>Tests</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Users</value>

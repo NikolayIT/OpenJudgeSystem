@@ -10,7 +10,9 @@
     using Newtonsoft.Json;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
@@ -43,15 +45,37 @@
         }
 
         [Authorize]
-        public ActionResult GetSubmissionsGrid(bool notProcessedOnly = false) =>
-            this.PartialView(
-                "_AdvancedSubmissionsGridPartial",
-                new SubmissionsFilterViewModel { NotProcessedOnly = this.User.IsAdmin() && notProcessedOnly });
+        public ActionResult GetSubmissionsGrid(
+            bool notProcessedOnly = false,
+            string userId = null,
+            int? contestId = null)
+        {
+            var filter = new SubmissionsFilterViewModel
+            {
+                ContestId = contestId,
+                UserId = userId,
+                NotProcessedOnly = this.User.IsAdmin() && notProcessedOnly
+            };
+
+            return this.PartialView("_AdvancedSubmissionsGridPartial", filter);
+        }
 
         [HttpPost]
-        public ActionResult ReadSubmissions([DataSourceRequest]DataSourceRequest request, string userId, bool notProcessedOnly = false)
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
+        public ActionResult ReadSubmissions(
+            [DataSourceRequest]DataSourceRequest request,
+            string userId,
+            bool notProcessedOnly = false,
+            int? contestId = null)
         {
-            var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
+            var data = this.Data.Submissions.All();
+
+            if (this.User.IsLecturer() && !this.User.IsAdmin())
+            {
+                data = data.Where(s =>
+                    s.Problem.Contest.Lecturers.Any(lic => lic.LecturerId == this.UserProfile.Id) ||
+                    s.Problem.Contest.Category.Lecturers.Any(licc => licc.LecturerId == this.UserProfile.Id));
+            }
 
             if (userId != null)
             {
@@ -62,6 +86,11 @@
             if (this.User.IsAdmin() && notProcessedOnly)
             {
                 data = data.Where(s => !s.Processed);
+            }
+
+            if (contestId.HasValue)
+            {
+                data = data.Where(s => s.Problem.ContestId == contestId.Value);
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);

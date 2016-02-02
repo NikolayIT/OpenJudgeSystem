@@ -295,11 +295,11 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test files.
+        ///   Looks up a localized string similar to Tests.
         /// </summary>
-        public static string Test_files {
+        public static string Tests {
             get {
-                return ResourceManager.GetString("Test_files", resourceCulture);
+                return ResourceManager.GetString("Tests", resourceCulture);
             }
         }
         

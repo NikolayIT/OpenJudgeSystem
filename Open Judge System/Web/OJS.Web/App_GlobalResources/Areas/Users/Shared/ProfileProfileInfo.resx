@@ -144,4 +144,7 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Submissions" xml:space="preserve">
+    <value>Submissions</value>
+  </data>
 </root>

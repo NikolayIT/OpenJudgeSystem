@@ -133,7 +133,7 @@ namespace Resources.Areas.Administration.Tests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test files.
+        ///   Looks up a localized string similar to Tests.
         /// </summary>
         public static string Page_title {
             get {

@@ -189,8 +189,8 @@
   <data name="SubmissionSimilarity" xml:space="preserve">
     <value>Прилика на решения</value>
   </data>
-  <data name="Test_files" xml:space="preserve">
-    <value>Тестови файлове</value>
+  <data name="Tests" xml:space="preserve">
+    <value>Тестове</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Потребители</value>

@@ -1,6 +1,8 @@
 ﻿@using OJS.Web.Areas.Users.ViewModels
 @using OJS.Web.ViewModels.Submission
-@using Resource = Resources.Areas.Users.Shared.ProfileProfileInfo;
+
+@using Resource = Resources.Areas.Users.Shared.ProfileProfileInfo
+@using SubmissionsAdministrationResource = Resources.Areas.Administration.Submissions.Views.SubmissionsIndex
 
 @model UserProfileViewModel
 
@@ -55,11 +57,49 @@
 </div>
 <br />
 
-@if (User.IsAdmin() || User.Identity.Name == Model.Username)
+@if (User.Identity.Name == Model.Username || User.IsAdmin() || User.IsLecturer())
 {
+    if (User.IsAdmin() || User.IsLecturer())
+    {
+        <div class="col-md-11">
+            @(Html.Kendo()
+                .ComboBox()
+                .Name("contests")
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .Filter(FilterType.Contains)
+                .AutoBind(false)
+                .MinLength(3)
+                .Placeholder(SubmissionsAdministrationResource.Choose_or_enter_contest)
+                .Events(ev => ev.Change("selectContest"))
+                .DataSource(dataSource =>
+                {
+                    dataSource
+                        .Read(read =>
+                        {
+                            read.Action("Contests", "Submissions", new { area = "Administration" }).Data("additionalComboBoxData");
+                        })
+                        .ServerFiltering(true);
+                })
+                .HtmlAttributes(new { style = "width: 100%;" })
+            )
+        </div>
+        <div class="col-md-1">
+            @Ajax.ActionLink(
+                SubmissionsAdministrationResource.Clear,
+                "GetSubmissionsGrid",
+                new { controller = "Submissions", userId = Model.Id, area = string.Empty },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "user-submissions-grid-container" },
+                new { @class = "btn btn-primary btn-sm" })
+        </div>
+        <br />
+    }
+
     <div class="col-md-12">
-        <h2>Решения</h2>
-        @Html.Partial("_AdvancedSubmissionsGridPartial", new SubmissionsFilterViewModel { UserId = Model.Id })
+        <h2>@Resource.Submissions</h2>
+        <div id="user-submissions-grid-container">
+            @Html.Partial("_AdvancedSubmissionsGridPartial", new SubmissionsFilterViewModel { UserId = Model.Id })
+        </div>
     </div>
     <br />
 }
@@ -101,3 +141,22 @@
         </tbody>
     </table>
 </div>
+
+@if (User.IsAdmin() || User.IsLecturer())
+{
+    <script>
+        function additionalComboBoxData() {
+            return {
+                text: $('#contests').data('kendoComboBox').input.val()
+            }
+        }
+
+        function selectContest() {
+            var contestId = $('#contests').val();
+
+            $.post('/Submissions/GetSubmissionsGrid?userId=@Model.Id&contestId=' + contestId, function (data) {
+                $('#user-submissions-grid-container').html(data);
+            });
+        }
+    </script>
+}
