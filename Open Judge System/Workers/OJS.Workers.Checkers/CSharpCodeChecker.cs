@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Linq;
+    using System.Runtime.Caching;
     using System.Text;
 
     using Microsoft.CSharp;
@@ -11,7 +12,16 @@
 
     public class CSharpCodeChecker : Checker
     {
+        private const int CacheDays = 7;
+
+        private readonly ObjectCache cache;
+
         private IChecker customChecker;
+
+        public CSharpCodeChecker()
+        {
+            this.cache = MemoryCache.Default;
+        }
 
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
@@ -26,6 +36,13 @@
 
         public override void SetParameter(string parameter)
         {
+            var customCheckerFromCache = this.cache[parameter] as IChecker;
+            if (customCheckerFromCache != null)
+            {
+                this.customChecker = customCheckerFromCache;
+                return;
+            }
+
             var codeProvider = new CSharpCodeProvider();
             var compilerParameters = new CompilerParameters { GenerateInMemory = true, };
             compilerParameters.ReferencedAssemblies.Add("System.dll");
@@ -68,6 +85,7 @@
                 throw new Exception($"Cannot create an instance of type {type.FullName}!");
             }
 
+            this.cache.Add(parameter, instance, new CacheItemPolicy { SlidingExpiration = TimeSpan.FromDays(CacheDays) });
             this.customChecker = instance;
         }
     }
