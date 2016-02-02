@@ -51,7 +51,7 @@
             var assembly = compilerResults.CompiledAssembly;
 
             var types = assembly.GetTypes().Where(x => typeof(IChecker).IsAssignableFrom(x)).ToList();
-            if (types.Count() > 1)
+            if (types.Count > 1)
             {
                 throw new Exception("More than one implementation of OJS.Workers.Common.IChecker was found!");
             }
@@ -65,7 +65,7 @@
             var instance = Activator.CreateInstance(type) as IChecker;
             if (instance == null)
             {
-                throw new Exception(string.Format("Cannot create an instance of type {0}!", type.FullName));
+                throw new Exception($"Cannot create an instance of type {type.FullName}!");
             }
 
             this.customChecker = instance;

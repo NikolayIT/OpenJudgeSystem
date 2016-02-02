@@ -103,12 +103,11 @@
                     var error = cmdProcess.StandardError.ReadToEnd();
                     if (string.IsNullOrWhiteSpace(error))
                     {
-                        var output = cmdProcess.StandardOutput.ReadToEnd();
-                        this.TempData.AddInfoMessage(output);
+                        this.TempData.AddInfoMessage("The service was started successfully!");
                     }
                     else
                     {
-                        this.TempData.AddDangerMessage(error);
+                        this.TempData.AddDangerMessage("The service is already running or an error has occurred while starting it.");
                     }
                 }
             }

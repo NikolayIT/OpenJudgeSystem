@@ -13,7 +13,13 @@
 
     public class MsBuildCompiler : Compiler
     {
+        private const string SolutionFileExtension = ".sln";
+        private const string CsharpProjectFileExtension = ".csproj";
+        private const string VisualBasicProjectFileExtension = ".vbproj";
+        private const string AllFilesSearchPattern = "*.*";
+        private const string SolutionFilesSearchPattern = "*.sln";
         private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
+        private const int NuGetRestoreProcessExitTimeOutMilliseconds = 3 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
 
         private static readonly Random Rand = new Random();
 
@@ -33,11 +39,13 @@
             DirectoryHelpers.SafeDeleteDirectory(this.outputPath, true);
         }
 
-        public override string RenameInputFile(string inputFile) => inputFile + ".zip";
+        public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
-            var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
+            var newOutputFile = Directory
+                .EnumerateFiles(this.outputPath)
+                .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
             if (newOutputFile == null)
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
@@ -47,7 +55,7 @@
             }
 
             var tempFile = Path.GetTempFileName() + Rand.Next();
-            var tempExeFile = tempFile + ".exe";
+            var tempExeFile = $"{tempFile}{GlobalConstants.ExecutableFileExtension}";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
             return tempExeFile;
@@ -67,7 +75,7 @@
                     nameof(inputFile));
             }
 
-            if (solutionOrProjectFile.EndsWith(".sln"))
+            if (solutionOrProjectFile.EndsWith(SolutionFileExtension))
             {
                 RestoreNugetPackages(solutionOrProjectFile);
             }
@@ -113,27 +121,32 @@
                 Arguments = $"restore \"{solutionFileInfo.Name}\""
             };
 
-            using (var process = new Process())
+            using (var process = Process.Start(processStartInfo))
             {
-                process.StartInfo = processStartInfo;
-                process.Start();
-                process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                if (process != null)
+                {
+                    var exited = process.WaitForExit(NuGetRestoreProcessExitTimeOutMilliseconds);
+                    if (!exited)
+                    {
+                        process.Kill();
+                    }
+                }
             }
         }
 
         private string FindSolutionOrProjectFile()
         {
             var solutionOrProjectFile = Directory
-                .EnumerateFiles(this.inputPath, "*.sln", SearchOption.AllDirectories)
+                .EnumerateFiles(this.inputPath, SolutionFilesSearchPattern, SearchOption.AllDirectories)
                 .FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
                 solutionOrProjectFile = Directory
-                    .EnumerateFiles(this.inputPath, "*.*", SearchOption.AllDirectories)
+                    .EnumerateFiles(this.inputPath, AllFilesSearchPattern, SearchOption.AllDirectories)
                     .FirstOrDefault(x =>
-                        x.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
-                        x.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase));
+                        x.EndsWith(CsharpProjectFileExtension, StringComparison.OrdinalIgnoreCase) ||
+                        x.EndsWith(VisualBasicProjectFileExtension, StringComparison.OrdinalIgnoreCase));
             }
 
             return solutionOrProjectFile;

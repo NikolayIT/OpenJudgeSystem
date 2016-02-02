@@ -70,6 +70,7 @@
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
         public const string ZipFileExtension = ".zip";
+        public const string ExecutableFileExtension = ".exe";
 
         // News
         public const int NewsTitleMaxLength = 200;
