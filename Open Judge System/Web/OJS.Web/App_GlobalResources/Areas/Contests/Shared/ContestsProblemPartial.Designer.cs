@@ -169,7 +169,7 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not process yet.
+        ///   Looks up a localized string similar to Not processed yet.
         /// </summary>
         public static string Not_processed {
             get {
