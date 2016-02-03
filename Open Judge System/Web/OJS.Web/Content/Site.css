@@ -328,3 +328,7 @@ input[type="checkbox"].input-validation-error {
 .feedback-editor-field input {
     width: 100%;
 }
+
+pre {
+    color: #fff;
+}

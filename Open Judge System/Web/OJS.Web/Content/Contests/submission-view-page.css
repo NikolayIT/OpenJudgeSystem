@@ -2,7 +2,7 @@
     height: 150px;
 }
 
-    .CodeMirror-merge .CodeMirror-code {
+    .CodeMirror-merge .CodeMirror-code, .diff .row {
         color: #fff;
     }
 
