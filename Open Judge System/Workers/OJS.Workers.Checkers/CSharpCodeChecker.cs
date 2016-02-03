@@ -12,7 +12,7 @@
 
     public class CSharpCodeChecker : Checker
     {
-        private const int CacheDays = 7;
+        private const int CacheSlidingExpirationDays = 7;
 
         private readonly ObjectCache cache;
 
@@ -85,7 +85,11 @@
                 throw new Exception($"Cannot create an instance of type {type.FullName}!");
             }
 
-            this.cache.Add(parameter, instance, new CacheItemPolicy { SlidingExpiration = TimeSpan.FromDays(CacheDays) });
+            this.cache.Set(
+                parameter,
+                instance,
+                new CacheItemPolicy { SlidingExpiration = TimeSpan.FromDays(CacheSlidingExpirationDays) });
+
             this.customChecker = instance;
         }
     }
