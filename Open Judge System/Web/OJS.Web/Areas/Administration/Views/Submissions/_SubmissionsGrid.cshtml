@@ -29,7 +29,11 @@
     .ToolBar(toolbar =>
     {
         toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
-        toolbar.Custom().Text(Resource.Delete_selected_submissions).HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~", courseInstanceId = "#=Id#" })).Name("custom-toolbar-button");
+        if (User.IsAdmin())
+        {
+            toolbar.Custom().Text(Resource.Delete_selected_submissions).HtmlAttributes(new { id = "bulk-delete-submissions" }).Url(Url.Action("BulkDeleteSubmissions", "Submissions", new { Area = "Administration", page = 1, pageSize = "~", filter = "!!", sort = "~" })).Name("custom-toolbar-button");
+        }
+
         toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })

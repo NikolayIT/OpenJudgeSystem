@@ -12,7 +12,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.ViewModels.Submission;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
@@ -69,7 +69,7 @@
         public ActionResult Create()
         {
             this.ViewBag.SubmissionAction = "Create";
-            var model = new SubmissionAdministrationViewModel();
+            var model = new ModelType();
             return this.View(model);
         }
 
@@ -255,6 +255,7 @@
             return this.RedirectToAction(GlobalConstants.Index);
         }
 
+        [AuthorizeRoles(SystemRole.Administrator)]
         public ActionResult BulkDeleteSubmissions([DataSourceRequest]DataSourceRequest request)
         {
             request.PageSize = 0;
@@ -270,7 +271,7 @@
             this.Data.SaveChanges();
 
             this.TempData[GlobalConstants.InfoMessage] = $"Успешно изтрихте {submissionsDataSourceResult.Total} решения.";
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction<SubmissionsController>(c => c.Index());
         }
 
         public JsonResult GetSubmissionTypes(int problemId, bool? allowBinaryFilesUpload)

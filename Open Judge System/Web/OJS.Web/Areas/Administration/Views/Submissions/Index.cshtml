@@ -8,31 +8,35 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-            @(Html
-            .Kendo()
-            .ComboBox()
-            .Name("contests")
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .Filter(FilterType.Contains)
-            .AutoBind(false)
-            .MinLength(3)
-            .Placeholder(Resource.Choose_or_enter_contest)
-            .Events(ev => ev.Change("selectContest"))
-            .DataSource(dataSource =>
+            @(Html.Kendo()
+                .ComboBox()
+                .Name("contests")
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .Filter(FilterType.Contains)
+                .AutoBind(false)
+                .MinLength(3)
+                .Placeholder(Resource.Choose_or_enter_contest)
+                .Events(ev => ev.Change("selectContest"))
+                .DataSource(dataSource =>
                 {
                     dataSource
                         .Read(read =>
-                            {
-                                read.Action("Contests", "Submissions")
-                                    .Data("additionalComboBoxData");
-                            })
+                        {
+                            read.Action("Contests", "Submissions")
+                                .Data("additionalComboBoxData");
+                        })
                         .ServerFiltering(true);
                 })
-            .HtmlAttributes(new { style = "width: 100%;" }))
+                .HtmlAttributes(new { style = "width: 100%;" }))
         </div>
         <div class="col-md-2 text-right">
-            @Ajax.ActionLink(Resource.Clear, "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-grid" }, new { @class = "btn btn-primary btn-sm" })
+            @Ajax.ActionLink(
+                Resource.Clear, 
+                "RenderGrid", 
+                null, 
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "submissions-grid" }, 
+                new { @class = "btn btn-primary btn-sm" })
         </div>
     </div>
     <br />
@@ -52,11 +56,12 @@
         }
 
         function selectContest() {
-            var contestId = $("#contests").val();
-
-            $.post('/Administration/Submissions/RenderGrid/' + contestId, function (data) {
-                $("#submissions-grid").html(data);
-            });
+            var contestId = this.value();
+            if (contestId) {
+                $('#DataGrid').data('kendoGrid').dataSource.filter({ field: 'ContestId', operator: 'eq', value: parseInt(contestId) });
+            } else {
+                $('#DataGrid').data('kendoGrid').dataSource.filter({});
+            }
         }
     </script>
 }
