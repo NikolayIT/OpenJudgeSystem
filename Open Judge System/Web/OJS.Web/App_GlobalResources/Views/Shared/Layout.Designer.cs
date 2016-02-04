@@ -169,7 +169,7 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IP Usage.
+        ///   Looks up a localized string similar to IP usage.
         /// </summary>
         public static string IpUsage {
             get {
