@@ -10,6 +10,15 @@ pre {
     border-color: #AAAAAA;
 }
 
+.main-container .administration-container .container {
+    max-width: 100%;
+}
+
+    .main-container .administration-container .container .k-grid .k-grid-header th.k-header {
+        overflow: visible;
+        white-space: normal;
+    }
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #b94a48;
@@ -277,13 +286,13 @@ input[type="checkbox"].input-validation-error {
     text-align: center;
 }
 
-.contests-by-category .paricipate-compete-buttons a {
-    display: block;
-}
+    .contests-by-category .paricipate-compete-buttons a {
+        display: block;
+    }
 
-.contests-by-category .paricipate-compete-buttons .practice-only {
-    padding: 6px 0;
-}
+    .contests-by-category .paricipate-compete-buttons .practice-only {
+        padding: 6px 0;
+    }
 
 .contests-by-category .results {
     display: inline-block;
