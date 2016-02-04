@@ -19,7 +19,7 @@
         private const string AllFilesSearchPattern = "*.*";
         private const string SolutionFilesSearchPattern = "*.sln";
         private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
-        private const int NuGetRestoreProcessExitTimeOutMilliseconds = 3 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
+        private const int NuGetRestoreProcessExitTimeOutMilliseconds = 2 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
 
         private static readonly Random Rand = new Random();
 
@@ -75,10 +75,10 @@
                     nameof(inputFile));
             }
 
-            if (solutionOrProjectFile.EndsWith(SolutionFileExtension))
-            {
-                RestoreNugetPackages(solutionOrProjectFile);
-            }
+            ////if (solutionOrProjectFile.EndsWith(SolutionFileExtension))
+            ////{
+            ////    RestoreNugetPackages(solutionOrProjectFile);
+            ////}
 
             // Input file argument
             arguments.Append($"\"{solutionOrProjectFile}\" ");
