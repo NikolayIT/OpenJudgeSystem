@@ -144,16 +144,16 @@
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
-            var exitCode = 0;
+            int exitCode;
 
-            using (var process = new Process())
+            using (var outputWaitHandle = new AutoResetEvent(false))
             {
-                process.StartInfo = compilerProcessStartInfo;
-
-                using (var outputWaitHandle = new AutoResetEvent(false))
+                using (var errorWaitHandle = new AutoResetEvent(false))
                 {
-                    using (var errorWaitHandle = new AutoResetEvent(false))
+                    using (var process = new Process())
                     {
+                        process.StartInfo = compilerProcessStartInfo;
+
                         process.OutputDataReceived += (sender, e) =>
                             {
                                 if (e.Data == null)
@@ -200,16 +200,16 @@
 
                         outputWaitHandle.WaitOne(100);
                         errorWaitHandle.WaitOne(100);
+
+                        exitCode = process.ExitCode;
                     }
                 }
-
-                exitCode = process.ExitCode;
             }
 
             var output = outputBuilder.ToString().Trim();
             var errorOutput = errorOutputBuilder.ToString().Trim();
 
-            var compilerOutput = string.Format("{0}{1}{2}", output, Environment.NewLine, errorOutput).Trim();
+            var compilerOutput = $"{output}{Environment.NewLine}{errorOutput}".Trim();
             return new CompilerOutput(exitCode, compilerOutput);
         }
     }
