@@ -203,7 +203,7 @@
                 this.Data.SaveChanges();
 
                 this.TempData.AddInfoMessage(GlobalResource.Problem_added);
-                return this.RedirectToAction("Contest", new { id });
+                return this.RedirectToAction("Problem", "Tests", new { newProblem.Id });
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
