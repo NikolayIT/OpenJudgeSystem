@@ -10,14 +10,13 @@ pre {
     border-color: #AAAAAA;
 }
 
-.main-container .administration-container .container {
-    max-width: 100%;
-}
-
-    .main-container .administration-container .container .k-grid .k-grid-header th.k-header {
+@media (max-width: 1320px) {
+    .main-container .administration-container .k-grid .k-grid-header th.k-header {
         overflow: visible;
         white-space: normal;
+        word-break: break-all;
     }
+}
 
 /* styles for validation helpers */
 .field-validation-error {

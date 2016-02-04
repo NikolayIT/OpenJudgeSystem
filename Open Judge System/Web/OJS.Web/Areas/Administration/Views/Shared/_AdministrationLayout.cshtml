@@ -3,14 +3,10 @@
 }
 
 @section styles {
-    <style>
-        .container.main-container {
-            max-width: 100%;
-        }
-    </style>
+    @RenderSection("styles", required: false)
 }
 
-<div class="administration-container">
+<div>
     @RenderBody()
 </div>
 

@@ -5,7 +5,15 @@
 
 <h1>@ViewBag.Title</h1>
 
-<div class="container">
+@section styles {
+    <style>
+        .container.main-container {
+            max-width: 100%;
+        }
+    </style>
+}
+
+<div class="administration-container">
     <div class="row">
         <div class="col-md-10">
             @(Html.Kendo()

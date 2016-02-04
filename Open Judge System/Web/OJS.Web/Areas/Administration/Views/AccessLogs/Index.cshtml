@@ -1,12 +1,23 @@
 ﻿@using Resource = Resources.Areas.Administration.AccessLogs.Views.AccessLogsIndex;
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+
 @{
     ViewBag.Title = Resource.Page_title;
     const string ControllerName = "AccessLogs";
 }
-<h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.AccessLogs.AccessLogGridViewModel>()
+@section styles {
+    <style>
+        .container.main-container {
+            max-width: 100%;
+        }
+    </style>
+}
+
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
+
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.AccessLogs.AccessLogGridViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
         {
@@ -42,7 +53,8 @@
             .Read(read => read.Action("Read", ControllerName))
             .Events(ev => ev.Error("validateModelStateErrors"))
         )
-)
+    )
+</div>
 
 <script type="text/javascript">
     function onDataBound(e) {
