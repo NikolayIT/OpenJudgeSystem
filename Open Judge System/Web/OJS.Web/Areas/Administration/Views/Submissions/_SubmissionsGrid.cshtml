@@ -70,7 +70,11 @@
 <script type="text/javascript">
     function onDataBound(e) {
         CreateExportToExcelButton();
-        CreateKendoSubmitParamsButton('bulk-delete-submissions');
+
+        @if (User.IsAdmin())
+        {
+            <text>CreateKendoSubmitParamsButton('bulk-delete-submissions');</text>
+        }
     }
 
     $(function () {
