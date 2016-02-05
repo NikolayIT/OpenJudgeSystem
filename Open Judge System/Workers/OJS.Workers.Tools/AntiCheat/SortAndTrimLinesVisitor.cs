@@ -4,6 +4,8 @@
     using System.IO;
     using System.Text;
 
+    using OJS.Workers.Tools.AntiCheat.Contracts;
+
     public class SortAndTrimLinesVisitor : IDetectPlagiarismVisitor
     {
         public string Visit(string text)

@@ -3,16 +3,12 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Similarity;
 
     public class PlainTextPlagiarismDetector : IPlagiarismDetector
     {
         private readonly ISimilarityFinder similarityFinder;
-
-        public PlainTextPlagiarismDetector()
-            : this(new SimilarityFinder())
-        {
-        }
 
         public PlainTextPlagiarismDetector(ISimilarityFinder similarityFinder)
         {
@@ -20,7 +16,10 @@
         }
 
         // TODO: This method is very similar to CSharpCompileDecompilePlagiarismDetector.DetectPlagiarism
-        public PlagiarismResult DetectPlagiarism(string firstSource, string secondSource, IEnumerable<IDetectPlagiarismVisitor> visitors = null)
+        public PlagiarismResult DetectPlagiarism(
+            string firstSource,
+            string secondSource,
+            IEnumerable<IDetectPlagiarismVisitor> visitors = null)
         {
             if (visitors != null)
             {

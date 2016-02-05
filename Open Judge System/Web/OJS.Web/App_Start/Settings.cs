@@ -9,6 +9,10 @@
 
         public static string DotNetDisassemblerPath => GetSetting("DotNetDisassemblerPath");
 
+        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
+
+        public static string JavaDisassemblerPath => GetSetting("JavaDisassemblerPath");
+
         public static string SvnBaseUrl => GetSetting("SvnBaseUrl");
 
         public static string LearningSystemUrl => GetSetting("LearningSystemUrl");

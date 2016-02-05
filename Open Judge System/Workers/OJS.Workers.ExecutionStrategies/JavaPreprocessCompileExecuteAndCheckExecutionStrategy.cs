@@ -4,22 +4,19 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using System.Text.RegularExpressions;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private const string PackageNameRegEx = @"\bpackage\s+[a-zA-Z_][a-zA-Z_.0-9]{0,150}\s*;";
-        private const string ClassNameRegEx = @"public\s+class\s+([a-zA-Z_][a-zA-Z_0-9]{0,150})\s*{";
         private const string TimeMeasurementFileName = "_$time.txt";
         private const string SandboxExecutorClassName = "_$SandboxExecutor";
         private const string JavaCompiledFileExtension = ".class";
-        private const int ClassNameRegExGroup = 1;
 
         private readonly string javaExecutablePath;
 
@@ -224,27 +221,8 @@ class _$SandboxSecurityManager extends SecurityManager {
             return result;
         }
 
-        protected virtual string CreateSubmissionFile(ExecutionContext executionContext)
-        {
-            var submissionCode = executionContext.Code;
-
-            // Remove existing packages
-            submissionCode = Regex.Replace(submissionCode, PackageNameRegEx, string.Empty);
-
-            // TODO: Remove the restriction for one public class - a non-public Java class can contain the main method!
-            var classNameMatch = Regex.Match(submissionCode, ClassNameRegEx);
-            if (!classNameMatch.Success)
-            {
-                throw new ArgumentException("No valid public class found!");
-            }
-
-            var className = classNameMatch.Groups[ClassNameRegExGroup].Value;
-            var submissionFilePath = $"{this.WorkingDirectory}\\{className}";
-
-            File.WriteAllText(submissionFilePath, submissionCode);
-
-            return submissionFilePath;
-        }
+        protected virtual string CreateSubmissionFile(ExecutionContext executionContext) =>
+            JavaCodePreprocessorHelper.CreateSubmissionFile(executionContext.Code, this.WorkingDirectory);
 
         protected virtual CompileResult DoCompile(ExecutionContext executionContext, string submissionFilePath)
         {

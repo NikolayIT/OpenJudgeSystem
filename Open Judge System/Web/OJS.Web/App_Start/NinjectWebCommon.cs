@@ -14,6 +14,8 @@ namespace OJS.Web
 
     using OJS.Data;
     using OJS.Workers.Tools.AntiCheat;
+    using OJS.Workers.Tools.AntiCheat.Contracts;
+    using OJS.Workers.Tools.Similarity;
 
     public static class NinjectWebCommon
     {
@@ -70,10 +72,9 @@ namespace OJS.Web
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IOjsData>().To<OjsData>();
-            kernel.Bind<IPlagiarismDetector>().To<CSharpCompileDecompilePlagiarismDetector>()
-                .WithConstructorArgument("csharpCompilerPath", Settings.CSharpCompilerPath)
-                .WithConstructorArgument("dotNetDisassemblerPath", Settings.DotNetDisassemblerPath);
+            kernel.Bind<IOjsData>().To<OjsData>().InRequestScope();
+            kernel.Bind<ISimilarityFinder>().To<SimilarityFinder>().InRequestScope();
+            kernel.Bind<IPlagiarismDetectorFactory>().To<PlagiarismDetectorFactory>().InRequestScope();
         }
     }
 }

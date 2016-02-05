@@ -58,6 +58,7 @@
     <Compile Include="Communication\SystemInformation.cs" />
     <Compile Include="Communication\Job.cs" />
     <Compile Include="Communication\JobResult.cs" />
+    <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
     <Compile Include="ProcessExecutionResult.cs" />
     <Compile Include="ProcessExecutionResultType.cs" />
     <Compile Include="IChecker.cs" />
