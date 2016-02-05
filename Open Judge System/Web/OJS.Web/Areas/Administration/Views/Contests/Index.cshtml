@@ -10,70 +10,81 @@
     const string ContestQuestionAnswersControllerName = "ContestQuestionAnswers";
 }
 
-<h1>@ViewBag.Title</h1>
+@section styles {
+    <style>
+        .container.main-container {
+            max-width: 100%;
+        }
+    </style>
+}
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
-    .Name("DataGrid")
-    .Columns(columns =>
-    {
-        columns.Bound(x => x.Id);
-        columns.Bound(x => x.Name);
-        columns.Bound(x => x.StartTime).Format("{0:dd/MM/yyyy HH:mm}");
-        columns.Bound(x => x.EndTime).Format("{0:dd/MM/yyyy HH:mm}");
-        columns.Bound(x => x.PracticeStartTime).Format("{0:dd/MM/yyyy HH:mm}");
-        columns.Bound(x => x.PracticeEndTime).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-        columns.Bound(x => x.IsVisible).Hidden();
-        columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-        columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-        columns.Command(command => command.Custom("Стартирай Лаб").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Лаб стартиране");
-        columns.Command(c => c.Custom("Свали решенията").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
-        //columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
-        columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
-        columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
-        columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{Resource.Edit}</a>").Title(GeneralResource.Change);
-        columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
-    })
-    .ToolBar(toolbar =>
-    {
-        toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
-        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
-    })
-    .Editable(editable =>
-    {
-        editable.Mode(GridEditMode.PopUp);
-        editable.Window(w => w.Title(ViewBag.Title));
-        editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-    })
-    .ColumnMenu()
-    .ClientDetailTemplateId("questions-template")
-    .Events(e => e.DataBound("onDataBound"))
-    .Pageable(x => x.Refresh(true))
-    .Sortable(x => x.Enabled(true).AllowUnsort(false))
-    .Filterable(x => x.Enabled(true))
-    .Groupable(x =>
-    {
-        x.Enabled(true);
-        x.Messages(m => m.Empty(GeneralResource.Group_by_message));
-    })
-    .Reorderable(x => x.Columns(true))
-    .Resizable(x => x.Columns(true))
-    .DataSource(datasource => datasource
-        .Ajax()
-        .ServerOperation(true)
-        .Model(model => model.Id(x => x.Id))
-        .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-        .Create(create => create.Action("Create", ContestControllerName))
-        .Read(read => read.Action("Read", ContestControllerName))
-        .Update(update => update.Action("Update", ContestControllerName))
-        .Destroy(destroy => destroy.Action("Destroy", ContestControllerName))
-        .Events(ev => ev.Error("validateModelStateErrors"))
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
+
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
+        .Name("DataGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(x => x.Id);
+            columns.Bound(x => x.Name);
+            columns.Bound(x => x.StartTime).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(x => x.EndTime).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(x => x.PracticeStartTime).Format("{0:dd/MM/yyyy HH:mm}");
+            columns.Bound(x => x.PracticeEndTime).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Bound(x => x.IsVisible).Hidden();
+            columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Command(command => command.Custom("Стартирай Лаб").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Лаб стартиране");
+            columns.Command(c => c.Custom("Свали решенията").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
+            //columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Contest", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
+            columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{Resource.Edit}</a>").Title(GeneralResource.Change);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.PopUp);
+            editable.Window(w => w.Title(ViewBag.Title));
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
+        .ColumnMenu()
+        .ClientDetailTemplateId("questions-template")
+        .Events(e => e.DataBound("onDataBound"))
+        .Pageable(x => x.Refresh(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
+        .Groupable(x =>
+        {
+            x.Enabled(true);
+            x.Messages(m => m.Empty(GeneralResource.Group_by_message));
+        })
+        .Reorderable(x => x.Columns(true))
+        .Resizable(x => x.Columns(true))
+        .DataSource(datasource => datasource
+            .Ajax()
+            .ServerOperation(true)
+            .Model(model => model.Id(x => x.Id))
+            .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+            .Create(create => create.Action("Create", ContestControllerName))
+            .Read(read => read.Action("Read", ContestControllerName))
+            .Update(update => update.Action("Update", ContestControllerName))
+            .Destroy(destroy => destroy.Action("Destroy", ContestControllerName))
+            .Events(ev => ev.Error("validateModelStateErrors"))
+        )
     )
-)
 
-@{ Html.RenderPartial("_LabStartPopupWindow", new LabStartInputModel()); }
+    @{ Html.RenderPartial("_LabStartPopupWindow", new LabStartInputModel()); }
 
-@{ Html.RenderPartial("_DownloadSubmissionsPopupWindow"); }
+    @{ Html.RenderPartial("_DownloadSubmissionsPopupWindow"); }
+
+</div>
 
 <script type="text/javascript">
     function onDataBound() {
