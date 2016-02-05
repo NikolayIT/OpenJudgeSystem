@@ -23,6 +23,8 @@
 
     public class SubmissionsController : LecturerBaseGridController
     {
+        private const int MaxContestsToTake = 20;
+
         private int? contestId;
 
         public SubmissionsController(IOjsData data)
@@ -387,7 +389,10 @@
                     c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
-            var contests = contestEntities.OrderByDescending(c => c.CreatedOn).Select(c => new { c.Id, c.Name });
+            var contests = contestEntities
+                .OrderByDescending(c => c.CreatedOn)
+                .Take(MaxContestsToTake)
+                .Select(c => new { c.Id, c.Name });
 
             return this.Json(contests, JsonRequestBehavior.AllowGet);
         }

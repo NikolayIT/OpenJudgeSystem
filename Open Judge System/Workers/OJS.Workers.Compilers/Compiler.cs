@@ -193,7 +193,11 @@
                             process.CancelOutputRead();
                             process.CancelErrorRead();
 
-                            process.Kill();
+                            // Double check if the process has exited before killing it
+                            if (!process.HasExited)
+                            {
+                                process.Kill();
+                            }
 
                             return new CompilerOutput(1, "Compiler process timed out.");
                         }

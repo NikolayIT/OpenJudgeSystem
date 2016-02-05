@@ -4,8 +4,6 @@
 
     public class SubmissionSimilarityViewModel
     {
-        public int ProblemId { get; set; }
-
         public string ProblemName { get; set; }
 
         public int Points { get; set; }

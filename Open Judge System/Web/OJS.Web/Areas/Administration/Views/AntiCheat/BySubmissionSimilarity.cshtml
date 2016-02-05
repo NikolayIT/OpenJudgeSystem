@@ -1,37 +1,83 @@
-﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
-@model IEnumerable<SelectListItem>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews
+
+@model OJS.Web.Areas.Administration.InputModels.AntiCheat.SubmissionSimilarityFiltersInputModel
+
 @{
     ViewBag.Title = Resource.By_submission_page_title;
 }
 
+@section styles {
+    <style>
+        #input-boxes .k-dropdown .k-dropdown-wrap {
+            height: 35px;
+        }
+    </style>
+}
+
 <h2>@ViewBag.Title</h2>
-<div id="contests-combo-boxes">
+<div id="input-boxes">
     <div class="row">
-        <div class="col-md-12">
-            @Html.Partial("_ContestsComboBox", Model)
+        <div class="col-md-7">
+            @Html.LabelFor(m => m.ContestId)
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.PlagiarismDetectorType)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            @(Html.Kendo().ComboBoxFor(m => m.ContestId)
+                  .Filter(FilterType.Contains)
+                  .AutoBind(false)
+                  .MinLength(3)
+                  .Placeholder(Resource.Choose_or_enter_contest)
+                  .DataValueField("Id")
+                  .DataTextField("Name")
+                  .DataSource(dataSource => dataSource.Read(read => read.Action("Contests", "Submissions").Data("onAdditionalData")).ServerFiltering(true))
+                  .HtmlAttributes(new { style = "width: 100%; height: 30px" }))
+        </div>
+        <div class="col-md-3">
+            @(Html.Kendo().DropDownListFor(m => m.PlagiarismDetectorType)
+                  .BindTo(Model.PlagiarismDetectorTypes)
+                  .DataValueField("Id")
+                  .DataTextField("Name")
+                  .HtmlAttributes(new { style = "width: 100%" }))
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary" id="check-submission-similarities">Провери за прилики</button>
         </div>
     </div>
 </div>
 
 <br />
-<div id="similarity-grid">
-</div>
+
+<div id="similarity-grid"></div>
 
 @section scripts{
     <script>
-        function selectContest() {
-            var contestId = $('#contests').val();
-            $("#similarity-grid").html('<h1 class="text-center">Loading...</h1>');
-
-            $.ajax({
-                url: '/Administration/AntiCheat/RenderSubmissionsSimilaritiesGrid',
-                data: { ids: [contestId] },
-                type: 'POST',
-                traditional: true,
-                success: function (data) {
-                    $("#similarity-grid").html(data);
-                }
-            });
+        function onAdditionalData() {
+            return {
+                text: $('#ContestId').data('kendoComboBox').text()
+            };
         }
+
+        $(function () {
+            $('#check-submission-similarities').click(function () {
+                var contestId = $('#ContestId').data('kendoComboBox').value();
+                var plagiarismDetectorType = $('#PlagiarismDetectorType').data('kendoDropDownList').value();
+
+                $('#similarity-grid').html('<h1 class="text-center">Loading...</h1>');
+
+                $.ajax({
+                    url: '/Administration/AntiCheat/RenderSubmissionsSimilaritiesGrid',
+                    data: { ids: [contestId], plagiarismDetectorType: plagiarismDetectorType },
+                    type: 'POST',
+                    traditional: true,
+                    success: function (data) {
+                        $('#similarity-grid').html(data);
+                    }
+                });
+            });
+        });
     </script>
 }

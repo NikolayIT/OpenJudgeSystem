@@ -1515,6 +1515,7 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionTypesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
@@ -1957,6 +1958,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AntiCheatViews.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.AntiCheat.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AntiCheat\Views\AntiCheatViews.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

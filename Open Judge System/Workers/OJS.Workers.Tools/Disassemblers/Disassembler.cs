@@ -111,7 +111,11 @@
                         {
                             process.CancelOutputRead();
 
-                            process.Kill();
+                            // Double check if the process has exited before killing it
+                            if (!process.HasExited)
+                            {
+                                process.Kill();
+                            }
                         }
                     }
 
