@@ -18,6 +18,6 @@
         {
         }
 
-        protected override string GetCompilerAdditionalArguments() => CSharpCompilerAdditionalArguments;
+        protected override string CompilerAdditionalArguments => CSharpCompilerAdditionalArguments;
     }
 }

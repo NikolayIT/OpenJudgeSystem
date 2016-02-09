@@ -2,6 +2,7 @@
 {
     using System;
 
+    using OJS.Common.Models;
     using OJS.Workers.Compilers;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Disassemblers;

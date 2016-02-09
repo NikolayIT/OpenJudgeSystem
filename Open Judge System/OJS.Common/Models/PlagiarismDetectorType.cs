@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Tools.AntiCheat
+﻿namespace OJS.Common.Models
 {
     using System.ComponentModel;
 

@@ -7,6 +7,7 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -79,37 +80,28 @@
         }
 
         [HttpPost]
-        public ActionResult RenderSubmissionsSimilaritiesGrid(int[] ids, PlagiarismDetectorType plagiarismDetectorType)
+        public ActionResult RenderSubmissionsSimilaritiesGrid(int[] contestIds, PlagiarismDetectorType plagiarismDetectorType)
         {
-            var orExpressionIds = ExpressionBuilder.BuildOrExpression<Submission, int>(
-                ids,
-                s => s.Participant.ContestId);
+            var participantsSimilarSubmissionGroups =
+                this.GetSimilarSubmissions(contestIds, plagiarismDetectorType)
+                    .Select(s => new
+                    {
+                        s.Id,
+                        s.ProblemId,
+                        s.ParticipantId,
+                        s.Points,
+                        s.Content,
+                        s.CreatedOn,
+                        ParticipantName = s.Participant.User.UserName,
+                        ProblemName = s.Problem.Name,
+                        TestRunResultTypes = s.TestRuns.OrderBy(t => t.Id).Select(t => t.ResultType)
+                    })
+                    .GroupBy(s => new { s.ProblemId, s.ParticipantId })
+                    .Select(g => g.OrderByDescending(s => s.Points).ThenByDescending(s => s.CreatedOn).FirstOrDefault())
+                    .GroupBy(s => new { s.ProblemId, s.Points })
+                    .ToList();
 
-            var participantsSimilarSubmissionGroups = this.Data.Submissions
-                .All()
-                .Where(orExpressionIds)
-                .Where(s => s.Participant.IsOfficial && s.Points >= MinSubmissionPointsToCheckForSimilarity)
-                .Select(s => new
-                {
-                    s.Id,
-                    s.ProblemId,
-                    s.ParticipantId,
-                    s.Points,
-                    s.Content,
-                    s.CreatedOn,
-                    ParticipantName = s.Participant.User.UserName,
-                    ProblemName = s.Problem.Name,
-                    TestRunResultTypes = s.TestRuns.OrderBy(t => t.Id).Select(t => t.ResultType)
-                })
-                .GroupBy(s => new { s.ProblemId, s.ParticipantId })
-                .Select(g => g.OrderByDescending(s => s.Points).ThenByDescending(s => s.CreatedOn).FirstOrDefault())
-                .GroupBy(s => new { s.ProblemId, s.Points })
-                .ToList();
-
-            var plagiarismDetectorCreationContext =
-                this.CreatePlagiarismDetectorCreationContext(plagiarismDetectorType);
-            var plagiarismDetector =
-                this.plagiarismDetectorFactory.CreatePlagiarismDetector(plagiarismDetectorCreationContext);
+            var plagiarismDetector = this.GetPlagiarismDetector(plagiarismDetectorType);
 
             var similarities = new List<SubmissionSimilarityViewModel>();
             for (var index = 0; index < participantsSimilarSubmissionGroups.Count; index++)
@@ -164,19 +156,9 @@
             var contests = this.Data.Contests
                 .All()
                 .OrderByDescending(c => c.CreatedOn)
-                .Select(c =>
-                    new
-                    {
-                        Text = c.Name,
-                        Value = c.Id
-                    })
+                .Select(c => new { Text = c.Name, Value = c.Id })
                 .ToList()
-                .Select(c =>
-                    new SelectListItem
-                    {
-                        Text = c.Text,
-                        Value = c.Value.ToString()
-                    });
+                .Select(c => new SelectListItem { Text = c.Text, Value = c.Value.ToString() });
 
             return contests;
         }
@@ -200,6 +182,38 @@
             }
 
             return result;
+        }
+
+        private IQueryable<Submission> GetSimilarSubmissions(
+            IEnumerable<int> contestIds,
+            PlagiarismDetectorType plagiarismDetectorType)
+        {
+            var orExpressionContestIds = ExpressionBuilder.BuildOrExpression<Submission, int>(
+                contestIds,
+                s => s.Participant.ContestId);
+
+            var plagiarismDetectorTypeCompatibleCompilerTypes = plagiarismDetectorType.GetCompatibleCompilerTypes();
+            var orExpressionCompilerTypes = ExpressionBuilder.BuildOrExpression<Submission, CompilerType>(
+                plagiarismDetectorTypeCompatibleCompilerTypes,
+                s => s.SubmissionType.CompilerType);
+
+            var result = this.Data.Submissions
+                .All()
+                .Where(orExpressionContestIds)
+                .Where(orExpressionCompilerTypes)
+                .Where(s => s.Participant.IsOfficial && s.Points >= MinSubmissionPointsToCheckForSimilarity);
+
+            return result;
+        }
+
+        private IPlagiarismDetector GetPlagiarismDetector(PlagiarismDetectorType type)
+        {
+            var plagiarismDetectorCreationContext =
+                this.CreatePlagiarismDetectorCreationContext(type);
+            var plagiarismDetector =
+                this.plagiarismDetectorFactory.CreatePlagiarismDetector(plagiarismDetectorCreationContext);
+
+            return plagiarismDetector;
         }
     }
 }

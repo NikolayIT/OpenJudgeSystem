@@ -2,6 +2,7 @@
 {
     using System;
 
+    using OJS.Common.Models;
     using OJS.Workers.Tools.Similarity;
 
     public class PlagiarismDetectorCreationContext

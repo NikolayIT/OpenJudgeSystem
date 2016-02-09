@@ -70,7 +70,7 @@
 
                 $.ajax({
                     url: '/Administration/AntiCheat/RenderSubmissionsSimilaritiesGrid',
-                    data: { ids: [contestId], plagiarismDetectorType: plagiarismDetectorType },
+                    data: { contestIds: [contestId], plagiarismDetectorType: plagiarismDetectorType },
                     type: 'POST',
                     traditional: true,
                     success: function (data) {

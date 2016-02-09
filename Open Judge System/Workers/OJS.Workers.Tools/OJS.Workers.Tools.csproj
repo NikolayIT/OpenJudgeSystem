@@ -51,7 +51,6 @@
     <Compile Include="AntiCheat\JavaCompileDisassemblePlagiarismDetector.cs" />
     <Compile Include="AntiCheat\PlagiarismDetectorCreationContext.cs" />
     <Compile Include="AntiCheat\PlagiarismDetectorFactory.cs" />
-    <Compile Include="AntiCheat\PlagiarismDetectorType.cs" />
     <Compile Include="AntiCheat\PlagiarismResult.cs" />
     <Compile Include="AntiCheat\PlainTextPlagiarismDetector.cs" />
     <Compile Include="AntiCheat\SortAndTrimLinesVisitor.cs" />

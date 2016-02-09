@@ -35,6 +35,10 @@
 
         protected IDisassembler Disassembler { get; }
 
+        protected virtual string CompilerAdditionalArguments => null;
+
+        protected virtual string DisassemblerAdditionalArguments => null;
+
         public PlagiarismResult DetectPlagiarism(
             string firstSource,
             string secondSource,
@@ -114,7 +118,7 @@
             var compileResult = this.Compiler.Compile(
                 this.CompilerPath,
                 sourceFilePath,
-                this.GetCompilerAdditionalArguments());
+                this.CompilerAdditionalArguments);
 
             if (File.Exists(sourceFilePath))
             {
@@ -128,7 +132,7 @@
         {
             var disassemblerResult = this.Disassembler.Disassemble(
                 compiledFilePath,
-                this.GetDisassemblerAdditionalArguments());
+                this.DisassemblerAdditionalArguments);
 
             if (File.Exists(compiledFilePath))
             {
@@ -137,9 +141,5 @@
 
             return disassemblerResult;
         }
-
-        protected virtual string GetCompilerAdditionalArguments() => null;
-
-        protected virtual string GetDisassemblerAdditionalArguments() => null;
     }
 }

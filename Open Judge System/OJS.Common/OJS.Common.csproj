@@ -66,6 +66,7 @@
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\FileHelpers.cs" />
+    <Compile Include="Extensions\PlagiarismDetectorTypeExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="MailSender.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Models\ContestQuestionType.cs" />
     <Compile Include="Models\ContestType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
+    <Compile Include="Models\PlagiarismDetectorType.cs" />
     <Compile Include="Models\SubmissionStatus.cs" />
     <Compile Include="Models\SystemRole.cs" />
     <Compile Include="Models\TestRunResultType.cs" />
