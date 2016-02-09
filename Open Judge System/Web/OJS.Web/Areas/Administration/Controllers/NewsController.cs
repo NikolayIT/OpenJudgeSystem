@@ -12,13 +12,10 @@
     using OJS.Web.Areas.Administration.Providers;
     using OJS.Web.Areas.Administration.Providers.Contracts;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.Providers;
-    using OJS.Web.Areas.Administration.Providers.Contracts;
 
     using Resources.News.Views;
 
     using DatabaseModelType = OJS.Data.Models.News;
-    using Resource = Resources.News;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.News.NewsAdministrationViewModel;
 
     public class NewsController : AdministrationBaseGridController
@@ -81,7 +78,7 @@
         {
             var providers = new List<INewsProvider>
             {
-                //// new InfoManNewsProvider(), 
+                //// new InfoManNewsProvider(),
                 //// new InfosNewsProvider(),
                 new SoftUniNewsProvier()
             };
@@ -103,9 +100,9 @@
         {
             foreach (var news in fetchedNews)
             {
-                if (!string.IsNullOrEmpty(news.Title) && 
-                    !string.IsNullOrEmpty(news.Content) && 
-                    news.Content.Length > 10 && 
+                if (!string.IsNullOrEmpty(news.Title) &&
+                    !string.IsNullOrEmpty(news.Content) &&
+                    news.Content.Length > 10 &&
                     !this.Data.News.All().Any(existingNews => existingNews.Title == news.Title))
                 {
                     this.Data.News.Add(news);

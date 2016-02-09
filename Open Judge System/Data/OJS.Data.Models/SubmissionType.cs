@@ -44,7 +44,8 @@
 
         /// <summary>
         /// Comma-separated list of allowed file extensions.
-        /// If the value is null or whitespace then only text values are allowed. If any extension is specified then no text input is allowed.
+        /// If the value is null or whitespace then only text values are allowed.
+        /// If any extension is specified then no text input is allowed.
         /// </summary>
         public string AllowedFileExtensions { get; set; }
 
