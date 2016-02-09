@@ -56,7 +56,7 @@
             var compiledFilesToDisassemble =
                 Directory.GetFiles(this.workingDirectory, JavaCompiledFilesSearchPattern, SearchOption.AllDirectories);
 
-            var result = new DisassembleResult(true);
+            var result = new DisassembleResult(compiledFilesToDisassemble.Length > 0);
 
             var disassembledCode = new StringBuilder();
 

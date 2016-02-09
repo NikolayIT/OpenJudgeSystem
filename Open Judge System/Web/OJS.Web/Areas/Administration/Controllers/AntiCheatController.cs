@@ -21,6 +21,7 @@
     public class AntiCheatController : AdministrationBaseController
     {
         private const int MinSubmissionPointsToCheckForSimilarity = 20;
+        private const int RenderSubmissionsSimilaritiesGridTimeOut = 10 * 60; // 10 min.
 
         private readonly IPlagiarismDetectorFactory plagiarismDetectorFactory;
         private readonly ISimilarityFinder similarityFinder;
@@ -82,6 +83,8 @@
         [HttpPost]
         public ActionResult RenderSubmissionsSimilaritiesGrid(int[] contestIds, PlagiarismDetectorType plagiarismDetectorType)
         {
+            this.Server.ScriptTimeout = RenderSubmissionsSimilaritiesGridTimeOut;
+
             var participantsSimilarSubmissionGroups =
                 this.GetSimilarSubmissions(contestIds, plagiarismDetectorType)
                     .Select(s => new
