@@ -23,7 +23,7 @@ function onResourceTypeSelect() {
     if (val == 3) {
         resourceContainer.html('<div class="pull-right" data-type="resource-content">' +
                                     '<label for="Resources_' + id + '__Link">Линк</label>' +
-                                    '<input type="text" class = "form-control full-editor" name="Resources[' + id + '].Link" id="Resources_' + id + '__Link" />' +
+                                    '<input type="text" class="form-control full-editor" name="Resources[' + id + '].RawLink" id="Resources_' + id + '__Link" />' +
                                 '</div>');
     }
     else {
