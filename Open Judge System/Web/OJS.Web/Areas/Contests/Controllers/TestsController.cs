@@ -1,7 +1,4 @@
-﻿using OJS.Common.Extensions;
-using OJS.Web.Areas.Contests.ViewModels.Tests;
-
-namespace OJS.Web.Areas.Contests.Controllers
+﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System.Linq;
     using System.Net;
@@ -9,9 +6,10 @@ namespace OJS.Web.Areas.Contests.Controllers
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Common.Extensions;
     using OJS.Web.Controllers;
-    using OJS.Web.ViewModels.TestRun;
-
+    using OJS.Web.Areas.Contests.ViewModels.Tests;
+    
     using Resource = Resources.Areas.Contests.Controllers.Tests;
 
     public class TestsController : BaseController

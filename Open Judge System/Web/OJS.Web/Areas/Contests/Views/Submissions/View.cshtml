@@ -283,10 +283,10 @@ else
 
             if ($container.hasClass('hidden')) {
                 $container.removeClass('hidden');
-                $(button).text('Hide input');
+                $(button).text(@Resource.Hide_input_text);
             } else {
                 $container.addClass('hidden');
-                $(button).text('Show input');
+                $(button).text(@Resource.Show_input_text);
             }
         });
     }
