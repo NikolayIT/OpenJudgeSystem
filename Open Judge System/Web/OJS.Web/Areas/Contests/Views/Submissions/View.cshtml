@@ -1,5 +1,6 @@
 ﻿@using OJS.Common.Extensions
 @using OJS.Common.Models
+
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
 
 
@@ -130,17 +131,17 @@ else
         <h3 class="@className">
             @if (testResult.IsTrialTest)
             {
-                @:@string.Format("{0}{1}", Resource.Zero_test, testResult.Order)
+                @($"{Resource.Zero_test}{testResult.Order}")
             }
             else
             {
-                @:@string.Format("{0}{1}", Resource.Test, testResult.Order)
+                @($"{Resource.Test}{testResult.Order}")
             }
             (@testResultText)
             @if (Model.UserHasAdminPermission)
             {
-                <small>@string.Format("{0}{1}", Resource.Run, testResult.Id)</small>
-                <small><a href="/Administration/Tests/Details/@testResult.TestId">@string.Format("{0}{1}", Resource.Test, testResult.TestId)</a></small>
+                <small>@($"{Resource.Run}{testResult.Id}")</small>
+                <small><a href="/Administration/Tests/Details/@testResult.TestId">@($"{Resource.Test}{testResult.TestId}")</a></small>
             }
         </h3>
 
@@ -188,13 +189,32 @@ else
                         <pre>@testResult.CheckerComment</pre>
                     }
 
+                    @(Ajax.ActionLink(
+                        "Show input",
+                        "GetInputData",
+                        "Tests",
+                        new { id = testResult.TestId },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                            OnSuccess = "changeButtonTextToHide",
+                            OnBegin = "preventDefaultIfLoadedOnce"
+                        },
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data = testResult.TestId }
+                    ))
+
+                    <div id="test-@testResult.TestId-input-data">
+                    </div>
+
                     @if (testResult.ExpectedOutputFragment != null || testResult.UserOutputFragment != null)
                     {
                         <div class="row">
-                            <div class="col-md-6 ">Expected output:</div>
-                            <div class="col-md-6">Your output:</div>
+                            <div class="col-md-6 ">@Resource.Expected_output</div>
+                            <div class="col-md-6">@Resource.Your_output</div>
                         </div>
-                        
+
                         <div id="diff-@testResult.Id"></div>
 
                         <script>
@@ -233,9 +253,41 @@ else
 <h3 id="SourceCode">@Resource.Source_code</h3>
 @if (Model.IsBinaryFile)
 {
-    <a class="btn btn-default" href="/Contests/Submissions/Download/@Model.Id">Download binary file</a>
+    <a class="btn btn-default" href="/Contests/Submissions/Download/@Model.Id">@Resource.Download_binary_file</a>
 }
 else
 {
     <textarea id="code">@Model.ContentAsString</textarea>
 }
+
+<script>
+    function changeButtonTextToHide() {
+        $(this).text('Hide input');
+        $(this)[0].attributes['data-loaded'] = true;
+
+        attachInputButtonEventHandlers(this);
+    }
+
+    function preventDefaultIfLoadedOnce(ev)
+    {
+        if ($(this)[0].attributes['data-loaded']) {
+            ev.abort();
+        }
+    }
+
+    function attachInputButtonEventHandlers(button) {
+        $(button).on('click', function(ev) {
+            ev.preventDefault();
+            var testId = $(button)[0].attributes['data'].value;
+            var $container = $($('#test-' + testId + '-input-data div:first-of-type')[0]);
+
+            if ($container.hasClass('hidden')) {
+                $container.removeClass('hidden');
+                $(button).text('Hide input');
+            } else {
+                $container.addClass('hidden');
+                $(button).text('Show input');
+            }
+        });
+    }
+</script>

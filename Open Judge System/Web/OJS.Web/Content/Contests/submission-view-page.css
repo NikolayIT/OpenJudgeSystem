@@ -1,8 +1,9 @@
-﻿.CodeMirror-merge, .CodeMirror-merge .CodeMirror {
+﻿.CodeMirror-merge,
+.CodeMirror-merge .CodeMirror {
     height: 150px;
 }
 
-    .CodeMirror-merge .CodeMirror-code, .diff .row {
+    .CodeMirror-merge .CodeMirror-code, .diff {
         color: #fff;
     }
 

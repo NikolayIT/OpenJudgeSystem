@@ -201,4 +201,22 @@
   <data name="Zero_tests_not_included_in_result" xml:space="preserve">
     <value>Резултатът от нулевите тестове не се включва към крайния резултат.</value>
   </data>
+  <data name="Download_binary_file" xml:space="preserve">
+    <value>Изтегли бинарен файл</value>
+  </data>
+  <data name="Expected_output" xml:space="preserve">
+    <value>Очакван изход:</value>
+  </data>
+  <data name="Hide_input_text" xml:space="preserve">
+    <value>Скрий входа</value>
+  </data>
+  <data name="Show_input_text" xml:space="preserve">
+    <value>Покажи входа</value>
+  </data>
+  <data name="Test_input" xml:space="preserve">
+    <value>Вход:</value>
+  </data>
+  <data name="Your_output" xml:space="preserve">
+    <value>Твоят изход:</value>
+  </data>
 </root>

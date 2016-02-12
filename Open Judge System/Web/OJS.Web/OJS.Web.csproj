@@ -1123,6 +1123,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestsGeneral.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Controllers\Tests.bg.designer.cs">
+      <DependentUpon>Tests.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Contests\Controllers\Tests.designer.cs">
+      <DependentUpon>Tests.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.designer.cs">
       <DependentUpon>ContestsAllContestSubmissionsByUser.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1611,6 +1621,7 @@
     <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
@@ -1652,6 +1663,7 @@
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionsFilterViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Tests\TestInputDataViewModel.cs" />
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2596,6 +2608,16 @@
       <LastGenOutput>UsersIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Users.Views</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Controllers\Tests.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tests.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Controllers</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Controllers\Tests.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tests.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Contests.Controllers</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\Results\Partials\StatsPartial.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StatsPartial.Designer.cs</LastGenOutput>
@@ -2667,6 +2689,7 @@
     <Content Include="Views\Shared\_AdvancedSubmissionsGridPartial.cshtml" />
     <Content Include="Views\Account\ExternalNotify.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DropDownList.cshtml" />
+    <None Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

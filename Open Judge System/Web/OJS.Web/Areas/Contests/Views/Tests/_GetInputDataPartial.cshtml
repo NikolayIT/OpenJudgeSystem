@@ -1,0 +1,29 @@
+﻿@using Resource = Resources.Areas.Contests.Views.SubmissionsView
+
+@model OJS.Web.Areas.Contests.ViewModels.Tests.TestInputDataViewModel
+
+<script>
+    (function() {
+        var container = $('#test-@Model.TestId-input-data textarea')[0];
+
+        var view = CodeMirror.fromTextArea(container, {
+            mode: "text/x-csharp",
+            lineNumbers: true,
+            matchBrackets: true,
+            theme: "the-matrix",
+            showCursorWhenSelecting: true,
+            undoDepth: 100,
+            lineWrapping: true,
+            readOnly: true,
+            autofocus: false,
+        });
+
+        view.setSize('100%', '150px');
+    })();
+</script>
+
+<div>
+    @Resource.Test_input
+    <textarea>@Model.InputData</textarea>
+</div>
+

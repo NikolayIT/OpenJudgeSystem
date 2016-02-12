@@ -124,11 +124,38 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download binary file.
+        /// </summary>
+        public static string Download_binary_file {
+            get {
+                return ResourceManager.GetString("Download_binary_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execution result.
         /// </summary>
         public static string Execution_result {
             get {
                 return ResourceManager.GetString("Execution_result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected output:.
+        /// </summary>
+        public static string Expected_output {
+            get {
+                return ResourceManager.GetString("Expected_output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide input.
+        /// </summary>
+        public static string Hide_input_text {
+            get {
+                return ResourceManager.GetString("Hide_input_text", resourceCulture);
             }
         }
         
@@ -187,6 +214,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show input.
+        /// </summary>
+        public static string Show_input_text {
+            get {
+                return ResourceManager.GetString("Show_input_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source code.
         /// </summary>
         public static string Source_code {
@@ -241,6 +277,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test input:.
+        /// </summary>
+        public static string Test_input {
+            get {
+                return ResourceManager.GetString("Test_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tests.
         /// </summary>
         public static string Tests {
@@ -291,6 +336,15 @@ namespace Resources.Areas.Contests.Views {
         public static string View_code {
             get {
                 return ResourceManager.GetString("View_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your output:.
+        /// </summary>
+        public static string Your_output {
+            get {
+                return ResourceManager.GetString("Your_output", resourceCulture);
             }
         }
         
