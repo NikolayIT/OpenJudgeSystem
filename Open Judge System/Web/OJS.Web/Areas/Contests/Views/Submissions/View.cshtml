@@ -20,19 +20,21 @@
     <script type="text/javascript">
         $(function () {
             var textEditor = document.getElementById("code");
-            var editor = new CodeMirror.fromTextArea(textEditor, {
-                mode: "text/x-csharp",
-                lineNumbers: true,
-                matchBrackets: true,
-                theme: "the-matrix",
-                showCursorWhenSelecting: true,
-                undoDepth: 100,
-                lineWrapping: true,
-                readOnly: true,
-                autofocus: false,
-            });
+            if (textEditor) {
+                var editor = new CodeMirror.fromTextArea(textEditor, {
+                    mode: "text/x-csharp",
+                    lineNumbers: true,
+                    matchBrackets: true,
+                    theme: "the-matrix",
+                    showCursorWhenSelecting: true,
+                    undoDepth: 100,
+                    lineWrapping: true,
+                    readOnly: true,
+                    autofocus: false,
+                });
 
-            editor.setSize('100%', '100%');
+                editor.setSize('100%', '100%');
+            }
         });
     </script>
 }

@@ -12,6 +12,7 @@
 
     using Resource = Resources.Areas.Contests.Controllers.Tests;
 
+    [Authorize]
     public class TestsController : BaseController
     {
         public TestsController(IOjsData data)
@@ -20,7 +21,6 @@
         }
 
         [HttpGet]
-        [Authorize]
         public ActionResult GetInputData(int id)
         {
             var testInfo = this.Data.Tests
