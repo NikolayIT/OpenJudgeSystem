@@ -19,7 +19,7 @@
     @Scripts.Render("~/bundles/codemirrormerge")
     <script type="text/javascript">
         $(function () {
-            var textEditor = document.getElementById("code");
+            var textEditor = document.getElementById('code');
             if (textEditor) {
                 var editor = new CodeMirror.fromTextArea(textEditor, {
                     mode: "text/x-csharp",
@@ -151,7 +151,8 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)) // Temporally execution comments are visible only for administrators
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && 
+            (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback))
         {
             var executionComment = testResult.ExecutionComment;
             if (!Model.UserHasAdminPermission && !testResult.IsTrialTest && !Model.ShowDetailedFeedback)
@@ -191,7 +192,7 @@ else
                     }
 
                     @(Ajax.ActionLink(
-                        @Resource.Show_input_text,
+                        Resource.Show_input_text,
                         "GetInputData",
                         "Tests",
                         new { id = testResult.TestId },
@@ -203,15 +204,13 @@ else
                             OnSuccess = "onTestInputDataSuccess",
                             OnBegin = "preventDefaultIfLoadedOnce"
                         },
-                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", @data_test_id = testResult.TestId }
-                    ))
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
-                    <div id="test-@testResult.TestId-input-data">
-                    </div>
+                    <div id="test-@(testResult.TestId)-input-data"></div>
 
                     @if (testResult.ExpectedOutputFragment != null || testResult.UserOutputFragment != null)
                     {
-                        <div class="row">
+                        <div class="row top-buffer">
                             <div class="col-md-6">@Resource.Expected_output</div>
                             <div class="col-md-6">@Resource.Your_output</div>
                         </div>
