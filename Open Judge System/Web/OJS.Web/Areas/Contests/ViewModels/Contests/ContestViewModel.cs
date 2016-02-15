@@ -20,36 +20,35 @@
         {
             get
             {
-                return
-                    contest =>
+                return contest =>
                     new ContestViewModel
-                                  {
-                                      Id = contest.Id,
-                                      Name = contest.Name,
-                                      CategoryId = contest.CategoryId,
-                                      CategoryName = contest.Category.Name,
-                                      StartTime = contest.StartTime,
-                                      EndTime = contest.EndTime,
-                                      PracticeStartTime = contest.PracticeStartTime,
-                                      PracticeEndTime = contest.PracticeEndTime,
-                                      IsDeleted = contest.IsDeleted,
-                                      IsVisible = contest.IsVisible,
-                                      ContestPassword = contest.ContestPassword,
-                                      PracticePassword = contest.PracticePassword,
-                                      HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
-                                      HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
-                                      OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
-                                      PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
-                                      ProblemsCount = contest.Problems.Count(x => !x.IsDeleted),
-                                      Problems = contest.Problems.AsQueryable()
+                    {
+                        Id = contest.Id,
+                        Name = contest.Name,
+                        CategoryId = contest.CategoryId,
+                        CategoryName = contest.Category.Name,
+                        StartTime = contest.StartTime,
+                        EndTime = contest.EndTime,
+                        PracticeStartTime = contest.PracticeStartTime,
+                        PracticeEndTime = contest.PracticeEndTime,
+                        IsDeleted = contest.IsDeleted,
+                        IsVisible = contest.IsVisible,
+                        ContestPassword = contest.ContestPassword,
+                        PracticePassword = contest.PracticePassword,
+                        HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
+                        HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
+                        OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
+                        PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
+                        ProblemsCount = contest.Problems.Count(x => !x.IsDeleted),
+                        Problems = contest.Problems.AsQueryable()
                                                                     .Where(x => !x.IsDeleted)
                                                                     .OrderBy(x => x.OrderBy)
                                                                     .ThenBy(x => x.Name)
                                                                     .Select(ContestProblemViewModel.FromProblem),
-                                      LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
-                                      Description = contest.Description,
-                                      AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType),
-                                  };
+                        LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
+                        Description = contest.Description,
+                        AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType),
+                    };
             }
         }
 
@@ -62,15 +61,9 @@
 
         public string CategoryName
         {
-            get
-            {
-                return this.contestName.ToUrl();
-            }
+            get { return this.contestName.ToUrl(); }
 
-            set
-            {
-                this.contestName = value;
-            }
+            set { this.contestName = value; }
         }
 
         public string Description { get; set; }

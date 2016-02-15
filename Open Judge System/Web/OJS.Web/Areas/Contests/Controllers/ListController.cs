@@ -28,12 +28,12 @@
 
         public ActionResult ReadCategories(int? id)
         {
-            var categories =
-                this.Data.ContestCategories.All()
-                    .Where(x => x.IsVisible)
-                    .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
-                    .OrderBy(x => x.OrderBy)
-                    .Select(ContestCategoryListViewModel.FromCategory);
+            var categories = this.Data.ContestCategories
+                .All()
+                .Where(x => x.IsVisible)
+                .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
+                .OrderBy(x => x.OrderBy)
+                .Select(ContestCategoryListViewModel.FromCategory);
 
             return this.Json(categories, JsonRequestBehavior.AllowGet);
         }
@@ -62,12 +62,12 @@
             ContestCategoryViewModel contestCategory;
             if (id.HasValue)
             {
-                contestCategory =
-                    this.Data.ContestCategories.All()
-                        .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
-                        .OrderBy(x => x.OrderBy)
-                        .Select(ContestCategoryViewModel.FromContestCategory)
-                        .FirstOrDefault();
+                contestCategory = this.Data.ContestCategories
+                    .All()
+                    .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
+                    .OrderBy(x => x.OrderBy)
+                    .Select(ContestCategoryViewModel.FromContestCategory)
+                    .FirstOrDefault();
             }
             else
             {
@@ -75,9 +75,10 @@
                 {
                     CategoryName = Resource.Main_categories,
                     Contests = new HashSet<ContestViewModel>(),
-                    SubCategories = this.Data.ContestCategories.All()
-                                        .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
-                                        .Select(ContestCategoryListViewModel.FromCategory)
+                    SubCategories = this.Data.ContestCategories
+                        .All()
+                        .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
+                        .Select(ContestCategoryListViewModel.FromCategory)
                 };
             }
 
@@ -101,10 +102,11 @@
             SubmissionTypeViewModel submissionType;
             if (id.HasValue)
             {
-                submissionType = this.Data.SubmissionTypes.All()
-                                                  .Where(x => x.Id == id.Value)
-                                                  .Select(SubmissionTypeViewModel.FromSubmissionType)
-                                                  .FirstOrDefault();
+                submissionType = this.Data.SubmissionTypes
+                    .All()
+                    .Where(x => x.Id == id.Value)
+                    .Select(SubmissionTypeViewModel.FromSubmissionType)
+                    .FirstOrDefault();
             }
             else
             {
@@ -116,14 +118,13 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_type_not_found);
             }
 
-            var contests =
-                this.Data.Contests
-                                .All()
-                                .Where(c => !c.IsDeleted &&
-                                            c.IsVisible &&
-                                            c.SubmissionTypes.Any(s => s.Id == submissionType.Id))
-                                .OrderBy(x => x.OrderBy)
-                                .Select(ContestViewModel.FromContest);
+            var contests = this.Data.Contests
+                .All()
+                .Where(c => !c.IsDeleted &&
+                            c.IsVisible &&
+                            c.SubmissionTypes.Any(s => s.Id == submissionType.Id))
+                .OrderBy(x => x.OrderBy)
+                .Select(ContestViewModel.FromContest);
 
             this.ViewBag.SubmissionType = submissionType.Name;
             return this.View(contests);

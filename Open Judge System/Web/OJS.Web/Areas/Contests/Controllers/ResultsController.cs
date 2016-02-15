@@ -88,6 +88,7 @@
             // If the results are not visible and the participant is not registered for the contest
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
+                official &&
                 !this.Data.Participants.Any(id, this.UserProfile.Id, official) &&
                 !this.User.IsAdmin())
             {

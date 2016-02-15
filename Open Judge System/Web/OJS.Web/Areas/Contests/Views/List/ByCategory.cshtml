@@ -16,7 +16,11 @@
                     @if (contest.CanBePracticed && contest.CanBeCompeted && contest.OfficialParticipants > 0)
                     {
                         <td colspan="2">
-                            @Html.RouteLink(Resource.Compete, "Contests_compete", new {id = contest.Id, action = GlobalConstants.Index}, new {@class = "btn btn-sm btn-success compete-button"})
+                            @Html.RouteLink(
+                                Resource.Compete,
+                                "Contests_compete",
+                                new { id = contest.Id, action = GlobalConstants.Index },
+                                new { @class = "btn btn-sm btn-success compete-button" })
 
                             @if (contest.HasContestPassword)
                             {
@@ -39,7 +43,11 @@
                         </td>
 
                         <td colspan="2">
-                            @Html.RouteLink(Resource.Practice, "Contests_practice", new {id = contest.Id, action = GlobalConstants.Index}, new {@class = "btn btn-sm btn-primary practice-button"})
+                            @Html.RouteLink(
+                                Resource.Practice,
+                                "Contests_practice",
+                                new { id = contest.Id, action = GlobalConstants.Index },
+                                new { @class = "btn btn-sm btn-primary practice-button" })
 
                             @if (contest.HasPracticePassword)
                             {
@@ -62,7 +70,11 @@
                         <td class="paricipate-compete-buttons">
                             @if (contest.CanBeCompeted && !contest.CanBePracticed)
                             {
-                                @Html.RouteLink(Resource.Compete, "Contests_compete", new {id = contest.Id, action = GlobalConstants.Index}, new {@class = "btn btn-sm btn-success compete-button"})
+                                @Html.RouteLink(
+                                    Resource.Compete,
+                                    "Contests_compete",
+                                    new { id = contest.Id, action = GlobalConstants.Index },
+                                    new { @class = "btn btn-sm btn-success compete-button" })
                                 if (contest.HasContestPassword)
                                 {
                                     <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
@@ -120,7 +132,6 @@
                                 </div>
                             }
                         </td>
-                        
                     }
 
                     <td class="problems-count">
