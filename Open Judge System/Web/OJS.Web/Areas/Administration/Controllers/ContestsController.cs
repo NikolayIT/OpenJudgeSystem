@@ -17,6 +17,7 @@
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+    using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
@@ -312,6 +313,7 @@
         private void PrepareViewBagData()
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
+            this.ViewBag.SubmissionExportTypes = DropdownViewModel.GetEnumValues<SubmissionExportType>();
         }
 
         private bool IsValidContest(ViewModelType model)

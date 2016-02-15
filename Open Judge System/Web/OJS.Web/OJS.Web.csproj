@@ -1586,6 +1586,7 @@
     <Compile Include="Areas\Contests\Models\BinarySubmissionModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestQuestionAnswerModel.cs" />
     <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
+    <Compile Include="Areas\Contests\Models\SubmissionExportType.cs" />
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />

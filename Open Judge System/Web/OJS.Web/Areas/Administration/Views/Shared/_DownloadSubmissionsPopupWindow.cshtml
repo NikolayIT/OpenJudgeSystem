@@ -1,4 +1,6 @@
-﻿<div id="download-contest-submissions-popup" style="display: none;">
+﻿@using System.Collections
+
+<div id="download-contest-submissions-popup" style="display: none;">
     <form id="download-contest-submissions-form" method="GET" action="/Administration/ContestsExport/Solutions/">
         <section>
             <input type="hidden" id="contest-id" name="id" />
@@ -20,13 +22,13 @@
 
         <section class="text-center small-margin-top">
             <div class="editor-field">
-                <input type="radio" checked="checked" name="bestSubmissions" value="true" id="best-submissions-true" />
-                <label for="best-submissions-true">Най-добри решения</label>
-            </div>
-
-            <div class="editor-field">
-                <input type="radio" name="bestSubmissions" value="false" id="best-submissions-false" />
-                <label for="best-submissions-false">Последни решения</label>
+                @(Html.Kendo().DropDownList()
+                    .Name("exportType")
+                    .DataValueField("Id")
+                    .DataTextField("Name")
+                    .SelectedIndex(1)
+                    .BindTo((IEnumerable)ViewBag.SubmissionExportTypes)
+                )    
             </div>
         </section>
 

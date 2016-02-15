@@ -19,6 +19,7 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
+    using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
 
@@ -163,7 +164,7 @@
                 string.Format(Resource.Report_excel_format, compete ? Resource.Contest : Resource.Practice, contest.Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
-        public ActionResult Solutions(int id, bool compete, bool bestSubmissions)
+        public ActionResult Solutions(int id, bool compete, SubmissionExportType exportType)
         {
             var userHasAccessToContest =
                 this.User.IsAdmin() ||
@@ -194,21 +195,25 @@
 
             var file = PrepareSolutionsZipFile(fileComment);
 
-            if (bestSubmissions)
+            Func<int, int, Submission> getSubmissionFunc = null;
+            switch (exportType)
             {
-                ZipParticipantsSolutions(participants, file, problems, this.GetBestSubmission);
+                case SubmissionExportType.BestSubmissions:
+                    getSubmissionFunc = this.GetBestSubmission;
+                    break;
+                case SubmissionExportType.LastSubmissions:
+                    getSubmissionFunc = this.GetLastSubmission;
+                    break;
             }
-            else
-            {
-                ZipParticipantsSolutions(participants, file, problems, this.GetLastSubmission);
-            }
+
+            this.ZipParticipantsSolutions(participants, file, problems, getSubmissionFunc);
 
             // Send file to the user
             var zipFileName = string.Format(
                 "{1} {2} submissions for {0}.zip",
                 contestName,
                 compete ? "Contest" : "Practice",
-                bestSubmissions ? "best" : "last");
+                exportType == SubmissionExportType.BestSubmissions ? "best" : exportType == SubmissionExportType.LastSubmissions ? "last" : "all");
             return new ZipFileResult(file, zipFileName);
         }
 
@@ -221,58 +226,42 @@
             var fileComment = new StringBuilder();
 
             fileComment.AppendLine(string.Format("{1} submissions for {0}", contestName, isOfficialContest ? "Contest" : "Practice"));
-            fileComment.AppendLine(string.Format("Number of participants: {0}", participantsCount));
+            fileComment.AppendLine($"Number of participants: {participantsCount}");
             fileComment.AppendLine();
 
             fileComment.AppendLine("Problems:");
             foreach (var problem in problems)
             {
-                fileComment.AppendLine(
-                    string.Format(
-                        "{0} - {1} points, time limit: {2:0.000} sec., memory limit: {3:0.00} MB",
-                        problem.Name,
-                        problem.MaximumPoints,
-                        problem.TimeLimit / 1000.0,
-                        problem.MemoryLimit / 1024.0 / 1024.0));
+                fileComment.AppendLine(string.Format(
+                    "{0} - {1} points, time limit: {2:0.000} sec., memory limit: {3:0.00} MB",
+                    problem.Name,
+                    problem.MaximumPoints,
+                    problem.TimeLimit / 1000.0,
+                    problem.MemoryLimit / 1024.0 / 1024.0));
             }
 
             return fileComment;
         }
 
-        private static void ZipParticipantsSolutions(
-            IEnumerable<ParticipantModel> participants,
+        private static void ZipSubmission(
             ZipFile file,
-            IEnumerable<ProblemModel> problems,
-            Func<int, int, Submission> getSubmission)
+            ProblemModel problem,
+            Submission submission,
+            string directoryName,
+            bool includeDateInFileName = false)
         {
-            foreach (var participant in participants)
-            {
-                // Create directory with the participants name
-                var directoryName =
-                    string.Format("{0} ({1} {2})", participant.UserName, participant.FirstName, participant.LastName)
-                        .ToValidFilePath();
-                file.AddDirectoryByName(directoryName);
+            var fileNameWithoutExtension =
+                includeDateInFileName ? $"{problem.Name}-{submission.CreatedOn.ToString("dd-MM-yyyy HH:mm:ss")}" : problem.Name;
 
-                foreach (var problem in problems)
-                {
-                    var submission = getSubmission(participant.Id, problem.Id);
+            var fileName =
+                $"{fileNameWithoutExtension}.{submission.FileExtension ?? submission.SubmissionType.FileNameExtension}"
+                    .ToValidFileName();
 
-                    if (submission != null)
-                    {
-                        var fileName = 
-                            string.Format("{0}.{1}", problem.Name, submission.FileExtension ?? submission.SubmissionType.FileNameExtension)
-                                .ToValidFileName();
+            var content = submission.IsBinaryFile ? submission.Content : submission.ContentAsString.ToByteArray();
 
-                        var content = submission.IsBinaryFile
-                            ? submission.Content
-                            : submission.ContentAsString.ToByteArray();
-
-                        var entry = file.AddEntry(string.Format("{0}\\{1}", directoryName, fileName), content);
-                        entry.CreationTime = submission.CreatedOn;
-                        entry.ModifiedTime = submission.CreatedOn;
-                    }
-                }
-            }
+            var entry = file.AddEntry($"{directoryName}\\{fileName}", content);
+            entry.CreationTime = submission.CreatedOn;
+            entry.ModifiedTime = submission.CreatedOn;
         }
 
         private static ZipFile PrepareSolutionsZipFile(StringBuilder fileComment)
@@ -285,6 +274,44 @@
             };
 
             return file;
+        }
+
+        private void ZipParticipantsSolutions(
+            IEnumerable<ParticipantModel> participants,
+            ZipFile file,
+            ICollection<ProblemModel> problems,
+            Func<int, int, Submission> getSubmission)
+        {
+            foreach (var participant in participants)
+            {
+                // Create directory with the participants name
+                var directoryName = $"{participant.UserName} ({participant.FirstName} {participant.LastName})"
+                    .ToValidFilePath();
+                file.AddDirectoryByName(directoryName);
+
+                foreach (var problem in problems)
+                {
+                    // All submissions
+                    if (getSubmission == null)
+                    {
+                        var submissions = this.GetAllSubmissions(participant.Id, problem.Id);
+
+                        foreach (var submission in submissions)
+                        {
+                            ZipSubmission(file, problem, submission, directoryName, true);
+                        }
+                    }
+                    else
+                    {
+                        var submission = getSubmission(participant.Id, problem.Id);
+
+                        if (submission != null)
+                        {
+                            ZipSubmission(file, problem, submission, directoryName);
+                        }
+                    }
+                }
+            }
         }
 
         private IList<ParticipantModel> GetContestParticipants(int contestId, bool isOfficialContest)
@@ -329,6 +356,15 @@
                 .Where(submission => submission.ParticipantId == participantId && submission.ProblemId == problemId)
                 .OrderByDescending(submission => submission.CreatedOn)
                 .FirstOrDefault();
+        }
+
+        private IEnumerable<Submission> GetAllSubmissions(int participantId, int problemId)
+        {
+            return this.Data.Submissions
+                .All()
+                .Where(submission => submission.ParticipantId == participantId && submission.ProblemId == problemId)
+                .OrderByDescending(submission => submission.CreatedOn)
+                .ToList();
         }
     }
 }
