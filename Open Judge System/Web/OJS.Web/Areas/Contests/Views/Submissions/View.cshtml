@@ -3,7 +3,6 @@
 
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
 
-
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
@@ -190,7 +189,7 @@ else
                     }
 
                     @(Ajax.ActionLink(
-                        "Show input",
+                        @Resource.Show_input_text,
                         "GetInputData",
                         "Tests",
                         new { id = testResult.TestId },
@@ -199,10 +198,10 @@ else
                             HttpMethod = "Get",
                             InsertionMode = InsertionMode.Replace,
                             UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                            OnSuccess = "changeButtonTextToHide",
+                            OnSuccess = "onTestInputDataSuccess",
                             OnBegin = "preventDefaultIfLoadedOnce"
                         },
-                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data = testResult.TestId }
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", @data_test_id = testResult.TestId }
                     ))
 
                     <div id="test-@testResult.TestId-input-data">
@@ -211,7 +210,7 @@ else
                     @if (testResult.ExpectedOutputFragment != null || testResult.UserOutputFragment != null)
                     {
                         <div class="row">
-                            <div class="col-md-6 ">@Resource.Expected_output</div>
+                            <div class="col-md-6">@Resource.Expected_output</div>
                             <div class="col-md-6">@Resource.Your_output</div>
                         </div>
 
@@ -261,15 +260,13 @@ else
 }
 
 <script>
-    function changeButtonTextToHide() {
+    function onTestInputDataSuccess() {
         $(this).text('Hide input');
         $(this)[0].attributes['data-loaded'] = true;
-
         attachInputButtonEventHandlers(this);
     }
 
-    function preventDefaultIfLoadedOnce(ev)
-    {
+    function preventDefaultIfLoadedOnce(ev) {
         if ($(this)[0].attributes['data-loaded']) {
             ev.abort();
         }
@@ -278,15 +275,15 @@ else
     function attachInputButtonEventHandlers(button) {
         $(button).on('click', function(ev) {
             ev.preventDefault();
-            var testId = $(button)[0].attributes['data'].value;
+            var testId = $(button)[0].attributes['data-test-id'].value;
             var $container = $($('#test-' + testId + '-input-data div:first-of-type')[0]);
 
             if ($container.hasClass('hidden')) {
                 $container.removeClass('hidden');
-                $(button).text(@Resource.Hide_input_text);
+                $(button).text('@Resource.Hide_input_text');
             } else {
                 $container.addClass('hidden');
-                $(button).text(@Resource.Show_input_text);
+                $(button).text('@Resource.Show_input_text');
             }
         });
     }
