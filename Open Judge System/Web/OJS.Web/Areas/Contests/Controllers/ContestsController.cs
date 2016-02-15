@@ -49,10 +49,11 @@
             this.ViewBag.ContestProblems = this.Data.Problems
                 .All()
                 .Where(x => x.ContestId == id)
-                .Select(ProblemListItemViewModel.FromProblem);
+                .Select(ProblemListItemViewModel.FromProblem)
+                .ToList();
 
             contestViewModel.UserIsLecturerInContest =
-                this.UserProfile?.LecturerInContests.Any(x => x.ContestId == contestViewModel.Id) ?? false;
+                this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
 
             return this.View(contestViewModel);
         }
@@ -60,9 +61,9 @@
         public ActionResult BySubmissionType(int id)
         {
             var contests = this.Data.Contests
-                                            .All()
-                                            .Where(x => x.SubmissionTypes.Any(s => s.Id == id) && !x.IsDeleted && x.IsVisible)
-                                            .Select(ContestViewModel.FromContest);
+                .All()
+                .Where(x => x.SubmissionTypes.Any(s => s.Id == id) && !x.IsDeleted && x.IsVisible)
+                .Select(ContestViewModel.FromContest);
 
             return this.View(contests);
         }
@@ -71,12 +72,13 @@
         [HttpPost]
         public ActionResult UserSubmissions([DataSourceRequest]DataSourceRequest request, int contestId)
         {
-            var userSubmissions = this.Data.Submissions.All()
-                                                        .Where(x =>
-                                                            x.Participant.UserId == this.UserProfile.Id &&
-                                                            x.Problem.ContestId == contestId &&
-                                                            x.Problem.ShowResults)
-                                                        .Select(SubmissionResultViewModel.FromSubmission);
+            var userSubmissions = this.Data.Submissions
+                .All()
+                .Where(x =>
+                    x.Participant.UserId == this.UserProfile.Id &&
+                    x.Problem.ContestId == contestId &&
+                    x.Problem.ShowResults)
+                .Select(SubmissionResultViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }

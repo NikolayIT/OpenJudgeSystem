@@ -203,10 +203,8 @@
                 {
                     return (this.EndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
