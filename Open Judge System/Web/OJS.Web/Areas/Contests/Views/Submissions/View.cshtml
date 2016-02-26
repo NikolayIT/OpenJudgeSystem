@@ -151,7 +151,7 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) && 
+        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
             (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback))
         {
             var executionComment = testResult.ExecutionComment;
@@ -176,7 +176,29 @@ else
                 }
             }
 
-            <pre>@executionComment</pre>
+            <div class="diff">
+                @if (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
+                {
+                    @(Ajax.ActionLink(
+                        Resource.Show_input_text,
+                        "GetInputData",
+                        "Tests",
+                        new { id = testResult.TestId },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                            OnSuccess = "onTestInputDataSuccess",
+                            OnBegin = "preventDefaultIfLoadedOnce"
+                        },
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+
+                    <div id="test-@(testResult.TestId)-input-data"></div>
+                }
+
+                <pre>@executionComment</pre>
+            </div>
         }
 
         if (!string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
@@ -245,8 +267,8 @@ else
             }
         }
 
-        <div>@Resource.Time_used: @string.Format("{0:0.000}", testResult.TimeUsed / 1000.0) s</div>
-        <div>@Resource.Memory_used: @string.Format("{0:0.00}", testResult.MemoryUsed / 1024.0 / 1024.0) MB</div>
+        <div>@Resource.Time_used: @($"{testResult.TimeUsed/1000.0:0.000}") s</div>
+        <div>@Resource.Memory_used: @($"{testResult.MemoryUsed/1024.0/1024.0:0.00}") MB</div>
     }
 }
 
