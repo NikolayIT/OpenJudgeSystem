@@ -1,0 +1,75 @@
+﻿@model int
+
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+
+@{
+    ViewBag.Title = "Информация за преподаватели";
+    const string ControllerName = "ParticipantsAnswers";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<input id="ContestId" type="hidden" data-contest-id="@Model" />
+
+@(Html.Kendo()
+    .Grid<OJS.Web.Areas.Contests.ViewModels.ParticipantsAnswers.ParticipantsAnswersViewModel>()
+    .Name("DataGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(x => x.ParticipantUsername).Width(180).Title("Потребител");
+        columns.Bound(x => x.ParticipantFullName).Width(240).Title("Пълно име");
+        columns.Bound(x => x.Answer).Title("Преподавател");
+        columns.Bound(x => x.Points).Title("Точки");
+    })
+    .ToolBar(toolbar =>
+    {
+        //toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+    })
+    .Editable(editable =>
+    {
+        editable.Mode(GridEditMode.PopUp);
+        editable.Window(w => w.Title(ViewBag.Title));
+    })
+    .ColumnMenu()
+    .Events(e => e.DataBound("onDataBound"))
+    .Pageable(x => x.Refresh(true))
+    .Sortable(x => x.Enabled(true).AllowUnsort(false))
+    .Filterable(x => x.Enabled(true))
+    .Reorderable(x => x.Columns(true))
+    .Resizable(x => x.Columns(true))
+    .DataSource(datasource => datasource
+        .Ajax()
+        .ServerOperation(true)
+        .Model(model =>
+        {
+            model.Id(m => m.Id);
+        })
+        .Sort(sort => sort.Add(x => x.Answer))
+        .PageSize(50)
+        .Read(read => read.Action("ReadData", ControllerName, new { contestId = Model }))
+        .Update(update => update.Action("Update", ControllerName))
+        .Events(ev => ev.Error("validateModelStateErrors"))
+    )
+)
+
+@section scripts {
+    <script type="text/javascript">
+        function onDataBound(e) {
+            CreateExportToExcelButton();
+
+            var contestId = $('#ContestId').data('contest-id');
+            var href = $('#export').attr('href');
+
+            href = href.replace('ExportToExcel', 'ExcelExport');
+            href += '&contestId=' + contestId;
+
+            $('#export').attr('href', href);
+            console.log($('#export'));
+        }
+    </script>
+    <script src="~/Scripts/Administration/administration-global.js"></script>
+}
+
+
+

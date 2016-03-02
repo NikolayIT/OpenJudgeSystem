@@ -28,6 +28,11 @@
     {
         <span>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
     }
+
+    @if (User.IsAdmin() || User.IsInRole("KidsTeacher"))
+    {
+        <span>@Html.ActionLink("Преподаватели", "Details", "ParticipantsAnswers", new { id = Model.Id }, new { @class = "btn btn-primary", style = "margin-left: 20px" })</span>
+    }
 </h2>
 
 @if (Model.AllPages > 1)

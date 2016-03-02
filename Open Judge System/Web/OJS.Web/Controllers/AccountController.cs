@@ -91,7 +91,7 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, bool captchaValid)
         {
-            if (this.Data.Users.All().Any(x => x.Email == model.Email))
+          if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
                 this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
             }

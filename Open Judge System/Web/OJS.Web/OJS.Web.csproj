@@ -1535,6 +1535,7 @@
     </Compile>
     <Compile Include="Areas\Contests\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Contests\Controllers\ListController.cs" />
+    <Compile Include="Areas\Contests\Controllers\ParticipantsAnswersController.cs" />
     <Compile Include="Areas\Contests\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Contests\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Contests\Helpers\ContestExtensions.cs" />
@@ -1551,6 +1552,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsChartViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\ParticipantsAnswers\ParticipantsAnswersViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
@@ -1808,6 +1810,7 @@
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
     <None Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
+    <Content Include="Areas\Contests\Views\ParticipantsAnswers\Details.cshtml" />
     <None Include="Properties\PublishProfiles\bgcoder.com.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

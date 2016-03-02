@@ -19,6 +19,11 @@
 <h2>
     @ViewBag.Subtitle
     <span>@Html.ActionLink(Resource.Public_results, "Simple", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+
+    @if (User.IsAdmin() || User.IsInRole("KidsTeacher"))
+    {
+        <span>@Html.ActionLink("Преподаватели", "Details", "ParticipantsAnswers", new { id = Model.Id }, new { @class = "btn btn-primary", style = "margin-left: 20px" })</span>
+    }
 </h2>
 
 @{Html.RenderAction("Stats", new { viewModel = Model });}
