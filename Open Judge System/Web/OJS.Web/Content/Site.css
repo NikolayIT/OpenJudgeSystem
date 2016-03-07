@@ -340,3 +340,7 @@ input[type="checkbox"].input-validation-error {
 pre {
     color: #fff;
 }
+
+.monospace-font {
+    font-family: "Lucida Console", Monaco, monospace
+}

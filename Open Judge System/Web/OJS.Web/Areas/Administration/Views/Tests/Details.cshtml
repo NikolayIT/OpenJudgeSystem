@@ -18,7 +18,7 @@
         @Html.LabelFor(m => m.Input)
     </div>
     <div class="panel-body news-content editor-label">
-        <pre id="test-input">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0, 200) + "..." : Model.InputFull)</pre>
+        <pre id="test-input" class="monospace-font">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0, 200) + "..." : Model.InputFull)</pre>
 
         @if (Model.InputFull.Length > 200)
         {
@@ -30,7 +30,7 @@
         @Html.LabelFor(m => m.Output)
     </div>
     <div class="panel-body news-content editor-label">
-        <pre id ="test-output">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
+        <pre id ="test-output" class="monospace-font">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
         
         @if (Model.OutputFull.Length > 200)
         {
