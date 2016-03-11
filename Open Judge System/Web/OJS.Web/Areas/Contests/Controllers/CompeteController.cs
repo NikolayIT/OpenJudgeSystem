@@ -99,7 +99,7 @@
         public ActionResult Index(int id, bool official)
         {
             var contest = this.Data.Contests.GetById(id);
-            ValidateContest(contest, official);
+            this.ValidateContest(contest, official);
 
             if (official && !this.ValidateContestIp(this.Request.UserHostAddress, id))
             {
@@ -136,7 +136,8 @@
         /// Displays form for contest registration.
         /// Users only.
         /// </summary>
-        [HttpGet, Authorize]
+        [HttpGet]
+        [Authorize]
         public ActionResult Register(int id, bool official)
         {
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
@@ -148,7 +149,7 @@
 
             var contest = this.Data.Contests.All().Include(x => x.Questions).FirstOrDefault(x => x.Id == id);
 
-            ValidateContest(contest, official);
+            this.ValidateContest(contest, official);
 
             if (contest.ShouldShowRegistrationForm(official))
             {
@@ -168,7 +169,9 @@
         /// Users only.
         /// </summary>
         //// TODO: Refactor
-        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
             // check if the user has already registered for participation and redirect him to the correct action
@@ -180,7 +183,7 @@
             }
 
             var contest = this.Data.Contests.GetById(registrationData.ContestId);
-            ValidateContest(contest, official);
+            this.ValidateContest(contest, official);
 
             if (official && contest.HasContestPassword)
             {
@@ -272,7 +275,8 @@
         /// <param name="participantSubmission">Participant submission.</param>
         /// <param name="official">A check whether the contest is official or practice.</param>
         /// <returns>Returns confirmation if the submission was correctly processed.</returns>
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize]
         public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
@@ -292,7 +296,7 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            ValidateContest(participant.Contest, official);
+            this.ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
@@ -349,7 +353,7 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            ValidateContest(participant.Contest, official);
+            this.ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
@@ -377,7 +381,7 @@
 
             // Validate file extension
             if (!submissionType.AllowedFileExtensionsList.Contains(
-                    participantSubmission.File.FileName.GetFileExtension()))
+                participantSubmission.File.FileName.GetFileExtension()))
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_extention);
             }
@@ -423,7 +427,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            ValidateContest(problem.Contest, official);
+            this.ValidateContest(problem.Contest, official);
 
             if (!this.Data.Participants.Any(problem.ContestId, this.UserProfile.Id, official))
             {
@@ -547,7 +551,7 @@
 
             if (this.UserProfile == null)
             {
-                ValidateContest(contest, official);
+                this.ValidateContest(contest, official);
             }
             else if (this.User != null && this.User.IsAdmin())
             {
@@ -557,7 +561,7 @@
             }
             else
             {
-                ValidateContest(contest, official);
+                this.ValidateContest(contest, official);
                 userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);
             }
 
@@ -625,7 +629,7 @@
 
             var contest = this.Data.Contests.GetById(id);
 
-            ValidateContest(contest, true);
+            this.ValidateContest(contest, true);
 
             var model = new NewContestIpViewModel { ContestId = id };
             return this.View(model);
@@ -648,7 +652,7 @@
 
             var contest = this.Data.Contests.All().Include(x => x.AllowedIps).Include("AllowedIps.Ip").FirstOrDefault(x => x.Id == model.ContestId);
 
-            ValidateContest(contest, true);
+            this.ValidateContest(contest, true);
 
             if (!string.Equals(contest.NewIpPassword, model.NewIpPassword, StringComparison.InvariantCulture))
             {

@@ -24,7 +24,7 @@
             {
                 return submission => new SubmissionResultViewModel
                 {
-                    TestRuns = submission.TestRuns.AsQueryable().Select(TestRunViewModel.FromTestRun),
+                    TestRuns = submission.TestRuns.AsQueryable().OrderBy(tr => tr.Test.OrderBy).Select(TestRunViewModel.FromTestRun),
                     SubmissionDate = submission.CreatedOn,
                     MaximumPoints = submission.Problem.MaximumPoints,
                     SubmissionId = submission.Id,
