@@ -9,16 +9,18 @@
     <h2 class="text-error">@Model.Exception.Message</h2>
 </hgroup>
 
-<pre>@Model.Exception.ToString()</pre>
-@{
-    var exception = Model.Exception.InnerException;
-}
-@while (exception != null)
+@if (User.IsAdmin())
 {
-    <h3>@exception.Message</h3>
-    <pre>@exception.ToString()</pre>
-    exception = exception.InnerException;
-}
+    <pre>@Model.Exception.ToString()</pre>
 
-<p>Controller name: @Model.ControllerName</p>
-<p>Action name: @Model.ActionName</p>
+    var exception = Model.Exception.InnerException;
+    while (exception != null)
+    {
+        <h3>@exception.Message</h3>
+        <pre>@exception.ToString()</pre>
+        exception = exception.InnerException;
+    }
+
+    <p>Controller name: @Model.ControllerName</p>
+    <p>Action name: @Model.ActionName</p>
+}

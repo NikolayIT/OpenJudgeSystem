@@ -388,6 +388,7 @@
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
+
             this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
             this.Data.SaveChanges();
 

@@ -10,14 +10,14 @@
         @Html.LabelFor(m => m.Input)
     </div>
     <div class="panel-body news-content editor-field">
-        <pre>@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0,200) + "..." : Model.InputFull)</pre>
+        <pre class="monospace-font">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0,200) + "..." : Model.InputFull)</pre>
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.Output)
     </div>
     <div class="panel-body news-content editor-field">
-        <pre>@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
+        <pre class="monospace-font">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
     </div>
     <br />
     <div class="editor-label">
