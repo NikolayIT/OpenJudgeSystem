@@ -3,37 +3,38 @@
 <div id="download-contest-submissions-popup" style="display: none;">
     <form id="download-contest-submissions-form" method="GET" action="/Administration/ContestsExport/Solutions/">
         <section>
-            <input type="hidden" id="contest-id" name="id" />
+            <input type="hidden" id="contest-id" name="id"/>
         </section>
 
         <div class="text-center">
             <div class="editor-field">
-                <input type="radio" checked="checked" value="true" name="compete" id="compete-true" />
+                <input type="radio" checked="checked" value="true" name="compete" id="compete-true"/>
                 <label for="compete-true">Решения на състезанието</label>
             </div>
 
             <div class="editor-field">
-                <input type="radio" value="false" name="compete" id="compete-false" />
+                <input type="radio" value="false" name="compete" id="compete-false"/>
                 <label for="compete-false">Решения на упражненията</label>
             </div>
         </div>
 
-        <hr style="border-color: #94C0D2; width: 50%; margin-top: 5px; margin-bottom: 5px" />
+        <hr style="border-color: #94C0D2; width: 50%; margin-top: 5px; margin-bottom: 5px"/>
 
         <section class="text-center small-margin-top">
             <div class="editor-field">
                 @(Html.Kendo().DropDownList()
-                    .Name("exportType")
-                    .DataValueField("Id")
-                    .DataTextField("Name")
-                    .SelectedIndex(1)
-                    .BindTo((IEnumerable)ViewBag.SubmissionExportTypes)
-                )    
+                      .Name("exportType")
+                      .DataValueField("Id")
+                      .DataTextField("Name")
+                      .Events(e => e.Open("onOpen"))
+                      .SelectedIndex(1)
+                      .BindTo((IEnumerable) ViewBag.SubmissionExportTypes)
+                      )
             </div>
         </section>
 
         <section class="text-center small-margin-top">
-            <input type="submit" class="btn btn-success" value="Свали решенията" />
+            <input type="submit" class="btn btn-success" value="Свали решенията"/>
         </section>
     </form>
 </div>

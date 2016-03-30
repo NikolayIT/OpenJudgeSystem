@@ -263,4 +263,11 @@
 
 @section scripts {
     <script src="~/Scripts/Administration/Contests/contests-index.js"></script>
+    <script src="~/Scripts/global.js"></script>
+
+    <script>
+        function onOpen() {
+            Ojs.KendoControls.DropDownList.alignDropDownToInput('#exportType');
+        }
+    </script>
 }

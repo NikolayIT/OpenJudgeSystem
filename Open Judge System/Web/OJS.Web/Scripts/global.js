@@ -91,3 +91,22 @@ function calculateRemainingTimeOnClient(condownTimerContainerId, remainingTimeFo
 
     timer.start();
 }
+
+var Ojs = Ojs || {};
+Ojs.KendoControls = Ojs.KendoControls || {};
+
+Ojs.KendoControls.DropDownList = (function() {
+    function alignDropDownToInput(selector) {
+        setTimeout(function() {
+            var position = $(selector).parent().offset();
+            var height = $(selector).parent().height();
+
+            $('div.k-animation-container').css('top', position.top + height);
+            $('div.k-animation-container').css('left', position.left);
+        }, 100);
+    }
+
+    return {
+        alignDropDownToInput: alignDropDownToInput
+    };
+})();
