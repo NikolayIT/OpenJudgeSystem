@@ -2,6 +2,7 @@
 
 @(Html.Kendo()
     .DropDownListFor(m => m)
+    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
     .BindTo((IEnumerable<SelectListItem>)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "Data"])
     .OptionLabel("Изберете категория")
     .HtmlAttributes(new { style = "width: 100%;" }))

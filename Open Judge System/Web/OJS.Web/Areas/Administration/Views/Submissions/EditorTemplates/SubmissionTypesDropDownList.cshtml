@@ -14,7 +14,7 @@
     .DataTextField("Text")
     .DataValueField("Value")
     .CascadeFrom("ProblemId")
-    .Events(ev=> ev.DataBound("onSubmissionDataBound").Change("onSubmissionTypeChange"))
+    .Events(ev=> ev.DataBound("onSubmissionDataBound").Change("onSubmissionTypeChange").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
     .DataSource(data => 
         {
             data.ServerFiltering(true)

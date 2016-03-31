@@ -39,7 +39,7 @@
                 @(Html.Kendo()
                     .DropDownListFor(m => m.Type)
                     .BindTo(Model.AllTypes)
-                    .Events(ev => ev.Change("onEditResourceTypeSelect"))
+                    .Events(ev => ev.Change("onEditResourceTypeSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
             </div>
             <div class="editor-field col-xs-4">

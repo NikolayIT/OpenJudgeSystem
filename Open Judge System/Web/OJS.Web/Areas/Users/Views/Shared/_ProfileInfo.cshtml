@@ -71,7 +71,7 @@
                 .AutoBind(false)
                 .MinLength(3)
                 .Placeholder(SubmissionsAdministrationResource.Choose_or_enter_contest)
-                .Events(ev => ev.Change("selectContest"))
+                .Events(ev => ev.Change("selectContest").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
                 .DataSource(dataSource =>
                 {
                     dataSource

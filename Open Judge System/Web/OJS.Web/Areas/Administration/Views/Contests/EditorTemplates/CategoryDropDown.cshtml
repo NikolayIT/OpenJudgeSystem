@@ -7,11 +7,12 @@
     .DataTextField("Text")
     .DataValueField("Value")
     .DataSource(data =>
-        {
-            data.ServerFiltering(true)
-                .Read(read =>
-                    {
-                        read.Action("GetCategories", "Contests");
-                    });
-        })
+    {
+        data.ServerFiltering(true)
+            .Read(read =>
+                {
+                    read.Action("GetCategories", "Contests");
+                });
+    })
+    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
     .HtmlAttributes(new { style = "width: 100%;" }))

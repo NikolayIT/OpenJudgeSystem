@@ -20,6 +20,7 @@
 @(Html.Kendo()
     .DropDownListFor(m => m)
     .BindTo((IEnumerable<DropdownViewModel>)this.ViewData[this.ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "Data"])
+    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
     .DataValueField("Id")
     .DataTextField("Name")
     .OptionLabel(placeholder)

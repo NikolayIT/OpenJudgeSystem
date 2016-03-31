@@ -40,9 +40,9 @@
                 }
                 )
                 .Events(e =>
-                    {
-                        e.Select("onSearchSelect");
-                    }))
+                {
+                    e.Select("onSearchSelect");
+                }))
         </div>
         <div>
             <div>
@@ -55,6 +55,7 @@
                 .HtmlAttributes(new { @class = "test-file-dropdown" })
                 .DataTextField("Name")
                 .DataValueField("Id")
+                .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
                 .DataSource(source =>
                 {
                     source.Read(read =>
@@ -69,25 +70,24 @@
         </div>
         <div>
             @(Html.Kendo().DropDownList()
-            .Name("contests")
-            .OptionLabel(Resource.Choose_contest)
-            .HtmlAttributes(new { @class = "test-file-dropdown" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
+                .Name("contests")
+                .OptionLabel(Resource.Choose_contest)
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .DataSource(source =>
                 {
-                    read.Action("GetCascadeContests", "Problems")
-                        .Data("filterContests");
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeContests", "Problems")
+                            .Data("filterContests");
+                    })
+                    .ServerFiltering(true);
                 })
-                .ServerFiltering(true);
-            })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("categories")
-            .Events(e => e.Change("onContestSelect"))
-                )
+                .Enable(false)
+                .AutoBind(false)
+                .CascadeFrom("categories")
+                .Events(e => e.Change("onContestSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
             </div>
     </div>
     <div class="col-md-6">

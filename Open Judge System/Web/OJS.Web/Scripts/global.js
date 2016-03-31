@@ -96,10 +96,10 @@ var Ojs = Ojs || {};
 Ojs.KendoControls = Ojs.KendoControls || {};
 
 Ojs.KendoControls.DropDownList = (function() {
-    function alignDropDownToInput(selector) {
-        setTimeout(function() {
-            var position = $(selector).parent().offset();
-            var height = $(selector).parent().height();
+    function alignDropDownToInput(ev) {
+        setTimeout(function () {
+            var position = $(ev.sender.element).parent().offset();
+            var height = $(ev.sender.element).parent().height();
 
             $('div.k-animation-container').css('top', position.top + height);
             $('div.k-animation-container').css('left', position.left);

@@ -131,6 +131,7 @@
                 <div class="col-xs-3">
                     @(Html.Kendo()
                     .DropDownListFor(m => m.Checker)
+                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
                     .BindTo(Model.AvailableCheckers)
                     .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
                 </div>

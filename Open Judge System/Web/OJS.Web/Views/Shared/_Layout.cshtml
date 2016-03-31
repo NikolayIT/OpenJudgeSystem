@@ -60,7 +60,7 @@
                         <ul class="dropdown-menu">
                             @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories)
                             {
-                                <li><a href="@string.Format("/Contests/#!/List/ByCategory/{0}/{1}", category.Id, category.NameUrl)">@category.Name</a></li>
+                                <li><a href="@($"/Contests/#!/List/ByCategory/{category.Id}/{category.NameUrl}")">@category.Name</a></li>
                             }
                             <li class="divider"></li>
                             <li><a href="/Contests">@Resource.All</a></li>

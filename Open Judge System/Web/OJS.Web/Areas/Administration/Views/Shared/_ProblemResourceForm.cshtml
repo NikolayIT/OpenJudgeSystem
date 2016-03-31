@@ -12,11 +12,11 @@
     <div class="col-md-2">
         <label for="Resources_@(Model.Id)__Type">@Resource.Type</label>
         @(Html.Kendo()
-        .DropDownList()
-        .Name("Resources[" + Model.Id + "].Type")
-        .BindTo(Model.AllTypes)
-        .Events(ev => ev.Change("onResourceTypeSelect"))
-        .HtmlAttributes(new { id = "Resources_" + Model.Id + "__Type", @class = "full-kendo-editor", modelid = Model.Id }))
+            .DropDownList()
+            .Name("Resources[" + Model.Id + "].Type")
+            .BindTo(Model.AllTypes)
+            .Events(ev => ev.Change("onResourceTypeSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+            .HtmlAttributes(new { id = "Resources_" + Model.Id + "__Type", @class = "full-kendo-editor", modelid = Model.Id }))
     </div>
     <div class="col-md-2">
         <div class="pull-right" data-type="resource-content">

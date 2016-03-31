@@ -11,25 +11,25 @@
         </div>
         <div>
             @(@Html.Kendo().AutoComplete()
-            .Name("search")
-            .Placeholder(Resource.Enter_problem)
-            .HtmlAttributes(new { @class = "test-file-dropdown" })
-            .DataTextField("Name")
-            .MinLength(3)
-            .DataSource(source =>
-            {
-                source
-                    .Read(read =>
-                    {
-                        read.Action("GetSearchedProblems", "Tests")
-                            .Data("onAdditionalData");
-                    })
-                    .ServerFiltering(true);
-            }
-            )
-            .Events(e => 
+                .Name("search")
+                .Placeholder(Resource.Enter_problem)
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .MinLength(3)
+                .DataSource(source =>
                 {
-                    e.Select("onSearchSelect");
+                    source
+                        .Read(read =>
+                        {
+                            read.Action("GetSearchedProblems", "Tests")
+                                .Data("onAdditionalData");
+                        })
+                        .ServerFiltering(true);
+                }
+                )
+                .Events(e => 
+                {
+                    e.Select("onSearchSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput");
                 }))
         </div>
     </div>
@@ -43,18 +43,19 @@
             </div>
             <div>
                 @(Html.Kendo().DropDownList()
-                .Name("categories")
-                .OptionLabel(Resource.Choose_category)
-                .HtmlAttributes(new { @class = "test-file-dropdown" })
-                .DataTextField("Name")
-                .DataValueField("Id")
-                .DataSource(source =>
-                {
-                    source.Read(read =>
+                    .Name("categories")
+                    .OptionLabel(Resource.Choose_category)
+                    .HtmlAttributes(new { @class = "test-file-dropdown" })
+                    .DataTextField("Name")
+                    .DataValueField("Id")
+                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                    .DataSource(source =>
                     {
-                        read.Action("GetCascadeCategories", "Tests");
-                    });
-                }))
+                        source.Read(read =>
+                        {
+                            read.Action("GetCascadeCategories", "Tests");
+                        });
+                    }))
             </div>
         </div>
         <div>
@@ -62,23 +63,24 @@
         </div>
         <div>
             @(Html.Kendo().DropDownList()
-            .Name("contests")
-            .OptionLabel(Resource.Choose_contest)
-            .HtmlAttributes(new { @class = "test-file-dropdown" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
+                .Name("contests")
+                .OptionLabel(Resource.Choose_contest)
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                .DataSource(source =>
                 {
-                    read.Action("GetCascadeContests", "Tests")
-                        .Data("filterContests");
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeContests", "Tests")
+                            .Data("filterContests");
+                    })
+                    .ServerFiltering(true);
                 })
-                .ServerFiltering(true);
-            })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("categories")
+                .Enable(false)
+                .AutoBind(false)
+                .CascadeFrom("categories")
             )
         </div>
         <div>
@@ -86,24 +88,24 @@
         </div>
         <div>
             @(Html.Kendo().DropDownList()
-            .Name("problems")
-            .OptionLabel(Resource.Choose_problem)
-            .HtmlAttributes(new { @class = "test-file-dropdown" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
+                .Name("problems")
+                .OptionLabel(Resource.Choose_problem)
+                .HtmlAttributes(new { @class = "test-file-dropdown" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .DataSource(source =>
                 {
-                    read.Action("GetCascadeProblems", "Tests")
-                        .Data("filterProblems");
+                    source.Read(read =>
+                    {
+                        read.Action("GetCascadeProblems", "Tests")
+                            .Data("filterProblems");
+                    })
+                    .ServerFiltering(true);
                 })
-                .ServerFiltering(true);
-            })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("contests")
-            .Events(e => e.Change("onProblemSelect"))
+                .Enable(false)
+                .AutoBind(false)
+                .CascadeFrom("contests")
+                .Events(e => e.Change("onProblemSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
             )
         </div>
     </div>

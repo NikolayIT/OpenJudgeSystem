@@ -23,13 +23,13 @@
         <section class="text-center small-margin-top">
             <div class="editor-field">
                 @(Html.Kendo().DropDownList()
-                      .Name("exportType")
-                      .DataValueField("Id")
-                      .DataTextField("Name")
-                      .Events(e => e.Open("onOpen"))
-                      .SelectedIndex(1)
-                      .BindTo((IEnumerable) ViewBag.SubmissionExportTypes)
-                      )
+                    .Name("exportType")
+                    .DataValueField("Id")
+                    .DataTextField("Name")
+                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                    .SelectedIndex(1)
+                    .BindTo((IEnumerable) ViewBag.SubmissionExportTypes)
+                )
             </div>
         </section>
 

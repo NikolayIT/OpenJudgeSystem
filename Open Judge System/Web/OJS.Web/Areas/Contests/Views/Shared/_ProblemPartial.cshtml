@@ -159,7 +159,7 @@
                             .Name("SubmissionTypeId")
                             .DataTextField("Text")
                             .DataValueField("Value")
-                            .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange"))
+                            .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
                             .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
                             .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
                         <input type="submit" value="@Resource.Submit" class="k-button submision-submit-button" />
