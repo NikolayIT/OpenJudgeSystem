@@ -9,17 +9,15 @@ The system consists of few parts:
 * Restricted process executor using Windows APIs
 * Compiler wrappers and checkers
 
-Originally developed by:
+Contributors:
 * Nikolay Kostov (https://github.com/NikolayIT)
 * Ivaylo Kenov (https://github.com/ivaylokenov)
 * Vasil Dininski (https://github.com/dininski)
-
-Other contributors:
 * Vladislav Karamfilov (https://github.com/vladislav-karamfilov)
 
 ## License
 
-Code by Nikolay Kostov. Copyright 2013-2015 Nikolay Kostov.
+Code by Nikolay Kostov. Copyright 2013-2016 Nikolay Kostov.
 This library is licensed under [GNU General Public License v3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) (full terms and conditions [here](https://www.gnu.org/licenses/gpl.html)). Basically:
 
  - If you create software that uses GPL, you must license that software under GPL v3 (see [GPL FAQ](http://www.gnu.org/licenses/gpl-faq.html#IfLibraryIsGPL))
