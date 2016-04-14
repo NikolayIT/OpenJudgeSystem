@@ -9,7 +9,7 @@ The system consists of few parts:
 * Restricted process executor using Windows APIs
 * Compiler wrappers and checkers
 
-Contributors:
+## Contributors:
 * Nikolay Kostov (https://github.com/NikolayIT)
 * Ivaylo Kenov (https://github.com/ivaylokenov)
 * Vasil Dininski (https://github.com/dininski)
