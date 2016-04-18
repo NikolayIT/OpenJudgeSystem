@@ -120,6 +120,9 @@
   <data name="Detailed_results" xml:space="preserve">
     <value>Detailed results</value>
   </data>
+  <data name="Export_results" xml:space="preserve">
+    <value>Export results</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>

@@ -112,7 +112,8 @@
                 var cellNumber = 0;
                 var row = sheet.CreateRow(rowNumber++);
                 row.CreateCell(cellNumber++).SetCellValue(result.Data.ParticipantUserName);
-                row.CreateCell(cellNumber++).SetCellValue(string.Format("{0} {1}", result.Data.ParticipantFirstName, result.Data.ParticipantLastName).Trim());
+                row.CreateCell(cellNumber++).SetCellValue(
+                    $"{result.Data.ParticipantFirstName} {result.Data.ParticipantLastName}".Trim());
                 foreach (var answer in result.Data.Answers)
                 {
                     int answerId;

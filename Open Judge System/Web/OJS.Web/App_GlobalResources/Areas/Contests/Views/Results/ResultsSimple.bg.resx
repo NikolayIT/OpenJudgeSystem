@@ -141,4 +141,8 @@
   <data name="UserFullName" xml:space="preserve">
     <value>Име</value>
   </data>
+  <data name="Export_results" xml:space="preserve">
+    <value>Експорт на резултатите</value>
+    <comment>Експорт на резултатите</comment>
+  </data>
 </root>
