@@ -22,7 +22,9 @@
 
     public class ResultsController : BaseController
     {
-        public const int ResultsPageSize = 300;
+        public const int OfficialResultsPageSize = 300;
+        public const int NotOfficialResultsPageSize = 100;
+
 
         public ResultsController(IOjsData data)
             : base(data)
@@ -106,7 +108,7 @@
             // calculate page information
             contestResults.TotalResults = contestResults.Results.Count();
             int totalResults = contestResults.TotalResults;
-            int totalPages = totalResults % ResultsPageSize == 0 ? totalResults / ResultsPageSize : (totalResults / ResultsPageSize) + 1;
+            int totalPages = totalResults % OfficialResultsPageSize == 0 ? totalResults / OfficialResultsPageSize : (totalResults / OfficialResultsPageSize) + 1;
 
             if (page == null || page < 1)
             {
@@ -117,9 +119,15 @@
                 page = totalPages;
             }
 
+            var resultsInPage = NotOfficialResultsPageSize;
+            if (official)
+            {
+                resultsInPage = OfficialResultsPageSize;
+            }
+
             // TODO: optimize if possible
             // query the paged result
-            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * ResultsPageSize).Take(ResultsPageSize);
+            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * OfficialResultsPageSize).Take(resultsInPage);
 
             // add page info to View Model
             contestResults.CurrentPage = page.Value;
@@ -150,6 +158,26 @@
             var model = this.GetContestFullResults(contest, official);
 
             this.ViewBag.IsOfficial = official;
+
+            return this.View(model);
+        }
+
+        [Authorize]
+        public ActionResult Export(int id, bool official)
+        {
+            if (!this.UserHasAccessToContest(id))
+            {
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
+            }
+
+            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
+
+            if (contest == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+            }
+
+            var model = this.GetContestFullResults(contest, official);
 
             return this.View(model);
         }
