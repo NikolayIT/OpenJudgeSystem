@@ -163,7 +163,7 @@
     <value>Submision types</value>
   </data>
   <data name="Submissions_limit" xml:space="preserve">
-    <value>Submissions limit</value>
+    <value>Time between submissions</value>
   </data>
   <data name="Visibility" xml:space="preserve">
     <value>Is visible?</value>

@@ -63,12 +63,6 @@
         [HttpGet]
         public ActionResult Create()
         {
-            if (!this.User.IsAdmin())
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
-            }
-
             var newContest = new ViewModelType
             {
                 SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
@@ -82,7 +76,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(ContestAdministrationViewModel model)
         {
-            if (!this.User.IsAdmin())
+            if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
@@ -93,7 +87,7 @@
                 return this.View(model);
             }
 
-            if (model != null && this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();
 
@@ -262,8 +256,14 @@
 
         public JsonResult GetCategories()
         {
-            var dropDownData = this.Data.ContestCategories
-                .All()
+            var categories = this.Data.ContestCategories.All();
+
+            if (this.User.IsLecturer())
+            {
+                categories = categories.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+            }
+
+            var dropDownData = categories
                 .ToList()
                 .Select(cat => new SelectListItem
                 {

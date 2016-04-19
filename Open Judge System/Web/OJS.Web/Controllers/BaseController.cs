@@ -130,6 +130,16 @@
                                 x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
         }
 
+        protected bool CheckIfUserHasContestCategoryPermissions(int categoryId)
+        {
+            return this.User.IsAdmin() ||
+                   this.Data.ContestCategories
+                       .All()
+                       .Any(x =>
+                            x.Id == categoryId &&
+                            x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+        }
+
         private SystemMessageCollection PrepareSystemMessages()
         {
             // Warning: always escape data to prevent XSS

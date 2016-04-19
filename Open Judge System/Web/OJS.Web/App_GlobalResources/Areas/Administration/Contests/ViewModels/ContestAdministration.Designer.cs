@@ -197,7 +197,7 @@ namespace Resources.Areas.Administration.Contests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submissions limit.
+        ///   Looks up a localized string similar to Time between submissions.
         /// </summary>
         public static string Submissions_limit {
             get {
