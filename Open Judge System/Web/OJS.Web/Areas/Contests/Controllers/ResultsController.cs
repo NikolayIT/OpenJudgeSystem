@@ -105,10 +105,16 @@
             // TODO: Extract choosing the best submission logic to separate repository method?
             var contestResults = this.GetContestResults(contest, official, isUserAdminOrLecturerInContest);
 
+            var resultsInPage = NotOfficialResultsPageSize;
+            if (official)
+            {
+                resultsInPage = OfficialResultsPageSize;
+            }
+
             // calculate page information
             contestResults.TotalResults = contestResults.Results.Count();
             int totalResults = contestResults.TotalResults;
-            int totalPages = totalResults % OfficialResultsPageSize == 0 ? totalResults / OfficialResultsPageSize : (totalResults / OfficialResultsPageSize) + 1;
+            int totalPages = totalResults % resultsInPage == 0 ? totalResults / resultsInPage : (totalResults / resultsInPage) + 1;
 
             if (page == null || page < 1)
             {
@@ -119,15 +125,9 @@
                 page = totalPages;
             }
 
-            var resultsInPage = NotOfficialResultsPageSize;
-            if (official)
-            {
-                resultsInPage = OfficialResultsPageSize;
-            }
-
             // TODO: optimize if possible
             // query the paged result
-            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * OfficialResultsPageSize).Take(resultsInPage);
+            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * resultsInPage).Take(resultsInPage);
 
             // add page info to View Model
             contestResults.CurrentPage = page.Value;
