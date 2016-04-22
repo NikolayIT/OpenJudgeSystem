@@ -258,7 +258,7 @@
         {
             var categories = this.Data.ContestCategories.All();
 
-            if (this.User.IsLecturer())
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
                 categories = categories.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
             }
