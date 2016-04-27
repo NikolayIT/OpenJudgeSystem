@@ -21,7 +21,7 @@
     public class AntiCheatController : AdministrationBaseController
     {
         private const int MinSubmissionPointsToCheckForSimilarity = 20;
-        private const int RenderSubmissionsSimilaritiesGridTimeOut = 10 * 60; // 10 min.
+        private const int RenderSubmissionsSimilaritiesGridTimeOut = 20 * 60; // 20 min.
 
         private readonly IPlagiarismDetectorFactory plagiarismDetectorFactory;
         private readonly ISimilarityFinder similarityFinder;
@@ -97,7 +97,7 @@
                         s.CreatedOn,
                         ParticipantName = s.Participant.User.UserName,
                         ProblemName = s.Problem.Name,
-                        TestRunResultTypes = s.TestRuns.OrderBy(t => t.Id).Select(t => t.ResultType)
+                        TestRuns = s.TestRuns.OrderBy(t => t.TestId).Select(t => new { t.TestId, t.ResultType })
                     })
                     .GroupBy(s => new { s.ProblemId, s.ParticipantId })
                     .Select(g => g.OrderByDescending(s => s.Points).ThenByDescending(s => s.CreatedOn).FirstOrDefault())
@@ -120,11 +120,28 @@
                             new List<IDetectPlagiarismVisitor> { new SortAndTrimLinesVisitor() });
 
                         var save = true;
-                        var firstTestRuns = groupOfSubmissions[i].TestRunResultTypes.ToList();
-                        var secondTestRuns = groupOfSubmissions[j].TestRunResultTypes.ToList();
+
+                        var firstTestRuns = groupOfSubmissions[i].TestRuns.ToList();
+                        var secondTestRuns = groupOfSubmissions[j].TestRuns.ToList();
+
+                        if (firstTestRuns.Count < secondTestRuns.Count)
+                        {
+                            secondTestRuns = secondTestRuns
+                                .Where(x => firstTestRuns.Any(y => y.TestId == x.TestId))
+                                .OrderBy(x => x.TestId)
+                                .ToList();
+                        }
+                        else if (firstTestRuns.Count > secondTestRuns.Count)
+                        {
+                            firstTestRuns = firstTestRuns
+                                .Where(x => secondTestRuns.Any(y => y.TestId == x.TestId))
+                                .OrderBy(x => x.TestId)
+                                .ToList();
+                        }
+
                         for (var k = 0; k < firstTestRuns.Count; k++)
                         {
-                            if (firstTestRuns[k] != secondTestRuns[k])
+                            if (firstTestRuns[k].ResultType != secondTestRuns[k].ResultType)
                             {
                                 save = false;
                                 break;
