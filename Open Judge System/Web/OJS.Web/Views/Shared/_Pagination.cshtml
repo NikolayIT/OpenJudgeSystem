@@ -11,7 +11,14 @@
     }
     @for (int i = 1; i <= Model.AllPages; i++)
     {
-        <li><a href="@(Model.Url + i)">@i</a></li>
+        if (Model.CurrentPage == i)
+        {
+            <li class="active"><a href="@(Model.Url + i)">@i</a></li>
+        }
+        else
+        {
+            <li><a href="@(Model.Url + i)">@i</a></li>
+        }
     }
     @if (Model.CurrentPage == Model.AllPages)
     {
