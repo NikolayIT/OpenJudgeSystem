@@ -9,7 +9,9 @@
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
 
+#pragma warning disable SA1649 // File name must match first type name
     public class MvcApplication : System.Web.HttpApplication
+#pragma warning restore SA1649 // File name must match first type name
     {
         protected void Application_Start()
         {

@@ -31,9 +31,9 @@
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        /// <summary>
+        /// <remarks>
         /// This property is true when the user comes from the old system and is not preregistered in the new system.
-        /// </summary>
+        /// </remarks>
         [DefaultValue(false)]
         public bool IsGhostUser { get; set; }
 
@@ -52,7 +52,7 @@
         public DateTime CreatedOn { get; set; }
 
         /// <summary>
-        /// Specifies whether or not the CreatedOn property should be automatically set.
+        /// Gets or sets a value indicating whether or not the CreatedOn property should be automatically set.
         /// </summary>
         [NotMapped]
         public bool PreserveCreatedOn { get; set; }
