@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Linq;
+    using System.Runtime.Caching;
     using System.Text;
 
     using Microsoft.CSharp;
@@ -11,7 +12,18 @@
 
     public class CSharpCodeChecker : Checker
     {
+        private const int CacheDays = 7;
+
+        private static readonly TimeSpan CacheDaysSlidingExpiration = TimeSpan.FromDays(CacheDays);
+
+        private readonly ObjectCache cache;
+
         private IChecker customChecker;
+
+        public CSharpCodeChecker()
+        {
+            this.cache = MemoryCache.Default;
+        }
 
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
         {
@@ -26,6 +38,13 @@
 
         public override void SetParameter(string parameter)
         {
+            var customCheckerFromCache = this.cache[parameter] as IChecker;
+            if (customCheckerFromCache != null)
+            {
+                this.customChecker = customCheckerFromCache;
+                return;
+            }
+
             var codeProvider = new CSharpCodeProvider();
             var compilerParameters = new CompilerParameters { GenerateInMemory = true, };
             compilerParameters.ReferencedAssemblies.Add("System.dll");
@@ -51,7 +70,7 @@
             var assembly = compilerResults.CompiledAssembly;
 
             var types = assembly.GetTypes().Where(x => typeof(IChecker).IsAssignableFrom(x)).ToList();
-            if (types.Count() > 1)
+            if (types.Count > 1)
             {
                 throw new Exception("More than one implementation of OJS.Workers.Common.IChecker was found!");
             }
@@ -65,9 +84,10 @@
             var instance = Activator.CreateInstance(type) as IChecker;
             if (instance == null)
             {
-                throw new Exception(string.Format("Cannot create an instance of type {0}!", type.FullName));
+                throw new Exception($"Cannot create an instance of type {type.FullName}!");
             }
 
+            this.cache.Add(parameter, instance, new CacheItemPolicy { SlidingExpiration = CacheDaysSlidingExpiration });
             this.customChecker = instance;
         }
     }
