@@ -1814,7 +1814,7 @@
     <Content Include="Areas\Contests\Views\Results\_StatsChartPartial.cshtml" />
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
-    <None Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
     <Content Include="Areas\Contests\Views\ParticipantsAnswers\Details.cshtml" />
     <None Include="Properties\PublishProfiles\bgcoder.com.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
