@@ -200,6 +200,7 @@
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern int GetLengthSid(IntPtr pSid);
 
+#pragma warning disable SA1625 // Element documentation must not be copied and pasted
         /// <summary>
         /// The AllocateAndInitializeSid function allocates and initializes a
         /// security identifier (SID) with up to eight subauthorities.
@@ -220,6 +221,7 @@
         /// function fails, the return value is false. To get extended error
         /// information, call GetLastError.
         /// </returns>
+#pragma warning restore SA1625 // Element documentation must not be copied and pasted
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool AllocateAndInitializeSid(

@@ -4,7 +4,7 @@
 
     using OJS.Common;
 
-    public class UsersAreaAreaRegistration : AreaRegistration
+    public class UsersAreaRegistration : AreaRegistration
     {
         public override string AreaName => "Users";
 

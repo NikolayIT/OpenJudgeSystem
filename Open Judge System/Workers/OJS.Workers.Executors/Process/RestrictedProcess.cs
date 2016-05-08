@@ -136,7 +136,7 @@
         public string ExitCodeAsString => new Win32Exception(this.ExitCode).Message;
 
         /// <summary>
-        /// Returns the time the process was started.
+        /// Gets the time the process was started.
         /// </summary>
         public DateTime StartTime => this.GetProcessTimes().StartTime;
 
@@ -146,23 +146,23 @@
         public DateTime ExitTime => this.GetProcessTimes().ExitTime;
 
         /// <summary>
-        /// Returns the amount of time the process has spent running code inside the operating system core.
+        /// Gets the amount of time the process has spent running code inside the operating system core.
         /// </summary>
         public TimeSpan PrivilegedProcessorTime => this.GetProcessTimes().PrivilegedProcessorTime;
 
         /// <summary>
-        /// Returns the amount of time the associated process has spent running code inside the application portion of the process (not the operating system core).
+        /// Gets the amount of time the associated process has spent running code inside the application portion of the process (not the operating system core).
         /// </summary>
         public TimeSpan UserProcessorTime => this.GetProcessTimes().UserProcessorTime;
 
         /// <summary>
-        /// Returns the amount of time the associated process has spent utilizing the CPU.
+        /// Gets the amount of time the associated process has spent utilizing the CPU.
         /// </summary>
         public TimeSpan TotalProcessorTime => this.GetProcessTimes().TotalProcessorTime;
 
-        /// <summary>
+        /// <remarks>
         /// Warning: If two processes with the same name are created, this property may not return correct name!
-        /// </summary>
+        /// </remarks>
         public string Name
         {
             get

@@ -9,7 +9,7 @@
     public struct BasicUiRestrictions
     {
         /// <summary>
-        /// The restriction class for the user interface.
+        /// Gets or sets the restriction class for the user interface.
         /// </summary>
         public uint UIRestrictionsClass { get; set; }
     }

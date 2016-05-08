@@ -17,17 +17,17 @@
         }
 
         /// <summary>
-        /// Number of elements (lines).
+        /// Gets or sets number of elements (lines).
         /// </summary>
         internal int Length { get; set; }
 
         /// <summary>
-        /// Buffer of numbers that will be compared.
+        /// Gets or sets buffer of numbers that will be compared.
         /// </summary>
         internal int[] Data { get; set; }
 
         /// <summary>
-        /// Array of booleans that flag for modified data.
+        /// Gets or sets array of booleans that flag for modified data.
         /// This is the result of the diff.
         /// This means deletedA in the first Data or inserted in the second Data.
         /// </summary>

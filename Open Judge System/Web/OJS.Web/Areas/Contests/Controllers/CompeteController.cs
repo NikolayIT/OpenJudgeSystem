@@ -121,7 +121,8 @@
         /// Displays form for contest registration.
         /// Users only.
         /// </summary>
-        [HttpGet, Authorize]
+        [HttpGet]
+        [Authorize]
         public ActionResult Register(int id, bool official)
         {
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
@@ -153,7 +154,8 @@
         /// Users only.
         /// </summary>
         //// TODO: Refactor
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
             // check if the user has already registered for participation and redirect him to the correct action
@@ -256,7 +258,8 @@
         /// <param name="participantSubmission">Participant submission.</param>
         /// <param name="official">A check whether the contest is official or practice.</param>
         /// <returns>Returns confirmation if the submission was correctly processed.</returns>
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize]
         public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);

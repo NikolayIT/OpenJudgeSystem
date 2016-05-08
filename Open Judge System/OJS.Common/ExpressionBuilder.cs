@@ -11,12 +11,12 @@
             IEnumerable<TValue> values,
             Expression<Func<TElement, TValue>> valueSelector)
         {
-            if (null == valueSelector)
+            if (valueSelector == null)
             {
                 throw new ArgumentNullException(nameof(valueSelector));
             }
 
-            if (null == values)
+            if (values == null)
             {
                 throw new ArgumentNullException(nameof(values));
             }

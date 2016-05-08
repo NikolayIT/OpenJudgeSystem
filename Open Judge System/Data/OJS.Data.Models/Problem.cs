@@ -39,17 +39,17 @@
         public short MaximumPoints { get; set; }
 
         /// <summary>
-        /// Time limit for the problem. Measured in milliseconds.
+        /// Gets or sets time limit for the problem. Measured in milliseconds.
         /// </summary>
         public int TimeLimit { get; set; }
 
         /// <summary>
-        /// Memory limit for the problem. Measured in bytes.
+        /// Gets or sets memory limit for the problem. Measured in bytes.
         /// </summary>
         public int MemoryLimit { get; set; }
 
         /// <summary>
-        /// File size limit (measured in bytes).
+        /// Gets or sets file size limit (measured in bytes).
         /// </summary>
         public int? SourceCodeSizeLimit { get; set; }
 
@@ -61,7 +61,7 @@
         public int OrderBy { get; set; }
 
         /// <summary>
-        /// Predefined skeleton for the task
+        /// Gets or sets predefined skeleton for the task
         /// </summary>
         public byte[] SolutionSkeleton { get; set; }
 

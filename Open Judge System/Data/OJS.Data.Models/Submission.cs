@@ -94,9 +94,9 @@
 
         public string ProcessingComment { get; set; }
 
-        /// <summary>
+        /// <remarks>
         /// Cache field for submissions points (to speed-up some of the database queries)
-        /// </summary>
+        /// </remarks>
         public int Points { get; set; }
 
         [NotMapped]

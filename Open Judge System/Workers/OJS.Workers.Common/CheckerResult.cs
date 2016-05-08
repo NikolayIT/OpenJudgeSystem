@@ -7,7 +7,7 @@
         public CheckerResultType ResultType { get; set; }
 
         /// <summary>
-        /// More detailed information visible only by administrators.
+        /// Gets or sets more detailed information visible only by administrators.
         /// </summary>
         public CheckerDetails CheckerDetails { get; set; }
     }
