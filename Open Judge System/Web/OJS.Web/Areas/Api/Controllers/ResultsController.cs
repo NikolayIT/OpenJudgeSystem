@@ -151,6 +151,44 @@
             return this.Json(participants, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetAllUserResultsPercentageByForContest(string apiKey, int? contestId)
+        {
+            if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
+            {
+                return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
+            }
+
+            var isValidApiKey = this.data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+            if (!isValidApiKey)
+            {
+                return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
+            }
+
+            var participants = this.data.Participants
+                .All()
+                .Where(x => x.ContestId == contestId.Value)
+                .Select(participant => new
+                {
+                    participant.UserId,
+                    ResultsInPercentages = participant.Contest.Problems
+                        .Where(problem => !problem.IsDeleted)
+                        .Select(problem => problem.Submissions
+                            .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
+                            .OrderByDescending(z => z.Points)
+                            .Select(z => z.Points)
+                            .FirstOrDefault())
+                        .DefaultIfEmpty(0) 
+                        .Sum() / participant.Contest.Problems.Select(p => (double)p.MaximumPoints).DefaultIfEmpty(0).Sum() * 100
+                })
+                .ToList();
+
+            return this.Json(participants, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetAllResultsForContestWithPoints(string apiKey, int? contestId)
         {
             if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
