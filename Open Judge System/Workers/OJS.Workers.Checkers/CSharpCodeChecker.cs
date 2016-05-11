@@ -16,13 +16,18 @@
 
         private static readonly TimeSpan CacheDaysSlidingExpiration = TimeSpan.FromDays(CacheDays);
 
-        private readonly ObjectCache cache;
+        private readonly ObjectCache compiledCustomCheckersCache;
 
         private IChecker customChecker;
 
         public CSharpCodeChecker()
+            : this(MemoryCache.Default)
         {
-            this.cache = MemoryCache.Default;
+        }
+
+        public CSharpCodeChecker(ObjectCache compiledCustomCheckersCache)
+        {
+            this.compiledCustomCheckersCache = compiledCustomCheckersCache;
         }
 
         public override CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
@@ -38,7 +43,7 @@
 
         public override void SetParameter(string parameter)
         {
-            var customCheckerFromCache = this.cache[parameter] as IChecker;
+            var customCheckerFromCache = this.compiledCustomCheckersCache[parameter] as IChecker;
             if (customCheckerFromCache != null)
             {
                 this.customChecker = customCheckerFromCache;
@@ -87,7 +92,7 @@
                 throw new Exception($"Cannot create an instance of type {type.FullName}!");
             }
 
-            this.cache.Add(parameter, instance, new CacheItemPolicy { SlidingExpiration = CacheDaysSlidingExpiration });
+            this.compiledCustomCheckersCache.Set(parameter, instance, new CacheItemPolicy { SlidingExpiration = CacheDaysSlidingExpiration });
             this.customChecker = instance;
         }
     }
