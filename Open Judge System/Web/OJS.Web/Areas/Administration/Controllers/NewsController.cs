@@ -9,9 +9,9 @@
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Providers;
     using OJS.Web.Areas.Administration.Providers.Contracts;
-    using OJS.Web.Areas.Administration.Controllers.Common;
 
     using Resources.News.Views;
 

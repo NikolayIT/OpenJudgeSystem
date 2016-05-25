@@ -260,7 +260,9 @@
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
-                categories = categories.Where(c => c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+                categories = categories.Where(c =>
+                    c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                    c.Contests.Any(cc => !cc.IsDeleted && cc.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
             }
 
             var dropDownData = categories

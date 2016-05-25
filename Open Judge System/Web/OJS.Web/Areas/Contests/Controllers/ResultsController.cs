@@ -25,7 +25,6 @@
         public const int OfficialResultsPageSize = 300;
         public const int NotOfficialResultsPageSize = 100;
 
-
         public ResultsController(IOjsData data)
             : base(data)
         {
