@@ -25,6 +25,8 @@
                             .Select(ContestViewModel.FromContest),
                         SubCategories = contestCategory.Children
                             .AsQueryable()
+                            .Where(x => !x.IsDeleted && x.IsVisible)
+                            .OrderBy(x => x.OrderBy)
                             .Select(ContestCategoryListViewModel.FromCategory)
                     };
             }

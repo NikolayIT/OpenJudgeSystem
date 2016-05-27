@@ -78,6 +78,7 @@
                     SubCategories = this.Data.ContestCategories
                         .All()
                         .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
+                        .OrderBy(x => x.OrderBy)
                         .Select(ContestCategoryListViewModel.FromCategory)
                 };
             }
