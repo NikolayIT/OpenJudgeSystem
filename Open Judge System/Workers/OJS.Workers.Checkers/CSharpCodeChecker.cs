@@ -27,6 +27,11 @@
 
         public CSharpCodeChecker(ObjectCache compiledCustomCheckersCache)
         {
+            if (compiledCustomCheckersCache == null)
+            {
+                throw new ArgumentNullException(nameof(compiledCustomCheckersCache));
+            }
+
             this.compiledCustomCheckersCache = compiledCustomCheckersCache;
         }
 

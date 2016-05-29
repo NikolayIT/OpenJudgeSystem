@@ -9,6 +9,10 @@
 
         public static string DotNetDisassemblerPath => GetSetting("DotNetDisassemblerPath");
 
+        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
+
+        public static string JavaDisassemblerPath => GetSetting("JavaDisassemblerPath");
+
         private static string GetSetting(string settingName)
         {
             if (ConfigurationManager.AppSettings[settingName] == null)

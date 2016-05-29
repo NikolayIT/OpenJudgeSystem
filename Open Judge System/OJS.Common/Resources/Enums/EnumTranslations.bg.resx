@@ -120,14 +120,23 @@
   <data name="AuthorsSolution" xml:space="preserve">
     <value>Авторско решение</value>
   </data>
+  <data name="CSharpCompileDisassemble" xml:space="preserve">
+    <value>C# код</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>По подразбиране</value>
   </data>
   <data name="DropDown" xml:space="preserve">
     <value>Dropdown лист</value>
   </data>
+  <data name="JavaCompileDisassemble" xml:space="preserve">
+    <value>Java код</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>Многоредов текст</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Текст</value>
   </data>
   <data name="ProblemDescription" xml:space="preserve">
     <value>Условие</value>

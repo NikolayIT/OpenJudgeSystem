@@ -22,6 +22,7 @@
         public const string BinaryFileMimeType = "application/octet-stream";
 
         public const string ZipFileExtension = ".zip";
+        public const string ExecutableFileExtension = ".exe";
 
         public const string AdministratorRoleName = "Administrator";
 
@@ -34,6 +35,8 @@
         public const int MinimumSearchTermLength = 3;
 
         public const int FeedbackContentMinLength = 10;
+
+        public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
 
         // Account
         public const int UserNameMaxLength = 15;

@@ -8,11 +8,19 @@
 
     using Ionic.Zip;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
 
     public class MsBuildCompiler : Compiler
     {
+        private const string SolutionFileExtension = ".sln";
+        private const string CsharpProjectFileExtension = ".csproj";
+        private const string VisualBasicProjectFileExtension = ".vbproj";
+        private const string AllFilesSearchPattern = "*.*";
+        private const string SolutionFilesSearchPattern = "*.sln";
+        private const string ExecutableFilesSearchPattern = "*" + GlobalConstants.ExecutableFileExtension;
         private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
+        private const int NuGetRestoreProcessExitTimeOutMilliseconds = 2 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
 
         private static readonly Random Rand = new Random();
 
@@ -51,14 +59,13 @@
             }
         }
 
-        public override string RenameInputFile(string inputFile)
-        {
-            return inputFile + ".zip";
-        }
+        public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
-            var newOutputFile = Directory.GetFiles(this.outputPath).FirstOrDefault(x => x.EndsWith(".exe"));
+            var newOutputFile = Directory
+                .EnumerateFiles(this.outputPath, ExecutableFilesSearchPattern, SearchOption.AllDirectories)
+                .FirstOrDefault();
             if (newOutputFile == null)
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
@@ -68,7 +75,7 @@
             }
 
             var tempFile = Path.GetTempFileName() + Rand.Next();
-            var tempExeFile = tempFile + ".exe";
+            var tempExeFile = $"{tempFile}{GlobalConstants.ExecutableFileExtension}";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
             return tempExeFile;
@@ -79,18 +86,25 @@
             var arguments = new StringBuilder();
 
             UnzipFile(inputFile, this.inputPath);
-            string solutionOrProjectFile = this.FindSolutionOrProjectFile();
+            var solutionOrProjectFile = this.FindSolutionOrProjectFile();
 
-            if (solutionOrProjectFile.EndsWith(".sln"))
+            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
+            {
+                throw new ArgumentException(
+                    "Input file does not contain a project or solution file.",
+                    nameof(inputFile));
+            }
+
+            if (solutionOrProjectFile.EndsWith(SolutionFileExtension))
             {
                 RestoreNugetPackages(solutionOrProjectFile);
             }
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\" ", solutionOrProjectFile));
+            arguments.Append($"\"{solutionOrProjectFile}\" ");
 
             // Output path argument
-            arguments.Append(string.Format("/p:OutputPath=\"{0}\" ", this.outputPath));
+            arguments.Append($"/p:OutputPath=\"{this.outputPath}\" ");
 
             // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
@@ -116,7 +130,7 @@
         {
             var solutionFileInfo = new FileInfo(solution);
 
-            var processStartInfo = new ProcessStartInfo()
+            var processStartInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardError = true,
@@ -124,32 +138,35 @@
                 UseShellExecute = false,
                 WorkingDirectory = solutionFileInfo.DirectoryName,
                 FileName = NuGetExecutablePath,
-                Arguments = string.Format("restore \"{0}\"", solutionFileInfo.Name)
+                Arguments = $"restore \"{solutionFileInfo.Name}\""
             };
 
-            using (var process = new Process())
+            using (var process = Process.Start(processStartInfo))
             {
-                process.StartInfo = processStartInfo;
-                process.Start();
-                process.WaitForExit();
+                if (process != null)
+                {
+                    var exited = process.WaitForExit(NuGetRestoreProcessExitTimeOutMilliseconds);
+                    if (!exited)
+                    {
+                        process.Kill();
+                    }
+                }
             }
         }
 
         private string FindSolutionOrProjectFile()
         {
-            var solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".sln"));
-            if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
-            {
-                solutionOrProjectFile = Directory.GetFiles(this.inputPath).FirstOrDefault(x => x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
-            }
+            var solutionOrProjectFile = Directory
+                .EnumerateFiles(this.inputPath, SolutionFilesSearchPattern, SearchOption.AllDirectories)
+                .FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
-                var directory = Directory.GetDirectories(this.inputPath).FirstOrDefault();
-                if (directory != null)
-                {
-                    solutionOrProjectFile = Directory.GetFiles(directory).FirstOrDefault(x => x.EndsWith(".sln") || x.EndsWith(".csproj") || x.EndsWith(".vbproj"));
-                }
+                solutionOrProjectFile = Directory
+                    .EnumerateFiles(this.inputPath, AllFilesSearchPattern, SearchOption.AllDirectories)
+                    .FirstOrDefault(x =>
+                        x.EndsWith(CsharpProjectFileExtension, StringComparison.OrdinalIgnoreCase) ||
+                        x.EndsWith(VisualBasicProjectFileExtension, StringComparison.OrdinalIgnoreCase));
             }
 
             return solutionOrProjectFile;
