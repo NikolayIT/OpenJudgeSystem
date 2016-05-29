@@ -118,7 +118,7 @@
                         var result = plagiarismDetector.DetectPlagiarism(
                             groupOfSubmissions[i].Content.Decompress(),
                             groupOfSubmissions[j].Content.Decompress(),
-                            new List<IDetectPlagiarismVisitor> { new SortAndTrimLinesVisitor() });
+                            new IDetectPlagiarismVisitor[] { new SortTrimLinesAndRemoveBlankLinesVisitor() });
 
                         var firstTestRuns = groupOfSubmissions[i].TestRuns.ToList();
                         var secondTestRuns = groupOfSubmissions[j].TestRuns.ToList();

@@ -54,6 +54,7 @@
     <Compile Include="AntiCheat\PlagiarismResult.cs" />
     <Compile Include="AntiCheat\PlainTextPlagiarismDetector.cs" />
     <Compile Include="AntiCheat\SortAndTrimLinesVisitor.cs" />
+    <Compile Include="AntiCheat\SortTrimLinesAndRemoveBlankLinesVisitor.cs" />
     <Compile Include="Disassemblers\Contracts\IDisassembler.cs" />
     <Compile Include="Disassemblers\Disassembler.cs" />
     <Compile Include="Disassemblers\DisassembleResult.cs" />
