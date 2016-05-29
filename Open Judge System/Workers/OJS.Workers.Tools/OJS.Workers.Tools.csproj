@@ -43,16 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntiCheat\CSharpCompileDecompilePlagiarismDetector.cs" />
-    <Compile Include="AntiCheat\IDetectPlagiarismVisitor.cs" />
-    <Compile Include="AntiCheat\IPlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\CompileDisassemblePlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\Contracts\IPlagiarismDetectorFactory.cs" />
+    <Compile Include="AntiCheat\Contracts\IDetectPlagiarismVisitor.cs" />
+    <Compile Include="AntiCheat\Contracts\IPlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\CSharpCompileDisassemblePlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\JavaCompileDisassemblePlagiarismDetector.cs" />
+    <Compile Include="AntiCheat\PlagiarismDetectorCreationContext.cs" />
+    <Compile Include="AntiCheat\PlagiarismDetectorFactory.cs" />
     <Compile Include="AntiCheat\PlagiarismResult.cs" />
     <Compile Include="AntiCheat\PlainTextPlagiarismDetector.cs" />
     <Compile Include="AntiCheat\SortAndTrimLinesVisitor.cs" />
+    <Compile Include="AntiCheat\SortTrimLinesAndRemoveBlankLinesVisitor.cs" />
+    <Compile Include="Disassemblers\Contracts\IDisassembler.cs" />
+    <Compile Include="Disassemblers\Disassembler.cs" />
+    <Compile Include="Disassemblers\DisassembleResult.cs" />
+    <Compile Include="Disassemblers\DotNetDisassembler.cs" />
+    <Compile Include="Disassemblers\JavaDisassembler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Similarity\DiffData.cs" />
     <Compile Include="Similarity\Difference.cs" />
-    <Compile Include="Similarity\ISimilarityFinder.cs" />
+    <Compile Include="Similarity\Contracts\ISimilarityFinder.cs" />
     <Compile Include="Similarity\ShortestMiddleSnakeReturnData.cs" />
     <Compile Include="Similarity\SimilarityFinder.cs" />
   </ItemGroup>

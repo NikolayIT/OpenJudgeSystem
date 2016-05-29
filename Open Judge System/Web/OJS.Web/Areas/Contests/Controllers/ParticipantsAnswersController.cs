@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using OJS.Data;
@@ -32,7 +31,7 @@
         [OverrideAuthorize(Roles = "KidsTeacher, Administrator")]
         public override object GetById(object id)
         {
-            return this.Data.Contests.All().Where(x => x.Id == (int)id).FirstOrDefault();
+            return this.Data.Contests.All().FirstOrDefault(x => x.Id == (int)id);
         }
 
         [HttpPost]
@@ -89,7 +88,7 @@
 
                 if (int.TryParse(item.Answer, out id))
                 {
-                    item.Answer = this.Data.ContestQuestionAnswers.All().Where(x => x.Id == id).FirstOrDefault()?.Text;
+                    item.Answer = this.Data.ContestQuestionAnswers.All().FirstOrDefault(x => x.Id == id)?.Text;
                 }
             }
 

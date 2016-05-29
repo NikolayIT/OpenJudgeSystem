@@ -1,48 +1,51 @@
-﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews;
-@model IEnumerable<IGrouping<int, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
+﻿@using Resource = Resources.Areas.Administration.AntiCheat.Views.AntiCheatViews
 
-@foreach (var groupedReport in Model.OrderBy(m => m.First().ProblemName))
+@model IEnumerable<IGrouping<string, OJS.Web.Areas.Administration.ViewModels.AntiCheat.SubmissionSimilarityViewModel>>
+
+@if (Model.Any())
 {
-    var sortedAndFilteredReports = groupedReport.Where(s => s.Points > 20).OrderBy(p => p.Percentage).Take(500);
-    <h3 class="text-white">@groupedReport.First().ProblemName</h3>
-    <table class="table table-striped">
-        <tr>
-            <th>
-                @Resource.First_participant
-            </th>
-            <th>
-                @Resource.Second_participant
-            </th>
-            <th>
-                @Resource.Points
-            </th>
-            <th>
-                @Resource.Differences
-            </th>
-            <th>
-                @Resource.Percentage
-            </th>
-        </tr>
-        @foreach (var report in sortedAndFilteredReports)
-	    {
-		    <tr>
-                <td>
-                    <a href="/Contests/Submissions/View/@report.FirstSubmissionId" target="_blank">@report.FirstParticipantName - @report.FirstSubmissionCreatedOn</a>
-                </td>
-                <td>
-                    <a href="/Contests/Submissions/View/@report.SecondSubmissionId" target="_blank">@report.SecondParticipantName - @report.SecondSubmissionCreatedOn</a>
-                </td>
-                <td>
-                    @report.Points
-                </td>
-                <td>
-                    @report.Differences
-                </td>
-                <td>
-                    @report.Percentage
-                </td>
-		    </tr>
-	    }
-    </table>
-    <br />
+    foreach (var groupedReport in Model)
+    {
+        var reports = groupedReport.OrderByDescending(p => p.Percentage);
+        <h3 class="text-white">@groupedReport.Key</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>@Resource.First_participant</th>
+                <th>@Resource.Second_participant</th>
+                <th>@Resource.Points</th>
+                <th>@Resource.Differences</th>
+                <th>@Resource.Percentage</th>
+            </tr>
+
+            @foreach (var report in reports)
+            {
+                <tr>
+                    <td>
+                        <a href="/Contests/Submissions/View/@report.FirstSubmissionId" target="_blank">
+                            @report.FirstParticipantName - @report.FirstSubmissionCreatedOn
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/Contests/Submissions/View/@report.SecondSubmissionId" target="_blank">
+                            @report.SecondParticipantName - @report.SecondSubmissionCreatedOn
+                        </a>
+                    </td>
+                    <td>
+                        @report.Points
+                    </td>
+                    <td>
+                        @report.Differences
+                    </td>
+                    <td>
+                        @report.Percentage.ToString("F2")%
+                    </td>
+                </tr>
+            }
+        </table>
+        <br />
+    }
+}
+else
+{
+    <div class="text-center text-uppercase">@Resource.No_similarities</div>
 }

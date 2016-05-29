@@ -3,9 +3,8 @@
     public class CompileResult
     {
         public CompileResult(string outputFile)
+            : this(true, null, outputFile)
         {
-            this.IsCompiledSuccessfully = true;
-            this.OutputFile = outputFile;
         }
 
         public CompileResult(bool isCompiledSuccessfully, string compilerComment, string outputFile = null)

@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Tools.AntiCheat
+﻿namespace OJS.Workers.Tools.AntiCheat.Contracts
 {
     using System.Collections.Generic;
 

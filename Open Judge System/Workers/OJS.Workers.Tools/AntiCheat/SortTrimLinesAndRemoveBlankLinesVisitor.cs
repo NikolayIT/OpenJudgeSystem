@@ -6,20 +6,20 @@
 
     using OJS.Workers.Tools.AntiCheat.Contracts;
 
-    public class SortAndTrimLinesVisitor : IDetectPlagiarismVisitor
+    public class SortTrimLinesAndRemoveBlankLinesVisitor : IDetectPlagiarismVisitor
     {
         public string Visit(string text)
         {
-            text = text.Trim();
-
             var lines = new List<string>();
             using (var stringReader = new StringReader(text))
             {
                 string line;
                 while ((line = stringReader.ReadLine()) != null)
                 {
-                    line = line.Trim();
-                    lines.Add(line);
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        lines.Add(line.Trim());
+                    }
                 }
             }
 

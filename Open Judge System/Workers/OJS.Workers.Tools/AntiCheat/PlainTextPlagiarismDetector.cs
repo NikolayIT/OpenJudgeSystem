@@ -3,7 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Similarity;
+    using OJS.Workers.Tools.Similarity.Contracts;
 
     public class PlainTextPlagiarismDetector : IPlagiarismDetector
     {
@@ -34,10 +36,11 @@
             var differences = this.similarityFinder.DiffText(firstSource, secondSource, true, true, true);
 
             var differencesCount = differences.Sum(difference => difference.DeletedA + difference.InsertedB);
-            var textLength = firstSource.Length + secondSource.Length;
+            decimal textLength = firstSource.Length + secondSource.Length;
 
-            // TODO: Revert the percentage
-            var percentage = ((decimal)differencesCount * 100) / textLength;
+            var percentage = textLength > 0
+                ? ((textLength - differencesCount) / textLength) * 100
+                : 0;
 
             return new PlagiarismResult(percentage)
             {

@@ -59,7 +59,6 @@
     <Compile Include="CompilerOutput.cs" />
     <Compile Include="CPlusPlusCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
-    <Compile Include="DotNetDisassembler.cs" />
     <Compile Include="JavaCompiler.cs" />
     <Compile Include="JavaZipCompiler.cs" />
     <Compile Include="MsBuildCompiler.cs" />

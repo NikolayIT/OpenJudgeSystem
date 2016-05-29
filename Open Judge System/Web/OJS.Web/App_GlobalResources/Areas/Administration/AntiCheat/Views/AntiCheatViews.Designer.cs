@@ -115,6 +115,15 @@ namespace Resources.Areas.Administration.AntiCheat.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No similarities.
+        /// </summary>
+        public static string No_similarities {
+            get {
+                return ResourceManager.GetString("No_similarities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Participant Id.
         /// </summary>
         public static string Participant_id {

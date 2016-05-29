@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading;
 
+    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Workers.Common;
 
@@ -15,8 +16,6 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
-        private const int CompilerProcessExitTimeOut = 5000;
-
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -145,16 +144,16 @@
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
-            var exitCode = 0;
+            int exitCode;
 
-            using (var process = new Process())
+            using (var outputWaitHandle = new AutoResetEvent(false))
             {
-                process.StartInfo = compilerProcessStartInfo;
-
-                using (var outputWaitHandle = new AutoResetEvent(false))
+                using (var errorWaitHandle = new AutoResetEvent(false))
                 {
-                    using (var errorWaitHandle = new AutoResetEvent(false))
+                    using (var process = new Process())
                     {
+                        process.StartInfo = compilerProcessStartInfo;
+
                         process.OutputDataReceived += (sender, e) =>
                         {
                             if (e.Data == null)
@@ -188,24 +187,33 @@
                         process.BeginOutputReadLine();
                         process.BeginErrorReadLine();
 
-                        var exited = process.WaitForExit(CompilerProcessExitTimeOut);
+                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
                         if (!exited)
                         {
-                            process.Kill();
+                            process.CancelOutputRead();
+                            process.CancelErrorRead();
+
+                            // Double check if the process has exited before killing it
+                            if (!process.HasExited)
+                            {
+                                process.Kill();
+                            }
+
+                            return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
                         outputWaitHandle.WaitOne(100);
                         errorWaitHandle.WaitOne(100);
+
+                        exitCode = process.ExitCode;
                     }
                 }
-
-                exitCode = process.ExitCode;
             }
 
             var output = outputBuilder.ToString().Trim();
             var errorOutput = errorOutputBuilder.ToString().Trim();
 
-            var compilerOutput = string.Format("{0}{1}{2}", output, Environment.NewLine, errorOutput).Trim();
+            var compilerOutput = $"{output}{Environment.NewLine}{errorOutput}".Trim();
             return new CompilerOutput(exitCode, compilerOutput);
         }
     }

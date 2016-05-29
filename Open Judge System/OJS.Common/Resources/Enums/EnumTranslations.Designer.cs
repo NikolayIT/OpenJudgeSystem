@@ -70,6 +70,15 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C# code.
+        /// </summary>
+        public static string CSharpCompileDisassemble {
+            get {
+                return ResourceManager.GetString("CSharpCompileDisassemble", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string Default {
@@ -88,11 +97,29 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Java code.
+        /// </summary>
+        public static string JavaCompileDisassemble {
+            get {
+                return ResourceManager.GetString("JavaCompileDisassemble", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MultiLine TextBox.
         /// </summary>
         public static string MultiLineTextBox {
             get {
                 return ResourceManager.GetString("MultiLineTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plain text.
+        /// </summary>
+        public static string PlainText {
+            get {
+                return ResourceManager.GetString("PlainText", resourceCulture);
             }
         }
         
