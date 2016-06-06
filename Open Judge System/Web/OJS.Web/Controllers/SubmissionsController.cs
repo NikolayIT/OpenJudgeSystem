@@ -10,9 +10,7 @@
     using Newtonsoft.Json;
 
     using OJS.Common;
-    using OJS.Common.Models;
     using OJS.Data;
-    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
@@ -61,23 +59,17 @@
         }
 
         [HttpPost]
-        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
+        [Authorize]
         public ActionResult ReadSubmissions(
             [DataSourceRequest]DataSourceRequest request,
             string userId,
             bool notProcessedOnly = false,
             int? contestId = null)
         {
-            var data = this.Data.Submissions.All();
+            var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 
-            if (this.User.IsLecturer() && !this.User.IsAdmin())
-            {
-                data = data.Where(s =>
-                    s.Problem.Contest.Lecturers.Any(lic => lic.LecturerId == this.UserProfile.Id) ||
-                    s.Problem.Contest.Category.Lecturers.Any(licc => licc.LecturerId == this.UserProfile.Id));
-            }
-
-            if (userId != null)
+            // UserId filter is available only for administrators and lecturers
+            if ((this.User.IsAdmin() || this.User.IsLecturer()) && !string.IsNullOrWhiteSpace(userId))
             {
                 data = data.Where(s => s.Participant.UserId == userId);
             }
