@@ -10,7 +10,7 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -61,10 +61,18 @@
                 .Select(submissionGrouping => new ProblemResultViewModel
                 {
                     ProblemId = problem.Id,
-                    SubmissionId = submissionGrouping.Key.Id,
+                    SubmissionId = submissionGrouping
+                        .Where(x => x.ProblemId == problem.Id)
+                        .OrderByDescending(x => x.Points)
+                        .Select(x => x.Id)
+                        .FirstOrDefault(),
                     ParticipantName = submissionGrouping.Key.User.UserName,
                     MaximumPoints = problem.MaximumPoints,
-                    Result = submissionGrouping.Where(x => x.ProblemId == problem.Id).Max(x => x.Points)
+                    Result = submissionGrouping
+                        .Where(x => x.ProblemId == problem.Id)
+                        .OrderByDescending(x => x.Points)
+                        .Select(x => x.Points)
+                        .FirstOrDefault()
                 });
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
@@ -236,7 +244,7 @@
                     .Select(gr => new
                     {
                         MaxPoints = gr.Max(pr => pr.Points),
-                         gr.Key.ParticipantId
+                        gr.Key.ParticipantId
                     })
                     .GroupBy(pr => pr.ParticipantId)
                     .Select(gr => gr.Sum(pr => pr.MaxPoints))
@@ -277,12 +285,12 @@
                 var maxResultsForProblem = viewModel.Results.Count(r => r.ProblemResults.Any(pr => pr.ProblemName == problem.Name && pr.BestSubmission != null && pr.BestSubmission.Points == pr.MaximumPoints));
                 var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
                 statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel
-                    {
-                        Name = problem.Name,
-                        MaxResultsCount = maxResultsForProblem,
-                        MaxResultsPercent = maxResultsForProblemPercent,
-                        MaxPossiblePoints = problem.MaximumPoints
-                    });
+                {
+                    Name = problem.Name,
+                    MaxResultsCount = maxResultsForProblem,
+                    MaxResultsPercent = maxResultsForProblemPercent,
+                    MaxPossiblePoints = problem.MaximumPoints
+                });
 
                 if (toPoints == 0)
                 {
@@ -297,12 +305,12 @@
                 var participantsInPointsRangePercent = (double)participantsInPointsRange / participantsCount;
 
                 statsModel.StatsByPointsRange.Add(new ContestPointsRangeViewModel
-                    {
-                        PointsFrom = fromPoints,
-                        PointsTo = toPoints,
-                        Participants = participantsInPointsRange,
-                        PercentOfAllParticipants = participantsInPointsRangePercent
-                    });
+                {
+                    PointsFrom = fromPoints,
+                    PointsTo = toPoints,
+                    Participants = participantsInPointsRange,
+                    PercentOfAllParticipants = participantsInPointsRangePercent
+                });
 
                 fromPoints = toPoints + 1;
             }

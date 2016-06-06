@@ -1,8 +1,7 @@
 ﻿@using OJS.Web.Areas.Contests.ViewModels.Contests
 @using OJS.Web.Areas.Contests.ViewModels.Submissions
 @using OJS.Web.Areas.Contests.ViewModels.Results
-@using OJS.Common.Models;
-@using OJS.Web.Areas.Users.Controllers
+@using OJS.Common.Models
 
 @using Resource = Resources.Areas.Contests.Shared.ContestsProblemPartial
 
@@ -173,8 +172,8 @@
 
     @{
         var participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
-            "<td><a href='/users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" + 
-            "<td><a href='" + Url.Action("View", "Submissions") + "/#:SubmissionId#'>#:Result# / #:MaximumPoints#</a></td></tr>";
+            "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" + 
+            "<td><a href='" + Url.Action("View", "Submissions") + "/#:SubmissionId#' target='_blank'>#:Result# / #:MaximumPoints#</a></td></tr>";
     }
 
     @if (Model.ShowResults)
