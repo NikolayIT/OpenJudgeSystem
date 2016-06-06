@@ -14,15 +14,19 @@
         {
             get
             {
-                return submission => new ProblemResultViewModel
-                                {
-                                    ProblemId = submission.Problem.Id,
-                                    ParticipantName = submission.Participant.User.UserName,
-                                    MaximumPoints = submission.Problem.MaximumPoints,
-                                    Result = submission.Points
-                                };
+                return submission => 
+                    new ProblemResultViewModel
+                    {
+                        ProblemId = submission.Problem.Id,
+                        SubmissionId = submission.Id,
+                        ParticipantName = submission.Participant.User.UserName,
+                        MaximumPoints = submission.Problem.MaximumPoints,
+                        Result = submission.Points
+                    };
             }
         }
+
+        public int SubmissionId { get; set; }
 
         [Display(Name = "Participant", ResourceType = typeof(Resource))]
         public string ParticipantName { get; set; }

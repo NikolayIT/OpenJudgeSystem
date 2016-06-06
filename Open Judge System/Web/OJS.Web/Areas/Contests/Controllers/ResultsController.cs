@@ -61,6 +61,7 @@
                 .Select(submissionGrouping => new ProblemResultViewModel
                 {
                     ProblemId = problem.Id,
+                    SubmissionId = submissionGrouping.Key.Id,
                     ParticipantName = submissionGrouping.Key.User.UserName,
                     MaximumPoints = problem.MaximumPoints,
                     Result = submissionGrouping.Where(x => x.ProblemId == problem.Id).Max(x => x.Points)
