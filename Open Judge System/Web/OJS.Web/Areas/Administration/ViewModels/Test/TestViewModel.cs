@@ -38,7 +38,7 @@
                         ? TestType.Trial
                         : test.IsOpenTest 
                             ? TestType.Open 
-                            : TestType.Standart,
+                            : TestType.Standard,
                     AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
                     {
                         Text = v.GetLocalizedDescription(),
@@ -66,7 +66,7 @@
                         ? TestType.Trial
                         : test.IsOpenTest
                             ? TestType.Open
-                            : TestType.Standart,
+                            : TestType.Standard,
                 };
             }
         }
@@ -196,15 +196,6 @@
 
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
         public string TrialTestName => this.Type == TestType.Trial ? Resource.Practice : Resource.Contest;
-
-        ////[Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
-        ////public bool IsTrialTest { get; set; }
-
-        ////[Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
-        ////public bool IsOpenTest { get; set; }
-
-        ////[Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
-        ////public bool IsStandartTest { get; set; }
 
         [Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
         public TestType Type { get; set; }

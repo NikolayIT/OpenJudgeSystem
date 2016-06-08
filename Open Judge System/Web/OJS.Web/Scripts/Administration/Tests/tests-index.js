@@ -41,7 +41,7 @@ function onProblemSelect(e) {
 
 function getTestTypeString(type) {
     if (type === 1) {
-        return "Standart";
+        return "Standard";
     } else if (type === 2) {
         return "Open";
     } else if (type === 3) {

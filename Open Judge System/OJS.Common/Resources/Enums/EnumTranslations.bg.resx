@@ -147,7 +147,7 @@
   <data name="ProcessingSubmissionStatus" xml:space="preserve">
     <value>Изчислява се</value>
   </data>
-  <data name="StandartTestDescription" xml:space="preserve">
+  <data name="StandardTestDescription" xml:space="preserve">
     <value>Стандартен тест (без обратна връзка + точки)</value>
   </data>
   <data name="TextBox" xml:space="preserve">

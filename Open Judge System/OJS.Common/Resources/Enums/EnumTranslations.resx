@@ -147,7 +147,7 @@
   <data name="ProcessingSubmissionStatus" xml:space="preserve">
     <value>Processing</value>
   </data>
-  <data name="StandartTestDescription" xml:space="preserve">
+  <data name="StandardTestDescription" xml:space="preserve">
     <value>Standard test (no feedback + give score)</value>
   </data>
   <data name="TextBox" xml:space="preserve">

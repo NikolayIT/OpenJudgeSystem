@@ -6,8 +6,8 @@
 
     public enum TestType
     {
-        [LocalizedDescription("StandartTestDescription", typeof(Resource))]
-        Standart = 1,
+        [LocalizedDescription("StandardTestDescription", typeof(Resource))]
+        Standard = 1,
 
         [LocalizedDescription("OpenTestDescription", typeof(Resource))]
         Open = 2,

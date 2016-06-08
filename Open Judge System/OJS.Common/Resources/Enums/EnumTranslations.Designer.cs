@@ -153,9 +153,9 @@ namespace Resources.Enums {
         /// <summary>
         ///   Looks up a localized string similar to Standard test (no feedback + give score).
         /// </summary>
-        public static string StandartTestDescription {
+        public static string StandardTestDescription {
             get {
-                return ResourceManager.GetString("StandartTestDescription", resourceCulture);
+                return ResourceManager.GetString("StandardTestDescription", resourceCulture);
             }
         }
         
