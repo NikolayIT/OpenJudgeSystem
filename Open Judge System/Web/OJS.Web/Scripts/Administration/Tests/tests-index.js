@@ -5,7 +5,6 @@
 }
 
 function onSearchSelect(e) {
-    
     var problemId = this.dataItem(e.item.index()).Id;
     $('#problemId').val(problemId);
     populateDropDowns(problemId);
@@ -40,6 +39,18 @@ function onProblemSelect(e) {
     }
 }
 
+function getTestTypeString(type) {
+    if (type === 1) {
+        return "Standart";
+    } else if (type === 2) {
+        return "Open";
+    } else if (type === 3) {
+        return "Trial";
+    }
+
+    return type;
+}
+
 function populateDropDowns(problemIdAsString) {
 
     $('#controls').show();
@@ -47,7 +58,7 @@ function populateDropDowns(problemIdAsString) {
 
     var response;
 
-    $.get('/Administration/Tests/GetProblemInformation/' + problemIdAsString, function(data) {
+    $.get('/Administration/Tests/GetProblemInformation/' + problemIdAsString, function (data) {
         response = data;
 
         var categoryId = response.Category;
@@ -86,20 +97,20 @@ function populateDropDowns(problemIdAsString) {
         });
 
         function categoriesCascade() {
-            contests.dataSource.fetch(function() {
+            contests.dataSource.fetch(function () {
                 contests.dataSource.read();
 
-                contests.select(function(dataItem) {
+                contests.select(function (dataItem) {
                     return dataItem.Id == contestId;
                 });
             });
         }
 
         function contestsCascade() {
-            problems.dataSource.fetch(function() {
+            problems.dataSource.fetch(function () {
                 problems.dataSource.read();
 
-                problems.select(function(dataItem) {
+                problems.select(function (dataItem) {
                     return dataItem.Id == problemId;
                 });
             });
@@ -108,13 +119,13 @@ function populateDropDowns(problemIdAsString) {
         categories.bind("cascade", categoriesCascade);
         contests.bind("cascade", contestsCascade);
 
-        categoriesData.fetch(function() {
+        categoriesData.fetch(function () {
             categories.dataSource.data(categoriesData);
             categories.setDataSource(categoriesData);
             categories.refresh();
         });
 
-        categories.select(function(dataItem) {
+        categories.select(function (dataItem) {
             return dataItem.Id === categoryId;
         });
 
@@ -152,7 +163,7 @@ function initializeGrid(problemId, contestId) {
             columns: [
                 { field: "Input", title: "Вход" },
                 { field: "Output", title: "Изход" },
-                { field: "TrialTestName", title: "Вид тест" },
+                { field: "TypeName", title: "Вид тест", template: '#= getTestTypeString(Type) #' },
                 { field: "OrderBy", title: "Подредба" },
                 { field: "TestRunsCount", title: "Изпълнения" },
                 { title: "Операции", width: "25%", template: '<a href="/Administration/Tests/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }

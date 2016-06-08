@@ -205,7 +205,7 @@ else
             testResult.ExpectedOutputFragment != null ||
             testResult.UserOutputFragment != null)
         {
-            if (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
+            if (testResult.IsTrialTest || testResult.IsOpenTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
             {
                 <div class="diff">
                     @if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))

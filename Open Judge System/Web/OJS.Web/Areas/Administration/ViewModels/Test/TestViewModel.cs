@@ -1,7 +1,10 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Test
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
@@ -9,12 +12,42 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Web.Common;
 
     using Resource = Resources.Areas.Administration.Tests.ViewModels.TestAdministration;
 
     public class TestViewModel
     {
+        [ExcludeFromExcel]
+        public static Expression<Func<Test, TestViewModel>> EditFromTest
+        {
+            get
+            {
+                return test => new TestViewModel
+                {
+                    Id = test.Id,
+                    InputData = test.InputData,
+                    OutputData = test.OutputData,
+                    OrderBy = test.OrderBy,
+                    ProblemId = test.Problem.Id,
+                    ProblemName = test.Problem.Name,
+                    TestRunsCount = test.TestRuns.Count,
+                    Type = test.IsTrialTest 
+                        ? TestType.Trial
+                        : test.IsOpenTest 
+                            ? TestType.Open 
+                            : TestType.Standart,
+                    AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
+                    {
+                        Text = v.GetLocalizedDescription(),
+                        Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+                    })
+            };
+            }
+        }
+
         [ExcludeFromExcel]
         public static Expression<Func<Test, TestViewModel>> FromTest
         {
@@ -25,11 +58,15 @@
                     Id = test.Id,
                     InputData = test.InputData,
                     OutputData = test.OutputData,
-                    IsTrialTest = test.IsTrialTest,
                     OrderBy = test.OrderBy,
                     ProblemId = test.Problem.Id,
                     ProblemName = test.Problem.Name,
-                    TestRunsCount = test.TestRuns.Count
+                    TestRunsCount = test.TestRuns.Count,
+                    Type = test.IsTrialTest
+                        ? TestType.Trial
+                        : test.IsOpenTest
+                            ? TestType.Open
+                            : TestType.Standart,
                 };
             }
         }
@@ -158,10 +195,24 @@
         }
 
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
-        public string TrialTestName => this.IsTrialTest ? Resource.Practice : Resource.Contest;
+        public string TrialTestName => this.Type == TestType.Trial ? Resource.Practice : Resource.Contest;
 
-        [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
-        public bool IsTrialTest { get; set; }
+        ////[Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
+        ////public bool IsTrialTest { get; set; }
+
+        ////[Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
+        ////public bool IsOpenTest { get; set; }
+
+        ////[Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
+        ////public bool IsStandartTest { get; set; }
+
+        [Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
+        public TestType Type { get; set; }
+
+        [Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
+        public string TypeName { get; set; }
+
+        public IEnumerable<SelectListItem> AllTypes { get; set; }
 
         [Display(Name = "Order", ResourceType = typeof(Resource))]
         [Required(

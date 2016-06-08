@@ -89,6 +89,15 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open test.
+        /// </summary>
+        public static string Open_test_name {
+            get {
+                return ResourceManager.GetString("Open_test_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order.
         /// </summary>
         public static string Order {
@@ -166,6 +175,15 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         public static string Trial_test_name {
             get {
                 return ResourceManager.GetString("Trial_test_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test type.
+        /// </summary>
+        public static string Type_test_name {
+            get {
+                return ResourceManager.GetString("Type_test_name", resourceCulture);
             }
         }
     }

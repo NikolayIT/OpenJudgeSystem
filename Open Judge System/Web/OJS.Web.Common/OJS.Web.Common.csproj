@@ -105,6 +105,7 @@
     <Compile Include="SystemMessage.cs" />
     <Compile Include="SystemMessageCollection.cs" />
     <Compile Include="SystemMessageType.cs" />
+    <Compile Include="TestType.cs" />
     <Compile Include="ZipFileResult.cs" />
     <Compile Include="ZippedTestManipulator\ParseResult.cs" />
     <Compile Include="ZippedTestManipulator\ZippedTestsParser.cs" />

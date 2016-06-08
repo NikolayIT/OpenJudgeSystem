@@ -106,6 +106,15 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open test (show feedback + give score).
+        /// </summary>
+        public static string OpenTestDescription {
+            get {
+                return ResourceManager.GetString("OpenTestDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending.
         /// </summary>
         public static string PendingSubmissionStatus {
@@ -142,11 +151,29 @@ namespace Resources.Enums {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Standard test (no feedback + give score).
+        /// </summary>
+        public static string StandartTestDescription {
+            get {
+                return ResourceManager.GetString("StandartTestDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TextBox.
         /// </summary>
         public static string TextBox {
             get {
                 return ResourceManager.GetString("TextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trial test (show feedback + no score).
+        /// </summary>
+        public static string TrialTestDescription {
+            get {
+                return ResourceManager.GetString("TrialTestDescription", resourceCulture);
             }
         }
         

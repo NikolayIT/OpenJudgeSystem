@@ -153,4 +153,12 @@
   <data name="Trial_test_name" xml:space="preserve">
     <value>Пробен тест</value>
   </data>
+  <data name="Open_test_name" xml:space="preserve">
+    <value>Отворен тест</value>
+    <comment>Отворен тест</comment>
+  </data>
+  <data name="Type_test_name" xml:space="preserve">
+    <value>Тип на теста</value>
+    <comment>Тип на теста</comment>
+  </data>
 </root>

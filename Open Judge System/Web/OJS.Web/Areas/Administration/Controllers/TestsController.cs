@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
@@ -14,6 +15,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -21,6 +23,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
+    using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
 
@@ -100,6 +103,11 @@
             {
                 ProblemId = problem.Id,
                 ProblemName = problem.Name,
+                AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
+                {
+                    Text = v.GetLocalizedDescription(),
+                    Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+                }),
                 OrderBy = this.Data.Tests
                     .All()
                     .Where(t => t.ProblemId == problem.Id && !t.IsTrialTest)
@@ -142,8 +150,9 @@
                     InputDataAsString = test.InputFull,
                     OutputDataAsString = test.OutputFull,
                     ProblemId = id,
-                    IsTrialTest = test.IsTrialTest,
-                    OrderBy = test.OrderBy
+                    IsTrialTest = test.Type == TestType.Trial,
+                    OrderBy = test.OrderBy,
+                    IsOpenTest = test.Type == TestType.Open
                 });
 
                 this.Data.SaveChanges();
@@ -214,7 +223,8 @@
                 existingTest.InputData = test.InputData;
                 existingTest.OutputData = test.OutputData;
                 existingTest.OrderBy = test.OrderBy;
-                existingTest.IsTrialTest = test.IsTrialTest;
+                existingTest.IsTrialTest = test.Type == TestType.Trial;
+                existingTest.IsOpenTest = test.Type == TestType.Open;
 
                 this.Data.SaveChanges();
 

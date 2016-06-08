@@ -11,10 +11,10 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
+
         @Html.HiddenFor(m => m.ProblemId)
         @Html.HiddenFor(m => m.ProblemName)
-        
+
         <div class="editor-label">
             @Html.LabelFor(m => m.InputFull)
         </div>
@@ -33,8 +33,10 @@
         <br />
         <div class="row">
             <div class="editor-label">
-                @Html.CheckBoxFor(m => m.IsTrialTest)
-                @Html.LabelFor(m => m.IsTrialTest)
+                @Html.LabelFor(m => m.Type)
+            </div>
+            <div class="editor-field">
+                @Html.Kendo().DropDownListFor(m => m.Type).BindTo(Model.AllTypes).HtmlAttributes(new { style = "width: 22em;" })
             </div>
             <div class="editor-label">
                 @Html.LabelFor(m => m.OrderBy)

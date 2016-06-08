@@ -15,6 +15,7 @@
                 return test => new TestRunDetailsViewModel
                 {
                     IsTrialTest = test.Test.IsTrialTest,
+                    IsOpenTest = test.Test.IsOpenTest,
                     CheckerComment = test.CheckerComment,
                     ExpectedOutputFragment = test.ExpectedOutputFragment,
                     UserOutputFragment = test.UserOutputFragment,
@@ -30,6 +31,8 @@
         }
 
         public bool IsTrialTest { get; set; }
+
+        public bool IsOpenTest { get; set; }
 
         public int Order { get; set; }
 
