@@ -90,9 +90,12 @@
 
         public void MoveCategory(int id, int? to)
         {
-            var category = this.Data.ContestCategories.GetById(id);
-            category.ParentId = to;
-            this.Data.SaveChanges();
+            if (id != to)
+            {
+                var category = this.Data.ContestCategories.GetById(id);
+                category.ParentId = to;
+                this.Data.SaveChanges();
+            }
         }
 
         private void CascadeDeleteCategories(DatabaseModelType contest)
