@@ -1,4 +1,5 @@
-﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsDetails;
+﻿@using OJS.Common.Extensions
+@using Resource = Resources.Areas.Administration.Tests.Views.TestsDetails;
 @model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
 
 @{
@@ -39,10 +40,10 @@
     </div>
     <br />
     <div class="editor-label">
-        @Html.LabelFor(m => m.IsTrialTest)
+        @Html.LabelFor(m => m.Type)
     </div>
     <div class="panel-body news-content editor-label">
-        @Model.IsTrialTest
+        @Model.Type.GetLocalizedDescription()
     </div>
     <br />
     <div class="editor-label">

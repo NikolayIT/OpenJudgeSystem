@@ -169,7 +169,7 @@
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
         public string TrialTestName => this.Type == TestType.Trial ? Resource.Practice : Resource.Contest;
 
-        [Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
+        [Display(Name = "Type_test_name", ResourceType = typeof(Resource))]
         public TestType Type { get; set; }
 
         [Display(Name = "Open_test_name", ResourceType = typeof(Resource))]
