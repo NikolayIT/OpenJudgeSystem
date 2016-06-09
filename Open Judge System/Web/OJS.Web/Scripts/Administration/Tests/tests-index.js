@@ -163,7 +163,7 @@ function initializeGrid(problemId, contestId) {
             columns: [
                 { field: "Input", title: "Вход" },
                 { field: "Output", title: "Изход" },
-                { field: "TypeName", title: "Вид тест", template: '#= getTestTypeString(Type) #' },
+                { field: "TypeName", title: "Вид тест", template: '#= getTestTypeString(Type) #', sortable: false},
                 { field: "OrderBy", title: "Подредба" },
                 { field: "TestRunsCount", title: "Изпълнения" },
                 { title: "Операции", width: "25%", template: '<a href="/Administration/Tests/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }

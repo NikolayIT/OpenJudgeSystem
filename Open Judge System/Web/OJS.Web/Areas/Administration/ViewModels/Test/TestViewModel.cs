@@ -21,34 +21,6 @@
     public class TestViewModel
     {
         [ExcludeFromExcel]
-        public static Expression<Func<Test, TestViewModel>> EditFromTest
-        {
-            get
-            {
-                return test => new TestViewModel
-                {
-                    Id = test.Id,
-                    InputData = test.InputData,
-                    OutputData = test.OutputData,
-                    OrderBy = test.OrderBy,
-                    ProblemId = test.Problem.Id,
-                    ProblemName = test.Problem.Name,
-                    TestRunsCount = test.TestRuns.Count,
-                    Type = test.IsTrialTest 
-                        ? TestType.Trial
-                        : test.IsOpenTest 
-                            ? TestType.Open 
-                            : TestType.Standard,
-                    AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
-                    {
-                        Text = v.GetLocalizedDescription(),
-                        Value = ((int)v).ToString(CultureInfo.InvariantCulture)
-                    })
-            };
-            }
-        }
-
-        [ExcludeFromExcel]
         public static Expression<Func<Test, TestViewModel>> FromTest
         {
             get

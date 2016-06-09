@@ -30,6 +30,7 @@
                 {
                     InputDataAsBytes = t.InputData,
                     t.IsTrialTest,
+                    t.IsOpenTest,
                     t.ProblemId,
                     t.Problem.ContestId,
                     t.Problem.ShowDetailedFeedback
@@ -41,23 +42,24 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Test_not_found_message);
             }
 
-            if (!testInfo.IsTrialTest &&
-                !testInfo.ShowDetailedFeedback &&
-                !this.CheckIfUserHasProblemPermissions(testInfo.ProblemId) &&
-                !this.Data.Participants
-                    .All()
-                    .Any(p => p.UserId == this.UserProfile.Id && p.ContestId == testInfo.ContestId))
+            var hasPermissions = this.CheckIfUserHasProblemPermissions(testInfo.ProblemId);
+            var isParticipant = this.Data.Participants
+                .All()
+                .Any(p => p.UserId == this.UserProfile.Id && p.ContestId == testInfo.ContestId);
+
+            if (hasPermissions || 
+                ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant))
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.No_rights_message);
+                var inputDataViewModel = new TestInputDataViewModel
+                {
+                    InputData = testInfo.InputDataAsBytes.Decompress(),
+                    TestId = id
+                };
+
+                return this.PartialView("_GetInputDataPartial", inputDataViewModel);
             }
 
-            var inputDataViewModel = new TestInputDataViewModel
-            {
-                InputData = testInfo.InputDataAsBytes.Decompress(),
-                TestId = id
-            };
-
-            return this.PartialView("_GetInputDataPartial", inputDataViewModel);
+            throw new HttpException((int)HttpStatusCode.Forbidden, Resource.No_rights_message);
         }
     }
 }

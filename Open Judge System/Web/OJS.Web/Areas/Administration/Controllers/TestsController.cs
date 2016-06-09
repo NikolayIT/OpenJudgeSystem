@@ -185,6 +185,12 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            test.AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
+            {
+                Text = v.GetLocalizedDescription(),
+                Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+            });
+
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
