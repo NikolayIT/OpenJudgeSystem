@@ -69,7 +69,12 @@
             var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
 
             // UserId filter is available only for administrators and lecturers
-            if ((this.User.IsAdmin() || this.User.IsLecturer()) && !string.IsNullOrWhiteSpace(userId))
+            if (!this.User.IsAdmin() && !this.User.IsLecturer())
+            {
+                userId = this.UserProfile.Id;
+            }
+
+            if (!string.IsNullOrWhiteSpace(userId))
             {
                 data = data.Where(s => s.Participant.UserId == userId);
             }
