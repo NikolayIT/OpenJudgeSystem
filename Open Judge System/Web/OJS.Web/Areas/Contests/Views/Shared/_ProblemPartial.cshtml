@@ -205,7 +205,6 @@
                         .Sort(sort =>
                         {
                             sort.Add(x => x.Result).Descending();
-                            sort.Add(x => x.ParticipantName).Ascending();
                         })
                         .Read("ByProblem", "Results", new { official = ViewBag.IsOfficial, id = Model.ProblemId })
                         .PageSize(8);
