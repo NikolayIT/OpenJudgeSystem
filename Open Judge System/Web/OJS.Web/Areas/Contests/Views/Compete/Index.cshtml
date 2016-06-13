@@ -74,7 +74,7 @@
 </div>
 
 @{
-    string remainingTimeFormat = string.Format("\"<div id='countdown-timer'>" + Resource.Remaining_time_format + "</div>\"", "<span id='hours-remaining'></span>",
+    var remainingTimeFormat = string.Format("\"<div id='countdown-timer'>" + Resource.Remaining_time_format + "</div>\"", "<span id='hours-remaining'></span>",
         "<span id='minutes-remaining'></span>", "<span id='seconds-remaining'></span>");
 }
 

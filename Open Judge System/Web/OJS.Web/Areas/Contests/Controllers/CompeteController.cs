@@ -439,7 +439,10 @@
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            var problemViewModel = new ContestProblemViewModel(problem);
+            var problemViewModel = new ContestProblemViewModel(problem)
+            {
+                UserHasAdminRights = this.CheckIfUserHasProblemPermissions(problem.Id)
+            };
 
             return this.PartialView("_ProblemPartial", problemViewModel);
         }

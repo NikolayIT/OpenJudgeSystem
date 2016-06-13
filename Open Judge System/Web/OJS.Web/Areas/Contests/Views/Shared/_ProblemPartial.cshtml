@@ -171,9 +171,20 @@
     </div>
 
     @{
-        var participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
-            "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" + 
-            "<td><a href='" + Url.Action("View", "Submissions") + "/#:SubmissionId#' target='_blank'>#:Result# / #:MaximumPoints#</a></td></tr>";
+        string participantRowTemplate;
+
+        if (Model.UserHasAdminRights)
+        {
+            participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
+                "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" +
+                "<td><a href='" + Url.Action("View", "Submissions") + "/#:SubmissionId#' target='_blank'>#:Result# / #:MaximumPoints#</a></td></tr>";
+        }
+        else
+        {
+            participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
+                "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" +
+                "<td>#:Result# / #:MaximumPoints#</td></tr>";
+        }
     }
 
     @if (Model.ShowResults)

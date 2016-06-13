@@ -126,5 +126,7 @@
         public string CheckerDescription { get; set; }
 
         public IEnumerable<ContestProblemResourceViewModel> Resources { get; set; }
+
+        public bool UserHasAdminRights { get; set; }
     }
 }

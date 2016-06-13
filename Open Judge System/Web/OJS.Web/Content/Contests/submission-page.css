@@ -60,3 +60,7 @@
     text-overflow: ellipsis;
     max-width: 120px;
 }
+
+.problem-result-container .k-grid tr.success td a {
+    color: #fff;
+}
