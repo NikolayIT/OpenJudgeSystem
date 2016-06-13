@@ -58,13 +58,13 @@
                 .All()
                 .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
                 .GroupBy(x => x.Participant)
-                .Select(x => x.Where(z => z.ProblemId == problem.Id).OrderByDescending(z => z.Points).FirstOrDefault())
-                .Select(submissionGrouping => new ProblemResultViewModel
+                .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
+                .Select(submission => new ProblemResultViewModel
                 {
-                    SubmissionId = submissionGrouping.Id,
-                    ParticipantName = submissionGrouping.Participant.User.UserName,
+                    SubmissionId = submission.Id,
+                    ParticipantName = submission.Participant.User.UserName,
                     MaximumPoints = problem.MaximumPoints,
-                    Result = submissionGrouping.Points
+                    Result = submission.Points
                 });
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
