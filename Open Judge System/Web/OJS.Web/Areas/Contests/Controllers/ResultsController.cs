@@ -57,7 +57,7 @@
             var results = this.Data.Submissions
                 .All()
                 .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
-                .GroupBy(x => x.Participant)
+                .GroupBy(x => x.ParticipantId)
                 .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
                 .Select(submission => new ProblemResultViewModel
                 {
@@ -196,12 +196,12 @@
                     .Select(
                         c =>
                         new
-                            {
-                                c.Id,
-                                ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial),
-                                c.StartTime,
-                                c.EndTime
-                            })
+                        {
+                            c.Id,
+                            ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial),
+                            c.StartTime,
+                            c.EndTime
+                        })
                     .FirstOrDefault();
 
             var submissions = this.Data.Participants.All()
