@@ -133,7 +133,7 @@
     <value>Многоредов текст</value>
   </data>
   <data name="OpenTestDescription" xml:space="preserve">
-    <value>Отворен тест (с обратна връзка + точки)</value>
+    <value>Отворен</value>
   </data>
   <data name="PendingSubmissionStatus" xml:space="preserve">
     <value>Предстои изчисляване</value>
@@ -148,13 +148,13 @@
     <value>Изчислява се</value>
   </data>
   <data name="StandardTestDescription" xml:space="preserve">
-    <value>Стандартен тест (без обратна връзка + точки)</value>
+    <value>Състезателен</value>
   </data>
   <data name="TextBox" xml:space="preserve">
     <value>Едноредов текст</value>
   </data>
   <data name="TrialTestDescription" xml:space="preserve">
-    <value>Нулев тест (с обратна връзка без точки)</value>
+    <value>Нулев</value>
   </data>
   <data name="Video" xml:space="preserve">
     <value>Видео</value>

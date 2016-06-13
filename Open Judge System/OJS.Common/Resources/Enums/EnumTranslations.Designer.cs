@@ -106,7 +106,7 @@ namespace Resources.Enums {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open test (show feedback + give score).
+        ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string OpenTestDescription {
             get {
@@ -151,7 +151,7 @@ namespace Resources.Enums {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard test (no feedback + give score).
+        ///   Looks up a localized string similar to Contest.
         /// </summary>
         public static string StandardTestDescription {
             get {
@@ -169,7 +169,7 @@ namespace Resources.Enums {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trial test (show feedback + no score).
+        ///   Looks up a localized string similar to Practice.
         /// </summary>
         public static string TrialTestDescription {
             get {

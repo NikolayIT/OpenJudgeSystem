@@ -41,11 +41,11 @@ function onProblemSelect(e) {
 
 function getTestTypeString(type) {
     if (type === 1) {
-        return "Standard";
+        return "Contest";
     } else if (type === 2) {
         return "Open";
     } else if (type === 3) {
-        return "Trial";
+        return "Practice";
     }
 
     return type;
