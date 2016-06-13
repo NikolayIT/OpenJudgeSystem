@@ -718,6 +718,7 @@
             using (zipFile)
             {
                 int trialTestCounter = 1;
+                int openTestCounter = 1;
                 int testCounter = 1;
 
                 foreach (var test in tests)
@@ -727,6 +728,12 @@
                         zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString);
                         zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString);
                         trialTestCounter++;
+                    }
+                    else if (test.IsOpenTest)
+                    {
+                        zipFile.AddEntry(string.Format("test.open.{0:D3}.in.txt", openTestCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.open.{0:D3}.out.txt", openTestCounter), test.OutputDataAsString);
+                        openTestCounter++;
                     }
                     else
                     {

@@ -56,6 +56,21 @@
                 count = lastTest.OrderBy + 1;
             }
 
+            for (int i = 0; i < tests.OpenInputs.Count; i++)
+            {
+                problem.Tests.Add(new Test
+                {
+                    IsTrialTest = false,
+                    IsOpenTest = true,
+                    OrderBy = count,
+                    Problem = problem,
+                    InputDataAsString = tests.OpenInputs[i],
+                    OutputDataAsString = tests.OpenOutputs[i]
+                });
+
+                count++;
+            }
+
             for (int i = 0; i < tests.Inputs.Count; i++)
             {
                 problem.Tests.Add(new Test
@@ -196,6 +211,12 @@
                         {
                             result.ZeroInputs.Add(ExtractFileFromStream(input));
                             result.ZeroOutputs.Add(ExtractFileFromStream(output));
+                        }
+                        else if (input.FileName.Contains(".open.")
+                            && output.FileName.Contains(".open."))
+                        {
+                            result.OpenInputs.Add(ExtractFileFromStream(input));
+                            result.OpenOutputs.Add(ExtractFileFromStream(output));
                         }
                         else
                         {
