@@ -11,6 +11,8 @@
 
     public class NodeJsPreprocessExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
+        protected const string LatestEcmaScriptFeaturesEnabledFlag = "--harmony";
+
         private const string UserInputPlaceholder = "#userInput#";
         private const string RequiredModules = "#requiredModule#";
         private const string PreevaluationPlaceholder = "#preevaluationCode#";
@@ -198,9 +200,11 @@ var code = {
         {
             var testResults = new List<TestResult>();
 
+            var arguments = new[] { LatestEcmaScriptFeaturesEnabledFlag, codeSavePath };
+
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, new[] { codeSavePath });
+                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
