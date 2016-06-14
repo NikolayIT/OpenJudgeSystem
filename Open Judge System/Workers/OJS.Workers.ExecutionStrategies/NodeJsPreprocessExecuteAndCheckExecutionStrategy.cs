@@ -17,7 +17,11 @@
         private const string PostevaluationPlaceholder = "#postevaluationCode#";
         private const string EvaluationPlaceholder = "#evaluationCode#";
 
-        public NodeJsPreprocessExecuteAndCheckExecutionStrategy(string nodeJsExecutablePath, string underscoreModulePath)
+        public NodeJsPreprocessExecuteAndCheckExecutionStrategy(
+            string nodeJsExecutablePath,
+            string underscoreModulePath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
@@ -30,13 +34,35 @@
                 throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
             }
 
+            if (baseTimeUsed < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(baseTimeUsed));
+            }
+
+            if (baseMemoryUsed < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(baseMemoryUsed));
+            }
+
             this.NodeJsExecutablePath = nodeJsExecutablePath;
             this.UnderscoreModulePath = this.ProcessModulePath(underscoreModulePath);
+            this.BaseTimeUsed = baseTimeUsed;
+            this.BaseMemoryUsed = baseMemoryUsed;
         }
 
         protected string NodeJsExecutablePath { get; }
 
         protected string UnderscoreModulePath { get; }
+
+        /// <remarks>
+        /// Measured in milliseconds.
+        /// </remarks>
+        protected int BaseTimeUsed { get; set; }
+
+        /// <remarks>
+        /// Measured in bytes.
+        /// </remarks>
+        protected int BaseMemoryUsed { get; set; }
 
         protected virtual string JsCodeRequiredModules => $@"
 var EOL = require('os').EOL,
@@ -85,8 +111,9 @@ process.chdir = undefined;
 process.cwd = undefined;
 process.exit = undefined;
 process.umask = undefined;
-GLOBAL = undefined;
-root = undefined;
+//GLOBAL = undefined;
+//root = undefined;
+global = {};
 setTimeout = undefined;
 setInterval = undefined;
 clearTimeout = undefined;
@@ -146,8 +173,7 @@ var code = {
         {
             var result = new ExecutionResult();
 
-            // setting the IsCompiledSuccessfully variable to true as in the NodeJS
-            // execution strategy there is no compilation
+            // In NodeJS there is no compilation
             result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
@@ -174,12 +200,39 @@ var code = {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, new[] { codeSavePath });
+                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, new[] { codeSavePath });
+
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
             }
 
             return testResults;
+        }
+
+        protected virtual ProcessExecutionResult ExecuteNodeJsProcess(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            string input,
+            IEnumerable<string> additionalArguments)
+        {
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                input,
+                executionContext.TimeLimit + this.BaseTimeUsed,
+                executionContext.MemoryLimit + this.BaseMemoryUsed,
+                additionalArguments);
+
+            // No update of time and memory when the result is TimeLimit or MemoryLimit - show how wasteful the solution is
+            if (processExecutionResult.Type != ProcessExecutionResultType.TimeLimit &&
+                processExecutionResult.Type != ProcessExecutionResultType.MemoryLimit)
+            {
+                processExecutionResult.TimeWorked = processExecutionResult.TimeWorked.TotalMilliseconds > this.BaseTimeUsed
+                    ? processExecutionResult.TimeWorked - TimeSpan.FromMilliseconds(this.BaseTimeUsed)
+                    : TimeSpan.FromMilliseconds(this.BaseTimeUsed);
+                processExecutionResult.MemoryUsed = Math.Max(processExecutionResult.MemoryUsed - this.BaseMemoryUsed, this.BaseMemoryUsed);
+            }
+
+            return processExecutionResult;
         }
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');

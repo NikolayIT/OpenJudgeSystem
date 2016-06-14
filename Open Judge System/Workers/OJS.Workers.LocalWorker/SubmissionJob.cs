@@ -251,14 +251,18 @@
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
                         Settings.NodeJsExecutablePath,
-                        Settings.UnderscoreModulePath);
+                        Settings.UnderscoreModulePath,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
                     executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
-                        Settings.UnderscoreModulePath);
+                        Settings.UnderscoreModulePath,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
                     executionStrategy = new IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
@@ -270,7 +274,9 @@
                         Settings.HandlebarsModulePath,
                         Settings.SinonModulePath,
                         Settings.SinonChaiModulePath,
-                        Settings.UnderscoreModulePath);
+                        Settings.UnderscoreModulePath,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);

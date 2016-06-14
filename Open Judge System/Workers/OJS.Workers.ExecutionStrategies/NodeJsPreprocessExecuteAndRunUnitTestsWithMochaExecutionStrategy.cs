@@ -15,8 +15,10 @@
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
-            string underscoreModulePath)
-            : base(nodeJsExecutablePath, underscoreModulePath)
+            string underscoreModulePath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(nodeJsExecutablePath, underscoreModulePath, baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(mochaModulePath))
             {
@@ -84,9 +86,14 @@ describe('TestScope', function() {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(this.NodeJsExecutablePath, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit, arguments);
+                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
+
                 var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, mochaResult.Passed ? "yes" : string.Format("Unexpected error: {0}", mochaResult.Error));
+                var testResult = this.ExecuteAndCheckTest(
+                    test,
+                    processExecutionResult,
+                    checker,
+                    mochaResult.Passed ? "yes" : $"Unexpected error: {mochaResult.Error}");
                 testResults.Add(testResult);
             }
 

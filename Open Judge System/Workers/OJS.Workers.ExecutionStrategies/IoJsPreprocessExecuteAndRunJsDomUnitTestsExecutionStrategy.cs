@@ -5,11 +5,11 @@
 
     public class IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
-        private string jsdomModulePath;
-        private string jqueryModulePath;
-        private string handlebarsModulePath;
-        private string sinonModulePath;
-        private string sinonChaiModulePath;
+        private readonly string jsdomModulePath;
+        private readonly string jqueryModulePath;
+        private readonly string handlebarsModulePath;
+        private readonly string sinonModulePath;
+        private readonly string sinonChaiModulePath;
 
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string iojsExecutablePath,
@@ -20,8 +20,10 @@
             string handlebarsModulePath,
             string sinonModulePath,
             string sinonChaiModulePath,
-            string underscoreModulePath) // TODO: make this modular by getting requires from test
-            : base(iojsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath)
+            string underscoreModulePath,
+            int baseTimeUsed,
+            int baseMemoryUsed) // TODO: make this modular by getting requires from test
+            : base(iojsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath, baseTimeUsed, baseMemoryUsed)
         {
             if (!Directory.Exists(jsdomModulePath))
             {

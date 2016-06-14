@@ -52,6 +52,10 @@
 
         public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
+        public static int NodeJsBaseTimeUsedInMilliseconds => GetSettingOrDefault("NodeJsBaseTimeUsedInMilliseconds", 0);
+
+        public static int NodeJsBaseMemoryUsedInBytes => GetSettingOrDefault("NodeJsBaseMemoryUsedInBytes", 0);
+
         public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
         private static string GetSetting(string settingName)
