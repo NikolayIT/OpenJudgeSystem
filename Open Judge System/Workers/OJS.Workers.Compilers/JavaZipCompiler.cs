@@ -14,7 +14,8 @@
     {
         private const string JavaCompiledFilesSearchPattern = "*.class";
         private const string JavaSourceFilesSearchPattern = "*.java";
-        private const string MainClassFilePathSuffix = "\\Main.class";
+        private const string MainClassFileName = "Main.class";
+        private const string MainClassFilePathSuffix = "\\" + MainClassFileName;
 
         private readonly string workingDirectory;
 
@@ -73,6 +74,11 @@
             // TODO: Find the main class after analyzing which source file contains the main method
             var mainClassFile = compiledFiles
                 .FirstOrDefault(file => file.EndsWith(MainClassFilePathSuffix, StringComparison.InvariantCultureIgnoreCase));
+
+            if (string.IsNullOrWhiteSpace(mainClassFile))
+            {
+                throw new ArgumentException($"'{MainClassFileName}' file not found in output directory.", nameof(outputDirectory));
+            }
 
             return mainClassFile;
         }
