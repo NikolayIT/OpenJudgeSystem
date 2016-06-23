@@ -30,8 +30,7 @@
 
         protected string NodeJsExecutablePath { get; private set; }
 
-        protected virtual string JsCodeRequiredModules => @"
-var EOL = require('os').EOL";
+        protected virtual string JsCodeRequiredModules => @"";
 
         protected virtual string JsCodePreevaulationCode => @"
 var content = ''";
@@ -39,7 +38,11 @@ var content = ''";
         protected virtual string JsCodePostevaulationCode => string.Empty;
 
         protected virtual string JsCodeEvaluation => @"
-    var inputData = content.trim().split(EOL);
+    var inputData = content.trim()
+		.filter(function(x) {
+			return x !== '\r';
+		})
+		.split('\n');
     var result = code.run(inputData);
     if (result !== undefined) {
         console.log(result);
