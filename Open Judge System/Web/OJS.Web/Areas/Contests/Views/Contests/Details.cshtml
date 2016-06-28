@@ -34,7 +34,7 @@
         }
         @if (!string.IsNullOrEmpty(Model.Description))
         {
-            @Model.Description
+            @Html.Raw(Model.Description)
         }
         else
         {

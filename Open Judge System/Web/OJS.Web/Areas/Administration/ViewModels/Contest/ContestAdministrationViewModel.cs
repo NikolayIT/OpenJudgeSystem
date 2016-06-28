@@ -121,8 +121,10 @@
         public string NewIpPassword { get; set; }
 
         [DatabaseProperty]
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Description", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [UIHint("HtmlContent")]
         public string Description { get; set; }
 
         [DatabaseProperty]

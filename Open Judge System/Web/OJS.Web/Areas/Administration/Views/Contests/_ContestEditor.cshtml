@@ -60,10 +60,10 @@
                 @Html.LabelFor(m => m.Description)
             </div>
         </div>
-        <div class="editor-field col-xs-4">
-            @Html.EditorFor(m => m.Description, new { @class = "form-control pull-left full-editor" })
+        <div class="editor-field col-xs-8">
+            @Html.EditorFor(m => m.Description, new { @class = "form-control pull-left full-editor"})
         </div>
-        <div class="editor-field col-xs-4">
+        <div class="editor-field col-xs-1">
             <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_description" data-tooltip="true"></span>
             @Html.ValidationMessageFor(m => m.Description)
         </div>
