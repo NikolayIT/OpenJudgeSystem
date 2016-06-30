@@ -188,7 +188,8 @@
             test.AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
             {
                 Text = v.GetLocalizedDescription(),
-                Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+                Value = ((int)v).ToString(CultureInfo.InvariantCulture),
+                Selected = v == test.Type
             });
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
