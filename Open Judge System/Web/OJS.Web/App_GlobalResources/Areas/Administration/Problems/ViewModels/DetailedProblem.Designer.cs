@@ -188,6 +188,15 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Solution skeleton.
+        /// </summary>
+        public static string Solution_skeleton {
+            get {
+                return ResourceManager.GetString("Solution_skeleton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source code size limit.
         /// </summary>
         public static string Source_code_size_limit {

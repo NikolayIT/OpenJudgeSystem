@@ -172,6 +172,15 @@ namespace Resources.Areas.Administration.Problems.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter solution skeleton.
+        /// </summary>
+        public static string Enter_solution_skeleton {
+            get {
+                return ResourceManager.GetString("Enter_solution_skeleton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the source code size limit (in bytes) for this problem.
         /// </summary>
         public static string Enter_sorce_code_size_limit {

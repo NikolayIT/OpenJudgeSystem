@@ -71,22 +71,6 @@
             return builder.ToString();
         }
 
-        public static string GetFileExtension(this string fileName)
-        {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                return string.Empty;
-            }
-
-            string[] fileParts = fileName.Split(new[] { "." }, StringSplitOptions.None);
-            if (fileParts.Length == 1 || string.IsNullOrEmpty(fileParts.Last()))
-            {
-                return string.Empty;
-            }
-
-            return fileParts.Last().Trim().ToLower();
-        }
-
         public static string MaxLength(this string stringToTrim, int maxLength)
         {
             if (stringToTrim == null || stringToTrim.Length <= maxLength)

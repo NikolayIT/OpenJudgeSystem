@@ -2,6 +2,8 @@
 {
     using System.IO;
 
+    using MissingFeatures;
+
     public static class DirectoryHelpers
     {
         public static string CreateTempDirectory()

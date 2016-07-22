@@ -150,4 +150,7 @@
   <data name="Unlimited" xml:space="preserve">
     <value>Unlimited</value>
   </data>
+  <data name="See_more" xml:space="preserve">
+    <value>See more</value>
+  </data>
 </root>

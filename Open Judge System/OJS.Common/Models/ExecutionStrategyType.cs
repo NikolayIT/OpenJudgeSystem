@@ -15,5 +15,11 @@
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6,
         CheckOnly = 7,
+        SqlServerLocalDbPrepareDatabaseAndRunQueries = 13,
+        SqlServerLocalDbRunQueriesAndCheckDatabase = 14,
+        SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase = 15,
+        MySqlPrepareDatabaseAndRunQueries = 16,
+        MySqlRunQueriesAndCheckDatabase = 17,
+        MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
     }
 }

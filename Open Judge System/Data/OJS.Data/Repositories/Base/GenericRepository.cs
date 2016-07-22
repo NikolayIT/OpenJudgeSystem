@@ -12,6 +12,8 @@
     using EntityFramework.BulkInsert.Extensions;
     using EntityFramework.Extensions;
 
+    using MissingFeatures;
+
     using OJS.Common.Extensions;
     using OJS.Data.Contracts;
 
