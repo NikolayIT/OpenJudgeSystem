@@ -171,4 +171,7 @@
   <data name="Trial_tests" xml:space="preserve">
     <value>Trial tests</value>
   </data>
+  <data name="Solution_skeleton" xml:space="preserve">
+    <value>Solution skeleton</value>
+  </data>
 </root>

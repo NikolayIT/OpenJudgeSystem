@@ -11,6 +11,8 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Workers.ExecutionStrategies;
+    using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
+    using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
 
     using ExecutionContext = OJS.Workers.ExecutionStrategies.ExecutionContext;
 
@@ -90,7 +92,7 @@
                 catch (Exception exception)
                 {
                     this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = string.Format("Exception in ProcessSubmission: {0}", exception.Message);
+                    submission.ProcessingComment = $"Exception in ProcessSubmission: {exception.Message}";
                 }
 
                 try
@@ -100,7 +102,7 @@
                 catch (Exception exception)
                 {
                     this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = string.Format("Exception in CalculatePointsForSubmission: {0}", exception.Message);
+                    submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {exception.Message}";
                 }
 
                 submission.Processed = true;
@@ -165,6 +167,7 @@
                 CompilerType = submission.SubmissionType.CompilerType,
                 MemoryLimit = submission.Problem.MemoryLimit,
                 TimeLimit = submission.Problem.TimeLimit,
+                TaskSkeleton = submission.Problem.SolutionSkeleton,
                 Tests = submission.Problem.Tests.AsQueryable().Select(x =>
                         new TestContext
                         {
@@ -183,7 +186,7 @@
             catch (Exception exception)
             {
                 this.logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                submission.ProcessingComment = string.Format("Exception in executionStrategy.Execute: {0}", exception.Message);
+                submission.ProcessingComment = $"Exception in executionStrategy.Execute: {exception.Message}";
                 return;
             }
 
@@ -286,6 +289,24 @@
                     break;
                 case ExecutionStrategyType.PhpCliExecuteAndCheck:
                     executionStrategy = new PhpCliExecuteAndCheckExecutionStrategy(Settings.PhpCliExecutablePath);
+                    break;
+                case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
+                    executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase:
+                    executionStrategy = new SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase:
+                    executionStrategy = new SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries:
+                    executionStrategy = new MySqlPrepareDatabaseAndRunQueriesExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase:
+                    executionStrategy = new MySqlRunQueriesAndCheckDatabaseExecutionStrategy();
+                    break;
+                case ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase:
+                    executionStrategy = new MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy();
                     break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();

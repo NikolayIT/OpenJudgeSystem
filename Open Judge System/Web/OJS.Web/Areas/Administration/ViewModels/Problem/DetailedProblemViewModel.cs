@@ -10,6 +10,7 @@
 
     using OJS.Common;
     using OJS.Common.DataAnnotations;
+    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
 
@@ -37,7 +38,8 @@
                     ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy
+                    OrderBy = problem.OrderBy,
+                    SolutionSkeletonData = problem.SolutionSkeleton
                 };
             }
         }
@@ -113,5 +115,37 @@
 
         [ExcludeFromExcel]
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }
+
+        [Display(Name = "Solution_skeleton", ResourceType = typeof(Resource))]
+        [UIHint("MultiLineText")]
+        public string SolutionSkeleton
+        {
+            get
+            {
+                return this.SolutionSkeletonData.Decompress();
+            }
+
+            set
+            {
+                this.SolutionSkeletonData = !string.IsNullOrWhiteSpace(value) ? value.Compress() : null;
+            }
+        }
+
+        public string SolutionSkeletonShort
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(this.SolutionSkeleton))
+                {
+                    return null;
+                }
+
+                return this.SolutionSkeleton.Length > 200
+                    ? this.SolutionSkeleton.Substring(0, 200)
+                    : this.SolutionSkeleton;
+            }
+        }
+
+        internal byte[] SolutionSkeletonData { get; set; }
     }
 }

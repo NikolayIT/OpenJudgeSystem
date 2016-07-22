@@ -150,4 +150,8 @@
   <data name="Unlimited" xml:space="preserve">
     <value>Неограничен</value>
   </data>
+  <data name="See_more" xml:space="preserve">
+    <value>Вижте още</value>
+    <comment>Вижте още</comment>
+  </data>
 </root>

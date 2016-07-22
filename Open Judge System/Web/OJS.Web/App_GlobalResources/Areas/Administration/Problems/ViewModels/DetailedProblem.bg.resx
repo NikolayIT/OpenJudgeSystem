@@ -171,4 +171,8 @@
   <data name="Trial_tests" xml:space="preserve">
     <value>Пробни тестове</value>
   </data>
+  <data name="Solution_skeleton" xml:space="preserve">
+    <value>Скелет</value>
+    <comment>Скелет</comment>
+  </data>
 </root>

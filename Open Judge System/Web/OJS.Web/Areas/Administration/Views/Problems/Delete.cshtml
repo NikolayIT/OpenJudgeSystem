@@ -44,6 +44,18 @@
         </div>
         <br />
     }
+    @if (Model.SolutionSkeleton != null)
+    {
+        <div class="editor-label">
+            @Html.LabelFor(m => m.SolutionSkeleton)
+        </div>
+        <div class="panel-body news-content editor-field">
+            <pre class="monospace-font">
+                @(Model.SolutionSkeletonShort + (Model.SolutionSkeleton.Length > 200 ? "..." : string.Empty))
+            </pre>
+        </div>
+        <br />
+    }
     @if (Model.Checker != null)
     {
         <div class="editor-label">
@@ -64,4 +76,3 @@
     <a href="/Administration/Problems/ConfirmDelete/@Model.Id" class="btn btn-primary">@Resource.Delete</a>
     <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
 </div>
-

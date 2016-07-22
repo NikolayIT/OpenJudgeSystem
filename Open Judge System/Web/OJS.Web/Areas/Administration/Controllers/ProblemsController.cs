@@ -12,6 +12,8 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using MissingFeatures;
+
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
@@ -167,7 +169,8 @@
                     ShowResults = problem.ShowResults,
                     ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     OrderBy = problem.OrderBy,
-                    Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker)
+                    Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker),
+                    SolutionSkeleton = problem.SolutionSkeletonData
                 };
 
                 if (problem.Resources != null && problem.Resources.Any())
@@ -226,26 +229,9 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            // TODO: Fix this query to use the static method from DetailedProblemViewModel
             var selectedProblem = this.Data.Problems.All()
                 .Where(x => x.Id == id)
-                .Select(problem => new DetailedProblemViewModel
-                {
-                    Id = problem.Id,
-                    Name = problem.Name,
-                    ContestId = problem.ContestId,
-                    ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
-                    CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
-                    MaximumPoints = problem.MaximumPoints,
-                    TimeLimit = problem.TimeLimit,
-                    MemoryLimit = problem.MemoryLimit,
-                    ShowResults = problem.ShowResults,
-                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
-                    SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
-                    Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy
-                })
+                .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
             if (selectedProblem == null)
@@ -287,6 +273,7 @@
                 existingProblem.ShowDetailedFeedback = problem.ShowDetailedFeedback;
                 existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
                 existingProblem.OrderBy = problem.OrderBy;
+                existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
 
                 this.Data.SaveChanges();
 
@@ -315,23 +302,7 @@
 
             var selectedProblem = this.Data.Problems.All()
                 .Where(x => x.Id == id)
-                .Select(problem => new DetailedProblemViewModel
-                {
-                    Id = problem.Id,
-                    Name = problem.Name,
-                    ContestId = problem.ContestId,
-                    ContestName = problem.Contest.Name,
-                    TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
-                    CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
-                    MaximumPoints = problem.MaximumPoints,
-                    TimeLimit = problem.TimeLimit,
-                    MemoryLimit = problem.MemoryLimit,
-                    SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
-                    Checker = problem.Checker.Name,
-                    OrderBy = problem.OrderBy,
-                    ShowResults = problem.ShowResults,
-                    ShowDetailedFeedback = problem.ShowDetailedFeedback
-                })
+                .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
             if (selectedProblem == null)
@@ -639,6 +610,22 @@
             };
 
             return this.PartialView("_ProblemResourceForm", resourceViewModel);
+        }
+
+        public ActionResult FullSolutionSkeleton(int id)
+        {
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                return this.Json("Нямате привилегиите за това действие");
+            }
+
+            var solutionSkeleton = this.Data.Problems
+                .All()
+                .Where(p => p.Id == id)
+                .Select(p => p.SolutionSkeleton)
+                .FirstOrDefault();
+
+            return this.Content(solutionSkeleton.Decompress());
         }
 
         private IEnumerable GetData(int id)

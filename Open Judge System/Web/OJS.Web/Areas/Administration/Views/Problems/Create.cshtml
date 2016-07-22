@@ -23,7 +23,7 @@
                         @Html.LabelFor(m => m.Name)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
                 </div>
                 <div class="editor-field col-xs-4">
@@ -38,7 +38,7 @@
                         @Html.LabelFor(m => m.MaximumPoints)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.MaximumPoints)
                     .Min(1)
@@ -59,7 +59,7 @@
                         @Html.LabelFor(m => m.TimeLimit) (в ms)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.TimeLimit)
                     .Min(1)
@@ -80,7 +80,7 @@
                         @Html.LabelFor(m => m.MemoryLimit) (в B)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.MemoryLimit)
                     .Format("#")
@@ -89,7 +89,7 @@
                     .Spinners(false)
                     .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-4">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_memory_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.MemoryLimit)
                 </div>
@@ -101,7 +101,7 @@
                         @Html.LabelFor(m => m.SourceCodeSizeLimit) (в B)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     <input type="checkbox" id="enable-sclimit" checked="checked"/>
                     <strong>Да</strong>
                     @(Html.Kendo()
@@ -118,6 +118,21 @@
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
                 </div>
             </div>
+            <br/>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.SolutionSkeleton)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-5">
+                    @Html.EditorFor(m => m.SolutionSkeleton, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_solution_skeleton" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.SolutionSkeleton)
+                </div>
+            </div>
         </fieldset>
         <fieldset>
             <legend>@Resource.Settings</legend>
@@ -127,7 +142,7 @@
                         @Html.LabelFor(m => m.Checker)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @(Html.Kendo()
                     .DropDownListFor(m => m.Checker)
                     .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
@@ -146,7 +161,7 @@
                         @Html.LabelFor(m => m.OrderBy)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.OrderBy)
                     .Format("#")
@@ -167,7 +182,7 @@
                         @Html.LabelFor(m => m.ShowResults)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @Html.EditorFor(m => m.ShowResults)
                 </div>
                 <div class="editor-field col-xs-3">
@@ -182,7 +197,7 @@
                         @Html.LabelFor(m => m.ShowDetailedFeedback)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @Html.EditorFor(m => m.ShowDetailedFeedback)
                 </div>
                 <div class="editor-field col-xs-3">
@@ -195,7 +210,7 @@
         <fieldset>
             <legend>@Resource.Resources</legend>
             <div class="row">
-                <div class="container col-md-6">
+                <div class="container col-md-8">
                     <div class="pull-right">
                         <button class="btn btn-primary" id="add-resource">@Resource.Add</button>
                         <button class="btn btn-primary" id="remove-resource" disabled="disabled">@Resource.Remove</button>
@@ -222,7 +237,7 @@
                         <strong>@Resource.Tests_label</strong>
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     <div id="tests-file-button" class="btn btn-sm btn-primary pull-right">@Resource.Choose_file</div>
                     <div class="hidden-file-upload">
                         <input type="file" name="testArchive" id="tests-upload-input" />
@@ -279,7 +294,4 @@
     <script src="~/Scripts/Administration/Problems/problems-create.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-
-
 

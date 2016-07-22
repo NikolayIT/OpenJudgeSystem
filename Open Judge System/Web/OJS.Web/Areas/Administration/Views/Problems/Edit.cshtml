@@ -22,7 +22,7 @@
                         @Html.LabelFor(m => m.Name)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control pull-left full-editor" })
                 </div>
                 <div class="editor-field col-xs-4">
@@ -37,7 +37,7 @@
                         @Html.LabelFor(m => m.MaximumPoints)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.MaximumPoints)
                     .Min(1)
@@ -59,7 +59,7 @@
                         @Html.LabelFor(m => m.TimeLimit) (в ms)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.TimeLimit)
                     .Min(1)
@@ -80,7 +80,7 @@
                         @Html.LabelFor(m => m.MemoryLimit) (в B)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.MemoryLimit)
                     .Format("#")
@@ -101,7 +101,7 @@
                         @Html.LabelFor(m => m.SourceCodeSizeLimit) (в B)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3">
+                <div class="editor-field col-xs-5">
                     <input type="checkbox" id="enable-sclimit" />
                     <strong>Да</strong>
                     @(Html.Kendo()
@@ -118,6 +118,21 @@
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.SolutionSkeleton)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-5">
+                    @Html.EditorFor(m => m.SolutionSkeleton, new { @class = "form-control pull-left full-editor" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_solution_skeleton" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.SolutionSkeleton)
+                </div>
+            </div>
         </fieldset>
 
         <fieldset>
@@ -128,7 +143,7 @@
                         @Html.LabelFor(m => m.Checker)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @(Html.Kendo()
                     .DropDownListFor(m => m.Checker)
                     .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
@@ -147,7 +162,7 @@
                         @Html.LabelFor(m => m.OrderBy)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @(Html.Kendo()
                     .NumericTextBoxFor(m => m.OrderBy)
                     .Format("#")
@@ -168,7 +183,7 @@
                         @Html.LabelFor(m => m.ShowResults)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @Html.EditorFor(m => m.ShowResults)
                 </div>
                 <div class="editor-field col-xs-3">
@@ -183,7 +198,7 @@
                         @Html.LabelFor(m => m.ShowDetailedFeedback)
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     @Html.EditorFor(m => m.ShowDetailedFeedback)
                 </div>
                 <div class="editor-field col-xs-3">

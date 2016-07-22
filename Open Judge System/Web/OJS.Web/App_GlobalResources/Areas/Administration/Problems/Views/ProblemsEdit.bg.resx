@@ -207,4 +207,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="Enter_solution_skeleton" xml:space="preserve">
+    <value>Въведете скелет</value>
+  </data>
 </root>

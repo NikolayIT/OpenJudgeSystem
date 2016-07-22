@@ -124,6 +124,15 @@ namespace Resources.Areas.Administration.Problems.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to See more.
+        /// </summary>
+        public static string See_more {
+            get {
+                return ResourceManager.GetString("See_more", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show resources.
         /// </summary>
         public static string Show_resources {

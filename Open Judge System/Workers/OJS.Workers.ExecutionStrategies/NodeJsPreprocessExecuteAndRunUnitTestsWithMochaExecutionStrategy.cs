@@ -34,8 +34,8 @@
             this.chaiModulePath = this.ProcessModulePath(chaiModulePath);
         }
 
-        protected override string JsCodeRequiredModules => @"
-var chai = require('" + this.chaiModulePath + @"'),
+        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
+    chai = require('" + this.chaiModulePath + @"'),
 	assert = chai.assert,
 	expect = chai.expect,
 	should = chai.should()";
