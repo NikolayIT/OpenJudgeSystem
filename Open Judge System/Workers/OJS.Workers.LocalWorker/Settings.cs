@@ -56,6 +56,18 @@
 
         public static int NodeJsBaseMemoryUsedInBytes => GetSettingOrDefault("NodeJsBaseMemoryUsedInBytes", 0);
 
+        public static string SqlServerLocalDbMasterDbConnectionString => GetSetting("SqlServerLocalDbMasterDbConnectionString");
+
+        public static string SqlServerLocalDbRestrictedUserId => GetSetting("SqlServerLocalDbRestrictedUserId");
+
+        public static string SqlServerLocalDbRestrictedUserPassword => GetSetting("SqlServerLocalDbRestrictedUserPassword");
+
+        public static string MySqlSysDbConnectionString => GetSetting("MySqlSysDbConnectionString");
+
+        public static string MySqlRestrictedUserId => GetSetting("MySqlRestrictedUserId");
+
+        public static string MySqlRestrictedUserPassword => GetSetting("MySqlRestrictedUserPassword");
+
         public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
         private static string GetSetting(string settingName)

@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.SqlStrategies.MySql
 {
+    using System;
     using System.Data;
     using System.Globalization;
 
@@ -10,37 +11,60 @@
         private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         private const string TimeSpanFormat = "HH:mm:ss";
 
+        private readonly string sysDbConnectionString;
+        private readonly string restrictedUserId;
+        private readonly string restrictedUserPassword;
+
+        protected BaseMySqlExecutionStrategy(
+            string sysDbConnectionString,
+            string restrictedUserId,
+            string restrictedUserPassword)
+        {
+            if (string.IsNullOrWhiteSpace(sysDbConnectionString))
+            {
+                throw new ArgumentException("Invalid sys DB connection string!", nameof(sysDbConnectionString));
+            }
+
+            if (string.IsNullOrWhiteSpace(restrictedUserId))
+            {
+                throw new ArgumentException("Invalid restricted user ID!", nameof(restrictedUserId));
+            }
+
+            if (string.IsNullOrWhiteSpace(restrictedUserPassword))
+            {
+                throw new ArgumentException("Invalid restricted user password!", nameof(restrictedUserPassword));
+            }
+
+            this.sysDbConnectionString = sysDbConnectionString;
+            this.restrictedUserId = restrictedUserId;
+            this.restrictedUserPassword = restrictedUserPassword;
+        }
+
         protected override IDbConnection GetOpenConnection(string databaseName)
         {
-            // TODO: Extract as a setting or constructor parameters!
-            // TODO: Construct with class fields!
-            const string MySqlMasterDbConnectionString = "Server=localhost;Database=sys;UID=root;Password=root";
-
-            using (var connection = new MySqlConnection(MySqlMasterDbConnectionString))
+            using (var connection = new MySqlConnection(this.sysDbConnectionString))
             {
                 connection.Open();
 
-                // TODO: Params?
                 this.ExecuteNonQuery(connection, $"CREATE DATABASE `{databaseName}`;");
 
-                // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $@"
-CREATE USER IF NOT EXISTS '{"OJS-Restricted"}'@'{"localhost"}';
-SET PASSWORD FOR '{"OJS-Restricted"}'@'{"localhost"}'='{"123123"}'");
+CREATE USER IF NOT EXISTS '{this.restrictedUserId}'@'localhost';
+SET PASSWORD FOR '{this.restrictedUserId}'@'localhost'='{this.restrictedUserPassword}'");
 
                 // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $@"
-GRANT ALL PRIVILEGES ON `{databaseName}`.* TO '{"OJS-Restricted"}'@'{"localhost"}';
+GRANT ALL PRIVILEGES ON `{databaseName}`.* TO '{this.restrictedUserId}'@'localhost';
 FLUSH PRIVILEGES;");
             }
 
             // TODO: Construct with class fields!
             var createdDbConnectionString =
-                $"Server=localhost;Database={databaseName};UID={"OJS-Restricted"};Password={"123123"}";
+                $"Server=localhost;Database={databaseName};UID={this.restrictedUserId};Password={this.restrictedUserPassword}";
             var createdDbConnection = new MySqlConnection(createdDbConnectionString);
             createdDbConnection.Open();
 
@@ -49,11 +73,7 @@ FLUSH PRIVILEGES;");
 
         protected override void DropDatabase(string databaseName)
         {
-            // TODO: Extract as a setting or constructor parameters!
-            // TODO: Construct with class fields!
-            const string MySqlMasterDbConnectionString = "Server=localhost;Database=sys;UID=root;Password=root";
-
-            using (var connection = new MySqlConnection(MySqlMasterDbConnectionString))
+            using (var connection = new MySqlConnection(this.sysDbConnectionString))
             {
                 connection.Open();
 

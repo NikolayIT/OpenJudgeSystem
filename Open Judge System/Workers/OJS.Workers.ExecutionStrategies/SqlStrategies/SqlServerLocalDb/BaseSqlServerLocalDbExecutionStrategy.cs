@@ -13,49 +13,69 @@
 
         private static readonly Type DateTimeOffsetType = typeof(DateTimeOffset);
 
+        private readonly string masterDbConnectionString;
+        private readonly string restrictedUserId;
+        private readonly string restrictedUserPassword;
+
+        protected BaseSqlServerLocalDbExecutionStrategy(
+            string masterDbConnectionString,
+            string restrictedUserId,
+            string restrictedUserPassword)
+        {
+            if (string.IsNullOrWhiteSpace(masterDbConnectionString))
+            {
+                throw new ArgumentException("Invalid master DB connection string!", nameof(masterDbConnectionString));
+            }
+
+            if (string.IsNullOrWhiteSpace(restrictedUserId))
+            {
+                throw new ArgumentException("Invalid restricted user ID!", nameof(restrictedUserId));
+            }
+
+            if (string.IsNullOrWhiteSpace(restrictedUserPassword))
+            {
+                throw new ArgumentException("Invalid restricted user password!", nameof(restrictedUserPassword));
+            }
+
+            this.masterDbConnectionString = masterDbConnectionString;
+            this.restrictedUserId = restrictedUserId;
+            this.restrictedUserPassword = restrictedUserPassword;
+        }
+
         protected override IDbConnection GetOpenConnection(string databaseName)
         {
-            // TODO: Extract as a setting or constructor parameter!
-            const string LocalDbBaseConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Integrated Security=True;";
-
             var databaseFilePath = $"C:\\Windows\\Temp\\{databaseName}.mdf";
 
-            using (var connection = new SqlConnection(LocalDbBaseConnectionString))
+            using (var connection = new SqlConnection(this.masterDbConnectionString))
             {
                 connection.Open();
 
-                // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $"CREATE DATABASE [{databaseName}] ON PRIMARY (NAME=N'{databaseName}', FILENAME=N'{databaseFilePath}');");
 
-                // TODO: Extract login and password to settings and constructor parameters!
-                // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $@"
-IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name=N'{"OJS-Restricted"}')
+IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name=N'{this.restrictedUserId}')
 BEGIN
-    CREATE LOGIN [{"OJS-Restricted"}] WITH PASSWORD=N'{"123123"}',
+    CREATE LOGIN [{this.restrictedUserId}] WITH PASSWORD=N'{this.restrictedUserPassword}',
     DEFAULT_DATABASE=[master],
     DEFAULT_LANGUAGE=[us_english],
     CHECK_EXPIRATION=OFF,
     CHECK_POLICY=ON;
 END;");
 
-                // TODO: Extract login name to setting and constructor parameter!
-                // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $@"
 USE [{databaseName}];
-CREATE USER [{"OJS-Restricted"}] FOR LOGIN [{"OJS-Restricted"}];
-ALTER ROLE [db_owner] ADD MEMBER [{"OJS-Restricted"}];");
+CREATE USER [{this.restrictedUserId}] FOR LOGIN [{this.restrictedUserId}];
+ALTER ROLE [db_owner] ADD MEMBER [{this.restrictedUserId}];");
             }
 
-            // TODO: Construct with class fields!
             var createdDbConnectionString =
-                $"Data Source=(LocalDB)\\MSSQLLocalDB;User Id={"OJS-Restricted"};Password={"123123"};AttachDbFilename={databaseFilePath}";
+                $"Data Source=(LocalDB)\\MSSQLLocalDB;User Id={this.restrictedUserId};Password={this.restrictedUserPassword};AttachDbFilename={databaseFilePath}";
             var createdDbConnection = new SqlConnection(createdDbConnectionString);
             createdDbConnection.Open();
 
@@ -64,10 +84,7 @@ ALTER ROLE [db_owner] ADD MEMBER [{"OJS-Restricted"}];");
 
         protected override void DropDatabase(string databaseName)
         {
-            // TODO: Extract as a setting and use constructor parameter!
-            const string LocalDbBaseConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Integrated Security=True;";
-
-            using (var connection = new SqlConnection(LocalDbBaseConnectionString))
+            using (var connection = new SqlConnection(this.masterDbConnectionString))
             {
                 connection.Open();
 

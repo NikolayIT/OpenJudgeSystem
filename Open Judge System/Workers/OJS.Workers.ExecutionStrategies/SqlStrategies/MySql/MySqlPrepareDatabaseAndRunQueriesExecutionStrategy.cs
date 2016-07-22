@@ -2,6 +2,14 @@
 {
     public class MySqlPrepareDatabaseAndRunQueriesExecutionStrategy : BaseMySqlExecutionStrategy, IExecutionStrategy
     {
+        public MySqlPrepareDatabaseAndRunQueriesExecutionStrategy(
+            string sysDbConnectionString,
+            string restrictedUserId,
+            string restrictedUserPassword)
+            : base(sysDbConnectionString, restrictedUserId, restrictedUserPassword)
+        {
+        }
+
         public ExecutionResult Execute(ExecutionContext executionContext)
         {
             return this.Execute(

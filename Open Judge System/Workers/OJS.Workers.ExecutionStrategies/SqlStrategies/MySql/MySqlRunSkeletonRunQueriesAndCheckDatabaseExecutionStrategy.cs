@@ -2,6 +2,14 @@
 {
     public class MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy : BaseMySqlExecutionStrategy, IExecutionStrategy
     {
+        public MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy(
+            string sysDbConnectionString,
+            string restrictedUserId,
+            string restrictedUserPassword)
+            : base(sysDbConnectionString, restrictedUserId, restrictedUserPassword)
+        {
+        }
+
         public ExecutionResult Execute(ExecutionContext executionContext)
         {
             return this.Execute(

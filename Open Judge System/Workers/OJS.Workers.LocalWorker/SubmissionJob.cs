@@ -291,22 +291,40 @@
                     executionStrategy = new PhpCliExecuteAndCheckExecutionStrategy(Settings.PhpCliExecutablePath);
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
-                    executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy();
+                    executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(
+                        Settings.SqlServerLocalDbMasterDbConnectionString,
+                        Settings.SqlServerLocalDbRestrictedUserId,
+                        Settings.SqlServerLocalDbRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase:
-                    executionStrategy = new SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy();
+                    executionStrategy = new SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy(
+                        Settings.SqlServerLocalDbMasterDbConnectionString,
+                        Settings.SqlServerLocalDbRestrictedUserId,
+                        Settings.SqlServerLocalDbRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase:
-                    executionStrategy = new SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy();
+                    executionStrategy = new SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy(
+                        Settings.SqlServerLocalDbMasterDbConnectionString,
+                        Settings.SqlServerLocalDbRestrictedUserId,
+                        Settings.SqlServerLocalDbRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries:
-                    executionStrategy = new MySqlPrepareDatabaseAndRunQueriesExecutionStrategy();
+                    executionStrategy = new MySqlPrepareDatabaseAndRunQueriesExecutionStrategy(
+                        Settings.MySqlSysDbConnectionString,
+                        Settings.MySqlRestrictedUserId,
+                        Settings.MySqlRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase:
-                    executionStrategy = new MySqlRunQueriesAndCheckDatabaseExecutionStrategy();
+                    executionStrategy = new MySqlRunQueriesAndCheckDatabaseExecutionStrategy(
+                        Settings.MySqlSysDbConnectionString,
+                        Settings.MySqlRestrictedUserId,
+                        Settings.MySqlRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase:
-                    executionStrategy = new MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy();
+                    executionStrategy = new MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy(
+                        Settings.MySqlSysDbConnectionString,
+                        Settings.MySqlRestrictedUserId,
+                        Settings.MySqlRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.DoNothing:
                     executionStrategy = new DoNothingExecutionStrategy();
