@@ -15,7 +15,7 @@
 
         public static string SvnBaseUrl => GetSetting("SvnBaseUrl");
 
-        public static string LearningSystemUrl => GetSetting("LearningSystemUrl");
+        public static string GetExternalUserUrl => GetSetting("GetExternalUserUrl");
 
         public static string LearningSystemSvnDownloadBaseUrl => GetSetting("LearningSystemSvnDownloadBaseUrl");
 

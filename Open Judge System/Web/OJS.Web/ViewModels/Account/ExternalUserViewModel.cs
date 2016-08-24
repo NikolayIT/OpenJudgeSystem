@@ -40,34 +40,29 @@
 
         public DateTime? DeletedOn { get; set; }
 
-        public UserProfile Entity
-        {
-            get
+        public UserProfile Entity =>
+            new UserProfile
             {
-                return new UserProfile
+                Id = this.Id,
+                UserName = this.UserName,
+                PasswordHash = this.PasswordHash,
+                SecurityStamp = this.SecurityStamp,
+                Email = this.Email,
+                ForgottenPasswordToken = this.ForgottenPasswordToken,
+                IsDeleted = this.IsDeleted,
+                DeletedOn = this.DeletedOn,
+                CreatedOn = this.CreatedOn,
+                ModifiedOn = this.ModifiedOn,
+                UserSettings = new UserSettings
                 {
-                    Id = this.Id,
-                    UserName = this.UserName,
-                    PasswordHash = this.PasswordHash,
-                    SecurityStamp = this.SecurityStamp,
-                    Email = this.Email,
-                    ForgottenPasswordToken = this.ForgottenPasswordToken,
-                    IsDeleted = this.IsDeleted,
-                    DeletedOn = this.DeletedOn,
-                    CreatedOn = this.CreatedOn,
-                    ModifiedOn = this.ModifiedOn,
-                    UserSettings = new UserSettings
-                    {
-                        FirstName = this.FirstName,
-                        LastName = this.LastName,
-                        DateOfBirth = this.DateOfBirth,
-                        City = this.City,
-                        EducationalInstitution = this.EducationalInstitution,
-                        Company = this.Company,
-                        JobTitle = this.JobTitle
-                    }
-                };
-            }
-        }
+                    FirstName = this.FirstName,
+                    LastName = this.LastName,
+                    DateOfBirth = this.DateOfBirth,
+                    City = this.City,
+                    EducationalInstitution = this.EducationalInstitution,
+                    Company = this.Company,
+                    JobTitle = this.JobTitle
+                }
+            };
     }
 }

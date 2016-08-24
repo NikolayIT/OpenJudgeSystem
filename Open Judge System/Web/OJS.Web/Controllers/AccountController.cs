@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
-    using System.Configuration;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -31,11 +30,6 @@
         private const string XsrfKey = "XsrfId";
         private const string JsonContentType = "application/json";
 
-        private static readonly string GetExternalUserUrl = string.Format(
-            "http{0}://{1}/Api/ExternalAuthentication/GetUserInfo",
-            Settings.LearningSystemUrl.StartsWith("localhost") ? string.Empty : "s",
-            Settings.LearningSystemUrl);
-
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
         {
@@ -49,13 +43,7 @@
 
         public UserManager<UserProfile> UserManager { get; private set; }
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return this.HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => this.HttpContext.GetOwinContext().Authentication;
 
         // GET: /Account/Login
         [AllowAnonymous]
@@ -669,14 +657,14 @@
             this.Data.SaveChanges();
         }
 
-        private async Task<ExternalUserViewModel> GetExternalUser(string username)
+        private async Task<ExternalUserViewModel> GetExternalUser(string userName)
         {
             using (var httpClient = new HttpClient())
             {
                 var jsonMediaType = new MediaTypeWithQualityHeaderValue(JsonContentType);
                 httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
 
-                var response = await httpClient.PostAsJsonAsync(GetExternalUserUrl, new { username });
+                var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userName });
                 if (response.IsSuccessStatusCode)
                 {
                     var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
