@@ -20,12 +20,12 @@
         public const int NameMinLength = 2;
         public const int NameMaxLength = 30;
 
-        public const int CityMinLength = 3;
-        public const int CityMaxLength = 50;
+        public const int CityMinLength = 2;
+        public const int CityMaxLength = 200;
         public const string CityRegEx = @"^[a-zA-Zа-яА-Я]+(?:[\s-][a-zA-Zа-яА-Я]+)*$";
 
         public const int CompanyMinLength = 2;
-        public const int CompanyMaxLength = 100;
+        public const int CompanyMaxLength = 200;
         public const string CompanyRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!""])*$";
         public const int JobTitleMinLength = 2;
         public const int JobTitleMaxLength = 100;

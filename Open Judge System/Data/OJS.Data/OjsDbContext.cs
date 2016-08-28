@@ -3,6 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
 
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -72,23 +75,12 @@
         {
             this.ApplyAuditInfoRules();
 
-            ////// Use this to see Database validation errors
-            ////try
-            ////{
-            ////    return base.SaveChanges();
-            ////}
-            ////catch (DbEntityValidationException databeseException)
-            ////{
-            ////    foreach (var validationErrors in databeseException.EntityValidationErrors)
-            ////    {
-            ////        foreach (var validationError in validationErrors.ValidationErrors)
-            ////        {
-            ////            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-            ////        }
-            ////    }
-            ////}
-
+#if DEBUG
+            //// Use this to see DB validation errors
+            return this.SaveChangesWithTracingDbExceptions();
+#else
             return base.SaveChanges();
+#endif
         }
 
         public void ClearDatabase()
@@ -198,6 +190,38 @@
                 entity.DeletedOn = DateTime.Now;
                 entity.IsDeleted = true;
                 entry.State = EntityState.Modified;
+            }
+        }
+
+        private int SaveChangesWithTracingDbExceptions()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                Exception currentException = ex;
+                while (currentException != null)
+                {
+                    Trace.TraceError(currentException.Message);
+                    currentException = currentException.InnerException;
+                }
+
+                throw;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceError(
+                            $"Property: {validationError.PropertyName}{Environment.NewLine} Error: {validationError.ErrorMessage}");
+                    }
+                }
+
+                throw;
             }
         }
     }
