@@ -187,6 +187,18 @@
                                               },
                                           new SubmissionType
                                               {
+                                                  Name = "JavaScript code (AJAX and Mocha)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
                                                   Name = "C# project/solution",
                                                   CompilerType = CompilerType.MsBuild,
                                                   AdditionalCompilerArguments =

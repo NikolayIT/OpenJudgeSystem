@@ -2931,6 +2931,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestsProblemPartial.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Shared</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\ViewModels\ContestsViewModels.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
