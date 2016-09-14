@@ -42,6 +42,8 @@
 
         public static string SinonModulePath => GetSetting("SinonModulePath");
 
+        public static string SinonJsDomModulePath => GetSetting("SinonJsDomModulePath");
+
         public static string SinonChaiModulePath => GetSetting("SinonChaiModulePath");
 
         public static string UnderscoreModulePath => GetSetting("UnderscoreModulePath");

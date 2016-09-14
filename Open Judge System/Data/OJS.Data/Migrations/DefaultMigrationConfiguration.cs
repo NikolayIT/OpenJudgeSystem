@@ -187,6 +187,30 @@
                                               },
                                           new SubmissionType
                                               {
+                                                  Name = "JavaScript code (AJAX and Mocha)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (Unit Tests with Sinon and Mocha)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "--delay -R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
                                                   Name = "C# project/solution",
                                                   CompilerType = CompilerType.MsBuild,
                                                   AdditionalCompilerArguments =

@@ -81,7 +81,9 @@
     <Compile Include="JsonExecutionResult.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy.cs" />
+    <Compile Include="NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy.cs" />
+    <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

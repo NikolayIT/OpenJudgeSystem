@@ -1,4 +1,6 @@
-﻿namespace OJS.Workers.ExecutionStrategies
+﻿using System;
+
+namespace OJS.Workers.ExecutionStrategies
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,17 +18,21 @@
 
         public List<int> PassingIndexes { get; set; }
 
+        public int TotalTests { get; set; }
+
         public static JsonExecutionResult Parse(string result, bool forceErrorExtracting = false, bool getTestIndexes = false)
         {
             JObject jsonTestResult = null;
             var passed = false;
             string error = null;
             var totalPasses = 0;
+            var totalTests = 0;
 
             try
             {
                 jsonTestResult = JObject.Parse(result.Trim().Replace("/*", InvalidJsonReplace).Replace("*/", InvalidJsonReplace));
                 totalPasses = (int)jsonTestResult["stats"]["passes"];
+                totalTests = (int)jsonTestResult["stats"]["tests"];
                 passed = totalPasses == 1;
             }
             catch
@@ -51,7 +57,12 @@
             {
                 try
                 {
-                    error = (string)jsonTestResult["failures"][0]["err"]["message"];
+                    var failures = (JArray)jsonTestResult["failures"];
+                    for (int i = 0; i < failures.Count; i++)
+                    {
+                        error += (string)jsonTestResult["failures"][i]["err"]["message"];
+                        error += Environment.NewLine;
+                    }
                 }
                 catch
                 {
@@ -64,7 +75,8 @@
                 Passed = passed,
                 Error = error,
                 PassingIndexes = testsIndexes,
-                TotalPasses = totalPasses
+                TotalPasses = totalPasses,
+                TotalTests = totalTests
             };
         }
     }

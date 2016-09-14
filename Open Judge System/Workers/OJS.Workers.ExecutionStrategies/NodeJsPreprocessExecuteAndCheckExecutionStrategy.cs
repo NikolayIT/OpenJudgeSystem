@@ -13,11 +13,11 @@
     {
         protected const string LatestEcmaScriptFeaturesEnabledFlag = "--harmony";
 
-        private const string UserInputPlaceholder = "#userInput#";
-        private const string RequiredModules = "#requiredModule#";
-        private const string PreevaluationPlaceholder = "#preevaluationCode#";
-        private const string PostevaluationPlaceholder = "#postevaluationCode#";
-        private const string EvaluationPlaceholder = "#evaluationCode#";
+        protected const string UserInputPlaceholder = "#userInput#";
+        protected const string RequiredModules = "#requiredModule#";
+        protected const string PreevaluationPlaceholder = "#preevaluationCode#";
+        protected const string PostevaluationPlaceholder = "#postevaluationCode#";
+        protected const string EvaluationPlaceholder = "#evaluationCode#";
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(
             string nodeJsExecutablePath,
@@ -241,7 +241,7 @@ var code = {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        private string PreprocessJsSubmission(string template, string code)
+        protected virtual string PreprocessJsSubmission(string template, string code)
         {
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
