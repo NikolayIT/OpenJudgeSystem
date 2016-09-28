@@ -116,7 +116,7 @@
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
                 </div>
             </div>
-            <br/>
+            <br />
             <div class="row">
                 <div class="editor-label col-xs-3">
                     <div class="pull-right">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="col-xs-5">
-                    @(@Html.Kendo().ComboBox()
+                    @(Html.Kendo().ComboBox()
                     .Name("ContestId")
                     .HtmlAttributes(new { @class = "test-file-dropdown" })
                     .DataTextField("Name")
@@ -136,14 +136,8 @@
                         source
                             .Read(read =>
                             {
-                                read.Action("GetSearchedContests", "Problems")
-                                    .Data("onAdditionalData");
+                                read.Action("GetSearchedContests", "Problems");
                             });
-                    }
-                    )
-                    .Events(e =>
-                    {
-                        e.Select("onSearchSelect");
                     }))
                 </div>
                 <div class="editor-field col-xs-3">
@@ -278,6 +272,5 @@
 
 @section scripts {
     <script src="~/Scripts/Administration/Problems/problems-edit.js"></script>
-    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
 }
