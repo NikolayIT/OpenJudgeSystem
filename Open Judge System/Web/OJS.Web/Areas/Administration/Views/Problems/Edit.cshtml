@@ -10,9 +10,7 @@
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-
         @Html.HiddenFor(m => m.ContestName)
-        @Html.HiddenFor(m => m.ContestId)
 
         <fieldset>
             <legend>@Resource.General_info</legend>
@@ -39,12 +37,12 @@
                 </div>
                 <div class="editor-field col-xs-5">
                     @(Html.Kendo()
-                    .NumericTextBoxFor(m => m.MaximumPoints)
-                    .Min(1)
-                    .Format("#")
-                    .Step(1)
-                    .Spinners(false)
-                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                        .NumericTextBoxFor(m => m.MaximumPoints)
+                        .Min(1)
+                        .Format("#")
+                        .Step(1)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-left full-editor" }))
                     @Html.ValidationMessageFor(m => m.MaximumPoints)
                 </div>
                 <div class="editor-field col-xs-4">
@@ -61,12 +59,12 @@
                 </div>
                 <div class="editor-field col-xs-5">
                     @(Html.Kendo()
-                    .NumericTextBoxFor(m => m.TimeLimit)
-                    .Min(1)
-                    .Format("#")
-                    .Step(1)
-                    .Spinners(false)
-                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                        .NumericTextBoxFor(m => m.TimeLimit)
+                        .Min(1)
+                        .Format("#")
+                        .Step(1)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-4">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_time_limit" data-tooltip="true"></span>
@@ -82,12 +80,12 @@
                 </div>
                 <div class="editor-field col-xs-5">
                     @(Html.Kendo()
-                    .NumericTextBoxFor(m => m.MemoryLimit)
-                    .Format("#")
-                    .Min(1)
-                    .Step(1)
-                    .Spinners(false)
-                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                        .NumericTextBoxFor(m => m.MemoryLimit)
+                        .Format("#")
+                        .Min(1)
+                        .Step(1)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_memory_limit" data-tooltip="true"></span>
@@ -105,17 +103,46 @@
                     <input type="checkbox" id="enable-sclimit" />
                     <strong>Да</strong>
                     @(Html.Kendo()
-                    .NumericTextBoxFor(m => m.SourceCodeSizeLimit)
-                    .Format("#")
-                    .Min(1)
-                    .Step(1)
-                    .Enable(false)
-                    .Spinners(false)
-                    .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
+                        .NumericTextBoxFor(m => m.SourceCodeSizeLimit)
+                        .Format("#")
+                        .Min(1)
+                        .Step(1)
+                        .Enable(false)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_sorce_code_size_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.ContestId)
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    @(Html.Kendo()
+                        .ComboBox()
+                        .Name("ContestId")
+                        .HtmlAttributes(new { @class = "test-file-dropdown" })
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .Filter("contains")
+                        .MinLength(3)
+                        .DataSource(source =>
+                        {
+                            source
+                                .Read(read =>
+                                {
+                                    read.Action("GetSearchedContests", "Problems");
+                                });
+                        }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.ValidationMessageFor(m => m.ContestId)
                 </div>
             </div>
             <br />
@@ -145,10 +172,10 @@
                 </div>
                 <div class="col-xs-5">
                     @(Html.Kendo()
-                    .DropDownListFor(m => m.Checker)
-                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                    .BindTo(Model.AvailableCheckers)
-                    .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
+                        .DropDownListFor(m => m.Checker)
+                        .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                        .BindTo(Model.AvailableCheckers)
+                        .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
@@ -164,12 +191,12 @@
                 </div>
                 <div class="col-xs-5">
                     @(Html.Kendo()
-                    .NumericTextBoxFor(m => m.OrderBy)
-                    .Format("#")
-                    .Min(0)
-                    .Step(1)
-                    .Spinners(false)
-                    .HtmlAttributes(new { @class = "pull-left full-editor" }))
+                        .NumericTextBoxFor(m => m.OrderBy)
+                        .Format("#")
+                        .Min(0)
+                        .Step(1)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-left full-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_order" data-tooltip="true"></span>
@@ -219,7 +246,12 @@
     }
 </div>
 
-@(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+@(Html.Kendo()
+    .Tooltip()
+    .For("#create-form")
+    .Filter("[data-tooltip='true']")
+    .Position(TooltipPosition.Bottom)
+    .Width(240))
 
 <script type="text/x-kendo-template" id="checkers-template">
     <div>
