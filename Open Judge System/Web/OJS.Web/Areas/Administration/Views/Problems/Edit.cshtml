@@ -10,9 +10,7 @@
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-
         @Html.HiddenFor(m => m.ContestName)
-        @Html.HiddenFor(m => m.ContestId)
 
         <fieldset>
             <legend>@Resource.General_info</legend>
@@ -116,6 +114,40 @@
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Enter_sorce_code_size_limit" data-tooltip="true"></span>
                     @Html.ValidationMessageFor(m => m.SourceCodeSizeLimit)
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        @Html.LabelFor(m => m.ContestId)
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    @(@Html.Kendo().ComboBox()
+                    .Name("ContestId")
+                    .HtmlAttributes(new { @class = "test-file-dropdown" })
+                    .DataTextField("Name")
+                    .DataValueField("Id")
+                    .Filter("contains")
+                    .MinLength(3)
+                    .DataSource(source =>
+                    {
+                        source
+                            .Read(read =>
+                            {
+                                read.Action("GetSearchedContests", "Problems")
+                                    .Data("onAdditionalData");
+                            });
+                    }
+                    )
+                    .Events(e =>
+                    {
+                        e.Select("onSearchSelect");
+                    }))
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.ValidationMessageFor(m => m.ContestId)
                 </div>
             </div>
             <br />
@@ -246,5 +278,6 @@
 
 @section scripts {
     <script src="~/Scripts/Administration/Problems/problems-edit.js"></script>
+    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
 }
