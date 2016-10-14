@@ -187,8 +187,6 @@ var code = {
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
-            File.WriteAllText("G:\\template.js", codeToExecute);
-
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
             IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
