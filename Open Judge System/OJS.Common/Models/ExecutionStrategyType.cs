@@ -10,6 +10,7 @@
         IoJsPreprocessExecuteAndRunJsDomUnitTests = 12,
         NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy = 19,
         NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy = 20,
+        NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha = 21,
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
         JavaZipFileCompileExecuteAndCheck = 8,

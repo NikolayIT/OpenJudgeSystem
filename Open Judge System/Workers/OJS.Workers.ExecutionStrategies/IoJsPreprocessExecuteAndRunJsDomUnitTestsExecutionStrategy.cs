@@ -5,14 +5,8 @@
 
     public class IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
-        private readonly string jsdomModulePath;
-        private readonly string jqueryModulePath;
-        private readonly string handlebarsModulePath;
-        private readonly string sinonModulePath;
-        private readonly string sinonChaiModulePath;
-
         public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
-            string iojsExecutablePath,
+            string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
             string jsdomModulePath,
@@ -23,7 +17,7 @@
             string underscoreModulePath,
             int baseTimeUsed,
             int baseMemoryUsed) // TODO: make this modular by getting requires from test
-            : base(iojsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath, baseTimeUsed, baseMemoryUsed)
+            : base(nodeJsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath, baseTimeUsed, baseMemoryUsed)
         {
             if (!Directory.Exists(jsdomModulePath))
             {
@@ -50,19 +44,29 @@
                 throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
             }
 
-            this.jsdomModulePath = this.ProcessModulePath(jsdomModulePath);
-            this.jqueryModulePath = this.ProcessModulePath(jqueryModulePath);
-            this.handlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
-            this.sinonModulePath = this.ProcessModulePath(sinonModulePath);
-            this.sinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
+            this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
+            this.JQueryModulePath = this.ProcessModulePath(jqueryModulePath);
+            this.HandlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
+            this.SinonModulePath = this.ProcessModulePath(sinonModulePath);
+            this.SinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
         }
 
+        protected string JsDomModulePath { get; }
+
+        protected string JQueryModulePath { get; }
+
+        protected string HandlebarsModulePath { get; }
+
+        protected string SinonModulePath { get; }
+
+        protected string SinonChaiModulePath { get; }
+
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
-    jsdom = require('" + this.jsdomModulePath + @"'),
-    jq = require('" + this.jqueryModulePath + @"'),
-    sinon = require('" + this.sinonModulePath + @"'),
-    sinonChai = require('" + this.sinonChaiModulePath + @"'),
-    handlebars = require('" + this.handlebarsModulePath + @"')";
+    jsdom = require('" + this.JsDomModulePath + @"'),
+    jq = require('" + this.JQueryModulePath + @"'),
+    sinon = require('" + this.SinonModulePath + @"'),
+    sinonChai = require('" + this.SinonChaiModulePath + @"'),
+    handlebars = require('" + this.HandlebarsModulePath + @"')";
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
@@ -76,7 +80,7 @@ describe('TestDOMScope', function() {
                 global.document = window.document;
                 global.$ = jq(window);
                 global.handlebars = handlebars;
-                Object.keys(window)
+                Object.getOwnPropertyNames(window)
                     .filter(function (prop) {
                         return prop.toLowerCase().indexOf('html') >= 0;
                     }).forEach(function (prop) {

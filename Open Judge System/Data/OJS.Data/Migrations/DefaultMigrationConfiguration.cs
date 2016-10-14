@@ -187,30 +187,6 @@
                                               },
                                           new SubmissionType
                                               {
-                                                  Name = "JavaScript code (AJAX and Mocha)",
-                                                  CompilerType = CompilerType.None,
-                                                  AdditionalCompilerArguments = "-R json",
-                                                  ExecutionStrategyType =
-                                                      ExecutionStrategyType
-                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy,
-                                                  IsSelectedByDefault = false,
-                                                  AllowedFileExtensions = null,
-                                                  AllowBinaryFilesUpload = false,
-                                              },
-                                          new SubmissionType
-                                              {
-                                                  Name = "JavaScript code (Unit Tests with Sinon and Mocha)",
-                                                  CompilerType = CompilerType.None,
-                                                  AdditionalCompilerArguments = "--delay -R json",
-                                                  ExecutionStrategyType =
-                                                      ExecutionStrategyType
-                                                      .NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,
-                                                  IsSelectedByDefault = false,
-                                                  AllowedFileExtensions = null,
-                                                  AllowBinaryFilesUpload = false,
-                                              },
-                                          new SubmissionType
-                                              {
                                                   Name = "C# project/solution",
                                                   CompilerType = CompilerType.MsBuild,
                                                   AdditionalCompilerArguments =
@@ -290,7 +266,42 @@
                                                   IsSelectedByDefault = false,
                                                   AllowedFileExtensions = null,
                                                   AllowBinaryFilesUpload = false,
-                                              }
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript Zip File (DOM, Mocha and Module Transpiling)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType.NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = "zip",
+                                                  AllowBinaryFilesUpload = true,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (AJAX and Mocha)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "-R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
+                                          new SubmissionType
+                                              {
+                                                  Name = "JavaScript code (Unit Tests with Sinon and Mocha)",
+                                                  CompilerType = CompilerType.None,
+                                                  AdditionalCompilerArguments = "--delay -R json",
+                                                  ExecutionStrategyType =
+                                                      ExecutionStrategyType
+                                                      .NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,
+                                                  IsSelectedByDefault = false,
+                                                  AllowedFileExtensions = null,
+                                                  AllowBinaryFilesUpload = false,
+                                              },
                                       };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);
@@ -455,12 +466,12 @@
             for (int i = 0; i < 1000; i++)
             {
                 testRuns.Add(new TestRun
-                    {
-                        TimeUsed = (random.Next() % 10) + 1,
-                        MemoryUsed = (random.Next() % 1500) + 200,
-                        ResultType = (TestRunResultType)(random.Next() % 5),
-                        Test = test
-                    });
+                {
+                    TimeUsed = (random.Next() % 10) + 1,
+                    MemoryUsed = (random.Next() % 1500) + 200,
+                    ResultType = (TestRunResultType)(random.Next() % 5),
+                    Test = test
+                });
             }
 
             var contest = new Contest

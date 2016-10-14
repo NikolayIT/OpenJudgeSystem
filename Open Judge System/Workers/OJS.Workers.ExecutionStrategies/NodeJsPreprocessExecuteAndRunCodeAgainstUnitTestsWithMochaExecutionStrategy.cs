@@ -1,8 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Text.RegularExpressions;
     using OJS.Workers.Common;
 
@@ -26,15 +24,7 @@
                 handlebarsModulePath, sinonModulePath, sinonChaiModulePath, underscoreModulePath, baseTimeUsed,
                 baseMemoryUsed)
         {
-            if (!File.Exists(mochaModulePath))
-            {
-                throw new ArgumentException($"Mocha not found in: {mochaModulePath}", nameof(mochaModulePath));
-            }
-
-            this.MochaModulePath = this.ProcessModulePath(mochaModulePath);
         }
-
-        protected string MochaModulePath { get; }
 
         // TODO Maybe create a flexible base template
         protected override string JsCodeTemplate => RequiredModules + @";
@@ -115,47 +105,47 @@ var code = {
 " + EvaluationPlaceholder + @"
 " + PostevaluationPlaceholder;
 
+        // We call mocha with the --delay argument, which supplies the run() hook allowing us to read the standard input before any suites are called
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
-
-describe('TestDOMScope', function() {
-
-process.nextTick(function() {
-    content = '';
-    jsdom.env({
+var content = '';
+process.stdin.resume();
+process.stdin.on('data', function(buf) { content += buf.toString(); });
+process.stdin.on('end', function(){
+        defineTests(content);
+        run();
+});";
+       
+        protected override string JsCodeEvaluation => @"
+    function defineTests(content){
+        before(function(done){
+            jsdom.env({
                 html: '',
                 done: function(errors, window) {
                     global.window = window;
                     global.document = window.document;
                     global.$ = jq(window);
                     global.handlebars = handlebars;
-                    Object.keys(window)
+                    Object.getOwnPropertyNames(window)
                         .filter(function (prop) {
                             return prop.toLowerCase().indexOf('html') >= 0;
                         }).forEach(function (prop) {
                             global[prop] = window[prop];
                         });
-
-                    process.stdin.resume();
-                    process.stdin.on('data', function(buf) { content += buf.toString(); });
-                    process.stdin.on('end', function(){
-                            defineTests(content);
-                            run();
-                    });
-                }
+                    done();
+                    }
             });
-    });";
-        
-        protected override string JsCodeEvaluation => @"
-    function defineTests(content){
+        });
 
         describe('Tests',function(){
+            
             var bgCoderConsole = {};            
             Object.keys(console)
                 .forEach(function (prop) {
                     bgCoderConsole[prop] = console[prop];
                     console[prop] = new Function('');
                 });
+
             var inputData = content.trim();
             var codeInput = code.run;
             var executingCode = '\'use strict\';';
@@ -171,8 +161,7 @@ process.nextTick(function() {
         });
     }";
 
-        protected override string JsCodePostevaulationCode => @"
-});";
+        protected override string JsCodePostevaulationCode => string.Empty;
 
         protected override string TestFuncVariables => base.TestFuncVariables + @",'describe','it','before','beforeEach','after','afterEach'";
 
@@ -256,11 +245,11 @@ process.nextTick(function() {
             return testResults;
         }
 
-        protected override string PreprocessJsSubmission(string template, string code)
+        protected override string PreprocessJsSubmission(string template, string code, string problemSkeleton)
         {
             code = Regex.Replace(code, "([\"'])", "\\$1");
             code = Regex.Replace(code, "[\r\n\t]*", string.Empty);
-            return base.PreprocessJsSubmission(template, "'" + code + "'");
+            return base.PreprocessJsSubmission(template, "'" + code + "'", problemSkeleton);
         }
     }
 }

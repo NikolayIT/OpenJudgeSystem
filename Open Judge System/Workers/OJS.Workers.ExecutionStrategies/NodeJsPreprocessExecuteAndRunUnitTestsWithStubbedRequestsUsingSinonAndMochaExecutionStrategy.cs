@@ -86,7 +86,7 @@ describe('TestDOMScope', function() {
                 global.$ = jq(window);
                 global.sinon = window.sinon;
                 global.handlebars = handlebars;
-                Object.keys(window)
+                Object.getOwnPropertyNames(window)
                     .filter(function (prop) {
                         return prop.toLowerCase().indexOf('html') >= 0;
                     }).forEach(function (prop) {
@@ -96,12 +96,6 @@ describe('TestDOMScope', function() {
                 global.server = sinon.fakeServer.create();
                 server.autoRespond = true;
 
-                var bgCoderConsole = {};
-                Object.keys(console)
-                    .forEach(function (prop) {
-                        bgCoderConsole[prop] = console[prop];
-                        console[prop] = new Function('');
-                    });
                 done();
             }
         });
@@ -110,26 +104,11 @@ describe('TestDOMScope', function() {
 	it('Test', function(done) {
 		var content = '';";
 
-        protected override string JsCodeEvaluation => @"
-    var inputData = content.trim();
-    var result = code.run();
-    if (result == undefined) {
-        result = 'Invalid!';
-    }
-
-    var testFunc = new Function(" + this.TestFuncVariables + @",""var result = this.valueOf();"" + inputData);
-    testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");";
-
         protected override string JsCodePostevaulationCode => @"
     });
 
     after(function(done){
         server.restore();
-
-        Object.keys(bgCoderConsole)
-        .forEach(function (prop) {
-        console[prop] = bgCoderConsole[prop];
-        });
         done();
     });
 });";

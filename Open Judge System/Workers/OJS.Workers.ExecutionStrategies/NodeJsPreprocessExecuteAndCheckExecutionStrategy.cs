@@ -18,6 +18,7 @@
         protected const string PreevaluationPlaceholder = "#preevaluationCode#";
         protected const string PostevaluationPlaceholder = "#postevaluationCode#";
         protected const string EvaluationPlaceholder = "#evaluationCode#";
+        protected const string AdapterFunctionPlaceholder = "#adapterFunctionCode#";
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(
             string nodeJsExecutablePath,
@@ -71,13 +72,14 @@ var EOL = require('os').EOL,
 _ = require('{this.UnderscoreModulePath}')";
 
         protected virtual string JsCodePreevaulationCode => @"
-var content = ''";
+var content = '';
+var adapterFunction = " + AdapterFunctionPlaceholder;
 
         protected virtual string JsCodePostevaulationCode => string.Empty;
 
         protected virtual string JsCodeEvaluation => @"
     var inputData = content.trim().split(EOL);
-    var result = code.run(inputData);
+    var result = adapterFunction(inputData,code.run);
     if (result !== undefined) {
         console.log(result);
     }";
@@ -179,10 +181,13 @@ var code = {
             result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code.Trim(';'));
+            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code.Trim(';'), executionContext.TaskSkeletonAsString);
+
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
+
+            File.WriteAllText("G:\\template.js", codeToExecute);
 
             // Process the submission and check each test
             IExecutor executor = new RestrictedProcessExecutor();
@@ -241,14 +246,19 @@ var code = {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        protected virtual string PreprocessJsSubmission(string template, string code)
+        protected virtual string PreprocessJsSubmission(string template, string code, string problemSkeleton)
         {
+
+                problemSkeleton = problemSkeleton ??
+                "function adapter(input,code) {return code(input);}";
+
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
                 .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
                 .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
                 .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
-                .Replace(UserInputPlaceholder, code);
+                .Replace(UserInputPlaceholder, code)
+                .Replace(AdapterFunctionPlaceholder, problemSkeleton);
 
             return processedCode;
         }
