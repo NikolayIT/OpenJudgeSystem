@@ -19,6 +19,8 @@ Other contributors:
 * Teodor Kurtev (https://github.com/teodor92)
 * Kristian Mariyanov (https://github.com/KristianMariyanov)
 * Rositsa Popova (https://github.com/rozay)
+* Viktor Kazakov (https://github.com/Innos)
+* Svetlin Galov (https://github.com/jicata)
 
 ## License
 
