@@ -32,8 +32,6 @@
 
         public static string ChaiModulePath => GetSetting("ChaiModulePath");
 
-        public static string IoJsExecutablePath => GetSetting("IoJsExecutablePath");
-
         public static string JsDomModulePath => GetSetting("JsDomModulePath");
 
         public static string JQueryModulePath => GetSetting("JQueryModulePath");
@@ -42,9 +40,17 @@
 
         public static string SinonModulePath => GetSetting("SinonModulePath");
 
+        public static string SinonJsDomModulePath => GetSetting("SinonJsDomModulePath");
+
         public static string SinonChaiModulePath => GetSetting("SinonChaiModulePath");
 
         public static string UnderscoreModulePath => GetSetting("UnderscoreModulePath");
+
+        public static string BrowserifyModulePath => GetSetting("BrowserifyModulePath");
+
+        public static string BabelifyModulePath => GetSetting("BabelifyModulePath");
+
+        public static string Es2015ImportPluginPath => GetSetting("ES2015ImportPluginPath");
 
         public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 

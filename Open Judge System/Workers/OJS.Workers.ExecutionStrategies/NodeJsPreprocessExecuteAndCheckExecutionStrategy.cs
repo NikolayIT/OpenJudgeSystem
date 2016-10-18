@@ -13,11 +13,12 @@
     {
         protected const string LatestEcmaScriptFeaturesEnabledFlag = "--harmony";
 
-        private const string UserInputPlaceholder = "#userInput#";
-        private const string RequiredModules = "#requiredModule#";
-        private const string PreevaluationPlaceholder = "#preevaluationCode#";
-        private const string PostevaluationPlaceholder = "#postevaluationCode#";
-        private const string EvaluationPlaceholder = "#evaluationCode#";
+        protected const string UserInputPlaceholder = "#userInput#";
+        protected const string RequiredModules = "#requiredModule#";
+        protected const string PreevaluationPlaceholder = "#preevaluationCode#";
+        protected const string PostevaluationPlaceholder = "#postevaluationCode#";
+        protected const string EvaluationPlaceholder = "#evaluationCode#";
+        protected const string AdapterFunctionPlaceholder = "#adapterFunctionCode#";
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(
             string nodeJsExecutablePath,
@@ -33,7 +34,9 @@
 
             if (!Directory.Exists(underscoreModulePath))
             {
-                throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
+                throw new ArgumentException(
+                    $"Underscore not found in: {underscoreModulePath}",
+                    nameof(underscoreModulePath));
             }
 
             if (baseTimeUsed < 0)
@@ -71,13 +74,14 @@ var EOL = require('os').EOL,
 _ = require('{this.UnderscoreModulePath}')";
 
         protected virtual string JsCodePreevaulationCode => @"
-var content = ''";
+var content = '';
+var adapterFunction = " + AdapterFunctionPlaceholder;
 
         protected virtual string JsCodePostevaulationCode => string.Empty;
 
         protected virtual string JsCodeEvaluation => @"
     var inputData = content.trim().split(EOL);
-    var result = code.run(inputData);
+    var result = adapterFunction(inputData, code.run);
     if (result !== undefined) {
         console.log(result);
     }";
@@ -179,14 +183,21 @@ var code = {
             result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code.Trim(';'));
+            var codeToExecute = this.PreprocessJsSubmission(
+                this.JsCodeTemplate,
+                executionContext.Code.Trim(';'),
+                executionContext.TaskSkeletonAsString);
+
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Process the submission and check each test
-            IExecutor executor = new RestrictedProcessExecutor();
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
 
             result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
 
@@ -241,14 +252,19 @@ var code = {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        private string PreprocessJsSubmission(string template, string code)
+        protected virtual string PreprocessJsSubmission(string template, string code, string problemSkeleton)
         {
+
+                problemSkeleton = problemSkeleton ??
+                "function adapter(input,code) {return code(input);}";
+
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
                 .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
                 .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
                 .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
-                .Replace(UserInputPlaceholder, code);
+                .Replace(UserInputPlaceholder, code)
+                .Replace(AdapterFunctionPlaceholder, problemSkeleton);
 
             return processedCode;
         }

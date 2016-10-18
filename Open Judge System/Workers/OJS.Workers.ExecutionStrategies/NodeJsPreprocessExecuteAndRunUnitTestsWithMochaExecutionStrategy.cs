@@ -3,14 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
-        private readonly string mochaModulePath;
-        private readonly string chaiModulePath;
-
         public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath,
@@ -30,12 +26,16 @@
                 throw new ArgumentException($"Chai not found in: {chaiModulePath}", nameof(chaiModulePath));
             }
 
-            this.mochaModulePath = mochaModulePath;
-            this.chaiModulePath = this.ProcessModulePath(chaiModulePath);
+            this.MochaModulePath = mochaModulePath;
+            this.ChaiModulePath = this.ProcessModulePath(chaiModulePath);
         }
 
+        protected string MochaModulePath { get; }
+
+        protected string ChaiModulePath { get; }
+
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
-    chai = require('" + this.chaiModulePath + @"'),
+    chai = require('" + this.ChaiModulePath + @"'),
 	assert = chai.assert,
 	expect = chai.expect,
 	should = chai.should()";
@@ -47,7 +47,7 @@ describe('TestScope', function() {
 
         protected override string JsCodeEvaluation => @"
     var inputData = content.trim();
-    var result = code.run();
+    var result = code.run;
     if (result == undefined) {
         result = 'Invalid!';
     }
@@ -75,12 +75,16 @@ describe('TestScope', function() {
 
         protected virtual string TestFuncVariables => "'assert', 'expect', 'should'";
 
-        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
+        protected override List<TestResult> ProcessTests(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            IChecker checker,
+            string codeSavePath)
         {
             var testResults = new List<TestResult>();
 
             var arguments = new List<string>();
-            arguments.Add(this.mochaModulePath);
+            arguments.Add(this.MochaModulePath);
             arguments.Add(codeSavePath);
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
