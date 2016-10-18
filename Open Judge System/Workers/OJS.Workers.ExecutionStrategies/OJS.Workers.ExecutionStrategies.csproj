@@ -83,7 +83,6 @@
     <Compile Include="IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy.cs" />
     <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy.cs" />
-    <Compile Include="NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy.cs" />
     <Compile Include="NodeJsZipPreprocessExecuteAndRunUnitTestsWithDOMAndMochaExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />

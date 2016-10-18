@@ -21,6 +21,8 @@
 
         protected override void Seed(OjsDbContext context)
         {
+            this.SeedSubmissionTypes(context);
+
             if (context.Roles.Any())
             {
                 return;
@@ -29,7 +31,7 @@
             // this.SeedSubmissionsAndTestRuns(context);
             this.SeedRoles(context);
             this.SeedCheckers(context);
-            this.SeedSubmissionTypes(context);
+
 
             // this.SeedContests(context);
             // this.SeedLongNews(context);
@@ -277,18 +279,6 @@
                                                   IsSelectedByDefault = false,
                                                   AllowedFileExtensions = "zip",
                                                   AllowBinaryFilesUpload = true,
-                                              },
-                                          new SubmissionType
-                                              {
-                                                  Name = "JavaScript code (AJAX and Mocha)",
-                                                  CompilerType = CompilerType.None,
-                                                  AdditionalCompilerArguments = "-R json",
-                                                  ExecutionStrategyType =
-                                                      ExecutionStrategyType
-                                                      .NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy,
-                                                  IsSelectedByDefault = false,
-                                                  AllowedFileExtensions = null,
-                                                  AllowBinaryFilesUpload = false,
                                               },
                                           new SubmissionType
                                               {

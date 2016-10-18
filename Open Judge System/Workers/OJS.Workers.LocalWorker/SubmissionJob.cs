@@ -298,20 +298,6 @@
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
-                case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy:
-                    executionStrategy = new NodeJsPreprocessExecuteAndRunUnitTestsWithStubbedRequestsUsingSinonAndMochaExecutionStrategy(
-                        Settings.NodeJsExecutablePath,
-                        Settings.MochaModulePath,
-                        Settings.ChaiModulePath,
-                        Settings.JsDomModulePath,
-                        Settings.JQueryModulePath,
-                        Settings.HandlebarsModulePath,
-                        Settings.SinonJsDomModulePath,
-                        Settings.SinonChaiModulePath,
-                        Settings.UnderscoreModulePath,
-                        Settings.NodeJsBaseTimeUsedInMilliseconds,
-                        Settings.NodeJsBaseMemoryUsedInBytes);
-                    break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy:
                     executionStrategy = new NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy(
                         Settings.NodeJsExecutablePath,
