@@ -34,7 +34,9 @@
 
             if (!Directory.Exists(underscoreModulePath))
             {
-                throw new ArgumentException($"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
+                throw new ArgumentException(
+                    $"Underscore not found in: {underscoreModulePath}",
+                    nameof(underscoreModulePath));
             }
 
             if (baseTimeUsed < 0)
@@ -191,8 +193,11 @@ var code = {
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Process the submission and check each test
-            IExecutor executor = new RestrictedProcessExecutor();
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
 
             result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
 

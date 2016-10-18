@@ -172,7 +172,11 @@ process.stdin.on('end', function(){
 
         protected override string TestFuncVariables => base.TestFuncVariables + @",'describe','it','before','beforeEach','after','afterEach'";
 
-        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
+        protected override List<TestResult> ProcessTests(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            IChecker checker,
+            string codeSavePath)
         {
             var testResults = new List<TestResult>();
 
@@ -190,7 +194,10 @@ process.stdin.on('end', function(){
                 TestResult testResult = null;
                 if (testCount == 0)
                 {
-                    var minTestCount = int.Parse(Regex.Match(test.Input, "<minTestCount>(\\d+)</minTestCount>").Groups[1].Value);
+                    var minTestCount = int.Parse(
+                        Regex.Match(
+                            test.Input,
+                            "<minTestCount>(\\d+)</minTestCount>").Groups[1].Value);
                     var result = "yes";
                     if (mochaResult.TotalTests == 0)
                     {

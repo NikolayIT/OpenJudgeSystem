@@ -17,7 +17,13 @@
             string underscoreModulePath,
             int baseTimeUsed,
             int baseMemoryUsed) // TODO: make this modular by getting requires from test
-            : base(nodeJsExecutablePath, mochaModulePath, chaiModulePath, underscoreModulePath, baseTimeUsed, baseMemoryUsed)
+            : base(
+                  nodeJsExecutablePath,
+                  mochaModulePath,
+                  chaiModulePath,
+                  underscoreModulePath,
+                  baseTimeUsed,
+                  baseMemoryUsed)
         {
             if (!Directory.Exists(jsdomModulePath))
             {

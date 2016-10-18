@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
-
-namespace OJS.Workers.ExecutionStrategies
+﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json.Linq;

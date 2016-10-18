@@ -325,7 +325,11 @@ describe('TestDOMScope', function() {
 
         protected virtual string FindProgramEntryPath()
         {
-            var files = new List<string>(Directory.GetFiles(this.WorkingDirectory, "app.js", SearchOption.AllDirectories));
+            var files = new List<string>(
+                Directory.GetFiles(
+                    this.WorkingDirectory,
+                    "app.js",
+                    SearchOption.AllDirectories));
             if (files.Count == 0)
             {
                 throw new ArgumentException(

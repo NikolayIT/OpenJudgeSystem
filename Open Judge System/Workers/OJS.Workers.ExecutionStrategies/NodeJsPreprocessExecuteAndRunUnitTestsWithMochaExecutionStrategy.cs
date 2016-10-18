@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
@@ -76,7 +75,11 @@ describe('TestScope', function() {
 
         protected virtual string TestFuncVariables => "'assert', 'expect', 'should'";
 
-        protected override List<TestResult> ProcessTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, string codeSavePath)
+        protected override List<TestResult> ProcessTests(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            IChecker checker,
+            string codeSavePath)
         {
             var testResults = new List<TestResult>();
 
