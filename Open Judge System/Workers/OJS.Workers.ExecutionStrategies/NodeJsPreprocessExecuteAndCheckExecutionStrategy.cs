@@ -79,7 +79,7 @@ var adapterFunction = " + AdapterFunctionPlaceholder;
 
         protected virtual string JsCodeEvaluation => @"
     var inputData = content.trim().split(EOL);
-    var result = adapterFunction(inputData,code.run);
+    var result = adapterFunction(inputData, code.run);
     if (result !== undefined) {
         console.log(result);
     }";
@@ -181,7 +181,10 @@ var code = {
             result.IsCompiledSuccessfully = true;
 
             // Preprocess the user submission
-            var codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, executionContext.Code.Trim(';'), executionContext.TaskSkeletonAsString);
+            var codeToExecute = this.PreprocessJsSubmission(
+                this.JsCodeTemplate,
+                executionContext.Code.Trim(';'),
+                executionContext.TaskSkeletonAsString);
 
 
             // Save the preprocessed submission which is ready for execution

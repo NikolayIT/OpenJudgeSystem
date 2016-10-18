@@ -20,8 +20,16 @@
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(
-                nodeJsExecutablePath, mochaModulePath, chaiModulePath, jsdomModulePath, jqueryModulePath,
-                handlebarsModulePath, sinonModulePath, sinonChaiModulePath, underscoreModulePath, baseTimeUsed,
+                nodeJsExecutablePath,
+                mochaModulePath,
+                chaiModulePath,
+                jsdomModulePath,
+                jqueryModulePath,
+                handlebarsModulePath,
+                sinonModulePath,
+                sinonChaiModulePath,
+                underscoreModulePath,
+                baseTimeUsed,
                 baseMemoryUsed)
         {
         }
@@ -137,8 +145,7 @@ process.stdin.on('end', function(){
             });
         });
 
-        describe('Tests',function(){
-            
+        describe('Tests',function(){ 
             var bgCoderConsole = {};            
             Object.keys(console)
                 .forEach(function (prop) {

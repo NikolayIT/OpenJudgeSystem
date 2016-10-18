@@ -14,11 +14,9 @@
         IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
     {
         protected const string AppJsFileName = "app.js";
-
         protected const string SubmissionFileName = "_$submission";
 
-        public NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy
-            (
+        public NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
@@ -34,24 +32,36 @@
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(
-                nodeJsExecutablePath, mochaModulePath, chaiModulePath, jsdomModulePath, jqueryModulePath,
-                handlebarsModulePath, sinonModulePath, sinonChaiModulePath, underscoreModulePath, baseTimeUsed,
+                nodeJsExecutablePath,
+                mochaModulePath,
+                chaiModulePath,
+                jsdomModulePath,
+                jqueryModulePath,
+                handlebarsModulePath,
+                sinonModulePath,
+                sinonChaiModulePath,
+                underscoreModulePath,
+                baseTimeUsed,
                 baseMemoryUsed)
         {
             if (!Directory.Exists(browserifyModulePath))
             {
-                throw new ArgumentException($"Browsrify not found in: {browserifyModulePath}",
+                throw new ArgumentException(
+                    $"Browsrify not found in: {browserifyModulePath}",
                     nameof(browserifyModulePath));
             }
 
             if (!Directory.Exists(babelifyModulePath))
             {
-                throw new ArgumentException($"Babel not found in: {babelifyModulePath}", nameof(babelifyModulePath));
+                throw new ArgumentException(
+                    $"Babel not found in: {babelifyModulePath}",
+                    nameof(babelifyModulePath));
             }
 
             if (!Directory.Exists(ecmaScriptImportPluginPath))
             {
-                throw new ArgumentException($"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
+                throw new ArgumentException(
+                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
                     nameof(ecmaScriptImportPluginPath));
             }
 
@@ -153,10 +163,11 @@ delete msg;
 
 process.exit = function () {};";
 
-        protected override string JsCodeTemplate => this.JsCodeRequiredModules +
-                                                    this.JsCodePreevaulationCode +
-                                                    this.JsCodeEvaluation +
-                                                    this.JsCodePostevaulationCode;
+        protected override string JsCodeTemplate =>
+            this.JsCodeRequiredModules +
+            this.JsCodePreevaulationCode +
+            this.JsCodeEvaluation +
+            this.JsCodePostevaulationCode;
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
@@ -227,27 +238,31 @@ describe('TestDOMScope', function() {
     });
 });";
 
-    public override ExecutionResult Execute(ExecutionContext executionContext)
+        public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            ExecutionResult result = new ExecutionResult();
-
-            result.IsCompiledSuccessfully = true;
+            var result = new ExecutionResult { IsCompiledSuccessfully = true };
 
             // Copy and unzip the file (save file to WorkingDirectory)
-            string submissionFilePath = this.CreateSubmissionFile(executionContext);
+            this.CreateSubmissionFile(executionContext);
             this.ProgramEntryPath = this.FindProgramEntryPath();
 
             // Replace the placeholders in the JS Template with the real values
-            string codeToExecute = this.PreprocessJsSubmission(this.JsCodeTemplate, this.ProgramEntryPath, executionContext.TaskSkeletonAsString);
+            var codeToExecute = this.PreprocessJsSubmission(
+                this.JsCodeTemplate,
+                this.ProgramEntryPath,
+                executionContext.TaskSkeletonAsString);
 
             // Save code to file
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Create a Restricted Process Executor
-            IExecutor executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor();
 
             // Create a Checker using the information from the Execution Context
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
 
             // Process tests 
             result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
@@ -305,7 +320,7 @@ describe('TestDOMScope', function() {
                 }
             }
 
-            System.IO.File.Delete(fileToUnzip);
+            File.Delete(fileToUnzip);
         }
 
         protected virtual string FindProgramEntryPath()
@@ -313,7 +328,9 @@ describe('TestDOMScope', function() {
             var files = new List<string>(Directory.GetFiles(this.WorkingDirectory, "app.js", SearchOption.AllDirectories));
             if (files.Count == 0)
             {
-                throw new ArgumentException($"'{AppJsFileName}' file not found in output directory!", nameof(this.WorkingDirectory));
+                throw new ArgumentException(
+                    $"'{AppJsFileName}' file not found in output directory!",
+                    nameof(this.WorkingDirectory));
             }
 
             return this.ProcessModulePath("\"" + files[0] + "\"");
