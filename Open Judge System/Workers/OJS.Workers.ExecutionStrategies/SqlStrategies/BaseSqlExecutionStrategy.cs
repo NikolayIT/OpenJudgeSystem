@@ -19,7 +19,7 @@
         protected static readonly Type DateTimeType = typeof(DateTime);
         protected static readonly Type TimeSpanType = typeof(TimeSpan);
 
-        private const int DefaultTimeLimit = 60 * 1000;
+        private const int DefaultTimeLimit = 2 * 60 * 1000;
 
         public virtual ExecutionResult Execute(
             ExecutionContext executionContext,
@@ -28,30 +28,29 @@
             var result = new ExecutionResult { IsCompiledSuccessfully = true };
 
             string databaseName = null;
-            IDbConnection connection = null;
             try
             {
-                executionContext.Tests.ForEach(test =>
+                foreach (var test in executionContext.Tests)
                 {
                     databaseName = this.GetDatabaseName();
-                    connection = this.GetOpenConnection(databaseName);
 
-                    executionFlow(connection, test, result);
-                });
+                    using (var connection = this.GetOpenConnection(databaseName))
+                    {
+                        executionFlow(connection, test, result);
+                    }
+
+                    this.DropDatabase(databaseName);
+                }
             }
             catch (Exception ex)
             {
+                if (!string.IsNullOrWhiteSpace(databaseName))
+                {
+                    this.DropDatabase(databaseName);
+                }
+
                 result.IsCompiledSuccessfully = false;
                 result.CompilerComment = ex.Message;
-            }
-            finally
-            {
-                connection?.Dispose();
-            }
-
-            if (!string.IsNullOrWhiteSpace(databaseName))
-            {
-                this.DropDatabase(databaseName);
             }
 
             return result;
@@ -104,43 +103,47 @@
 
         protected bool ExecuteNonQuery(IDbConnection connection, string commandText, int timeLimit = DefaultTimeLimit)
         {
-            var command = connection.CreateCommand();
-            command.CommandText = commandText;
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = commandText;
 
-            return Code.ExecuteWithTimeLimit(
-                TimeSpan.FromMilliseconds(timeLimit),
-                () => command.ExecuteNonQuery());
+                return Code.ExecuteWithTimeLimit(
+                    TimeSpan.FromMilliseconds(timeLimit),
+                    () => command.ExecuteNonQuery());
+            }
         }
 
         protected SqlResult ExecuteReader(IDbConnection connection, string commandText, int timeLimit = DefaultTimeLimit)
         {
-            var command = connection.CreateCommand();
-            command.CommandText = commandText;
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = commandText;
 
-            var sqlTestResult = new SqlResult();
-            sqlTestResult.Completed = Code.ExecuteWithTimeLimit(
-                TimeSpan.FromMilliseconds(timeLimit),
-                () =>
+                using (var reader = command.ExecuteReader())
                 {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        do
+                    var sqlTestResult = new SqlResult();
+                    sqlTestResult.Completed = Code.ExecuteWithTimeLimit(
+                        TimeSpan.FromMilliseconds(timeLimit),
+                        () =>
                         {
-                            while (reader.Read())
+                            do
                             {
-                                for (var i = 0; i < reader.FieldCount; i++)
+                                while (reader.Read())
                                 {
-                                    var fieldValue = this.GetDataRecordFieldValue(reader, i);
+                                    for (var i = 0; i < reader.FieldCount; i++)
+                                    {
+                                        var fieldValue = this.GetDataRecordFieldValue(reader, i);
 
-                                    sqlTestResult.Results.Add(fieldValue);
+                                        sqlTestResult.Results.Add(fieldValue);
+                                    }
                                 }
                             }
-                        }
-                        while (reader.NextResult());
-                    }
-                });
+                            while (reader.NextResult());
+                        });
 
-            return sqlTestResult;
+                    return sqlTestResult;
+                }
+            }
         }
 
         protected void ProcessSqlResult(SqlResult sqlResult, ExecutionContext executionContext, TestContext test, ExecutionResult result)

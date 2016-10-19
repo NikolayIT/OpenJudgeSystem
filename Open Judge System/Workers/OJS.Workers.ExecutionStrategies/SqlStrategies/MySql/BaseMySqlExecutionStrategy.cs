@@ -54,7 +54,6 @@
 CREATE USER IF NOT EXISTS '{this.restrictedUserId}'@'localhost';
 SET PASSWORD FOR '{this.restrictedUserId}'@'localhost'='{this.restrictedUserPassword}'");
 
-                // TODO: Params?
                 this.ExecuteNonQuery(
                     connection,
                     $@"
@@ -62,9 +61,8 @@ GRANT ALL PRIVILEGES ON `{databaseName}`.* TO '{this.restrictedUserId}'@'localho
 FLUSH PRIVILEGES;");
             }
 
-            // TODO: Construct with class fields!
             var createdDbConnectionString =
-                $"Server=localhost;Database={databaseName};UID={this.restrictedUserId};Password={this.restrictedUserPassword}";
+                $"Server=localhost;Database={databaseName};UID={this.restrictedUserId};Password={this.restrictedUserPassword};Pooling=False;";
             var createdDbConnection = new MySqlConnection(createdDbConnectionString);
             createdDbConnection.Open();
 
@@ -77,7 +75,7 @@ FLUSH PRIVILEGES;");
             {
                 connection.Open();
 
-                this.ExecuteNonQuery(connection, $"SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE `{databaseName}`;");
+                this.ExecuteNonQuery(connection, $"DROP DATABASE IF EXISTS `{databaseName}`;");
             }
         }
 
