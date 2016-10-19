@@ -75,7 +75,7 @@ ALTER ROLE [db_owner] ADD MEMBER [{this.restrictedUserId}];");
             }
 
             var createdDbConnectionString =
-                $"Data Source=(LocalDB)\\MSSQLLocalDB;User Id={this.restrictedUserId};Password={this.restrictedUserPassword};AttachDbFilename={databaseFilePath}";
+                $"Data Source=(LocalDB)\\MSSQLLocalDB;User Id={this.restrictedUserId};Password={this.restrictedUserPassword};AttachDbFilename={databaseFilePath};Pooling=False;";
             var createdDbConnection = new SqlConnection(createdDbConnectionString);
             createdDbConnection.Open();
 
@@ -90,7 +90,12 @@ ALTER ROLE [db_owner] ADD MEMBER [{this.restrictedUserId}];");
 
                 this.ExecuteNonQuery(
                     connection,
-                    $"ALTER DATABASE [{databaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{databaseName}];");
+                    $@"
+IF EXISTS (SELECT name FROM master.sys.databases WHERE name=N'{databaseName}')
+BEGIN
+    ALTER DATABASE [{databaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [{databaseName}];
+END;");
             }
         }
 
