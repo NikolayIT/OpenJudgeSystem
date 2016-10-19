@@ -21,17 +21,15 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.SeedSubmissionTypes(context);
-
             if (context.Roles.Any())
             {
                 return;
             }
 
             // this.SeedSubmissionsAndTestRuns(context);
+            this.SeedSubmissionTypes(context);
             this.SeedRoles(context);
             this.SeedCheckers(context);
-
 
             // this.SeedContests(context);
             // this.SeedLongNews(context);
