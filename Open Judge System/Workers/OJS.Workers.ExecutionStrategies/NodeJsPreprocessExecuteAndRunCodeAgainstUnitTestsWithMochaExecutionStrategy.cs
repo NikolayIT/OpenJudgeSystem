@@ -1,8 +1,17 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
+
+    using MissingFeatures;
+
+    using OJS.Common.Extensions;
+    using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Executors;
 
     public class NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy :
         IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
@@ -34,149 +43,164 @@
         {
         }
 
-        // TODO Maybe create a flexible base template
-        protected override string JsCodeTemplate => RequiredModules + @";
-DataView = undefined;
-DTRACE_NET_SERVER_CONNECTION = undefined;
-// DTRACE_NET_STREAM_END = undefined;
-DTRACE_NET_SOCKET_READ = undefined;
-DTRACE_NET_SOCKET_WRITE = undefined;
-DTRACE_HTTP_SERVER_REQUEST = undefined;
-DTRACE_HTTP_SERVER_RESPONSE = undefined;
-DTRACE_HTTP_CLIENT_REQUEST = undefined;
-DTRACE_HTTP_CLIENT_RESPONSE = undefined;
-COUNTER_NET_SERVER_CONNECTION = undefined;
-COUNTER_NET_SERVER_CONNECTION_CLOSE = undefined;
-COUNTER_HTTP_SERVER_REQUEST = undefined;
-COUNTER_HTTP_SERVER_RESPONSE = undefined;
-COUNTER_HTTP_CLIENT_REQUEST = undefined;
-COUNTER_HTTP_CLIENT_RESPONSE = undefined;
-process.argv = undefined;
-process.versions = undefined;
-process.env = { NODE_DEBUG: false };
-process.addListener = undefined;
-process.EventEmitter = undefined;
-process.mainModule = undefined;
-process.config = undefined;
-// process.on = undefined;
-process.openStdin = undefined;
-process.chdir = undefined;
-process.cwd = undefined;
-process.exit = undefined;
-process.umask = undefined;
-// GLOBAL = undefined;
-// root = undefined;
-// global = {};
-setInterval = undefined;
-// clearTimeout = undefined;
-clearInterval = undefined;
-setImmediate = undefined;
-clearImmediate = undefined;
-module = undefined;
-require = undefined;
-msg = undefined;
-
-delete DataView;
-delete DTRACE_NET_SERVER_CONNECTION;
-// delete DTRACE_NET_STREAM_END;
-delete DTRACE_NET_SOCKET_READ;
-delete DTRACE_NET_SOCKET_WRITE;
-delete DTRACE_HTTP_SERVER_REQUEST;
-delete DTRACE_HTTP_SERVER_RESPONSE;
-delete DTRACE_HTTP_CLIENT_REQUEST;
-delete DTRACE_HTTP_CLIENT_RESPONSE;
-delete COUNTER_NET_SERVER_CONNECTION;
-delete COUNTER_NET_SERVER_CONNECTION_CLOSE;
-delete COUNTER_HTTP_SERVER_REQUEST;
-delete COUNTER_HTTP_SERVER_RESPONSE;
-delete COUNTER_HTTP_CLIENT_REQUEST;
-delete COUNTER_HTTP_CLIENT_RESPONSE;
-delete process.argv;
-delete process.exit;
-delete process.versions;
-// delete GLOBAL;
-// delete root;
-delete setInterval;
-// delete clearTimeout;
-delete clearInterval;
-delete setImmediate;
-delete clearImmediate;
-delete module;
-delete require;
-delete msg;
-
-process.exit = function () {};
-var code = {
-    run: " + UserInputPlaceholder + @"
-};
-" + PreevaluationPlaceholder + @"
-" + EvaluationPlaceholder + @"
-" + PostevaluationPlaceholder;
-
-        // We call mocha with the --delay argument, which supplies the run() hook allowing us to read the standard input before any suites are called
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
-var content = '';
-process.stdin.resume();
-process.stdin.on('data', function(buf) { content += buf.toString(); });
-process.stdin.on('end', function(){
-        defineTests(content);
-        run();
-});";
-       
-        protected override string JsCodeEvaluation => @"
-    function defineTests(content){
-        before(function(done){
-            jsdom.env({
-                html: '',
-                done: function(errors, window) {
-                    global.window = window;
-                    global.document = window.document;
-                    global.$ = jq(window);
-                    global.handlebars = handlebars;
-                    Object.getOwnPropertyNames(window)
-                        .filter(function (prop) {
-                            return prop.toLowerCase().indexOf('html') >= 0;
-                        }).forEach(function (prop) {
-                            global[prop] = window[prop];
-                        });
-                    done();
-                    }
+let bgCoderConsole = {};
+before(function(done)
+{
+    jsdom.env({
+        html: '',
+        done: function(errors, window) {
+            global.window = window;
+            global.document = window.document;
+            global.$ = jq(window);
+            global.handlebars = handlebars;
+            Object.getOwnPropertyNames(window)
+                .filter(function(prop) {
+                return prop.toLowerCase().indexOf('html') >= 0;
+            }).forEach(function(prop) {
+                global[prop] = window[prop];
             });
-        });
 
-        describe('Tests',function(){ 
-            var bgCoderConsole = {};            
             Object.keys(console)
-                .forEach(function (prop) {
-                    bgCoderConsole[prop] = console[prop];
-                    console[prop] = new Function('');
-                });
-
-            var inputData = content.trim();
-            var codeInput = code.run;
-            var executingCode = '\'use strict\';';
-            executingCode += inputData + codeInput;
-
-            var testFunc = new Function(" + this.TestFuncVariables + @", executingCode);
-            testFunc.call({}, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
-            
-            Object.keys(bgCoderConsole)
-                .forEach(function (prop) {
-                console[prop] = bgCoderConsole[prop];
+                .forEach(function(prop) {
+                bgCoderConsole[prop] = console[prop];
+                console[prop] = new Function('');
             });
-        });
-    }";
+
+            done();
+        }
+    });
+});
+
+after(function()
+{
+    Object.keys(bgCoderConsole)
+        .forEach(function(prop) {
+        console[prop] = bgCoderConsole[prop];
+    });
+});";
+
+        protected override string JsCodeEvaluation => @"
+        " + TestsPlaceholder;
 
         protected override string JsCodePostevaulationCode => string.Empty;
 
-        protected override string TestFuncVariables => base.TestFuncVariables + @",'describe','it','before','beforeEach','after','afterEach'";
+        public override ExecutionResult Execute(ExecutionContext executionContext)
+        {
+            // In NodeJS there is no compilation
+            var result = new ExecutionResult() { IsCompiledSuccessfully = true };
 
-        protected override List<TestResult> ProcessTests(
+            var executor = new RestrictedProcessExecutor();
+
+            // Prerun the zero test in order to get the amount of user tests
+            var preRunCode = this.PreprocessPrerunTemplate(
+                this.JsCodeTemplate,
+                executionContext);
+            var prerunCodeSavePath = FileHelpers.SaveStringToTempFile(preRunCode);
+            var numberOfUserTests = this.PrerunSubmission(executionContext, executor, prerunCodeSavePath);
+
+            // Preprocess the user submission
+            var codeToExecute = this.PreprocessJsSubmission(
+                this.JsCodeTemplate,
+                executionContext,
+                numberOfUserTests);
+
+            // Save the preprocessed submission which is ready for execution
+            var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
+
+            // Process the submission and check each test
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath, numberOfUserTests);
+
+            // Clean up
+            File.Delete(prerunCodeSavePath);
+            File.Delete(codeSavePath);
+
+            return result;
+        }
+
+        protected virtual string BuildTests(IEnumerable<TestContext> tests, int numberOfUserTests)
+        {
+            // Swap the testInput every X amount of tests where X is the amount of User Tests
+            // We keep track of the number we must swap at with the variable testCountRoof
+            var testCountRoof = numberOfUserTests;
+            var problemTests = tests.ToList();
+            var testsCode = problemTests[0].Input;
+
+            // We set the state of the tested entity in a beforeEach hook to ensure the user doesnt manipulate the entity
+            testsCode += @"
+let testsCount = 0;
+beforeEach(function(){
+    if(testsCount < " + testCountRoof + @") {
+        " + problemTests[1].Input + @"
+    }";
+
+            testCountRoof += numberOfUserTests;
+            var beforeHookTests = problemTests.Skip(2).ToList();
+
+            foreach (var test in beforeHookTests)
+            {
+                testsCode += @"
+    else if(testsCount < " + testCountRoof + @") {
+        " + test.Input + @"
+    }";
+                testCountRoof += numberOfUserTests;
+            }
+
+            testsCode += @"
+    testsCount++;
+});";
+
+            // Insert a copy of the user tests for each test file except the first zero test as it just checks the test count
+            for (int i = 1; i <= problemTests.Count - 1; i++)
+            {
+                testsCode += @"
+describe('JudgeTest" + i + @"', function(){
+" + UserInputPlaceholder + @"
+});";
+            }
+
+            return testsCode;
+        }
+
+        protected virtual string BuildPrerunTests(IEnumerable<TestContext> tests)
+        {
+            var testsCode = string.Empty;
+            testsCode += @"
+                " + tests.FirstOrDefault().Input + @"
+                describe('JudgeTest1', function(){ 
+                " + UserInputPlaceholder + @"
+                });";
+
+            return testsCode;
+        }
+
+        protected virtual int PrerunSubmission(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            string codeSavePath)
+        {
+            var arguments = new List<string>();
+            arguments.Add(this.MochaModulePath);
+            arguments.Add(codeSavePath);
+            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+
+            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+            var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+            return mochaResult.TotalTests;
+        }
+
+        protected virtual List<TestResult> ProcessTests(
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
-            string codeSavePath)
+            string codeSavePath,
+            int numberOfUserTests)
         {
             var testResults = new List<TestResult>();
 
@@ -185,12 +209,13 @@ process.stdin.on('end', function(){
             arguments.Add(codeSavePath);
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
-            var initialPassedTests = 0;
             var testCount = 0;
+            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+            var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+            var correctSolutionTestPasses = mochaResult.TestsErrors.Take(numberOfUserTests).Count(x => x == string.Empty);
+            var testOffset = numberOfUserTests;
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
-                var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput, true);
                 TestResult testResult = null;
                 if (testCount == 0)
                 {
@@ -198,58 +223,59 @@ process.stdin.on('end', function(){
                         Regex.Match(
                             test.Input,
                             "<minTestCount>(\\d+)</minTestCount>").Groups[1].Value);
-                    var result = "yes";
-                    if (mochaResult.TotalTests == 0)
+                    var message = "yes";
+                    if (numberOfUserTests == 0)
                     {
-                        result = "The submitted code was either incorrect or contained no tests!";             
+                        message = "The submitted code was either incorrect or contained no tests!";
                     }
-                    else if (mochaResult.TotalTests != 0 && mochaResult.TotalTests < minTestCount)
+                    else if (numberOfUserTests < minTestCount)
                     {
-                        result = $"Insufficient amount of tests, you have to have atleast {minTestCount} tests!";
+                        message = $"Insufficient amount of tests, you have to have atleast {minTestCount} tests!";
                     }
 
                     testResult = this.ExecuteAndCheckTest(
                         test,
                         processExecutionResult,
                         checker,
-                        result);
+                        message);
                 }
                 else if (testCount == 1)
                 {
-                    var result = "yes";
-                    if (mochaResult.TotalTests == 0)
+                    var message = "yes";
+                    if (numberOfUserTests == 0)
                     {
-                        result = "The submitted code was either incorrect or contained no tests!";
+                        message = "The submitted code was either incorrect or contained no tests!";
                     }
-                    else if (mochaResult.TotalTests != 0 && mochaResult.TotalTests != mochaResult.TotalPasses)
+                    else if (correctSolutionTestPasses != numberOfUserTests)
                     {
-                        result = "Error: Some tests failed while running the correct solution!";
+                        message = "Error: Some tests failed while running the correct solution!";
                     }
 
                     testResult = this.ExecuteAndCheckTest(
                         test,
                         processExecutionResult,
                         checker,
-                        result);
-                    initialPassedTests = mochaResult.TotalPasses;
+                        message);
                 }
                 else
                 {
-                    var result = "No unit test covering this functionality!";
-                    if (mochaResult.TotalPasses < initialPassedTests)
+                    var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == string.Empty);
+                    var message = "yes";
+                    if (numberOfPasses >= correctSolutionTestPasses)
                     {
-                        result = "yes";
-                    }
-                    else if (mochaResult.Error != null)
-                    {
-                        result = $"Unexpected error:{mochaResult.Error}";
+                        message = "No unit test covering this functionality!";
+                        mochaResult.TestsErrors
+                            .Take(numberOfUserTests)
+                            .Where(x => x != string.Empty)
+                            .ForEach(x => message += x);
                     }
 
                     testResult = this.ExecuteAndCheckTest(
                         test,
                         processExecutionResult,
                         checker,
-                        result);
+                        message);
+                    testOffset += numberOfUserTests;
                 }
 
                 testCount++;
@@ -259,11 +285,35 @@ process.stdin.on('end', function(){
             return testResults;
         }
 
-        protected override string PreprocessJsSubmission(string template, string code, string problemSkeleton)
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, int numberOfUserTests)
         {
-            code = Regex.Replace(code, "([\"'])", "\\$1");
-            code = Regex.Replace(code, "[\r\n\t]*", string.Empty);
-            return base.PreprocessJsSubmission(template, "'" + code + "'", problemSkeleton);
+            var code = context.Code.Trim(';');
+
+            var processedCode =
+                template.Replace(RequiredModules, this.JsCodeRequiredModules)
+                    .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
+                    .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                    .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
+                    .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
+                    .Replace(TestsPlaceholder, this.BuildTests(context.Tests, numberOfUserTests))
+                    .Replace(UserInputPlaceholder, code);
+
+            return processedCode;
+        }
+
+        protected virtual string PreprocessPrerunTemplate(string template, ExecutionContext context)
+        {
+            var code = context.Code.Trim(';');
+
+            var processedCode =
+                template.Replace(RequiredModules, this.JsCodeRequiredModules)
+                    .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
+                    .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                    .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
+                    .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
+                    .Replace(TestsPlaceholder, this.BuildPrerunTests(context.Tests))
+                    .Replace(UserInputPlaceholder, code);
+            return processedCode;
         }
     }
 }

@@ -111,7 +111,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn("AggregateException caught.", ex.InnerException);
+                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
                 }
 
                 // Close the task that gets the process error output
@@ -121,7 +121,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn("AggregateException caught.", ex.InnerException);
+                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
                 }
 
                 // Close the task that gets the process output
@@ -131,7 +131,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn("AggregateException caught.", ex.InnerException);
+                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
                 }
 
                 Debug.Assert(restrictedProcess.HasExited, "Restricted process didn't exit!");

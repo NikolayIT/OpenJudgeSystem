@@ -1,7 +1,12 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using OJS.Workers.Common;
 
     public class IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
@@ -78,6 +83,13 @@
 chai.use(sinonChai);
 
 describe('TestDOMScope', function() {
+    let code = {
+        run: " + UserInputPlaceholder + @"
+    };
+
+    let result = code.run;
+    let bgCoderConsole = {};   
+
     before(function(done) {
         jsdom.env({
             html: '',
@@ -92,19 +104,97 @@ describe('TestDOMScope', function() {
                     }).forEach(function (prop) {
                         global[prop] = window[prop];
                     });
+                Object.keys(console)
+                    .forEach(function (prop) {
+                        bgCoderConsole[prop] = console[prop];
+                        console[prop] = new Function('');
+                    });
                 done();
             }
         });
     });
 
-	it('Test', function(done) {
-		var content = '';";
+    after(function() {
+        Object.keys(bgCoderConsole)
+            .forEach(function (prop) {
+            console[prop] = bgCoderConsole[prop];
+        });
+    });";
 
-        protected override string JsCodeTemplate => base.JsCodeTemplate
-            .Replace("process.removeListener = undefined;", string.Empty)
-            .Replace("setTimeout = undefined;", string.Empty)
-            .Replace("delete setTimeout;", string.Empty);
+        protected override string JsCodeEvaluation => TestsPlaceholder;
 
-        protected override string TestFuncVariables => base.TestFuncVariables + ", 'sinon', '_'";
+        protected override string TestFuncVariables => base.TestFuncVariables + ", '_'";
+
+        protected virtual string BuildTests(IEnumerable<TestContext> tests)
+        {
+            var testsCode = string.Empty;
+            var testsCount = 1;
+            foreach (var test in tests)
+            {
+                var code = Regex.Replace(test.Input, "([\\\\\"'])", "\\$1");
+                code = Regex.Replace(code, "[\r\n\t]*", string.Empty);
+
+                testsCode += @"
+it('Test" + testsCount++ + @"', function(done) {
+    let content = '" + code + @"';
+    let inputData = content.trim();
+
+    let testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
+    testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+
+    done();
+});";
+            }
+
+            return testsCode;
+        }
+
+        protected override List<TestResult> ProcessTests(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            IChecker checker,
+            string codeSavePath)
+        {
+            var testResults = new List<TestResult>();
+
+            var arguments = new List<string>();
+            arguments.Add(this.MochaModulePath);
+            arguments.Add(codeSavePath);
+            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+
+            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+
+            var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+            var currentTest = 0;
+
+            foreach (var test in executionContext.Tests)
+            {
+                var message = "yes";
+                if (mochaResult.Error != string.Empty)
+                {
+                    message = mochaResult.Error;
+                }
+                else if (mochaResult.TestsErrors[currentTest] != string.Empty)
+                {
+                    message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
+                }
+
+                var testResult = this.ExecuteAndCheckTest(
+                    test,
+                    processExecutionResult,
+                    checker,
+                    message);
+                currentTest++;
+                testResults.Add(testResult);
+            }
+
+            return testResults;
+        }
+
+        protected override string PreprocessJsSubmission(string template, ExecutionContext context)
+        {
+            var baseTemplate = base.PreprocessJsSubmission(template, context);
+            return baseTemplate.Replace(TestsPlaceholder, this.BuildTests(context.Tests));
+        }
     }
 }

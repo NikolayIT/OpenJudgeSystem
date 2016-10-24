@@ -32,7 +32,6 @@
             this.SeedRoles(context);
             this.SeedCheckers(context);
 
-
             // this.SeedContests(context);
             // this.SeedLongNews(context);
             // this.SeedRandomContests(context);
@@ -109,12 +108,12 @@
 
         protected void SeedSubmissionTypes(OjsDbContext context)
         {
-            foreach (var entity in context.SubmissionTypes)
-            {
-                context.SubmissionTypes.Remove(entity);
-            }
+            //foreach (var entity in context.SubmissionTypes)
+            //{
+            //    context.SubmissionTypes.Remove(entity);
+            //}
 
-            context.SaveChanges();
+            //context.SaveChanges();
 
             var submissionTypes = new[]
                                       {
@@ -273,7 +272,7 @@
                                               {
                                                   Name = "JavaScript Zip File (DOM, Mocha and Module Transpiling)",
                                                   CompilerType = CompilerType.None,
-                                                  AdditionalCompilerArguments = "-R json",
+                                                  AdditionalCompilerArguments = "--delay -R json",
                                                   ExecutionStrategyType =
                                                       ExecutionStrategyType.NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha,
                                                   IsSelectedByDefault = false,
@@ -284,7 +283,7 @@
                                               {
                                                   Name = "JavaScript code (Unit Tests with Sinon and Mocha)",
                                                   CompilerType = CompilerType.None,
-                                                  AdditionalCompilerArguments = "--delay -R json",
+                                                  AdditionalCompilerArguments = "-R json",
                                                   ExecutionStrategyType =
                                                       ExecutionStrategyType
                                                       .NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,

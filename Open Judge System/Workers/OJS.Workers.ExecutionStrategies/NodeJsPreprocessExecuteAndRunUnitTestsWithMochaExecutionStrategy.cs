@@ -3,10 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
+        protected const string TestsPlaceholder = "#testsCode#";
+
         public NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath,
@@ -42,44 +45,53 @@
 
         protected override string JsCodePreevaulationCode => @"
 describe('TestScope', function() {
-	it('Test', function(done) {
-		var content = '';";
+    let code = {
+        run: " + UserInputPlaceholder + @"
+    };
 
-        protected override string JsCodeEvaluation => @"
-    var inputData = content.trim();
-    var result = code.run;
-    if (result == undefined) {
-        result = 'Invalid!';
-    }
-	
-    var bgCoderConsole = {};      
-    Object.keys(console)
-        .forEach(function (prop) {
-            bgCoderConsole[prop] = console[prop];
-            console[prop] = new Function('');
-        });
+    let result = code.run;
+    let bgCoderConsole = {};   
 
-	testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
-    testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+    before(function() {
+        Object.keys(console)
+            .forEach(function (prop) {
+                bgCoderConsole[prop] = console[prop];
+                console[prop] = new Function('');
+            });
+    });
 
-    Object.keys(bgCoderConsole)
-        .forEach(function (prop) {
+    after(function() {
+        Object.keys(bgCoderConsole)
+            .forEach(function (prop) {
             console[prop] = bgCoderConsole[prop];
         });
+    });";
 
-	done();";
+        protected override string JsCodeEvaluation => @"
+	it('Test', function(done) {
+		let content = '';
+        process.stdin.resume();
+        process.stdin.on('data', function(buf) { content += buf.toString(); });
+        process.stdin.on('end', function() {    
+            let inputData = content.trim();
+
+	        let testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
+            testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+
+	        done();
+        });
+    });";
 
         protected override string JsCodePostevaulationCode => @"
-    });
 });";
 
         protected virtual string TestFuncVariables => "'assert', 'expect', 'should'";
 
         protected override List<TestResult> ProcessTests(
-            ExecutionContext executionContext,
-            IExecutor executor,
-            IChecker checker,
-            string codeSavePath)
+           ExecutionContext executionContext,
+           IExecutor executor,
+           IChecker checker,
+           string codeSavePath)
         {
             var testResults = new List<TestResult>();
 
@@ -91,13 +103,23 @@ describe('TestScope', function() {
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
-
                 var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+
+                var message = "yes";
+                if (mochaResult.Error != string.Empty)
+                {
+                    message = mochaResult.Error;
+                }
+                else if (mochaResult.TotalPasses != 1)
+                {
+                    message = $"Unexpected error: {mochaResult.TestsErrors[0]}";
+                }
+
                 var testResult = this.ExecuteAndCheckTest(
                     test,
                     processExecutionResult,
                     checker,
-                    mochaResult.Passed ? "yes" : $"Unexpected error: {mochaResult.Error}");
+                    message);
                 testResults.Add(testResult);
             }
 
