@@ -115,6 +115,7 @@ browserify(" + UserInputPlaceholder + @")
 
 function afterBundling() {
     describe('TestDOMScope', function() {
+    let bgCoderConsole = {};
         before(function(done) {" +
             NodeDisablePlaceholder + @"
             jsdom.env({
@@ -130,8 +131,23 @@ function afterBundling() {
                         }).forEach(function (prop) {
                             global[prop] = window[prop];
                         });
+
+                    Object.keys(console)
+                        .forEach(function(prop) {
+                        bgCoderConsole[prop] = console[prop];
+                        console[prop] = new Function('');
+                    });
+
                     done();
                 }
+            });
+        });
+
+        after(function()
+        {
+            Object.keys(bgCoderConsole)
+                .forEach(function(prop) {
+                console[prop] = bgCoderConsole[prop];
             });
         });";
 
