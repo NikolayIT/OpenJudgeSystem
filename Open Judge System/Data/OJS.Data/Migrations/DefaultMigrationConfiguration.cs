@@ -21,8 +21,6 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.SeedSubmissionTypes(context);
-
             if (context.Roles.Any())
             {
                 return;
@@ -31,6 +29,7 @@
             // this.SeedSubmissionsAndTestRuns(context);
             this.SeedRoles(context);
             this.SeedCheckers(context);
+            this.SeedSubmissionTypes(context);
 
             // this.SeedContests(context);
             // this.SeedLongNews(context);
@@ -108,12 +107,12 @@
 
         protected void SeedSubmissionTypes(OjsDbContext context)
         {
-            //foreach (var entity in context.SubmissionTypes)
-            //{
-            //    context.SubmissionTypes.Remove(entity);
-            //}
+            foreach (var entity in context.SubmissionTypes)
+            {
+                context.SubmissionTypes.Remove(entity);
+            }
 
-            //context.SaveChanges();
+            context.SaveChanges();
 
             var submissionTypes = new[]
                                       {
@@ -181,7 +180,7 @@
                                                   AdditionalCompilerArguments = "-R json",
                                                   ExecutionStrategyType =
                                                       ExecutionStrategyType
-                                                      .IoJsPreprocessExecuteAndRunJsDomUnitTests,
+                                                      .NodeJsPreprocessExecuteAndRunJsDomUnitTests,
                                                   IsSelectedByDefault = false,
                                                   AllowedFileExtensions = null,
                                                   AllowBinaryFilesUpload = false,
