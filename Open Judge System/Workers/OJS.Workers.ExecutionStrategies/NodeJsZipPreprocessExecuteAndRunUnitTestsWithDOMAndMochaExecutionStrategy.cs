@@ -133,22 +133,21 @@ function afterBundling() {
                         });
 
                     Object.keys(console)
-                        .forEach(function(prop) {
-                        bgCoderConsole[prop] = console[prop];
-                        console[prop] = new Function('');
-                    });
+                        .forEach(function (prop) {
+                            bgCoderConsole[prop] = console[prop];
+                            console[prop] = new Function('');
+                        });
 
                     done();
                 }
             });
         });
 
-        after(function()
-        {
+        after(function() {
             Object.keys(bgCoderConsole)
-                .forEach(function(prop) {
-                console[prop] = bgCoderConsole[prop];
-            });
+                .forEach(function (prop) {
+                    console[prop] = bgCoderConsole[prop];
+                });
         });";
 
         protected override string JsCodeEvaluation => @"

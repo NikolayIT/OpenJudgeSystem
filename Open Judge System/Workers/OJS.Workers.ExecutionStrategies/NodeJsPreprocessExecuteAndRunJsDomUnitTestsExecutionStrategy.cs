@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
-
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
@@ -83,11 +81,6 @@
 chai.use(sinonChai);
 
 describe('TestDOMScope', function() {
-    let code = {
-        run: " + UserInputPlaceholder + @"
-    };
-
-    let result = code.run;
     let bgCoderConsole = {};   
 
     before(function(done) {
@@ -104,11 +97,13 @@ describe('TestDOMScope', function() {
                     }).forEach(function (prop) {
                         global[prop] = window[prop];
                     });
+
                 Object.keys(console)
                     .forEach(function (prop) {
                         bgCoderConsole[prop] = console[prop];
                         console[prop] = new Function('');
                     });
+
                 done();
             }
         });
@@ -117,8 +112,8 @@ describe('TestDOMScope', function() {
     after(function() {
         Object.keys(bgCoderConsole)
             .forEach(function (prop) {
-            console[prop] = bgCoderConsole[prop];
-        });
+                console[prop] = bgCoderConsole[prop];
+            });
     });";
 
         protected override string JsCodeEvaluation => TestsPlaceholder;
@@ -138,9 +133,12 @@ describe('TestDOMScope', function() {
 it('Test" + testsCount++ + @"', function(done) {
     let content = '" + code + @"';
     let inputData = content.trim();
+    let code = {
+        run: " + UserInputPlaceholder + @"
+    };
 
     let testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
-    testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+    testFunc.call(code.run, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
 
     done();
 });";
@@ -170,11 +168,11 @@ it('Test" + testsCount++ + @"', function(done) {
             foreach (var test in executionContext.Tests)
             {
                 var message = "yes";
-                if (mochaResult.Error != string.Empty)
+                if (!string.IsNullOrEmpty(mochaResult.Error))
                 {
                     message = mochaResult.Error;
                 }
-                else if (mochaResult.TestsErrors[currentTest] != string.Empty)
+                else if (!string.IsNullOrEmpty(mochaResult.TestsErrors[currentTest]))
                 {
                     message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
                 }
@@ -193,8 +191,18 @@ it('Test" + testsCount++ + @"', function(done) {
 
         protected override string PreprocessJsSubmission(string template, ExecutionContext context)
         {
-            var baseTemplate = base.PreprocessJsSubmission(template, context);
-            return baseTemplate.Replace(TestsPlaceholder, this.BuildTests(context.Tests));
+            var code = context.Code.Trim(';');
+
+            var processedCode = template
+                .Replace(RequiredModules, this.JsCodeRequiredModules)
+                .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
+                .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
+                .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
+                .Replace(TestsPlaceholder, this.BuildTests(context.Tests))
+                .Replace(UserInputPlaceholder, code);
+
+            return processedCode;
         }
     }
 }
