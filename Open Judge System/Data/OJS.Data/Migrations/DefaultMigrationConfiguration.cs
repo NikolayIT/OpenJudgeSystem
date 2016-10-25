@@ -180,7 +180,7 @@
                         AdditionalCompilerArguments = "-R json",
                         ExecutionStrategyType =
                             ExecutionStrategyType
-                            .IoJsPreprocessExecuteAndRunJsDomUnitTests,
+                            .NodeJsPreprocessExecuteAndRunJsDomUnitTests,
                         IsSelectedByDefault = false,
                         AllowedFileExtensions = null,
                         AllowBinaryFilesUpload = false,
@@ -271,7 +271,7 @@
                     {
                         Name = "JavaScript Zip File (DOM, Mocha and Module Transpiling)",
                         CompilerType = CompilerType.None,
-                        AdditionalCompilerArguments = "-R json",
+                        AdditionalCompilerArguments = "--delay -R json",
                         ExecutionStrategyType =
                             ExecutionStrategyType.NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha,
                         IsSelectedByDefault = false,
@@ -282,7 +282,7 @@
                     {
                         Name = "JavaScript code (Unit Tests with Sinon and Mocha)",
                         CompilerType = CompilerType.None,
-                        AdditionalCompilerArguments = "--delay -R json",
+                        AdditionalCompilerArguments = "-R json",
                         ExecutionStrategyType =
                             ExecutionStrategyType
                             .NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy,

@@ -18,6 +18,7 @@
         protected const string PreevaluationPlaceholder = "#preevaluationCode#";
         protected const string PostevaluationPlaceholder = "#postevaluationCode#";
         protected const string EvaluationPlaceholder = "#evaluationCode#";
+        protected const string NodeDisablePlaceholder = "#nodeDisableCode";
         protected const string AdapterFunctionPlaceholder = "#adapterFunctionCode#";
 
         public NodeJsPreprocessExecuteAndCheckExecutionStrategy(
@@ -73,21 +74,7 @@
 var EOL = require('os').EOL,
 _ = require('{this.UnderscoreModulePath}')";
 
-        protected virtual string JsCodePreevaulationCode => @"
-var content = '';
-var adapterFunction = " + AdapterFunctionPlaceholder;
-
-        protected virtual string JsCodePostevaulationCode => string.Empty;
-
-        protected virtual string JsCodeEvaluation => @"
-    var inputData = content.trim().split(EOL);
-    var result = adapterFunction(inputData, code.run);
-    if (result !== undefined) {
-        console.log(result);
-    }";
-
-        protected virtual string JsCodeTemplate => RequiredModules + @";
-
+        protected string JsNodeDisableCode => @"
 DataView = undefined;
 DTRACE_NET_SERVER_CONNECTION = undefined;
 // DTRACE_NET_STREAM_END = undefined;
@@ -109,8 +96,8 @@ process.env = { NODE_DEBUG: false };
 process.addListener = undefined;
 process.EventEmitter = undefined;
 process.mainModule = undefined;
-process.removeListener = undefined;
 process.config = undefined;
+//process.removeListener = undefined;
 // process.on = undefined;
 process.openStdin = undefined;
 process.chdir = undefined;
@@ -120,9 +107,9 @@ process.umask = undefined;
 // GLOBAL = undefined;
 // root = undefined;
 // global = {};
-setTimeout = undefined;
 setInterval = undefined;
-// clearTimeout = undefined;
+//setTimeout = undefined;
+//clearTimeout = undefined;
 clearInterval = undefined;
 setImmediate = undefined;
 clearImmediate = undefined;
@@ -150,9 +137,9 @@ delete process.exit;
 delete process.versions;
 // delete GLOBAL;
 // delete root;
-delete setTimeout;
 delete setInterval;
-// delete clearTimeout;
+//delete setTimeout;
+//delete clearTimeout;
 delete clearInterval;
 delete setImmediate;
 delete clearImmediate;
@@ -160,20 +147,34 @@ delete module;
 delete require;
 delete msg;
 
-process.exit = function () {};
+process.exit = function () {};";
 
-" + PreevaluationPlaceholder + @"
+        protected virtual string JsCodePreevaulationCode => @"
+let content = '';
+let code = {
+    run: " + UserInputPlaceholder + @"
+};
+let adapterFunction = " + AdapterFunctionPlaceholder;
+
+        protected virtual string JsCodeEvaluation => @"
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
-    " + EvaluationPlaceholder + @"
-});
+    let inputData = content.trim().split(EOL);
+    let result = adapterFunction(inputData, code.run);
+    if (result !== undefined) {
+        console.log(result);
+    }
+});";
 
-" + PostevaluationPlaceholder + @"
+        protected virtual string JsCodePostevaulationCode => string.Empty;
 
-var code = {
-    run: " + UserInputPlaceholder + @"
-};";
+        protected virtual string JsCodeTemplate =>
+            RequiredModules + @";" +
+            NodeDisablePlaceholder +
+            PreevaluationPlaceholder +
+            EvaluationPlaceholder +
+            PostevaluationPlaceholder;
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -185,9 +186,7 @@ var code = {
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
-                executionContext.Code.Trim(';'),
-                executionContext.TaskSkeletonAsString);
-
+                executionContext);
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
@@ -252,17 +251,18 @@ var code = {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        protected virtual string PreprocessJsSubmission(string template, string code, string problemSkeleton)
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)
         {
-
-                problemSkeleton = problemSkeleton ??
+            var problemSkeleton = context.TaskSkeletonAsString ??
                 "function adapter(input,code) {return code(input);}";
+            var code = context.Code.Trim(';');
 
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
                 .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
                 .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
                 .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
+                .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
                 .Replace(UserInputPlaceholder, code)
                 .Replace(AdapterFunctionPlaceholder, problemSkeleton);
 

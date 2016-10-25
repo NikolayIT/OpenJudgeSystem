@@ -7,7 +7,7 @@
         CSharpTestRunner = 10,
         NodeJsPreprocessExecuteAndCheck = 2,
         NodeJsPreprocessExecuteAndRunUnitTestsWithMocha = 11,
-        IoJsPreprocessExecuteAndRunJsDomUnitTests = 12,
+        NodeJsPreprocessExecuteAndRunJsDomUnitTests = 12,
         NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy = 19,
         NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha = 20,
         RemoteExecution = 3,

@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Newtonsoft.Json.Linq;
 
     public class JsonExecutionResult
     {
         private const string InvalidJsonReplace = "]}[},!^@,Invalid,!^@,{]{[";
 
-        public bool Passed { get; set; }
+        public IList<string> TestsErrors { get; set; }
 
         public string Error { get; set; }
 
@@ -22,17 +23,28 @@
         public static JsonExecutionResult Parse(string result, bool forceErrorExtracting = false, bool getTestIndexes = false)
         {
             JObject jsonTestResult = null;
-            var passed = false;
-            string error = null;
             var totalPasses = 0;
             var totalTests = 0;
-
+            var errors = new List<string>();
+            var error = string.Empty;
             try
             {
                 jsonTestResult = JObject.Parse(result.Trim().Replace("/*", InvalidJsonReplace).Replace("*/", InvalidJsonReplace));
                 totalPasses = (int)jsonTestResult["stats"]["passes"];
                 totalTests = (int)jsonTestResult["stats"]["tests"];
-                passed = totalPasses == 1;
+                var testsJs = (JArray)jsonTestResult["tests"];
+                for (int i = 0; i < testsJs.Count; i++)
+                {
+                    JToken token = jsonTestResult["tests"][i]["err"]["message"];
+                    if (token != null)
+                    {
+                        errors.Add((string)jsonTestResult["tests"][i]["err"]["message"]);
+                    }
+                    else
+                    {
+                        errors.Add(string.Empty);
+                    }
+                }
             }
             catch
             {
@@ -52,7 +64,7 @@
                 }
             }
 
-            if (!passed || forceErrorExtracting)
+            if (forceErrorExtracting)
             {
                 try
                 {
@@ -71,7 +83,7 @@
 
             return new JsonExecutionResult
             {
-                Passed = passed,
+                TestsErrors = errors,
                 Error = error,
                 PassingIndexes = testsIndexes,
                 TotalPasses = totalPasses,

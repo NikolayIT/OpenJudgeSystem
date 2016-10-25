@@ -3,15 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
+
     using Checkers;
-    using Common;
     using Executors;
     using Ionic.Zip;
     using OJS.Common;
     using OJS.Common.Extensions;
 
     public class NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy :
-        IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+        NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
     {
         protected const string AppJsFileName = "app.js";
         protected const string SubmissionFileName = "_$submission";
@@ -91,152 +92,71 @@
     streamJs = require('stream'),
     stream = new streamJs.PassThrough();";
 
-        protected string JsNodeDisableCode => @"
-DataView = undefined;
-DTRACE_NET_SERVER_CONNECTION = undefined;
-// DTRACE_NET_STREAM_END = undefined;
-DTRACE_NET_SOCKET_READ = undefined;
-DTRACE_NET_SOCKET_WRITE = undefined;
-DTRACE_HTTP_SERVER_REQUEST = undefined;
-DTRACE_HTTP_SERVER_RESPONSE = undefined;
-DTRACE_HTTP_CLIENT_REQUEST = undefined;
-DTRACE_HTTP_CLIENT_RESPONSE = undefined;
-COUNTER_NET_SERVER_CONNECTION = undefined;
-COUNTER_NET_SERVER_CONNECTION_CLOSE = undefined;
-COUNTER_HTTP_SERVER_REQUEST = undefined;
-COUNTER_HTTP_SERVER_RESPONSE = undefined;
-COUNTER_HTTP_CLIENT_REQUEST = undefined;
-COUNTER_HTTP_CLIENT_RESPONSE = undefined;
-process.argv = undefined;
-process.versions = undefined;
-process.env = { NODE_DEBUG: false };
-process.addListener = undefined;
-process.EventEmitter = undefined;
-process.mainModule = undefined;
-process.config = undefined;
-// process.on = undefined;
-process.openStdin = undefined;
-process.chdir = undefined;
-process.cwd = undefined;
-process.exit = undefined;
-process.umask = undefined;
-// GLOBAL = undefined;
-// root = undefined;
-// global = {};
-setInterval = undefined;
-// clearTimeout = undefined;
-clearInterval = undefined;
-setImmediate = undefined;
-clearImmediate = undefined;
-module = undefined;
-require = undefined;
-msg = undefined;
-
-delete DataView;
-delete DTRACE_NET_SERVER_CONNECTION;
-// delete DTRACE_NET_STREAM_END;
-delete DTRACE_NET_SOCKET_READ;
-delete DTRACE_NET_SOCKET_WRITE;
-delete DTRACE_HTTP_SERVER_REQUEST;
-delete DTRACE_HTTP_SERVER_RESPONSE;
-delete DTRACE_HTTP_CLIENT_REQUEST;
-delete DTRACE_HTTP_CLIENT_RESPONSE;
-delete COUNTER_NET_SERVER_CONNECTION;
-delete COUNTER_NET_SERVER_CONNECTION_CLOSE;
-delete COUNTER_HTTP_SERVER_REQUEST;
-delete COUNTER_HTTP_SERVER_RESPONSE;
-delete COUNTER_HTTP_CLIENT_REQUEST;
-delete COUNTER_HTTP_CLIENT_RESPONSE;
-delete process.argv;
-delete process.exit;
-delete process.versions;
-// delete GLOBAL;
-// delete root;
-delete setInterval;
-// delete clearTimeout;
-delete clearInterval;
-delete setImmediate;
-delete clearImmediate;
-delete module;
-delete require;
-delete msg;
-
-process.exit = function () {};";
-
         protected override string JsCodeTemplate =>
-            this.JsCodeRequiredModules +
-            this.JsCodePreevaulationCode +
-            this.JsCodeEvaluation +
-            this.JsCodePostevaulationCode;
+            RequiredModules + @";" +
+            PreevaluationPlaceholder +
+            EvaluationPlaceholder +
+            PostevaluationPlaceholder;
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
+let userBundleCode = '';
+stream.on('data', function (x) {
+    userBundleCode += x;
+});
+stream.on('end', function(){
+    afterBundling(userBundleCode);
+    run();
+});
+browserify(" + UserInputPlaceholder + @")
+    .transform('" + this.BabelifyModulePath + @"', { plugins: ['" + this.EcmaScriptImportPluginPath + @"']})
+    .bundle()
+    .pipe(stream);
 
-describe('TestDOMScope', function() {
-    before(function(done) {
-        jsdom.env({
-            html: '',
-            done: function(errors, window) {
-                global.window = window;
-                global.document = window.document;
-                global.$ = jq(window);
-                global.handlebars = handlebars;
-                Object.getOwnPropertyNames(window)
-                    .filter(function (prop) {
-                        return prop.toLowerCase().indexOf('html') >= 0;
-                    }).forEach(function (prop) {
-                        global[prop] = window[prop];
+function afterBundling() {
+    describe('TestDOMScope', function() {
+    let bgCoderConsole = {};
+        before(function(done) {" +
+            NodeDisablePlaceholder + @"
+            jsdom.env({
+                html: '',
+                done: function(errors, window) {
+                    global.window = window;
+                    global.document = window.document;
+                    global.$ = jq(window);
+                    global.handlebars = handlebars;
+                    Object.getOwnPropertyNames(window)
+                        .filter(function (prop) {
+                            return prop.toLowerCase().indexOf('html') >= 0;
+                        }).forEach(function (prop) {
+                            global[prop] = window[prop];
+                        });
+
+                    Object.keys(console)
+                        .forEach(function(prop) {
+                        bgCoderConsole[prop] = console[prop];
+                        console[prop] = new Function('');
                     });
-                done();
-            }
-        });
-    });
 
-	it('Test', function(done) {
-        this.timeout(30000);
-		var content = '';
-        var userBundleCode = '';
-            process.stdin.resume();
-            process.stdin.on('data', function (buf) {
-                content += buf.toString();
+                    done();
+                }
             });
-            process.stdin.on('end', function () {
-                stream.on('data', function (x) {
-                    userBundleCode += x;
-                });
-                stream.on('end', afterBundling);
-                browserify(" + UserInputPlaceholder + @")
-                    .transform('" + this.BabelifyModulePath + @"', { plugins: ['" + this.EcmaScriptImportPluginPath + @"']})
-                    .bundle()
-                    .pipe(stream);";
+        });
+
+        after(function()
+        {
+            Object.keys(bgCoderConsole)
+                .forEach(function(prop) {
+                console[prop] = bgCoderConsole[prop];
+            });
+        });";
 
         protected override string JsCodeEvaluation => @"
-        function afterBundling()
-        {
-            var bgCoderConsole = {};
-            Object.keys(console)
-                .forEach(function (prop) {
-                    bgCoderConsole[prop] = console[prop];
-                    console[prop] = new Function('');
-                });"
-
-            + this.JsNodeDisableCode + @"
-
-            var testCode = content.trim();
-            var testFunc = new Function(" + this.TestFuncVariables + @",'code', testCode);
-            var result = testFunc.call({}," + this.TestFuncVariables.Replace("'", string.Empty) + @", userBundleCode);
-
-            Object.keys(bgCoderConsole)
-                .forEach(function (prop) {
-                    console[prop] = bgCoderConsole[prop];
-                });
-            done();
-        }";
+            " + TestsPlaceholder;
 
         protected override string JsCodePostevaulationCode => @"
-        });
     });
-});";
+}";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -249,8 +169,8 @@ describe('TestDOMScope', function() {
             // Replace the placeholders in the JS Template with the real values
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
-                this.ProgramEntryPath,
-                executionContext.TaskSkeletonAsString);
+                executionContext,
+                this.ProgramEntryPath);
 
             // Save code to file
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
@@ -271,6 +191,30 @@ describe('TestDOMScope', function() {
             File.Delete(codeSavePath);
 
             return result;
+        }
+
+        protected override string BuildTests(IEnumerable<TestContext> tests)
+        {
+            var testsCode = string.Empty;
+            var testsCount = 1;
+            foreach (var test in tests)
+            {
+                var code = Regex.Replace(test.Input, "([\\\\\"'])", "\\$1");
+                code = Regex.Replace(code, "[\r\n\t]*", string.Empty);
+
+                testsCode += @"
+                it('Test" + testsCount++ + @"', function(done) {
+                    this.timeout(10000);
+            	    let content = '" + code + @"';
+
+                    let testFunc = new Function(" + this.TestFuncVariables + @",'code', content);
+                    testFunc.call({}," + this.TestFuncVariables.Replace("'", string.Empty) + @", userBundleCode);
+
+                    done();
+                });";
+            }
+
+            return testsCode;
         }
 
         protected virtual string CreateSubmissionFile(ExecutionContext executionContext)
@@ -338,6 +282,20 @@ describe('TestDOMScope', function() {
             }
 
             return this.ProcessModulePath("\"" + files[0] + "\"");
+        }
+
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)
+        {
+            var processedCode =
+                template.Replace(RequiredModules, this.JsCodeRequiredModules)
+                    .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
+                    .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
+                    .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
+                    .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
+                    .Replace(UserInputPlaceholder, pathToFile)
+                    .Replace(TestsPlaceholder, this.BuildTests(context.Tests));
+
+            return processedCode;
         }
     }
 }
