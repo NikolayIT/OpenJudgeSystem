@@ -284,8 +284,8 @@
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
-                case ExecutionStrategyType.IoJsPreprocessExecuteAndRunJsDomUnitTests:
-                    executionStrategy = new IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
+                case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunJsDomUnitTests:
+                    executionStrategy = new NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,

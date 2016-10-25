@@ -58,6 +58,7 @@
         [DefaultValue("Име")]
         public string Name { get; set; }
 
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public int ContestId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]

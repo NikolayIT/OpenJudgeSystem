@@ -8,9 +8,9 @@
 
     using OJS.Workers.Common;
 
-    public class IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
+    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
-        public IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
+        public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,

@@ -27,9 +27,9 @@
             }
 
             // this.SeedSubmissionsAndTestRuns(context);
+            this.SeedSubmissionTypes(context);
             this.SeedRoles(context);
             this.SeedCheckers(context);
-            this.SeedSubmissionTypes(context);
 
             // this.SeedContests(context);
             // this.SeedLongNews(context);
@@ -54,53 +54,53 @@
         protected void SeedCheckers(OjsDbContext context)
         {
             var checkers = new[]
-                               {
-                                   new Checker
-                                       {
-                                           Name = "Exact",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.ExactChecker",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Trim",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.TrimChecker",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Sort lines",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.SortChecker",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Case-insensitive",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Precision checker - 14",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                                           Parameter = "14",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Precision checker - 7",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                                           Parameter = "7",
-                                       },
-                                   new Checker
-                                       {
-                                           Name = "Precision checker - 3",
-                                           DllFile = "OJS.Workers.Checkers.dll",
-                                           ClassName = "OJS.Workers.Checkers.PrecisionChecker",
-                                           Parameter = "3",
-                                       }
-                               };
+            {
+                new Checker
+                    {
+                        Name = "Exact",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.ExactChecker",
+                    },
+                new Checker
+                    {
+                        Name = "Trim",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.TrimChecker",
+                    },
+                new Checker
+                    {
+                        Name = "Sort lines",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.SortChecker",
+                    },
+                new Checker
+                    {
+                        Name = "Case-insensitive",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.CaseInsensitiveChecker",
+                    },
+                new Checker
+                    {
+                        Name = "Precision checker - 14",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                        Parameter = "14",
+                    },
+                new Checker
+                    {
+                        Name = "Precision checker - 7",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                        Parameter = "7",
+                    },
+                new Checker
+                    {
+                        Name = "Precision checker - 3",
+                        DllFile = "OJS.Workers.Checkers.dll",
+                        ClassName = "OJS.Workers.Checkers.PrecisionChecker",
+                        Parameter = "3",
+                    }
+            };
             context.Checkers.AddOrUpdate(x => x.Name, checkers);
             context.SaveChanges();
         }

@@ -274,6 +274,7 @@
                 existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
                 existingProblem.OrderBy = problem.OrderBy;
                 existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
+                existingProblem.ContestId = problem.ContestId;
 
                 this.Data.SaveChanges();
 

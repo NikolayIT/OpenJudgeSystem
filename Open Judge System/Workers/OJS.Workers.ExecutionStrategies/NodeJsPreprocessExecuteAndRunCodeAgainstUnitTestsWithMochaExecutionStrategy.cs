@@ -14,7 +14,7 @@
     using OJS.Workers.Executors;
 
     public class NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy :
-        IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+        NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
     {
         public NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy(
             string nodeJsExecutablePath,

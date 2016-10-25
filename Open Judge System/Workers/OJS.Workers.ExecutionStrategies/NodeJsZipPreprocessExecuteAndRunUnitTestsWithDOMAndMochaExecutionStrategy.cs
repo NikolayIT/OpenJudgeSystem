@@ -12,7 +12,7 @@
     using OJS.Common.Extensions;
 
     public class NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy :
-        IoJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+        NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
     {
         protected const string AppJsFileName = "app.js";
         protected const string SubmissionFileName = "_$submission";
