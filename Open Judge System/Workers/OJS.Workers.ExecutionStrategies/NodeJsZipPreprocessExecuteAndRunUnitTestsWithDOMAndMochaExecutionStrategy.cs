@@ -133,22 +133,21 @@ function afterBundling() {
                         });
 
                     Object.keys(console)
-                        .forEach(function(prop) {
-                        bgCoderConsole[prop] = console[prop];
-                        console[prop] = new Function('');
-                    });
+                        .forEach(function (prop) {
+                            bgCoderConsole[prop] = console[prop];
+                            console[prop] = new Function('');
+                        });
 
                     done();
                 }
             });
         });
 
-        after(function()
-        {
+        after(function() {
             Object.keys(bgCoderConsole)
-                .forEach(function(prop) {
-                console[prop] = bgCoderConsole[prop];
-            });
+                .forEach(function (prop) {
+                    console[prop] = bgCoderConsole[prop];
+                });
         });";
 
         protected override string JsCodeEvaluation => @"
@@ -199,19 +198,18 @@ function afterBundling() {
             var testsCount = 1;
             foreach (var test in tests)
             {
-                var code = Regex.Replace(test.Input, "([\\\\\"'])", "\\$1");
-                code = Regex.Replace(code, "[\r\n\t]*", string.Empty);
+                var code = Regex.Replace(test.Input, "([\\\\`])", "\\$1");
 
-                testsCode += @"
-                it('Test" + testsCount++ + @"', function(done) {
+                testsCode += $@"
+                it('Test{testsCount++}', function(done) {{
                     this.timeout(10000);
-            	    let content = '" + code + @"';
+            	    let content = `{code}`;
 
-                    let testFunc = new Function(" + this.TestFuncVariables + @",'code', content);
-                    testFunc.call({}," + this.TestFuncVariables.Replace("'", string.Empty) + @", userBundleCode);
+                    let testFunc = new Function({this.TestFuncVariables},'code', content);
+                    testFunc.call({{}},{this.TestFuncVariables.Replace("'", string.Empty)}, userBundleCode);
 
                     done();
-                });";
+                }});";
             }
 
             return testsCode;

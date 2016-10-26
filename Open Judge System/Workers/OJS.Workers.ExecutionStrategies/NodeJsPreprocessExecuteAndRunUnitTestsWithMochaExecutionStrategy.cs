@@ -63,8 +63,8 @@ describe('TestScope', function() {
     after(function() {
         Object.keys(bgCoderConsole)
             .forEach(function (prop) {
-            console[prop] = bgCoderConsole[prop];
-        });
+                console[prop] = bgCoderConsole[prop];
+            });
     });";
 
         protected override string JsCodeEvaluation => @"

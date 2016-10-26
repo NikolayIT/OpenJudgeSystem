@@ -39,15 +39,10 @@
                 var testsJs = (JArray)jsonTestResult["tests"];
                 for (int i = 0; i < testsJs.Count; i++)
                 {
-                    JToken token = jsonTestResult["tests"][i]["err"]["message"];
-                    if (token != null)
-                    {
-                        errors.Add((string)jsonTestResult["tests"][i]["err"]["message"]);
-                    }
-                    else
-                    {
-                        errors.Add(string.Empty);
-                    }
+                    var token = jsonTestResult["tests"][i]["err"]["message"];
+                    var entry = token != null ? (string)token : string.Empty;
+                    errors.Add(entry);
+
                 }
             }
             catch

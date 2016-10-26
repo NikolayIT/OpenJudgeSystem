@@ -63,22 +63,21 @@ before(function(done)
             });
 
             Object.keys(console)
-                .forEach(function(prop) {
-                bgCoderConsole[prop] = console[prop];
-                console[prop] = new Function('');
-            });
+                .forEach(function (prop) {
+                    bgCoderConsole[prop] = console[prop];
+                    console[prop] = new Function('');
+                });
 
             done();
         }
     });
 });
 
-after(function()
-{
+after(function() {
     Object.keys(bgCoderConsole)
-        .forEach(function(prop) {
-        console[prop] = bgCoderConsole[prop];
-    });
+        .forEach(function (prop) {
+            console[prop] = bgCoderConsole[prop];
+        });
 });";
 
         protected override string JsCodeEvaluation => @"
@@ -133,22 +132,22 @@ after(function()
             var testsCode = problemTests[0].Input;
 
             // We set the state of the tested entity in a beforeEach hook to ensure the user doesnt manipulate the entity
-            testsCode += @"
+            testsCode += $@"
 let testsCount = 0;
-beforeEach(function(){
-    if(testsCount < " + testCountRoof + @") {
-        " + problemTests[1].Input + @"
-    }";
+beforeEach(function(){{
+    if(testsCount < {testCountRoof}) {{
+        {problemTests[1].Input}
+    }}";
 
             testCountRoof += numberOfUserTests;
             var beforeHookTests = problemTests.Skip(2).ToList();
 
             foreach (var test in beforeHookTests)
             {
-                testsCode += @"
-    else if(testsCount < " + testCountRoof + @") {
-        " + test.Input + @"
-    }";
+                testsCode += $@"
+    else if(testsCount < {testCountRoof}) {{
+        {test.Input}
+    }}";
                 testCountRoof += numberOfUserTests;
             }
 
@@ -159,10 +158,10 @@ beforeEach(function(){
             // Insert a copy of the user tests for each test file except the first zero test as it just checks the test count
             for (int i = 1; i <= problemTests.Count - 1; i++)
             {
-                testsCode += @"
-describe('JudgeTest" + i + @"', function(){
-" + UserInputPlaceholder + @"
-});";
+                testsCode += $@"
+describe('JudgeTest{i}', function(){{
+{UserInputPlaceholder}
+}});";
             }
 
             return testsCode;
@@ -171,11 +170,11 @@ describe('JudgeTest" + i + @"', function(){
         protected virtual string BuildPrerunTests(IEnumerable<TestContext> tests)
         {
             var testsCode = string.Empty;
-            testsCode += @"
-                " + tests.FirstOrDefault().Input + @"
-                describe('JudgeTest1', function(){ 
-                " + UserInputPlaceholder + @"
-                });";
+            testsCode += $@"
+                {tests.FirstOrDefault().Input}
+                describe('JudgeTest1', function(){{ 
+                    {UserInputPlaceholder}
+                }});";
 
             return testsCode;
         }
