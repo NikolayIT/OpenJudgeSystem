@@ -200,16 +200,16 @@ function afterBundling() {
             {
                 var code = Regex.Replace(test.Input, "([\\\\`])", "\\$1");
 
-                testsCode += @"
-                it('Test" + testsCount++ + @"', function(done) {
+                testsCode += $@"
+                it('Test{testsCount++}', function(done) {{
                     this.timeout(10000);
-            	    let content = `" + code + @"`;
+            	    let content = `{code}`;
 
-                    let testFunc = new Function(" + this.TestFuncVariables + @",'code', content);
-                    testFunc.call({}," + this.TestFuncVariables.Replace("'", string.Empty) + @", userBundleCode);
+                    let testFunc = new Function({this.TestFuncVariables},'code', content);
+                    testFunc.call({{}},{this.TestFuncVariables.Replace("'", string.Empty)}, userBundleCode);
 
                     done();
-                });";
+                }});";
             }
 
             return testsCode;

@@ -158,10 +158,10 @@ beforeEach(function(){{
             // Insert a copy of the user tests for each test file except the first zero test as it just checks the test count
             for (int i = 1; i <= problemTests.Count - 1; i++)
             {
-                testsCode += @"
-describe('JudgeTest" + i + @"', function(){
-" + UserInputPlaceholder + @"
-});";
+                testsCode += $@"
+describe('JudgeTest{i}', function(){{
+{UserInputPlaceholder}
+}});";
             }
 
             return testsCode;
@@ -173,7 +173,7 @@ describe('JudgeTest" + i + @"', function(){
             testsCode += $@"
                 {tests.FirstOrDefault().Input}
                 describe('JudgeTest1', function(){{ 
-                {UserInputPlaceholder}
+                    {UserInputPlaceholder}
                 }});";
 
             return testsCode;

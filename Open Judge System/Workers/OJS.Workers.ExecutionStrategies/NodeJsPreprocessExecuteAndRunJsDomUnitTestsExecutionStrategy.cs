@@ -128,19 +128,20 @@ describe('TestDOMScope', function() {
             {
                 var code = Regex.Replace(test.Input, "([\\\\`])", "\\$1");
 
-                testsCode += @"
-it('Test" + testsCount++ + @"', function(done) {
-    let content = `" + code + @"`;
+                testsCode +=
+                    $@"
+it('Test{testsCount++}', function(done) {{
+    let content = `{code}`;
     let inputData = content.trim();
-    let code = {
-        run: " + UserInputPlaceholder + @"
-    };
+    let code = {{
+        run: {UserInputPlaceholder}
+    }};
 
-    let testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
-    testFunc.call(code.run, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+    let testFunc = new Function({this.TestFuncVariables}, 'var result = this.valueOf();' + inputData);
+    testFunc.call(code.run, {this.TestFuncVariables.Replace("'", string.Empty)});
 
     done();
-});";
+}});";
             }
 
             return testsCode;
