@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -211,7 +210,7 @@ describe('JudgeTest{i}', function(){{
             var testCount = 0;
             var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
-            var correctSolutionTestPasses = mochaResult.TestsErrors.Take(numberOfUserTests).Count(x => x == string.Empty);
+            var correctSolutionTestPasses = mochaResult.TestsErrors.Take(numberOfUserTests).Count(x => x == null);
             var testOffset = numberOfUserTests;
             foreach (var test in executionContext.Tests)
             {
@@ -258,14 +257,14 @@ describe('JudgeTest{i}', function(){{
                 }
                 else
                 {
-                    var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == string.Empty);
+                    var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == null);
                     var message = "Test Passed!";
                     if (numberOfPasses >= correctSolutionTestPasses)
                     {
                         message = "No unit test covering this functionality!";
                         mochaResult.TestsErrors
                             .Take(numberOfUserTests)
-                            .Where(x => x != string.Empty)
+                            .Where(x => x != null)
                             .ForEach(x => message += x);
                     }
 
