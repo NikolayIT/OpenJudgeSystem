@@ -222,7 +222,7 @@ describe('JudgeTest{i}', function(){{
                         Regex.Match(
                             test.Input,
                             "<minTestCount>(\\d+)</minTestCount>").Groups[1].Value);
-                    var message = "Test Passed!";
+                    var message = "yes";
                     if (numberOfUserTests == 0)
                     {
                         message = "The submitted code was either incorrect or contained no tests!";
@@ -240,7 +240,7 @@ describe('JudgeTest{i}', function(){{
                 }
                 else if (testCount == 1)
                 {
-                    var message = "Test Passed!";
+                    var message = "yes";
                     if (numberOfUserTests == 0)
                     {
                         message = "The submitted code was either incorrect or contained no tests!";
@@ -259,7 +259,7 @@ describe('JudgeTest{i}', function(){{
                 else
                 {
                     var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == string.Empty);
-                    var message = "Test Passed!";
+                    var message = "yes";
                     if (numberOfPasses >= correctSolutionTestPasses)
                     {
                         message = "No unit test covering this functionality!";
