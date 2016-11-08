@@ -39,10 +39,10 @@
                 var testsJs = (JArray)jsonTestResult["tests"];
                 for (int i = 0; i < testsJs.Count; i++)
                 {
-                    var stack = jsonTestResult["tests"][i]["err"]["stack"];
-                    var token = (string)jsonTestResult["tests"][i]["err"]["message"] ?? string.Empty;
-                    var entry = stack != null ? token : null;
+                    var token = jsonTestResult["tests"][i]["err"]["message"];
+                    var entry = token != null ? (string)token : string.Empty;
                     errors.Add(entry);
+
                 }
             }
             catch
