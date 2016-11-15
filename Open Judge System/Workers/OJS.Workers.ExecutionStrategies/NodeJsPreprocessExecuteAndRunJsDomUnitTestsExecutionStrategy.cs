@@ -1,11 +1,10 @@
-﻿using OJS.Common.Extensions;
-
-namespace OJS.Workers.ExecutionStrategies
+﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
