@@ -275,12 +275,17 @@
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.HandlebarsModulePath,
+                        Settings.SinonJsDomModulePath,
                         Settings.SinonModulePath,
                         Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath,
                         Settings.BrowserifyModulePath,
                         Settings.BabelifyModulePath,
                         Settings.Es2015ImportPluginPath,
+                        Settings.BabelCliModulePath,
+                        Settings.ReactJsxPluginPath,
+                        Settings.ReactModulePath,
+                        Settings.ReactDomModulePath,
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
@@ -292,9 +297,14 @@
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.HandlebarsModulePath,
+                        Settings.SinonJsDomModulePath,
                         Settings.SinonModulePath,
                         Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath,
+                        Settings.BabelCliModulePath,
+                        Settings.ReactJsxPluginPath,
+                        Settings.ReactModulePath,
+                        Settings.ReactDomModulePath,
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
@@ -306,9 +316,14 @@
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.HandlebarsModulePath,
+                        Settings.SinonJsDomModulePath,
                         Settings.SinonModulePath,
                         Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath,
+                        Settings.BabelCliModulePath,
+                        Settings.ReactJsxPluginPath,
+                        Settings.ReactModulePath,
+                        Settings.ReactDomModulePath,
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;

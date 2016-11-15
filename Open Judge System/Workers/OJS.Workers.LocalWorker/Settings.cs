@@ -52,6 +52,14 @@
 
         public static string Es2015ImportPluginPath => GetSetting("ES2015ImportPluginPath");
 
+        public static string BabelCliModulePath => GetSetting("BabelCliModulePath");
+
+        public static string ReactJsxPluginPath => GetSetting("ReactJsxPluginPath");
+
+        public static string ReactModulePath => GetSetting("ReactModulePath");
+
+        public static string ReactDomModulePath => GetSetting("ReactDOMModulePath");
+
         public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 
         public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");

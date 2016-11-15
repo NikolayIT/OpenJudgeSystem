@@ -24,12 +24,17 @@
             string jsdomModulePath,
             string jqueryModulePath,
             string handlebarsModulePath,
+            string sinonJsDomModulePath,
             string sinonModulePath,
             string sinonChaiModulePath,
             string underscoreModulePath,
             string browserifyModulePath,
             string babelifyModulePath,
             string ecmaScriptImportPluginPath,
+            string babelCliModulePath,
+            string reactJsxPluginPath,
+            string reactModulePath,
+            string reactDomModulePath,
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(
@@ -39,9 +44,14 @@
                 jsdomModulePath,
                 jqueryModulePath,
                 handlebarsModulePath,
+                sinonJsDomModulePath,
                 sinonModulePath,
                 sinonChaiModulePath,
                 underscoreModulePath,
+                babelCliModulePath,
+                reactJsxPluginPath,
+                reactModulePath,
+                reactDomModulePath,
                 baseTimeUsed,
                 baseMemoryUsed)
         {
