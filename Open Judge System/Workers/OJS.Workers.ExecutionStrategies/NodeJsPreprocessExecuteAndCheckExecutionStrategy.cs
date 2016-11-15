@@ -253,10 +253,10 @@ process.stdin.on('end', function() {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context,IExecutor executor)
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, IExecutor executor)
         {
             var problemSkeleton = context.TaskSkeletonAsString ??
-                "function adapter(input,code) {return code(input);}";
+                "function adapter(input, code) { return code(input); }";
             var code = context.Code.Trim(';');
 
             var processedCode = template
