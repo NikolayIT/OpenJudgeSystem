@@ -253,7 +253,7 @@ it('Test{testsCount++}', function(done) {{
                 {
                     message = mochaResult.Error;
                 }
-                else if (!string.IsNullOrEmpty(mochaResult.TestsErrors[currentTest]))
+                else if (mochaResult.TestsErrors[currentTest] != null)
                 {
                     message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
                 }
