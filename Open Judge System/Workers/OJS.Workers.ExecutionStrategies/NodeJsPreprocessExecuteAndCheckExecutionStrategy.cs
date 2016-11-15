@@ -183,16 +183,18 @@ process.stdin.on('end', function() {
             // In NodeJS there is no compilation
             result.IsCompiledSuccessfully = true;
 
+            var executor = new RestrictedProcessExecutor();
+
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
-                executionContext);
+                executionContext,
+                executor);
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Process the submission and check each test
-            var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
@@ -251,10 +253,10 @@ process.stdin.on('end', function() {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, IExecutor executor)
         {
             var problemSkeleton = context.TaskSkeletonAsString ??
-                "function adapter(input,code) {return code(input);}";
+                "function adapter(input, code) { return code(input); }";
             var code = context.Code.Trim(';');
 
             var processedCode = template

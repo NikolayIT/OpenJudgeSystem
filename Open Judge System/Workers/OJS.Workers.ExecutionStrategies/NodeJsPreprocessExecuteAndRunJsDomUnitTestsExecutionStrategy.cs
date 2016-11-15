@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
@@ -15,9 +16,14 @@
             string jsdomModulePath,
             string jqueryModulePath,
             string handlebarsModulePath,
+            string sinonJsDomModulePath,
             string sinonModulePath,
             string sinonChaiModulePath,
             string underscoreModulePath,
+            string babelCliModulePath,
+            string reactJsxPluginPath,
+            string reactModulePath,
+            string reactDomModulePath,
             int baseTimeUsed,
             int baseMemoryUsed) // TODO: make this modular by getting requires from test
             : base(
@@ -43,6 +49,11 @@
                 throw new ArgumentException($"Handlebars not found in: {handlebarsModulePath}", nameof(handlebarsModulePath));
             }
 
+            if (!File.Exists(sinonJsDomModulePath))
+            {
+                throw new ArgumentException($"SinonPackaged not found in: {sinonJsDomModulePath}", nameof(sinonJsDomModulePath));
+            }
+
             if (!Directory.Exists(sinonModulePath))
             {
                 throw new ArgumentException($"Sinon not found in: {sinonModulePath}", nameof(sinonModulePath));
@@ -53,11 +64,36 @@
                 throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
             }
 
+            if (!File.Exists(babelCliModulePath))
+            {
+                throw new ArgumentException($"Babel-Cli not found in: {babelCliModulePath}", nameof(babelCliModulePath));
+            }
+
+            if (!Directory.Exists(reactJsxPluginPath))
+            {
+                throw new ArgumentException($"React JSX Plugin not found in: {reactJsxPluginPath}", nameof(reactJsxPluginPath));
+            }
+
+            if (!File.Exists(reactModulePath))
+            {
+                throw new ArgumentException($"React Module not found in: {reactModulePath}", nameof(reactModulePath));
+            }
+
+            if (!File.Exists(reactDomModulePath))
+            {
+                throw new ArgumentException($"ReactDOM Module not found in: {reactDomModulePath}", nameof(reactDomModulePath));
+            }
+
             this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
             this.JQueryModulePath = this.ProcessModulePath(jqueryModulePath);
             this.HandlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
+            this.SinonJsDomModulePath = this.ProcessModulePath(sinonJsDomModulePath);
             this.SinonModulePath = this.ProcessModulePath(sinonModulePath);
             this.SinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
+            this.BabelCliModulePath = this.ProcessModulePath(babelCliModulePath);
+            this.ReactJsxPluginPath = this.ProcessModulePath(reactJsxPluginPath);
+            this.ReactModulePath = this.ProcessModulePath(reactModulePath);
+            this.ReactDomModulePath = this.ProcessModulePath(reactDomModulePath);
         }
 
         protected string JsDomModulePath { get; }
@@ -68,17 +104,32 @@
 
         protected string SinonModulePath { get; }
 
+        protected string SinonJsDomModulePath { get; }
+
         protected string SinonChaiModulePath { get; }
+
+        protected string BabelCliModulePath { get; }
+
+        protected string ReactJsxPluginPath { get; }
+
+        protected string ReactModulePath { get; }
+
+        protected string ReactDomModulePath { get; }
 
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
     jsdom = require('" + this.JsDomModulePath + @"'),
     jq = require('" + this.JQueryModulePath + @"'),
+    fs = require('fs'),
+    sinonJsDom = fs.readFileSync('" + this.SinonJsDomModulePath + @"','utf-8'),
     sinon = require('" + this.SinonModulePath + @"'),
+    React = require('" + this.ReactModulePath + @"'),
+    ReactDOM = require('" + this.ReactDomModulePath + @"'),
     sinonChai = require('" + this.SinonChaiModulePath + @"'),
     handlebars = require('" + this.HandlebarsModulePath + @"')";
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
+fs = undefined;
 
 describe('TestDOMScope', function() {
     let bgCoderConsole = {};   
@@ -86,6 +137,7 @@ describe('TestDOMScope', function() {
     before(function(done) {
         jsdom.env({
             html: '',
+            src:[sinonJsDom],
             done: function(errors, window) {
                 global.window = window;
                 global.document = window.document;
@@ -107,6 +159,15 @@ describe('TestDOMScope', function() {
                 done();
             }
         });
+    });
+
+    beforeEach(function(){
+        global.server = window.sinon.fakeServer.create();
+        server.autoRespond = true;
+    });
+
+    afterEach(function(){
+        server.restore();
     });
 
     after(function() {
@@ -137,10 +198,30 @@ it('Test{testsCount++}', function(done) {{
         run: {UserInputPlaceholder}
     }};
 
-    let testFunc = new Function({this.TestFuncVariables}, 'var result = this.valueOf();' + inputData);
-    testFunc.call(code.run, {this.TestFuncVariables.Replace("'", string.Empty)});
+    let attachPromiseHandlers =(function attachPromiseHandlers(){{
+        let result = code.run;
+        return function(){{
+            let res = result.apply(this,arguments);
+            if(res === undefined){{
+                isAsyncChecker.isSynchonous = true;
+                return;
+            }}
+            else if(typeof(res.then) === 'function'){{
+                return $.when(res);
+            }}
+            else{{
+                isAsyncChecker.isSynchonous = true;
+                return res;
+            }}
+        }}
+    }})();
 
-    done();
+    let isAsyncChecker = {{isSynchonous:false}};
+    let testFunc = new Function('isAsyncChecker','result','done', {this.TestFuncVariables}, inputData);
+    testFunc.call({{}}, isAsyncChecker , attachPromiseHandlers,done,{this.TestFuncVariables.Replace("'", string.Empty)});
+    if(isAsyncChecker.isSynchonous){{
+        done();
+    }}
 }});";
             }
 
@@ -188,7 +269,7 @@ it('Test{testsCount++}', function(done) {{
             return testResults;
         }
 
-        protected override string PreprocessJsSubmission(string template, ExecutionContext context)
+        protected override string PreprocessJsSubmission(string template, ExecutionContext context, IExecutor executor)
         {
             var code = context.Code.Trim(';');
 
@@ -198,8 +279,25 @@ it('Test{testsCount++}', function(done) {{
                 .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
                 .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
                 .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
-                .Replace(TestsPlaceholder, this.BuildTests(context.Tests))
-                .Replace(UserInputPlaceholder, code);
+                .Replace(TestsPlaceholder, this.BuildTests(context.Tests));
+
+            var tempCode = FileHelpers.SaveStringToTempFile(code);
+            var arguments = new List<string>();
+            arguments.Add("\"" + this.BabelCliModulePath + "\"");
+            arguments.Add("\"" + tempCode + "\"");
+            arguments.Add("--plugins");
+            arguments.Add("\"" + this.ReactJsxPluginPath + "\"");
+
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                code,
+                context.TimeLimit + this.BaseTimeUsed,
+                context.MemoryLimit + this.BaseMemoryUsed,
+                arguments);
+
+            processExecutionResult.ReceivedOutput = processExecutionResult.ReceivedOutput.Trim(new[] { '\n', ';' });
+            processedCode = processedCode.Replace(UserInputPlaceholder, processExecutionResult.ReceivedOutput);
+            File.Delete(tempCode);
 
             return processedCode;
         }
