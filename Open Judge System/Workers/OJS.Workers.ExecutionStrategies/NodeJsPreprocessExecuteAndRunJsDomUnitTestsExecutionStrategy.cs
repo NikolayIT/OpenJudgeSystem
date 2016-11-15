@@ -130,7 +130,6 @@ namespace OJS.Workers.ExecutionStrategies
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
-fs = undefined;
 
 describe('TestDOMScope', function() {
     let bgCoderConsole = {};   
