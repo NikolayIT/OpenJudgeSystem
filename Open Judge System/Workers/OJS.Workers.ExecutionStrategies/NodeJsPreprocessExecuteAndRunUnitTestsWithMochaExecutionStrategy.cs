@@ -75,8 +75,8 @@ describe('TestScope', function() {
         process.stdin.on('end', function() {    
             let inputData = content.trim();
 
-	        let testFunc = new Function(" + this.TestFuncVariables + @", ""var result = this.valueOf();"" + inputData);
-            testFunc.call(result, " + this.TestFuncVariables.Replace("'", string.Empty) + @");
+	        let testFunc = new Function('result', " + this.TestFuncVariables + @", inputData);
+            testFunc.call({}, result,  " + this.TestFuncVariables.Replace("'", string.Empty) + @");
 
 	        done();
         });
