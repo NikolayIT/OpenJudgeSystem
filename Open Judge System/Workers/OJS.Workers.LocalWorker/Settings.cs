@@ -52,7 +52,7 @@
 
         public static string Es2015ImportPluginPath => GetSetting("ES2015ImportPluginPath");
 
-        public static string BabelCliModulePath => GetSetting("BabelCliModulePath");
+        public static string BabelCoreModulePath => GetSetting("BabelCoreModulePath");
 
         public static string ReactJsxPluginPath => GetSetting("ReactJsxPluginPath");
 

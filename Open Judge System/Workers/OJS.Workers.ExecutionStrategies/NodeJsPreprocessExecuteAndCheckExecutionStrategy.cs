@@ -74,7 +74,7 @@
 var EOL = require('os').EOL,
 _ = require('{this.UnderscoreModulePath}')";
 
-        protected string JsNodeDisableCode => @"
+        protected virtual string JsNodeDisableCode => @"
 DataView = undefined;
 DTRACE_NET_SERVER_CONNECTION = undefined;
 // DTRACE_NET_STREAM_END = undefined;
@@ -183,18 +183,16 @@ process.stdin.on('end', function() {
             // In NodeJS there is no compilation
             result.IsCompiledSuccessfully = true;
 
-            var executor = new RestrictedProcessExecutor();
-
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
-                executionContext,
-                executor);
+                executionContext);
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
 
             // Process the submission and check each test
+            var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
@@ -253,7 +251,7 @@ process.stdin.on('end', function() {
 
         protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
-        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, IExecutor executor)
+        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)
         {
             var problemSkeleton = context.TaskSkeletonAsString ??
                 "function adapter(input, code) { return code(input); }";
