@@ -6,7 +6,8 @@
     using System.Text.RegularExpressions;
     using OJS.Workers.Common;
 
-    public class NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy : NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+    public class NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy : 
+        NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
     {
         public NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy(
             string nodeJsExecutablePath,
@@ -26,17 +27,17 @@
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(
-            nodeJsExecutablePath,
-            mochaModulePath,
-            chaiModulePath,
-            jsdomModulePath,
-            jqueryModulePath,
-            handlebarsModulePath,
-            sinonModulePath,
-            sinonChaiModulePath,
-            underscoreModulePath,
-            baseTimeUsed,
-            baseMemoryUsed)
+                nodeJsExecutablePath,
+                mochaModulePath,
+                chaiModulePath,
+                jsdomModulePath,
+                jqueryModulePath,
+                handlebarsModulePath,
+                sinonModulePath,
+                sinonChaiModulePath,
+                underscoreModulePath,
+                baseTimeUsed,
+                baseMemoryUsed)
         {
             if (!File.Exists(sinonJsDomModulePath))
             {
