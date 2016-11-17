@@ -161,7 +161,7 @@ describe('TestDOMScope', function() {{
             var testsCount = 1;
             foreach (var test in tests)
             {
-                var code = Regex.Replace(test.Input, "([\\\\`])", "\\$1");
+                var code = Regex.Replace(test.Input, "([\\\\`$])", "\\$1");
 
                 testsCode +=
                     $@"
@@ -221,7 +221,7 @@ it('Test{testsCount++}', function(done) {{
         protected override string PreprocessJsSubmission(string template, ExecutionContext context)
         {
             var code = context.Code.Trim(';');
-            code = Regex.Replace(code, "([`])", "\\$1");
+            code = Regex.Replace(code, "([\\\\`$])", "\\$1");
 
             var processedCode = template
                 .Replace(RequiredModules, this.JsCodeRequiredModules)
