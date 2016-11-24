@@ -51,7 +51,7 @@
       <HintPath>..\..\packages\Lyare.SqlServerCe.MultiQuery.1.0.0\lib\net40\Lyare.SqlServerCe.MultiQuery.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral">
       <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
       <Private>True</Private>
     </Reference>
