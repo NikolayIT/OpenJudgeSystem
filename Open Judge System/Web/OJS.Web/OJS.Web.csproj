@@ -1622,6 +1622,7 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cosmo.min.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme-cyborg.css" />
@@ -1816,6 +1817,10 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
     <Content Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
     <Content Include="Areas\Contests\Views\ParticipantsAnswers\Details.cshtml" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\bgcoder.com.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
