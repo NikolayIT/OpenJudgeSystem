@@ -54,8 +54,8 @@
                                                   throw new Exception("Clipboard empty!");
                                               }
                                           },
-                                          "read from clipboard",
-                                          null), // Unit tested
+                                      "read from clipboard",
+                                      null), // Unit tested
                               };
 
             int tests = 0;

@@ -116,7 +116,7 @@
 
         public JsonResult Contests(string text)
         {
-           var contests = this.Data.Contests
+            var contests = this.Data.Contests
                 .All()
                 .Select(ContestViewModel.ViewModel);
 

@@ -266,7 +266,7 @@
                     .Select(gr => new
                     {
                         MaxPoints = gr.Max(pr => pr.Points),
-                         gr.Key.ParticipantId
+                        gr.Key.ParticipantId
                     })
                     .GroupBy(pr => pr.ParticipantId)
                     .Select(gr => gr.Sum(pr => pr.MaxPoints))
