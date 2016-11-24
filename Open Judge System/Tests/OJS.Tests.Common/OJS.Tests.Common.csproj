@@ -11,16 +11,7 @@
     <AssemblyName>OJS.Tests.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -138,7 +129,6 @@
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{93034417-0AAA-4E72-84EA-767DB4EF5283}"
 EndProject
@@ -49,13 +49,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxExecutorProofOfConcept", "Tools\SandboxExecutorProofOfConcept\SandboxExecutorProofOfConcept.csproj", "{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxTarget", "Tools\SandboxTarget\SandboxTarget.csproj", "{D51F7D60-421C-44B2-9422-2610066CB82D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{55BD5E6E-A6AB-41D9-99D9-3601077B2788}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Executors.Tests", "Tests\OJS.Workers.Executors.Tests\OJS.Workers.Executors.Tests.csproj", "{5054FE58-791D-41EA-9ED9-911788A7E631}"
 EndProject
