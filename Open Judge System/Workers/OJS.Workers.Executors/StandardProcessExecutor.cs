@@ -9,6 +9,7 @@
 
     using log4net;
 
+    using OJS.Common;
     using OJS.Workers.Common;
 
     // TODO: Implement memory constraints
@@ -115,7 +116,7 @@
                         process.Kill();
 
                         // Approach: https://msdn.microsoft.com/en-us/library/system.diagnostics.process.kill(v=vs.110).aspx#Anchor_2
-                        process.WaitForExit();
+                        process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
                     }
 
                     result.Type = ProcessExecutionResultType.TimeLimit;

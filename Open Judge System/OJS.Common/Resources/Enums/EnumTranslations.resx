@@ -120,14 +120,23 @@
   <data name="AuthorsSolution" xml:space="preserve">
     <value>Authors Solution</value>
   </data>
+  <data name="CSharpCompileDisassemble" xml:space="preserve">
+    <value>C# code</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
   <data name="DropDown" xml:space="preserve">
     <value>DropDown</value>
   </data>
+  <data name="JavaCompileDisassemble" xml:space="preserve">
+    <value>Java code</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>MultiLine TextBox</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Plain text</value>
   </data>
   <data name="ProblemDescription" xml:space="preserve">
     <value>Problem Description</value>

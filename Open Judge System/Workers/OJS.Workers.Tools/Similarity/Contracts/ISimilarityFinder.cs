@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Tools.Similarity
+﻿namespace OJS.Workers.Tools.Similarity.Contracts
 {
     public interface ISimilarityFinder
     {

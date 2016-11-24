@@ -135,6 +135,9 @@
   <data name="Ip_addresses" xml:space="preserve">
     <value>IP Адрес</value>
   </data>
+  <data name="No_similarities" xml:space="preserve">
+    <value>Няма прилики</value>
+  </data>
   <data name="Participant_id" xml:space="preserve">
     <value>Участник Id</value>
   </data>

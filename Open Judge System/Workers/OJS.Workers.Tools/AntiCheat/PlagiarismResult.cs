@@ -17,6 +17,6 @@
 
         public string SecondToCompare { get; set; }
 
-        public IEnumerable<Difference> Differences { get; set; }
+        public IReadOnlyCollection<Difference> Differences { get; set; }
     }
 }

@@ -4,6 +4,8 @@
     using System.Collections;
     using System.Text.RegularExpressions;
 
+    using OJS.Workers.Tools.Similarity.Contracts;
+
     /// <summary>
     /// This Class implements the Difference Algorithm published in
     /// "An O(ND) Difference Algorithm and its Variations" by Eugene Myers

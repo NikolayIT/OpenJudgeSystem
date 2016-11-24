@@ -9,11 +9,11 @@
             var arguments = new StringBuilder();
 
             // Output file argument
-            arguments.Append(string.Format("/out:\"{0}\"", outputFile));
+            arguments.Append($"/out:\"{outputFile}\"");
             arguments.Append(' ');
 
             // Input file argument
-            arguments.Append(string.Format("\"{0}\"", inputFile));
+            arguments.Append($"\"{inputFile}\"");
             arguments.Append(' ');
 
             // Additional compiler arguments

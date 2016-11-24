@@ -1501,6 +1501,7 @@
     <Compile Include="Areas\Administration\Providers\InfoManNewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\InfosNewsProvider.cs" />
     <Compile Include="Areas\Administration\ViewModels\AccessLogs\AccessLogGridViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\AntiCheatByIpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\IpSubmissionsAdministrationViewModel.cs" />
