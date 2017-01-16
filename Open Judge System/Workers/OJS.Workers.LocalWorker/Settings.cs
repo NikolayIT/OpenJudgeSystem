@@ -60,6 +60,10 @@
 
         public static string ReactDomModulePath => GetSetting("ReactDOMModulePath");
 
+        public static string BootstrapModulePath => GetSetting("BootstrapModulePath");
+
+        public static string BootstrapCssPath => GetSetting("BootstrapCssPath");
+
         public static string PythonExecutablePath => GetSetting("PythonExecutablePath");
 
         public static string PhpCgiExecutablePath => GetSetting("PhpCgiExecutablePath");

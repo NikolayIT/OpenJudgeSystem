@@ -11,6 +11,7 @@
         NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy = 19,
         NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMocha = 20,
         NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy = 21,
+        NodeJsZipExecuteHtmlAndCssStrategy = 22,
         RemoteExecution = 3,
         JavaPreprocessCompileExecuteAndCheck = 4,
         JavaZipFileCompileExecuteAndCheck = 8,

@@ -21,12 +21,12 @@
         {
             if (!File.Exists(mochaModulePath))
             {
-                throw new ArgumentException($"Mocha not found in: {mochaModulePath}", nameof(mochaModulePath));
+                throw new ArgumentException($@"Mocha not found in: {mochaModulePath}", nameof(mochaModulePath));
             }
 
             if (!Directory.Exists(chaiModulePath))
             {
-                throw new ArgumentException($"Chai not found in: {chaiModulePath}", nameof(chaiModulePath));
+                throw new ArgumentException($@"Chai not found in: {chaiModulePath}", nameof(chaiModulePath));
             }
 
             this.MochaModulePath = mochaModulePath;

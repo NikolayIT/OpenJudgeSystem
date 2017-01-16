@@ -48,21 +48,21 @@
             if (!Directory.Exists(browserifyModulePath))
             {
                 throw new ArgumentException(
-                    $"Browsrify not found in: {browserifyModulePath}",
+                    $@"Browsrify not found in: {browserifyModulePath}",
                     nameof(browserifyModulePath));
             }
 
             if (!Directory.Exists(babelifyModulePath))
             {
                 throw new ArgumentException(
-                    $"Babel not found in: {babelifyModulePath}",
+                    $@"Babel not found in: {babelifyModulePath}",
                     nameof(babelifyModulePath));
             }
 
             if (!Directory.Exists(ecmaScriptImportPluginPath))
             {
                 throw new ArgumentException(
-                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
+                    $@"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
                     nameof(ecmaScriptImportPluginPath));
             }
 
@@ -198,7 +198,7 @@ function afterBundling() {
             var testsCount = 1;
             foreach (var test in tests)
             {
-                var code = Regex.Replace(test.Input, "([\\\\`])", "\\$1");
+                var code = Regex.Replace(test.Input, "([\\\\`$])", "\\$1");
 
                 testsCode += $@"
                 it('Test{testsCount++}', function(done) {{
@@ -215,6 +215,7 @@ function afterBundling() {
             return testsCode;
         }
 
+        // TODO Extract methods to the Helper class
         protected virtual string CreateSubmissionFile(ExecutionContext executionContext)
         {
             var trimmedAllowedFileExtensions = executionContext.AllowedFileExtensions?.Trim();
@@ -270,12 +271,12 @@ function afterBundling() {
             var files = new List<string>(
                 Directory.GetFiles(
                     this.WorkingDirectory,
-                    "app.js",
+                    AppJsFileName,
                     SearchOption.AllDirectories));
             if (files.Count == 0)
             {
                 throw new ArgumentException(
-                    $"'{AppJsFileName}' file not found in output directory!",
+                    $@"'{AppJsFileName}' file not found in output directory!",
                     nameof(this.WorkingDirectory));
             }
 

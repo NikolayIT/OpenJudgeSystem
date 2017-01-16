@@ -21,6 +21,7 @@
 
         protected override void Seed(OjsDbContext context)
         {
+            this.SeedSubmissionTypes(context);
             if (context.Roles.Any())
             {
                 return;
@@ -28,7 +29,6 @@
 
             // this.SeedSubmissionsAndTestRuns(context);
 
-            this.SeedSubmissionTypes(context);
             this.SeedRoles(context);
             this.SeedCheckers(context);
 
@@ -108,12 +108,12 @@
 
         protected void SeedSubmissionTypes(OjsDbContext context)
         {
-            foreach (var entity in context.SubmissionTypes)
-            {
-                context.SubmissionTypes.Remove(entity);
-            }
+            //foreach (var entity in context.SubmissionTypes)
+            //{
+            //    context.SubmissionTypes.Remove(entity);
+            //}
 
-            context.SaveChanges();
+            //context.SaveChanges();
 
             var submissionTypes = new[]
             {
@@ -302,6 +302,18 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,
+                },
+                new SubmissionType
+                {
+                    Name = "HTML and CSS Zip File (DOM and Mocha)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "-R json",
+                    ExecutionStrategyType =
+                        ExecutionStrategyType
+                        .NodeJsZipExecuteHtmlAndCssStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
                 },
             };
 
