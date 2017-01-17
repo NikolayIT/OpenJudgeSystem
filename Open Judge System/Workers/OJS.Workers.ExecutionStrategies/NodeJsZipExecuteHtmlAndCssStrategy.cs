@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
+
     using Checkers;
     using Common;
     using Executors;
@@ -17,23 +18,23 @@
         protected const string SubmissionFileName = "_$submission";
 
         public NodeJsZipExecuteHtmlAndCssStrategy(
-           string nodeJsExecutablePath,
-           string mochaModulePath,
-           string chaiModulePath,
-           string jsdomModulePath,
-           string jqueryModulePath,
-           string underscoreModulePath,
-           string bootsrapModulePath,
-           string bootstrapCssPath,
-           int baseTimeUsed,
-           int baseMemoryUsed)
+            string nodeJsExecutablePath,
+            string mochaModulePath,
+            string chaiModulePath,
+            string jsdomModulePath,
+            string jqueryModulePath,
+            string underscoreModulePath,
+            string bootsrapModulePath,
+            string bootstrapCssPath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
             : base(
-                  nodeJsExecutablePath,
-                  mochaModulePath,
-                  chaiModulePath,
-                  underscoreModulePath,
-                  baseTimeUsed,
-                  baseMemoryUsed)
+                nodeJsExecutablePath,
+                mochaModulePath,
+                chaiModulePath,
+                underscoreModulePath,
+                baseTimeUsed,
+                baseMemoryUsed)
         {
             if (!Directory.Exists(jsdomModulePath))
             {
@@ -82,13 +83,13 @@
         protected override string JsNodeDisableCode => base.JsNodeDisableCode + @"
 fs = undefined;";
 
-        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
+        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + $@",
     fs = require('fs'),    
-    jsdom = require('" + this.JsDomModulePath + @"'),
-    jq = require('" + this.JQueryModulePath + @"'),
-    bootstrap = fs.readFileSync('" + this.BootstrapModulePath + @"','utf-8'),
-    bootstrapCss = fs.readFileSync('" + this.BootstrapCssPath + @"','utf-8'),
-    userCode = fs.readFileSync(" + UserInputPlaceholder + @",'utf-8')";
+    jsdom = require('{this.JsDomModulePath}'),
+    jq = require('{this.JQueryModulePath}'),
+    bootstrap = fs.readFileSync('{this.BootstrapModulePath}','utf-8'),
+    bootstrapCss = fs.readFileSync('{this.BootstrapCssPath}','utf-8'),
+    userCode = fs.readFileSync({UserInputPlaceholder},'utf-8')";
 
         protected override string JsCodeTemplate =>
             RequiredModules + @";" +
@@ -96,23 +97,23 @@ fs = undefined;";
             EvaluationPlaceholder +
             PostevaluationPlaceholder;
 
-        protected override string JsCodePreevaulationCode => @"
-describe('TestDOMScope', function() {
-    let bgCoderConsole = {};
-    before(function(done) {
-        jsdom.env({
+        protected override string JsCodePreevaulationCode => $@"
+describe('TestDOMScope', function() {{
+    let bgCoderConsole = {{}};
+    before(function(done) {{
+        jsdom.env({{
             html: userCode,
             src:[bootstrap],
-            done: function(errors, window) {
+            done: function(errors, window) {{
                 global.window = window;
                 global.document = window.document;
                 global.$ = global.jQuery = jq(window);
                 Object.getOwnPropertyNames(window)
-                    .filter(function (prop) {
+                    .filter(function (prop) {{
                         return prop.toLowerCase().indexOf('html') >= 0;
-                    }).forEach(function (prop) {
+                    }}).forEach(function (prop) {{
                         global[prop] = window[prop];
-                    });
+                    }});
 
                 let head = $(document.head);
                 let style = document.createElement('style');
@@ -121,36 +122,36 @@ describe('TestDOMScope', function() {
                 head.append(style);
 
                 let links = head.find('link');
-                links.each((index, el)=>{
+                links.each((index, el)=>{{
                     let style = document.createElement('style');
                     style.type = 'test/css';
-                    let path = '" + this.ProcessModulePath(this.WorkingDirectory) + "/" + @"' + el.href;
+                    let path = '{this.ProcessModulePath(this.WorkingDirectory)}/' + el.href;
                     let css = fs.readFileSync(path, 'utf-8');
                     style.innerHTML = css;
                     head.append(style);
-                });
+                }});
 
                 links.remove();    
 
                 Object.keys(console)
-                    .forEach(function (prop) {
+                    .forEach(function (prop) {{
                         bgCoderConsole[prop] = console[prop];
                         console[prop] = new Function('');
-                    });
+                    }});
 
-" + NodeDisablePlaceholder + @"
+{NodeDisablePlaceholder}
 
                 done();
-            }
-        });
-    });
+            }}
+        }});
+    }});
 
-    after(function() {
+    after(function() {{
         Object.keys(bgCoderConsole)
-            .forEach(function (prop) {
+            .forEach(function (prop) {{
                 console[prop] = bgCoderConsole[prop];
-            });
-    });";
+            }});
+    }});";
 
         protected override string JsCodeEvaluation => TestsPlaceholder;
 
