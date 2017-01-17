@@ -5,11 +5,12 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Checkers;
-    using Executors;
     using Ionic.Zip;
+
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Workers.Checkers;
+    using OJS.Workers.Executors;
 
     public class NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy :
         NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy

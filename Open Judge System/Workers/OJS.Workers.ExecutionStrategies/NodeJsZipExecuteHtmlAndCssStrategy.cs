@@ -6,6 +6,7 @@
     using System.Text.RegularExpressions;
 
     using Ionic.Zip;
+
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
@@ -38,22 +39,30 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}", nameof(jsdomModulePath));
+                throw new ArgumentException(
+                    $"jsDom not found in: {jsdomModulePath}",
+                    nameof(jsdomModulePath));
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}", nameof(jqueryModulePath));
+                throw new ArgumentException(
+                    $"jQuery not found in: {jqueryModulePath}",
+                    nameof(jqueryModulePath));
             }
 
             if (!File.Exists(bootsrapModulePath))
             {
-                throw new ArgumentException($"Bootstrap Module not found in: {bootsrapModulePath}", nameof(bootsrapModulePath));
+                throw new ArgumentException(
+                    $"Bootstrap Module not found in: {bootsrapModulePath}",
+                    nameof(bootsrapModulePath));
             }
 
             if (!File.Exists(bootstrapCssPath))
             {
-                throw new ArgumentException($"Bootstrap CSS not found in: {bootstrapCssPath}", nameof(bootstrapCssPath));
+                throw new ArgumentException(
+                    $"Bootstrap CSS not found in: {bootstrapCssPath}",
+                    nameof(bootstrapCssPath));
             }
 
             this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
@@ -302,7 +311,8 @@ describe('TestDOMScope', function() {{
             if (files.Count == 0)
             {
                 throw new ArgumentException(
-                    $"'{EntryFileName}' file not found in output directory!", nameof(EntryFileName));
+                    $"'{EntryFileName}' file not found in output directory!",
+                    nameof(EntryFileName));
             }
 
             return this.ProcessModulePath("\"" + files[0] + "\"");
