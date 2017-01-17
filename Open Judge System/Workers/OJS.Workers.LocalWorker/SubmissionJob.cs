@@ -331,6 +331,19 @@
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
+                case ExecutionStrategyType.NodeJsZipExecuteHtmlAndCssStrategy:
+                    executionStrategy = new NodeJsZipExecuteHtmlAndCssStrategy(
+                        Settings.NodeJsExecutablePath,
+                        Settings.MochaModulePath,
+                        Settings.ChaiModulePath,
+                        Settings.JsDomModulePath,
+                        Settings.JQueryModulePath,
+                        Settings.UnderscoreModulePath,
+                        Settings.BootstrapModulePath,
+                        Settings.BootstrapCssPath,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseMemoryUsedInBytes);
+                    break;
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);
                     break;

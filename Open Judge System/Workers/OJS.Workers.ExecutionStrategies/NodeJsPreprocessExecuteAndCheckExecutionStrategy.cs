@@ -30,7 +30,8 @@
             if (!File.Exists(nodeJsExecutablePath))
             {
                 throw new ArgumentException(
-                    $"NodeJS not found in: {nodeJsExecutablePath}", nameof(nodeJsExecutablePath));
+                    $"NodeJS not found in: {nodeJsExecutablePath}",
+                    nameof(nodeJsExecutablePath));
             }
 
             if (!Directory.Exists(underscoreModulePath))

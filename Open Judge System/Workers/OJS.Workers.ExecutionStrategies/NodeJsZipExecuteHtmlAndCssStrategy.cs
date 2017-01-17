@@ -10,88 +10,95 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
-    public class NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy :
-        NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+    public class NodeJsZipExecuteHtmlAndCssStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
-        protected const string AppJsFileName = "app.js";
+        protected const string EntryFileName = "*.html";
         protected const string SubmissionFileName = "_$submission";
 
-        public NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy(
+        public NodeJsZipExecuteHtmlAndCssStrategy(
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
             string jsdomModulePath,
             string jqueryModulePath,
-            string handlebarsModulePath,
-            string sinonModulePath,
-            string sinonChaiModulePath,
             string underscoreModulePath,
-            string browserifyModulePath,
-            string babelifyModulePath,
-            string ecmaScriptImportPluginPath,
+            string bootsrapModulePath,
+            string bootstrapCssPath,
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(
                 nodeJsExecutablePath,
                 mochaModulePath,
                 chaiModulePath,
-                jsdomModulePath,
-                jqueryModulePath,
-                handlebarsModulePath,
-                sinonModulePath,
-                sinonChaiModulePath,
                 underscoreModulePath,
                 baseTimeUsed,
                 baseMemoryUsed)
         {
-            if (!Directory.Exists(browserifyModulePath))
+            if (!Directory.Exists(jsdomModulePath))
             {
                 throw new ArgumentException(
-                    $"Browsrify not found in: {browserifyModulePath}",
-                    nameof(browserifyModulePath));
+                    $"jsDom not found in: {jsdomModulePath}",
+                    nameof(jsdomModulePath));
             }
 
-            if (!Directory.Exists(babelifyModulePath))
+            if (!Directory.Exists(jqueryModulePath))
             {
                 throw new ArgumentException(
-                    $"Babel not found in: {babelifyModulePath}",
-                    nameof(babelifyModulePath));
+                    $"jQuery not found in: {jqueryModulePath}",
+                    nameof(jqueryModulePath));
             }
 
-            if (!Directory.Exists(ecmaScriptImportPluginPath))
+            if (!File.Exists(bootsrapModulePath))
             {
                 throw new ArgumentException(
-                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
-                    nameof(ecmaScriptImportPluginPath));
+                    $"Bootstrap Module not found in: {bootsrapModulePath}",
+                    nameof(bootsrapModulePath));
             }
 
-            this.BrowserifyModulePath = this.ProcessModulePath(browserifyModulePath);
-            this.BabelifyModulePath = this.ProcessModulePath(babelifyModulePath);
-            this.EcmaScriptImportPluginPath = this.ProcessModulePath(ecmaScriptImportPluginPath);
+            if (!File.Exists(bootstrapCssPath))
+            {
+                throw new ArgumentException(
+                    $"Bootstrap CSS not found in: {bootstrapCssPath}",
+                    nameof(bootstrapCssPath));
+            }
+
+            this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
+            this.JQueryModulePath = this.ProcessModulePath(jqueryModulePath);
+            this.BootstrapModulePath = this.ProcessModulePath(bootsrapModulePath);
+            this.BootstrapCssPath = this.ProcessModulePath(bootstrapCssPath);
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
-        ~NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy()
+        ~NodeJsZipExecuteHtmlAndCssStrategy()
         {
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
-        protected string BrowserifyModulePath { get; }
+        protected string JsDomModulePath { get; }
 
-        protected string BabelifyModulePath { get; }
+        protected string JQueryModulePath { get; }
 
-        protected string EcmaScriptImportPluginPath { get; }
+        protected string BootstrapModulePath { get; }
+
+        protected string BootstrapCssPath { get; }
 
         protected string WorkingDirectory { get; set; }
 
         protected string ProgramEntryPath { get; set; }
 
-        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
-    browserify = require('" + this.BrowserifyModulePath + @"'),
-    streamJs = require('stream'),
-    stream = new streamJs.PassThrough();";
+        protected override string JsNodeDisableCode => base.JsNodeDisableCode + @"
+fs = undefined;";
+
+        protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + $@",
+    fs = require('fs'),    
+    jsdom = require('{this.JsDomModulePath}'),
+    jq = require('{this.JQueryModulePath}'),
+    bootstrap = fs.readFileSync('{this.BootstrapModulePath}','utf-8'),
+    bootstrapCss = fs.readFileSync('{this.BootstrapCssPath}','utf-8'),
+    userCode = fs.readFileSync({UserInputPlaceholder},'utf-8')";
 
         protected override string JsCodeTemplate =>
             RequiredModules + @";" +
@@ -99,101 +106,90 @@
             EvaluationPlaceholder +
             PostevaluationPlaceholder;
 
-        protected override string JsCodePreevaulationCode => @"
-chai.use(sinonChai);
-let userBundleCode = '';
-stream.on('data', function (x) {
-    userBundleCode += x;
-});
-stream.on('end', function(){
-    afterBundling(userBundleCode);
-    run();
-});
-browserify(" + UserInputPlaceholder + @")
-    .transform('" + this.BabelifyModulePath + @"', { plugins: ['" + this.EcmaScriptImportPluginPath + @"']})
-    .bundle()
-    .pipe(stream);
+        protected override string JsCodePreevaulationCode => $@"
+describe('TestDOMScope', function() {{
+    let bgCoderConsole = {{}};
+    before(function(done) {{
+        jsdom.env({{
+            html: userCode,
+            src:[bootstrap],
+            done: function(errors, window) {{
+                global.window = window;
+                global.document = window.document;
+                global.$ = global.jQuery = jq(window);
+                Object.getOwnPropertyNames(window)
+                    .filter(function (prop) {{
+                        return prop.toLowerCase().indexOf('html') >= 0;
+                    }}).forEach(function (prop) {{
+                        global[prop] = window[prop];
+                    }});
 
-function afterBundling() {
-    describe('TestDOMScope', function() {
-    let bgCoderConsole = {};
-        before(function(done) {" +
-            NodeDisablePlaceholder + @"
-            jsdom.env({
-                html: '',
-                done: function(errors, window) {
-                    global.window = window;
-                    global.document = window.document;
-                    global.$ = jq(window);
-                    global.handlebars = handlebars;
-                    Object.getOwnPropertyNames(window)
-                        .filter(function (prop) {
-                            return prop.toLowerCase().indexOf('html') >= 0;
-                        }).forEach(function (prop) {
-                            global[prop] = window[prop];
-                        });
+                let head = $(document.head);
+                let style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = bootstrapCss;
+                head.append(style);
 
-                    Object.keys(console)
-                        .forEach(function (prop) {
-                            bgCoderConsole[prop] = console[prop];
-                            console[prop] = new Function('');
-                        });
+                let links = head.find('link');
+                links.each((index, el)=>{{
+                    let style = document.createElement('style');
+                    style.type = 'test/css';
+                    let path = '{this.ProcessModulePath(this.WorkingDirectory)}/' + el.href;
+                    let css = fs.readFileSync(path, 'utf-8');
+                    style.innerHTML = css;
+                    head.append(style);
+                }});
 
-                    done();
-                }
-            });
-        });
+                links.remove();    
 
-        after(function() {
-            Object.keys(bgCoderConsole)
-                .forEach(function (prop) {
-                    console[prop] = bgCoderConsole[prop];
-                });
-        });";
+                Object.keys(console)
+                    .forEach(function (prop) {{
+                        bgCoderConsole[prop] = console[prop];
+                        console[prop] = new Function('');
+                    }});
 
-        protected override string JsCodeEvaluation => @"
-            " + TestsPlaceholder;
+{NodeDisablePlaceholder}
 
-        protected override string JsCodePostevaulationCode => @"
-    });
-}";
+                done();
+            }}
+        }});
+    }});
+
+    after(function() {{
+        Object.keys(bgCoderConsole)
+            .forEach(function (prop) {{
+                console[prop] = bgCoderConsole[prop];
+            }});
+    }});";
+
+        protected override string JsCodeEvaluation => TestsPlaceholder;
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult { IsCompiledSuccessfully = true };
-
-            // Copy and unzip the file (save file to WorkingDirectory)
             this.CreateSubmissionFile(executionContext);
             this.ProgramEntryPath = this.FindProgramEntryPath();
 
-            // Replace the placeholders in the JS Template with the real values
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
                 executionContext,
                 this.ProgramEntryPath);
 
-            // Save code to file
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
-
-            // Create a Restricted Process Executor
             var executor = new RestrictedProcessExecutor();
 
-            // Create a Checker using the information from the Execution Context
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            // Process tests 
             result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
-
-            // Clean up
             File.Delete(codeSavePath);
 
             return result;
         }
 
-        protected override string BuildTests(IEnumerable<TestContext> tests)
+        protected virtual string BuildTests(IEnumerable<TestContext> tests)
         {
             var testsCode = string.Empty;
             var testsCount = 1;
@@ -206,14 +202,52 @@ function afterBundling() {
                     this.timeout(10000);
             	    let content = `{code}`;
 
-                    let testFunc = new Function({this.TestFuncVariables},'code', content);
-                    testFunc.call({{}},{this.TestFuncVariables.Replace("'", string.Empty)}, userBundleCode);
+                    let testFunc = new Function({this.TestFuncVariables}, content);
+                    testFunc.call({{}},{this.TestFuncVariables.Replace("'", string.Empty)});
 
                     done();
                 }});";
             }
 
             return testsCode;
+        }
+
+        protected override List<TestResult> ProcessTests(
+          ExecutionContext executionContext,
+          IExecutor executor,
+          IChecker checker,
+          string codeSavePath)
+        {
+            var testResults = new List<TestResult>();
+            var arguments = new List<string>();
+            arguments.Add(this.MochaModulePath);
+            arguments.Add(codeSavePath);
+            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+            var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
+            var currentTest = 0;
+            foreach (var test in executionContext.Tests)
+            {
+                var message = "yes";
+                if (!string.IsNullOrEmpty(mochaResult.Error))
+                {
+                    message = mochaResult.Error;
+                }
+                else if (mochaResult.TestsErrors[currentTest] != null)
+                {
+                    message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
+                }
+
+                var testResult = this.ExecuteAndCheckTest(
+                    test,
+                    processExecutionResult,
+                    checker,
+                    message);
+                currentTest++;
+                testResults.Add(testResult);
+            }
+
+            return testResults;
         }
 
         // TODO Extract methods to the Helper class
@@ -272,13 +306,13 @@ function afterBundling() {
             var files = new List<string>(
                 Directory.GetFiles(
                     this.WorkingDirectory,
-                    AppJsFileName,
+                    EntryFileName,
                     SearchOption.AllDirectories));
             if (files.Count == 0)
             {
                 throw new ArgumentException(
-                    $"'{AppJsFileName}' file not found in output directory!",
-                    nameof(AppJsFileName));
+                    $"'{EntryFileName}' file not found in output directory!",
+                    nameof(EntryFileName));
             }
 
             return this.ProcessModulePath("\"" + files[0] + "\"");
