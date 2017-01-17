@@ -30,27 +30,27 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException($@"jsDom not found in: {jsdomModulePath}", nameof(jsdomModulePath));
+                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}");
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException($@"jQuery not found in: {jqueryModulePath}", nameof(jqueryModulePath));
+                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}");
             }
 
             if (!Directory.Exists(handlebarsModulePath))
             {
-                throw new ArgumentException($@"Handlebars not found in: {handlebarsModulePath}", nameof(handlebarsModulePath));
+                throw new ArgumentException($"Handlebars not found in: {handlebarsModulePath}");
             }
 
             if (!Directory.Exists(sinonModulePath))
             {
-                throw new ArgumentException($@"Sinon not found in: {sinonModulePath}", nameof(sinonModulePath));
+                throw new ArgumentException($"Sinon not found in: {sinonModulePath}");
             }
 
             if (!Directory.Exists(sinonChaiModulePath))
             {
-                throw new ArgumentException($@"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
+                throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}");
             }
 
             this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);

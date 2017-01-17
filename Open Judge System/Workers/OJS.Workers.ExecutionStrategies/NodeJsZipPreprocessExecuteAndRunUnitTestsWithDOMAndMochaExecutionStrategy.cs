@@ -48,22 +48,19 @@
             if (!Directory.Exists(browserifyModulePath))
             {
                 throw new ArgumentException(
-                    $@"Browsrify not found in: {browserifyModulePath}",
-                    nameof(browserifyModulePath));
+                    $"Browsrify not found in: {browserifyModulePath}");
             }
 
             if (!Directory.Exists(babelifyModulePath))
             {
                 throw new ArgumentException(
-                    $@"Babel not found in: {babelifyModulePath}",
-                    nameof(babelifyModulePath));
+                    $"Babel not found in: {babelifyModulePath}");
             }
 
             if (!Directory.Exists(ecmaScriptImportPluginPath))
             {
                 throw new ArgumentException(
-                    $@"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
-                    nameof(ecmaScriptImportPluginPath));
+                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}");
             }
 
             this.BrowserifyModulePath = this.ProcessModulePath(browserifyModulePath);

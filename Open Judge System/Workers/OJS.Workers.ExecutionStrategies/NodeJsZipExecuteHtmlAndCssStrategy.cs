@@ -38,22 +38,22 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException($@"jsDom not found in: {jsdomModulePath}", nameof(jsdomModulePath));
+                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}");
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException($@"jQuery not found in: {jqueryModulePath}", nameof(jqueryModulePath));
+                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}");
             }
 
             if (!File.Exists(bootsrapModulePath))
             {
-                throw new ArgumentException($@"Bootstrap Module not found in: {bootsrapModulePath}", nameof(bootsrapModulePath));
+                throw new ArgumentException($"Bootstrap Module not found in: {bootsrapModulePath}");
             }
 
             if (!File.Exists(bootstrapCssPath))
             {
-                throw new ArgumentException($@"Bootstrap CSS not found in: {bootstrapCssPath}", nameof(bootstrapCssPath));
+                throw new ArgumentException($"Bootstrap CSS not found in: {bootstrapCssPath}");
             }
 
             this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);

@@ -41,27 +41,27 @@
         {
             if (!File.Exists(sinonJsDomModulePath))
             {
-                throw new ArgumentException($@"SinonPackaged not found in: {sinonJsDomModulePath}", nameof(sinonJsDomModulePath));
+                throw new ArgumentException($"SinonPackaged not found in: {sinonJsDomModulePath}");
             }
 
             if (!Directory.Exists(babelCoreModulePath))
             {
-                throw new ArgumentException($@"Babel-Core not found in: {babelCoreModulePath}", nameof(babelCoreModulePath));
+                throw new ArgumentException($"Babel-Core not found in: {babelCoreModulePath}");
             }
 
             if (!Directory.Exists(reactJsxPluginPath))
             {
-                throw new ArgumentException($@"React JSX Plugin not found in: {reactJsxPluginPath}", nameof(reactJsxPluginPath));
+                throw new ArgumentException($"React JSX Plugin not found in: {reactJsxPluginPath}");
             }
 
             if (!File.Exists(reactModulePath))
             {
-                throw new ArgumentException($@"React Module not found in: {reactModulePath}", nameof(reactModulePath));
+                throw new ArgumentException($"React Module not found in: {reactModulePath}");
             }
 
             if (!File.Exists(reactDomModulePath))
             {
-                throw new ArgumentException($@"ReactDOM Module not found in: {reactDomModulePath}", nameof(reactDomModulePath));
+                throw new ArgumentException($"ReactDOM Module not found in: {reactDomModulePath}");
             }
 
             this.SinonJsDomModulePath = this.ProcessModulePath(sinonJsDomModulePath);
