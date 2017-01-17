@@ -30,13 +30,13 @@
             if (!File.Exists(nodeJsExecutablePath))
             {
                 throw new ArgumentException(
-                    $"NodeJS not found in: {nodeJsExecutablePath}");
+                    $"NodeJS not found in: {nodeJsExecutablePath}", nameof(nodeJsExecutablePath));
             }
 
             if (!Directory.Exists(underscoreModulePath))
             {
                 throw new ArgumentException(
-                    $"Underscore not found in: {underscoreModulePath}");
+                    $"Underscore not found in: {underscoreModulePath}", nameof(underscoreModulePath));
             }
 
             if (baseTimeUsed < 0)

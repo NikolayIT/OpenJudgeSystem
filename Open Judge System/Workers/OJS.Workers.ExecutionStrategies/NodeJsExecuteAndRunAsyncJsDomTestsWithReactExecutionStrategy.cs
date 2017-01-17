@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
+
     using OJS.Workers.Common;
 
     public class NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy : 
@@ -41,27 +42,27 @@
         {
             if (!File.Exists(sinonJsDomModulePath))
             {
-                throw new ArgumentException($"SinonPackaged not found in: {sinonJsDomModulePath}");
+                throw new ArgumentException($"SinonPackaged not found in: {sinonJsDomModulePath}", nameof(sinonJsDomModulePath));
             }
 
             if (!Directory.Exists(babelCoreModulePath))
             {
-                throw new ArgumentException($"Babel-Core not found in: {babelCoreModulePath}");
+                throw new ArgumentException($"Babel-Core not found in: {babelCoreModulePath}", nameof(babelCoreModulePath));
             }
 
             if (!Directory.Exists(reactJsxPluginPath))
             {
-                throw new ArgumentException($"React JSX Plugin not found in: {reactJsxPluginPath}");
+                throw new ArgumentException($"React JSX Plugin not found in: {reactJsxPluginPath}", nameof(reactJsxPluginPath));
             }
 
             if (!File.Exists(reactModulePath))
             {
-                throw new ArgumentException($"React Module not found in: {reactModulePath}");
+                throw new ArgumentException($"React Module not found in: {reactModulePath}", nameof(reactModulePath));
             }
 
             if (!File.Exists(reactDomModulePath))
             {
-                throw new ArgumentException($"ReactDOM Module not found in: {reactDomModulePath}");
+                throw new ArgumentException($"ReactDOM Module not found in: {reactDomModulePath}", nameof(reactDomModulePath));
             }
 
             this.SinonJsDomModulePath = this.ProcessModulePath(sinonJsDomModulePath);

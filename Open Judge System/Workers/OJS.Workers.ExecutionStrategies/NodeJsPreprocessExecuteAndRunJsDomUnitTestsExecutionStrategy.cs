@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
+
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
@@ -30,27 +31,27 @@
         {
             if (!Directory.Exists(jsdomModulePath))
             {
-                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}");
+                throw new ArgumentException($"jsDom not found in: {jsdomModulePath}", nameof(jsdomModulePath));
             }
 
             if (!Directory.Exists(jqueryModulePath))
             {
-                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}");
+                throw new ArgumentException($"jQuery not found in: {jqueryModulePath}", nameof(jqueryModulePath));
             }
 
             if (!Directory.Exists(handlebarsModulePath))
             {
-                throw new ArgumentException($"Handlebars not found in: {handlebarsModulePath}");
+                throw new ArgumentException($"Handlebars not found in: {handlebarsModulePath}", nameof(handlebarsModulePath));
             }
 
             if (!Directory.Exists(sinonModulePath))
             {
-                throw new ArgumentException($"Sinon not found in: {sinonModulePath}");
+                throw new ArgumentException($"Sinon not found in: {sinonModulePath}", nameof(sinonModulePath));
             }
 
             if (!Directory.Exists(sinonChaiModulePath))
             {
-                throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}");
+                throw new ArgumentException($"Sinon-chai not found in: {sinonChaiModulePath}", nameof(sinonChaiModulePath));
             }
 
             this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);

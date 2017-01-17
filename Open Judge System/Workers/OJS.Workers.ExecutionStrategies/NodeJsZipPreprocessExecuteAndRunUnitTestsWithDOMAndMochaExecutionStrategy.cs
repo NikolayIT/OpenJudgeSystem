@@ -48,19 +48,22 @@
             if (!Directory.Exists(browserifyModulePath))
             {
                 throw new ArgumentException(
-                    $"Browsrify not found in: {browserifyModulePath}");
+                    $"Browsrify not found in: {browserifyModulePath}",
+                    nameof(browserifyModulePath));
             }
 
             if (!Directory.Exists(babelifyModulePath))
             {
                 throw new ArgumentException(
-                    $"Babel not found in: {babelifyModulePath}");
+                    $"Babel not found in: {babelifyModulePath}",
+                    nameof(babelifyModulePath));
             }
 
             if (!Directory.Exists(ecmaScriptImportPluginPath))
             {
                 throw new ArgumentException(
-                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}");
+                    $"ECMAScript2015ImportPluginPath not found in: {ecmaScriptImportPluginPath}",
+                    nameof(ecmaScriptImportPluginPath));
             }
 
             this.BrowserifyModulePath = this.ProcessModulePath(browserifyModulePath);
@@ -273,8 +276,8 @@ function afterBundling() {
             if (files.Count == 0)
             {
                 throw new ArgumentException(
-                    $@"'{AppJsFileName}' file not found in output directory!",
-                    nameof(this.WorkingDirectory));
+                    $"'{AppJsFileName}' file not found in output directory!",
+                    nameof(AppJsFileName));
             }
 
             return this.ProcessModulePath("\"" + files[0] + "\"");
