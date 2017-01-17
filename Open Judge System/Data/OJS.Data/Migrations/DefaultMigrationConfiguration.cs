@@ -21,13 +21,14 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.SeedSubmissionTypes(context);
+            this.SeedSubmissionTypes(context);      
+            // this.SeedCopyOfSubmissionAndCreateTestRuns(context);
             if (context.Roles.Any())
             {
                 return;
             }
 
-            // this.SeedSubmissionsAndTestRuns(context);
+             // this.SeedSubmissionsAndTestRuns(context);
 
             this.SeedRoles(context);
             this.SeedCheckers(context);
@@ -41,6 +42,58 @@
         }
 
         //// TODO: Add seed with .Any()
+        protected void SeedCopyOfSubmissionAndCreateTestRuns(OjsDbContext context)
+        {
+            var problem = context.Problems.FirstOrDefault(p => !p.IsDeleted);
+            if (problem != null && problem.Submissions.Any(s => !s.IsDeleted))
+            {
+                var submission = problem.Submissions.FirstOrDefault(s => !s.IsDeleted);
+                for (int i = 0; i < 1000; i++)
+                {
+                    var newSubmission = new Submission()
+                    {
+                        
+                        Participant = submission.Participant,
+                        Problem = submission.Problem,
+                        SubmissionType = submission.SubmissionType,
+                        Content = submission.Content,
+                        FileExtension = submission.FileExtension,
+                        SolutionSkeleton = submission.SolutionSkeleton,
+                        IpAddress = submission.IpAddress,
+                        IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
+                        CompilerComment = submission.CompilerComment,
+                        Processed = true,
+                        Processing = false,
+                        ProcessingComment = submission.ProcessingComment,
+                        Points = submission.Points,
+                        IsDeleted = false,
+                        DeletedOn = null,
+                        CreatedOn = submission.CreatedOn,
+                        ModifiedOn = null,
+                    };
+                    foreach (var test in problem.Tests)
+                    {
+                        var testRun = new TestRun()
+                        {
+                            CheckerComment = null,
+                            ExpectedOutputFragment = null,
+                            UserOutputFragment = null,
+                            ExecutionComment = null,
+                            MemoryUsed = 0,
+                            ResultType = 0,
+                            TestId = test.Id,
+                            TimeUsed = 0,
+                        };
+                        newSubmission.TestRuns.Add(testRun);
+                    }
+
+                    context.Submissions.Add(newSubmission);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
 
         protected void SeedRoles(OjsDbContext context)
         {
@@ -303,18 +356,6 @@
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,
                 },
-                new SubmissionType
-                {
-                    Name = "HTML and CSS Zip File (DOM and Mocha)",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = "-R json",
-                    ExecutionStrategyType =
-                        ExecutionStrategyType
-                        .NodeJsZipExecuteHtmlAndCssStrategy,
-                    IsSelectedByDefault = false,
-                    AllowedFileExtensions = "zip",
-                    AllowBinaryFilesUpload = true,
-                },
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);
@@ -337,7 +378,7 @@
             {
                 context.Problems.Remove(problemToBeDeleted);
             }
-
+            
             var category = new ContestCategory
             {
                 Name = "Category",
@@ -507,11 +548,7 @@
                 OrderBy = 1
             };
 
-            var user = new UserProfile
-            {
-                UserName = "Ifaka",
-                Email = "Nekav@nekav.com"
-            };
+            var user = context.Users.FirstOrDefault();
 
             var participant = new Participant
             {
