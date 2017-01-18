@@ -9,7 +9,7 @@
     using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
-
+    using EntityFramework.Extensions;
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
@@ -638,16 +638,11 @@
 
             if (deleteOldFiles)
             {
-                var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
-                foreach (var test in tests)
+                var testsIds = problem.Tests.Select(t => t.Id).ToList();
+                foreach (var testId in testsIds)
                 {
-                    var testRuns = test.TestRuns.ToList();
-                    foreach (var testRun in testRuns)
-                    {
-                        this.Data.TestRuns.Delete(testRun);
-                    }
-
-                    this.Data.Tests.Delete(test.Id);
+                    this.Data.TestRuns.All().Where(tr => tr.TestId == testId).Delete();
+                    this.Data.Tests.Delete(testId);
                 }
 
                 problem.Tests = new HashSet<Test>();
