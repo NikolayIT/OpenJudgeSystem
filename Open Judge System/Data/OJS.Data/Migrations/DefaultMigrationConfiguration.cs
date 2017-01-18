@@ -94,7 +94,6 @@
             }
         }
 
-
         protected void SeedRoles(OjsDbContext context)
         {
             foreach (var entity in context.Roles)
@@ -356,6 +355,18 @@
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,
                 },
+                new SubmissionType
+                {
+                    Name = "HTML and CSS Zip File (DOM and Mocha)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "-R json",
+                    ExecutionStrategyType =
+                        ExecutionStrategyType
+                        .NodeJsZipExecuteHtmlAndCssStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);
@@ -378,7 +389,7 @@
             {
                 context.Problems.Remove(problemToBeDeleted);
             }
-            
+
             var category = new ContestCategory
             {
                 Name = "Category",
@@ -548,7 +559,11 @@
                 OrderBy = 1
             };
 
-            var user = context.Users.FirstOrDefault();
+            var user = new UserProfile
+            {
+                UserName = "Ifaka",
+                Email = "Nekav@nekav.com"
+            };
 
             var participant = new Participant
             {
