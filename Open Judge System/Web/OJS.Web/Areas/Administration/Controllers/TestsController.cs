@@ -9,7 +9,7 @@
     using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
-    using EntityFramework.Extensions;
+
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
@@ -641,7 +641,7 @@
                 var testsIds = problem.Tests.Select(t => t.Id).ToList();
                 foreach (var testId in testsIds)
                 {
-                    this.Data.TestRuns.All().Where(tr => tr.TestId == testId).Delete();
+                    this.Data.TestRuns.Delete(tr => tr.TestId == testId);
                     this.Data.Tests.Delete(testId);
                 }
 
