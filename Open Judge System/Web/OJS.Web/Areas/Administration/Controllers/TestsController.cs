@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -636,24 +637,12 @@
                 return this.RedirectToAction("Problem", new { id });
             }
 
-            if (deleteOldFiles)
-            {
-                var testsIds = problem.Tests.Select(t => t.Id).ToList();
-                foreach (var testId in testsIds)
-                {
-                    this.Data.TestRuns.Delete(tr => tr.TestId == testId);
-                    this.Data.Tests.Delete(testId);
-                }
-
-                problem.Tests = new HashSet<Test>();
-            }
-
+            TestsParseResult parsedTests;
+        
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
                 memory.Position = 0;
-
-                TestsParseResult parsedTests;
 
                 try
                 {
@@ -670,17 +659,28 @@
                     this.TempData.AddDangerMessage(Resource.Invalid_tests);
                     return this.RedirectToAction("Problem", new { id });
                 }
+            }
+
+            using (var dbContextTransaction = this.Data.Context.DbContext.Database.BeginTransaction())
+            {
+                if (deleteOldFiles)
+                {
+                    var testsIds = this.Data.Tests.All().Where(t => t.ProblemId == problem.Id).Select(t => t.Id).ToList();
+                    this.Data.TestRuns.Delete(tr => testsIds.Contains(tr.TestId));
+                    this.Data.Tests.Delete(t => testsIds.Contains(t.Id));
+                }
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
 
+                if (retestTask)
+                {
+                    this.RetestSubmissions(problem.Id);
+                }
+
                 this.Data.SaveChanges();
+                dbContextTransaction.Commit();
             }
-
-            if (retestTask)
-            {
-                this.RetestSubmissions(problem.Id);
-            }
-
+         
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });
