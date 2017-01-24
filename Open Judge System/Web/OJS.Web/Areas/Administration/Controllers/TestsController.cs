@@ -28,6 +28,7 @@
     using OJS.Web.Common.ZippedTestManipulator;
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
+    using TransactionScope = System.Transactions.TransactionScope;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -660,7 +661,7 @@
                 }
             }
 
-            using (var dbContextTransaction = this.Data.Context.DbContext.Database.BeginTransaction())
+            using (var scope = new TransactionScope())
             {
                 if (deleteOldFiles)
                 {
@@ -677,7 +678,7 @@
                 }
 
                 this.Data.SaveChanges();
-                dbContextTransaction.Commit();
+                scope.Complete();
             }
          
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
