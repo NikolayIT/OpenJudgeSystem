@@ -524,11 +524,10 @@
         }
 
         [HttpGet]
-        public JsonResult ByContest(int id)
+        public ContentResult ByContest(int id)
         {
             var result = this.GetData(id);
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
+            return this.LargeJson(result);
         }
 
         [HttpGet]
