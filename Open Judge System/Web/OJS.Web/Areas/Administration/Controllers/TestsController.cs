@@ -28,6 +28,7 @@
     using OJS.Web.Common.ZippedTestManipulator;
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
+    using TransactionScope = System.Transactions.TransactionScope;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -636,29 +637,12 @@
                 return this.RedirectToAction("Problem", new { id });
             }
 
-            if (deleteOldFiles)
-            {
-                var tests = problem.Tests.Select(t => new { t.Id, TestRuns = t.TestRuns.Select(tr => tr.Id) }).ToList();
-                foreach (var test in tests)
-                {
-                    var testRuns = test.TestRuns.ToList();
-                    foreach (var testRun in testRuns)
-                    {
-                        this.Data.TestRuns.Delete(testRun);
-                    }
-
-                    this.Data.Tests.Delete(test.Id);
-                }
-
-                problem.Tests = new HashSet<Test>();
-            }
-
+            TestsParseResult parsedTests;
+        
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
                 memory.Position = 0;
-
-                TestsParseResult parsedTests;
 
                 try
                 {
@@ -675,17 +659,28 @@
                     this.TempData.AddDangerMessage(Resource.Invalid_tests);
                     return this.RedirectToAction("Problem", new { id });
                 }
+            }
+
+            using (var scope = new TransactionScope())
+            {
+                if (deleteOldFiles)
+                {
+                    var testIds = this.Data.Tests.All().Where(t => t.ProblemId == problem.Id).Select(t => t.Id).ToList();
+                    this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
+                    this.Data.Tests.Delete(t => testIds.Contains(t.Id));
+                }
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
 
+                if (retestTask)
+                {
+                    this.RetestSubmissions(problem.Id);
+                }
+
                 this.Data.SaveChanges();
+                scope.Complete();
             }
-
-            if (retestTask)
-            {
-                this.RetestSubmissions(problem.Id);
-            }
-
+         
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });
