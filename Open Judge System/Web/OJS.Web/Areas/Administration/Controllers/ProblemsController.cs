@@ -524,7 +524,7 @@
         }
 
         [HttpGet]
-        public ContentResult ByContest(int id)
+        public ActionResult ByContest(int id)
         {
             var result = this.GetData(id);
             return this.LargeJson(result);
