@@ -17,6 +17,7 @@
     {
         protected const string EntryFileName = "*.html";
         protected const string SubmissionFileName = "_$submission";
+        protected const string UserBaseDirectoryPlaceholder = "#userBaseDirectoryPlaceholder#";
 
         public NodeJsZipExecuteHtmlAndCssStrategy(
             string nodeJsExecutablePath,
@@ -101,7 +102,7 @@ fs = undefined;";
     userCode = fs.readFileSync({UserInputPlaceholder},'utf-8')";
 
         protected override string JsCodeTemplate =>
-            RequiredModules + @";" +
+            RequiredModules + ";" +
             PreevaluationPlaceholder +
             EvaluationPlaceholder +
             PostevaluationPlaceholder;
@@ -134,7 +135,7 @@ describe('TestDOMScope', function() {{
                 links.each((index, el)=>{{
                     let style = document.createElement('style');
                     style.type = 'test/css';
-                    let path = '{this.ProcessModulePath(this.WorkingDirectory)}/' + el.href;
+                    let path = '{UserBaseDirectoryPlaceholder}/' + el.href;
                     let css = fs.readFileSync(path, 'utf-8');
                     style.innerHTML = css;
                     head.append(style);
@@ -320,6 +321,10 @@ describe('TestDOMScope', function() {{
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)
         {
+            var userBaseDirectory = this.FindProgramEntryPath();
+            userBaseDirectory = userBaseDirectory.Substring(1, userBaseDirectory.Length - 2);
+            userBaseDirectory = this.ProcessModulePath(Path.GetDirectoryName(userBaseDirectory));
+
             var processedCode =
                 template.Replace(RequiredModules, this.JsCodeRequiredModules)
                     .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
@@ -327,6 +332,7 @@ describe('TestDOMScope', function() {{
                     .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
                     .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
                     .Replace(UserInputPlaceholder, pathToFile)
+                    .Replace(UserBaseDirectoryPlaceholder, userBaseDirectory)
                     .Replace(TestsPlaceholder, this.BuildTests(context.Tests));
 
             return processedCode;
