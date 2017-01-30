@@ -666,8 +666,11 @@
                 if (deleteOldFiles)
                 {
                     var testIds = this.Data.Tests.All().Where(t => t.ProblemId == problem.Id).Select(t => t.Id).ToList();
-                    this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
-                    this.Data.Tests.Delete(t => testIds.Contains(t.Id));
+                    if (testIds.Any())
+                    {
+                        this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
+                        this.Data.Tests.Delete(t => testIds.Contains(t.Id));
+                    }
                 }
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
