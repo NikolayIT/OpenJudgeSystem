@@ -19,8 +19,8 @@
         columns.Bound(model => model.SubmissionTypeName);
         columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
         columns.Bound(model => model.Points);
-        columns.Bound(model => model.CreatedOn).Hidden();
-        columns.Bound(model => model.ModifiedOn).Hidden();
+        columns.Bound(model => model.CreatedOn).Filterable(x=>x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
+        columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
