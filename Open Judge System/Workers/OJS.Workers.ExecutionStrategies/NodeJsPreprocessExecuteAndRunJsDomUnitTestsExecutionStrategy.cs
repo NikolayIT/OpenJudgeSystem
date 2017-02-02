@@ -5,6 +5,7 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
@@ -64,11 +65,11 @@
                     nameof(sinonChaiModulePath));
             }
 
-            this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
-            this.JQueryModulePath = this.ProcessModulePath(jqueryModulePath);
-            this.HandlebarsModulePath = this.ProcessModulePath(handlebarsModulePath);
-            this.SinonModulePath = this.ProcessModulePath(sinonModulePath);
-            this.SinonChaiModulePath = this.ProcessModulePath(sinonChaiModulePath);
+            this.JsDomModulePath = FileHelpers.ProcessModulePath(jsdomModulePath);
+            this.JQueryModulePath = FileHelpers.ProcessModulePath(jqueryModulePath);
+            this.HandlebarsModulePath = FileHelpers.ProcessModulePath(handlebarsModulePath);
+            this.SinonModulePath = FileHelpers.ProcessModulePath(sinonModulePath);
+            this.SinonChaiModulePath = FileHelpers.ProcessModulePath(sinonChaiModulePath);
         }
 
         protected string JsDomModulePath { get; }

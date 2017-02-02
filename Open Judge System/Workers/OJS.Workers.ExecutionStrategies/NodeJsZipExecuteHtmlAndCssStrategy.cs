@@ -5,8 +5,6 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Ionic.Zip;
-
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
@@ -65,10 +63,10 @@
                     nameof(bootstrapCssPath));
             }
 
-            this.JsDomModulePath = this.ProcessModulePath(jsdomModulePath);
-            this.JQueryModulePath = this.ProcessModulePath(jqueryModulePath);
-            this.BootstrapModulePath = this.ProcessModulePath(bootsrapModulePath);
-            this.BootstrapCssPath = this.ProcessModulePath(bootstrapCssPath);
+            this.JsDomModulePath = FileHelpers.ProcessModulePath(jsdomModulePath);
+            this.JQueryModulePath = FileHelpers.ProcessModulePath(jqueryModulePath);
+            this.BootstrapModulePath = FileHelpers.ProcessModulePath(bootsrapModulePath);
+            this.BootstrapCssPath = FileHelpers.ProcessModulePath(bootstrapCssPath);
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
@@ -134,7 +132,7 @@ describe('TestDOMScope', function() {{
                 links.each((index, el)=>{{
                     let style = document.createElement('style');
                     style.type = 'test/css';
-                    let path = '{this.ProcessModulePath(this.WorkingDirectory)}/' + el.href;
+                    let path = '{FileHelpers.ProcessModulePath(this.WorkingDirectory)}/' + el.href;
                     let css = fs.readFileSync(path, 'utf-8');
                     style.innerHTML = css;
                     head.append(style);
@@ -168,7 +166,7 @@ describe('TestDOMScope', function() {{
         {
             var result = new ExecutionResult { IsCompiledSuccessfully = true };
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = this.FindProgramEntryPath();
+            this.ProgramEntryPath = FileHelpers.FindProgramEntryPath(this.WorkingDirectory, EntryFileName);
 
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
@@ -250,7 +248,6 @@ describe('TestDOMScope', function() {{
             return testResults;
         }
 
-        // TODO Extract methods to the Helper class
         protected virtual string CreateSubmissionFile(ExecutionContext executionContext)
         {
             var trimmedAllowedFileExtensions = executionContext.AllowedFileExtensions?.Trim();
@@ -270,52 +267,11 @@ describe('TestDOMScope', function() {{
         protected virtual string PrepareSubmissionFile(byte[] submissionFileContent)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
-
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
-
-            this.ConvertContentToZip(submissionFilePath);
-
-            this.UnzipFile(submissionFilePath, this.WorkingDirectory);
-
+            FileHelpers.ConvertContentToZip(submissionFilePath);
+            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            File.Delete(submissionFilePath);
             return submissionFilePath;
-        }
-
-        protected virtual void ConvertContentToZip(string submissionZipFilePath)
-        {
-            using (var zipFile = new ZipFile(submissionZipFilePath))
-            {
-                zipFile.Save();
-            }
-        }
-
-        protected virtual void UnzipFile(string fileToUnzip, string outputDirectory)
-        {
-            using (var zipFile = ZipFile.Read(fileToUnzip))
-            {
-                foreach (var entry in zipFile)
-                {
-                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
-
-            File.Delete(fileToUnzip);
-        }
-
-        protected virtual string FindProgramEntryPath()
-        {
-            var files = new List<string>(
-                Directory.GetFiles(
-                    this.WorkingDirectory,
-                    EntryFileName,
-                    SearchOption.AllDirectories));
-            if (files.Count == 0)
-            {
-                throw new ArgumentException(
-                    $"'{EntryFileName}' file not found in output directory!",
-                    nameof(EntryFileName));
-            }
-
-            return this.ProcessModulePath("\"" + files[0] + "\"");
         }
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)

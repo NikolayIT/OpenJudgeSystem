@@ -5,6 +5,7 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy :
@@ -75,11 +76,11 @@
                     nameof(reactDomModulePath));
             }
 
-            this.SinonJsDomModulePath = this.ProcessModulePath(sinonJsDomModulePath);
-            this.BabelCoreModulePath = this.ProcessModulePath(babelCoreModulePath);
-            this.ReactJsxPluginPath = this.ProcessModulePath(reactJsxPluginPath);
-            this.ReactModulePath = this.ProcessModulePath(reactModulePath);
-            this.ReactDomModulePath = this.ProcessModulePath(reactDomModulePath);
+            this.SinonJsDomModulePath = FileHelpers.ProcessModulePath(sinonJsDomModulePath);
+            this.BabelCoreModulePath = FileHelpers.ProcessModulePath(babelCoreModulePath);
+            this.ReactJsxPluginPath = FileHelpers.ProcessModulePath(reactJsxPluginPath);
+            this.ReactModulePath = FileHelpers.ProcessModulePath(reactModulePath);
+            this.ReactDomModulePath = FileHelpers.ProcessModulePath(reactDomModulePath);
         }
 
         protected string SinonJsDomModulePath { get; }
