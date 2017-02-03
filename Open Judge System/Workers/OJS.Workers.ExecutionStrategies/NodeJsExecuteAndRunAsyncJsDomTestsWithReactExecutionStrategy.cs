@@ -149,6 +149,7 @@ describe('TestDOMScope', function() {{
     }});
 
     beforeEach(function(){{
+        window.XMLHttpRequest = window.sinon.useFakeXMLHttpRequest();
         global.server = window.sinon.fakeServer.create();
         server.autoRespond = true;
     }});
