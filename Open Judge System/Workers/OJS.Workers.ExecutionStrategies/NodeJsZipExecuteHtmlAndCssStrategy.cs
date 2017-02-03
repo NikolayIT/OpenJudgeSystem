@@ -96,7 +96,7 @@ fs = undefined;";
     jq = require('{this.JQueryModulePath}'),
     bootstrap = fs.readFileSync('{this.BootstrapModulePath}','utf-8'),
     bootstrapCss = fs.readFileSync('{this.BootstrapCssPath}','utf-8'),
-    userCode = fs.readFileSync({UserInputPlaceholder},'utf-8')";
+    userCode = fs.readFileSync('{UserInputPlaceholder}','utf-8')";
 
         protected override string JsCodeTemplate =>
             RequiredModules + @";" +
@@ -166,7 +166,7 @@ describe('TestDOMScope', function() {{
         {
             var result = new ExecutionResult { IsCompiledSuccessfully = true };
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = FileHelpers.FindProgramEntryPath(this.WorkingDirectory, EntryFileName);
+            this.ProgramEntryPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, EntryFileName);
 
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,

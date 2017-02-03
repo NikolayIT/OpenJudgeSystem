@@ -42,7 +42,7 @@
             }
         }
 
-        public static string FindProgramEntryPath(string workingDirectory, string pattern)
+        public static string FindFirstFileMatchingPattern(string workingDirectory, string pattern)
         {
             var files = new List<string>(
                 Directory.GetFiles(
@@ -56,7 +56,7 @@
                     nameof(pattern));
             }
 
-            return ProcessModulePath("\"" + files[0] + "\"");
+            return ProcessModulePath(files[0]);
         }
 
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');

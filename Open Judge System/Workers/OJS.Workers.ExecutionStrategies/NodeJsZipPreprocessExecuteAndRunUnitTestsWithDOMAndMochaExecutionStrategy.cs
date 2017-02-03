@@ -107,7 +107,7 @@ stream.on('end', function(){
     afterBundling(userBundleCode);
     run();
 });
-browserify(" + UserInputPlaceholder + @")
+browserify('" + UserInputPlaceholder + @"')
     .transform('" + this.BabelifyModulePath + @"', { plugins: ['" + this.EcmaScriptImportPluginPath + @"']})
     .bundle()
     .pipe(stream);
@@ -162,7 +162,7 @@ function afterBundling() {
 
             // Copy and unzip the file (save file to WorkingDirectory)
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = FileHelpers.FindProgramEntryPath(this.WorkingDirectory, AppJsFileName);
+            this.ProgramEntryPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, AppJsFileName);
 
             // Replace the placeholders in the JS Template with the real values
             var codeToExecute = this.PreprocessJsSubmission(
