@@ -185,7 +185,7 @@
                         .Sum() / participant.Contest.Problems
                             .Where(p => !p.IsDeleted)
                             .Select(p => (double)p.MaximumPoints)
-                            .DefaultIfEmpty(0)
+                            .DefaultIfEmpty(1)
                             .Sum() * 100
                 })
                 .ToList();
