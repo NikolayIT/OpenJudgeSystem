@@ -62,14 +62,14 @@
                     nameof(reactJsxPluginPath));
             }
 
-            if (!File.Exists(reactModulePath))
+            if (!Directory.Exists(reactModulePath))
             {
                 throw new ArgumentException(
                     $"React Module not found in: {reactModulePath}",
                     nameof(reactModulePath));
             }
 
-            if (!File.Exists(reactDomModulePath))
+            if (!Directory.Exists(reactDomModulePath))
             {
                 throw new ArgumentException(
                     $"ReactDOM Module not found in: {reactDomModulePath}",
@@ -150,6 +150,7 @@ describe('TestDOMScope', function() {{
     }});
 
     beforeEach(function(){{
+        window.XMLHttpRequest = window.sinon.useFakeXMLHttpRequest();
         global.server = window.sinon.fakeServer.create();
         server.autoRespond = true;
     }});
