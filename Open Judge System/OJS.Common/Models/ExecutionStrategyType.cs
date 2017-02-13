@@ -25,5 +25,6 @@
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
         MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
+        CSharpUnitTestsRunnerExecutionStrategy = 23
     }
 }

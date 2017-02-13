@@ -18,6 +18,10 @@
 
         public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
+        public static string NUnitFrameworkFrameworkPath => GetSetting("NUnitFrameworkPath");
+
+        public static string NUnitConsoleRunnerPath => GetSetting("NUnitConsoleRunnerPath");
+
         public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
         public static string NuGetExecutablePath => GetSetting("NuGetExecutablePath");

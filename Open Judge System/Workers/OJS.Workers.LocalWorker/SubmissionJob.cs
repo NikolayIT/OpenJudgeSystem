@@ -241,6 +241,11 @@
                 case ExecutionStrategyType.CSharpTestRunner:
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CSharpUnitTestsRunnerExecutionStrategy:
+                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(
+                        Settings.NUnitFrameworkFrameworkPath,
+                        Settings.NUnitConsoleRunnerPath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
