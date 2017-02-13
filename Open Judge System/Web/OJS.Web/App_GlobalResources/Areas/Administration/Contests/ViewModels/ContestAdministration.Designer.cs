@@ -71,6 +71,15 @@ namespace Resources.Areas.Administration.Contests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category Name.
+        /// </summary>
+        public static string Category_name {
+            get {
+                return ResourceManager.GetString("Category_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The category is required!.
         /// </summary>
         public static string Category_required {

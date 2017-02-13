@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
@@ -34,7 +35,7 @@
             }
 
             this.MochaModulePath = mochaModulePath;
-            this.ChaiModulePath = this.ProcessModulePath(chaiModulePath);
+            this.ChaiModulePath = FileHelpers.ProcessModulePath(chaiModulePath);
         }
 
         protected string MochaModulePath { get; }
