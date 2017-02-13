@@ -278,7 +278,7 @@ describe('TestDOMScope', function() {{
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)
         {
             var userBaseDirectory = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, EntryFileName);
-            userBaseDirectory = this.ProcessModulePath(Path.GetDirectoryName(userBaseDirectory));
+            userBaseDirectory = FileHelpers.ProcessModulePath(Path.GetDirectoryName(userBaseDirectory));
 
             var processedCode =
                 template.Replace(RequiredModules, this.JsCodeRequiredModules)
