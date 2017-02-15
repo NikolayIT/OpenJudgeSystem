@@ -10,41 +10,29 @@
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
-    using Checkers;
+    using OJS.Workers.Checkers;
     using Common;
-    using Executors;
+    using OJS.Workers.Executors;
 
     public class CSharpUnitTestsRunnerExecutionStrategy : ExecutionStrategy
     {
         private const string ZippedSubmissionName = "Submission.zip";
         private const string TestedCode = "TestedCode.cs";
-        private const string CsFileExtenstionSearchPattern = "*.cs";
         private const string CsProjFileSearchPattern = "*.csproj";
         private const string ProjFileExtenstion = ".csproj";
         private const string DllFileExtension = ".dll";
-        private const string NUnitDirectivesTemplate = @"
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using TestContext = System.Object;
-using TestProperty = NUnit.Framework.PropertyAttribute;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using NUnit.Framework;
-";
 
-        public CSharpUnitTestsRunnerExecutionStrategy(string nUnitFrameworkPath, string nUnitConsoleRunnerPath)
+        public CSharpUnitTestsRunnerExecutionStrategy(string nUnitConsoleRunnerPath)
         {
-            this.NUnitFrameworkPath = nUnitFrameworkPath;
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+
         }
 
         ~CSharpUnitTestsRunnerExecutionStrategy()
         {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory);
+            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
-
-        protected string NUnitFrameworkPath { get; set; }
 
         protected string NUnitConsoleRunnerPath { get; set; }
 
@@ -67,7 +55,7 @@ using NUnit.Framework;
             // In order to run unit tests written for the MSTest framework via the NUnit framework we need to
             // switch the standard "using Microsoft.VisualStudio.TestTools.UnitTesting" directives to the NUnit ones 
             // reference: http://www.adamtuliper.com/2009/05/blog-post.html
-            this.SwitchUsingDirectivesInCsFiles();
+            // this.SwitchUsingDirectivesInCsFiles();
 
             // Edit References in Project file
             var project = new Project(csProjFilePath);
@@ -88,10 +76,12 @@ using NUnit.Framework;
             return result;
         }
 
-        private ExecutionResult RunUnitTests(ExecutionContext executionContext,  IExecutor executor, IChecker checker, ExecutionResult result, string csProjFilePath)
+        private ExecutionResult RunUnitTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, ExecutionResult result, string csProjFilePath)
         {
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
-
+            int originalTestsPassed = -1;
+            int count = 0;
+           
             foreach (var test in executionContext.Tests)
             {
                 // Copy the test input into a .cs file
@@ -101,6 +91,7 @@ using NUnit.Framework;
                 // Compile the project
                 var project = new Project(csProjFilePath);
                 var didCompile = project.Build();
+                project.ProjectCollection.UnloadAllProjects();
 
                 // If a test does not compile, set isCompiledSuccessfully to false and break execution
                 if (!didCompile)
@@ -122,106 +113,107 @@ using NUnit.Framework;
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
                     arguments);
-                TestResult testResult = this.EvaluateTestResults(
-                    test, 
-                    checker,
-                    processExecutionResult);
+
+                // Construct and figure out what the Test result is
+                TestResult testResult = new TestResult()
+                {
+                    Id = test.Id,
+                    TimeUsed = (int)processExecutionResult.TimeWorked.TotalMilliseconds,
+                    MemoryUsed = (int)processExecutionResult.MemoryUsed
+                };
+
+                switch (processExecutionResult.Type)
+                {
+                    case ProcessExecutionResultType.RunTimeError:
+                        testResult.ResultType = TestRunResultType.RunTimeError;
+                        testResult.ExecutionComment = processExecutionResult.ErrorOutput.MaxLength(2048); // Trimming long error texts
+                        break;
+                    case ProcessExecutionResultType.TimeLimit:
+                        testResult.ResultType = TestRunResultType.TimeLimit;
+                        break;
+                    case ProcessExecutionResultType.MemoryLimit:
+                        testResult.ResultType = TestRunResultType.MemoryLimit;
+                        break;
+                    case ProcessExecutionResultType.Success:
+                        int totalTests = 0;
+                        int passedTests = 0;
+                 
+                        this.ExtractTestResult(processExecutionResult.ReceivedOutput, ref passedTests, ref totalTests);
+                        string message = "Test Passed!";
+
+                        if (totalTests == 0)
+                        {
+                            message = "No tests found";
+                        }
+                        else if (passedTests == originalTestsPassed)
+                        {
+                            message = "No functionality covering this test!";
+                        }
+
+                        if (count == 0)
+                        {
+                            originalTestsPassed = passedTests;
+                            if (totalTests != passedTests)
+                            {
+                                message = "Not all tests passed on the correct solution.";
+                            }
+                        }
+
+                        var checkerResult = checker.Check(test.Input, message, test.Output, test.IsTrialTest);
+                        testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
+                        testResult.CheckerDetails = checkerResult.CheckerDetails;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
+                }
 
                 // Cleanup the .cs with the tested code to prepare for the next test
                 File.Delete(testedCodePath);
                 result.TestResults.Add(testResult);
+                count++;
             }
 
             return result;
         }
 
-        private TestResult EvaluateTestResults(TestContext test, IChecker checker, ProcessExecutionResult processExecutionResult)
+        private void ExtractTestResult(string receivedOutput, ref int passedTests, ref int totalTests)
         {
-            TestResult testResult = new TestResult()
-            {
-                Id = test.Id,
-                TimeUsed = (int)processExecutionResult.TimeWorked.TotalMilliseconds,
-                MemoryUsed = (int)processExecutionResult.MemoryUsed
-            };
-
-            if (processExecutionResult.Type == ProcessExecutionResultType.RunTimeError)
-            {
-                testResult.ResultType = TestRunResultType.RunTimeError;
-                testResult.ExecutionComment = processExecutionResult.ErrorOutput.MaxLength(2048); // Trimming long error texts
-            }
-            else if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit)
-            {
-                testResult.ResultType = TestRunResultType.TimeLimit;
-            }
-            else if (processExecutionResult.Type == ProcessExecutionResultType.MemoryLimit)
-            {
-                testResult.ResultType = TestRunResultType.MemoryLimit;
-            }
-            else if (processExecutionResult.Type == ProcessExecutionResultType.Success)
-            {
-                string receivedOutput = this.ProcessTestResults(processExecutionResult.ReceivedOutput);
-                var checkerResult = checker.Check(test.Input, receivedOutput, test.Output, test.IsTrialTest);
-                testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
-                testResult.CheckerDetails = checkerResult.CheckerDetails;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
-            }
-
-            return testResult;
-        }
-
-        private string ProcessTestResults(string receivedOutput)
-        {
-            Regex errorRegex =
-                new Regex(
-                    $@"\d+\)(.*){Environment.NewLine}((?:.|{Environment.NewLine})*?){Environment.NewLine}\s*at \w+(\.[^\.{Environment
-                        .NewLine}]*)*?\(\)");
             Regex testResultsRegex =
                 new Regex(
                     @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+");
             var res = testResultsRegex.Match(receivedOutput);
-            var errors = errorRegex.Matches(receivedOutput);
-            // var totalTests = res.Groups[1].Value; <---- is this really neccessary for UUT?
-            var passedTests = res.Groups[2].Value;
-            var failedTests = res.Groups[3].Value;
-            //List<string> results = new List<string> { $"PassedTests: {passedTests}; FailedTests: {failedTests}" };
-            //foreach (Match error in errors)
-            //{
-            //    var errorMethod = error.Groups[1].Value;
-            //    var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
-            //    results.Add($"{errorMethod} {cause}");
-            //}
-
-            return passedTests;
-        }
-
-        private void SwitchUsingDirectivesInCsFiles()
-        {
-            IEnumerable<string> csFilesPaths = Directory.EnumerateFiles(this.WorkingDirectory, CsFileExtenstionSearchPattern, SearchOption.AllDirectories);
-            foreach (var path in csFilesPaths)
-            {
-                string csFile = File.ReadAllText(path);
-                csFile = csFile.Replace("using Microsoft.VisualStudio.TestTools.UnitTesting;", NUnitDirectivesTemplate);
-                File.WriteAllText(path, csFile);
-            }
+            totalTests = int.Parse(res.Groups[1].Value);
+            passedTests = int.Parse(res.Groups[2].Value);
         }
 
         private void CorrectProjectReferences(Project project)
         {
+            // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
             if (projectReference != null)
             {
                 project.RemoveItem(projectReference);
             }
 
+            // Add a reference to tested code as a .cs file
             project.AddItem("Compile", TestedCode);
 
+            // Remove previous NUnit reference (the path is probably pointing to the users package folder)
+            var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
+            if (nUnitPrevReference != null)
+            {
+                project.RemoveItem(nUnitPrevReference);
+            }
+
+            // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
             Dictionary<string, string> nUnitMetaData = new Dictionary<string, string>();
-            nUnitMetaData.Add("HintPath", this.NUnitFrameworkPath);
-            nUnitMetaData.Add("Private", "False");
-            project.AddItem("Reference", "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL", nUnitMetaData);
+            nUnitMetaData.Add("Private", "True");
+            project.AddItem(
+                "Reference",
+                "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL",
+                nUnitMetaData);
+    
+            // If we use NUnit we don't really need the VSTT, it will save us copying of the .dll
             var vsTestFrameworkReference =
                 project.Items.FirstOrDefault(
                     x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
