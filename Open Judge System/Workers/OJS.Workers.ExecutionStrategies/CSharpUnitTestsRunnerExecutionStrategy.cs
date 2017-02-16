@@ -5,13 +5,12 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-
+    using Common;
     using Microsoft.Build.Evaluation;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
-    using Common;
     using OJS.Workers.Executors;
 
     public class CSharpUnitTestsRunnerExecutionStrategy : ExecutionStrategy
