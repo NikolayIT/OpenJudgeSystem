@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using Common;
+    using System.Text.RegularExpressions;   
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Executors;
+    using OJS.Workers.Common;
+    using OJS.Common.Extensions;
+    using OJS.Common.Models;
 
     public class CSharpUnitTestsRunnerExecutionStrategy : ExecutionStrategy
     {
