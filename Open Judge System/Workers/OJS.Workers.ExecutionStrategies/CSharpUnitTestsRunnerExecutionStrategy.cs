@@ -217,9 +217,9 @@
                 nUnitMetaData);
     
             // If we use NUnit we don't really need the VSTT, it will save us copying of the .dll
-            var vsTestFrameworkReference = project.Items.
-                FirstOrDefault(x => 
-                x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
+            var vsTestFrameworkReference = project.Items
+                .FirstOrDefault(x => 
+                    x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
 
             if (vsTestFrameworkReference != null)
             {
