@@ -319,9 +319,7 @@
                     Name = "C# Unit Tests Tester",
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = "--noresult --inprocess",
-                    ExecutionStrategyType = 
-                        ExecutionStrategyType.
-                        CSharpUnitTestsRunnerExecutionStrategy,
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsRunnerExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,

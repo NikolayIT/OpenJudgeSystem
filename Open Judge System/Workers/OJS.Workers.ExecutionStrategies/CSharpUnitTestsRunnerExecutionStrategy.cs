@@ -26,7 +26,6 @@
         {
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
-
         }
 
         ~CSharpUnitTestsRunnerExecutionStrategy()
@@ -52,11 +51,6 @@
                 this.WorkingDirectory,
                 CsProjFileSearchPattern);
 
-            // In order to run unit tests written for the MSTest framework via the NUnit framework we need to
-            // switch the standard "using Microsoft.VisualStudio.TestTools.UnitTesting" directives to the NUnit ones 
-            // reference: http://www.adamtuliper.com/2009/05/blog-post.html
-            // this.SwitchUsingDirectivesInCsFiles();
-
             // Edit References in Project file
             var project = new Project(csProjFilePath);
             this.CorrectProjectReferences(project);
@@ -76,7 +70,12 @@
             return result;
         }
 
-        private ExecutionResult RunUnitTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, ExecutionResult result, string csProjFilePath)
+        private ExecutionResult RunUnitTests(
+            ExecutionContext executionContext, 
+            IExecutor executor,
+            IChecker checker,
+            ExecutionResult result, 
+            string csProjFilePath)
         {
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
             int originalTestsPassed = -1;
@@ -139,7 +138,7 @@
                         int passedTests = 0;
                  
                         this.ExtractTestResult(processExecutionResult.ReceivedOutput, ref passedTests, ref totalTests);
-                        string message = "Test Passed!";
+                        var message = "Test Passed!";
 
                         if (totalTests == 0)
                         {
@@ -160,11 +159,15 @@
                         }
 
                         var checkerResult = checker.Check(test.Input, message, test.Output, test.IsTrialTest);
-                        testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
+                        testResult.ResultType = checkerResult.IsCorrect 
+                            ? TestRunResultType.CorrectAnswer 
+                            : TestRunResultType.WrongAnswer;
                         testResult.CheckerDetails = checkerResult.CheckerDetails;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
+                        throw new ArgumentOutOfRangeException(
+                            nameof(processExecutionResult), 
+                            @"Invalid ProcessExecutionResultType value.");
                 }
 
                 // Cleanup the .cs with the tested code to prepare for the next test
@@ -206,7 +209,7 @@
             }
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            Dictionary<string, string> nUnitMetaData = new Dictionary<string, string>();
+            var nUnitMetaData = new Dictionary<string, string>();
             nUnitMetaData.Add("Private", "True");
             project.AddItem(
                 "Reference",
@@ -214,9 +217,10 @@
                 nUnitMetaData);
     
             // If we use NUnit we don't really need the VSTT, it will save us copying of the .dll
-            var vsTestFrameworkReference =
-                project.Items.FirstOrDefault(
-                    x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
+            var vsTestFrameworkReference = project.Items.
+                FirstOrDefault(x => 
+                x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
+
             if (vsTestFrameworkReference != null)
             {
                 project.RemoveItem(vsTestFrameworkReference);
