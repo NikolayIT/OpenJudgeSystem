@@ -111,7 +111,7 @@
                 CreateNoWindow = true,
                 ErrorDialog = false,
                 FileName = "cmd",
-                Arguments = "/c NET START \"OJS Local Worker Service\""
+                Arguments = @"/c SCHTASKS.EXE /RUN /TN JudgeTasks\RestartService"
             };
 
             using (var cmdProcess = Process.Start(processStartInfo))
