@@ -161,7 +161,7 @@ let adapterFunction = " + AdapterFunctionPlaceholder;
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
-    let inputData = content.trim().split(EOL);
+    let inputData = content.split(EOL);
     let result = adapterFunction(inputData, code.run);
     if (result !== undefined) {
         console.log(result);
