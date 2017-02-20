@@ -313,6 +313,16 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
+                new SubmissionType
+                {
+                    Name = "C# Unit Tests Tester",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsRunnerExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                }
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);
