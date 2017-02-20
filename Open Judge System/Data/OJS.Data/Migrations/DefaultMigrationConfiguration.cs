@@ -322,6 +322,16 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "C# Project Tests",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
                 }
             };
 

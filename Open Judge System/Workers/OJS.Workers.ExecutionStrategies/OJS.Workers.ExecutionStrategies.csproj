@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckOnlyExecutionStrategy.cs" />
+    <Compile Include="CSharpProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpTestRunnerExecutionStrategy.cs" />
     <Compile Include="CSharpUnitTestsRunnerExecutionStrategy.cs" />
     <Compile Include="DoNothingExecutionStrategy.cs" />
