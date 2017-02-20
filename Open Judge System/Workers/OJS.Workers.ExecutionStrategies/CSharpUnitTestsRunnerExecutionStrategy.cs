@@ -7,12 +7,12 @@
     using System.Text.RegularExpressions;   
     using Microsoft.Build.Evaluation;
 
-    using OJS.Workers.Checkers;
-    using OJS.Workers.Executors;
-    using OJS.Workers.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
-
+    using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
+    using OJS.Workers.Executors;
+   
     public class CSharpUnitTestsRunnerExecutionStrategy : ExecutionStrategy
     {
         private const string ZippedSubmissionName = "Submission.zip";
@@ -46,17 +46,15 @@
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            string csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
+            var csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
                 this.WorkingDirectory,
                 CsProjFileSearchPattern);
 
-            // Edit References in Project file
             var project = new Project(csProjFilePath);
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
 
-            // Initially set isCompiledSucessfully to true
             result.IsCompiledSuccessfully = true;
 
             var executor = new RestrictedProcessExecutor();
@@ -113,7 +111,7 @@
                     arguments);
 
                 // Construct and figure out what the Test result is
-                TestResult testResult = new TestResult()
+                var testResult = new TestResult()
                 {
                     Id = test.Id,
                     TimeUsed = (int)processExecutionResult.TimeWorked.TotalMilliseconds,
@@ -180,7 +178,7 @@
 
         private void ExtractTestResult(string receivedOutput, ref int passedTests, ref int totalTests)
         {
-            Regex testResultsRegex =
+            var testResultsRegex =
                 new Regex(
                     @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+");
             var res = testResultsRegex.Match(receivedOutput);
