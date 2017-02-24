@@ -21,6 +21,7 @@
 
         protected override void Seed(OjsDbContext context)
         {
+            this.SeedSubmissionTypes(context);
             if (context.Roles.Any())
             {
                 return;
@@ -329,6 +330,16 @@
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = "--noresult --inprocess",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "Java Project Tests",
+                    CompilerType = CompilerType.JavaZip,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.JavaProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,

@@ -26,6 +26,7 @@
         MySqlRunQueriesAndCheckDatabase = 17,
         MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
         CSharpUnitTestsRunnerExecutionStrategy = 23,
-        CSharpProjectTestsExecutionStrategy = 24
+        CSharpProjectTestsExecutionStrategy = 24,
+        JavaProjectTestsExecutionStrategy = 25
     }
 }

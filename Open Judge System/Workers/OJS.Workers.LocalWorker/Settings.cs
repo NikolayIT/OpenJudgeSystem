@@ -28,6 +28,8 @@
 
         public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 
+        public static string JavaLibsPath => GetSetting("JavaLibsPath");
+
         public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
 
         public static string MochaModulePath => GetSetting("MochaModulePath");

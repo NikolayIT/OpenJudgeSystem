@@ -257,6 +257,12 @@
                         Settings.JavaExecutablePath,
                         GetCompilerPath);
                     break;
+                case ExecutionStrategyType.JavaProjectTestsExecutionStrategy:
+                    executionStrategy = new JavaProjectTestsExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        GetCompilerPath,
+                        Settings.JavaLibsPath);
+                    break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
                         Settings.NodeJsExecutablePath,

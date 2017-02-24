@@ -55,12 +55,14 @@
             // Input files arguments
             var filesToCompile =
                 Directory.GetFiles(this.workingDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
+ 
             for (var i = 0; i < filesToCompile.Length; i++)
             {
                 arguments.Append($"\"{filesToCompile[i]}\"");
                 arguments.Append(' ');
             }
 
+            File.WriteAllText("E:\\javaout.txt", string.Join(", ", arguments));
             return arguments.ToString();
         }
 
