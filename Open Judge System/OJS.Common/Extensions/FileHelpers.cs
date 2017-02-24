@@ -72,15 +72,6 @@
             }
         }
 
-        public static void AddFileToZipArchive(string archivePath, string pathInArchive, string filePath)
-        {
-            using (var zipFile = new ZipFile(archivePath))
-            {
-                zipFile.AddFile(filePath, pathInArchive);
-                zipFile.Save();
-            }
-        }
-
         public static IEnumerable<string> GetFilePathsFromZip(string archivePath)
         {
             using (ZipFile file = new ZipFile(archivePath))

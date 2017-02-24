@@ -76,7 +76,12 @@
             return result;
         }
 
-        private ExecutionResult RunUnitTests(ExecutionContext executionContext, IExecutor executor, IChecker checker, ExecutionResult result, string csProjFilePath)
+        private ExecutionResult RunUnitTests(
+            ExecutionContext executionContext,
+            IExecutor executor,
+            IChecker checker,
+            ExecutionResult result,
+            string csProjFilePath)
         {
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
             int index = 0;
@@ -94,7 +99,6 @@
             var didCompile = project.Build();
             project.ProjectCollection.UnloadAllProjects();
 
-            // If a test does not compile, set isCompiledSuccessfully to false and break execution
             if (!didCompile)
             {
                 result.IsCompiledSuccessfully = false;
@@ -120,42 +124,14 @@
 
             foreach (var test in executionContext.Tests)
             {
-                // Construct and figure out what the Test results are
-                TestResult testResult = new TestResult()
+                var message = "Test Passed!";
+                var testFile = this.testNames[testIndex++];
+                if (errorsByFiles.ContainsKey(testFile))
                 {
-                    Id = test.Id,
-                    TimeUsed = (int)processExecutionResult.TimeWorked.TotalMilliseconds,
-                    MemoryUsed = (int)processExecutionResult.MemoryUsed
-                };
-
-                switch (processExecutionResult.Type)
-                {
-                    case ProcessExecutionResultType.RunTimeError:
-                        testResult.ResultType = TestRunResultType.RunTimeError;
-                        testResult.ExecutionComment = processExecutionResult.ErrorOutput.MaxLength(2048); // Trimming long error texts
-                        break;
-                    case ProcessExecutionResultType.TimeLimit:
-                        testResult.ResultType = TestRunResultType.TimeLimit;
-                        break;
-                    case ProcessExecutionResultType.MemoryLimit:
-                        testResult.ResultType = TestRunResultType.MemoryLimit;
-                        break;
-                    case ProcessExecutionResultType.Success:
-                        string message = "Test Passed!";
-                        string testFile = this.testNames[testIndex++];
-                        if (errorsByFiles.ContainsKey(testFile))
-                        {
-                            message = errorsByFiles[testFile];
-                        }
-
-                        var checkerResult = checker.Check(test.Input, message, test.Output, test.IsTrialTest);
-                        testResult.ResultType = checkerResult.IsCorrect ? TestRunResultType.CorrectAnswer : TestRunResultType.WrongAnswer;
-                        testResult.CheckerDetails = checkerResult.CheckerDetails;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(processExecutionResult), "Invalid ProcessExecutionResultType value.");
+                    message = errorsByFiles[testFile];
                 }
 
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
             }         
 
@@ -201,11 +177,13 @@
             var nUnitMetaData = new Dictionary<string, string>();
             nUnitMetaData.Add("SpecificVersion", "False");
             nUnitMetaData.Add("Private", "True");
-            project.AddItem("Reference", "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL", nUnitMetaData);
+            project.AddItem(
+                "Reference",
+                "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL",
+                nUnitMetaData);
 
             // Check for VSTT just in case, we dont want Assert conflicts
-            var vsTestFrameworkReference =
-                project.Items.FirstOrDefault(
+            var vsTestFrameworkReference = project.Items.FirstOrDefault(
                     x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
             if (vsTestFrameworkReference != null)
             {
@@ -215,20 +193,20 @@
 
         private void ExtractTestNames(IEnumerable<TestContext> tests)
         {
-            int trialTests = 1;
-            int competeTests = 1;
+            var trialTests = 1;
+            var competeTests = 1;
 
             foreach (var test in tests)
             {
                 if (test.IsTrialTest)
                 {
-                    string testNumber = trialTests < 10 ? $"00{trialTests}" : $"0{trialTests}";
+                    var testNumber = trialTests < 10 ? $"00{trialTests}" : $"0{trialTests}";
                     this.testNames.Add($"{TrialTest}.{testNumber}");
                     trialTests++;
                 }
                 else
                 {
-                    string testNumber = competeTests < 10 ? $"00{competeTests}" : $"0{competeTests}";
+                    var testNumber = competeTests < 10 ? $"00{competeTests}" : $"0{competeTests}";
                     this.testNames.Add($"{CompeteTest}.{testNumber}");
                     competeTests++;
                 }

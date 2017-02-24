@@ -21,6 +21,7 @@
         private const string CsProjFileSearchPattern = "*.csproj";
         private const string ProjFileExtenstion = ".csproj";
         private const string DllFileExtension = ".dll";
+        private const string CompiledResultFolder = "compiledResult\\";
 
         public CSharpUnitTestsRunnerExecutionStrategy(string nUnitConsoleRunnerPath)
         {
@@ -39,7 +40,7 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            ExecutionResult result = new ExecutionResult();
+            var result = new ExecutionResult();
             byte[] userSubmissionContent = executionContext.FileContent;
 
             var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
@@ -76,13 +77,23 @@
             string csProjFilePath)
         {
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
-            int originalTestsPassed = -1;
-            int count = 0;
+            var fileName = Path.GetFileName(csProjFilePath);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                fileName = fileName.Replace(ProjFileExtenstion, DllFileExtension);
+            }
+
+            var targetDll = $"{compileDirectory}\\{CompiledResultFolder}{fileName}";
+            var arguments = new List<string> { targetDll };
+            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+
+            var testedCodePath = $"{compileDirectory}\\{TestedCode}";
+            var originalTestsPassed = -1;
+            var count = 0;
            
             foreach (var test in executionContext.Tests)
             {
                 // Copy the test input into a .cs file
-                var testedCodePath = $"{compileDirectory}\\{TestedCode}";
                 File.WriteAllText(testedCodePath, test.Input);
 
                 // Compile the project
@@ -90,18 +101,11 @@
                 var didCompile = project.Build();
                 project.ProjectCollection.UnloadAllProjects();
 
-                // If a test does not compile, set isCompiledSuccessfully to false and break execution
                 if (!didCompile)
                 {
                     result.IsCompiledSuccessfully = false;
                     return result;
-                }
-
-                var fileName = Path.GetFileName(csProjFilePath);
-                fileName = fileName.Replace(ProjFileExtenstion, DllFileExtension);
-                var dllPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, fileName);
-                var arguments = new List<string> { dllPath };
-                arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+                }           
 
                 // Run unit tests on the resulting .dll
                 var processExecutionResult = executor.Execute(
@@ -111,62 +115,31 @@
                     executionContext.MemoryLimit,
                     arguments);
 
-                // Construct and figure out what the Test result is
-                var testResult = new TestResult()
+                var totalTests = 0;
+                var passedTests = 0;
+
+                this.ExtractTestResult(processExecutionResult.ReceivedOutput, ref passedTests, ref totalTests);
+                var message = "Test Passed!";
+
+                if (totalTests == 0)
                 {
-                    Id = test.Id,
-                    TimeUsed = (int)processExecutionResult.TimeWorked.TotalMilliseconds,
-                    MemoryUsed = (int)processExecutionResult.MemoryUsed
-                };
-
-                switch (processExecutionResult.Type)
-                {
-                    case ProcessExecutionResultType.RunTimeError:
-                        testResult.ResultType = TestRunResultType.RunTimeError;
-                        testResult.ExecutionComment = processExecutionResult.ErrorOutput.MaxLength(2048); // Trimming long error texts
-                        break;
-                    case ProcessExecutionResultType.TimeLimit:
-                        testResult.ResultType = TestRunResultType.TimeLimit;
-                        break;
-                    case ProcessExecutionResultType.MemoryLimit:
-                        testResult.ResultType = TestRunResultType.MemoryLimit;
-                        break;
-                    case ProcessExecutionResultType.Success:
-                        int totalTests = 0;
-                        int passedTests = 0;
-                 
-                        this.ExtractTestResult(processExecutionResult.ReceivedOutput, ref passedTests, ref totalTests);
-                        var message = "Test Passed!";
-
-                        if (totalTests == 0)
-                        {
-                            message = "No tests found";
-                        }
-                        else if (passedTests == originalTestsPassed)
-                        {
-                            message = "No functionality covering this test!";
-                        }
-
-                        if (count == 0)
-                        {
-                            originalTestsPassed = passedTests;
-                            if (totalTests != passedTests)
-                            {
-                                message = "Not all tests passed on the correct solution.";
-                            }
-                        }
-
-                        var checkerResult = checker.Check(test.Input, message, test.Output, test.IsTrialTest);
-                        testResult.ResultType = checkerResult.IsCorrect 
-                            ? TestRunResultType.CorrectAnswer 
-                            : TestRunResultType.WrongAnswer;
-                        testResult.CheckerDetails = checkerResult.CheckerDetails;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(
-                            nameof(processExecutionResult), 
-                            @"Invalid ProcessExecutionResultType value.");
+                    message = "No tests found";
                 }
+                else if (passedTests == originalTestsPassed)
+                {
+                    message = "No functionality covering this test!";
+                }
+
+                if (count == 0)
+                {
+                    originalTestsPassed = passedTests;
+                    if (totalTests != passedTests)
+                    {
+                        message = "Not all tests passed on the correct solution.";
+                    }
+                }
+
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
 
                 // Cleanup the .cs with the tested code to prepare for the next test
                 File.Delete(testedCodePath);
@@ -189,6 +162,8 @@
 
         private void CorrectProjectReferences(Project project)
         {
+            project.SetProperty("OutputPath", CompiledResultFolder);
+
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
             if (projectReference != null)

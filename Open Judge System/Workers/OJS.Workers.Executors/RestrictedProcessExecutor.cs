@@ -17,6 +17,7 @@ namespace OJS.Workers.Executors
 
     public class RestrictedProcessExecutor : IExecutor
     {
+        private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
         private static ILog logger;
 
         public RestrictedProcessExecutor()
@@ -26,7 +27,12 @@ namespace OJS.Workers.Executors
         }
 
         // TODO: double check and maybe change order of parameters
-        public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null)
+        public ProcessExecutionResult Execute(
+            string fileName,
+            string inputData,
+            int timeLimit,
+            int memoryLimit,
+            IEnumerable<string> executionArguments = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             var workingDirectory = new FileInfo(fileName).DirectoryName;
@@ -63,8 +69,7 @@ namespace OJS.Workers.Executors
                         result.ErrorOutput = x.Result;
                     });
 
-                // Read memory consumption every few milliseconds to determine the peak memory usage of the process
-                const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
+                // Read memory consumption every few milliseconds to determine the peak memory usage of the process               
                 var memoryTaskCancellationToken = new CancellationTokenSource();
                 var memoryTask = Task.Run(
                     () =>
@@ -161,7 +166,13 @@ namespace OJS.Workers.Executors
             return result;
         }
 
-        public ProcessExecutionResult ExecuteJavaProcess(string fileName, string inputData, int timeLimit, int memoryLimit, string workingDirectory, IEnumerable<string> executionArguments = null)
+        public ProcessExecutionResult ExecuteJavaProcess(
+            string fileName,
+            string inputData,
+            int timeLimit,
+            int memoryLimit,
+            string workingDirectory,
+            IEnumerable<string> executionArguments = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
 
@@ -198,7 +209,6 @@ namespace OJS.Workers.Executors
                     });
 
                 // Read memory consumption every few milliseconds to determine the peak memory usage of the process
-                const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
                 var memoryTaskCancellationToken = new CancellationTokenSource();
                 var memoryTask = Task.Run(
                     () =>

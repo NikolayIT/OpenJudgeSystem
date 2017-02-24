@@ -16,7 +16,10 @@
     {
         protected const string JUnitRunnerClassName = "_$TestRunner";
 
-        public JavaProjectTestsExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc, string javaLibsPath)
+        public JavaProjectTestsExecutionStrategy(
+            string javaExecutablePath,
+            Func<CompilerType, string> getCompilerPathFunc,
+            string javaLibsPath)
             : base(javaExecutablePath, getCompilerPathFunc)
         {
             if (!Directory.Exists(javaLibsPath))
@@ -136,8 +139,8 @@ class Classes{{
             foreach (var test in executionContext.Tests)
             {
                 // Construct and figure out what the Test results are
-                string message = "Test Passed!";
-                string testFile = this.TestNames[testIndex++];
+                var message = "Test Passed!";
+                var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))
                 {
                     message = errorsByFiles[testFile];
@@ -178,7 +181,7 @@ class Classes{{
 
         private void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {
-            int testNumber = 0;
+            var testNumber = 0;
             string[] filePaths = new string[context.Tests.Count()];
 
             foreach (var test in context.Tests)
@@ -200,7 +203,7 @@ class Classes{{
             // It is important to call the JUintTestRunnerCodeTemplate after the TestClasses have been filled
             // otherwise no tests will be queued in the JUnitTestRunner, which would result in no tests failing.
             File.WriteAllText(this.JUnitTestRunnerSourceFilePath, this.JUnitTestRunnerCode);
-            FileHelpers.AddFileToZipArchive(submissionFilePath, string.Empty, this.JUnitTestRunnerSourceFilePath);
+            FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, this.JUnitTestRunnerSourceFilePath);
         }
 
         private void ExtractUserClassNames(string submissionFilePath)
