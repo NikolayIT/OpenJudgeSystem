@@ -214,7 +214,6 @@ class Classes{{
 
         private Dictionary<string, string> GetTestErrors(string receivedOutput)
         {
-            File.WriteAllText("E:\\output.txt", receivedOutput);
             var errorsByFiles = new Dictionary<string, string>();
             var output = new StringReader(receivedOutput);
             string line = output.ReadLine();
@@ -223,7 +222,6 @@ class Classes{{
                 int firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
                 string fileName = line.Substring(0, firstSpaceIndex);
                 string errorMessage = line.Substring(firstSpaceIndex);
-                File.WriteAllText("E:\\raww.txt", "\'" + fileName + "\' " + "\'" + errorMessage + "\'");
                 errorsByFiles.Add(fileName, errorMessage);
                 line = output.ReadLine();
             }
