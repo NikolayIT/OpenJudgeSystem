@@ -61,7 +61,7 @@
                 .Select(x => new ProblemResultViewModel
                 {
                     SubmissionId = x.SubmissionId,
-                    ParticipantName = x.Participant.User.UserName,
+                    ParticipantName = x.ParticipantName,
                     MaximumPoints = problem.MaximumPoints,
                     Result = x.Points
                 });

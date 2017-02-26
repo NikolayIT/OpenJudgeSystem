@@ -20,6 +20,8 @@
 
         public virtual Submission Submission { get; set; }
 
+        public string ParticipantName { get; set; }
+
         public int Points { get; set; }
 
         [Index]
