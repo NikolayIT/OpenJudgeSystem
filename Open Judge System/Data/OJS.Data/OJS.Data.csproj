@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\ParticipantAnswersConfiguration.cs" />
+    <Compile Include="Configurations\ParticipantScoresConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
