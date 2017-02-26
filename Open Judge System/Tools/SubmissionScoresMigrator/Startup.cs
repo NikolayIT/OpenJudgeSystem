@@ -15,30 +15,12 @@
             var processed = 0;
             var page = 0;
             var pageSize = 10000;
-            
+
             while (true)
             {
                 Console.WriteLine("Reading data...");
 
-                var currentSubmissions = db
-                    .Submissions
-                    .Where(x => !x.IsDeleted)
-                    .GroupBy(x => new { x.ParticipantId, x.ProblemId, x.Participant.IsOfficial })
-                    .OrderBy(x => x.Key.ParticipantId)
-                    .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
-                    .Skip(page * pageSize)
-                    .Take(pageSize)
-                    .Select(x => new
-                    {
-                        SubmissionId = x.Id,
-                        ProblemId = x.ProblemId,
-                        ParticipantId = x.ParticipantId,
-                        ParticipantName = x.Participant.User.UserName,
-                        Points = x.Points,
-                        IsOfficial = x.Participant.IsOfficial
-                    })
-                    .ToArray();
-
+                var currentSubmissions = GetSubmissions(db.Submissions, page, pageSize);
                 if (!currentSubmissions.Any())
                 {
                     break;
@@ -83,6 +65,26 @@
             Console.WriteLine($"{processed} scores processed");
             Console.WriteLine("Done!");
         }
+
+        // Public for unit testing
+        public static SubmissionScoreModel[] GetSubmissions(IQueryable<Submission> submissions, int page, int pageSize)
+            => submissions
+                .Where(x => !x.IsDeleted)
+                .GroupBy(x => new { x.ParticipantId, x.ProblemId, x.Participant.IsOfficial })
+                .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
+                .OrderByDescending(s => s.Id)
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .Select(x => new SubmissionScoreModel
+                {
+                    SubmissionId = x.Id,
+                    ProblemId = x.ProblemId,
+                    ParticipantId = x.ParticipantId,
+                    ParticipantName = x.Participant.User.UserName,
+                    Points = x.Points,
+                    IsOfficial = x.Participant.IsOfficial
+                })
+                .ToArray();
 
         private static OjsDbContext GetData()
         {

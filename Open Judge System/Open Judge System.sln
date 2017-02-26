@@ -79,6 +79,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlTestingPoC", "Tools\SqlT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubmissionScoresMigrator", "Tools\SubmissionScoresMigrator\SubmissionScoresMigrator.csproj", "{A9EA934C-99DB-495A-B654-888886DC23AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tools.SubmissionScoresMigrator.Tests", "Tests\OJS.Tools.SubmissionScoresMigrator.Tests\OJS.Tools.SubmissionScoresMigrator.Tests.csproj", "{8EB6D313-B16D-4F4C-9187-F58BFE5292CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -189,6 +191,10 @@ Global
 		{A9EA934C-99DB-495A-B654-888886DC23AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9EA934C-99DB-495A-B654-888886DC23AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9EA934C-99DB-495A-B654-888886DC23AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,5 +225,6 @@ Global
 		{1A12AF9D-5BD6-455E-924E-54E686A2F270} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{2AE356DA-FCD4-4601-A533-85042648D7F8} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 		{A9EA934C-99DB-495A-B654-888886DC23AA} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
+		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 	EndGlobalSection
 EndGlobal
