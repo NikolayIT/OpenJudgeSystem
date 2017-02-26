@@ -20,7 +20,7 @@
 
         public virtual Submission Submission { get; set; }
 
-        public int Result { get; set; }
+        public int Points { get; set; }
 
         [Index]
         public bool IsOfficial { get; set; }

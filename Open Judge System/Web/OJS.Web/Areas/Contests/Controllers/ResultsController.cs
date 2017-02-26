@@ -54,18 +54,30 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }
 
-            var results = this.Data.Submissions
+            var results = this.Data.ParticipantScores
                 .All()
-                .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
-                .GroupBy(x => x.ParticipantId)
-                .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
-                .Select(submission => new ProblemResultViewModel
+                .Where(x => x.ProblemId == problem.Id && x.IsOfficial == official)
+                .OrderByDescending(x => x.Points)
+                .Select(x => new ProblemResultViewModel
                 {
-                    SubmissionId = submission.Id,
-                    ParticipantName = submission.Participant.User.UserName,
+                    SubmissionId = x.SubmissionId,
+                    ParticipantName = x.Participant.User.UserName,
                     MaximumPoints = problem.MaximumPoints,
-                    Result = submission.Points
+                    Result = x.Points
                 });
+
+            //var results = this.Data.Submissions
+            //    .All()
+            //    .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
+            //    .GroupBy(x => x.ParticipantId)
+            //    .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
+            //    .Select(submission => new ProblemResultViewModel
+            //    {
+            //        SubmissionId = submission.Id,
+            //        ParticipantName = submission.Participant.User.UserName,
+            //        MaximumPoints = problem.MaximumPoints,
+            //        Result = submission.Points
+            //    });
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }

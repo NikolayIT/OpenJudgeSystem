@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{93034417-0AAA-4E72-84EA-767DB4EF5283}"
 EndProject
@@ -76,6 +76,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.ExecutionStrategies.Tests", "Tests\OJS.Workers.ExecutionStrategies.Tests\OJS.Workers.ExecutionStrategies.Tests.csproj", "{1A12AF9D-5BD6-455E-924E-54E686A2F270}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlTestingPoC", "Tools\SqlTestingPoC\SqlTestingPoC.csproj", "{2AE356DA-FCD4-4601-A533-85042648D7F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubmissionScoresMigrator", "Tools\SubmissionScoresMigrator\SubmissionScoresMigrator.csproj", "{A9EA934C-99DB-495A-B654-888886DC23AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,6 +185,10 @@ Global
 		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AE356DA-FCD4-4601-A533-85042648D7F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9EA934C-99DB-495A-B654-888886DC23AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9EA934C-99DB-495A-B654-888886DC23AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9EA934C-99DB-495A-B654-888886DC23AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9EA934C-99DB-495A-B654-888886DC23AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,5 +218,6 @@ Global
 		{EE0CE0F5-BAF8-4AA9-83E8-84881CDABFB1} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{1A12AF9D-5BD6-455E-924E-54E686A2F270} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{2AE356DA-FCD4-4601-A533-85042648D7F8} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
+		{A9EA934C-99DB-495A-B654-888886DC23AA} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 	EndGlobalSection
 EndGlobal
