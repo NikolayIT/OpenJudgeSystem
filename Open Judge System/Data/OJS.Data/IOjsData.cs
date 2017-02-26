@@ -40,7 +40,7 @@
 
         IParticipantsRepository Participants { get; }
 
-        IRepository<ParticipantScore> ParticipantScores { get; }
+        IParticipantScoresRepository ParticipantScores { get; }
 
         IRepository<Setting> Settings { get; }
 

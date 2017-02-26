@@ -104,6 +104,7 @@
     <Compile Include="Repositories\Contracts\IContestsRepository.cs" />
     <Compile Include="IOjsData.cs" />
     <Compile Include="IOjsDbContext.cs" />
+    <Compile Include="Repositories\Contracts\IParticipantScoresRepository.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsRepository.cs" />
     <Compile Include="Repositories\Contracts\ITestRepository.cs" />
     <Compile Include="Repositories\Contracts\ITestRunsRepository.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="OjsData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Contracts\IParticipantsRepository.cs" />
+    <Compile Include="Repositories\ParticipantScoresRepository.cs" />
     <Compile Include="Repositories\ParticipantsRepository.cs" />
     <Compile Include="Repositories\SubmissionsRepository.cs" />
     <Compile Include="Repositories\TestRepository.cs" />

@@ -66,19 +66,6 @@
                     Result = x.Points
                 });
 
-            //var results = this.Data.Submissions
-            //    .All()
-            //    .Where(x => x.ProblemId == problem.Id && x.Participant.IsOfficial == official)
-            //    .GroupBy(x => x.ParticipantId)
-            //    .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
-            //    .Select(submission => new ProblemResultViewModel
-            //    {
-            //        SubmissionId = submission.Id,
-            //        ParticipantName = submission.Participant.User.UserName,
-            //        MaximumPoints = problem.MaximumPoints,
-            //        Result = submission.Points
-            //    });
-
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 

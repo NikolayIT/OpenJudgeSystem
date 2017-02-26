@@ -64,7 +64,7 @@
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
-        public IRepository<ParticipantScore> ParticipantScores => this.GetRepository<ParticipantScore>();
+        public IParticipantScoresRepository ParticipantScores => (ParticipantScoresRepository)this.GetRepository<ParticipantScore>();
 
         public IDeletableEntityRepository<FeedbackReport> FeedbackReports => 
             this.GetDeletableEntityRepository<FeedbackReport>();
