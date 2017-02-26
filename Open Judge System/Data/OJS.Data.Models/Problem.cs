@@ -66,6 +66,7 @@
         public byte[] SolutionSkeleton { get; set; }
 
         [DefaultValue(true)]
+        [Index]
         public bool ShowResults { get; set; }
 
         [DefaultValue(false)]
