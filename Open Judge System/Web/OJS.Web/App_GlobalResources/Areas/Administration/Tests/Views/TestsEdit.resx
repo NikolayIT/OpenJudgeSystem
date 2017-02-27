@@ -126,4 +126,7 @@
   <data name="Page_title" xml:space="preserve">
     <value>Edit test</value>
   </data>
+  <data name="Retest_problem" xml:space="preserve">
+    <value>Retest problem</value>
+  </data>
 </root>
