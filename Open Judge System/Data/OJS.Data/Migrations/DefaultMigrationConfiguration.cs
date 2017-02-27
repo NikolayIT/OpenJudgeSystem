@@ -316,10 +316,10 @@
                 },
                 new SubmissionType
                 {
-                    Name = "C# Unit Tests Tester",
+                    Name = "C# Unit Tests",
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = "--noresult --inprocess",
-                    ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsRunnerExecutionStrategy,
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,

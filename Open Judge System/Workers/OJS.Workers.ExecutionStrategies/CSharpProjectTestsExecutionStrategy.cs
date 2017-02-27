@@ -9,7 +9,6 @@
     using Microsoft.Build.Evaluation;
 
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
@@ -20,8 +19,13 @@
         private const string CompeteTest = "Test";
         private const string TrialTest = "Test.000";
         private const string CsProjFileSearchPattern = "*.csproj";
-        private const string ProjFileExtenstion = ".csproj";
+        private const string ProjectFileExtenstion = ".csproj";
         private const string DllFileExtension = ".dll";
+        private const string NUnitReference =
+            "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+
+        // Extracts error/failure messages and the class which threw it
+        private static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*(.+).cs";
 
         private readonly List<string> testNames;
 
@@ -43,27 +47,25 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            ExecutionResult result = new ExecutionResult();
-            byte[] userSubmissionContent = executionContext.FileContent;
+            var result = new ExecutionResult();
+            var userSubmissionContent = executionContext.FileContent;
 
             var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
             File.WriteAllBytes(submissionFilePath, userSubmissionContent);
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            string csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
+            var csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
                 this.WorkingDirectory,
                 CsProjFileSearchPattern);
 
             this.ExtractTestNames(executionContext.Tests);
 
-            // Edit References in Project file
             var project = new Project(csProjFilePath);
             this.CorrectProjectReferences(executionContext.Tests, project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
 
-            // Initially set isCompiledSucessfully to true
             result.IsCompiledSuccessfully = true;
 
             var executor = new RestrictedProcessExecutor();
@@ -84,17 +86,15 @@
             string csProjFilePath)
         {
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
-            int index = 0;
+            var index = 0;
 
             foreach (var test in executionContext.Tests)
             {
-                // Copy the test inputs into .cs files
-                string testName = this.testNames[index++];
+                var testName = this.testNames[index++];
                 var testedCodePath = $"{compileDirectory}\\{testName}.cs";
                 File.WriteAllText(testedCodePath, test.Input);
             }
 
-            // Compile the project
             var project = new Project(csProjFilePath);
             var didCompile = project.Build();
             project.ProjectCollection.UnloadAllProjects();
@@ -106,12 +106,11 @@
             }
 
             var fileName = Path.GetFileName(csProjFilePath);
-            fileName = fileName.Replace(ProjFileExtenstion, DllFileExtension);
+            fileName = fileName.Replace(ProjectFileExtenstion, DllFileExtension);
             var dllPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, fileName);
             var arguments = new List<string> { dllPath };
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
-            // Run unit tests on the resulting .dll
             var processExecutionResult = executor.Execute(
                 this.NUnitConsoleRunnerPath,
                 string.Empty,
@@ -133,7 +132,7 @@
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
-            }         
+            }
 
             return result;
         }
@@ -141,9 +140,7 @@
         private Dictionary<string, string> GetTestErrors(string receivedOutput)
         {
             var errorsByFiles = new Dictionary<string, string>();
-            var errorRegex =
-     new Regex($@"\d+\) (.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*(.+).cs");
-
+            var errorRegex = new Regex(ErrorMessageRegex);
             var errors = errorRegex.Matches(receivedOutput);
 
             foreach (Match error in errors)
@@ -165,8 +162,6 @@
             }
 
             project.SetProperty("OutputType", "Library");
-
-            // Remove previous NUnit reference (the path is probably pointing to the users package folder)
             var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
             if (nUnitPrevReference != null)
             {
@@ -177,14 +172,11 @@
             var nUnitMetaData = new Dictionary<string, string>();
             nUnitMetaData.Add("SpecificVersion", "False");
             nUnitMetaData.Add("Private", "True");
-            project.AddItem(
-                "Reference",
-                "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL",
-                nUnitMetaData);
+            project.AddItem("Reference", NUnitReference, nUnitMetaData);
 
-            // Check for VSTT just in case, we dont want Assert conflicts
-            var vsTestFrameworkReference = project.Items.FirstOrDefault(
-                    x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
+            // Check for VSTT just in case, we don't want Assert conflicts
+            var vsTestFrameworkReference = project.Items
+                .FirstOrDefault(x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
             if (vsTestFrameworkReference != null)
             {
                 project.RemoveItem(vsTestFrameworkReference);

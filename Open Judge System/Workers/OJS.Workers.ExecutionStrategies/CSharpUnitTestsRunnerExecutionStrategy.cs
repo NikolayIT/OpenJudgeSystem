@@ -1,6 +1,5 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -9,7 +8,6 @@
     using Microsoft.Build.Evaluation;
 
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
@@ -19,9 +17,15 @@
         private const string ZippedSubmissionName = "Submission.zip";
         private const string TestedCode = "TestedCode.cs";
         private const string CsProjFileSearchPattern = "*.csproj";
-        private const string ProjFileExtenstion = ".csproj";
+        private const string ProjectFileExtenstion = ".csproj";
         private const string DllFileExtension = ".dll";
         private const string CompiledResultFolder = "compiledResult\\";
+        private const string NUnitReference =
+            "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+
+        // Extracts the number of total and passed tests 
+        private const string TestResultsRegex =
+            @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
 
         public CSharpUnitTestsRunnerExecutionStrategy(string nUnitConsoleRunnerPath)
         {
@@ -41,7 +45,7 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
-            byte[] userSubmissionContent = executionContext.FileContent;
+            var userSubmissionContent = executionContext.FileContent;
 
             var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
             File.WriteAllBytes(submissionFilePath, userSubmissionContent);
@@ -80,7 +84,7 @@
             var fileName = Path.GetFileName(csProjFilePath);
             if (!string.IsNullOrEmpty(fileName))
             {
-                fileName = fileName.Replace(ProjFileExtenstion, DllFileExtension);
+                fileName = fileName.Replace(ProjectFileExtenstion, DllFileExtension);
             }
 
             var targetDll = $"{compileDirectory}\\{CompiledResultFolder}{fileName}";
@@ -93,10 +97,8 @@
            
             foreach (var test in executionContext.Tests)
             {
-                // Copy the test input into a .cs file
                 File.WriteAllText(testedCodePath, test.Input);
 
-                // Compile the project
                 var project = new Project(csProjFilePath);
                 var didCompile = project.Build();
                 project.ProjectCollection.UnloadAllProjects();
@@ -107,7 +109,6 @@
                     return result;
                 }           
 
-                // Run unit tests on the resulting .dll
                 var processExecutionResult = executor.Execute(
                     this.NUnitConsoleRunnerPath,
                     string.Empty,
@@ -118,7 +119,7 @@
                 var totalTests = 0;
                 var passedTests = 0;
 
-                this.ExtractTestResult(processExecutionResult.ReceivedOutput, ref passedTests, ref totalTests);
+                this.ExtractTestResult(processExecutionResult.ReceivedOutput, out passedTests, out totalTests);
                 var message = "Test Passed!";
 
                 if (totalTests == 0)
@@ -141,7 +142,6 @@
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
 
-                // Cleanup the .cs with the tested code to prepare for the next test
                 File.Delete(testedCodePath);
                 result.TestResults.Add(testResult);
                 count++;
@@ -150,11 +150,9 @@
             return result;
         }
 
-        private void ExtractTestResult(string receivedOutput, ref int passedTests, ref int totalTests)
+        private void ExtractTestResult(string receivedOutput, out int passedTests, out int totalTests)
         {
-            var testResultsRegex =
-                new Regex(
-                    @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+");
+            var testResultsRegex = new Regex(TestResultsRegex);
             var res = testResultsRegex.Match(receivedOutput);
             totalTests = int.Parse(res.Groups[1].Value);
             passedTests = int.Parse(res.Groups[2].Value);
@@ -171,10 +169,8 @@
                 project.RemoveItem(projectReference);
             }
 
-            // Add a reference to tested code as a .cs file
             project.AddItem("Compile", TestedCode);
 
-            // Remove previous NUnit reference (the path is probably pointing to the users package folder)
             var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
             if (nUnitPrevReference != null)
             {
@@ -184,10 +180,7 @@
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
             var nUnitMetaData = new Dictionary<string, string>();
             nUnitMetaData.Add("Private", "True");
-            project.AddItem(
-                "Reference",
-                "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL",
-                nUnitMetaData);
+            project.AddItem("Reference", NUnitReference, nUnitMetaData);
     
             // If we use NUnit we don't really need the VSTT, it will save us copying of the .dll
             var vsTestFrameworkReference = project.Items

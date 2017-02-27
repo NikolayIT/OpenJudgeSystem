@@ -241,7 +241,7 @@
                 case ExecutionStrategyType.CSharpTestRunner:
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
-                case ExecutionStrategyType.CSharpUnitTestsRunnerExecutionStrategy:
+                case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
                     executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath);
                     break;
                 case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:

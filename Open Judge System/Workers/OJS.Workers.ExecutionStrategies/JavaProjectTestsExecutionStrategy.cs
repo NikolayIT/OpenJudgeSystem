@@ -182,11 +182,11 @@ class Classes{{
         private void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {
             var testNumber = 0;
-            string[] filePaths = new string[context.Tests.Count()];
+            var filePaths = new string[context.Tests.Count()];
 
             foreach (var test in context.Tests)
             {
-                string className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
+                var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
                 var testFileName =
                         $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
                 File.WriteAllText(testFileName, test.Input);
@@ -219,12 +219,12 @@ class Classes{{
         {
             var errorsByFiles = new Dictionary<string, string>();
             var output = new StringReader(receivedOutput);
-            string line = output.ReadLine();
+            var line = output.ReadLine();
             while (line != null)
             {
                 int firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
-                string fileName = line.Substring(0, firstSpaceIndex);
-                string errorMessage = line.Substring(firstSpaceIndex);
+                var fileName = line.Substring(0, firstSpaceIndex);
+                var errorMessage = line.Substring(firstSpaceIndex);
                 errorsByFiles.Add(fileName, errorMessage);
                 line = output.ReadLine();
             }

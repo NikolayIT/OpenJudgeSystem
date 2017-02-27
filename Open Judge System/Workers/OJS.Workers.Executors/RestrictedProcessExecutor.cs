@@ -232,7 +232,7 @@ namespace OJS.Workers.Executors
 
                 // Start the process
                 // JVM requires the process to have a minimum memory capacity in order to load
-                restrictedProcess.Start(timeLimit, memoryLimit + GlobalConstants.JvmMemoryRequirement); 
+                restrictedProcess.Start(timeLimit, memoryLimit + GlobalConstants.JvmMemoryRequirementInBytes); 
 
                 // Wait the process to complete. Kill it after (timeLimit * 1.5) milliseconds if not completed.
                 // We are waiting the process for more than defined time and after this we compare the process time with the real time limit.
