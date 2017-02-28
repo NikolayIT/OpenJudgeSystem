@@ -50,6 +50,14 @@
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Build.14.3.0\lib\net45\Microsoft.Build.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Build.Framework.14.3.0\lib\net45\Microsoft.Build.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MissingFeatures">
       <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
     </Reference>
@@ -72,11 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckOnlyExecutionStrategy.cs" />
+    <Compile Include="CSharpProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpTestRunnerExecutionStrategy.cs" />
+    <Compile Include="CSharpUnitTestsRunnerExecutionStrategy.cs" />
     <Compile Include="DoNothingExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="JavaProjectTestsExecutionStrategy.cs" />
     <Compile Include="JavaZipFileCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="JsonExecutionResult.cs" />
     <Compile Include="NodeJsExecuteAndRunAsyncJsDomTestsWithReactExecutionStrategy.cs" />

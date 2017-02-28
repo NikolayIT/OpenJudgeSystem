@@ -118,6 +118,9 @@
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
 
+        // JVM Startup Memory
+        public const int JvmMemoryRequirementInBytes = 200000000;
+
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
     }

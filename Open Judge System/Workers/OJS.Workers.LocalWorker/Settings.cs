@@ -18,6 +18,8 @@
 
         public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
+        public static string NUnitConsoleRunnerPath => GetSetting("NUnitConsoleRunnerPath");
+
         public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
         public static string NuGetExecutablePath => GetSetting("NuGetExecutablePath");
@@ -25,6 +27,8 @@
         public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
 
         public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
+
+        public static string JavaLibsPath => GetSetting("JavaLibsPath");
 
         public static string NodeJsExecutablePath => GetSetting("NodeJsExecutablePath");
 

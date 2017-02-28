@@ -5,6 +5,7 @@
     using System.IO;
     using System.Text;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -14,11 +15,9 @@
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private const string TimeMeasurementFileName = "_$time.txt";
-        private const string SandboxExecutorClassName = "_$SandboxExecutor";
-        private const string JavaCompiledFileExtension = ".class";
-
-        private readonly string javaExecutablePath;
+        protected const string TimeMeasurementFileName = "_$time.txt";
+        protected const string SandboxExecutorClassName = "_$SandboxExecutor";
+        protected const string JavaCompiledFileExtension = ".class";
 
         public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
         {
@@ -27,11 +26,11 @@
                 throw new ArgumentException($"Java not found in: {javaExecutablePath}!", nameof(javaExecutablePath));
             }
 
-            this.javaExecutablePath = javaExecutablePath;
+            this.JavaExecutablePath = javaExecutablePath;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.SandboxExecutorSourceFilePath =
-                $"{this.WorkingDirectory}\\{SandboxExecutorClassName}.{CompilerType.Java.GetFileExtension()}";
+                $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{GlobalConstants.JavaSourceFileExtension}";
         }
 
         ~JavaPreprocessCompileExecuteAndCheckExecutionStrategy()
@@ -39,13 +38,15 @@
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
+        protected string JavaExecutablePath { get; }
+
         protected string WorkingDirectory { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         protected string SandboxExecutorSourceFilePath { get; }
 
-        private string SandboxExecutorCode => @"
+        protected string SandboxExecutorCode => @"
 import java.io.File;
 import java.io.FilePermission;
 import java.io.FileWriter;
@@ -155,6 +156,33 @@ class _$SandboxSecurityManager extends SecurityManager {
     }
 }";
 
+        protected static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
+        {
+            if (File.Exists(timeMeasurementFilePath))
+            {
+                long timeInNanoseconds;
+                var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
+                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
+                {
+                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+
+                    if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
+                        processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
+                    {
+                        // The time from the time measurement file is under the time limit
+                        processExecutionResult.Type = ProcessExecutionResultType.Success;
+                    }
+                    else if (processExecutionResult.Type == ProcessExecutionResultType.Success &&
+                        processExecutionResult.TimeWorked.TotalMilliseconds > timeLimit)
+                    {
+                        processExecutionResult.Type = ProcessExecutionResultType.TimeLimit;
+                    }
+                }
+
+                File.Delete(timeMeasurementFilePath);
+            }
+        }
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -206,7 +234,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = executor.Execute(
-                    this.javaExecutablePath,
+                    this.JavaExecutablePath,
                     test.Input,
                     executionContext.TimeLimit * 2, // Java virtual machine takes more time to start up
                     executionContext.MemoryLimit,
@@ -236,33 +264,6 @@ class _$SandboxSecurityManager extends SecurityManager {
                 new[] { this.SandboxExecutorSourceFilePath, submissionFilePath });
 
             return compilerResult;
-        }
-
-        private static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
-        {
-            if (File.Exists(timeMeasurementFilePath))
-            {
-                long timeInNanoseconds;
-                var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
-                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
-                {
-                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
-
-                    if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
-                        processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
-                    {
-                        // The time from the time measurement file is under the time limit
-                        processExecutionResult.Type = ProcessExecutionResultType.Success;
-                    }
-                    else if (processExecutionResult.Type == ProcessExecutionResultType.Success &&
-                        processExecutionResult.TimeWorked.TotalMilliseconds > timeLimit)
-                    {
-                        processExecutionResult.Type = ProcessExecutionResultType.TimeLimit;
-                    }
-                }
-
-                File.Delete(timeMeasurementFilePath);
-            }
         }
 
         private CompileResult CompileSourceFiles(CompilerType compilerType, string compilerPath, string compilerArguments, IEnumerable<string> sourceFilesToCompile)

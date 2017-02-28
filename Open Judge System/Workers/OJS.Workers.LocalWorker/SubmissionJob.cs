@@ -241,6 +241,12 @@
                 case ExecutionStrategyType.CSharpTestRunner:
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
+                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    break;
+                case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
+                    executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
@@ -250,6 +256,12 @@
                     executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
                         GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.JavaProjectTestsExecutionStrategy:
+                    executionStrategy = new JavaProjectTestsExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        GetCompilerPath,
+                        Settings.JavaLibsPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
