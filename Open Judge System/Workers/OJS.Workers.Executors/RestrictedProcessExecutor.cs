@@ -288,7 +288,8 @@ namespace OJS.Workers.Executors
                 result.UserProcessorTime = restrictedProcess.UserProcessorTime;
             }
 
-            if (result.TotalProcessorTime.TotalMilliseconds > timeLimit)
+            // Changed to use TimeWorked instead of TotalProcessorTime, giving accurate information to the User
+            if (result.TimeWorked.TotalMilliseconds > timeLimit)
             {
                 result.Type = ProcessExecutionResultType.TimeLimit;
             }

@@ -131,7 +131,7 @@ class Classes{{
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
-                executionContext.TimeLimit * 2, // Java virtual machine takes more time to start up
+                executionContext.TimeLimit, // Java virtual machine takes more time to start up (around 100ms more)
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
