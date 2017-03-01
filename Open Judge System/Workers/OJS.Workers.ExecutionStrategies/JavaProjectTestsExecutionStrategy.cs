@@ -9,12 +9,15 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaProjectTestsExecutionStrategy : JavaZipFileCompileExecuteAndCheckExecutionStrategy
     {
         protected const string JUnitRunnerClassName = "_$TestRunner";
+
+        protected const string AdditionalExecutionArguments = "-Xms16m -Xmx128m";
 
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
@@ -34,9 +37,12 @@
                 $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
             this.TestNames = new List<string>();
             this.UserClassNames = new List<string>();
+            this.ClassPath = $@" -classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
         }
 
         protected string JavaLibsPath { get; }
+
+        protected string ClassPath { get; }
 
         protected string JUnitTestRunnerSourceFilePath { get; }
 
@@ -100,7 +106,6 @@ class Classes{{
                 return result;
             }
 
-            executionContext.AdditionalCompilerArguments = $@"-cp ""{this.JavaLibsPath}*""";
             var compilerResult = this.DoCompile(executionContext, submissionFilePath);
 
             // Assign compiled result info to the execution result
@@ -112,10 +117,8 @@ class Classes{{
             }
 
             var arguments = new List<string>();
-
-            // Prepare execution process arguments and time measurement info
-            var classPathArgument = $@"-classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
-            arguments.Add(classPathArgument);
+            arguments.Add(this.ClassPath);
+            arguments.Add(AdditionalExecutionArguments);
 
             // Create an executor and a checker
             var executor = new RestrictedProcessExecutor();
@@ -151,6 +154,20 @@ class Classes{{
             }
 
             return result;
+        }
+
+        protected override CompileResult DoCompile(ExecutionContext executionContext, string submissionFilePath)
+        {
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
+
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                combinedArguments,
+                submissionFilePath);
+
+            return compilerResult;
         }
 
         protected override string CreateSubmissionFile(ExecutionContext executionContext)
