@@ -66,12 +66,12 @@
             Console.WriteLine("Done!");
         }
 
-        // Public for unit testing
+        // Public for testing
         public static SubmissionScoreModel[] GetSubmissions(IQueryable<Submission> submissions, int page, int pageSize)
             => submissions
                 .Where(x => !x.IsDeleted)
                 .GroupBy(x => new { x.ParticipantId, x.ProblemId, x.Participant.IsOfficial })
-                .Select(x => x.OrderByDescending(z => z.Points).FirstOrDefault())
+                .Select(x => x.OrderByDescending(z => z.Points).ThenByDescending(z => z.Id).FirstOrDefault())
                 .OrderByDescending(s => s.Id)
                 .Skip(page * pageSize)
                 .Take(pageSize)

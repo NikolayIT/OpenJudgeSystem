@@ -1676,6 +1676,7 @@
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SimplePaginationViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionsFilterViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Tests\TestInputDataViewModel.cs" />
@@ -2707,6 +2708,7 @@
     <Content Include="Views\Account\ExternalNotify.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DropDownList.cshtml" />
     <Content Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
+    <Content Include="Views\Shared\_SimplePagination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

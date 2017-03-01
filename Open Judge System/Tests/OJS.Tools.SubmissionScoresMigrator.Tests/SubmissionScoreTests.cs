@@ -22,7 +22,7 @@
             
             this.AssertSubmission(
                 submission: first,
-                submissionId: 9,
+                submissionId: 10,
                 participantId: 2,
                 problemId: 2,
                 isOfficial: false,
@@ -123,6 +123,14 @@
                     ProblemId = 2,
                     Participant = new Participant { IsOfficial = true, User = new UserProfile { UserName = "First" } },
                     Points = 100,
+                },
+                new Submission
+                {
+                    Id = 10,
+                    ParticipantId = 2,
+                    ProblemId = 2,
+                    Participant = new Participant { IsOfficial = false, User = new UserProfile { UserName = "Second" } },
+                    Points = 60,
                 },
                 new Submission
                 {

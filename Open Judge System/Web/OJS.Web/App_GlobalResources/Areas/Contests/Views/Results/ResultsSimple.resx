@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CachedResults" xml:space="preserve">
+    <value>Results are updated every 2 minutes!</value>
+  </data>
   <data name="Detailed_results" xml:space="preserve">
     <value>Detailed results</value>
   </data>
@@ -126,6 +129,9 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="NoMoreResults" xml:space="preserve">
+    <value>No more results to show!</value>
+  </data>
   <data name="Simple_results" xml:space="preserve">
     <value>Results</value>
   </data>
@@ -133,7 +139,7 @@
     <value>{0} participants</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Results for {0}</value>
+    <value>Results for {0}{1}</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Total</value>

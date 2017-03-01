@@ -22,8 +22,8 @@
 
     public class ResultsController : BaseController
     {
-        public const int OfficialResultsPageSize = 300;
-        public const int NotOfficialResultsPageSize = 100;
+        public const int OfficialResultsPageSize = 100;
+        public const int NotOfficialResultsPageSize = 50;
 
         public ResultsController(IOjsData data)
             : base(data)
@@ -100,8 +100,7 @@
                 this.Data.Users.All().Any(x => x.Id == this.UserProfile.Id && x.LecturerInContests.Any(y => y.ContestId == id));
 
             var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
-
-            // TODO: Extract choosing the best submission logic to separate repository method?
+            
             var contestResults = this.GetContestResults(contest, official, isUserAdminOrLecturerInContest);
 
             var resultsInPage = NotOfficialResultsPageSize;
@@ -109,28 +108,22 @@
             {
                 resultsInPage = OfficialResultsPageSize;
             }
-
-            // calculate page information
-            contestResults.TotalResults = contestResults.Results.Count();
-            int totalResults = contestResults.TotalResults;
-            int totalPages = totalResults % resultsInPage == 0 ? totalResults / resultsInPage : (totalResults / resultsInPage) + 1;
-
+            
             if (page == null || page < 1)
             {
                 page = 1;
             }
-            else if (page > totalPages)
-            {
-                page = totalPages;
-            }
 
             // TODO: optimize if possible
             // query the paged result
-            contestResults.Results = contestResults.Results.Skip((page.Value - 1) * resultsInPage).Take(resultsInPage);
+            contestResults.Results = contestResults
+                .Results
+                .Skip((page.Value - 1) * resultsInPage)
+                .Take(resultsInPage)
+                .ToArray();
 
             // add page info to View Model
             contestResults.CurrentPage = page.Value;
-            contestResults.AllPages = totalPages;
 
             contestResults.UserIsLecturerInContest = isUserLecturerInContest;
             this.ViewBag.IsOfficial = official;
@@ -322,8 +315,6 @@
 
         private ContestResultsViewModel GetContestResults(Contest contest, bool official, bool isUserAdminOrLecturer)
         {
-            var contestStartTime = official ? contest.StartTime : contest.PracticeStartTime;
-
             var contestResults = new ContestResultsViewModel
             {
                 Id = contest.Id,
@@ -352,31 +343,34 @@
                                 ProblemName = problem.Name,
                                 ProblemOrderBy = problem.OrderBy,
                                 ShowResult = problem.ShowResults,
-                                BestSubmission = problem.Submissions
-                                    .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
-                                    .OrderByDescending(z => z.Points)
-                                    .ThenByDescending(z => z.Id)
-                                    .Select(z => new BestSubmissionViewModel { Id = z.Id, Points = z.Points, CreatedOn = z.CreatedOn })
+                                BestSubmission = problem.ParticipantScores
+                                    .Where(z => z.ParticipantId == participant.Id && z.IsOfficial == official)
+                                    .Select(z => new BestSubmissionViewModel { Id = z.SubmissionId, Points = z.Points })
                                     .FirstOrDefault()
                             })
                             .OrderBy(res => res.ProblemOrderBy)
                             .ThenBy(res => res.ProblemName)
                     })
-                    .ToList()
             };
+
+            IOrderedEnumerable<ParticipantResultViewModel> result;
 
             if (isUserAdminOrLecturer)
             {
-                contestResults.Results = contestResults.Results
-                    .OrderByDescending(x => x.AdminTotal)
-                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime));
+                result = contestResults.Results
+                    .OrderByDescending(x => x.AdminTotal);
             }
             else
             {
-                contestResults.Results = contestResults.Results
-                    .OrderByDescending(x => x.Total)
-                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime));
+                result = contestResults.Results
+                    .OrderByDescending(x => x.Total);
             }
+
+            contestResults.Results = result
+                .ThenByDescending(x => x.ProblemResults
+                    .OrderByDescending(y => y.BestSubmission?.Id)
+                    .Select(y => y.BestSubmission?.Id)
+                    .FirstOrDefault());
 
             return contestResults;
         }

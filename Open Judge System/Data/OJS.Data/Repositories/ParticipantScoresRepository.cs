@@ -42,7 +42,7 @@
                     IsOfficial = participant.IsOfficial
                 });
             }
-            else if (submission.Points > existingScore.Points)
+            else if (submission.Points >= existingScore.Points)
             {
                 existingScore.SubmissionId = submission.Id;
                 existingScore.Points = submission.Points;

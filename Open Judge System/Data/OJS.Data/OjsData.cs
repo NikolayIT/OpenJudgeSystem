@@ -138,6 +138,11 @@
                     type = typeof(ParticipantsRepository);
                 }
 
+                if (typeof(T).IsAssignableFrom(typeof(ParticipantScore)))
+                {
+                    type = typeof(ParticipantScoresRepository);
+                }
+
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
             }
 
