@@ -15,7 +15,7 @@
     {
         public DefaultMigrationConfiguration()
         {
-            this.AutomaticMigrationsEnabled = false;
+            this.AutomaticMigrationsEnabled = true;
             this.AutomaticMigrationDataLossAllowed = false;
         }
 

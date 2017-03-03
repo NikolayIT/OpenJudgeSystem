@@ -13,7 +13,7 @@
         {
             var submissions = this.GetSubmissions().AsQueryable();
 
-            var result = Startup.GetSubmissions(submissions, 0, 2);
+            var result = Startup.GetBestSubmissions(submissions, 0, 2);
 
             Assert.AreEqual(2, result.Length);
 
@@ -38,7 +38,7 @@
                 participantName: "Second",
                 points: 60);
 
-            result = Startup.GetSubmissions(submissions, 1, 2);
+            result = Startup.GetBestSubmissions(submissions, 1, 2);
 
             Assert.AreEqual(2, result.Length);
 
@@ -63,7 +63,7 @@
                 participantName: "First",
                 points: 100);
 
-            result = Startup.GetSubmissions(submissions, 2, 2);
+            result = Startup.GetBestSubmissions(submissions, 2, 2);
 
             Assert.AreEqual(1, result.Length);
 

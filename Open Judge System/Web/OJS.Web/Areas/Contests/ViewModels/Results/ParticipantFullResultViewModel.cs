@@ -21,8 +21,11 @@
             get
             {
                 return
-                    this.ProblemResults.Where(problemResult => problemResult.BestSubmission != null)
-                        .Sum(problemResult => problemResult.BestSubmission.Points);
+                    this.ProblemResults
+                        .Where(problemResult => problemResult.BestSubmission != null)
+                        .Select(problemResult => problemResult.BestSubmission.Points)
+                        .DefaultIfEmpty(0)
+                        .Sum();
             }
         }
 

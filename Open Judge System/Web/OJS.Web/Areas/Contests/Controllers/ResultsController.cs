@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Web;
+    using System.Web.Caching;
     using System.Web.Mvc;
 
     using Kendo.Mvc.Extensions;
@@ -100,31 +101,53 @@
                 this.Data.Users.All().Any(x => x.Id == this.UserProfile.Id && x.LecturerInContests.Any(y => y.ContestId == id));
 
             var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
-            
-            var contestResults = this.GetContestResults(contest, official, isUserAdminOrLecturerInContest);
 
-            var resultsInPage = NotOfficialResultsPageSize;
-            if (official)
+            var cacheKey = this.Request.Url.ToString();
+
+            ContestResultsViewModel contestResults = null;
+            if (!official && !isUserAdminOrLecturerInContest)
             {
-                resultsInPage = OfficialResultsPageSize;
-            }
-            
-            if (page == null || page < 1)
-            {
-                page = 1;
+                contestResults = this.HttpContext.Cache[cacheKey] as ContestResultsViewModel;
             }
 
-            // TODO: optimize if possible
-            // query the paged result
-            contestResults.Results = contestResults
-                .Results
-                .Skip((page.Value - 1) * resultsInPage)
-                .Take(resultsInPage)
-                .ToArray();
+            if (contestResults == null)
+            {
+                contestResults = this.GetContestResults(contest, official, isUserAdminOrLecturerInContest);
 
-            // add page info to View Model
-            contestResults.CurrentPage = page.Value;
+                var resultsInPage = NotOfficialResultsPageSize;
+                if (official)
+                {
+                    resultsInPage = OfficialResultsPageSize;
+                }
 
+                if (page == null || page < 1)
+                {
+                    page = 1;
+                }
+                
+                // query the paged result
+                contestResults.Results = contestResults
+                    .Results
+                    .Skip((page.Value - 1) * resultsInPage)
+                    .Take(resultsInPage)
+                    .ToArray();
+
+                // add page info to View Model
+                contestResults.CurrentPage = page.Value;
+
+                if (!official && !isUserAdminOrLecturerInContest)
+                {
+                    this.HttpContext.Cache.Add(
+                        key: cacheKey,
+                        value: contestResults,
+                        dependencies: null,
+                        absoluteExpiration: DateTime.Now.AddMinutes(2),
+                        slidingExpiration: Cache.NoSlidingExpiration,
+                        priority: CacheItemPriority.Normal,
+                        onRemoveCallback: null);
+                }
+            }
+            
             contestResults.UserIsLecturerInContest = isUserLecturerInContest;
             this.ViewBag.IsOfficial = official;
 
@@ -401,25 +424,28 @@
                             .Where(x => !x.IsDeleted)
                             .Select(problem => new ProblemFullResultViewModel
                             {
-                                Id = problem.Id,
                                 ProblemName = problem.Name,
                                 ProblemOrderBy = problem.OrderBy,
                                 MaximumPoints = problem.MaximumPoints,
-                                BestSubmission = problem.Submissions
+                                BestSubmission = problem.ParticipantScores
                                     .AsQueryable()
-                                    .Where(submission => submission.ParticipantId == participant.Id && !submission.IsDeleted)
-                                    .OrderByDescending(z => z.Points)
-                                    .ThenByDescending(z => z.Id)
+                                    .Where(z => z.ParticipantId == participant.Id && z.IsOfficial == official)
+                                    .Select(z => z.Submission)
                                     .Select(SubmissionFullResultsViewModel.FromSubmission)
                                     .FirstOrDefault(),
                             })
                             .OrderBy(res => res.ProblemOrderBy)
                             .ThenBy(res => res.ProblemName)
                     })
-                    .ToList()
-                    .OrderByDescending(x => x.Total)
-                    .ThenBy(x => x.GetContestTimeInSeconds(contestStartTime))
             };
+
+            contestFullResults.Results = contestFullResults.Results
+                .OrderByDescending(x => x.ParticipantUsername)
+                .ThenByDescending(x => x.ProblemResults
+                    .OrderByDescending(y => y.BestSubmission?.Id)
+                    .Select(y => y.BestSubmission?.Id)
+                    .FirstOrDefault())
+                .ToList();
 
             return contestFullResults;
         }

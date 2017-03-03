@@ -120,6 +120,16 @@
 
                 try
                 {
+                    submission.CacheTestRuns();
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+                }
+
+                try
+                {
                     data.SaveChanges();
                 }
                 catch (Exception exception)

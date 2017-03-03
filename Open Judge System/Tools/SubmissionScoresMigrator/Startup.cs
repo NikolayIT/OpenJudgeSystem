@@ -14,13 +14,53 @@
 
             var processed = 0;
             var page = 0;
-            var pageSize = 10000;
+            var pageSize = 1000;
 
             while (true)
             {
-                Console.WriteLine("Reading data...");
+                Console.WriteLine("Reading data for submissions...");
 
                 var currentSubmissions = GetSubmissions(db.Submissions, page, pageSize);
+                if (!currentSubmissions.Any())
+                {
+                    break;
+                }
+
+                page++;
+
+                foreach (var submission in currentSubmissions)
+                {
+                    submission.CacheTestRuns();
+
+                    processed++;
+
+                    if (processed % 200 == 0)
+                    {
+                        db.SaveChanges();
+                        db = GetData();
+                    }
+
+                    if (processed % 1000 == 0)
+                    {
+                        Console.WriteLine($"{processed} submissions processed");
+                    }
+                }
+            }
+
+            db.SaveChanges();
+            db = GetData();
+
+            Console.WriteLine($"{processed} submissions processed");
+
+            processed = 0;
+            page = 0;
+            pageSize = 10000;
+
+            while (true)
+            {
+                Console.WriteLine("Reading data for scores...");
+
+                var currentSubmissions = GetBestSubmissions(db.Submissions, page, pageSize);
                 if (!currentSubmissions.Any())
                 {
                     break;
@@ -67,12 +107,12 @@
         }
 
         // Public for testing
-        public static SubmissionScoreModel[] GetSubmissions(IQueryable<Submission> submissions, int page, int pageSize)
+        public static SubmissionScoreModel[] GetBestSubmissions(IQueryable<Submission> submissions, int page, int pageSize)
             => submissions
                 .Where(x => !x.IsDeleted)
                 .GroupBy(x => new { x.ParticipantId, x.ProblemId, x.Participant.IsOfficial })
                 .Select(x => x.OrderByDescending(z => z.Points).ThenByDescending(z => z.Id).FirstOrDefault())
-                .OrderByDescending(s => s.Id)
+                .OrderByDescending(x => x.Id)
                 .Skip(page * pageSize)
                 .Take(pageSize)
                 .Select(x => new SubmissionScoreModel
@@ -84,6 +124,16 @@
                     Points = x.Points,
                     IsOfficial = x.Participant.IsOfficial
                 })
+                .ToArray();
+
+        private static Submission[] GetSubmissions(IQueryable<Submission> submissions, int page, int pageSize)
+            => submissions
+                .Where(x => !x.IsDeleted)
+                .Include(x => x.TestRuns)
+                .Include(x => x.TestRuns.Select(y => y.Test))
+                .OrderBy(x => x.Id)
+                .Skip(page * pageSize)
+                .Take(pageSize)
                 .ToArray();
 
         private static OjsDbContext GetData()
