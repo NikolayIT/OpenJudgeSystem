@@ -32,6 +32,8 @@
                 {
                     submission.CacheTestRuns();
 
+                    db.Entry(submission).State = EntityState.Modified;
+
                     processed++;
 
                     if (processed % 200 == 0)
