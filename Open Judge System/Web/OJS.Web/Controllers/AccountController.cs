@@ -54,6 +54,45 @@
         }
 
         // POST: /Account/Login
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        //{
+        //    if (this.ModelState.IsValid)
+        //    {
+        //        ExternalUserViewModel externalUser = null;
+        //        try
+        //        {
+        //            externalUser = await this.GetExternalUser(model.UserName);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
+        //            return this.RedirectToAction("Index", "Home", new { area = string.Empty });
+        //        }
+
+        //        if (externalUser != null)
+        //        {
+        //            var userEntity = externalUser.Entity;
+        //            this.AddOrUpdateUser(userEntity);
+
+        //            var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+        //            if (user != null)
+        //            {
+        //                await this.SignInAsync(userEntity, model.RememberMe);
+        //                return this.RedirectToLocal(returnUrl);
+        //            }
+        //        }
+
+        //        this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return this.View(model);
+        //}
+
+        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -61,28 +100,11 @@
         {
             if (this.ModelState.IsValid)
             {
-                ExternalUserViewModel externalUser = null;
-                try
+                var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+                if (user != null)
                 {
-                    externalUser = await this.GetExternalUser(model.UserName);
-                }
-                catch (Exception)
-                {
-                    this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
-                    return this.RedirectToAction("Index", "Home", new { area = string.Empty });
-                }
-
-                if (externalUser != null)
-                {
-                    var userEntity = externalUser.Entity;
-                    this.AddOrUpdateUser(userEntity);
-
-                    var user = await this.UserManager.FindAsync(model.UserName, model.Password);
-                    if (user != null)
-                    {
-                        await this.SignInAsync(userEntity, model.RememberMe);
-                        return this.RedirectToLocal(returnUrl);
-                    }
+                    await this.SignInAsync(user, model.RememberMe);
+                    return this.RedirectToLocal(returnUrl);
                 }
 
                 this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
