@@ -80,6 +80,17 @@
             }
         }
 
+        public static void DeleteFiles(params string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
     }
 }

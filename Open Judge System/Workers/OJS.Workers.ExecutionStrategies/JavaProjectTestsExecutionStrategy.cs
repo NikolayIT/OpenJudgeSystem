@@ -76,7 +76,9 @@ public class _$TestRunner {{
         for (Class testClass: testClasses) {{
             Result result = JUnitCore.runClasses(testClass);
             for (Failure failure : result.getFailures()) {{
-                System.out.printf(""%s %s%s"", failure.getDescription().getTestClass().getSimpleName(), failure.getException(), System.lineSeparator());
+                String failureClass = failure.getDescription().getTestClass().getSimpleName();
+                String failureException = failure.getException().getMessage().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
+                System.out.printf(""%s %s%s"", failureClass, failureException, System.lineSeparator());
             }}
         }}
     }}
@@ -213,6 +215,7 @@ class Classes{{
             }
 
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, string.Empty, filePaths);
+            FileHelpers.DeleteFiles(filePaths);
         }
 
         private void AddTestRunnerTemplate(string submissionFilePath)
@@ -221,6 +224,7 @@ class Classes{{
             // otherwise no tests will be queued in the JUnitTestRunner, which would result in no tests failing.
             File.WriteAllText(this.JUnitTestRunnerSourceFilePath, this.JUnitTestRunnerCode);
             FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, this.JUnitTestRunnerSourceFilePath);
+            FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
         }
 
         private void ExtractUserClassNames(string submissionFilePath)
