@@ -33,7 +33,8 @@
 <h1 class="text-center">@ViewBag.Title</h1>
 <h3 class="text-center">
     @ViewBag.Subtitle
-
+    <br />
+    <br />
     @if (User.IsAdmin())
     {
         <span>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
@@ -125,6 +126,10 @@
             }
         </tbody>
     </table>
+}
+else
+{
+    <h2>@Resource.NoMoreResults</h2>
 }
 
 @if ((Model.CurrentPage == 1 && results.Count == resultsOnPage) || Model.CurrentPage > 1)
