@@ -5,6 +5,7 @@
 
     public abstract class AuditInfo : IAuditInfo
     {
+        [Index]
         public DateTime CreatedOn { get; set; }
 
         /// <summary>

@@ -61,7 +61,7 @@ namespace Resources.Areas.Contests.Views.Partials {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Averege result.
+        ///   Looks up a localized string similar to Average result.
         /// </summary>
         public static string Average_result {
             get {

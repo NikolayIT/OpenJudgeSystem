@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Average_result" xml:space="preserve">
-    <value>Averege result</value>
+    <value>Average result</value>
   </data>
   <data name="Contestants" xml:space="preserve">
     <value>participants</value>

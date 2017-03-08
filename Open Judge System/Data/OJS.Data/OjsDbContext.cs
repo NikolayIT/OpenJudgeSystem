@@ -39,6 +39,8 @@
 
         public virtual IDbSet<Participant> Participants { get; set; }
 
+        public virtual IDbSet<ParticipantScore> ParticipantScores { get; set; }
+
         public virtual IDbSet<ContestCategory> ContestCategories { get; set; }
 
         public virtual IDbSet<ContestQuestion> ContestQuestions { get; set; }
@@ -147,6 +149,7 @@
 
             modelBuilder.Configurations.Add(new TestRunConfiguration());
             modelBuilder.Configurations.Add(new ParticipantAnswersConfiguration());
+            modelBuilder.Configurations.Add(new ParticipantScoresConfiguration());
             modelBuilder.Configurations.Add(new UserProfileConfiguration());
 
             base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model

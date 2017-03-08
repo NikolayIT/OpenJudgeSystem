@@ -124,6 +124,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No more results to show!.
+        /// </summary>
+        public static string NoMoreResults {
+            get {
+                return ResourceManager.GetString("NoMoreResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Public results.
         /// </summary>
         public static string Public_results {
@@ -138,6 +147,15 @@ namespace Resources.Areas.Contests.Views {
         public static string Runtime_error {
             get {
                 return ResourceManager.GetString("Runtime_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show statistics.
+        /// </summary>
+        public static string ShowStatistics {
+            get {
+                return ResourceManager.GetString("ShowStatistics", resourceCulture);
             }
         }
         

@@ -5,12 +5,14 @@
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
-    ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    ViewBag.Subtitle = string.Format(Resource.Subtitle, Model.TotalResults);
+    ViewBag.Title = string.Format(Resource.Title, Model.Name, ViewBag.IsOfficial ? string.Empty : " (Practice)");
+    ViewBag.Subtitle = ViewBag.IsOfficial ? string.Empty : Resource.CachedResults;
     string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-    var resultsOnPage = ViewBag.IsOfficial 
-        ? ResultsController.OfficialResultsPageSize 
+    var resultsOnPage = ViewBag.IsOfficial
+        ? ResultsController.OfficialResultsPageSize
         : ResultsController.NotOfficialResultsPageSize;
+
+    var results = Model.Results.ToList();
 }
 
 @section Styles {
@@ -28,102 +30,109 @@
     <li class="active">@Resource.Simple_results</li>
 </ol>
 
-<h1>@ViewBag.Title</h1>
-<h2>
+<h1 class="text-center">@ViewBag.Title</h1>
+<h3 class="text-center">
     @ViewBag.Subtitle
-
+    <br />
+    <br />
     @if (User.IsAdmin())
     {
-        <span>@Html.ActionLink(Resource.Detailed_results, "Full", new {id = Model.Id, official = ViewBag.IsOfficial}, new {@class = "btn btn-primary"})</span>
-        <span>@Html.ActionLink(Resource.Export_results, "Results", "ContestsExport", new { area= "Administration", id = Model.Id, compete = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+        <span>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+        <span>@Html.ActionLink(Resource.Export_results, "Results", "ContestsExport", new { area = "Administration", id = Model.Id, compete = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
     }
-</h2>
+</h3>
 
-@if (Model.AllPages > 1)
+@if ((Model.CurrentPage == 1 && results.Count == resultsOnPage) || Model.CurrentPage > 1)
 {
-    @Html.Partial("_Pagination", new PaginationViewModel { AllPages = Model.AllPages, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
+    @Html.Partial("_SimplePagination", new SimplePaginationViewModel { HasNext = results.Count == resultsOnPage, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
 }
 
-<table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
-    <thead>
-        <tr>
-            <th>№</th>
-            <th class="text-center">@Resource.User</th>
-            <th class="text-center">@Resource.UserFullName</th>
-            @{
-                int problemCounter = 0;
-                bool displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
-                var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-            }
-            @foreach (var problem in Model.Problems)
-            {
-                if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin() || Model.UserIsLecturerInContest)
-                {
-                    <th class="text-center">
-                        @if (displayLink)
-                        {
-                            <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
-                            problemCounter++;
-                        }
-                        else
-                        {
-                            @problem.Name
-                        }
-                    </th>
-                }
-            }
-            <th class="text-center">@Resource.Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{ var results = Model.Results.ToList(); }
-        @for (int i = 0; i < results.Count; i++)
-        {
-            var participant = results[i];
-            string className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
-            <tr class="@className">
-                <td>@((Model.CurrentPage - 1) * resultsOnPage + i + 1)</td>
-                <td><a href="/Users/Profile?id=@participant.ParticipantUsername">@participant.ParticipantUsername</a></td>
-                <td>@participant.ParticipantFullName</td>
-                @foreach (var participantResult in participant.ProblemResults)
-                {
-                    if (User.IsAdmin() || Model.UserIsLecturerInContest)
-                    {
-                        if (participantResult.BestSubmission == null)
-                        {
-                            <td>0</td>
-                        }
-                        else
-                        {
-                            <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
-                        }
-                    }
-                    else if (participantResult.ShowResult)
-                    {
-                        if (participantResult.BestSubmission == null)
-                        {
-                            <td>0</td>
-                        }
-                        else
-                        {
-                            <td>@participantResult.BestSubmission.Points</td>
-                        }
-                    }
-                }
-                @if (User.IsAdmin() || Model.UserIsLecturerInContest)
-                {
-                    <td>@participant.AdminTotal</td>
-                }
-                else
-                {
-                    <td>@participant.Total</td>
-                }
-            </tr>
-        }
-    </tbody>
-</table>
-
-@if (Model.AllPages > 1)
+@if (Model.Results.Any())
 {
-    @Html.Partial("_Pagination", new PaginationViewModel { AllPages = Model.AllPages, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
+    <table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th class="text-center">@Resource.User</th>
+                <th class="text-center">@Resource.UserFullName</th>
+                @{
+                    int problemCounter = 0;
+                    bool displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
+                    var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+                }
+                @foreach (var problem in Model.Problems)
+                {
+                    if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin() || Model.UserIsLecturerInContest)
+                    {
+                        <th class="text-center">
+                            @if (displayLink)
+                        {
+                                <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
+                                problemCounter++;
+                            }
+                            else
+                            {
+                                @problem.Name
+                            }
+                        </th>
+                    }
+                }
+                <th class="text-center">@Resource.Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < results.Count; i++)
+            {
+                var participant = results[i];
+                string className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
+                <tr class="@className">
+                    <td>@((Model.CurrentPage - 1) * resultsOnPage + i + 1)</td>
+                    <td><a href="/Users/Profile?id=@participant.ParticipantUsername">@participant.ParticipantUsername</a></td>
+                    <td>@participant.ParticipantFullName</td>
+                    @foreach (var participantResult in participant.ProblemResults)
+                    {
+                        if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                        {
+                            if (participantResult.BestSubmission == null)
+                            {
+                                <td>0</td>
+                            }
+                            else
+                            {
+                                <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
+                            }
+                        }
+                        else if (participantResult.ShowResult)
+                        {
+                            if (participantResult.BestSubmission == null)
+                            {
+                                <td>0</td>
+                            }
+                            else
+                            {
+                                <td>@participantResult.BestSubmission.Points</td>
+                            }
+                        }
+                    }
+                    @if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                    {
+                        <td>@participant.AdminTotal</td>
+                    }
+                    else
+                    {
+                        <td>@participant.Total</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>@Resource.NoMoreResults</h2>
+}
+
+@if ((Model.CurrentPage == 1 && results.Count == resultsOnPage) || Model.CurrentPage > 1)
+{
+    @Html.Partial("_SimplePagination", new SimplePaginationViewModel { HasNext = results.Count == resultsOnPage, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Simple/" + Model.Id + "?page=" })
 }
