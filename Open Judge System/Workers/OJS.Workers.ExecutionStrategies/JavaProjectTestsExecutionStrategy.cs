@@ -19,6 +19,9 @@
 
         protected const string AdditionalExecutionArguments = "-Xms8m -Xmx128m";
 
+        protected const string JvmInsufficientMemoryMessage =
+            "There is insufficient memory for the Java Runtime Environment to continue.";
+
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
@@ -156,15 +159,14 @@ class Classes{{
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
-                executionContext.TimeLimit, // Java virtual machine takes more time to start up (around 100ms more)
+                executionContext.TimeLimit,
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
 
-            if (processExecutionResult.ReceivedOutput.Contains(
-                "There is insufficient memory for the Java Runtime Environment to continue."))
+            if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {
-                throw new InsufficientMemoryException("There is insufficient memory for the Java Runtime Environment to continue.");
+                throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
             }
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
