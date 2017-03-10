@@ -9,12 +9,18 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaProjectTestsExecutionStrategy : JavaZipFileCompileExecuteAndCheckExecutionStrategy
     {
         protected const string JUnitRunnerClassName = "_$TestRunner";
+
+        protected const string AdditionalExecutionArguments = "-Xms8m -Xmx128m";
+
+        protected const string JvmInsufficientMemoryMessage =
+            "There is insufficient memory for the Java Runtime Environment to continue.";
 
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
@@ -34,9 +40,12 @@
                 $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
             this.TestNames = new List<string>();
             this.UserClassNames = new List<string>();
+            this.ClassPath = $@" -classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
         }
 
         protected string JavaLibsPath { get; }
+
+        protected string ClassPath { get; }
 
         protected string JUnitTestRunnerSourceFilePath { get; }
 
@@ -53,7 +62,14 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class _$TestRunner {{
@@ -67,10 +83,28 @@ public class _$TestRunner {{
 
         Class[] testClasses = new Class[]{{{string.Join(", ", this.TestNames.Select(x => x + ".class"))}}};
 
+        InputStream originalIn = System.in;
+        PrintStream originalOut = System.out;
+
+        InputStream in = new ByteArrayInputStream(new byte[0]);
+        System.setIn(in);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        List<Result> results = new ArrayList<>();
         for (Class testClass: testClasses) {{
-            Result result = JUnitCore.runClasses(testClass);
+            results.add(JUnitCore.runClasses(testClass));
+        }}
+
+        System.setIn(originalIn);
+        System.setOut(originalOut);
+
+        for (Result result : results){{
             for (Failure failure : result.getFailures()) {{
-                System.out.printf(""%s %s%s"", failure.getDescription().getTestClass().getSimpleName(), failure.getException(), System.lineSeparator());
+                String failureClass = failure.getDescription().getTestClass().getSimpleName();
+                String failureException = failure.getException().toString().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
+                System.out.printf(""%s %s%s"", failureClass, failureException, System.lineSeparator());
             }}
         }}
     }}
@@ -100,7 +134,6 @@ class Classes{{
                 return result;
             }
 
-            executionContext.AdditionalCompilerArguments = $@"-cp ""{this.JavaLibsPath}*""";
             var compilerResult = this.DoCompile(executionContext, submissionFilePath);
 
             // Assign compiled result info to the execution result
@@ -112,10 +145,8 @@ class Classes{{
             }
 
             var arguments = new List<string>();
-
-            // Prepare execution process arguments and time measurement info
-            var classPathArgument = $@"-classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
-            arguments.Add(classPathArgument);
+            arguments.Add(this.ClassPath);
+            arguments.Add(AdditionalExecutionArguments);
 
             // Create an executor and a checker
             var executor = new RestrictedProcessExecutor();
@@ -128,10 +159,15 @@ class Classes{{
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
-                executionContext.TimeLimit * 2, // Java virtual machine takes more time to start up
+                executionContext.TimeLimit,
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
+
+            if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
+            {
+                throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
+            }
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
             var testIndex = 0;
@@ -151,6 +187,20 @@ class Classes{{
             }
 
             return result;
+        }
+
+        protected override CompileResult DoCompile(ExecutionContext executionContext, string submissionFilePath)
+        {
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
+
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                combinedArguments,
+                submissionFilePath);
+
+            return compilerResult;
         }
 
         protected override string CreateSubmissionFile(ExecutionContext executionContext)
@@ -196,6 +246,7 @@ class Classes{{
             }
 
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, string.Empty, filePaths);
+            FileHelpers.DeleteFiles(filePaths);
         }
 
         private void AddTestRunnerTemplate(string submissionFilePath)
@@ -204,6 +255,7 @@ class Classes{{
             // otherwise no tests will be queued in the JUnitTestRunner, which would result in no tests failing.
             File.WriteAllText(this.JUnitTestRunnerSourceFilePath, this.JUnitTestRunnerCode);
             FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, this.JUnitTestRunnerSourceFilePath);
+            FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
         }
 
         private void ExtractUserClassNames(string submissionFilePath)
