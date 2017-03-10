@@ -28,14 +28,14 @@
         public Submission GetSubmissionForProcessing()
         {
             var submission =
-                       this.All()
-                           .Where(x => !x.Processed && !x.Processing)
-                           .OrderBy(x => x.Id)
-                           .Include(x => x.Problem)
-                           .Include(x => x.Problem.Tests)
-                           .Include(x => x.Problem.Checker)
-                           .Include(x => x.SubmissionType)
-                           .FirstOrDefault();
+                this.All()
+                    .Where(x => !x.Processed && !x.Processing)
+                    .OrderBy(x => x.Id)
+                    .Include(x => x.Problem)
+                    .Include(x => x.Problem.Tests)
+                    .Include(x => x.Problem.Checker)
+                    .Include(x => x.SubmissionType)
+                    .FirstOrDefault();
 
             return submission;
         }
@@ -48,6 +48,7 @@
                     .OrderByDescending(x => x.CreatedOn)
                     .Select(x => new { x.Id, x.CreatedOn })
                     .FirstOrDefault();
+
             if (lastSubmission != null)
             {
                 // check if the submission was sent after the submission time limit has passed

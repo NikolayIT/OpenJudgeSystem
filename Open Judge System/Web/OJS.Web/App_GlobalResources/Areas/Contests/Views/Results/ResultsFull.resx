@@ -135,6 +135,9 @@
   <data name="Memory_limit" xml:space="preserve">
     <value>Memory limit</value>
   </data>
+  <data name="NoMoreResults" xml:space="preserve">
+    <value>No more results to show!</value>
+  </data>
   <data name="No_solution" xml:space="preserve">
     <value>No solution</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Runtime_error" xml:space="preserve">
     <value>Run-time error</value>
+  </data>
+  <data name="ShowStatistics" xml:space="preserve">
+    <value>Show statistics</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>{0} participants</value>

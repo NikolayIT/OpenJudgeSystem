@@ -39,6 +39,7 @@
         public string Name { get; set; }
 
         [Required]
+        [Index]
         public bool IsVisible { get; set; }
 
         public int? CategoryId { get; set; }

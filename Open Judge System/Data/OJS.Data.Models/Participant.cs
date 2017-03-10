@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using OJS.Data.Contracts;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Participant : AuditInfo
     {
@@ -33,6 +34,7 @@
 
         public string UserId { get; set; }
 
+        [Index]
         public bool IsOfficial { get; set; }
 
         [Required]

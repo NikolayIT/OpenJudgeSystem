@@ -135,6 +135,9 @@
   <data name="Memory_limit" xml:space="preserve">
     <value>Лимит памет</value>
   </data>
+  <data name="NoMoreResults" xml:space="preserve">
+    <value>Няма повече резултати!</value>
+  </data>
   <data name="No_solution" xml:space="preserve">
     <value>Няма решение</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Runtime_error" xml:space="preserve">
     <value>Грешка при изпълнение</value>
+  </data>
+  <data name="ShowStatistics" xml:space="preserve">
+    <value>Покажи статистики</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>{0} участници</value>

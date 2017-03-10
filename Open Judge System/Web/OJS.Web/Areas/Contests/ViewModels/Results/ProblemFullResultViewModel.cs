@@ -2,8 +2,6 @@
 {
     public class ProblemFullResultViewModel
     {
-        public int Id { get; set; }
-
         public string ProblemName { get; set; }
 
         public int ProblemOrderBy { get; set; }

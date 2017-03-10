@@ -61,6 +61,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Results are updated every 2 minutes!.
+        /// </summary>
+        public static string CachedResults {
+            get {
+                return ResourceManager.GetString("CachedResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Detailed results.
         /// </summary>
         public static string Detailed_results {
@@ -88,6 +97,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No more results to show!.
+        /// </summary>
+        public static string NoMoreResults {
+            get {
+                return ResourceManager.GetString("NoMoreResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Results.
         /// </summary>
         public static string Simple_results {
@@ -106,7 +124,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Results for {0}.
+        ///   Looks up a localized string similar to Results for {0}{1}.
         /// </summary>
         public static string Title {
             get {

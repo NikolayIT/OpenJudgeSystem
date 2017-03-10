@@ -1,0 +1,20 @@
+﻿@model OJS.Web.ViewModels.Shared.SimplePaginationViewModel
+
+<ul class="pagination" style="width: 100%">
+    @if (Model.CurrentPage == 1)
+    {
+        <li class="disabled"><a href="#">&laquo;</a></li>
+    }
+    else
+    {
+        <li><a href="@(Model.Url + (Model.CurrentPage - 1))">&laquo;</a></li>
+    }
+    @if (!Model.HasNext)
+    {
+        <li class="disabled pull-right"><a href="#">&raquo;</a></li>
+    }
+    else
+    {
+        <li class="pull-right"><a href="@(Model.Url + (Model.CurrentPage + 1))">&raquo;</a></li>
+    }
+</ul>

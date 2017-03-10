@@ -110,6 +110,26 @@
 
                 try
                 {
+                    data.ParticipantScores.SaveParticipantScore(submission);
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
+                }
+
+                try
+                {
+                    submission.CacheTestRuns();
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+                }
+
+                try
+                {
                     data.SaveChanges();
                 }
                 catch (Exception exception)
