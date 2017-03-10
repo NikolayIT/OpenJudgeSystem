@@ -17,7 +17,7 @@
     {
         protected const string JUnitRunnerClassName = "_$TestRunner";
 
-        protected const string AdditionalExecutionArguments = "-Xms16m -Xmx128m";
+        protected const string AdditionalExecutionArguments = "-Xms8m -Xmx128m";
 
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
@@ -59,7 +59,14 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class _$TestRunner {{
@@ -73,11 +80,27 @@ public class _$TestRunner {{
 
         Class[] testClasses = new Class[]{{{string.Join(", ", this.TestNames.Select(x => x + ".class"))}}};
 
+        InputStream originalIn = System.in;
+        PrintStream originalOut = System.out;
+
+        InputStream in = new ByteArrayInputStream(new byte[0]);
+        System.setIn(in);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        List<Result> results = new ArrayList<>();
         for (Class testClass: testClasses) {{
-            Result result = JUnitCore.runClasses(testClass);
+            results.add(JUnitCore.runClasses(testClass));
+        }}
+
+        System.setIn(originalIn);
+        System.setOut(originalOut);
+
+        for (Result result : results){{
             for (Failure failure : result.getFailures()) {{
                 String failureClass = failure.getDescription().getTestClass().getSimpleName();
-                String failureException = failure.getException().getMessage().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
+                String failureException = failure.getException().toString().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
                 System.out.printf(""%s %s%s"", failureClass, failureException, System.lineSeparator());
             }}
         }}
@@ -137,6 +160,12 @@ class Classes{{
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
+
+            if (processExecutionResult.ReceivedOutput.Contains(
+                "There is insufficient memory for the Java Runtime Environment to continue."))
+            {
+                throw new InsufficientMemoryException("There is insufficient memory for the Java Runtime Environment to continue.");
+            }
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
             var testIndex = 0;
