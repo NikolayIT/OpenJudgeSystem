@@ -9,31 +9,40 @@
     using Microsoft.Build.Evaluation;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
     public class CSharpProjectTestsExecutionStrategy : ExecutionStrategy
     {
-        private const string ZippedSubmissionName = "Submission.zip";
-        private const string CompeteTest = "Test";
-        private const string TrialTest = "Test.000";
-        private const string CsProjFileSearchPattern = "*.csproj";
-        private const string ProjectFileExtenstion = ".csproj";
-        private const string DllFileExtension = ".dll";
-        private const string NUnitReference =
+        protected const string ZippedSubmissionName = "Submission.zip";
+        protected const string CompeteTest = "Test";
+        protected const string TrialTest = "Test.000";
+        protected const string CsProjFileSearchPattern = "*.csproj";
+        protected const string NUnitReference =
             "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+
+        protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
         private static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*(.+).cs";
 
-        private readonly List<string> testNames;
-
-        public CSharpProjectTestsExecutionStrategy(string nUnitConsoleRunnerPath)
+        public CSharpProjectTestsExecutionStrategy(
+            string nUnitConsoleRunnerPath,
+            Func<CompilerType, string> getCompilerPathFunc)
         {
+            if (!File.Exists(nUnitConsoleRunnerPath))
+            {
+                throw new ArgumentException(
+                    $"NUnitConsole not found in: {nUnitConsoleRunnerPath}",
+                    nameof(nUnitConsoleRunnerPath));
+            }
+
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
-            this.testNames = new List<string>();
+            this.GetCompilerPathFunc = getCompilerPathFunc;
+            this.TestNames = new List<string>();
         }
 
         ~CSharpProjectTestsExecutionStrategy()
@@ -41,9 +50,13 @@
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
-        protected string NUnitConsoleRunnerPath { get; set; }
+        protected string NUnitConsoleRunnerPath { get;}
 
-        protected string WorkingDirectory { get; set; }
+        protected Func<CompilerType, string> GetCompilerPathFunc { get; }
+
+        protected string WorkingDirectory { get; }
+
+        protected List<string> TestNames { get; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -61,12 +74,38 @@
 
             this.ExtractTestNames(executionContext.Tests);
 
+            // Modify Project file
             var project = new Project(csProjFilePath);
             this.CorrectProjectReferences(executionContext.Tests, project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
 
-            result.IsCompiledSuccessfully = true;
+            // Write Test files
+            var compileDirectory = Path.GetDirectoryName(csProjFilePath);
+            var index = 0;
+            var testPaths = new List<string>();
+            foreach (var test in executionContext.Tests)
+            {
+                var testName = this.TestNames[index++];
+                var testedCodePath = $"{compileDirectory}\\{testName}.cs";
+                testPaths.Add(testedCodePath);
+                File.WriteAllText(testedCodePath, test.Input);
+            }
+
+            // Compiling
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, csProjFilePath);
+
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+            result.CompilerComment = compilerResult.CompilerComment;
+
+            if (!compilerResult.IsCompiledSuccessfully)
+            {
+                return result;
+            }
+
+            // Delete tests before execution so the user can't acces them
+            FileHelpers.DeleteFiles(testPaths.ToArray());
 
             var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
@@ -74,42 +113,19 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result = this.RunUnitTests(executionContext, executor, checker, result, csProjFilePath);
+            result = this.RunUnitTests(executionContext, executor, checker, result, compilerResult.OutputFile);
             return result;
         }
 
-        private ExecutionResult RunUnitTests(
+        protected virtual ExecutionResult RunUnitTests(
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string csProjFilePath)
+            string compiledFile)
         {
-            var compileDirectory = Path.GetDirectoryName(csProjFilePath);
-            var index = 0;
-
-            foreach (var test in executionContext.Tests)
-            {
-                var testName = this.testNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}.cs";
-                File.WriteAllText(testedCodePath, test.Input);
-            }
-
-            var project = new Project(csProjFilePath);
-            var didCompile = project.Build();
-            project.ProjectCollection.UnloadAllProjects();
-
-            if (!didCompile)
-            {
-                result.IsCompiledSuccessfully = false;
-                return result;
-            }
-
-            var fileName = Path.GetFileName(csProjFilePath);
-            fileName = fileName.Replace(ProjectFileExtenstion, DllFileExtension);
-            var dllPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, fileName);
-            var arguments = new List<string> { dllPath };
-            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
+            var arguments = new List<string> { compiledFile };
+            arguments.AddRange(AdditionalExecutionArguments.Split(' '));
 
             var processExecutionResult = executor.Execute(
                 this.NUnitConsoleRunnerPath,
@@ -123,8 +139,8 @@
 
             foreach (var test in executionContext.Tests)
             {
-                var message = "Test Passed!";
-                var testFile = this.testNames[testIndex++];
+                var message = "yes";
+                var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))
                 {
                     message = errorsByFiles[testFile];
@@ -137,7 +153,7 @@
             return result;
         }
 
-        private Dictionary<string, string> GetTestErrors(string receivedOutput)
+        protected virtual Dictionary<string, string> GetTestErrors(string receivedOutput)
         {
             var errorsByFiles = new Dictionary<string, string>();
             var errorRegex = new Regex(ErrorMessageRegex);
@@ -156,7 +172,7 @@
 
         private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
-            foreach (var testName in this.testNames)
+            foreach (var testName in this.TestNames)
             {
                 project.AddItem("Compile", $"{testName}.cs");
             }
@@ -193,13 +209,13 @@
                 if (test.IsTrialTest)
                 {
                     var testNumber = trialTests < 10 ? $"00{trialTests}" : $"0{trialTests}";
-                    this.testNames.Add($"{TrialTest}.{testNumber}");
+                    this.TestNames.Add($"{TrialTest}.{testNumber}");
                     trialTests++;
                 }
                 else
                 {
                     var testNumber = competeTests < 10 ? $"00{competeTests}" : $"0{competeTests}";
-                    this.testNames.Add($"{CompeteTest}.{testNumber}");
+                    this.TestNames.Add($"{CompeteTest}.{testNumber}");
                     competeTests++;
                 }
             }

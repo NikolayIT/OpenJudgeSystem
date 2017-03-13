@@ -158,6 +158,7 @@
                 case CompilerType.CSharp:
                     return Settings.CSharpCompilerPath;
                 case CompilerType.MsBuild:
+                case CompilerType.MsBuildLibrary:
                     return Settings.MsBuildExecutablePath;
                 case CompilerType.CPlusPlusGcc:
                     return Settings.CPlusPlusGccCompilerPath;
@@ -262,10 +263,10 @@
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
-                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
-                    executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(

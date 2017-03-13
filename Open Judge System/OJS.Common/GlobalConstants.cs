@@ -71,6 +71,7 @@
         public const string JavaCompiledFileExtension = ".class";
         public const string ZipFileExtension = ".zip";
         public const string ExecutableFileExtension = ".exe";
+        public const string ClassLibraryFileExtension = ".dll";
 
         // News
         public const int NewsTitleMaxLength = 200;
