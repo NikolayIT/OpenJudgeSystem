@@ -14,6 +14,7 @@
         private ICollection<ProblemResource> resources;
         private ICollection<Submission> submissions;
         private ICollection<Tag> tags;
+        private ICollection<ParticipantScore> participantScores;
 
         public Problem()
         {
@@ -21,6 +22,7 @@
             this.resources = new HashSet<ProblemResource>();
             this.submissions = new HashSet<Submission>();
             this.tags = new HashSet<Tag>();
+            this.participantScores = new HashSet<ParticipantScore>();
         }
 
         [Key]
@@ -66,6 +68,7 @@
         public byte[] SolutionSkeleton { get; set; }
 
         [DefaultValue(true)]
+        [Index]
         public bool ShowResults { get; set; }
 
         [DefaultValue(false)]
@@ -93,6 +96,12 @@
         {
             get { return this.tags; }
             set { this.tags = value; }
+        }
+
+        public virtual ICollection<ParticipantScore> ParticipantScores
+        {
+            get { return this.participantScores; }
+            set { this.participantScores = value; }
         }
     }
 }

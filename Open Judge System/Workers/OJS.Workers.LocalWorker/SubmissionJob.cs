@@ -110,6 +110,26 @@
 
                 try
                 {
+                    data.ParticipantScores.SaveParticipantScore(submission);
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
+                }
+
+                try
+                {
+                    submission.CacheTestRuns();
+                }
+                catch (Exception exception)
+                {
+                    this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                    submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+                }
+
+                try
+                {
                     data.SaveChanges();
                 }
                 catch (Exception exception)
@@ -241,6 +261,12 @@
                 case ExecutionStrategyType.CSharpTestRunner:
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
+                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    break;
+                case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
+                    executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
@@ -250,6 +276,12 @@
                     executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,
                         GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.JavaProjectTestsExecutionStrategy:
+                    executionStrategy = new JavaProjectTestsExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        GetCompilerPath,
+                        Settings.JavaLibsPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(

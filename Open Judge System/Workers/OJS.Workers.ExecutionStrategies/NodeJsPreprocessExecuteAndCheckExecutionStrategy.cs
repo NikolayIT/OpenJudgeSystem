@@ -52,7 +52,7 @@
             }
 
             this.NodeJsExecutablePath = nodeJsExecutablePath;
-            this.UnderscoreModulePath = this.ProcessModulePath(underscoreModulePath);
+            this.UnderscoreModulePath = FileHelpers.ProcessModulePath(underscoreModulePath);
             this.BaseTimeUsed = baseTimeUsed;
             this.BaseMemoryUsed = baseMemoryUsed;
         }
@@ -249,8 +249,6 @@ process.stdin.on('end', function() {
 
             return processExecutionResult;
         }
-
-        protected string ProcessModulePath(string path) => path.Replace('\\', '/');
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)
         {

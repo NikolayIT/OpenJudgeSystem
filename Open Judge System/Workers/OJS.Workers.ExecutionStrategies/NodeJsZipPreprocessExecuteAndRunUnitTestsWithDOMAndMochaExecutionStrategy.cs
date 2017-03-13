@@ -5,8 +5,6 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Ionic.Zip;
-
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
@@ -67,9 +65,9 @@
                     nameof(ecmaScriptImportPluginPath));
             }
 
-            this.BrowserifyModulePath = this.ProcessModulePath(browserifyModulePath);
-            this.BabelifyModulePath = this.ProcessModulePath(babelifyModulePath);
-            this.EcmaScriptImportPluginPath = this.ProcessModulePath(ecmaScriptImportPluginPath);
+            this.BrowserifyModulePath = FileHelpers.ProcessModulePath(browserifyModulePath);
+            this.BabelifyModulePath = FileHelpers.ProcessModulePath(babelifyModulePath);
+            this.EcmaScriptImportPluginPath = FileHelpers.ProcessModulePath(ecmaScriptImportPluginPath);
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
@@ -109,7 +107,7 @@ stream.on('end', function(){
     afterBundling(userBundleCode);
     run();
 });
-browserify(" + UserInputPlaceholder + @")
+browserify('" + UserInputPlaceholder + @"')
     .transform('" + this.BabelifyModulePath + @"', { plugins: ['" + this.EcmaScriptImportPluginPath + @"']})
     .bundle()
     .pipe(stream);
@@ -164,7 +162,7 @@ function afterBundling() {
 
             // Copy and unzip the file (save file to WorkingDirectory)
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = this.FindProgramEntryPath();
+            this.ProgramEntryPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, AppJsFileName);
 
             // Replace the placeholders in the JS Template with the real values
             var codeToExecute = this.PreprocessJsSubmission(
@@ -216,7 +214,6 @@ function afterBundling() {
             return testsCode;
         }
 
-        // TODO Extract methods to the Helper class
         protected virtual string CreateSubmissionFile(ExecutionContext executionContext)
         {
             var trimmedAllowedFileExtensions = executionContext.AllowedFileExtensions?.Trim();
@@ -236,52 +233,11 @@ function afterBundling() {
         protected virtual string PrepareSubmissionFile(byte[] submissionFileContent)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
-
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
-
-            this.ConvertContentToZip(submissionFilePath);
-
-            this.UnzipFile(submissionFilePath, this.WorkingDirectory);
-
+            FileHelpers.ConvertContentToZip(submissionFilePath);
+            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            File.Delete(submissionFilePath);
             return submissionFilePath;
-        }
-
-        protected virtual void ConvertContentToZip(string submissionZipFilePath)
-        {
-            using (var zipFile = new ZipFile(submissionZipFilePath))
-            {
-                zipFile.Save();
-            }
-        }
-
-        protected virtual void UnzipFile(string fileToUnzip, string outputDirectory)
-        {
-            using (var zipFile = ZipFile.Read(fileToUnzip))
-            {
-                foreach (var entry in zipFile)
-                {
-                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
-
-            File.Delete(fileToUnzip);
-        }
-
-        protected virtual string FindProgramEntryPath()
-        {
-            var files = new List<string>(
-                Directory.GetFiles(
-                    this.WorkingDirectory,
-                    AppJsFileName,
-                    SearchOption.AllDirectories));
-            if (files.Count == 0)
-            {
-                throw new ArgumentException(
-                    $"'{AppJsFileName}' file not found in output directory!",
-                    nameof(AppJsFileName));
-            }
-
-            return this.ProcessModulePath("\"" + files[0] + "\"");
         }
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)

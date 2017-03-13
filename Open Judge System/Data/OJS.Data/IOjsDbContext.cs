@@ -20,6 +20,8 @@
 
         IDbSet<Participant> Participants { get; }
 
+        IDbSet<ParticipantScore> ParticipantScores { get; }
+
         IDbSet<ContestCategory> ContestCategories { get; set; }
 
         IDbSet<ContestQuestion> ContestQuestions { get; set; }

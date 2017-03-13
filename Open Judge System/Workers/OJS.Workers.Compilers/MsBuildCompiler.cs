@@ -6,8 +6,6 @@
     using System.Linq;
     using System.Text;
 
-    using Ionic.Zip;
-
     using OJS.Common;
     using OJS.Common.Extensions;
 
@@ -65,7 +63,7 @@
         {
             var arguments = new StringBuilder();
 
-            UnzipFile(inputFile, this.inputPath);
+            FileHelpers.UnzipFile(inputFile, this.inputPath);
             var solutionOrProjectFile = this.FindSolutionOrProjectFile();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
@@ -93,17 +91,6 @@
             arguments.Append(additionalArguments);
 
             return arguments.ToString().Trim();
-        }
-
-        private static void UnzipFile(string fileToUnzip, string outputDirectory)
-        {
-            using (var zipFile = ZipFile.Read(fileToUnzip))
-            {
-                foreach (var entry in zipFile)
-                {
-                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
         }
 
         private static void RestoreNugetPackages(string solution)

@@ -26,6 +26,7 @@
         .Columns(columns =>
         {
             columns.Bound(x => x.Id);
+            columns.Bound(x => x.CategoryName);
             columns.Bound(x => x.Name);
             columns.Bound(x => x.StartTime).Format("{0:dd/MM/yyyy HH:mm}");
             columns.Bound(x => x.EndTime).Format("{0:dd/MM/yyyy HH:mm}");

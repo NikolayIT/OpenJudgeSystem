@@ -43,6 +43,7 @@
                     PracticeEndTime = contest.PracticeEndTime,
                     IsVisible = contest.IsVisible,
                     CategoryId = contest.CategoryId.Value,
+                    CategoryName = contest.Category.Name,
                     ContestPassword = contest.ContestPassword,
                     PracticePassword = contest.PracticePassword,
                     NewIpPassword = contest.NewIpPassword,
@@ -153,6 +154,11 @@
         [UIHint("CategoryDropDown")]
         [DefaultValue(null)]
         public int? CategoryId { get; set; }
+
+        [Display(Name = "Category_name", ResourceType = typeof(Resource))]
+        [ExcludeFromExcel]
+        [UIHint("SingleLineText")]
+        public string CategoryName { get; set; }
 
         [Display(Name = "Submision_types", ResourceType = typeof(Resource))]
         [ExcludeFromExcel]

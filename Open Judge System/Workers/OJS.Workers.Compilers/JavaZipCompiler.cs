@@ -5,8 +5,6 @@
     using System.Linq;
     using System.Text;
 
-    using Ionic.Zip;
-
     using OJS.Common;
     using OJS.Common.Extensions;
 
@@ -52,7 +50,7 @@
             arguments.Append(additionalArguments);
             arguments.Append(' ');
 
-            UnzipFile(inputFile, this.workingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.workingDirectory);
 
             // Input files arguments
             var filesToCompile =
@@ -81,17 +79,6 @@
             }
 
             return mainClassFile;
-        }
-
-        private static void UnzipFile(string fileToUnzip, string outputDirectory)
-        {
-            using (var zipFile = ZipFile.Read(fileToUnzip))
-            {
-                foreach (var entry in zipFile)
-                {
-                    entry.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
         }
     }
 }

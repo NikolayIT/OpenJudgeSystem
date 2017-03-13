@@ -130,7 +130,7 @@
     <value>{0} участници</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Резултати за {0}</value>
+    <value>Резултати за {0}{1}</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Общо</value>
@@ -144,5 +144,11 @@
   <data name="Export_results" xml:space="preserve">
     <value>Експорт на резултатите</value>
     <comment>Експорт на резултатите</comment>
+  </data>
+  <data name="CachedResults" xml:space="preserve">
+    <value>Резултатите се обновяват на всеки 2 минути!</value>
+  </data>
+  <data name="NoMoreResults" xml:space="preserve">
+    <value>Няма повече резултати!</value>
   </data>
 </root>

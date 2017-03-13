@@ -16,11 +16,12 @@
         public DefaultMigrationConfiguration()
         {
             this.AutomaticMigrationsEnabled = true;
-            this.AutomaticMigrationDataLossAllowed = true;
+            this.AutomaticMigrationDataLossAllowed = false;
         }
 
         protected override void Seed(OjsDbContext context)
         {
+            this.SeedSubmissionTypes(context);
             if (context.Roles.Any())
             {
                 return;
@@ -313,6 +314,36 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
+                new SubmissionType
+                {
+                    Name = "C# Unit Tests",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "C# Project Tests",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "Java Project Tests",
+                    CompilerType = CompilerType.JavaZip,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.JavaProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                }
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);

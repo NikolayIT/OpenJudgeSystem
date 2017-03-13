@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Text;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -88,6 +89,20 @@
             set { this.testRuns = value; }
         }
 
+        /// <summary>
+        /// Cache field for submission test runs representing each test run result as an integer equal to <see cref="OJS.Common.Models.TestRunResultType"/>.
+        /// The first integer represent the number of trial tests associated with this submissions.
+        /// This field optimized database queries.
+        /// 
+        /// Example: 300011002 means:
+        /// - Three trial tests runs with 0 result (Correct Answer)
+        /// - Five normal test runs with:
+        ///   - Two 1 results (Wrong Answer)
+        ///   - Two 0 results (Correct Answer)
+        ///   - One 2 result (Time Limit)
+        /// </summary>
+        public string TestRunsCache { get; set; }
+
         public bool Processed { get; set; }
 
         public bool Processing { get; set; }
@@ -123,6 +138,29 @@
             get
             {
                 return this.Problem.Tests.Count(x => !x.IsTrialTest);
+            }
+        }
+
+        public void CacheTestRuns()
+        {
+            if (this.TestRuns.Any())
+            {
+                var result = new StringBuilder();
+                var trialTests = 0;
+
+                foreach (var testRun in this.TestRuns
+                    .OrderByDescending(tr => tr.Test.IsTrialTest)
+                    .ThenBy(tr => tr.Id))
+                {
+                    if (testRun.Test.IsTrialTest)
+                    {
+                        trialTests++;
+                    }
+
+                    result.Append((int)testRun.ResultType);
+                }
+
+                this.TestRunsCache = $"{trialTests}{result.ToString()}";
             }
         }
     }
