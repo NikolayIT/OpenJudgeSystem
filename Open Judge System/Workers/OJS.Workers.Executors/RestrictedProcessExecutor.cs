@@ -122,7 +122,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process error output
                 try
                 {
-                    errorOutputTask.Wait(100);
+                    errorOutputTask.Wait(300);
                 }
                 catch (AggregateException ex)
                 {
@@ -132,7 +132,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process output
                 try
                 {
-                    processOutputTask.Wait(100);
+                    processOutputTask.Wait(300);
                 }
                 catch (AggregateException ex)
                 {
