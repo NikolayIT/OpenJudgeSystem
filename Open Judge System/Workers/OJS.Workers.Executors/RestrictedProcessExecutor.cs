@@ -116,7 +116,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Memory Sampling Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 // Close the task that gets the process error output
@@ -126,7 +126,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Error Output Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 // Close the task that gets the process output
@@ -136,7 +136,7 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Standard Output Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 Debug.Assert(restrictedProcess.HasExited, "Restricted process didn't exit!");
