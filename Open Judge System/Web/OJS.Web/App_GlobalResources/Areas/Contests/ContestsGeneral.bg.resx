@@ -180,4 +180,7 @@
   <data name="User_is_not_registered_for_exam" xml:space="preserve">
     <value>Не сте регистрирани за това състезание!</value>
   </data>
+  <data name="User_has_not_processed_submission_for_problem" xml:space="preserve">
+    <value>Имате необработено решение за тази задача. Моля изчакайте решението да бъде обработено.</value>
+  </data>
 </root>
