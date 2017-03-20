@@ -39,7 +39,7 @@
             var participants = this.data.Participants
                 .All()
                 .Where(x => x.IsOfficial && x.ContestId == contestId.Value && x.Answers.Any(a => a.Answer == answer));
-            
+
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
@@ -181,14 +181,16 @@
                             .OrderByDescending(z => z.Points)
                             .Select(z => z.Points)
                             .FirstOrDefault())
-                        .DefaultIfEmpty(0) 
+                        .DefaultIfEmpty(0)
                         .Sum() / participant.Contest.Problems
                             .Where(p => !p.IsDeleted)
                             .Select(p => (double)p.MaximumPoints)
                             .DefaultIfEmpty(1)
                             .Sum() * 100
                 })
-                .ToList();
+                .ToList()
+                .GroupBy(p => p.UserId)
+                .Select(pg => pg.OrderByDescending(p => p.ResultsInPercentages).FirstOrDefault());
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
         }

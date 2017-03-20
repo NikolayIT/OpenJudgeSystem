@@ -301,6 +301,11 @@
             this.ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
 
+            if (!this.ModelState.IsValid)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+            }
+
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
                 throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -311,9 +316,9 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
-            if (!this.ModelState.IsValid)
+            if (this.Data.Submissions.HasUserNotProcessedSubmissionForProblem(problem.Id, this.UserProfile.Id))
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.User_has_not_processed_submission_for_problem);
             }
 
             this.Data.Submissions.Add(new Submission

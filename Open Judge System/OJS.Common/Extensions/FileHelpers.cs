@@ -59,6 +59,38 @@
             return ProcessModulePath(files[0]);
         }
 
+        public static void AddFilesToZipArchive(string archivePath, string pathInArchive, params string[] filePaths)
+        {
+            using (var zipFile = new ZipFile(archivePath))
+            {
+                foreach (var filePath in filePaths)
+                {
+                    zipFile.AddFile(filePath, pathInArchive);
+                }
+
+                zipFile.Save();
+            }
+        }
+
+        public static IEnumerable<string> GetFilePathsFromZip(string archivePath)
+        {
+            using (ZipFile file = new ZipFile(archivePath))
+            {
+                return file.EntryFileNames;
+            }
+        }
+
+        public static void DeleteFiles(params string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
     }
 }
