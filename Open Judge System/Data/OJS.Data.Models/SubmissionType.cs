@@ -14,10 +14,12 @@
     public class SubmissionType
     {
         private ICollection<Contest> contests;
+        private ICollection<Problem> problems;
 
         public SubmissionType()
         {
             this.contests = new HashSet<Contest>();
+            this.problems = new HashSet<Problem>();
         }
 
         [Key]
@@ -65,6 +67,12 @@
         {
             get { return this.contests; }
             set { this.contests = value; }
+        }
+
+        public virtual ICollection<Problem> Problems
+        {
+            get { return this.problems; }
+            set { this.problems = value; }
         }
 
         [NotMapped]

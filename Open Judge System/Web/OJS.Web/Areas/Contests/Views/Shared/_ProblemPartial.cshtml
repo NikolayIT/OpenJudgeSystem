@@ -79,6 +79,7 @@
                 },
                 new { id = "problem_" + Model.ProblemId }))
             {
+                @Html.AntiForgeryToken()
                 @Html.HiddenFor(x => x.ProblemId)
                 <div id="submisionDataFields">
                     <div id="SourceCodeInputFields_@Model.ProblemId">
@@ -160,7 +161,7 @@
                             .DataTextField("Text")
                             .DataValueField("Value")
                             .Events(ev => ev.Change("onSubmissionTypeChange").DataBound("onSubmissionTypeChange").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                            .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ContestId }))
+                            .DataSource(data => data.Read("GetAllowedSubmissionTypes", ViewBag.CompeteType, new { id = Model.ProblemId }))
                             .HtmlAttributes(new { id = "dropdown_" + Model.ProblemId }))
                         <input type="submit" value="@Resource.Submit" class="k-button submision-submit-button" />
                     </div>

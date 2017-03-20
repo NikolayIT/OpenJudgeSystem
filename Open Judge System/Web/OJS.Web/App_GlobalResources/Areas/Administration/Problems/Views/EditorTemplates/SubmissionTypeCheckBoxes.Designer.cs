@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration.Contests.Views.EditorTemplates {
+namespace Resources.Areas.Administration.Problems.Views.EditorTemplates {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Resources.Areas.Administration.Contests.Views.EditorTemplates {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Contests.Views.EditorTemplates.S" +
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Problems.Views.EditorTemplates.S" +
                             "ubmissionTypeCheckBoxes", typeof(SubmissionTypeCheckBoxes).Assembly);
                     resourceMan = temp;
                 }

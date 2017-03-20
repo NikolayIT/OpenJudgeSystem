@@ -150,4 +150,10 @@
   <data name="Resources_not_complete" xml:space="preserve">
     <value>Ресурсите трябва да бъдат попълнени изцяло!</value>
   </data>
+  <data name="Problem_not_found" xml:space="preserve">
+    <value>Не може да бъде намерена задачата!</value>
+  </data>
+  <data name="Select_one_submission_type" xml:space="preserve">
+    <value>Изберете поне един вид решение!</value>
+  </data>
 </root>

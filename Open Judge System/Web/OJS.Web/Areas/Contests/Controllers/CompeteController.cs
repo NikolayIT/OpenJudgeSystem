@@ -80,14 +80,14 @@
         }
 
         /// <summary>
-        /// Validates if the selected submission type from the participant is allowed in the current contest
+        /// Validates if the selected submission type from the participant is allowed in the current problem
         /// </summary>
         /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
-        /// <param name="contest">The contest in which the user participate</param>
+        /// <param name="problem">The problem which the user is attempting to solve</param>
         [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
+        public static void ValidateSubmissionType(int submissionTypeId, Problem problem)
         {
-            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            if (problem.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
@@ -279,6 +279,7 @@
         /// <returns>Returns confirmation if the submission was correctly processed.</returns>
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
@@ -299,7 +300,7 @@
             }
 
             this.ValidateContest(participant.Contest, official);
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -356,7 +357,7 @@
             }
 
             this.ValidateContest(participant.Contest, official);
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, participant.Contest);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
@@ -502,21 +503,21 @@
         }
 
         /// <summary>
-        /// Gets the allowed submission types for a contest.
+        /// Gets the allowed submission types for a problem.
         /// </summary>
-        /// <param name="id">The contest id.</param>
+        /// <param name="id">The problem id.</param>
         /// <returns>Returns the allowed submission types as JSON.</returns>
         public ActionResult GetAllowedSubmissionTypes(int id)
         {
             // TODO: Implement this method with only one database query (this.Data.SubmissionTypes.All().Where(x => x.ContestId == id)
-            var contest = this.Data.Contests.GetById(id);
+            var problem = this.Data.Problems.GetById(id);
 
-            if (contest == null)
+            if (problem == null)
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            var submissionTypesSelectListItems = contest
+            var submissionTypesSelectListItems = problem
                                                     .SubmissionTypes
                                                     .ToList()
                                                     .Select(x => new

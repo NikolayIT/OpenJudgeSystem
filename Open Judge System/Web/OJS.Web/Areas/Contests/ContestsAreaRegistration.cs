@@ -5,7 +5,7 @@
     using OJS.Common;
     using OJS.Web.Areas.Contests.Controllers;
 
-    public class ContestsAreaAreaRegistration : AreaRegistration
+    public class ContestsAreaRegistration : AreaRegistration
     {
         public override string AreaName => "Contests";
 

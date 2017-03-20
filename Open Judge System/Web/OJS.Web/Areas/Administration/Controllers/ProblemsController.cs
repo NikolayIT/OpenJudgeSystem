@@ -24,6 +24,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.Submission;
+    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
@@ -103,9 +104,6 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var checkers = this.Data.Checkers.All()
-                .Select(x => x.Name);
-
             var lastOrderBy = -1;
             var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == id);
 
@@ -127,6 +125,7 @@
                 ShowResults = true,
                 SourceCodeSizeLimit = 16384,
                 ShowDetailedFeedback = false,
+                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
             };
 
             return this.View(problem);
@@ -156,22 +155,25 @@
                 }
             }
 
+            if (!this.IsValidProblem(problem))
+            {
+                problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
+                return this.View(problem);
+            }
+
             if (this.ModelState.IsValid)
             {
-                var newProblem = new Problem
+                var newProblem = problem.GetEntityModel();
+                newProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+
+                problem.SubmissionTypes.ForEach(s =>
                 {
-                    Name = problem.Name,
-                    ContestId = id,
-                    MaximumPoints = problem.MaximumPoints,
-                    MemoryLimit = problem.MemoryLimit,
-                    TimeLimit = problem.TimeLimit,
-                    SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
-                    ShowResults = problem.ShowResults,
-                    ShowDetailedFeedback = problem.ShowDetailedFeedback,
-                    OrderBy = problem.OrderBy,
-                    Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker),
-                    SolutionSkeleton = problem.SolutionSkeletonData
-                };
+                    if (s.IsChecked)
+                    {
+                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                        newProblem.SubmissionTypes.Add(submission);
+                    }
+                });
 
                 if (problem.Resources != null && problem.Resources.Any())
                 {
@@ -210,7 +212,6 @@
             }
 
             problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-
             return this.View(problem);
         }
 
@@ -240,6 +241,10 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            this.Data.SubmissionTypes.All()
+                .Select(SubmissionTypeViewModel.ViewModel)
+                .ForEach(SubmissionTypeViewModel.ApplySelectedTo(selectedProblem));
+
             var checkers = this.Data.Checkers
                 .All()
                 .AsQueryable()
@@ -264,18 +269,27 @@
             {
                 var existingProblem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
 
-                existingProblem.Name = problem.Name;
-                existingProblem.MaximumPoints = problem.MaximumPoints;
-                existingProblem.TimeLimit = problem.TimeLimit;
-                existingProblem.MemoryLimit = problem.MemoryLimit;
-                existingProblem.SourceCodeSizeLimit = problem.SourceCodeSizeLimit;
-                existingProblem.ShowResults = problem.ShowResults;
-                existingProblem.ShowDetailedFeedback = problem.ShowDetailedFeedback;
-                existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
-                existingProblem.OrderBy = problem.OrderBy;
-                existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
-                existingProblem.ContestId = problem.ContestId;
+                if (existingProblem == null)
+                {
+                    this.TempData.Add(GlobalConstants.DangerMessage, GlobalResource.Problem_not_found);
+                    return this.RedirectToAction(GlobalConstants.Index);
+                }
 
+                existingProblem = problem.GetEntityModel(existingProblem);
+                existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+                existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
+                existingProblem.SubmissionTypes.Clear();
+
+                problem.SubmissionTypes.ForEach(s =>
+                {
+                    if (s.IsChecked)
+                    {
+                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                        existingProblem.SubmissionTypes.Add(submission);
+                    }
+                });
+
+                this.Data.Problems.Update(existingProblem);
                 this.Data.SaveChanges();
 
                 this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
@@ -709,6 +723,19 @@
             var entry = this.Data.Context.Entry(submission);
             entry.Property(pr => pr.Processed).IsModified = true;
             entry.Property(pr => pr.Processing).IsModified = true;
+        }
+
+        private bool IsValidProblem(DetailedProblemViewModel model)
+        {
+            bool isValid = true;
+
+            if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
+            {
+                this.ModelState.AddModelError("SelectedSubmissionTypes", GlobalResource.Select_one_submission_type);
+                isValid = false;
+            }
+
+            return isValid;
         }
     }
 }

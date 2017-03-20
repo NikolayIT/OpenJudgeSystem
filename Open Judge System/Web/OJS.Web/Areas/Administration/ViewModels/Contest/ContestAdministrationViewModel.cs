@@ -13,7 +13,6 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
 
     using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
 
@@ -23,7 +22,6 @@
 
         public ContestAdministrationViewModel()
         {
-            this.SubmissionTypes = new List<SubmissionTypeViewModel>();
             this.allowedIps = new List<IpAdministrationViewModel>();
         }
 
@@ -55,7 +53,6 @@
                     Description = contest.Description,
                     LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                     OrderBy = contest.OrderBy,
-                    SelectedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
                 };
@@ -159,14 +156,6 @@
         [ExcludeFromExcel]
         [UIHint("SingleLineText")]
         public string CategoryName { get; set; }
-
-        [Display(Name = "Submision_types", ResourceType = typeof(Resource))]
-        [ExcludeFromExcel]
-        [UIHint("SubmissionTypeCheckBoxes")]
-        public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; }
-
-        [ExcludeFromExcel]
-        public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
 
         [Display(Name = "Позволени IP-та")]
         public string AllowedIps { get; set; }

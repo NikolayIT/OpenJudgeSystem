@@ -123,7 +123,7 @@
                 .All()
                 .Where(c => !c.IsDeleted &&
                             c.IsVisible &&
-                            c.SubmissionTypes.Any(s => s.Id == submissionType.Id))
+                            c.Problems.Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
                 .OrderBy(x => x.OrderBy)
                 .Select(ContestViewModel.FromContest);
 
