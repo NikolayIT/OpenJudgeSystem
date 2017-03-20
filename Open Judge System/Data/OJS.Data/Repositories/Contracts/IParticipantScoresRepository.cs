@@ -6,5 +6,7 @@
     public interface IParticipantScoresRepository : IRepository<ParticipantScore>
     {
         void SaveParticipantScore(Submission submission);
+
+        void RecalculateParticipantScore(int participantId, int problemId);
     }
 }

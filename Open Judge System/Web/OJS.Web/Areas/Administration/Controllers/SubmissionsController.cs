@@ -252,6 +252,12 @@
             this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
             this.Data.Submissions.Delete(id);
+            
+            if (submission.ParticipantId.HasValue && submission.ProblemId.HasValue)
+            {
+                this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+            }
+
             this.Data.SaveChanges();
 
             return this.RedirectToAction(GlobalConstants.Index);

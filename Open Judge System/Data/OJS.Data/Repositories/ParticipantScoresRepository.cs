@@ -42,11 +42,27 @@
                     IsOfficial = participant.IsOfficial
                 });
             }
+            else if (submission == null)
+            {
+                this.DbSet.Remove(existingScore);
+            }
             else if (submission.Points >= existingScore.Points)
             {
                 existingScore.SubmissionId = submission.Id;
                 existingScore.Points = submission.Points;
             }
+        }
+
+        public void RecalculateParticipantScore(int participantId, int problemId)
+        {
+            var submission = this.Context
+                .Submissions
+                .Where(x => x.ParticipantId == participantId && x.ProblemId == problemId && !x.IsDeleted)
+                .OrderBy(x => x.Points)
+                .ThenByDescending(x => x.Id)
+                .FirstOrDefault();
+
+            this.SaveParticipantScore(submission);
         }
     }
 }
