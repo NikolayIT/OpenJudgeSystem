@@ -337,6 +337,16 @@
                 }
 
                 submission.Points = points;
+
+                var participantScore = this.Data.ParticipantScores
+                    .All()
+                    .Where(x => x.SubmissionId == submissionResult.Id)
+                    .FirstOrDefault();
+
+                if (participantScore != null)
+                {
+                    participantScore.Points = points;
+                }
             }
 
             this.Data.SaveChanges();
@@ -776,6 +786,9 @@
 
         private void RetestSubmissions(int problemId)
         {
+            this.Data.ParticipantScores.DeleteParticipantScores(problemId);
+            this.Data.SaveChanges();
+
             this.Data.Submissions.Update(
                 submission => submission.ProblemId == problemId,
                 submission => new Submission { Processed = false, Processing = false });

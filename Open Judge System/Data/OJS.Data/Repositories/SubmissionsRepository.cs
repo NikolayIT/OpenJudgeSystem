@@ -72,7 +72,7 @@
 
             return submissions;
         }
-
+        
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>
             this.All().Any(s => s.ProblemId == problemId && s.Participant.UserId == userId && !s.Processed);
     }

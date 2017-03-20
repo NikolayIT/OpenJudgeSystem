@@ -458,6 +458,9 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
+            this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
+            this.Data.SaveChanges();
+
             this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
             this.Data.SaveChanges();
 

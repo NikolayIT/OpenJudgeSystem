@@ -252,6 +252,8 @@
             this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
             this.Data.Submissions.Delete(id);
+
+            this.Data.SaveChanges();
             
             if (submission.ParticipantId.HasValue && submission.ProblemId.HasValue)
             {
@@ -274,6 +276,18 @@
             foreach (GridModelType submission in submissions)
             {
                 this.Data.Submissions.Delete(submission.Id);
+            }
+
+            this.Data.SaveChanges();
+            
+            foreach (GridModelType submission in submissions)
+            {
+                var dbSubmission = this.Data.Submissions.GetById(submission.Id);
+
+                if (dbSubmission.ParticipantId.HasValue && dbSubmission.ProblemId.HasValue)
+                {
+                    this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
+                }
             }
 
             this.Data.SaveChanges();
@@ -320,6 +334,9 @@
                     this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
+
+                this.Data.ParticipantScores.DeleteParticipantScore(submission);
+                this.Data.SaveChanges();
 
                 submission.Processed = false;
                 submission.Processing = false;
