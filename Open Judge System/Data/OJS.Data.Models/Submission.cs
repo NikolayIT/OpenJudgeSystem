@@ -83,6 +83,9 @@
 
         public string CompilerComment { get; set; }
 
+        [Index]
+        public bool? IsPublic { get; set; }
+
         public virtual ICollection<TestRun> TestRuns
         {
             get { return this.testRuns; }

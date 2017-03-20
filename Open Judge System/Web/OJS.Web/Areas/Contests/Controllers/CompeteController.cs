@@ -46,6 +46,20 @@
         }
 
         /// <summary>
+        /// Validates if the selected submission type from the participant is allowed in the current contest
+        /// </summary>
+        /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
+        /// <param name="contest">The contest in which the user participate</param>
+        [NonAction]
+        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
+        {
+            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
+            }
+        }
+
+        /// <summary>
         /// Validates if a contest is correctly found. If the user wants to practice or compete in the contest
         /// checks if the contest can be practiced or competed.
         /// </summary>
@@ -76,20 +90,6 @@
             if (!official && !contest.CanBePracticed)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_practiced);
-            }
-        }
-
-        /// <summary>
-        /// Validates if the selected submission type from the participant is allowed in the current contest
-        /// </summary>
-        /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
-        /// <param name="contest">The contest in which the user participate</param>
-        [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
-        {
-            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
         }
 
@@ -321,6 +321,8 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.User_has_not_processed_submission_for_problem);
             }
 
+            var contest = participant.Contest;
+
             this.Data.Submissions.Add(new Submission
             {
                 ContentAsString = participantSubmission.Content,
@@ -328,6 +330,10 @@
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
                 IpAddress = this.Request.UserHostAddress,
+                IsPublic = ((participant.IsOfficial && contest.ContestPassword == null) ||
+                     (!participant.IsOfficial && contest.PracticePassword == null))
+                    && contest.IsVisible && !contest.IsDeleted
+                    && problem.ShowResults
             });
 
             this.Data.SaveChanges();
