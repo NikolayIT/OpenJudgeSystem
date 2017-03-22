@@ -31,18 +31,8 @@
                 foreach (var problem in allProblems)
                 {
                     problem.SubmissionTypes = problem.Contest.SubmissionTypes;
-                    //var submissionTypes = problem.Contest.SubmissionTypes;
-                    //foreach (var contestSubmissionType in submissionTypes)
-                    //{
-                    //    problem.SubmissionTypes.Add(contestSubmissionType);
-                    //    contestSubmissionType.Problems.Add(problem);
-                    //    db.Entry(contestSubmissionType).State = EntityState.Modified;
-                    //}
-
                     db.Entry(problem).State = EntityState.Modified;
-
                     Console.WriteLine($"Problem with id = {problem.Id} modified");
-
                     processed++;
 
                     if (processed % 500 == 0)
@@ -123,12 +113,6 @@
         {
             var db = new OjsDbContext();
             db.Database.CommandTimeout = 10 * 60 * 5;
-
-            //db.DbContext.Configuration.AutoDetectChangesEnabled = false;
-            //db.DbContext.Configuration.ValidateOnSaveEnabled = false;
-            //db.DbContext.Configuration.ProxyCreationEnabled = false;
-            //db.DbContext.Configuration.LazyLoadingEnabled = false;
-
             return db;
         }
     }

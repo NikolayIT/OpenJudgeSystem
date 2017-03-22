@@ -104,30 +104,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var lastOrderBy = -1;
-            var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == id);
-
-            if (lastProblem.Any())
-            {
-                lastOrderBy = lastProblem.Max(x => x.OrderBy);
-            }
-
-            var problem = new DetailedProblemViewModel
-            {
-                Name = "Име",
-                MaximumPoints = 100,
-                TimeLimit = 100,
-                MemoryLimit = 16777216,
-                AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name, Selected = checker.Name.Contains("Trim") }),
-                OrderBy = lastOrderBy + 1,
-                ContestId = contest.Id,
-                ContestName = contest.Name,
-                ShowResults = true,
-                SourceCodeSizeLimit = 16384,
-                ShowDetailedFeedback = false,
-                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
-            };
-
+            var problem = this.PrepareProblemViewModelForCreate(contest);
             return this.View(problem);
         }
 
@@ -139,6 +116,25 @@
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
+            if (contest == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
+                return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (problem == null)
+            {
+                problem = this.PrepareProblemViewModelForCreate(contest);
+                problem.AvailableCheckers = this.Data.Checkers.All()
+                .Select(checker => new SelectListItem
+                {
+                    Text = checker.Name,
+                    Value = checker.Name
+                });
+                return this.View(problem);
             }
 
             if (problem.Resources != null && problem.Resources.Any())
@@ -155,41 +151,40 @@
                 }
             }
 
-            if (!this.IsValidProblem(problem))
+            if (!this.IsValidProblem(problem) || !this.ModelState.IsValid)
             {
-                problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
+                problem.AvailableCheckers = this.Data.Checkers.All()
+                    .Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
                 return this.View(problem);
             }
 
-            if (this.ModelState.IsValid)
+            var newProblem = problem.GetEntityModel();
+            newProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+
+            problem.SubmissionTypes.ForEach(s =>
             {
-                var newProblem = problem.GetEntityModel();
-                newProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
-
-                problem.SubmissionTypes.ForEach(s =>
+                if (s.IsChecked)
                 {
-                    if (s.IsChecked)
-                    {
-                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
-                        newProblem.SubmissionTypes.Add(submission);
-                    }
-                });
-
-                if (problem.Resources != null && problem.Resources.Any())
-                {
-                    this.AddResourcesToProblem(newProblem, problem.Resources);
+                    var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                    newProblem.SubmissionTypes.Add(submission);
                 }
+            });
 
-                if (testArchive != null && testArchive.ContentLength != 0)
+            if (problem.Resources != null && problem.Resources.Any())
+            {
+                this.AddResourcesToProblem(newProblem, problem.Resources);
+            }
+
+            if (testArchive != null && testArchive.ContentLength != 0)
+            {
+                try
                 {
-                    try
-                    {
-                        this.AddTestsToProblem(newProblem, testArchive);
-                    }
-                    catch (Exception ex)
-                    {
-                        // TempData is not working with return this.View
-                        var systemMessages = new SystemMessageCollection
+                    this.AddTestsToProblem(newProblem, testArchive);
+                }
+                catch (Exception ex)
+                {
+                    // TempData is not working with return this.View
+                    var systemMessages = new SystemMessageCollection
                                 {
                                     new SystemMessage
                                     {
@@ -198,21 +193,22 @@
                                         Importance = 0
                                     }
                                 };
-                        this.ViewBag.SystemMessages = systemMessages;
-                        problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-                        return this.View(problem);
-                    }
+                    this.ViewBag.SystemMessages = systemMessages;
+                    problem.AvailableCheckers = this.Data.Checkers.All()
+                        .Select(checker => new SelectListItem
+                        {
+                            Text = checker.Name,
+                            Value = checker.Name
+                        });
+                    return this.View(problem);
                 }
-
-                this.Data.Problems.Add(newProblem);
-                this.Data.SaveChanges();
-
-                this.TempData.AddInfoMessage(GlobalResource.Problem_added);
-                return this.RedirectToAction("Problem", "Tests", new { newProblem.Id });
             }
 
-            problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-            return this.View(problem);
+            this.Data.Problems.Add(newProblem);
+            this.Data.SaveChanges();
+
+            this.TempData.AddInfoMessage(GlobalResource.Problem_added);
+            return this.RedirectToAction("Problem", "Tests", new { newProblem.Id });
         }
 
         [HttpGet]
@@ -230,10 +226,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var selectedProblem = this.Data.Problems.All()
-                .Where(x => x.Id == id)
-                .Select(DetailedProblemViewModel.FromProblem)
-                .FirstOrDefault();
+            var selectedProblem = this.PrepareProblemViewModelForEdit(id.Value);
 
             if (selectedProblem == null)
             {
@@ -265,39 +258,57 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            if (problem != null && this.ModelState.IsValid)
+            var existingProblem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+
+            if (existingProblem == null)
             {
-                var existingProblem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
-
-                if (existingProblem == null)
-                {
-                    this.TempData.Add(GlobalConstants.DangerMessage, GlobalResource.Problem_not_found);
-                    return this.RedirectToAction(GlobalConstants.Index);
-                }
-
-                existingProblem = problem.GetEntityModel(existingProblem);
-                existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
-                existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
-                existingProblem.SubmissionTypes.Clear();
-
-                problem.SubmissionTypes.ForEach(s =>
-                {
-                    if (s.IsChecked)
-                    {
-                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
-                        existingProblem.SubmissionTypes.Add(submission);
-                    }
-                });
-
-                this.Data.Problems.Update(existingProblem);
-                this.Data.SaveChanges();
-
-                this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
-                return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
+                this.TempData.Add(GlobalConstants.DangerMessage, GlobalResource.Problem_not_found);
+                return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            problem.AvailableCheckers = this.Data.Checkers.All().Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-            return this.View(problem);
+            if (problem == null)
+            {
+                problem = this.PrepareProblemViewModelForEdit(id);
+                problem.AvailableCheckers = this.Data.Checkers.All()
+                .Select(checker => new SelectListItem
+                {
+                    Text = checker.Name,
+                    Value = checker.Name
+                });
+                return this.View(problem);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                problem = this.PrepareProblemViewModelForEdit(id);
+                problem.AvailableCheckers = this.Data.Checkers.All()
+                .Select(checker => new SelectListItem
+                {
+                    Text = checker.Name,
+                    Value = checker.Name
+                });
+                return this.View(problem);
+            }
+
+            existingProblem = problem.GetEntityModel(existingProblem);
+            existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+            existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
+            existingProblem.SubmissionTypes.Clear();
+
+            problem.SubmissionTypes.ForEach(s =>
+            {
+                if (s.IsChecked)
+                {
+                    var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                    existingProblem.SubmissionTypes.Add(submission);
+                }
+            });
+
+            this.Data.Problems.Update(existingProblem);
+            this.Data.SaveChanges();
+
+            this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
+            return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
         }
 
         [HttpGet]
@@ -723,6 +734,49 @@
             var entry = this.Data.Context.Entry(submission);
             entry.Property(pr => pr.Processed).IsModified = true;
             entry.Property(pr => pr.Processing).IsModified = true;
+        }
+
+        private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
+        {
+            return this.Data.Problems.All()
+                .Where(x => x.Id == id)
+                .Select(DetailedProblemViewModel.FromProblem)
+                .FirstOrDefault();
+        }
+
+        private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
+        {
+            var lastOrderBy = -1;
+            var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == contest.Id);
+
+            if (lastProblem.Any())
+            {
+                lastOrderBy = lastProblem.Max(x => x.OrderBy);
+            }
+
+            var problem = new DetailedProblemViewModel
+            {
+                Name = "Име",
+                MaximumPoints = 100,
+                TimeLimit = 100,
+                MemoryLimit = 16777216,
+                AvailableCheckers = this.Data.Checkers.All()
+                    .Select(checker => new SelectListItem
+                    {
+                        Text = checker.Name,
+                        Value = checker.Name,
+                        Selected = checker.Name.Contains("Trim")
+                    }),
+                OrderBy = lastOrderBy + 1,
+                ContestId = contest.Id,
+                ContestName = contest.Name,
+                ShowResults = true,
+                SourceCodeSizeLimit = 16384,
+                ShowDetailedFeedback = false,
+                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
+            };
+
+            return problem;
         }
 
         private bool IsValidProblem(DetailedProblemViewModel model)
