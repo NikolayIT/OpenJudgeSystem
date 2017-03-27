@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿ namespace OJS.Workers.LocalWorker
 {
     using System;
     using System.Linq;
@@ -161,6 +161,7 @@
                 case CompilerType.MsBuildLibrary:
                     return Settings.MsBuildExecutablePath;
                 case CompilerType.CPlusPlusGcc:
+                case CompilerType.CPlusPlusZip:
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:
                 case CompilerType.JavaZip:
@@ -258,6 +259,9 @@
             {
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
+                    executionStrategy = new CPlusPlusZipFileExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpTestRunner:
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
