@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
+    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
@@ -207,10 +208,11 @@
         /// </summary>
         /// <param name="id">Id for edited test</param>
         /// <param name="test">Edited test posted information</param>
+        /// <param name="retestTask">Value indicating if the problem should be retested</param>
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful edit otherwise to /Administration/Test/ with proper error message</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, TestViewModel test)
+        public ActionResult Edit(int id, TestViewModel test, bool retestTask)
         {
             if (test != null && this.ModelState.IsValid)
             {
@@ -228,15 +230,28 @@
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
-                existingTest.InputData = test.InputData;
-                existingTest.OutputData = test.OutputData;
-                existingTest.OrderBy = test.OrderBy;
-                existingTest.IsTrialTest = test.Type == TestType.Trial;
-                existingTest.IsOpenTest = test.Type == TestType.Open;
+                using (var scope = new TransactionScope())
+                {
+                    existingTest.InputData = test.InputData;
+                    existingTest.OutputData = test.OutputData;
+                    existingTest.OrderBy = test.OrderBy;
+                    existingTest.IsTrialTest = test.Type == TestType.Trial;
+                    existingTest.IsOpenTest = test.Type == TestType.Open;
 
-                this.Data.SaveChanges();
+                    var testIds = this.Data.Tests.All().Where(t => t.ProblemId == existingTest.ProblemId).Select(t => t.Id).ToList();
+                    if (testIds.Any())
+                    {
+                        this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
+                    }
 
-                this.RetestSubmissions(existingTest.ProblemId);
+                    if (retestTask)
+                    {
+                        this.RetestSubmissions(existingTest.ProblemId);
+                    }
+
+                    this.Data.SaveChanges();
+                    scope.Complete();
+                }
 
                 this.TempData.AddInfoMessage(Resource.Test_edited_successfully);
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
@@ -638,7 +653,7 @@
             }
 
             TestsParseResult parsedTests;
-        
+
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
@@ -683,7 +698,7 @@
                 this.Data.SaveChanges();
                 scope.Complete();
             }
-         
+
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });

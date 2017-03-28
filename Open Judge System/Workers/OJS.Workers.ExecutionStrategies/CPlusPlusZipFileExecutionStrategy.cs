@@ -2,11 +2,12 @@
 {
     using System;
     using System.IO;
-    using Checkers;
-    using Executors;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
+
+    using OJS.Workers.Checkers;
+    using OJS.Workers.Executors;
 
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
     {
