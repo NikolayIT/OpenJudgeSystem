@@ -30,8 +30,8 @@
         {
             var result = new ExecutionResult();
 
-            string submissionDestination =
-                $@"{this.WorkingDirectory}\{SubmissionName}";
+            string submissionDestination = $@"{this.WorkingDirectory}\{SubmissionName}";
+
             File.WriteAllBytes(submissionDestination, executionContext.FileContent);
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);

@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Text;
+
     using OJS.Common;
     using OJS.Common.Extensions;
 
@@ -12,8 +13,6 @@
         private const string CPlusPlusClassFileExtension = ".cpp";
         private const string CPlusPlusHeaderFileExtension = ".h";
         private const string CClassFileExtension = ".c";
-
-        private static readonly Random Rand = new Random();
 
         private readonly string workingDirectory;
 
