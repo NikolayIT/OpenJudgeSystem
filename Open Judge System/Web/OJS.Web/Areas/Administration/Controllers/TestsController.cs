@@ -7,7 +7,6 @@
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
@@ -208,11 +207,10 @@
         /// </summary>
         /// <param name="id">Id for edited test</param>
         /// <param name="test">Edited test posted information</param>
-        /// <param name="retestTask">Value indicating if the problem should be retested</param>
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful edit otherwise to /Administration/Test/ with proper error message</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, TestViewModel test, bool retestTask)
+        public ActionResult Edit(int id, TestViewModel test)
         {
             if (test != null && this.ModelState.IsValid)
             {
@@ -230,28 +228,15 @@
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
-                using (var scope = new TransactionScope())
-                {
-                    existingTest.InputData = test.InputData;
-                    existingTest.OutputData = test.OutputData;
-                    existingTest.OrderBy = test.OrderBy;
-                    existingTest.IsTrialTest = test.Type == TestType.Trial;
-                    existingTest.IsOpenTest = test.Type == TestType.Open;
+                existingTest.InputData = test.InputData;
+                existingTest.OutputData = test.OutputData;
+                existingTest.OrderBy = test.OrderBy;
+                existingTest.IsTrialTest = test.Type == TestType.Trial;
+                existingTest.IsOpenTest = test.Type == TestType.Open;
 
-                    var testIds = this.Data.Tests.All().Where(t => t.ProblemId == existingTest.ProblemId).Select(t => t.Id).ToList();
-                    if (testIds.Any())
-                    {
-                        this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
-                    }
+                this.Data.SaveChanges();
 
-                    if (retestTask)
-                    {
-                        this.RetestSubmissions(existingTest.ProblemId);
-                    }
-
-                    this.Data.SaveChanges();
-                    scope.Complete();
-                }
+                this.RetestSubmissions(existingTest.ProblemId);
 
                 this.TempData.AddInfoMessage(Resource.Test_edited_successfully);
                 return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
