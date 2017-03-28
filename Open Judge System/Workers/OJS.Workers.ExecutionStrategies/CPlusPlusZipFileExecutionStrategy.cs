@@ -2,41 +2,85 @@
 {
     using System;
     using System.IO;
+    using Checkers;
+    using Executors;
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
 
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
     {
-        private const string SubmissionName = "UserSubmission";
+        private const string SubmissionName = "UserSubmission.zip";
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
         public CPlusPlusZipFileExecutionStrategy(Func<CompilerType, string> getCompilerPath)
         {
             this.getCompilerPathFunc = getCompilerPath;
-            this.WorkingDirectory = @"D:\CSharpUnitTestsRunnerTestingFolder";
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+        }
+
+        ~CPlusPlusZipFileExecutionStrategy()
+        {
+            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory,true);
+            Log(Directory.Exists(this.WorkingDirectory).ToString());
         }
 
         public string WorkingDirectory { get; set; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            File.WriteAllText(@"D:\Log.txt", "Enter!");
             var result = new ExecutionResult();
 
             string submissionDestination =
                 $@"{this.WorkingDirectory}\{SubmissionName}";
-            File.WriteAllBytes($@"{submissionDestination}", executionContext.FileContent);
+            File.WriteAllBytes(submissionDestination, executionContext.FileContent);
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
 
-            var compilationResult = this.Compile(executionContext.CompilerType, compilerPath, string.Empty, submissionDestination);
+            var compilationResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                executionContext.AdditionalCompilerArguments,
+                submissionDestination);
+
             if (!compilationResult.IsCompiledSuccessfully)
             {
+                Log(compilationResult.CompilerComment);
                 return result;
             }
 
-            File.WriteAllText(@"D:\Log.txt","Success!");
+            result.IsCompiledSuccessfully = true;
+
+           var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            foreach (var test in executionContext.Tests)
+            {
+                var processExecutionResult = executor.Execute(
+                    compilationResult.OutputFile,
+                    test.Input,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit);
+
+                var testResults = this.ExecuteAndCheckTest(
+                    test, 
+                    processExecutionResult, 
+                    checker,
+                    processExecutionResult.ReceivedOutput);
+
+                result.TestResults.Add(testResults);
+            }
+          
             return result;
         }
+
+        private static void Log(string errorToLog)
+        {
+            File.AppendAllText(@"D:\Log.txt", errorToLog + "\n");
+        }
     }
+
 }

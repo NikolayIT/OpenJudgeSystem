@@ -40,17 +40,13 @@
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
-            File.AppendAllText(@"D:\Log.txt", inputFile);
-            // Input file argument
-            arguments.Append($"\"{inputFile}\"");
-            arguments.Append(' ');
-
             // Output file argument
             arguments.Append($"-o \"{outputFile}\"");
             arguments.Append(' ');
 
             // Additional compiler arguments
             arguments.Append(additionalArguments);
+            arguments.Append(' ');
             FileHelpers.UnzipFile(inputFile, this.workingDirectory);
 
             // Input files arguments
@@ -70,29 +66,13 @@
                 arguments.Append(' ');
             }
 
-            File.WriteAllText(@"D:\Log.txt",arguments.ToString());
             return arguments.ToString();
         }
 
-        public override string ChangeOutputFileAfterCompilation(string outputFile)
+        public override string GetOutputFileName(string inputFileName)
         {
-            var newOutputFile = Directory
-                .EnumerateFiles(this.workingDirectory)
-                .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
-            if (newOutputFile == null)
-            {
-                // ??? create -> delete -> move into deleted dir?
-                var tempDir = DirectoryHelpers.CreateTempDirectory();
-                Directory.Delete(tempDir);
-                Directory.Move(this.workingDirectory, tempDir);
-                return tempDir;
-            }
-
-            var tempFile = Path.GetTempFileName() + Rand.Next();
-            var tempExeFile = $"{tempFile}{GlobalConstants.ExecutableFileExtension}";
-            File.Move(newOutputFile, tempExeFile);
-            File.Delete(tempFile);
-            return tempExeFile;
+            inputFileName = inputFileName.Replace(".zip", ".exe");
+            return inputFileName;
         }
     }
 }
