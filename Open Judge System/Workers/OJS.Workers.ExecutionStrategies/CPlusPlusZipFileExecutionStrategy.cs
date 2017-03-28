@@ -4,7 +4,7 @@
     using System.IO;
     using Checkers;
     using Executors;
-    using OJS.Common;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
@@ -22,7 +22,6 @@
         ~CPlusPlusZipFileExecutionStrategy()
         {
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory,true);
-            Log(Directory.Exists(this.WorkingDirectory).ToString());
         }
 
         public string WorkingDirectory { get; set; }
@@ -45,7 +44,6 @@
 
             if (!compilationResult.IsCompiledSuccessfully)
             {
-                Log(compilationResult.CompilerComment);
                 return result;
             }
 
@@ -76,11 +74,5 @@
           
             return result;
         }
-
-        private static void Log(string errorToLog)
-        {
-            File.AppendAllText(@"D:\Log.txt", errorToLog + "\n");
-        }
     }
-
 }
