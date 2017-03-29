@@ -7,7 +7,6 @@
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
@@ -653,7 +652,7 @@
             }
 
             TestsParseResult parsedTests;
-
+        
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
@@ -698,7 +697,7 @@
                 this.Data.SaveChanges();
                 scope.Complete();
             }
-
+         
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });
@@ -739,20 +738,20 @@
                 {
                     if (test.IsTrialTest)
                     {
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString);
                         trialTestCounter++;
                     }
                     else if (test.IsOpenTest)
                     {
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.in.txt", openTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.out.txt", openTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry(string.Format("test.open.{0:D3}.in.txt", openTestCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.open.{0:D3}.out.txt", openTestCounter), test.OutputDataAsString);
                         openTestCounter++;
                     }
                     else
                     {
-                        zipFile.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString);
+                        zipFile.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString);
                         testCounter++;
                     }
                 }
