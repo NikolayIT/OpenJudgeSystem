@@ -15,7 +15,7 @@
     using OJS.Workers.Compilers;
     using OJS.Workers.Executors;
 
-    public class CSharpUnitTestsRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
+    public class CSharpUnitTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
         private const string TestedCode = "TestedCode.cs";
 
@@ -23,7 +23,7 @@
         private const string TestResultsRegex =
             @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
 
-        public CSharpUnitTestsRunnerExecutionStrategy(
+        public CSharpUnitTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
             : base(

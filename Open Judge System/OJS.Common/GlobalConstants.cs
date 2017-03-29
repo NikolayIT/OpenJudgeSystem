@@ -1,5 +1,6 @@
 ﻿namespace OJS.Common
 {
+    using System;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
@@ -121,5 +122,8 @@
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
+
+        // Class Delimiter
+        public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
     }
 }

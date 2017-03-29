@@ -646,7 +646,7 @@
 
                 try
                 {
-                    parsedTests = ZippedTestsManipulator.Parse(memory);
+                    parsedTests = ZippedTestsParser.Parse(memory);
                 }
                 catch
                 {
@@ -673,7 +673,7 @@
                     }
                 }
 
-                ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
+                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
 
                 if (retestTask)
                 {

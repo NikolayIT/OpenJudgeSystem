@@ -1,7 +1,6 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -9,43 +8,39 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Common;
 
     public class MsBuildLibraryCompiler : Compiler
     {
         protected string InputFile { get; private set; }
 
-        protected string OutputPath { get; private set; }
-
-        public override string RenameInputFile(string inputFile)
+        public override string GetOutputFileName(string inputFileName)
         {
-            this.InputFile = inputFile;
-            var inputFolder = Path.GetDirectoryName(inputFile);
-            this.OutputPath = $"{inputFolder}\\_Compiled";
-            Directory.CreateDirectory(this.OutputPath);
-            return inputFile;
+            var inputFolder = Path.GetDirectoryName(inputFileName);
+            var outputPath = $"{inputFolder}\\_Compiled";
+            Directory.CreateDirectory(outputPath);
+            return outputPath;
         }
 
-        public override string ChangeOutputFileAfterCompilation(string outputFile)
+        public override string ChangeOutputFileAfterCompilation(string outputFolder)
         {
             var compiledFileName = Path.GetFileNameWithoutExtension(this.InputFile);
             compiledFileName = $"{compiledFileName}{GlobalConstants.ClassLibraryFileExtension}";
             var newOutputFile = Directory
-                .EnumerateFiles(this.OutputPath)
+                .EnumerateFiles(outputFolder)
                 .FirstOrDefault(x => x.EndsWith(compiledFileName));
             if (newOutputFile == null)
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
                 Directory.Delete(tempDir);
-                Directory.Move(this.OutputPath, tempDir);
+                Directory.Move(outputFolder, tempDir);
                 return tempDir;
             }
 
             return newOutputFile;
         }
 
-        public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
+        public override string BuildCompilerArguments(string inputFile, string outputFolder, string additionalArguments)
         {
             var arguments = new StringBuilder();
 
@@ -53,7 +48,7 @@
             arguments.Append($"\"{inputFile}\" ");
 
             // Output path argument
-            arguments.Append($"/p:OutputPath=\"{this.OutputPath}\" ");
+            arguments.Append($"/p:OutputPath=\"{outputFolder}\" ");
 
             // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
@@ -94,6 +89,8 @@
                 inputFile = newInputFilePath;
             }
 
+            this.InputFile = inputFile;
+
             // Build compiler arguments
             var outputFile = this.GetOutputFileName(inputFile);
             var arguments = this.BuildCompilerArguments(inputFile, outputFile, additionalArguments);
@@ -124,7 +121,7 @@
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
             // Check results and return CompilerResult instance
-            if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
+            if (!Directory.Exists(outputFile) && !compilerOutput.IsSuccessful)
             {
                 // Compiled file is missing
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");

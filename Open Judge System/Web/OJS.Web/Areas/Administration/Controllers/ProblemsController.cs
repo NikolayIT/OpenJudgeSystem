@@ -716,14 +716,14 @@
                 testArchive.InputStream.CopyTo(memory);
                 memory.Position = 0;
 
-                var parsedTests = ZippedTestsManipulator.Parse(memory);
+                var parsedTests = ZippedTestsParser.Parse(memory);
 
                 if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
                 {
                     throw new ArgumentException(GlobalResource.Invalid_tests);
                 }
 
-                ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
+                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
             }
         }
 
