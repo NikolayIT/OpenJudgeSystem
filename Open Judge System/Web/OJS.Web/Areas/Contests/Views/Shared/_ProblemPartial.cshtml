@@ -132,7 +132,7 @@
                                     form.attr("action", newFormAction)
                                         .attr("data-ajax", "false")
                                         .unbind("submit")
-                                        .bind("submit");
+                                        .bind("submit",submitHandler());
 
                                     fileUpload.show();
                                     codeArea.hide();
@@ -148,7 +148,7 @@
 
                                     form.attr("action", newFormAction)
                                         .attr("data-ajax", "true")
-                                        .unbind("submit", submitHandler);
+                                        .unbind("submit");
 
                                     fileUpload.hide();
                                     codeArea.show();
