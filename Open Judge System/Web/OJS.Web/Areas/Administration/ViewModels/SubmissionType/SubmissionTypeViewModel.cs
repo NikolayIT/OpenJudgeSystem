@@ -1,9 +1,10 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.SubmissionType
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
+    using Ninject.Infrastructure.Language;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;

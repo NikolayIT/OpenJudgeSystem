@@ -32,7 +32,6 @@
                 foreach (var problem in allProblems)
                 {
                     problem.SubmissionTypes = problem.Contest.SubmissionTypes;
-                    db.Entry(problem).State = EntityState.Modified;
                     Console.WriteLine($"Problem with id = {problem.Id} modified");
                     processed++;
 
@@ -85,12 +84,6 @@
 
                     if (processed % 500 == 0)
                     {
-                        db.SaveChanges();
-                        db = GetData();
-                    }
-
-                    if (processed % 500 == 0)
-                    {
                         Console.WriteLine($"{processed} problems checked");
                     }
                 }
@@ -113,7 +106,7 @@
         private static OjsDbContext GetData()
         {
             var db = new OjsDbContext();
-            db.Database.CommandTimeout = 10 * 60 * 5;
+            db.Database.CommandTimeout = 10 * 60;
             return db;
         }
     }

@@ -12,8 +12,6 @@
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.CreatedOn)
-        @Html.ValidationMessage(GlobalConstants.DateTimeError)
         @Html.HiddenFor(m => m.ContestName)
 
         <div class="row">
