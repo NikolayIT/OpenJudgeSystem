@@ -13,6 +13,7 @@
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
+    using Models;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -321,11 +322,14 @@
                 .Select(s => new
                 {
                     s.Id,
+                    s.ParticipantId,
                     CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
                     AllTestRuns = s.TestRuns.Count(),
                     MaxPoints = s.Problem.MaximumPoints
                 })
                 .ToList();
+
+            var topResults = new Dictionary<int, ParticipantScoreModel>();
 
             foreach (var submissionResult in submissionResults)
             {
@@ -338,15 +342,47 @@
 
                 submission.Points = points;
 
-                var participantScore = this.Data.ParticipantScores
-                    .All()
-                    .Where(x => x.SubmissionId == submissionResult.Id)
-                    .FirstOrDefault();
-
-                if (participantScore != null)
+                if (submissionResult.ParticipantId.HasValue)
                 {
-                    participantScore.Points = points;
-                }
+                    var participantId = submissionResult.ParticipantId.Value;
+
+                    if (!topResults.ContainsKey(participantId) || topResults[participantId].Points < points)
+                    {
+                        // score does not exists or have less points than current submission
+                        topResults[participantId] = new ParticipantScoreModel
+                        {
+                            Points = points,
+                            SubmissionId = submission.Id
+                        };
+                    }
+                    else if (topResults[participantId].Points == points)
+                    {
+                        // save score with latest submission
+                        if (topResults[participantId].SubmissionId < submission.Id)
+                        {
+                            topResults[participantId].SubmissionId = submission.Id;
+                        }
+                    }
+                }                
+            }
+
+            this.Data.SaveChanges();
+
+            var participants = topResults.Keys.ToList();
+
+            // find all participant scores for the test's problem
+            var existingScores = this.Data.ParticipantScores
+                .All()
+                .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
+                .ToList();
+
+            // replace the scores with updated values
+            foreach (var existingScore in existingScores)
+            {
+                var topScore = topResults[existingScore.ParticipantId];
+
+                existingScore.Points = topScore.Points;
+                existingScore.SubmissionId = topScore.SubmissionId;
             }
 
             this.Data.SaveChanges();
