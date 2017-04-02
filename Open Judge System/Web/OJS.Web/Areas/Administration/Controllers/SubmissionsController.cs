@@ -20,6 +20,7 @@
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
     using Resource = Resources.Areas.Administration.Submissions.SubmissionsControllers;
+    using TransactionScope = System.Transactions.TransactionScope;
 
     public class SubmissionsController : LecturerBaseGridController
     {
@@ -140,7 +141,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            ViewBag.SubmissionAction = "Update";
+            this.ViewBag.SubmissionAction = "Update";
             return this.View(submission);
         }
 
@@ -249,18 +250,23 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
-
-            this.Data.Submissions.Delete(id);
-
-            this.Data.SaveChanges();
-            
-            if (submission.ParticipantId.HasValue && submission.ProblemId.HasValue)
+            using (var scope = new TransactionScope())
             {
-                this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
-            }
+                this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
-            this.Data.SaveChanges();
+                this.Data.Submissions.Delete(id);
+
+                this.Data.SaveChanges();
+
+                if (submission.ParticipantId.HasValue && submission.ProblemId.HasValue)
+                {
+                    this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+                }
+
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             return this.RedirectToAction(GlobalConstants.Index);
         }
@@ -273,24 +279,29 @@
             var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
             var submissions = submissionsDataSourceResult.Data;
 
-            foreach (GridModelType submission in submissions)
+            using (var scope = new TransactionScope())
             {
-                this.Data.Submissions.Delete(submission.Id);
-            }
-
-            this.Data.SaveChanges();
-            
-            foreach (GridModelType submission in submissions)
-            {
-                var dbSubmission = this.Data.Submissions.GetById(submission.Id);
-
-                if (dbSubmission.ParticipantId.HasValue && dbSubmission.ProblemId.HasValue)
+                foreach (GridModelType submission in submissions)
                 {
-                    this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
+                    this.Data.Submissions.Delete(submission.Id);
                 }
-            }
 
-            this.Data.SaveChanges();
+                this.Data.SaveChanges();
+
+                foreach (GridModelType submission in submissions)
+                {
+                    var dbSubmission = this.Data.Submissions.GetById(submission.Id);
+
+                    if (dbSubmission.ParticipantId.HasValue && dbSubmission.ProblemId.HasValue)
+                    {
+                        this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
+                    }
+                }
+
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             this.TempData[GlobalConstants.InfoMessage] = $"Успешно изтрихте {submissionsDataSourceResult.Total} решения.";
             return this.RedirectToAction<SubmissionsController>(c => c.Index());
@@ -335,12 +346,17 @@
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
-                this.Data.ParticipantScores.DeleteParticipantScore(submission);
-                this.Data.SaveChanges();
+                using (var scope = new TransactionScope())
+                {
+                    this.Data.ParticipantScores.DeleteParticipantScore(submission);
+                    this.Data.SaveChanges();
 
-                submission.Processed = false;
-                submission.Processing = false;
-                this.Data.SaveChanges();
+                    submission.Processed = false;
+                    submission.Processing = false;
+                    this.Data.SaveChanges();
+
+                    scope.Complete();
+                }
 
                 this.TempData.AddInfoMessage(Resource.Retest_successful);
             }
