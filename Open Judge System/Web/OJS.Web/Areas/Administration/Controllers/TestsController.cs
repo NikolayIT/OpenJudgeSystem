@@ -30,6 +30,7 @@
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
     using TransactionScope = System.Transactions.TransactionScope;
+    using System.Data.Entity;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -318,9 +319,13 @@
                 this.Data.SaveChanges();
 
                 // recalculate submissions point
-                var submissionResults = this.Data.Submissions
+                var problemSubmissions = this.Data.Submissions
                     .All()
+                    .Include(s => s.TestRuns)
                     .Where(s => s.ProblemId == test.ProblemId)
+                    .ToList();
+
+                var submissionResults = problemSubmissions
                     .Select(s => new
                     {
                         s.Id,
@@ -331,11 +336,12 @@
                     })
                     .ToList();
 
+                var problemSubmissionsById = problemSubmissions.ToDictionary(s => s.Id);
                 var topResults = new Dictionary<int, ParticipantScoreModel>();
 
                 foreach (var submissionResult in submissionResults)
                 {
-                    var submission = this.Data.Submissions.GetById(submissionResult.Id);
+                    var submission = problemSubmissionsById[submissionResult.Id];
                     int points = 0;
                     if (submissionResult.AllTestRuns != 0)
                     {
@@ -343,6 +349,7 @@
                     }
 
                     submission.Points = points;
+                    submission.CacheTestRuns();
 
                     if (submissionResult.ParticipantId.HasValue)
                     {

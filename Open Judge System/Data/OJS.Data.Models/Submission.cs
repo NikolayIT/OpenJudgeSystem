@@ -151,9 +151,11 @@
                 var result = new StringBuilder();
                 var trialTests = 0;
 
-                foreach (var testRun in this.TestRuns
+                var orderedTestRuns = this.TestRuns
                     .OrderByDescending(tr => tr.Test.IsTrialTest)
-                    .ThenBy(tr => tr.Id))
+                    .ThenBy(tr => tr.Id);
+
+                foreach (var testRun in orderedTestRuns)
                 {
                     if (testRun.Test.IsTrialTest)
                     {
