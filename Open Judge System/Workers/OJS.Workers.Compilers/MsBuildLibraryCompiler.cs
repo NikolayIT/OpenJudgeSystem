@@ -14,6 +14,8 @@
 
     public class MsBuildLibraryCompiler : Compiler
     {
+        private const int ProcessExitTimeOutMillisecond = 10000; // ms
+
         protected string InputFile { get; private set; }
 
         protected string OutputPath { get; private set; }
@@ -119,7 +121,7 @@
             this.UpdateCompilerProcessStartInfo(processStartInfo);
 
             // Execute compiler
-            var compilerOutput = ExecuteCompiler(processStartInfo);
+            var compilerOutput = ExecuteCompiler(processStartInfo, ProcessExitTimeOutMillisecond);
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
