@@ -772,7 +772,7 @@
 
         private bool IsValidProblem(DetailedProblemViewModel model)
         {
-            bool isValid = true;
+            var isValid = true;
 
             if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
             {

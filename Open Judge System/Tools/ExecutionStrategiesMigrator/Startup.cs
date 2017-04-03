@@ -79,13 +79,6 @@
                         Console.WriteLine(
                             $"Submission types for problem with id = {problem.Id} were not copied correctly");
                     }
-
-                    processed++;
-
-                    if (processed % 500 == 0)
-                    {
-                        Console.WriteLine($"{processed} problems checked");
-                    }
                 }
             }
 
@@ -95,7 +88,6 @@
         private static Problem[] GetAllProblems(IQueryable<Problem> problems, int page, int pageSize)
             => problems
                 .Where(x => !x.IsDeleted)
-                .Include(x => x.Contest)
                 .Include(x => x.Contest.SubmissionTypes)
                 .Include(x => x.SubmissionTypes)
                 .OrderBy(x => x.Id)
