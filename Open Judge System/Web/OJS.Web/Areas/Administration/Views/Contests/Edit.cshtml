@@ -9,7 +9,6 @@
     @using (Html.BeginForm("Edit", "Contests", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.CreatedOn)
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
         @Html.Partial("_ContestEditor", Model)

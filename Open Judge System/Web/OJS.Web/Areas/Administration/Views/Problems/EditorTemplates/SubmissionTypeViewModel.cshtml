@@ -1,0 +1,21 @@
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.EditorTemplates.SubmissionTypeViewModel;
+
+@model OJS.Web.Areas.Administration.ViewModels.SubmissionType.SubmissionTypeViewModel
+
+<div class="row">
+    <div class="editor-label col-xs-3">
+        <div class="pull-right">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.Name)
+            @Html.LabelFor(m => m.IsChecked, Model.Name)
+        </div>
+    </div>
+    <div class="editor-field col-xs-4">
+        @Html.EditorFor(m => m.IsChecked, new { @class = "form-control pull-left full-editor" })
+    </div>
+    <div class="editor-field col-xs-4">
+        <span class="glyphicon glyphicon-question-sign text-primary" title="@string.Format("{0} {1}", Resource.Allow_submission, Model.Name)" data-tooltip="true"></span>
+    </div>
+</div>
+
+

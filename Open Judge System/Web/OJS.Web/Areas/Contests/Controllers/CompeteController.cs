@@ -509,25 +509,19 @@
         /// <returns>Returns the allowed submission types as JSON.</returns>
         public ActionResult GetAllowedSubmissionTypes(int id)
         {
-            // TODO: Implement this method with only one database query (this.Data.SubmissionTypes.All().Where(x => x.ContestId == id)
-            var problem = this.Data.Problems.GetById(id);
-
-            if (problem == null)
-            {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
-            }
-
-            var submissionTypesSelectListItems = problem
-                                                    .SubmissionTypes
-                                                    .ToList()
-                                                    .Select(x => new
-                                                    {
-                                                        Text = x.Name,
-                                                        Value = x.Id.ToString(CultureInfo.InvariantCulture),
-                                                        Selected = x.IsSelectedByDefault,
-                                                        x.AllowBinaryFilesUpload,
-                                                        x.AllowedFileExtensions,
-                                                    });
+            var submissionTypesSelectListItems =
+                this.Data.Problems.All()
+                    .Where(x => x.Id == id)
+                    .SelectMany(x => x.SubmissionTypes)
+                    .ToList()
+                    .Select(x => new
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString(CultureInfo.InvariantCulture),
+                        Selected = x.IsSelectedByDefault,
+                        x.AllowBinaryFilesUpload,
+                        x.AllowedFileExtensions
+                    });  
 
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }

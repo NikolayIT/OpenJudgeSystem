@@ -79,7 +79,7 @@ namespace Resources.Areas.Administration.Problems.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create problem.
+        ///   Looks up a localized string similar to Edit problem.
         /// </summary>
         public static string Page_title {
             get {

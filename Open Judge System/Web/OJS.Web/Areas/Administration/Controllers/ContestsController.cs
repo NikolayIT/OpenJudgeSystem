@@ -61,9 +61,8 @@
         [HttpGet]
         public ActionResult Create()
         {
-            var newContest = new ViewModelType();
             this.PrepareViewBagData();
-            return this.View(newContest);
+            return this.View(new ViewModelType());
         }
 
         [HttpPost]
