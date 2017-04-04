@@ -121,7 +121,7 @@
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
             // Check results and return CompilerResult instance
-            if (!Directory.Exists(outputFile) && !compilerOutput.IsSuccessful)
+            if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
             {
                 // Compiled file is missing
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
