@@ -15,7 +15,6 @@
         private ICollection<ContestQuestion> questions;
         private ICollection<Problem> problems;
         private ICollection<Participant> participants;
-        private ICollection<SubmissionType> submissionTypes;
         private ICollection<LecturerInContest> lecturers;
         private ICollection<ContestIp> allowedIps;
 
@@ -24,7 +23,6 @@
             this.questions = new HashSet<ContestQuestion>();
             this.problems = new HashSet<Problem>();
             this.participants = new HashSet<Participant>();
-            this.submissionTypes = new HashSet<SubmissionType>();
             this.lecturers = new HashSet<LecturerInContest>();
             this.allowedIps = new HashSet<ContestIp>();
         }
@@ -118,12 +116,6 @@
         {
             get { return this.participants; }
             set { this.participants = value; }
-        }
-
-        public virtual ICollection<SubmissionType> SubmissionTypes
-        {
-            get { return this.submissionTypes; }
-            set { this.submissionTypes = value; }
         }
 
         public virtual ICollection<ContestIp> AllowedIps
