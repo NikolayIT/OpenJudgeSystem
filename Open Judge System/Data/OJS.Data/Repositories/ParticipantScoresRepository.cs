@@ -1,7 +1,9 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System.Linq;
+
     using EntityFramework.Extensions;
+
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;

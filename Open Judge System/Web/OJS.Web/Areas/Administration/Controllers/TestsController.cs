@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -13,7 +14,6 @@
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
-    using Models;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -21,6 +21,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
@@ -30,7 +31,6 @@
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
     using TransactionScope = System.Transactions.TransactionScope;
-    using System.Data.Entity;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -236,6 +236,9 @@
                 existingTest.IsTrialTest = test.Type == TestType.Trial;
                 existingTest.IsOpenTest = test.Type == TestType.Open;
 
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == existingTest.ProblemId && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
                 this.Data.SaveChanges();
 
                 this.RetestSubmissions(existingTest.ProblemId);
@@ -322,6 +325,7 @@
                 var problemSubmissions = this.Data.Submissions
                     .All()
                     .Include(s => s.TestRuns)
+                    .Include(s => s.TestRuns.Select(tr => tr.Test))
                     .Where(s => s.ProblemId == test.ProblemId)
                     .ToList();
 
@@ -330,8 +334,8 @@
                     {
                         s.Id,
                         s.ParticipantId,
-                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
-                        AllTestRuns = s.TestRuns.Count(),
+                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer && !t.Test.IsTrialTest),
+                        AllTestRuns = s.TestRuns.Count(t => !t.Test.IsTrialTest),
                         MaxPoints = s.Problem.MaximumPoints
                     })
                     .ToList();
@@ -345,7 +349,7 @@
                     int points = 0;
                     if (submissionResult.AllTestRuns != 0)
                     {
-                        points = submissionResult.CorrectTestRuns / submissionResult.AllTestRuns * submissionResult.MaxPoints;
+                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) / submissionResult.AllTestRuns;
                     }
 
                     submission.Points = points;
@@ -465,13 +469,19 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
-            this.Data.SaveChanges();
+            using (var scope = new TransactionScope())
+            {
+                this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
+                this.Data.SaveChanges();
+                this.Data.Tests.Delete(test => test.ProblemId == id);
+                this.Data.SaveChanges();
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == id && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
+                this.Data.SaveChanges();
 
-            this.Data.Tests.Delete(test => test.ProblemId == id);
-            this.Data.SaveChanges();
-
-            this.RetestSubmissions(problem.Id);
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(Resource.Tests_deleted_successfully);
             return this.RedirectToAction("Problem", new { id });
@@ -721,14 +731,15 @@
 
             using (var scope = new TransactionScope())
             {
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == id && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
+                this.Data.SaveChanges();
+
                 if (deleteOldFiles)
                 {
-                    var testIds = this.Data.Tests.All().Where(t => t.ProblemId == problem.Id).Select(t => t.Id).ToList();
-                    if (testIds.Any())
-                    {
-                        this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
-                        this.Data.Tests.Delete(t => testIds.Contains(t.Id));
-                    }
+                    this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == problem.Id);
+                    this.Data.Tests.Delete(t => t.ProblemId == problem.Id);
                 }
 
                 ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
