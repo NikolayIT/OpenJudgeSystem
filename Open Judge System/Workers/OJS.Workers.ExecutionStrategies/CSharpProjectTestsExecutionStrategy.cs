@@ -1,10 +1,13 @@
-﻿namespace OJS.Workers.ExecutionStrategies
+﻿
+
+namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Xml;
 
     using Microsoft.Build.Evaluation;
 
@@ -76,9 +79,7 @@
 
             // Modify Project file
             var project = new Project(csProjFilePath);
-            this.CorrectProjectReferences(executionContext.Tests, project);
-            project.Save(csProjFilePath);
-            project.ProjectCollection.UnloadAllProjects();
+            this.CorrectProjectReferences(executionContext.Tests, project);           
 
             // Write Test files
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
@@ -197,6 +198,32 @@
             {
                 project.RemoveItem(vsTestFrameworkReference);
             }
+
+            bool nuGetPackageImportsTarget = project.Targets.ContainsKey("EnsureNuGetPackageBuildImports");
+            
+            project.Save(project.FullPath);
+            project.ProjectCollection.UnloadAllProjects();
+
+            // Remove unneccesary build target that could cause the MSBuild compilation to fail
+            // This mostly applies to ASP.NET projects.
+            if (nuGetPackageImportsTarget)
+            {
+                this.RemoveNuGetTarget(project.FullPath);
+            }
+        }
+
+        private void RemoveNuGetTarget(string projectFullPath)
+        {
+            XmlDocument csprojXml = new XmlDocument();
+            csprojXml.Load(projectFullPath);
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(csprojXml.NameTable);
+            namespaceManager.AddNamespace("msns", "http://schemas.microsoft.com/developer/msbuild/2003");
+
+            XmlNode rootNode = csprojXml.DocumentElement;
+            var nuGetTargetNode = rootNode.SelectSingleNode("//msns:Target[@Name='EnsureNuGetPackageBuildImports']", namespaceManager);
+            rootNode.RemoveChild(nuGetTargetNode);
+            csprojXml.Save(projectFullPath);
+            csprojXml.Save(@"D:\modified.csproj");
         }
 
         private void ExtractTestNames(IEnumerable<TestContext> tests)
