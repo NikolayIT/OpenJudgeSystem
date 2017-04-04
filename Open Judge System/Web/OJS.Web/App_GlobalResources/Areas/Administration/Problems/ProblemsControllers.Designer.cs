@@ -133,6 +133,15 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The problem was not found!.
+        /// </summary>
+        public static string Problem_not_found {
+            get {
+                return ResourceManager.GetString("Problem_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem retested successfully..
         /// </summary>
         public static string Problem_retested {
@@ -156,6 +165,15 @@ namespace Resources.Areas.Administration.Problems {
         public static string Resources_not_complete {
             get {
                 return ResourceManager.GetString("Resources_not_complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose at least one submission type!.
+        /// </summary>
+        public static string Select_one_submission_type {
+            get {
+                return ResourceManager.GetString("Select_one_submission_type", resourceCulture);
             }
         }
     }

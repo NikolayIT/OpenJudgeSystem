@@ -62,6 +62,7 @@
     <Compile Include="JavaCompiler.cs" />
     <Compile Include="JavaZipCompiler.cs" />
     <Compile Include="MsBuildCompiler.cs" />
+    <Compile Include="MsBuildLibraryCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

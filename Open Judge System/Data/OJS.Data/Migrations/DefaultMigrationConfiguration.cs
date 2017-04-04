@@ -317,8 +317,8 @@
                 new SubmissionType
                 {
                     Name = "C# Unit Tests",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -327,8 +327,8 @@
                 new SubmissionType
                 {
                     Name = "C# Project Tests",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",

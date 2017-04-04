@@ -58,16 +58,6 @@
             return this.View(contestViewModel);
         }
 
-        public ActionResult BySubmissionType(int id)
-        {
-            var contests = this.Data.Contests
-                .All()
-                .Where(x => x.SubmissionTypes.Any(s => s.Id == id) && !x.IsDeleted && x.IsVisible)
-                .Select(ContestViewModel.FromContest);
-
-            return this.View(contests);
-        }
-
         [Authorize]
         [HttpPost]
         public ActionResult UserSubmissions([DataSourceRequest]DataSourceRequest request, int contestId)

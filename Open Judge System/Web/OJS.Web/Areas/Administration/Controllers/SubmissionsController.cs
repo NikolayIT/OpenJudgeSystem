@@ -309,9 +309,9 @@
 
         public JsonResult GetSubmissionTypes(int problemId, bool? allowBinaryFilesUpload)
         {
-            var selectedProblemContest = this.Data.Contests.All().FirstOrDefault(contest => contest.Problems.Any(problem => problem.Id == problemId));
-
-            var submissionTypesSelectListItems = selectedProblemContest.SubmissionTypes
+            var submissionTypesSelectListItems = this.Data.Problems.All()
+                .Where(x => x.Id == problemId)
+                .SelectMany(x => x.SubmissionTypes)
                 .ToList()
                 .Select(submissionType => new
                 {

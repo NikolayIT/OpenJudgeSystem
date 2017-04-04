@@ -6,7 +6,7 @@
 
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Administration.ViewModels.Problem;
 
     public class SubmissionTypeViewModel
     {
@@ -29,7 +29,7 @@
 
         public bool IsChecked { get; set; }
 
-        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ContestAdministrationViewModel contest)
+        public static Action<SubmissionTypeViewModel> ApplySelectedTo(DetailedProblemViewModel problem)
         {
             return st =>
             {
@@ -40,14 +40,14 @@
                     IsChecked = false,
                 };
 
-                var selectedSubmission = contest.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
+                var selectedSubmission = problem.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
 
                 if (selectedSubmission != null)
                 {
                     submissionViewModel.IsChecked = true;
                 }
 
-                contest.SubmissionTypes.Add(submissionViewModel);
+                problem.SubmissionTypes.Add(submissionViewModel);
             };
         }
 

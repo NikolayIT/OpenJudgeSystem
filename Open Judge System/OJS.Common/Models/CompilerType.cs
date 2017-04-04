@@ -8,5 +8,6 @@
         CPlusPlusGcc = 3,
         Java = 4,
         JavaZip = 5,
+        MsBuildLibrary = 6
     }
 }

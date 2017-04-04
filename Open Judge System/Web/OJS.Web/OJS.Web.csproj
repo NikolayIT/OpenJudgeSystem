@@ -627,16 +627,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CategoryDropDown.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\SubmissionTypeCheckBoxes.bg.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubmissionTypeCheckBoxes.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\SubmissionTypeCheckBoxes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubmissionTypeCheckBoxes.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -767,12 +757,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionTypeViewModel.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmissionTypeViewModel.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsPartials.bg.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.Designer.cs">
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsPartials.resx</DependentUpon>
@@ -1919,6 +1919,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Areas\Administration\Views\Problems\EditorTemplates\SubmissionTypeViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
@@ -1938,7 +1939,6 @@
     <Content Include="Scripts\KendoUI\2014.3.1411\kendo.aspnetmvc.js" />
     <Content Include="Views\Account\ChangeUsername.cshtml" />
     <Content Include="Areas\Contests\Views\Results\Full.cshtml" />
-    <Content Include="Areas\Administration\Views\Contests\EditorTemplates\SubmissionTypeCheckBoxes.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\CategoryDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
@@ -2126,16 +2126,6 @@
       <LastGenOutput>CategoryDropDown.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\SubmissionTypeCheckBoxes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SubmissionTypeCheckBoxes.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\SubmissionTypeCheckBoxes.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SubmissionTypeCheckBoxes.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
-    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestEditor.Designer.cs</LastGenOutput>
@@ -2266,15 +2256,26 @@
       <LastGenOutput>ProblemResources.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProblemsPartials.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
-    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsPartials.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\Partials\ProblemsPartials.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsPartials.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionTypeViewModel.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.EditorTemplates</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubmissionTypeViewModel.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.EditorTemplates</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2916,6 +2917,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestsGeneral.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Shared\ContestsAllContestSubmissionsByUser.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

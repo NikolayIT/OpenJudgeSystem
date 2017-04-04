@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Web.Tests", "Tests\OJS.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Models.Tests", "Tests\OJS.Data.Models.Tests\OJS.Data.Models.Tests.csproj", "{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecutionStrategiesMigrator", "Tools\ExecutionStrategiesMigrator\ExecutionStrategiesMigrator.csproj", "{C11E6952-11C2-413F-A543-BACE0A136D29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,10 @@ Global
 		{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11E6952-11C2-413F-A543-BACE0A136D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11E6952-11C2-413F-A543-BACE0A136D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11E6952-11C2-413F-A543-BACE0A136D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11E6952-11C2-413F-A543-BACE0A136D29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -240,5 +246,6 @@ Global
 		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{757DED16-A6CC-4686-B9AF-496A409F5A47} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
+		{C11E6952-11C2-413F-A543-BACE0A136D29} = {B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}
 	EndGlobalSection
 EndGlobal
