@@ -13,12 +13,10 @@
 
     public class SubmissionType
     {
-        private ICollection<Contest> contests;
         private ICollection<Problem> problems;
 
         public SubmissionType()
         {
-            this.contests = new HashSet<Contest>();
             this.problems = new HashSet<Problem>();
         }
 
@@ -61,12 +59,6 @@
                         .Select(x => x.Trim());
                 return list.ToArray();
             }
-        }
-
-        public virtual ICollection<Contest> Contests
-        {
-            get { return this.contests; }
-            set { this.contests = value; }
         }
 
         public virtual ICollection<Problem> Problems
