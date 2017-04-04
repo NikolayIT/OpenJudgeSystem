@@ -18,11 +18,11 @@
         public IQueryable<Submission> AllPublic()
         {
             return this.All()
-                .Where(x =>
-                    ((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
+                .Where(x => x.IsPublic ??
+                    (((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
                      (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
                     && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
-                    && x.Problem.ShowResults);
+                    && x.Problem.ShowResults));
         }
 
         public Submission GetSubmissionForProcessing()
@@ -72,7 +72,7 @@
 
             return submissions;
         }
-
+        
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>
             this.All().Any(s => s.ProblemId == problemId && s.Participant.UserId == userId && !s.Processed);
     }

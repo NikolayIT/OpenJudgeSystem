@@ -13,6 +13,7 @@
     using Ionic.Zip;
 
     using Kendo.Mvc.UI;
+    using Models;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -29,6 +30,7 @@
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
     using TransactionScope = System.Transactions.TransactionScope;
+    using System.Data.Entity;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -306,40 +308,96 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            // delete all test runs for the test
-            this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
-            this.Data.SaveChanges();
-
-            // delete the test
-            this.Data.Tests.Delete(test);
-            this.Data.SaveChanges();
-
-            // recalculate submissions point
-            var submissionResults = this.Data.Submissions
-                .All()
-                .Where(s => s.ProblemId == test.ProblemId)
-                .Select(s => new
-                {
-                    s.Id,
-                    CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
-                    AllTestRuns = s.TestRuns.Count(),
-                    MaxPoints = s.Problem.MaximumPoints
-                })
-                .ToList();
-
-            foreach (var submissionResult in submissionResults)
+            using (var scope = new TransactionScope())
             {
-                var submission = this.Data.Submissions.GetById(submissionResult.Id);
-                int points = 0;
-                if (submissionResult.AllTestRuns != 0)
+                // delete all test runs for the test
+                this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
+                this.Data.SaveChanges();
+
+                // delete the test
+                this.Data.Tests.Delete(test);
+                this.Data.SaveChanges();
+
+                // recalculate submissions point
+                var problemSubmissions = this.Data.Submissions
+                    .All()
+                    .Include(s => s.TestRuns)
+                    .Where(s => s.ProblemId == test.ProblemId)
+                    .ToList();
+
+                var submissionResults = problemSubmissions
+                    .Select(s => new
+                    {
+                        s.Id,
+                        s.ParticipantId,
+                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
+                        AllTestRuns = s.TestRuns.Count(),
+                        MaxPoints = s.Problem.MaximumPoints
+                    })
+                    .ToList();
+
+                var problemSubmissionsById = problemSubmissions.ToDictionary(s => s.Id);
+                var topResults = new Dictionary<int, ParticipantScoreModel>();
+
+                foreach (var submissionResult in submissionResults)
                 {
-                    points = submissionResult.CorrectTestRuns / submissionResult.AllTestRuns * submissionResult.MaxPoints;
+                    var submission = problemSubmissionsById[submissionResult.Id];
+                    int points = 0;
+                    if (submissionResult.AllTestRuns != 0)
+                    {
+                        points = submissionResult.CorrectTestRuns / submissionResult.AllTestRuns * submissionResult.MaxPoints;
+                    }
+
+                    submission.Points = points;
+                    submission.CacheTestRuns();
+
+                    if (submissionResult.ParticipantId.HasValue)
+                    {
+                        var participantId = submissionResult.ParticipantId.Value;
+
+                        if (!topResults.ContainsKey(participantId) || topResults[participantId].Points < points)
+                        {
+                            // score does not exists or have less points than current submission
+                            topResults[participantId] = new ParticipantScoreModel
+                            {
+                                Points = points,
+                                SubmissionId = submission.Id
+                            };
+                        }
+                        else if (topResults[participantId].Points == points)
+                        {
+                            // save score with latest submission
+                            if (topResults[participantId].SubmissionId < submission.Id)
+                            {
+                                topResults[participantId].SubmissionId = submission.Id;
+                            }
+                        }
+                    }
                 }
 
-                submission.Points = points;
-            }
+                this.Data.SaveChanges();
 
-            this.Data.SaveChanges();
+                var participants = topResults.Keys.ToList();
+
+                // find all participant scores for the test's problem
+                var existingScores = this.Data.ParticipantScores
+                    .All()
+                    .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
+                    .ToList();
+
+                // replace the scores with updated values
+                foreach (var existingScore in existingScores)
+                {
+                    var topScore = topResults[existingScore.ParticipantId];
+
+                    existingScore.Points = topScore.Points;
+                    existingScore.SubmissionId = topScore.SubmissionId;
+                }
+
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(Resource.Test_deleted_successfully);
             return this.RedirectToAction("Problem", new { id = test.ProblemId });
@@ -638,7 +696,7 @@
             }
 
             TestsParseResult parsedTests;
-        
+
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
@@ -683,7 +741,7 @@
                 this.Data.SaveChanges();
                 scope.Complete();
             }
-         
+
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });
@@ -776,6 +834,9 @@
 
         private void RetestSubmissions(int problemId)
         {
+            this.Data.ParticipantScores.DeleteParticipantScores(problemId);
+            this.Data.SaveChanges();
+
             this.Data.Submissions.Update(
                 submission => submission.ProblemId == problemId,
                 submission => new Submission { Processed = false, Processing = false });
