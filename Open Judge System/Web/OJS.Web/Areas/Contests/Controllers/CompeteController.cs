@@ -46,14 +46,14 @@
         }
 
         /// <summary>
-        /// Validates if a contest is correctly found. If the user wants to practice or compete in the contest
-        /// checks if the contest can be practiced or competed.
+        /// Validates if the selected submission type from the participant is allowed in the current problem
         /// </summary>
-        /// <param name="contest">Contest to validate.</param>
+        /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
+        /// <param name="problem">The problem which the user is attempting to solve</param>
         [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
+        public static void ValidateSubmissionType(int submissionTypeId, Problem problem)
         {
-            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            if (problem.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
@@ -90,20 +90,6 @@
             if (!official && !contest.CanBePracticed)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_practiced);
-            }
-        }
-
-        /// <summary>
-        /// Validates if the selected submission type from the participant is allowed in the current problem
-        /// </summary>
-        /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
-        /// <param name="problem">The problem which the user is attempting to solve</param>
-        [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Problem problem)
-        {
-            if (problem.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
         }
 
