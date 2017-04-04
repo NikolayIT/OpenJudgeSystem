@@ -50,6 +50,20 @@
         /// checks if the contest can be practiced or competed.
         /// </summary>
         /// <param name="contest">Contest to validate.</param>
+        [NonAction]
+        public static void ValidateSubmissionType(int submissionTypeId, Contest contest)
+        {
+            if (contest.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
+            }
+        }
+
+        /// <param name="official">A flag checking if the contest will be practiced or competed</param>
+        /// Validates if a contest is correctly found. If the user wants to practice or compete in the contest
+        /// checks if the contest can be practiced or competed.
+        /// </summary>
+        /// <param name="contest">Contest to validate.</param>
         /// <param name="official">A flag checking if the contest will be practiced or competed</param>
         [NonAction]
         public void ValidateContest(Contest contest, bool official)
@@ -302,6 +316,11 @@
             this.ValidateContest(participant.Contest, official);
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
 
+            if (!this.ModelState.IsValid)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+            }
+
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
                 throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -312,10 +331,12 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
-            if (!this.ModelState.IsValid)
+            if (this.Data.Submissions.HasUserNotProcessedSubmissionForProblem(problem.Id, this.UserProfile.Id))
             {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.User_has_not_processed_submission_for_problem);
             }
+
+            var contest = participant.Contest;
 
             this.Data.Submissions.Add(new Submission
             {
@@ -324,6 +345,10 @@
                 SubmissionTypeId = participantSubmission.SubmissionTypeId,
                 ParticipantId = participant.Id,
                 IpAddress = this.Request.UserHostAddress,
+                IsPublic = ((participant.IsOfficial && contest.ContestPassword == null) ||
+                     (!participant.IsOfficial && contest.PracticePassword == null))
+                    && contest.IsVisible && !contest.IsDeleted
+                    && problem.ShowResults
             });
 
             this.Data.SaveChanges();

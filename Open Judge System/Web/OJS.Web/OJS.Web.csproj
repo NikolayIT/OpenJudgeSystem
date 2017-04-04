@@ -1542,6 +1542,7 @@
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
+    <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
     <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
     <Compile Include="Areas\Administration\Providers\Contracts\INewsProvider.cs" />

@@ -31,6 +31,7 @@
     using OJS.Web.ViewModels.Common;
 
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+    using TransactionScope = System.Transactions.TransactionScope;
 
     public class ProblemsController : LecturerBaseController
     {
@@ -483,8 +484,16 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
-            this.Data.SaveChanges();
+            using (var scope = new TransactionScope())
+            {
+                this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
+                this.Data.SaveChanges();
+
+                this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
