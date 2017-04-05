@@ -1,13 +1,10 @@
-﻿
-
-namespace OJS.Workers.ExecutionStrategies
+﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Xml;
 
     using Microsoft.Build.Evaluation;
 
@@ -53,7 +50,7 @@ namespace OJS.Workers.ExecutionStrategies
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
-        protected string NUnitConsoleRunnerPath { get;}
+        protected string NUnitConsoleRunnerPath { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
@@ -79,7 +76,7 @@ namespace OJS.Workers.ExecutionStrategies
 
             // Modify Project file
             var project = new Project(csProjFilePath);
-            this.CorrectProjectReferences(executionContext.Tests, project);           
+            this.CorrectProjectReferences(executionContext.Tests, project);
 
             // Write Test files
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
@@ -171,7 +168,7 @@ namespace OJS.Workers.ExecutionStrategies
             return errorsByFiles;
         }
 
-        private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
+        protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
             foreach (var testName in this.TestNames)
             {
@@ -186,10 +183,7 @@ namespace OJS.Workers.ExecutionStrategies
             }
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            var nUnitMetaData = new Dictionary<string, string>();
-            nUnitMetaData.Add("SpecificVersion", "False");
-            nUnitMetaData.Add("Private", "True");
-            project.AddItem("Reference", NUnitReference, nUnitMetaData);
+            this.AddProjectReferences(project, NUnitReference);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items
@@ -199,31 +193,20 @@ namespace OJS.Workers.ExecutionStrategies
                 project.RemoveItem(vsTestFrameworkReference);
             }
 
-            bool nuGetPackageImportsTarget = project.Targets.ContainsKey("EnsureNuGetPackageBuildImports");
-            
             project.Save(project.FullPath);
             project.ProjectCollection.UnloadAllProjects();
-
-            // Remove unneccesary build target that could cause the MSBuild compilation to fail
-            // This mostly applies to ASP.NET projects.
-            if (nuGetPackageImportsTarget)
-            {
-                this.RemoveNuGetTarget(project.FullPath);
-            }
         }
 
-        private void RemoveNuGetTarget(string projectFullPath)
+        protected void AddProjectReferences(Project project, params string[] references)
         {
-            XmlDocument csprojXml = new XmlDocument();
-            csprojXml.Load(projectFullPath);
-            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(csprojXml.NameTable);
-            namespaceManager.AddNamespace("msns", "http://schemas.microsoft.com/developer/msbuild/2003");
-
-            XmlNode rootNode = csprojXml.DocumentElement;
-            var nuGetTargetNode = rootNode.SelectSingleNode("//msns:Target[@Name='EnsureNuGetPackageBuildImports']", namespaceManager);
-            rootNode.RemoveChild(nuGetTargetNode);
-            csprojXml.Save(projectFullPath);
-            csprojXml.Save(@"D:\modified.csproj");
+            var referenceMetaData = new Dictionary<string, string>();
+            foreach (var reference in references)
+            {
+                referenceMetaData.Add("SpecificVersion", "False");
+                referenceMetaData.Add("Private", "True");
+                project.AddItem("Reference", reference, referenceMetaData);
+                referenceMetaData.Clear();
+            }
         }
 
         private void ExtractTestNames(IEnumerable<TestContext> tests)
