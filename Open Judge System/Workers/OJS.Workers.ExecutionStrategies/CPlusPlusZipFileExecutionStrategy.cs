@@ -5,7 +5,6 @@
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
-
     using OJS.Workers.Checkers;
     using OJS.Workers.Executors;
 
