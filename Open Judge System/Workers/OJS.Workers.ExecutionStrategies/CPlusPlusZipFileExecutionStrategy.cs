@@ -11,6 +11,7 @@
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
     {
         private const string SubmissionName = "UserSubmission.zip";
+
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
         public CPlusPlusZipFileExecutionStrategy(Func<CompilerType, string> getCompilerPath)
@@ -30,7 +31,7 @@
         {
             var result = new ExecutionResult();
 
-            string submissionDestination = $@"{this.WorkingDirectory}\{SubmissionName}";
+            var submissionDestination = $@"{this.WorkingDirectory}\{SubmissionName}";
 
             File.WriteAllBytes(submissionDestination, executionContext.FileContent);
 
@@ -49,7 +50,7 @@
 
             result.IsCompiledSuccessfully = true;
 
-           var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

@@ -39,25 +39,22 @@
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
-            // Output file argument
+
             arguments.Append($"-o \"{outputFile}\"");
             arguments.Append(' ');
 
-            // Additional compiler arguments
             arguments.Append(additionalArguments);
             arguments.Append(' ');
             FileHelpers.UnzipFile(inputFile, this.workingDirectory);
 
-            // Input files arguments
             var filesToCompile = Directory.EnumerateFiles(
                     this.workingDirectory,
                     "*.*",
                     SearchOption.AllDirectories)
-                .Where(
-                    f =>
-                        f.EndsWith(CClassFileExtension) ||
-                        f.EndsWith(CPlusPlusClassFileExtension) ||
-                        f.EndsWith(CPlusPlusHeaderFileExtension));
+                .Where(f =>
+                       f.EndsWith(CClassFileExtension) ||
+                       f.EndsWith(CPlusPlusClassFileExtension) ||
+                       f.EndsWith(CPlusPlusHeaderFileExtension));
 
             foreach (var file in filesToCompile)
             {
