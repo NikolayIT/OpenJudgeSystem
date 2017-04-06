@@ -47,14 +47,15 @@
             arguments.Append(' ');
             FileHelpers.UnzipFile(inputFile, this.workingDirectory);
 
-            var filesToCompile = Directory.EnumerateFiles(
+            var filesToCompile = Directory.
+                EnumerateFiles(
                     this.workingDirectory,
                     "*.*",
                     SearchOption.AllDirectories)
                 .Where(f =>
-                       f.EndsWith(CClassFileExtension) ||
-                       f.EndsWith(CPlusPlusClassFileExtension) ||
-                       f.EndsWith(CPlusPlusHeaderFileExtension));
+                        f.EndsWith(CClassFileExtension) ||
+                        f.EndsWith(CPlusPlusClassFileExtension) ||
+                        f.EndsWith(CPlusPlusHeaderFileExtension));
 
             foreach (var file in filesToCompile)
             {
