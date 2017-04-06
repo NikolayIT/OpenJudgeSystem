@@ -20,6 +20,10 @@
 
         public List<int> PassingIndexes { get; set; }
 
+        public int UsersTestCount { get; set; }
+
+        public int InitialPassingTests { get; set; }
+
         public int TotalTests { get; set; }
 
         public static JsonExecutionResult Parse(string result, bool forceErrorExtracting = false, bool getTestIndexes = false)
@@ -29,6 +33,8 @@
             var totalTests = 0;
             var errors = new List<string>();
             var error = string.Empty;
+            var userTestsCount = 0;
+            var initialPassedTests = 0;
             var passed = false;
             try
             {
@@ -39,9 +45,17 @@
                 var testsJs = (JArray)jsonTestResult["tests"];
                 for (int i = 0; i < testsJs.Count; i++)
                 {
+                    var currentTitle = jsonTestResult["tests"][i]["fullTitle"];
                     var stack = jsonTestResult["tests"][i]["err"]["stack"];
                     var token = (string)jsonTestResult["tests"][i]["err"]["message"] ?? string.Empty;
                     var entry = stack != null ? token : null;
+
+                    // By convention the groups of user tests will be separated in describes named "Test 0 ", then "Test 1 " and so forth
+                    userTestsCount += currentTitle.ToString().StartsWith("Test 0 ") ? 1 : 0;
+
+                    // The second group (the second zero test) "Test 1 " should be the one holding the correct solution, thus we extract the amount of                    
+                    // correct tests in that group, so that the Execution Strategy has a base for judging the other tests
+                    initialPassedTests += currentTitle.ToString().StartsWith("Test 1 ") && entry == null ? 1 : 0;
                     errors.Add(entry);
                 }
             }
@@ -87,7 +101,9 @@
                 PassingIndexes = testsIndexes,
                 TotalPasses = totalPasses,
                 TotalTests = totalTests,
-                Passed = passed
+                Passed = passed,
+                UsersTestCount = userTestsCount,
+                InitialPassingTests = initialPassedTests
             };
         }
     }
