@@ -1,4 +1,7 @@
-﻿namespace OJS.Workers.ExecutionStrategies
+﻿using System.Text.RegularExpressions;
+using OJS.Common;
+
+namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.IO;
@@ -11,6 +14,8 @@
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
     {
         private const string SubmissionName = "UserSubmission.zip";
+        private const string FileNameAndTypeIndicatorPattern = @"##((\w+)\.(cpp|h))##";
+
 
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
@@ -22,7 +27,7 @@
 
         ~CPlusPlusZipFileExecutionStrategy()
         {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory,true);
+            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
         public string WorkingDirectory { get; set; }
@@ -34,6 +39,11 @@
             var submissionDestination = $@"{this.WorkingDirectory}\{SubmissionName}";
 
             File.WriteAllBytes(submissionDestination, executionContext.FileContent);
+
+            if (!string.IsNullOrEmpty(executionContext.TaskSkeletonAsString))
+            {
+                this.ExtractTaskSkeleton(executionContext.TaskSkeletonAsString);
+            }
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
 
@@ -65,15 +75,31 @@
                     executionContext.MemoryLimit);
 
                 var testResults = this.ExecuteAndCheckTest(
-                    test, 
-                    processExecutionResult, 
+                    test,
+                    processExecutionResult,
                     checker,
                     processExecutionResult.ReceivedOutput);
 
                 result.TestResults.Add(testResults);
             }
-          
+
             return result;
+        }
+
+        private void ExtractTaskSkeleton(string executionContextTaskSkeletonAsString)
+        {
+            string[] headersAndCppFiles = executionContextTaskSkeletonAsString.Split(
+                new string[] {GlobalConstants.ClassDelimiter},
+                StringSplitOptions.RemoveEmptyEntries);
+            Regex fileNameAndTypeMatcher = new Regex(FileNameAndTypeIndicatorPattern);
+            foreach (var headersOrCppFile in headersAndCppFiles)
+            {
+                var match = fileNameAndTypeMatcher.Match(headersOrCppFile);
+                if (match.Success)
+                {
+                    File.Create(match.Groups[1].ToString());
+                }
+            }
         }
     }
 }
