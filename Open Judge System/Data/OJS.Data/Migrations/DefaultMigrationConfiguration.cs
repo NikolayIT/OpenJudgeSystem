@@ -353,6 +353,16 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
+                    Name = "Java Unit Tests",
+                    CompilerType = CompilerType.JavaInPlaceCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.JavaUnitTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
                 }
             };
 

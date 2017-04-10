@@ -9,51 +9,24 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
-    using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
-    public class JavaProjectTestsExecutionStrategy : JavaZipFileCompileExecuteAndCheckExecutionStrategy
+    public class JavaProjectTestsExecutionStrategy : JavaUnitTestsExecutionStrategy
     {
-        protected const string JUnitRunnerClassName = "_$TestRunner";
-
-        protected const string AdditionalExecutionArguments = "-Xms8m -Xmx128m";
-
-        protected const string JvmInsufficientMemoryMessage =
-            "There is insufficient memory for the Java Runtime Environment to continue.";
-
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
             string javaLibsPath)
-            : base(javaExecutablePath, getCompilerPathFunc)
+            : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
         {
-            if (!Directory.Exists(javaLibsPath))
-            {
-                throw new ArgumentException(
-                    $"Java libraries not found in: {javaLibsPath}",
-                    nameof(javaLibsPath));
-            }
-
-            this.JavaLibsPath = javaLibsPath;
-            this.JUnitTestRunnerSourceFilePath =
-                $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
-            this.TestNames = new List<string>();
             this.UserClassNames = new List<string>();
             this.ClassPath = $@" -classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
         }
 
-        protected string JavaLibsPath { get; }
-
-        protected string ClassPath { get; }
-
-        protected string JUnitTestRunnerSourceFilePath { get; }
-
-        protected List<string> TestNames { get; }
-
         protected List<string> UserClassNames { get; }
 
-        protected string JUnitTestRunnerCode
+        protected override string JUnitTestRunnerCode
         {
             get
             {
@@ -134,9 +107,15 @@ class Classes{{
                 return result;
             }
 
-            var compilerResult = this.DoCompile(executionContext, submissionFilePath);
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
 
-            // Assign compiled result info to the execution result
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                combinedArguments,
+                submissionFilePath);
+
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
             if (!result.IsCompiledSuccessfully)
@@ -144,18 +123,18 @@ class Classes{{
                 return result;
             }
 
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);
             arguments.Add(AdditionalExecutionArguments);
-
-            // Create an executor and a checker
-            var executor = new RestrictedProcessExecutor();
-            var checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
-
             arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
 
-            // Process the submission and check each test
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
@@ -174,7 +153,6 @@ class Classes{{
 
             foreach (var test in executionContext.Tests)
             {
-                // Construct and figure out what the Test results are
                 var message = "Test Passed!";
                 var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))
@@ -189,36 +167,7 @@ class Classes{{
             return result;
         }
 
-        protected override CompileResult DoCompile(ExecutionContext executionContext, string submissionFilePath)
-        {
-            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-            var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
-
-            var compilerResult = this.Compile(
-                executionContext.CompilerType,
-                compilerPath,
-                combinedArguments,
-                submissionFilePath);
-
-            return compilerResult;
-        }
-
-        protected override string CreateSubmissionFile(ExecutionContext executionContext)
-        {
-            var trimmedAllowedFileExtensions = executionContext.AllowedFileExtensions?.Trim();
-            var allowedFileExtensions = (!trimmedAllowedFileExtensions?.StartsWith(".") ?? false)
-                ? $".{trimmedAllowedFileExtensions}"
-                : trimmedAllowedFileExtensions;
-
-            if (allowedFileExtensions != GlobalConstants.ZipFileExtension)
-            {
-                throw new ArgumentException("Submission file is not a zip file!");
-            }
-
-            return this.PrepareSubmissionFile(executionContext);
-        }
-
-        private string PrepareSubmissionFile(ExecutionContext context)
+        protected override string PrepareSubmissionFile(ExecutionContext context)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, context.FileContent);

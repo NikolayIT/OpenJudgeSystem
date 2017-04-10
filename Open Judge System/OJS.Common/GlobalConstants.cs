@@ -128,8 +128,6 @@
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
-
-        // Class Delimeter
         public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
     }
 }

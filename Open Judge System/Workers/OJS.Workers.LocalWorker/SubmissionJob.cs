@@ -165,6 +165,7 @@
                     return Settings.CPlusPlusGccCompilerPath;
                 case CompilerType.Java:
                 case CompilerType.JavaZip:
+                case CompilerType.JavaInPlaceCompiler:
                     return Settings.JavaCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
@@ -267,7 +268,7 @@
                     executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
-                    executionStrategy = new CSharpUnitTestsRunnerExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
+                    executionStrategy = new CSharpUnitTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
@@ -284,6 +285,12 @@
                     break;
                 case ExecutionStrategyType.JavaProjectTestsExecutionStrategy:
                     executionStrategy = new JavaProjectTestsExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        GetCompilerPath,
+                        Settings.JavaLibsPath);
+                    break;
+                case ExecutionStrategyType.JavaUnitTestsExecutionStrategy:
+                    executionStrategy = new JavaUnitTestsExecutionStrategy(
                         Settings.JavaExecutablePath,
                         GetCompilerPath,
                         Settings.JavaLibsPath);
