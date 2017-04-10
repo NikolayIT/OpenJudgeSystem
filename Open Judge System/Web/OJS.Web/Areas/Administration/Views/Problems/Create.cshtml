@@ -114,13 +114,13 @@
                     <input type="checkbox" id="enable-sclimit" />
                     <strong>Да</strong>
                     @(Html.Kendo()
-                  .NumericTextBoxFor(m => m.SourceCodeSizeLimit)
-                  .Format("#")
-                  .Min(1)
-                  .Step(1)
-                  .Enable(false)
-                  .Spinners(false)
-                  .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
+                        .NumericTextBoxFor(m => m.SourceCodeSizeLimit)
+                        .Format("#")
+                        .Min(1)
+                        .Step(1)
+                        .Enable(false)
+                        .Spinners(false)
+                        .HtmlAttributes(new { @class = "pull-right full-editor", style = "width: 75%" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@SharedResource.Enter_sorce_code_size_limit" data-tooltip="true"></span>

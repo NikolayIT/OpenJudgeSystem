@@ -9,6 +9,7 @@
         Java = 4,
         JavaZip = 5,
         MsBuildLibrary = 6,
-        JavaInPlaceCompiler = 7
+        CPlusPlusZip = 7
+        JavaInPlaceCompiler = 8
     }
 }

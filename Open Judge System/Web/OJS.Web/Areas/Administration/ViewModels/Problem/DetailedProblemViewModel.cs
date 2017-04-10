@@ -11,11 +11,11 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+
     using Resources.Areas.Administration.Contests.ViewModels;
     using Resource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
 
@@ -23,6 +23,13 @@
     {
         public DetailedProblemViewModel()
         {
+            this.Name = GlobalConstants.ProblemDefaultName;
+            this.MaximumPoints = GlobalConstants.ProblemDefaultMaximumPoints;
+            this.TimeLimit = GlobalConstants.ProblemDefaultTimeLimit;
+            this.MemoryLimit = GlobalConstants.ProblemDefaultMemoryLimit;
+            this.ShowResults = GlobalConstants.ProblemDefaultShowResults;
+            this.SourceCodeSizeLimit = GlobalConstants.ProblemDefaultSourceLimit;
+            this.ShowDetailedFeedback = GlobalConstants.ProblemDefaultShowDetailedFeedback;
             this.SubmissionTypes = new List<SubmissionTypeViewModel>();
         }
 
@@ -68,7 +75,7 @@
             GlobalConstants.ProblemNameMaxLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]
-        [DefaultValue("Име")]
+        [DefaultValue(GlobalConstants.ProblemDefaultName)]
         public string Name { get; set; }
 
         [DatabaseProperty]
@@ -124,20 +131,21 @@
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]
-        [DefaultValue(null)]
+        [DefaultValue(GlobalConstants.ProblemDefaultSourceLimit)]
         public int? SourceCodeSizeLimit { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Show_results", ResourceType = typeof(Resource))]
+        [DefaultValue(GlobalConstants.ProblemDefaultShowResults)]
         public bool ShowResults { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Show_detailed_feedback", ResourceType = typeof(Resource))]
+        [DefaultValue(GlobalConstants.ProblemDefaultShowDetailedFeedback)]
         public bool ShowDetailedFeedback { get; set; }
 
         [Display(Name = "Submision_types", ResourceType = typeof(ContestAdministration))]
         [ExcludeFromExcel]
-        [UIHint("SubmissionTypeCheckBoxes")]
         public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; }
 
         [ExcludeFromExcel]
@@ -177,12 +185,5 @@
         }
 
         internal byte[] SolutionSkeletonData { get; set; }
-
-        public override Problem GetEntityModel(Problem model = null)
-        {
-            model = model ?? new Problem();
-
-            return base.GetEntityModel(model);
-        }
     }
 }

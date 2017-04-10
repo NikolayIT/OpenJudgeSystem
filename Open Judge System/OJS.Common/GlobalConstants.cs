@@ -1,6 +1,7 @@
 ﻿namespace OJS.Common
 {
     using System;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
@@ -107,9 +108,14 @@
 
         public const int ProblemNameMaxLength = 50;
 
+        public const string ProblemDefaultName = "Име";
+        public const int ProblemDefaultOrderBy = 0;
         public const int ProblemDefaultMaximumPoints = 100;
-        public const int ProblemDefaultTimeLimit = 1000;
-        public const int ProblemDefaultMemoryLimit = 32 * 1024 * 1024;
+        public const int ProblemDefaultTimeLimit = 100;
+        public const int ProblemDefaultMemoryLimit = 16 * 1024 * 1024;
+        public const int ProblemDefaultSourceLimit = 16384;
+        public const bool ProblemDefaultShowResults = true;
+        public const bool ProblemDefaultShowDetailedFeedback = false;
 
         public const int ProblemResourceNameMaxLength = 50;
         public const int ProblemResourceNameMinLength = 3;

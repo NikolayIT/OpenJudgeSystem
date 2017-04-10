@@ -63,11 +63,7 @@
         {
             using (var zipFile = new ZipFile(archivePath))
             {
-                foreach (var filePath in filePaths)
-                {
-                    zipFile.AddFile(filePath, pathInArchive);
-                }
-
+                zipFile.UpdateFiles(filePaths, pathInArchive);
                 zipFile.Save();
             }
         }

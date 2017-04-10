@@ -346,6 +346,16 @@
                 },
                 new SubmissionType
                 {
+                    Name = "C++ Zip File",
+                    CompilerType = CompilerType.CPlusPlusZip,
+                    AdditionalCompilerArguments = "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                    ExecutionStrategyType = ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
                     Name = "Java Unit Tests",
                     CompilerType = CompilerType.JavaInPlaceCompiler,
                     AdditionalCompilerArguments = string.Empty,
