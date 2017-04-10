@@ -63,11 +63,7 @@
         {
             using (var zipFile = new ZipFile(archivePath))
             {
-                foreach (var filePath in filePaths)
-                {
-                    zipFile.AddFile(filePath, pathInArchive);
-                }
-
+                zipFile.UpdateFiles(filePaths, pathInArchive);
                 zipFile.Save();
             }
         }
@@ -88,15 +84,6 @@
                 {
                     File.Delete(filePath);
                 }
-            }
-        }
-
-        public static void AddFilesToZip(string zipPath, IEnumerable<string> files)
-        {
-            using (ZipFile zipFile = ZipFile.Read(zipPath))
-            {
-                zipFile.UpdateFiles(files, string.Empty);
-                zipFile.Save();
             }
         }
 

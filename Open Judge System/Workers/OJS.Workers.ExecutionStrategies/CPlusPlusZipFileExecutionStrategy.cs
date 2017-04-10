@@ -1,4 +1,6 @@
-﻿namespace OJS.Workers.ExecutionStrategies
+﻿using System.Linq;
+
+namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.Collections.Generic;
@@ -42,7 +44,7 @@
             if (!string.IsNullOrEmpty(executionContext.TaskSkeletonAsString))
             {
                 var pathsOfHeadersAndCppFiles = this.ExtractTaskSkeleton(executionContext.TaskSkeletonAsString);
-                FileHelpers.AddFilesToZip(submissionDestination, pathsOfHeadersAndCppFiles);
+                FileHelpers.AddFilesToZipArchive(submissionDestination, string.Empty, pathsOfHeadersAndCppFiles.ToArray());
             }
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
