@@ -72,7 +72,6 @@
                 return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
 
-            // Move source file if needed
             string newInputFilePath = this.RenameInputFile(inputFile);
             if (newInputFilePath != inputFile)
             {
@@ -82,18 +81,15 @@
 
             this.InputFile = inputFile;
 
-            // Build compiler arguments
             var outputFile = this.GetOutputFileName(inputFile);
             var arguments = this.BuildCompilerArguments(inputFile, outputFile, additionalArguments);
 
-            // Find compiler directory
             var directoryInfo = new FileInfo(compilerPath).Directory;
             if (directoryInfo == null)
             {
                 return new CompileResult(false, $"Compiler directory is null. Compiler path value: {compilerPath}");
             }
 
-            // Prepare process start information
             var processStartInfo =
                 new ProcessStartInfo(compilerPath)
                 {
@@ -104,27 +100,23 @@
                     WorkingDirectory = directoryInfo.ToString(),
                     Arguments = arguments
                 };
+
             this.UpdateCompilerProcessStartInfo(processStartInfo);
 
-            // Execute compiler
             var compilerOutput = ExecuteCompiler(processStartInfo);
-
+ 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
-            // Check results and return CompilerResult instance
             if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
             {
-                // Compiled file is missing
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }
 
             if (!string.IsNullOrWhiteSpace(compilerOutput.Output))
             {
-                // Compile file is ready but the compiler has something on standard error (possibly compile warnings)
                 return new CompileResult(true, compilerOutput.Output, outputFile);
             }
 
-            // Compilation is ready without warnings
             return new CompileResult(outputFile);
         }
     }
