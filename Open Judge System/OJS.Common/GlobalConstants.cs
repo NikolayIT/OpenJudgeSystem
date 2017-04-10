@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace OJS.Common
+﻿namespace OJS.Common
 {
+    using System;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 

@@ -1,10 +1,9 @@
-﻿using System.Linq;
-
-namespace OJS.Workers.ExecutionStrategies
+﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using OJS.Common;
@@ -90,12 +89,12 @@ namespace OJS.Workers.ExecutionStrategies
 
         private IEnumerable<string> ExtractTaskSkeleton(string executionContextTaskSkeletonAsString)
         {
-            string[] headersAndCppFiles = executionContextTaskSkeletonAsString.Split(
+            var headersAndCppFiles = executionContextTaskSkeletonAsString.Split(
                 new string[] { GlobalConstants.ClassDelimiter },
                 StringSplitOptions.RemoveEmptyEntries);
 
-            List<string> pathsToHeadersAndCppFiles = new List<string>();
-            Regex fileNameAndExtensionMatcher = new Regex(FileNameAndExtensionPattern);
+            var pathsToHeadersAndCppFiles = new List<string>();
+            var fileNameAndExtensionMatcher = new Regex(FileNameAndExtensionPattern);
 
             foreach (var headersOrCppFile in headersAndCppFiles)
             {
