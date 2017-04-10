@@ -91,6 +91,15 @@
             }
         }
 
+        public static void AddFilesToZip(string zipPath, IEnumerable<string> files)
+        {
+            using (ZipFile zipFile = ZipFile.Read(zipPath))
+            {
+                zipFile.UpdateFiles(files, string.Empty);
+                zipFile.Save();
+            }
+        }
+
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
     }
 }

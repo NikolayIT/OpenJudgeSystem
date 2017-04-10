@@ -1,11 +1,11 @@
-﻿using System.Text.RegularExpressions;
-using OJS.Common;
-
-namespace OJS.Workers.ExecutionStrategies
+﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -14,8 +14,7 @@ namespace OJS.Workers.ExecutionStrategies
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
     {
         private const string SubmissionName = "UserSubmission.zip";
-        private const string FileNameAndTypeIndicatorPattern = @"##((\w+)\.(cpp|h))##";
-
+        private const string FileNameAndExtensionPattern = @"//((\w+)\.(cpp|h))//";
 
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
@@ -42,7 +41,8 @@ namespace OJS.Workers.ExecutionStrategies
 
             if (!string.IsNullOrEmpty(executionContext.TaskSkeletonAsString))
             {
-                this.ExtractTaskSkeleton(executionContext.TaskSkeletonAsString);
+                var pathsOfHeadersAndCppFiles = this.ExtractTaskSkeleton(executionContext.TaskSkeletonAsString);
+                FileHelpers.AddFilesToZip(submissionDestination, pathsOfHeadersAndCppFiles);
             }
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
@@ -86,20 +86,26 @@ namespace OJS.Workers.ExecutionStrategies
             return result;
         }
 
-        private void ExtractTaskSkeleton(string executionContextTaskSkeletonAsString)
+        private IEnumerable<string> ExtractTaskSkeleton(string executionContextTaskSkeletonAsString)
         {
             string[] headersAndCppFiles = executionContextTaskSkeletonAsString.Split(
-                new string[] {GlobalConstants.ClassDelimiter},
+                new string[] { GlobalConstants.ClassDelimiter },
                 StringSplitOptions.RemoveEmptyEntries);
-            Regex fileNameAndTypeMatcher = new Regex(FileNameAndTypeIndicatorPattern);
+
+            List<string> pathsToHeadersAndCppFiles = new List<string>();
+            Regex fileNameAndExtensionMatcher = new Regex(FileNameAndExtensionPattern);
+
             foreach (var headersOrCppFile in headersAndCppFiles)
             {
-                var match = fileNameAndTypeMatcher.Match(headersOrCppFile);
+                var match = fileNameAndExtensionMatcher.Match(headersOrCppFile);
                 if (match.Success)
                 {
-                    File.Create(match.Groups[1].ToString());
+                    File.WriteAllText($@"{this.WorkingDirectory}\{match.Groups[1]}", headersOrCppFile);
+                    pathsToHeadersAndCppFiles.Add($@"{this.WorkingDirectory}\{match.Groups[1]}");
                 }
             }
+
+            return pathsToHeadersAndCppFiles;
         }
     }
 }
