@@ -43,19 +43,10 @@
         public override string BuildCompilerArguments(string inputFile, string outputFolder, string additionalArguments)
         {
             var arguments = new StringBuilder();
-
-            // Input file argument
             arguments.Append($"\"{inputFile}\" ");
-
-            // Output path argument
             arguments.Append($"/p:OutputPath=\"{outputFolder}\" ");
-
-            // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
-
-            // Additional compiler arguments
             arguments.Append(additionalArguments);
-
             return arguments.ToString().Trim();
         }
 

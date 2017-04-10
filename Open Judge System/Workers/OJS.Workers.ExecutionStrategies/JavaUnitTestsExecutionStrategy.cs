@@ -17,7 +17,7 @@
     public class JavaUnitTestsExecutionStrategy : JavaZipFileCompileExecuteAndCheckExecutionStrategy
     {
         protected const string IncorrectTestFormat =
-            "The problem's tests were not uploaded as an archive of zips. A Lecturer/Administrator should reupload the tests in the correct format.";
+            "The problem's tests were not uploaded as an archive of zips. Reupload the tests in the correct format.";
 
         protected const string FilenameRegex = @"^//((?:\w+/)*[a-zA-Z_][a-zA-Z_0-9]*\.java)";
 
@@ -107,6 +107,7 @@ public class _$TestRunner {{
                 failed += result.getFailureCount();
                 System.out.println(result.getFailures().toString());
             }}
+
             total += result.getRunCount();
         }}
 
@@ -167,10 +168,9 @@ public class _$TestRunner {{
                         Directory.CreateDirectory(directory);
                     }
 
-                    File.WriteAllText(fileNames.Last(), projectClass);
+                    File.WriteAllText(fileNames[fileNames.Count - 1], projectClass);
                 }
 
-                // Compiling
                 var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
                 var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
 
@@ -180,10 +180,7 @@ public class _$TestRunner {{
                     combinedArguments,
                     this.WorkingDirectory);
 
-                // Modify the class path to include the folder with compiled files
                 this.ClassPath = $@" -classpath ""{this.JavaLibsPath}*;{compilerResult.OutputFile}""";
-
-                // Assign compiled result info to the execution result
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
                 if (!result.IsCompiledSuccessfully)
@@ -246,7 +243,11 @@ public class _$TestRunner {{
             return result;
         }
 
-        protected override CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
+        protected override CompileResult Compile(
+            CompilerType compilerType,
+            string compilerPath,
+            string compilerArguments,
+            string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
@@ -258,7 +259,7 @@ public class _$TestRunner {{
                 throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
-            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
             return compilerResult;
         }

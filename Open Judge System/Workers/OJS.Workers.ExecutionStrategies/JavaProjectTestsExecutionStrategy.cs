@@ -107,7 +107,6 @@ class Classes{{
                 return result;
             }
 
-            // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
 
@@ -117,7 +116,6 @@ class Classes{{
                 combinedArguments,
                 submissionFilePath);
 
-            // Assign compiled result info to the execution result
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
             if (!result.IsCompiledSuccessfully)
@@ -125,7 +123,6 @@ class Classes{{
                 return result;
             }
 
-            // Create an executor and a checker
             var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
@@ -138,7 +135,6 @@ class Classes{{
             arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
 
-            // Process the submission and check each test
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
@@ -157,7 +153,6 @@ class Classes{{
 
             foreach (var test in executionContext.Tests)
             {
-                // Construct and figure out what the Test results are
                 var message = "Test Passed!";
                 var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))

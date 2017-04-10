@@ -21,15 +21,10 @@
         public override string BuildCompilerArguments(string inputFolder, string outputDirectory, string additionalArguments)
         {
             var arguments = new StringBuilder();
-
-            // Output path argument
             arguments.Append($"-d \"{outputDirectory}\" ");
-
-            // Additional compiler arguments
             arguments.Append(additionalArguments);
             arguments.Append(' ');
 
-            // Input files arguments
             var filesToCompile =
                 Directory.GetFiles(inputFolder, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
             for (var i = 0; i < filesToCompile.Length; i++)
@@ -38,7 +33,6 @@
                 arguments.Append(' ');
             }
 
-            File.WriteAllText("E:\\args.txt",string.Join(", ", arguments));
             return arguments.ToString();
         }
 
@@ -76,8 +70,7 @@
             }
 
             // Prepare process start information
-            var processStartInfo =
-                new ProcessStartInfo(compilerPath)
+            var processStartInfo = new ProcessStartInfo(compilerPath)
                 {
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
@@ -86,27 +79,21 @@
                     WorkingDirectory = directoryInfo.ToString(),
                     Arguments = arguments
                 };
-            this.UpdateCompilerProcessStartInfo(processStartInfo);
 
-            // Execute compiler
+            this.UpdateCompilerProcessStartInfo(processStartInfo);
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
             outputDirectory = this.ChangeOutputFileAfterCompilation(outputDirectory);
-
-            // Check results and return CompilerResult instance
             if (!Directory.Exists(outputDirectory) && !compilerOutput.IsSuccessful)
             {
-                // Compiled file is missing
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }
 
             if (!string.IsNullOrWhiteSpace(compilerOutput.Output))
             {
-                // Compile file is ready but the compiler has something on standard error (possibly compile warnings)
                 return new CompileResult(true, compilerOutput.Output, outputDirectory);
             }
 
-            // Compilation is ready without warnings
             return new CompileResult(outputDirectory);
         }
     }

@@ -718,7 +718,8 @@
 
                 var parsedTests = ZippedTestsParser.Parse(memory);
 
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
+                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count ||
+                    parsedTests.Inputs.Count != parsedTests.Outputs.Count)
                 {
                     throw new ArgumentException(GlobalResource.Invalid_tests);
                 }

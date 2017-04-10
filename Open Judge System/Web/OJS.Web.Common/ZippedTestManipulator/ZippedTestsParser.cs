@@ -245,21 +245,23 @@
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
-                    else
+
+                    var inputFiles = zipFile.Entries
+                        .Where(x => x.FileName.ToLower()
+                            .Contains("in" + output.FileName.ToLower()
+                            .Substring(output.FileName.ToLower().LastIndexOf('.'))) &&
+                            x.FileName.Substring(x.FileName.LastIndexOf('.')) == output.FileName.Substring(output.FileName.LastIndexOf('.')))
+                        .ToList();
+
+                    if (inputFiles.Count > 1)
                     {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains("in" + output.FileName.ToLower().Substring(output.FileName.ToLower().LastIndexOf('.')))
-                            && x.FileName.Substring(x.FileName.LastIndexOf('.')) == output.FileName.Substring(output.FileName.LastIndexOf('.'))).ToList();
-
-                        if (inputFiles.Count > 1)
-                        {
-                            throw new ArgumentException("Невалиден брой входни тестове");
-                        }
-
-                        var input = inputFiles[0];
-
-                        result.Inputs.Add(ExtractFileFromStream(input));
-                        result.Outputs.Add(ExtractFileFromStream(output));
+                        throw new ArgumentException("Невалиден брой входни тестове");
                     }
+
+                    var input = inputFiles[0];
+
+                    result.Inputs.Add(ExtractFileFromStream(input));
+                    result.Outputs.Add(ExtractFileFromStream(output));
                 }
             }
         }
@@ -270,16 +272,29 @@
             if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip"))
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
-                var inputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip").ToList();
+                var inputs = zipFile.EntriesSorted
+                    .Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip")
+                    .ToList();
 
                 foreach (var input in inputs)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(input.FileName.ToLower().Substring(0, input.FileName.Length - 6) + "out.zip")))
+                    if (!zipFile.Entries
+                        .Any(x => x.FileName
+                            .ToLower()
+                            .Contains(input.FileName
+                                .ToLower()
+                                .Substring(0, input.FileName.Length - 6) + "out.zip")))
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
 
-                    var outputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(input.FileName.ToLower().Substring(0, input.FileName.Length - 6) + "out.zip")).ToList();
+                    var outputFiles = zipFile.Entries
+                        .Where(x => x.FileName
+                            .ToLower()
+                            .Contains(input.FileName
+                                .ToLower()
+                                .Substring(0, input.FileName.Length - 6) + "out.zip"))
+                        .ToList();
 
                     if (outputFiles.Count > 1)
                     {
