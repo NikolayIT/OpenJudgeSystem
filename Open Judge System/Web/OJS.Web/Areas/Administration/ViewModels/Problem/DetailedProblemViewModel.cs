@@ -154,6 +154,7 @@
         [ExcludeFromExcel]
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }
 
+        [AllowHtml]
         [Display(Name = "Solution_skeleton", ResourceType = typeof(Resource))]
         [UIHint("MultiLineText")]
         public string SolutionSkeleton
@@ -169,6 +170,7 @@
             }
         }
 
+        [AllowHtml]
         public string SolutionSkeletonShort
         {
             get
@@ -184,6 +186,7 @@
             }
         }
 
+        [AllowHtml]
         internal byte[] SolutionSkeletonData { get; set; }
     }
 }

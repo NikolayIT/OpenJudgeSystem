@@ -7,13 +7,13 @@ namespace OJS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RemoveContestSubissionTypes : IMigrationMetadata
+    public sealed partial class RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveContestSubissionTypes));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704041533564_RemoveContestSubissionTypes"; }
+            get { return "201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies"; }
         }
         
         string IMigrationMetadata.Source

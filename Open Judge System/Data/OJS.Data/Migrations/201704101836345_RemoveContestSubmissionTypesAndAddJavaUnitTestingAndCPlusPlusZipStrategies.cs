@@ -3,7 +3,7 @@ namespace OJS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class RemoveContestSubissionTypes : DbMigration
+    public partial class RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies : DbMigration
     {
         public override void Up()
         {
