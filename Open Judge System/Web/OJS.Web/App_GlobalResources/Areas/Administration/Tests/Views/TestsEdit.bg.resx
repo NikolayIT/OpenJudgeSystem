@@ -126,7 +126,4 @@
   <data name="Page_title" xml:space="preserve">
     <value>Промяна на тест</value>
   </data>
-  <data name="Retest_problem" xml:space="preserve">
-    <value>Ретестване на задачата</value>
-  </data>
 </root>

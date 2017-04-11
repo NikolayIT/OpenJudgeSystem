@@ -214,7 +214,7 @@
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful edit otherwise to /Administration/Test/ with proper error message</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, TestViewModel test, bool retestTask)
+        public ActionResult Edit(int id, TestViewModel test)
         {
             if (test != null && this.ModelState.IsValid)
             {
@@ -246,7 +246,7 @@
                 this.Data.SaveChanges();
                 this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == existingTest.ProblemId);
 
-                    if (retestTask)
+                    if (test.RetestTask)
                     {
                         this.RetestSubmissions(existingTest.ProblemId);
                     }

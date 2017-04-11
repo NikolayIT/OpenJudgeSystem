@@ -43,15 +43,15 @@
             </div>
             <div class="editor-label">
                 @(Html.Kendo()
-                      .NumericTextBoxFor(m => m.OrderBy)
-                      .Format("#")
-                      .Step(1)
-                      .Spinners(false))
+                    .NumericTextBoxFor(m => m.OrderBy)
+                    .Format("#")
+                    .Step(1)
+                    .Spinners(false))
                 @Html.ValidationMessageFor(m => m.OrderBy)
             </div>
             <div>
-                @Html.CheckBox("retestTask", false)
-                @Html.Label(Resource.Retest_problem, new { @for = "retestTask", style = "display: inline-block; " })
+                @Html.CheckBoxFor(m=>m.RetestTask, false)
+                @Html.LabelFor(m=>m.RetestTask)
             </div>
             <br />
             <button type="submit" class="btn btn-primary">@Resource.Edit</button>
