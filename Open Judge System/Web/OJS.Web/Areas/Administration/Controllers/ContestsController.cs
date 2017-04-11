@@ -268,14 +268,23 @@
             }
 
             var dropDownData = categories
+                //.OrderBy(c => c.Name)
                 .ToList()
                 .Select(cat => new SelectListItem
                 {
                     Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
                 });
 
-            return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
+            var newDropDownData = categories.ToList().Select(cat =>
+                new
+                {
+                    Parent = cat.Parent != null ? cat.Parent.Name : string.Empty,
+                    Name = cat.Name,
+                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
+                }).OrderBy(a => string.IsNullOrEmpty(a.Parent)).ThenBy(a => a.Parent).ThenBy(a => a.Name);
+
+            return this.Json(newDropDownData, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult StartAsLab(LabStartInputModel inputModel)

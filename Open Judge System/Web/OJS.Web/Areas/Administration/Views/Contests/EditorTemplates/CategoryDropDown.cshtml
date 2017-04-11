@@ -4,15 +4,27 @@
 @(Html.Kendo()
     .DropDownListFor(m => m)
     .OptionLabel(Resource.Choose_category)
-    .DataTextField("Text")
+    .Template("#:categoryDropdownTemplate(data)#")
+    .DataTextField("Name")
     .DataValueField("Value")
     .DataSource(data =>
     {
         data.ServerFiltering(true)
             .Read(read =>
-                {
-                    read.Action("GetCategories", "Contests");
-                });
+            {
+                read.Action("GetCategories", "Contests");
+            });
     })
     .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-    .HtmlAttributes(new { style = "width: 100%;" }))
+      .HtmlAttributes(new { style = "width: 100%;" }))
+
+<script>
+    function categoryDropdownTemplate(data){
+        if(data.Parent==undefined) {
+            return data.Name;
+        }
+        else {
+            return data.Parent + " - " + data.Name;
+        }
+    };
+</script>
