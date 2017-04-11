@@ -714,7 +714,7 @@
 
                 try
                 {
-                    parsedTests = ZippedTestsManipulator.Parse(memory);
+                    parsedTests = ZippedTestsParser.Parse(memory);
                 }
                 catch
                 {
@@ -742,7 +742,7 @@
                     this.Data.Tests.Delete(t => t.ProblemId == problem.Id);
                 }
 
-                ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
+                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
 
                 if (retestTask)
                 {

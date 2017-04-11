@@ -32,8 +32,12 @@
                     return new JavaCompiler();
                 case CompilerType.JavaZip:
                     return new JavaZipCompiler();
+                case CompilerType.JavaInPlaceCompiler:
+                    return new JavaInPlaceFolderCompiler();
                 case CompilerType.MsBuildLibrary:
                     return new MsBuildLibraryCompiler();
+                case CompilerType.CPlusPlusZip:
+                    return new CPlusPlusZipCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

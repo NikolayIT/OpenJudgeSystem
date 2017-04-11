@@ -58,9 +58,11 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="CompilerOutput.cs" />
     <Compile Include="CPlusPlusCompiler.cs" />
+    <Compile Include="CPlusPlusZipCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
     <Compile Include="JavaCompiler.cs" />
     <Compile Include="JavaZipCompiler.cs" />
+    <Compile Include="JavaInPlaceFolderCompiler.cs" />
     <Compile Include="MsBuildCompiler.cs" />
     <Compile Include="MsBuildLibraryCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
