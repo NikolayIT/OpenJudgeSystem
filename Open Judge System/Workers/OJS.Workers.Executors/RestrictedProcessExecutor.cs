@@ -18,6 +18,7 @@ namespace OJS.Workers.Executors
     public class RestrictedProcessExecutor : IExecutor
     {
         private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
+        private const int TimeBeforeClosingOutputStreams = 300;
         private static ILog logger;
 
         public RestrictedProcessExecutor()
@@ -122,7 +123,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process error output
                 try
                 {
-                    errorOutputTask.Wait(300);
+                    errorOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
@@ -132,7 +133,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process output
                 try
                 {
-                    processOutputTask.Wait(300);
+                    processOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
@@ -262,7 +263,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process error output
                 try
                 {
-                    errorOutputTask.Wait(100);
+                    errorOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
@@ -272,7 +273,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process output
                 try
                 {
-                    processOutputTask.Wait(100);
+                    processOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {

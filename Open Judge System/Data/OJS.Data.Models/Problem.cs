@@ -15,6 +15,7 @@
         private ICollection<Submission> submissions;
         private ICollection<Tag> tags;
         private ICollection<ParticipantScore> participantScores;
+        private ICollection<SubmissionType> submissionTypes;
 
         public Problem()
         {
@@ -23,6 +24,7 @@
             this.submissions = new HashSet<Submission>();
             this.tags = new HashSet<Tag>();
             this.participantScores = new HashSet<ParticipantScore>();
+            this.submissionTypes = new HashSet<SubmissionType>();
         }
 
         [Key]
@@ -102,6 +104,12 @@
         {
             get { return this.participantScores; }
             set { this.participantScores = value; }
+        }
+
+        public virtual ICollection<SubmissionType> SubmissionTypes
+        {
+            get { return this.submissionTypes; }
+            set { this.submissionTypes = value; }
         }
     }
 }

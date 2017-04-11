@@ -41,17 +41,21 @@ $(document).ready(function () {
 
     var input = $("#SourceCodeSizeLimit");
     var numericTextBox = input.data("kendoNumericTextBox");
-    if ($('#enable-sclimit').is(':checked')) {
+    var checkbox = $('#enable-sclimit');
+
+    if (numericTextBox.value() != null && numericTextBox.value() != 0) {
+        checkbox.attr('checked', true);
         numericTextBox.enable(true);
-    }
-    else {
-        numericTextBox.enable(false);
+        input.attr("data-val-required", "Лимита е задължителен!");
+
+        $("form").removeData("validator");
+        $("form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form'));
     }
 
     $('#enable-sclimit').change(function () {
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
-            numericTextBox.value(16384);
             input.attr("data-val-required", "Лимита е задължителен!");
             
             $("form").removeData("validator");
@@ -59,7 +63,6 @@ $(document).ready(function () {
             $.validator.unobtrusive.parse($('form'));
         }
         else {
-            numericTextBox.value(null);
             numericTextBox.enable(false);
             input.removeAttr("data-val-required");
 

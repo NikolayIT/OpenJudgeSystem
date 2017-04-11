@@ -117,97 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add_remove_resource" xml:space="preserve">
-    <value>Add or remove resource for this problem - problem description, solution or video. Every resource has a name, type and a file/llink.</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
-  </data>
-  <data name="Case_insensitive_checker_description" xml:space="preserve">
-    <value>- the system does uses case insensitive comparison when comparing symbol by symbol.</value>
-  </data>
-  <data name="Choose_code_checker" xml:space="preserve">
-    <value>Choose a source code checker for this problem. The basic options are:</value>
-  </data>
-  <data name="Choose_file" xml:space="preserve">
-    <value>Choose file</value>
-  </data>
-  <data name="Choose_zip_file" xml:space="preserve">
-    <value>Choose the .zip file with expected input and output for the current problem.
-    &lt;br /&gt;
-    You can download a sample zip file from
-    &lt;a href="/Content/Demos/DemoTests.zip"&gt;here&lt;/a&gt;.</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="Enter_max_points" xml:space="preserve">
-    <value>Enter the max points for the problem</value>
-  </data>
-  <data name="Enter_memory_limit" xml:space="preserve">
-    <value>Enter the memory limit (in bytes) for this problem</value>
-  </data>
-  <data name="Enter_name" xml:space="preserve">
-    <value>Enter the name of the problem</value>
-  </data>
-  <data name="Enter_order" xml:space="preserve">
-    <value>Enter the order for the current problem</value>
-  </data>
-  <data name="Enter_sorce_code_size_limit" xml:space="preserve">
-    <value>Enter the source code size limit (in bytes) for this problem</value>
-  </data>
-  <data name="Enter_time_limit" xml:space="preserve">
-    <value>Enter the time limit (in miliseconds) for this problem</value>
-  </data>
-  <data name="Exact_checker_description" xml:space="preserve">
-    <value>- the system compares the results of the participants with the expected output symbol by symbol.</value>
-  </data>
-  <data name="For" xml:space="preserve">
-    <value>for</value>
-  </data>
-  <data name="General_info" xml:space="preserve">
-    <value>General information</value>
-  </data>
   <data name="Page_title" xml:space="preserve">
-    <value>Create problem</value>
-  </data>
-  <data name="Precision_checker_description" xml:space="preserve">
-    <value>- the system compares only N digits after the decimal separator. Works only for problems where the answers are floating point numbers positioned on new lines.</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="Resources" xml:space="preserve">
-    <value>Resources</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Show_detailed_feedback" xml:space="preserve">
-    <value>Choose if the participants can see a full feedback for thier submissions (like administrators)</value>
-  </data>
-  <data name="Show_results" xml:space="preserve">
-    <value>Choose if the participants can see their result in real time</value>
-  </data>
-  <data name="Sort_checker_description" xml:space="preserve">
-    <value>- the system first sorts the results of the participants and the expected output, line by line and  then compares them both symbol by symbol.</value>
-  </data>
-  <data name="Tests" xml:space="preserve">
-    <value>Tests</value>
-  </data>
-  <data name="Tests_label" xml:space="preserve">
-    <value>Tests (.zip file)</value>
-  </data>
-  <data name="Trim_checker_description" xml:space="preserve">
-    <value>- the system first removes the white spaces in front and in the end of the participant results and then compare them with the expected output symbol by symbol.</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Enter_solution_skeleton" xml:space="preserve">
-    <value>Enter solution skeleton</value>
+    <value>Edit problem</value>
   </data>
 </root>

@@ -11,7 +11,6 @@
 
     public class MsBuildCompiler : Compiler
     {
-        private const string SolutionFileExtension = ".sln";
         private const string CsharpProjectFileExtension = ".csproj";
         private const string VisualBasicProjectFileExtension = ".vbproj";
         private const string AllFilesSearchPattern = "*.*";

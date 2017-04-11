@@ -39,7 +39,7 @@
             var participants = this.data.Participants
                 .All()
                 .Where(x => x.IsOfficial && x.ContestId == contestId.Value && x.Answers.Any(a => a.Answer == answer));
-            
+
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
