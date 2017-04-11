@@ -155,6 +155,11 @@
         {
             var testResultsRegex = new Regex(TestResultsRegex);
             var res = testResultsRegex.Match(receivedOutput);
+            if (!res.Success)
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
             totalTests = int.Parse(res.Groups[1].Value);
             passedTests = int.Parse(res.Groups[2].Value);
         }

@@ -208,8 +208,8 @@
                             return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
-                        outputWaitHandle.WaitOne(100);
-                        errorWaitHandle.WaitOne(100);
+                        outputWaitHandle.WaitOne(300);
+                        errorWaitHandle.WaitOne(300);
                         exitCode = process.ExitCode;
                     }
                 }

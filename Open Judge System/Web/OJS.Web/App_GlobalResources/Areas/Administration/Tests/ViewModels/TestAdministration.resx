@@ -159,4 +159,7 @@
   <data name="Type_test_name" xml:space="preserve">
     <value>Test type</value>
   </data>
+  <data name="Retest_problem" xml:space="preserve">
+    <value>Retest Problem</value>
+  </data>
 </root>

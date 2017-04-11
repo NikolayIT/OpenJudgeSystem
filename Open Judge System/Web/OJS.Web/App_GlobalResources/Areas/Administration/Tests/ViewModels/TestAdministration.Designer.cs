@@ -161,6 +161,15 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retest Problem.
+        /// </summary>
+        public static string Retest_problem {
+            get {
+                return ResourceManager.GetString("Retest_problem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test runs count.
         /// </summary>
         public static string Test_runs_count {

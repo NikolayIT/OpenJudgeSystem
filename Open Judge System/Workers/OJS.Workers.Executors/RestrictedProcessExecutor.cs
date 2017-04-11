@@ -18,6 +18,7 @@ namespace OJS.Workers.Executors
     public class RestrictedProcessExecutor : IExecutor
     {
         private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
+        private const int TimeBeforeClosingOutputStreams = 300;
         private static ILog logger;
 
         public RestrictedProcessExecutor()
@@ -116,27 +117,27 @@ namespace OJS.Workers.Executors
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Memory Sampling Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 // Close the task that gets the process error output
                 try
                 {
-                    errorOutputTask.Wait(100);
+                    errorOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Error Output Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 // Close the task that gets the process output
                 try
                 {
-                    processOutputTask.Wait(100);
+                    processOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
-                    logger.Warn($"AggregateException caught. Inner Exception: {ex.InnerException},\nException Message: {ex.InnerException.Message},\nStackTrace: {ex.InnerException.StackTrace}");
+                    logger.Warn($"AggregateException caught in Standard Output Thread. Inner Exception: {ex.InnerException}");
                 }
 
                 Debug.Assert(restrictedProcess.HasExited, "Restricted process didn't exit!");
@@ -262,7 +263,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process error output
                 try
                 {
-                    errorOutputTask.Wait(100);
+                    errorOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {
@@ -272,7 +273,7 @@ namespace OJS.Workers.Executors
                 // Close the task that gets the process output
                 try
                 {
-                    processOutputTask.Wait(100);
+                    processOutputTask.Wait(TimeBeforeClosingOutputStreams);
                 }
                 catch (AggregateException ex)
                 {

@@ -32,6 +32,8 @@
             var passed = false;
             try
             {
+                // The fields 'stats' and 'tests' with their respective subfields are required for extracting results,
+                // if any of them are missing the received output is not considered valid
                 jsonTestResult = JObject.Parse(result.Trim().Replace("/*", InvalidJsonReplace).Replace("*/", InvalidJsonReplace));
                 totalPasses = (int)jsonTestResult["stats"]["passes"];
                 totalTests = (int)jsonTestResult["stats"]["tests"];
