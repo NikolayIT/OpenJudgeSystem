@@ -21,7 +21,6 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.SeedSubmissionTypes(context);
             if (context.Roles.Any())
             {
                 return;
