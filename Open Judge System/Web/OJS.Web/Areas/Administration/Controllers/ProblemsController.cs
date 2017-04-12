@@ -31,6 +31,7 @@
     using OJS.Web.ViewModels.Common;
 
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+    using TransactionScope = System.Transactions.TransactionScope;
 
     public class ProblemsController : LecturerBaseController
     {
@@ -483,8 +484,16 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
-            this.Data.SaveChanges();
+            using (var scope = new TransactionScope())
+            {
+                this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
+                this.Data.SaveChanges();
+
+                this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
             return this.RedirectToAction("Contest", new { id = problem.ContestId });
@@ -716,14 +725,15 @@
                 testArchive.InputStream.CopyTo(memory);
                 memory.Position = 0;
 
-                var parsedTests = ZippedTestsManipulator.Parse(memory);
+                var parsedTests = ZippedTestsParser.Parse(memory);
 
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
+                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count ||
+                    parsedTests.Inputs.Count != parsedTests.Outputs.Count)
                 {
                     throw new ArgumentException(GlobalResource.Invalid_tests);
                 }
 
-                ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
+                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
             }
         }
 
@@ -746,46 +756,37 @@
 
         private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
         {
-            var lastOrderBy = -1;
-            var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == contest.Id);
+            var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
+            var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == contest.Id).OrderByDescending(x => x.OrderBy).FirstOrDefault();
 
-            if (lastProblem.Any())
+            if (lastProblem != null)
             {
-                lastOrderBy = lastProblem.Max(x => x.OrderBy);
+                problemOrder = lastProblem.OrderBy + 1;
             }
 
-            var problem = new DetailedProblemViewModel
-            {
-                Name = "Име",
-                MaximumPoints = 100,
-                TimeLimit = 100,
-                MemoryLimit = 16777216,
-                AvailableCheckers = this.Data.Checkers.All()
-                    .Select(checker => new SelectListItem
-                    {
-                        Text = checker.Name,
-                        Value = checker.Name,
-                        Selected = checker.Name.Contains("Trim")
-                    }),
-                OrderBy = lastOrderBy + 1,
-                ContestId = contest.Id,
-                ContestName = contest.Name,
-                ShowResults = true,
-                SourceCodeSizeLimit = 16384,
-                ShowDetailedFeedback = false,
-                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
-            };
+            var problem = new DetailedProblemViewModel();
+            problem.OrderBy = problemOrder;
+            problem.ContestId = contest.Id;
+            problem.ContestName = contest.Name;
+            problem.AvailableCheckers = this.Data.Checkers.All()
+                .Select(checker => new SelectListItem
+                {
+                    Text = checker.Name,
+                    Value = checker.Name,
+                    Selected = checker.Name.Contains("Trim")
+                });
+            problem.SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
 
             return problem;
         }
 
         private bool IsValidProblem(DetailedProblemViewModel model)
         {
-            bool isValid = true;
+            var isValid = true;
 
             if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
             {
-                this.ModelState.AddModelError("SelectedSubmissionTypes", GlobalResource.Select_one_submission_type);
+                this.ModelState.AddModelError(nameof(model.SelectedSubmissionTypes), GlobalResource.Select_one_submission_type);
                 isValid = false;
             }
 

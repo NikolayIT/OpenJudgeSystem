@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -20,6 +21,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
@@ -234,6 +236,9 @@
                 existingTest.IsTrialTest = test.Type == TestType.Trial;
                 existingTest.IsOpenTest = test.Type == TestType.Open;
 
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == existingTest.ProblemId && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
                 this.Data.SaveChanges();
 
                 this.RetestSubmissions(existingTest.ProblemId);
@@ -306,40 +311,97 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            // delete all test runs for the test
-            this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
-            this.Data.SaveChanges();
-
-            // delete the test
-            this.Data.Tests.Delete(test);
-            this.Data.SaveChanges();
-
-            // recalculate submissions point
-            var submissionResults = this.Data.Submissions
-                .All()
-                .Where(s => s.ProblemId == test.ProblemId)
-                .Select(s => new
-                {
-                    s.Id,
-                    CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer),
-                    AllTestRuns = s.TestRuns.Count(),
-                    MaxPoints = s.Problem.MaximumPoints
-                })
-                .ToList();
-
-            foreach (var submissionResult in submissionResults)
+            using (var scope = new TransactionScope())
             {
-                var submission = this.Data.Submissions.GetById(submissionResult.Id);
-                int points = 0;
-                if (submissionResult.AllTestRuns != 0)
+                // delete all test runs for the test
+                this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
+                this.Data.SaveChanges();
+
+                // delete the test
+                this.Data.Tests.Delete(test);
+                this.Data.SaveChanges();
+
+                // recalculate submissions point
+                var problemSubmissions = this.Data.Submissions
+                    .All()
+                    .Include(s => s.TestRuns)
+                    .Include(s => s.TestRuns.Select(tr => tr.Test))
+                    .Where(s => s.ProblemId == test.ProblemId)
+                    .ToList();
+
+                var submissionResults = problemSubmissions
+                    .Select(s => new
+                    {
+                        s.Id,
+                        s.ParticipantId,
+                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer && !t.Test.IsTrialTest),
+                        AllTestRuns = s.TestRuns.Count(t => !t.Test.IsTrialTest),
+                        MaxPoints = s.Problem.MaximumPoints
+                    })
+                    .ToList();
+
+                var problemSubmissionsById = problemSubmissions.ToDictionary(s => s.Id);
+                var topResults = new Dictionary<int, ParticipantScoreModel>();
+
+                foreach (var submissionResult in submissionResults)
                 {
-                    points = submissionResult.CorrectTestRuns / submissionResult.AllTestRuns * submissionResult.MaxPoints;
+                    var submission = problemSubmissionsById[submissionResult.Id];
+                    int points = 0;
+                    if (submissionResult.AllTestRuns != 0)
+                    {
+                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) / submissionResult.AllTestRuns;
+                    }
+
+                    submission.Points = points;
+                    submission.CacheTestRuns();
+
+                    if (submissionResult.ParticipantId.HasValue)
+                    {
+                        var participantId = submissionResult.ParticipantId.Value;
+
+                        if (!topResults.ContainsKey(participantId) || topResults[participantId].Points < points)
+                        {
+                            // score does not exists or have less points than current submission
+                            topResults[participantId] = new ParticipantScoreModel
+                            {
+                                Points = points,
+                                SubmissionId = submission.Id
+                            };
+                        }
+                        else if (topResults[participantId].Points == points)
+                        {
+                            // save score with latest submission
+                            if (topResults[participantId].SubmissionId < submission.Id)
+                            {
+                                topResults[participantId].SubmissionId = submission.Id;
+                            }
+                        }
+                    }
                 }
 
-                submission.Points = points;
-            }
+                this.Data.SaveChanges();
 
-            this.Data.SaveChanges();
+                var participants = topResults.Keys.ToList();
+
+                // find all participant scores for the test's problem
+                var existingScores = this.Data.ParticipantScores
+                    .All()
+                    .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
+                    .ToList();
+
+                // replace the scores with updated values
+                foreach (var existingScore in existingScores)
+                {
+                    var topScore = topResults[existingScore.ParticipantId];
+
+                    existingScore.Points = topScore.Points;
+                    existingScore.SubmissionId = topScore.SubmissionId;
+                }
+
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(Resource.Test_deleted_successfully);
             return this.RedirectToAction("Problem", new { id = test.ProblemId });
@@ -407,13 +469,19 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
-            this.Data.SaveChanges();
+            using (var scope = new TransactionScope())
+            {
+                this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
+                this.Data.SaveChanges();
+                this.Data.Tests.Delete(test => test.ProblemId == id);
+                this.Data.SaveChanges();
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == id && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
+                this.Data.SaveChanges();
 
-            this.Data.Tests.Delete(test => test.ProblemId == id);
-            this.Data.SaveChanges();
-
-            this.RetestSubmissions(problem.Id);
+                scope.Complete();
+            }
 
             this.TempData.AddInfoMessage(Resource.Tests_deleted_successfully);
             return this.RedirectToAction("Problem", new { id });
@@ -638,7 +706,7 @@
             }
 
             TestsParseResult parsedTests;
-        
+
             using (var memory = new MemoryStream())
             {
                 file.InputStream.CopyTo(memory);
@@ -646,7 +714,7 @@
 
                 try
                 {
-                    parsedTests = ZippedTestsManipulator.Parse(memory);
+                    parsedTests = ZippedTestsParser.Parse(memory);
                 }
                 catch
                 {
@@ -663,17 +731,18 @@
 
             using (var scope = new TransactionScope())
             {
+                this.Data.Submissions.Update(
+                    x => x.ProblemId == id && !x.IsDeleted,
+                    x => new Submission { TestRunsCache = null });
+                this.Data.SaveChanges();
+
                 if (deleteOldFiles)
                 {
-                    var testIds = this.Data.Tests.All().Where(t => t.ProblemId == problem.Id).Select(t => t.Id).ToList();
-                    if (testIds.Any())
-                    {
-                        this.Data.TestRuns.Delete(tr => testIds.Contains(tr.TestId));
-                        this.Data.Tests.Delete(t => testIds.Contains(t.Id));
-                    }
+                    this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == problem.Id);
+                    this.Data.Tests.Delete(t => t.ProblemId == problem.Id);
                 }
 
-                ZippedTestsManipulator.AddTestsToProblem(problem, parsedTests);
+                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
 
                 if (retestTask)
                 {
@@ -683,7 +752,7 @@
                 this.Data.SaveChanges();
                 scope.Complete();
             }
-         
+
             this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
 
             return this.RedirectToAction("Problem", new { id });
@@ -776,6 +845,9 @@
 
         private void RetestSubmissions(int problemId)
         {
+            this.Data.ParticipantScores.DeleteParticipantScores(problemId);
+            this.Data.SaveChanges();
+
             this.Data.Submissions.Update(
                 submission => submission.ProblemId == problemId,
                 submission => new Submission { Processed = false, Processing = false });

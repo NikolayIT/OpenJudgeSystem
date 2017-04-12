@@ -121,8 +121,7 @@
 
             var contests = this.Data.Contests
                 .All()
-                .Where(c => !c.IsDeleted &&
-                            c.IsVisible &&
+                .Where(c => c.IsVisible &&
                             c.Problems.Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
                 .OrderBy(x => x.OrderBy)
                 .Select(ContestViewModel.FromContest);
