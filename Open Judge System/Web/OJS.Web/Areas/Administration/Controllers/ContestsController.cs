@@ -235,19 +235,10 @@
                     c.Contests.Any(cc => !cc.IsDeleted && cc.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
             }
 
-            var dropDownData = categories
-                //.OrderBy(c => c.Name)
-                .ToList()
-                .Select(cat => new SelectListItem
-                {
-                    Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture),
-                });
-
             var newDropDownData = categories.ToList().Select(cat =>
                 new
                 {
-                    Parent = cat.Parent != null ? cat.Parent.Name : string.Empty,
+                    Parent = cat.Parent != null ? cat.Parent.Name : null,
                     Name = cat.Name,
                     Value = cat.Id.ToString(CultureInfo.InvariantCulture)
                 }).OrderBy(a => string.IsNullOrEmpty(a.Parent)).ThenBy(a => a.Parent).ThenBy(a => a.Name);
