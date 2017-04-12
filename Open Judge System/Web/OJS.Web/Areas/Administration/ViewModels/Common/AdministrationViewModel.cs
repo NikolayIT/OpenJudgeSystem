@@ -13,13 +13,11 @@
     public abstract class AdministrationViewModel<T> : IAdministrationViewModel<T>
         where T : class, new()
     {
-        [DatabaseProperty]
         [Display(Name = "Created_on", ResourceType = typeof(Resource))]
         [DataType(DataType.DateTime)]
         [HiddenInput(DisplayValue = false)]
         public DateTime? CreatedOn { get; set; }
 
-        [DatabaseProperty]
         [Display(Name = "Modified_on", ResourceType = typeof(Resource))]
         [DataType(DataType.DateTime)]
         [HiddenInput(DisplayValue = false)]

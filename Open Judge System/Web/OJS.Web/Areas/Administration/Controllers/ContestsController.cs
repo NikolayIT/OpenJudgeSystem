@@ -8,17 +8,13 @@
 
     using Kendo.Mvc.UI;
 
-    using MissingFeatures;
-
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
-    using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
@@ -65,13 +61,8 @@
         [HttpGet]
         public ActionResult Create()
         {
-            var newContest = new ViewModelType
-            {
-                SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList()
-            };
-
             this.PrepareViewBagData();
-            return this.View(newContest);
+            return this.View(new ViewModelType());
         }
 
         [HttpPost]
@@ -92,15 +83,6 @@
             if (this.ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();
-
-                model.SubmissionTypes.ForEach(s =>
-                {
-                    if (s.IsChecked)
-                    {
-                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
-                        contest.SubmissionTypes.Add(submission);
-                    }
-                });
 
                 this.AddIpsToContest(contest, model.AllowedIps);
 
@@ -136,10 +118,6 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            this.Data.SubmissionTypes.All()
-                .Select(SubmissionTypeViewModel.ViewModel)
-                .ForEach(SubmissionTypeViewModel.ApplySelectedTo(contest));
-
             this.PrepareViewBagData();
             return this.View(contest);
         }
@@ -170,16 +148,6 @@
                 }
 
                 contest = model.GetEntityModel(contest);
-                contest.SubmissionTypes.Clear();
-
-                model.SubmissionTypes.ForEach(s =>
-                {
-                    if (s.IsChecked)
-                    {
-                        var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
-                        contest.SubmissionTypes.Add(submission);
-                    }
-                });
 
                 contest.AllowedIps.Clear();
                 this.AddIpsToContest(contest, model.AllowedIps);
@@ -342,12 +310,6 @@
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
                 this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Practice_start_date_before_end);
-                isValid = false;
-            }
-
-            if (model.SubmissionTypes == null || !model.SubmissionTypes.Any(s => s.IsChecked))
-            {
-                this.ModelState.AddModelError("SelectedSubmissionTypes", Resource.Select_one_submission_type);
                 isValid = false;
             }
 

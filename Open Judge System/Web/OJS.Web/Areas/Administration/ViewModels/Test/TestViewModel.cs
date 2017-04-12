@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Globalization;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
@@ -12,7 +10,6 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Common;
 
@@ -165,6 +162,9 @@
                 this.OutputData = value.Compress();
             }
         }
+
+        [Display(Name = "Retest_problem", ResourceType = typeof(Resource))]
+        public bool RetestTask { get; set; }
 
         [Display(Name = "Trial_test_name", ResourceType = typeof(Resource))]
         public string TrialTestName => this.Type == TestType.Trial ? Resource.Practice : Resource.Contest;

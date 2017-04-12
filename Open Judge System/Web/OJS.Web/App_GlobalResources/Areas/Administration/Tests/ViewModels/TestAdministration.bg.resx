@@ -161,4 +161,7 @@
     <value>Тип на теста</value>
     <comment>Тип на теста</comment>
   </data>
+  <data name="Retest_problem" xml:space="preserve">
+    <value>Ретестване на задачата</value>
+  </data>
 </root>

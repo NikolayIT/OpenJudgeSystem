@@ -62,47 +62,173 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to - the system does uses case insensitive comparison when comparing symbol by symbol..
         /// </summary>
-        public static string Delete {
+        public static string Case_insensitive_checker_description {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("Case_insensitive_checker_description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download.
+        ///   Looks up a localized string similar to Choose a source code checker for this problem. The basic options are:.
         /// </summary>
-        public static string Download {
+        public static string Choose_code_checker {
             get {
-                return ResourceManager.GetString("Download", resourceCulture);
+                return ResourceManager.GetString("Choose_code_checker", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Enter the max points for the problem.
         /// </summary>
-        public static string Edit {
+        public static string Enter_max_points {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("Enter_max_points", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retest.
+        ///   Looks up a localized string similar to Enter the memory limit (in bytes) for this problem.
         /// </summary>
-        public static string Retest {
+        public static string Enter_memory_limit {
             get {
-                return ResourceManager.GetString("Retest", resourceCulture);
+                return ResourceManager.GetString("Enter_memory_limit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video.
+        ///   Looks up a localized string similar to Enter the name of the problem.
         /// </summary>
-        public static string Video {
+        public static string Enter_name {
             get {
-                return ResourceManager.GetString("Video", resourceCulture);
+                return ResourceManager.GetString("Enter_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the order for the current problem.
+        /// </summary>
+        public static string Enter_order {
+            get {
+                return ResourceManager.GetString("Enter_order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter solution skeleton.
+        /// </summary>
+        public static string Enter_solution_skeleton {
+            get {
+                return ResourceManager.GetString("Enter_solution_skeleton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the source code size limit (in bytes) for this problem.
+        /// </summary>
+        public static string Enter_sorce_code_size_limit {
+            get {
+                return ResourceManager.GetString("Enter_sorce_code_size_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the time limit (in miliseconds) for this problem.
+        /// </summary>
+        public static string Enter_time_limit {
+            get {
+                return ResourceManager.GetString("Enter_time_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system compares the results of the participants with the expected output symbol by symbol..
+        /// </summary>
+        public static string Exact_checker_description {
+            get {
+                return ResourceManager.GetString("Exact_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to for.
+        /// </summary>
+        public static string For {
+            get {
+                return ResourceManager.GetString("For", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General information.
+        /// </summary>
+        public static string General_info {
+            get {
+                return ResourceManager.GetString("General_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system compares only N digits after the decimal separator. Works only for problems where the answers are floating point numbers positioned on new lines..
+        /// </summary>
+        public static string Precision_checker_description {
+            get {
+                return ResourceManager.GetString("Precision_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose if the participants can see a full feedback for thier submissions (like administrators).
+        /// </summary>
+        public static string Show_detailed_feedback {
+            get {
+                return ResourceManager.GetString("Show_detailed_feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose if the participants can see their result in real time.
+        /// </summary>
+        public static string Show_results {
+            get {
+                return ResourceManager.GetString("Show_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system first sorts the results of the participants and the expected output, line by line and  then compares them both symbol by symbol..
+        /// </summary>
+        public static string Sort_checker_description {
+            get {
+                return ResourceManager.GetString("Sort_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submission types.
+        /// </summary>
+        public static string Submission_types {
+            get {
+                return ResourceManager.GetString("Submission_types", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - the system first removes the white spaces in front and in the end of the participant results and then compare them with the expected output symbol by symbol..
+        /// </summary>
+        public static string Trim_checker_description {
+            get {
+                return ResourceManager.GetString("Trim_checker_description", resourceCulture);
             }
         }
     }

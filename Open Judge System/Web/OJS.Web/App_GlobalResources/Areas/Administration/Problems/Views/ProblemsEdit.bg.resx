@@ -117,97 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add_remove_resource" xml:space="preserve">
-    <value>Добавете или премахнете ресурс към задачата - условие, авторско решение или видео. Всеки ресурс има име, тип и файл/линк.</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
-  </data>
-  <data name="Case_insensitive_checker_description" xml:space="preserve">
-    <value>- системата не отчита разлика между главна и малка буква като сравнява символ по символ;</value>
-  </data>
-  <data name="Choose_code_checker" xml:space="preserve">
-    <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>
-  </data>
-  <data name="Choose_file" xml:space="preserve">
-    <value>Избери файл</value>
-  </data>
-  <data name="Choose_zip_file" xml:space="preserve">
-    <value>Изберете .zip файл с тестове за вход и изход към задачата.
-    &lt;br /&gt;
-    Можете да изтеглите примерен файл с тестове
-    &lt;a href="/Content/Demos/DemoTests.zip"&gt;тук&lt;/a&gt;.</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>Създай</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Промяна</value>
   </data>
-  <data name="Enter_max_points" xml:space="preserve">
-    <value>Промяна на максималния брой точки, които състезателят може да получи от задачата</value>
-  </data>
-  <data name="Enter_memory_limit" xml:space="preserve">
-    <value>Промяна на максималнaта памет в байтове, която състезателят може да достигне с решението си върху задачата</value>
-  </data>
-  <data name="Enter_name" xml:space="preserve">
-    <value>Промяна на заглавието на задачата</value>
-  </data>
-  <data name="Enter_order" xml:space="preserve">
-    <value>Промяна на номер под ред на задачата в текущото състезание</value>
-  </data>
-  <data name="Enter_sorce_code_size_limit" xml:space="preserve">
-    <value>Промяна на максималния размер на сорс код в байтове, която състезателят може да изпрати като решение на задачата</value>
-  </data>
-  <data name="Enter_time_limit" xml:space="preserve">
-    <value>Промяна на максимално време в милисекунди, които състезателят може да достигне с решението си върху задачата</value>
-  </data>
-  <data name="Exact_checker_description" xml:space="preserve">
-    <value>- системата проверява резултатите на състезателя с очаквания изход символ по символ;</value>
-  </data>
-  <data name="For" xml:space="preserve">
-    <value>към</value>
-  </data>
-  <data name="General_info" xml:space="preserve">
-    <value>Основна информация</value>
-  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Промяна на задача</value>
-  </data>
-  <data name="Precision_checker_description" xml:space="preserve">
-    <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Премахни</value>
-  </data>
-  <data name="Resources" xml:space="preserve">
-    <value>Ресурси</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Show_detailed_feedback" xml:space="preserve">
-    <value>Изберете дали участниците ще могат да си виждат пълен feedback на решенията си, както го виждат администраторите</value>
-  </data>
-  <data name="Show_results" xml:space="preserve">
-    <value>Изберете дали участниците ще могат да си виждат резултатите в реално време</value>
-  </data>
-  <data name="Sort_checker_description" xml:space="preserve">
-    <value>- системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;</value>
-  </data>
-  <data name="Tests" xml:space="preserve">
-    <value>Тестове</value>
-  </data>
-  <data name="Tests_label" xml:space="preserve">
-    <value>Тестове (.zip файл)</value>
-  </data>
-  <data name="Trim_checker_description" xml:space="preserve">
-    <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Да</value>
-  </data>
-  <data name="Enter_solution_skeleton" xml:space="preserve">
-    <value>Въведете скелет</value>
   </data>
 </root>

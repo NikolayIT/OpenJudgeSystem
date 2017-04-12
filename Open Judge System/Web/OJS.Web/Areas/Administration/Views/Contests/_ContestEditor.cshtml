@@ -1,11 +1,6 @@
 ﻿@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;
-@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
 
-<div class="row">
-    <div class="editor-label col-xs-3">
-        @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
-    </div>
-</div>
+@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
 
 <fieldset>
     <legend>@Resource.General_info</legend>
@@ -256,11 +251,6 @@
         </div>
     </div>
     <br />
-</fieldset>
-
-<fieldset>
-    <legend>@Resource.Submission_types</legend>
-    @Html.EditorFor(m => m.SubmissionTypes)
 </fieldset>
 
 <script>

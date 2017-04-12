@@ -150,4 +150,10 @@
   <data name="Resources_not_complete" xml:space="preserve">
     <value>Resources must be fully entered.</value>
   </data>
+  <data name="Problem_not_found" xml:space="preserve">
+    <value>The problem was not found!</value>
+  </data>
+  <data name="Select_one_submission_type" xml:space="preserve">
+    <value>Choose at least one submission type!</value>
+  </data>
 </root>

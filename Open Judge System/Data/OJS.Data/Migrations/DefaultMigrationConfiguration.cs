@@ -21,7 +21,6 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.SeedSubmissionTypes(context);
             if (context.Roles.Any())
             {
                 return;
@@ -317,8 +316,8 @@
                 new SubmissionType
                 {
                     Name = "C# Unit Tests",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpUnitTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -327,8 +326,8 @@
                 new SubmissionType
                 {
                     Name = "C# Project Tests",
-                    CompilerType = CompilerType.None,
-                    AdditionalCompilerArguments = "--noresult --inprocess",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -343,6 +342,26 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "Java Unit Tests",
+                    CompilerType = CompilerType.JavaInPlaceCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.JavaUnitTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "C++ Zip File",
+                    CompilerType = CompilerType.CPlusPlusZip,
+                    AdditionalCompilerArguments = "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                    ExecutionStrategyType = ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true
                 }
             };
 

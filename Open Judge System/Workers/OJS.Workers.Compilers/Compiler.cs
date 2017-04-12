@@ -32,12 +32,18 @@
                     return new JavaCompiler();
                 case CompilerType.JavaZip:
                     return new JavaZipCompiler();
+                case CompilerType.JavaInPlaceCompiler:
+                    return new JavaInPlaceFolderCompiler();
+                case CompilerType.MsBuildLibrary:
+                    return new MsBuildLibraryCompiler();
+                case CompilerType.CPlusPlusZip:
+                    return new CPlusPlusZipCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
         }
 
-        public CompileResult Compile(string compilerPath, string inputFile, string additionalArguments)
+        public virtual CompileResult Compile(string compilerPath, string inputFile, string additionalArguments)
         {
             if (compilerPath == null)
             {
@@ -140,7 +146,7 @@
         {
         }
 
-        private static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
@@ -204,7 +210,6 @@
 
                         outputWaitHandle.WaitOne(300);
                         errorWaitHandle.WaitOne(300);
-
                         exitCode = process.ExitCode;
                     }
                 }

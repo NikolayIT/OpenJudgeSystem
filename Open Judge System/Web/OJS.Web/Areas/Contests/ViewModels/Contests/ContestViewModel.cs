@@ -47,7 +47,7 @@
                                                                     .Select(ContestProblemViewModel.FromProblem),
                         LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                         Description = contest.Description,
-                        AllowedSubmissionTypes = contest.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.FromSubmissionType),
+                        AllowedSubmissionTypes = contest.Problems.AsQueryable().SelectMany(p => p.SubmissionTypes).GroupBy(st => st.Id).Select(g => g.FirstOrDefault()).Select(SubmissionTypeViewModel.FromSubmissionType),
                     };
             }
         }

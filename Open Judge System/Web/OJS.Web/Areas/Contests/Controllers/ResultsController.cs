@@ -417,7 +417,7 @@
 
             contestResults.Results = result
                 .ThenByDescending(x => x.ProblemResults
-                    .OrderByDescending(y => y.BestSubmission?.Id)
+                    .OrderBy(y => y.BestSubmission?.Id)
                     .Select(y => y.BestSubmission?.Id)
                     .FirstOrDefault());
 

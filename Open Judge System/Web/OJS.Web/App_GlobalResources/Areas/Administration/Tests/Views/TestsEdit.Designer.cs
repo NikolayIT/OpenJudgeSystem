@@ -86,14 +86,5 @@ namespace Resources.Areas.Administration.Tests.Views {
                 return ResourceManager.GetString("Page_title", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Retest problem.
-        /// </summary>
-        public static string Retest_problem {
-            get {
-                return ResourceManager.GetString("Retest_problem", resourceCulture);
-            }
-        }
     }
 }
