@@ -88,6 +88,15 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose File.
+        /// </summary>
+        public static string Choose_file {
+            get {
+                return ResourceManager.GetString("Choose_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {

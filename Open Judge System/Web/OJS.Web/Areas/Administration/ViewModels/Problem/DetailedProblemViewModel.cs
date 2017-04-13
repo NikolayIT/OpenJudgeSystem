@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Web;
     using System.Web.Mvc;
 
     using OJS.Common;
@@ -117,6 +118,10 @@
 
         [Display(Name = "Checker", ResourceType = typeof(Resource))]
         public string Checker { get; set; }
+
+        [ExcludeFromExcel]
+        [UIHint("FileUpload")]
+        public HttpPostedFileBase AdditionalFiles { get; set; }
 
         [ExcludeFromExcel]
         public IEnumerable<SelectListItem> AvailableCheckers { get; set; }

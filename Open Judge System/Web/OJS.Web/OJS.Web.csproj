@@ -2711,6 +2711,7 @@
     <Content Include="Views\Shared\EditorTemplates\DropDownList.cshtml" />
     <Content Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
     <Content Include="Views\Shared\_SimplePagination.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3301,7 +3302,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1721</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

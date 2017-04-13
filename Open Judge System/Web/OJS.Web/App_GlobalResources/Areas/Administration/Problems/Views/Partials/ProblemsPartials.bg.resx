@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Additional_files" xml:space="preserve">
+    <value>Допълнителни файлове</value>
+  </data>
+  <data name="Additional_files_label" xml:space="preserve">
+    <value>Допълнителни файлове (.zip формат)</value>
+  </data>
   <data name="Case_insensitive_checker_description" xml:space="preserve">
     <value>- системата не отчита разлика между главна и малка буква като сравнява символ по символ;</value>
+  </data>
+  <data name="Choose_additional_file" xml:space="preserve">
+    <value>Изберете .zip файл със допълнителни файлове които да се добавят към проекта на потребителя.</value>
   </data>
   <data name="Choose_code_checker" xml:space="preserve">
     <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>

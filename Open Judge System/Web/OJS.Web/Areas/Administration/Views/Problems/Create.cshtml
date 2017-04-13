@@ -258,7 +258,25 @@
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" id="tests-tooltip"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Choose_zip_file" data-tooltip="true"></span>
+                </div>
+            </div>
+            <hr />
+        </fieldset>
+        <br />
+        <fieldset>
+            <legend>@SharedResource.Additional_files</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        <strong>@SharedResource.Additional_files_label</strong>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    @Html.EditorFor(m => m.AdditionalFiles)
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@SharedResource.Choose_additional_file" data-tooltip="true"></span>
                 </div>
             </div>
             <hr />
@@ -279,10 +297,7 @@
     @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
 
     <script src="~/Scripts/Administration/Problems/problems-create.js"></script>
-    <script type="text/x-kendo-template" id="tests-template">
-        @Html.Raw(Resource.Choose_zip_file)
-    </script>
-    
+
     <script type="text/x-kendo-template" id="checkers-template">
         <ul style="list-style-type: none">
             <li>

@@ -29,12 +29,17 @@
 
         public override string RenameInputFile(string inputFile)
         {
-            if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return inputFile;
-            }
+            //if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    return inputFile;
+            //}
 
-            return $"{inputFile}{GlobalConstants.ZipFileExtension}";
+            return inputFile;
+        }
+
+        public override bool ShouldDeleteSourceFile()
+        {
+            return false;
         }
 
         public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;

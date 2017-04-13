@@ -78,12 +78,6 @@ $(document).ready(function () {
         position: "bottom"
     });
 
-    $('#tests-tooltip').kendoTooltip({
-        content: kendo.template($("#tests-template").html()),
-        width: 440,
-        position: "bottom"
-    });
-
     $('#add-resource').click(function (e) {
         e.preventDefault();
 

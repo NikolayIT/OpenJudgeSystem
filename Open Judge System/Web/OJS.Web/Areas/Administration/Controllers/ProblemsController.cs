@@ -111,7 +111,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, HttpPostedFileBase testArchive, DetailedProblemViewModel problem)
+        public ActionResult Create(int id, HttpPostedFileBase testArchive, HttpPostedFileBase additionalFilesArchive, DetailedProblemViewModel problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
@@ -174,6 +174,35 @@
             if (problem.Resources != null && problem.Resources.Any())
             {
                 this.AddResourcesToProblem(newProblem, problem.Resources);
+            }
+
+            if (additionalFilesArchive != null && additionalFilesArchive.ContentLength != 0)
+            {
+                try
+                {
+                    this.AddAdditionalFilesToProblem(newProblem, testArchive);
+                }
+                catch (Exception ex)
+                {
+                    // TempData is not working with return this.View
+                    var systemMessages = new SystemMessageCollection
+                                {
+                                    new SystemMessage
+                                    {
+                                        Content = ex.Message,
+                                        Type = SystemMessageType.Error,
+                                        Importance = 0
+                                    }
+                                };
+                    this.ViewBag.SystemMessages = systemMessages;
+                    problem.AvailableCheckers = this.Data.Checkers.All()
+                        .Select(checker => new SelectListItem
+                        {
+                            Text = checker.Name,
+                            Value = checker.Name
+                        });
+                    return this.View(problem);
+                }
             }
 
             if (testArchive != null && testArchive.ContentLength != 0)
@@ -734,6 +763,22 @@
                 }
 
                 ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+            }
+        }
+
+        private void AddAdditionalFilesToProblem(Problem problem, HttpPostedFileBase additionalFiles)
+        {
+            var extension = additionalFiles.FileName.Substring(additionalFiles.FileName.Length - 4, 4);
+
+            if (extension != GlobalConstants.ZipFileExtension)
+            {
+                throw new ArgumentException(GlobalResource.Must_be_zip_file);
+            }
+
+            using (var archiveStream = new MemoryStream())
+            {
+                additionalFiles.InputStream.CopyTo(archiveStream);
+                problem.AdditionalFiles = archiveStream.ToArray();
             }
         }
 

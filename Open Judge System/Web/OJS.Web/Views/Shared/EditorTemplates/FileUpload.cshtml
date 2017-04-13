@@ -1,0 +1,13 @@
+﻿@using Resource = Resources.Areas.Administration.AdministrationGeneral;
+
+@model HttpPostedFileBase
+   
+@{
+    var propertyName = this.ViewData.ModelMetadata.PropertyName;
+}
+
+@Html.Kendo().Upload().Multiple(false).Name(propertyName).Messages(x=>x.Select(Resource.Choose_file))
+
+@*<div class="hidden-file-upload">
+    <input type="file" name="@ViewData.ModelMetadata.PropertyName" id='@ViewData.ModelMetadata.PropertyName' text='@ViewData["text"]' />
+</div>*@

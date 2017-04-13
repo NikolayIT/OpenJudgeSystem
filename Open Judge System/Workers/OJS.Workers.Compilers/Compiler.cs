@@ -103,9 +103,12 @@
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
             // Delete input file
-            if (File.Exists(newInputFilePath))
+            if (this.ShouldDeleteSourceFile())
             {
-                File.Delete(newInputFilePath);
+                if (File.Exists(newInputFilePath))
+                {
+                    File.Delete(newInputFilePath);
+                }
             }
 
             // Check results and return CompilerResult instance
@@ -123,6 +126,11 @@
 
             // Compilation is ready without warnings
             return new CompileResult(outputFile);
+        }
+
+        public virtual bool ShouldDeleteSourceFile()
+        {
+            return true;
         }
 
         public virtual string RenameInputFile(string inputFile)

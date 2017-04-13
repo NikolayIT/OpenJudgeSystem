@@ -69,6 +69,11 @@
         /// </summary>
         public byte[] SolutionSkeleton { get; set; }
 
+        /// <summary>
+        /// Additional files which should be provided to User Submissions
+        /// </summary>
+        public byte[] AdditionalFiles { get; set; }
+
         [DefaultValue(true)]
         [Index]
         public bool ShowResults { get; set; }
