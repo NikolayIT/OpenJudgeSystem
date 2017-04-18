@@ -1,4 +1,6 @@
-﻿namespace OJS.Common.Extensions
+﻿using System.Linq;
+
+namespace OJS.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -54,6 +56,12 @@
                 throw new ArgumentException(
                     $"'{pattern}' file not found in output directory!",
                     nameof(pattern));
+            }
+
+            if (files.Count > 0)
+            {
+                files[0] = files
+                    .OrderByDescending(f => new FileInfo(f).Length).First();
             }
 
             return ProcessModulePath(files[0]);
