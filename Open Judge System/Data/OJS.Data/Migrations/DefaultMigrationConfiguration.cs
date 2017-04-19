@@ -362,7 +362,6 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true
-                }
                 },
                   new SubmissionType
                 {
