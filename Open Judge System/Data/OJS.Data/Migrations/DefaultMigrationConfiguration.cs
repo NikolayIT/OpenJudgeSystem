@@ -21,6 +21,7 @@
 
         protected override void Seed(OjsDbContext context)
         {
+            
             if (context.Roles.Any())
             {
                 return;
@@ -357,7 +358,7 @@
                 {
                     Name = "C++ Zip File",
                     CompilerType = CompilerType.CPlusPlusZip,
-                    AdditionalCompilerArguments = "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                    AdditionalCompilerArguments = "-pipe -mtune=generic -static-libgcc -static-libstdc++",
                     ExecutionStrategyType = ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",

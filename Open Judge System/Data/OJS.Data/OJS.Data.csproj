@@ -95,9 +95,9 @@
     <Compile Include="Configurations\ParticipantScoresConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
-    <Compile Include="Migrations\201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies.cs" />
-    <Compile Include="Migrations\201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies.Designer.cs">
-      <DependentUpon>201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies.cs</DependentUpon>
+    <Compile Include="Migrations\201704201207228_tempester.cs" />
+    <Compile Include="Migrations\201704201207228_tempester.Designer.cs">
+      <DependentUpon>201704201207228_tempester.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
@@ -148,8 +148,8 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies.resx">
-      <DependentUpon>201704101836345_RemoveContestSubmissionTypesAndAddJavaUnitTestingAndCPlusPlusZipStrategies.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704201207228_tempester.resx">
+      <DependentUpon>201704201207228_tempester.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
