@@ -20,8 +20,7 @@
         }
 
         protected override void Seed(OjsDbContext context)
-        {
-            
+        {           
             if (context.Roles.Any())
             {
                 return;
