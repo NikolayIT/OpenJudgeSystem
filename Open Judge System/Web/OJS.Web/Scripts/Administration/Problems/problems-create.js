@@ -12,6 +12,35 @@ function selectedFile(e) {
     $('#file-button-' + id).text(fileName.length > 20 ? fileName.substring(0, 20) + '...' : fileName);
 }
 
+function validateFile(files, validationBox) {
+    if (files) {
+        if (files[0].extension.toLowerCase() !== ".zip") {
+            validationBox.attr("class", "field-validation-error");
+            validationBox.text("Uploaded file must be in .zip format");
+            e.preventDefault();
+        } else {
+            validationBox.attr("class", "field-validation-valid");
+            validationBox.text("");
+        }
+    }
+
+    $("form").removeData("validator");
+    $("form").removeData("unobtrusiveValidation");
+    $.validator.unobtrusive.parse($('form'));
+}
+
+function additionalFilesValidation(e) {
+    var files = e.files;
+    var validationBox = $("span[data-valmsg-for='AdditionalFiles']");
+    validateFile(files, validationBox);
+}
+
+function testsValidation(e) {
+    var files = e.files;
+    var validationBox = $("span[data-valmsg-for='Tests']");
+    validateFile(files, validationBox);
+}
+
 function onResourceTypeSelect() {
     var val = this.value();
     var id = this.element.attr('modelid');
@@ -57,7 +86,7 @@ $(document).ready(function () {
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
             input.attr("data-val-required", "Лимита е задължителен!");
-            
+
             $("form").removeData("validator");
             $("form").removeData("unobtrusiveValidation");
             $.validator.unobtrusive.parse($('form'));
@@ -71,6 +100,23 @@ $(document).ready(function () {
             $.validator.unobtrusive.parse($('form'));
         }
     });
+
+
+    //$(".main-container form").validate({
+    //    submitHandler: function(form) {
+    //        var submissionTypes = $('input[name^="SubmissionTypes"][name$=".IsChecked"]');
+    //        var submissionTypesValidation = $("span[data-valmsg-for='SelectedSubmissionTypes']");
+    //        if (submissionTypes.is(":checked")) {
+    //            submissionTypesValidation.attr('class', 'field-validation-valid');
+    //            submissionTypesValidation.text("");
+    //            form.submit();
+    //        }
+
+    //        submissionTypesValidation.attr('class', 'field-validation-error');
+    //        submissionTypesValidation.text("Choose at least one submission Type!");
+    //        $(this).cancelSubmit = true;
+    //    }
+    //});
 
     $('#checkers-tooltip').kendoTooltip({
         content: kendo.template($("#checkers-template").html()),
@@ -88,7 +134,7 @@ $(document).ready(function () {
 
             $('#remove-resource').removeAttr('disabled');
 
-            $('#resources .required-resource-field').each(function() {
+            $('#resources .required-resource-field').each(function () {
                 $(this).rules("add", { required: true, messages: { required: "Задължително поле" } });
             });
         });
@@ -108,14 +154,5 @@ $(document).ready(function () {
         if (itemIndex == 0) {
             $('#remove-resource').attr('disabled', 'disabled');
         }
-    });
-
-    $('#tests-file-button').click(function (e) {
-        $('#tests-upload-input').click();
-    });
-
-    $('#tests-upload-input').change(function (e) {
-        var fileName = this.files[0].name;
-        $('#tests-file-button').text(fileName.length > 30 ? fileName.substring(0, 30) + '...' : fileName);
     });
 });

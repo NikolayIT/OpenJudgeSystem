@@ -1,4 +1,27 @@
-﻿$(document).ready(function () {
+﻿function validateFile(files, validationBox) {
+    if (files) {
+        if (files[0].extension.toLowerCase() !== ".zip") {
+            validationBox.attr("class", "field-validation-error");
+            validationBox.text("Uploaded file must be in .zip format");
+            e.preventDefault();
+        } else {
+            validationBox.attr("class", "field-validation-valid");
+            validationBox.text("");
+        }
+    }
+
+    $("form").removeData("validator");
+    $("form").removeData("unobtrusiveValidation");
+    $.validator.unobtrusive.parse($('form'));
+}
+
+function additionalFilesValidation(e) {
+    var files = e.files;
+    var validationBox = $("span[data-valmsg-for='AdditionalFiles']");
+    validateFile(files, validationBox);
+}
+
+$(document).ready(function () {
 
     $.validator.addMethod(
         'date',

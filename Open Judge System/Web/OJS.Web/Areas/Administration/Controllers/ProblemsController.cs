@@ -6,8 +6,11 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
+
+    using Ionic.Zip;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -111,7 +114,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, HttpPostedFileBase testArchive, HttpPostedFileBase additionalFilesArchive, DetailedProblemViewModel problem)
+        public ActionResult Create(int id, DetailedProblemViewModel problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
@@ -152,6 +155,11 @@
                 }
             }
 
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
+            }
+
             if (!this.IsValidProblem(problem) || !this.ModelState.IsValid)
             {
                 problem.AvailableCheckers = this.Data.Checkers.All()
@@ -176,40 +184,20 @@
                 this.AddResourcesToProblem(newProblem, problem.Resources);
             }
 
-            if (additionalFilesArchive != null && additionalFilesArchive.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
-                try
+                using (var archiveStream = new MemoryStream())
                 {
-                    this.AddAdditionalFilesToProblem(newProblem, testArchive);
-                }
-                catch (Exception ex)
-                {
-                    // TempData is not working with return this.View
-                    var systemMessages = new SystemMessageCollection
-                                {
-                                    new SystemMessage
-                                    {
-                                        Content = ex.Message,
-                                        Type = SystemMessageType.Error,
-                                        Importance = 0
-                                    }
-                                };
-                    this.ViewBag.SystemMessages = systemMessages;
-                    problem.AvailableCheckers = this.Data.Checkers.All()
-                        .Select(checker => new SelectListItem
-                        {
-                            Text = checker.Name,
-                            Value = checker.Name
-                        });
-                    return this.View(problem);
+                    problem.AdditionalFiles.InputStream.CopyTo(archiveStream);
+                    newProblem.AdditionalFiles = archiveStream.ToArray();
                 }
             }
 
-            if (testArchive != null && testArchive.ContentLength != 0)
+            if (problem.Tests != null && problem.Tests.ContentLength != 0)
             {
                 try
                 {
-                    this.AddTestsToProblem(newProblem, testArchive);
+                    this.AddTestsToProblem(newProblem, problem.Tests);
                 }
                 catch (Exception ex)
                 {
@@ -308,6 +296,11 @@
                 return this.View(problem);
             }
 
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 problem = this.PrepareProblemViewModelForEdit(id);
@@ -324,6 +317,15 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                using (var archiveStream = new MemoryStream())
+                {
+                    problem.AdditionalFiles.InputStream.CopyTo(archiveStream);
+                    existingProblem.AdditionalFiles = archiveStream.ToArray();
+                }
+            }
 
             problem.SubmissionTypes.ForEach(s =>
             {
@@ -487,6 +489,44 @@
             }
 
             return this.View(problem);
+        }
+
+        /// <summary>
+        /// Creates a zip file with all additional files in the problem
+        /// </summary>
+        /// <param name="id">Problem id</param>
+        /// <returns>Zip file containing all additional files</returns>
+        public ActionResult DownloadAdditionalFiles(int id)
+        {
+            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Problem_not_found);
+                return this.RedirectToAction(GlobalConstants.Index);
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.Json("No premissions");
+            }
+
+            var additionalFiles = problem.AdditionalFiles;
+            var zipFileName = $"{problem.Name}_AdditionalFiles_{DateTime.Now}.{GlobalConstants.ZipFileExtension}";
+
+            var stream = new MemoryStream();
+            using (var additionalFilesStream = new MemoryStream(additionalFiles))
+            {
+                using (var zipFile = ZipFile.Read(additionalFilesStream))
+                {
+                    zipFile.Name = zipFileName;
+                    zipFile.Save(stream);
+                    stream.Position = 0;
+                }
+            }
+
+            return this.File(stream, MediaTypeNames.Application.Zip, zipFileName);
         }
 
         public ActionResult Retest(int? id)
@@ -766,19 +806,13 @@
             }
         }
 
-        private void AddAdditionalFilesToProblem(Problem problem, HttpPostedFileBase additionalFiles)
+        private void ValidateUploadedFile(string propertyName, HttpPostedFileBase additionalFiles)
         {
             var extension = additionalFiles.FileName.Substring(additionalFiles.FileName.Length - 4, 4);
 
             if (extension != GlobalConstants.ZipFileExtension)
             {
-                throw new ArgumentException(GlobalResource.Must_be_zip_file);
-            }
-
-            using (var archiveStream = new MemoryStream())
-            {
-                additionalFiles.InputStream.CopyTo(archiveStream);
-                problem.AdditionalFiles = archiveStream.ToArray();
+                this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
         }
 

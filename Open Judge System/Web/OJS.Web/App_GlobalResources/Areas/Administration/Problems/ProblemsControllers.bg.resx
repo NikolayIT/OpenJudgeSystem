@@ -130,7 +130,7 @@
     <value>Невалиден потребител</value>
   </data>
   <data name="Must_be_zip_file" xml:space="preserve">
-    <value>Тестовете трябва да бъдат в .ZIP файл</value>
+    <value>Каченият файл трябва да бъде в .ZIP формат</value>
   </data>
   <data name="Problems_deleted" xml:space="preserve">
     <value>Задачите бяха изтрити успешно</value>

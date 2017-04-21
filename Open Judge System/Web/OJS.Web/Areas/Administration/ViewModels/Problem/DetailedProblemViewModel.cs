@@ -57,6 +57,7 @@
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
                     SolutionSkeletonData = problem.SolutionSkeleton,
+                    HasAdditionalFiles = problem.AdditionalFiles != null,
                     CreatedOn = problem.CreatedOn,
                     ModifiedOn = problem.ModifiedOn,
                 };
@@ -126,6 +127,9 @@
         [ExcludeFromExcel]
         public IEnumerable<SelectListItem> AvailableCheckers { get; set; }
 
+        [ExcludeFromExcel]
+        public bool HasAdditionalFiles { get; set; }
+
         [DatabaseProperty]
         [Display(Name = "Order", ResourceType = typeof(Resource))]
         [Required(
@@ -190,6 +194,10 @@
                     : this.SolutionSkeleton;
             }
         }
+
+        [ExcludeFromExcel]
+        [UIHint("FileUpload")]
+        public HttpPostedFileBase Tests { get; set; }
 
         [AllowHtml]
         internal byte[] SolutionSkeletonData { get; set; }

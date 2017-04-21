@@ -147,8 +147,6 @@ class Classes{{
                 preprocessArguments.Add(this.WorkingDirectory);
                 preprocessArguments.AddRange(this.UserClassNames);
 
-                File.WriteAllText("E:\\preargs.txt", string.Join(", ", preprocessArguments));
-
                 var preprocessExecutionResult = preprocessExecutor.Execute(
                     this.JavaExecutablePath,
                     string.Empty,
@@ -166,7 +164,6 @@ class Classes{{
                 foreach (var file in filesToAdd)
                 {
                     var path = Path.GetDirectoryName(file);
-                    File.WriteAllText($"E:\\path{Guid.NewGuid()}.txt", path + " " + file);
                     FileHelpers.AddFilesToZipArchive(submissionFilePath, path, this.WorkingDirectory + "\\" + file);
                 }
 

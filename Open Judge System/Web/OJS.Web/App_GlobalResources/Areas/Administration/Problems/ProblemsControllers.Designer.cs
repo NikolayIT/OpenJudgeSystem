@@ -97,7 +97,7 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tests must be in a zip file..
+        ///   Looks up a localized string similar to Uploaded file must be in .ZIP format..
         /// </summary>
         public static string Must_be_zip_file {
             get {
