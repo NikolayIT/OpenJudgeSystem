@@ -95,14 +95,6 @@
     <Compile Include="Configurations\ParticipantScoresConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
-    <Compile Include="Migrations\201704181259386_temppy.cs" />
-    <Compile Include="Migrations\201704181259386_temppy.Designer.cs">
-      <DependentUpon>201704181259386_temppy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704181312126_tempPpy.cs" />
-    <Compile Include="Migrations\201704181312126_tempPpy.Designer.cs">
-      <DependentUpon>201704181312126_tempPpy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
@@ -150,14 +142,6 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704181259386_temppy.resx">
-      <DependentUpon>201704181259386_temppy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704181312126_tempPpy.resx">
-      <DependentUpon>201704181312126_tempPpy.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
