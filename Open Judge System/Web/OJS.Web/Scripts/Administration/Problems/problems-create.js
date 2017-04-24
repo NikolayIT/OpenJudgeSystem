@@ -114,22 +114,6 @@ $(document).ready(function () {
         }
     });
 
-    //$(".main-container form").validate({
-    //    submitHandler: function(form) {
-    //        var submissionTypes = $('input[name^="SubmissionTypes"][name$=".IsChecked"]');
-    //        var submissionTypesValidation = $("span[data-valmsg-for='SelectedSubmissionTypes']");
-    //        if (submissionTypes.is(":checked")) {
-    //            submissionTypesValidation.attr('class', 'field-validation-valid');
-    //            submissionTypesValidation.text("");
-    //            form.submit();
-    //        }
-
-    //        submissionTypesValidation.attr('class', 'field-validation-error');
-    //        submissionTypesValidation.text("Choose at least one submission Type!");
-    //        $(this).cancelSubmit = true;
-    //    }
-    //});
-
     $('#checkers-tooltip').kendoTooltip({
         content: kendo.template($("#checkers-template").html()),
         width: 580,

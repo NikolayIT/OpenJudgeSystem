@@ -167,7 +167,7 @@ class Classes{{
                     FileHelpers.AddFilesToZipArchive(submissionFilePath, path, this.WorkingDirectory + "\\" + file);
                 }
 
-                //File.Delete(filePath);
+                File.Delete(filePath);
             }
 
             var compilerResult = this.Compile(
