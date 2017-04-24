@@ -8,7 +8,7 @@
 }
 
 <h2>@ViewBag.Title @SharedResource.For @Model.ContestName</h2>
-<div id="create-form" class="container">
+<div id="edit-form" class="container">
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
@@ -245,6 +245,11 @@
         <fieldset>
             <legend>@SharedResource.Submission_types</legend>
             @Html.EditorFor(m => m.SubmissionTypes)
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
+                </div>
+            </div>
         </fieldset>
         <br />
         <fieldset>

@@ -24,9 +24,9 @@ function validateFile(files, validationBox) {
         }
     }
 
-    $("form").removeData("validator");
-    $("form").removeData("unobtrusiveValidation");
-    $.validator.unobtrusive.parse($('form'));
+    $("#create-form form").removeData("validator");
+    $("#create-form  form").removeData("unobtrusiveValidation");
+    $.validator.unobtrusive.parse($('#create-form form'));
 }
 
 function additionalFilesValidation(e) {
@@ -77,9 +77,9 @@ $(document).ready(function () {
         numericTextBox.enable(true);
         input.attr("data-val-required", "Лимита е задължителен!");
 
-        $("form").removeData("validator");
-        $("form").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($('form'));
+        $("#create-form form").removeData("validator");
+        $("#create-form form").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('#create-form form'));
     }
 
     $('#enable-sclimit').change(function () {
@@ -87,20 +87,32 @@ $(document).ready(function () {
             numericTextBox.enable(true);
             input.attr("data-val-required", "Лимита е задължителен!");
 
-            $("form").removeData("validator");
-            $("form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('form'));
+            $("#create-form form").removeData("validator");
+            $("#create-form form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('#create-form form'));
         }
         else {
             numericTextBox.enable(false);
             input.removeAttr("data-val-required");
 
-            $("form").removeData("validator");
-            $("form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('form'));
+            $("#create-form form").removeData("validator");
+            $("#create-form form").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('#create-form form'));
         }
     });
 
+    $("#create-form form").on("submit", function(ev) {
+        var submissionTypes = $('input[name^="SubmissionTypes"][name$=".IsChecked"]');
+        var submissionTypesValidation = $("span[data-valmsg-for='SelectedSubmissionTypes']");
+        if (submissionTypes.is(":checked")) {
+            submissionTypesValidation.attr('class', 'field-validation-valid');
+            submissionTypesValidation.text("");
+        } else {
+            submissionTypesValidation.attr('class', 'field-validation-error');
+            submissionTypesValidation.text("Choose at least one submission Type!");
+            ev.preventDefault();
+        }
+    });
 
     //$(".main-container form").validate({
     //    submitHandler: function(form) {
