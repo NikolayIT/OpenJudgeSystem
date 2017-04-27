@@ -58,10 +58,10 @@ namespace OJS.Common.Extensions
                     nameof(pattern));
             }
 
-            files[0] = files
+            string discoveredFile = files
                 .OrderByDescending(f => new FileInfo(f).Length).First();
 
-            return ProcessModulePath(files[0]);
+            return ProcessModulePath(discoveredFile);
         }
 
         public static void AddFilesToZipArchive(string archivePath, string pathInArchive, params string[] filePaths)
