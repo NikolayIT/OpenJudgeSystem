@@ -85,17 +85,7 @@
             }
 
             // Prepare process start information
-            var processStartInfo =
-                new ProcessStartInfo(compilerPath)
-                {
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    WorkingDirectory = directoryInfo.ToString(),
-                    Arguments = arguments
-                };
-            this.UpdateCompilerProcessStartInfo(processStartInfo);
+            var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             // Execute compiler
             var compilerOutput = ExecuteCompiler(processStartInfo);
@@ -142,8 +132,19 @@
 
         public abstract string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments);
 
-        public virtual void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
+        public virtual ProcessStartInfo SetCompilerProcessStartInfo(string compilerPath, DirectoryInfo directoryInfo, string arguments)
         {
+            return new ProcessStartInfo(compilerPath)
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                WorkingDirectory = directoryInfo.ToString(),
+                Arguments = arguments,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8
+            };
         }
 
         protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)

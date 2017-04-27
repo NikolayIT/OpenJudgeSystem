@@ -27,6 +27,7 @@
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             var workingDirectory = new FileInfo(fileName).DirectoryName;
+            workingDirectory = workingDirectory ?? string.Empty;
 
             var processStartInfo = new ProcessStartInfo(fileName)
             {
