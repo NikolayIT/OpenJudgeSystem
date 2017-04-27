@@ -68,7 +68,7 @@
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            var csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
+            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
                 CsProjFileSearchPattern);
 

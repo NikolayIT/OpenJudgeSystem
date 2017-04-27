@@ -44,7 +44,7 @@ namespace OJS.Common.Extensions
             }
         }
 
-        public static string FindFirstFileMatchingPattern(string workingDirectory, string pattern)
+        public static string FindFileMatchingPattern(string workingDirectory, string pattern)
         {
             var files = new List<string>(
                 Directory.GetFiles(
