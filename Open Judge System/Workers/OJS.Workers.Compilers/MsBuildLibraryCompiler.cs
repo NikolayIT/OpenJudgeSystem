@@ -12,7 +12,7 @@
 
     public class MsBuildLibraryCompiler : Compiler
     {
-        private const int MsBuildLibraryProcessExitTimeOutMillisecond = 10000; // ms
+        private const int MsBuildLibraryProcessExitTimeOutMillisecond = 10000;
 
         protected string InputFile { get; private set; }
 

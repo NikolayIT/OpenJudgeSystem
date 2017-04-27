@@ -58,11 +58,8 @@ namespace OJS.Common.Extensions
                     nameof(pattern));
             }
 
-            if (files.Count > 0)
-            {
-                files[0] = files
-                    .OrderByDescending(f => new FileInfo(f).Length).First();
-            }
+            files[0] = files
+                .OrderByDescending(f => new FileInfo(f).Length).First();
 
             return ProcessModulePath(files[0]);
         }

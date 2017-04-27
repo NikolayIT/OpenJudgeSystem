@@ -146,7 +146,9 @@
         {
         }
 
-        protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo, int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
+        protected static CompilerOutput ExecuteCompiler(
+            ProcessStartInfo compilerProcessStartInfo, 
+            int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
