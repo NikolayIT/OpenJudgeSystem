@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web;
@@ -57,7 +58,7 @@
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
                     SolutionSkeletonData = problem.SolutionSkeleton,
-                    HasAdditionalFiles = problem.AdditionalFiles != null,
+                    HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
                     ModifiedOn = problem.ModifiedOn,
                 };

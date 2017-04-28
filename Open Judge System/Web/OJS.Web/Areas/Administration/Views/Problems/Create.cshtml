@@ -253,7 +253,7 @@
                 </div>
                 <div class="col-xs-5">
                     <div class="pull-right">
-                        @Html.EditorFor(m => m.Tests, new { onSelect = "testsValidation" })
+                        @Html.EditorFor(m => m.Tests, new { onSelectCallback = "testsValidation" })
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
@@ -274,7 +274,7 @@
                 </div>
                 <div class="col-xs-5">
                     <div class="pull-right">
-                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelect = "additionalFilesValidation" })
+                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelectCallback = "additionalFilesValidation" })
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
@@ -298,9 +298,8 @@
 
 @section scripts{
     @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
-
+    <script src="~/Scripts/Helpers/validations.js"></script>
     <script src="~/Scripts/Administration/Problems/problems-create.js"></script>
-
     <script type="text/x-kendo-template" id="checkers-template">
         <ul style="list-style-type: none">
             <li>

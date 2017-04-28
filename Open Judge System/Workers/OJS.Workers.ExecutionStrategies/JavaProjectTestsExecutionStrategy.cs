@@ -126,10 +126,10 @@ class Classes{{
                 FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, filePath);
 
                 var preprocessCompileResult = this.Compile(
-                executionContext.CompilerType,
-                compilerPath,
-                combinedArguments,
-                submissionFilePath);
+                    executionContext.CompilerType,
+                    compilerPath,
+                    combinedArguments,
+                    submissionFilePath);
 
                 result.IsCompiledSuccessfully = preprocessCompileResult.IsCompiledSuccessfully;
                 result.CompilerComment = preprocessCompileResult.CompilerComment;
@@ -160,7 +160,9 @@ class Classes{{
                     throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
                 }
 
-                var filesToAdd = preprocessExecutionResult.ReceivedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                var filesToAdd = preprocessExecutionResult
+                    .ReceivedOutput
+                    .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var file in filesToAdd)
                 {
                     var path = Path.GetDirectoryName(file);

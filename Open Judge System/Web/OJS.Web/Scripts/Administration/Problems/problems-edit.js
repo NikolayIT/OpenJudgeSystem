@@ -1,24 +1,7 @@
-﻿function validateFile(files, validationBox) {
-    if (files) {
-        if (files[0].extension.toLowerCase() !== ".zip") {
-            validationBox.attr("class", "field-validation-error");
-            validationBox.text("Uploaded file must be in .zip format");
-            e.preventDefault();
-        } else {
-            validationBox.attr("class", "field-validation-valid");
-            validationBox.text("");
-        }
-    }
-
-    $("#edit-form form").removeData("validator");
-    $("#edit-form form").removeData("unobtrusiveValidation");
-    $.validator.unobtrusive.parse($('#edit-form form'));
-}
-
-function additionalFilesValidation(e) {
+﻿function additionalFilesValidation(e) {
     var files = e.files;
     var validationBox = $("span[data-valmsg-for='AdditionalFiles']");
-    validateFile(files, validationBox);
+    validateZipFile(files, validationBox, $("#edit-form form"));
 }
 
 $(document).ready(function () {
@@ -46,6 +29,7 @@ $(document).ready(function () {
 
     $.validator.setDefaults({ ignore: '' });
 
+    var form = $("#edit-form form");
     var input = $("#SourceCodeSizeLimit");
     var numericTextBox = input.data("kendoNumericTextBox");
     var checkbox = $('#enable-sclimit');
@@ -55,44 +39,31 @@ $(document).ready(function () {
         checkbox.attr('checked', true);
         numericTextBox.enable(true);
         input.attr("data-val-required", "Лимита е задължителен!");
-
-        $("#edit-form form").removeData("validator");
-        $("#edit-form form").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($('#edit-form form'));
+        reparseForm(form);
     }
 
     checkbox.change(function () {
-
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
             input.attr("data-val-required", "Лимита е задължителен!");
-
-            $("#edit-form form").removeData("validator");
-            $("#edit-form form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('#edit-form form'));
+            reparseForm(form);
         }
         else {
             numericTextBox.enable(false);
             input.removeAttr("data-val-required");
-
-            $("#edit-form form").removeData("validator");
-            $("#edit-form form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('#edit-form form'));
+            reparseForm(form);
         }
     });
 
-    $("#edit-form form").on("submit", function (ev) {
-        var submissionTypes = $('input[name^="SubmissionTypes"][name$=".IsChecked"]');
-        var submissionTypesValidation = $("span[data-valmsg-for='SelectedSubmissionTypes']");
-        if (submissionTypes.is(":checked")) {
-            submissionTypesValidation.attr('class', 'field-validation-valid');
-            submissionTypesValidation.text("");
-        } else {
-            submissionTypesValidation.attr('class', 'field-validation-error');
-            submissionTypesValidation.text("Choose at least one submission Type!");
-            ev.preventDefault();
-        }
-    });
+    function isChecked(elements) {
+        return elements.is(":checked");
+    }
+
+    addSubmitValidation($("#edit-form form"),
+        $("input[name^='SubmissionTypes'][name$='.IsChecked']"),
+        $("span[data-valmsg-for='SelectedSubmissionTypes']"),
+        isChecked,
+        "Choose at least one submission Type!");
 
     $('#checkers-tooltip').kendoTooltip({
         content: kendo.template($("#checkers-template").html()),

@@ -70,7 +70,8 @@
         public byte[] SolutionSkeleton { get; set; }
 
         /// <summary>
-        /// Additional files which should be provided to User Submissions
+        /// Problem specific dependencies that will be compiled and executed with the user code
+        /// such as Solution skeletons, mocks or data and text files.
         /// </summary>
         public byte[] AdditionalFiles { get; set; }
 

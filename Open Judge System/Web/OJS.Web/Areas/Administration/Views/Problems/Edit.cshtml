@@ -1,4 +1,6 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsEdit;
+﻿@using System.Web.Mvc.Expressions
+@using OJS.Web.Areas.Administration.Controllers
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsEdit;
 @using SharedResource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
 
 @model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
@@ -264,11 +266,11 @@
                     @if (Model.HasAdditionalFiles)
                     {
                         <div class="k-upload-sync col-xs-4">
-                            @Html.ActionLink("Download", "DownloadAdditionalFiles", "Problems", new { id = Model.Id }, new { @class = "k-button k-upload-button" })
+                            @(Html.ActionLink<ProblemsController>("Download", c => c.DownloadAdditionalFiles(Model.Id), null, new { @class = "k-button k-upload-button" }))
                         </div>
                     }
                     <div class="pull-right col-xs-8">
-                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelect = "additionalFilesValidation" })
+                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelectCallback = "additionalFilesValidation" })
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
@@ -291,7 +293,8 @@
 </div>
 
 @section scripts {
-    @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+    @(Html.Kendo().Tooltip().For("#edit-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+    <script src="~/Scripts/Helpers/validations.js"></script>
     <script src="~/Scripts/Administration/Problems/problems-edit.js"></script>
     <script type="text/x-kendo-template" id="checkers-template">
         <ul style="list-style-type: none">

@@ -26,10 +26,7 @@
             DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
-        public override bool ShouldDeleteSourceFile()
-        {
-            return false;
-        }
+        public override bool ShouldDeleteSourceFile => false;
 
         public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;
 

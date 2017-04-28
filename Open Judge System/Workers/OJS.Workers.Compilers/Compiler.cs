@@ -16,6 +16,8 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        public virtual bool ShouldDeleteSourceFile => true;
+
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -102,8 +104,7 @@
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
-            // Delete input file
-            if (this.ShouldDeleteSourceFile())
+            if (this.ShouldDeleteSourceFile)
             {
                 if (File.Exists(newInputFilePath))
                 {
@@ -126,11 +127,6 @@
 
             // Compilation is ready without warnings
             return new CompileResult(outputFile);
-        }
-
-        public virtual bool ShouldDeleteSourceFile()
-        {
-            return true;
         }
 
         public virtual string RenameInputFile(string inputFile)
