@@ -42,29 +42,25 @@
             }
         }
 
-        public static string FindFileMatchingPattern(
-            string workingDirectory, 
-            string pattern, 
-            Func<string, long> orderBy = null)
+        public static string FindFileMatchingPattern(string workingDirectory, string pattern)
         {
-            var files = new List<string>(
-                Directory.GetFiles(
-                    workingDirectory,
-                    pattern,
-                    SearchOption.AllDirectories));
-            if (files.Count == 0)
-            {
-                throw new ArgumentException(
-                    $"'{pattern}' file not found in output directory!",
-                    nameof(pattern));
-            }
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            if (orderBy != null)
-            {
-                files = files.OrderBy(orderBy).ToList();
-            }
+            string discoveredFile = files.First();
 
-            string discoveredFile = files.First();                
+            return ProcessModulePath(discoveredFile);
+        }
+
+        public static string FindFileMatchingPattern<TOut>(
+            string workingDirectory,
+            string pattern,
+            Func<string, TOut> orderBy)
+        {
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
+
+            files = files.OrderBy(orderBy).ToList();
+
+            string discoveredFile = files.First();
 
             return ProcessModulePath(discoveredFile);
         }
@@ -98,5 +94,22 @@
         }
 
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
+
+        private static List<string> DiscoverAllFilesMatchingPattern(string workingDirectory, string pattern)
+        {
+            var files = new List<string>(
+                Directory.GetFiles(
+                    workingDirectory,
+                    pattern,
+                    SearchOption.AllDirectories));
+            if (files.Count == 0)
+            {
+                throw new ArgumentException(
+                    $"'{pattern}' file not found in output directory!",
+                    nameof(pattern));
+            }
+
+            return files;
+        }
     }
 }
