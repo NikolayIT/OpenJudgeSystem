@@ -70,7 +70,8 @@
 
             var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
-                CsProjFileSearchPattern);
+                CsProjFileSearchPattern,
+                f => new FileInfo(f).Length);
 
             this.ExtractTestNames(executionContext.Tests);
 

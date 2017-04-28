@@ -1,11 +1,9 @@
-﻿using System.Linq;
-
-namespace OJS.Common.Extensions
+﻿namespace OJS.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-
+    using System.Linq;
     using Ionic.Zip;
 
     // TODO: Unit test
@@ -44,7 +42,10 @@ namespace OJS.Common.Extensions
             }
         }
 
-        public static string FindFileMatchingPattern(string workingDirectory, string pattern)
+        public static string FindFileMatchingPattern(
+            string workingDirectory, 
+            string pattern, 
+            Func<string, long> orderBy = null)
         {
             var files = new List<string>(
                 Directory.GetFiles(
@@ -58,8 +59,12 @@ namespace OJS.Common.Extensions
                     nameof(pattern));
             }
 
-            string discoveredFile = files
-                .OrderByDescending(f => new FileInfo(f).Length).First();
+            if (orderBy != null)
+            {
+                files = files.OrderBy(orderBy).ToList();
+            }
+
+            string discoveredFile = files.First();                
 
             return ProcessModulePath(discoveredFile);
         }
