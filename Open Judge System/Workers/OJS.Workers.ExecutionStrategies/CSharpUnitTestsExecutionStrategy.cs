@@ -47,6 +47,8 @@
                 CsProjFileSearchPattern);
 
             var project = new Project(csProjFilePath);
+            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}.cs";
+
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
@@ -161,6 +163,8 @@
 
         private void CorrectProjectReferences(Project project)
         {
+            this.SaveAndAddSetupFixtureFileToProjectReferences(project);
+
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
             if (projectReference != null)
