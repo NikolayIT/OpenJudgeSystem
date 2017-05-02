@@ -58,9 +58,7 @@
         {
             var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            files = files.OrderBy(orderBy).ToList();
-
-            string discoveredFile = files.First();
+            string discoveredFile = files.OrderBy(orderBy).First();
 
             return ProcessModulePath(discoveredFile);
         }
