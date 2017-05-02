@@ -97,6 +97,8 @@
             // Modify Project file
             var project = new Project(csProjFilePath);
             var compileDirectory = project.DirectoryPath;
+            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}.cs";
+
             this.CorrectProjectReferences(executionContext.Tests, project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
@@ -111,13 +113,16 @@
                 testPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }
-
-            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}.cs";
+      
             testPaths.Add(this.SetupFixturePath);
 
             // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, csProjFilePath);
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                executionContext.AdditionalCompilerArguments, 
+                csProjFilePath);
 
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
@@ -193,15 +198,10 @@
             return errorsByFiles;
         }
 
-        protected void SaveAndAddSetupFixtureFileToProjectReferences(Project project)
+        private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             project.AddItem("Compile", $"{SetupFixtureFileName}.cs");
-        }
-
-        private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
-        {
-            this.SaveAndAddSetupFixtureFileToProjectReferences(project);
 
             foreach (var testName in this.TestNames)
             {

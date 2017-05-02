@@ -77,11 +77,17 @@
 
             foreach (var test in executionContext.Tests)
             {
+                File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+            
                 File.WriteAllText(testedCodePath, test.Input);
 
                 // Compiling
                 var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-                var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, csProjFilePath);
+                var compilerResult = this.Compile(
+                    executionContext.CompilerType, 
+                    compilerPath, 
+                    executionContext.AdditionalCompilerArguments,
+                    csProjFilePath);
 
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
@@ -92,7 +98,7 @@
                 }
 
                 // Delete tests before execution so the user can't acces them
-                File.Delete(testedCodePath);
+                FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
                 arguments.AddRange(AdditionalExecutionArguments.Split(' '));
@@ -136,7 +142,11 @@
             return result;
         }
 
-        protected override CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
+        protected override CompileResult Compile(
+            CompilerType compilerType,
+            string compilerPath,
+            string compilerArguments,
+            string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
@@ -163,7 +173,7 @@
 
         private void CorrectProjectReferences(Project project)
         {
-            this.SaveAndAddSetupFixtureFileToProjectReferences(project);
+            project.AddItem("Compile", $"{SetupFixtureFileName}.cs");
 
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
@@ -183,6 +193,7 @@
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
             var nUnitMetaData = new Dictionary<string, string>();
+            nUnitMetaData.Add("SpecificVersion", "False");
             nUnitMetaData.Add("Private", "True");
             project.AddItem("Reference", NUnitReference, nUnitMetaData);
 
