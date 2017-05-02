@@ -165,10 +165,13 @@
 
         private void ExtractTestResult(string receivedOutput, out int passedTests, out int totalTests)
         {
+            // Grabbing the last regex match from the nUnit console
+            // ensures that the expected output is the genuine one
+            // and not some user supplied fake result
             var testResultsRegex = new Regex(TestResultsRegex);
-            var res = testResultsRegex.Match(receivedOutput);
-            totalTests = int.Parse(res.Groups[1].Value);
-            passedTests = int.Parse(res.Groups[2].Value);
+            var res = testResultsRegex.Matches(receivedOutput);
+            totalTests = int.Parse(res[res.Count - 1].Groups[1].Value);
+            passedTests = int.Parse(res[res.Count - 1].Groups[2].Value);
         }
 
         private void CorrectProjectReferences(Project project)
