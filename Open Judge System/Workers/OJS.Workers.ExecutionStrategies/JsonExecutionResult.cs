@@ -10,7 +10,7 @@
     {
         private const string InvalidJsonReplace = "]}[},!^@,Invalid,!^@,{]{[";
 
-        public IList<string> TestsErrors { get; set; }
+        public IList<string> TestErrors { get; set; }
 
         public bool Passed { get; set; }
 
@@ -96,7 +96,7 @@
 
             return new JsonExecutionResult
             {
-                TestsErrors = errors,
+                TestErrors = errors,
                 Error = error,
                 PassingTestsIndexes = testsIndexes,
                 TotalPassingTests = totalPasses,

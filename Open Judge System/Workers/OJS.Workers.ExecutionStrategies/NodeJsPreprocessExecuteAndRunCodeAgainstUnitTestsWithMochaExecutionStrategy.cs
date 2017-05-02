@@ -224,7 +224,7 @@ describe('Test {i} ', function(){{
                 }
                 else
                 {
-                    var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == null);
+                    var numberOfPasses = mochaResult.TestErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == null);
                     if (numberOfPasses >= correctSolutionTestPasses)
                     {
                         message = "No unit test covering this functionality!";
