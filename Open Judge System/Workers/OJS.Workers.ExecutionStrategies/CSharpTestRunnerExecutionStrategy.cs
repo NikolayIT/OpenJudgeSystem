@@ -176,7 +176,7 @@
                     MemoryUsed = (int)processExecutionResult.MemoryUsed,
                 };
 
-                if (jsonResult.PassingIndexes.Contains(index))
+                if (jsonResult.PassingTestsIndexes.Contains(index))
                 {
                     testResult.ResultType = TestRunResultType.CorrectAnswer;
                 }

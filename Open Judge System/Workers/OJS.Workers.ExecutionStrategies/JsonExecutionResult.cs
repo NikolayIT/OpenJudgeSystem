@@ -16,9 +16,9 @@
 
         public string Error { get; set; }
 
-        public int TotalPasses { get; set; }
+        public int TotalPassingTests { get; set; }
 
-        public List<int> PassingIndexes { get; set; }
+        public List<int> PassingTestsIndexes { get; set; }
 
         public int UsersTestCount { get; set; }
 
@@ -98,8 +98,8 @@
             {
                 TestsErrors = errors,
                 Error = error,
-                PassingIndexes = testsIndexes,
-                TotalPasses = totalPasses,
+                PassingTestsIndexes = testsIndexes,
+                TotalPassingTests = totalPasses,
                 TotalTests = totalTests,
                 Passed = passed,
                 UsersTestCount = userTestsCount,

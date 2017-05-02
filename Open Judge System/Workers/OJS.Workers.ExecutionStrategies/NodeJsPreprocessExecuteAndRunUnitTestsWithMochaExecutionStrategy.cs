@@ -115,7 +115,7 @@ describe('TestScope', function() {
                 {
                     message = mochaResult.Error;
                 }
-                else if (mochaResult.TotalPasses != 1)
+                else if (mochaResult.TotalPassingTests != 1)
                 {
                     message = $"Unexpected error: {mochaResult.TestsErrors[0]}";
                 }
