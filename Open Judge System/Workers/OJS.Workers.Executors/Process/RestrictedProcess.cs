@@ -268,12 +268,23 @@
             this.CreatePipe(out standardOutputReadPipeHandle, out startupInfo.StandardOutputHandle, false, bufferSize);
             this.CreatePipe(out standardErrorReadPipeHandle, out startupInfo.StandardErrorHandle, false, 4096);
 
-            this.StandardInput = new StreamWriter(new FileStream(standardInputWritePipeHandle, FileAccess.Write, bufferSize, false), new UTF8Encoding(false), bufferSize)
-                                     {
-                                         AutoFlush = true
-                                     };
-            this.StandardOutput = new StreamReader(new FileStream(standardOutputReadPipeHandle, FileAccess.Read, bufferSize, false), new UTF8Encoding(false), true, bufferSize);
-            this.StandardError = new StreamReader(new FileStream(standardErrorReadPipeHandle, FileAccess.Read, 4096, false), new UTF8Encoding(false), true, 4096);
+            this.StandardInput = new StreamWriter(
+                new FileStream(standardInputWritePipeHandle, FileAccess.Write, bufferSize, false),
+                new UTF8Encoding(false),
+                bufferSize)
+                {
+                    AutoFlush = true
+                };
+            this.StandardOutput = new StreamReader(
+                new FileStream(standardOutputReadPipeHandle, FileAccess.Read, bufferSize, false),
+                new UTF8Encoding(false),
+                true,
+                bufferSize);
+            this.StandardError = new StreamReader(
+                new FileStream(standardErrorReadPipeHandle, FileAccess.Read, 4096, false),
+                new UTF8Encoding(false),
+                true,
+                4096);
 
             /*
              * Child processes that use such C run-time functions as printf() and fprintf() can behave poorly when redirected.
