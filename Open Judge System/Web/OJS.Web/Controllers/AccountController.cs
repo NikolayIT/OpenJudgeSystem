@@ -1,4 +1,4 @@
-namespace OJS.Web.Controllers
+п»їnamespace OJS.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -68,7 +68,7 @@ namespace OJS.Web.Controllers
                 }
                 catch (Exception)
                 {
-                    this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
+                    this.TempData[GlobalConstants.InfoMessage] = "РЎСЉР¶Р°Р»СЏРІР°РјРµ, РЅРѕ РІ РјРѕРјРµРЅС‚Р° СЃРёСЃС‚РµРјР°С‚Р° Р·Р° РІС…РѕРґ РЅРµ Рµ Р°РєС‚РёРІРЅР°.";
                     return this.RedirectToAction("Index", "Home", new { area = string.Empty });
                 }
 
