@@ -142,7 +142,7 @@
                     Name = "C++ code",
                     CompilerType = CompilerType.CPlusPlusGcc,
                     AdditionalCompilerArguments =
-                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType =
                         ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = false,
@@ -357,7 +357,7 @@
                 {
                     Name = "C++ Zip File",
                     CompilerType = CompilerType.CPlusPlusZip,
-                    AdditionalCompilerArguments = "-pipe -mtune=generic -static-libgcc -static-libstdc++",
+                    AdditionalCompilerArguments = "-pipe -mtune=generic -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType = ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
