@@ -235,15 +235,20 @@
                     c.Contests.Any(cc => !cc.IsDeleted && cc.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
             }
 
-            var newDropDownData = categories.ToList().Select(cat =>
-                new
-                {
-                    Parent = cat.Parent != null ? cat.Parent.Name : null,
-                    Name = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
-                }).OrderBy(a => string.IsNullOrEmpty(a.Parent)).ThenBy(a => a.Parent).ThenBy(a => a.Name);
+            var dropDownData = categories
+                .ToList()
+                .Select(cat =>
+                    new
+                    {
+                        Parent = cat.Parent != null ? cat.Parent.Name : null,
+                        Name = cat.Name,
+                        Value = cat.Id.ToString(CultureInfo.InvariantCulture)
+                    })
+                .OrderBy(a => string.IsNullOrEmpty(a.Parent))
+                .ThenBy(a => a.Parent)
+                .ThenBy(a => a.Name);
 
-            return this.Json(newDropDownData, JsonRequestBehavior.AllowGet);
+            return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult StartAsLab(LabStartInputModel inputModel)
