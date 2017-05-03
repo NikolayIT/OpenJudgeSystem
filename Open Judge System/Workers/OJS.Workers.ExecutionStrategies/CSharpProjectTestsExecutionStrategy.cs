@@ -167,7 +167,7 @@
 
             foreach (var test in executionContext.Tests)
             {
-                var message = "yes";
+                var message = "Test Passed!";
                 var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))
                 {
