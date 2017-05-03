@@ -237,11 +237,16 @@
 
             var dropDownData = categories
                 .ToList()
-                .Select(cat => new SelectListItem
-                {
-                    Text = cat.Name,
-                    Value = cat.Id.ToString(CultureInfo.InvariantCulture)
-                });
+                .Select(cat =>
+                    new
+                    {
+                        Parent = cat.Parent != null ? cat.Parent.Name : null,
+                        Name = cat.Name,
+                        Value = cat.Id.ToString(CultureInfo.InvariantCulture)
+                    })
+                .OrderBy(a => string.IsNullOrEmpty(a.Parent))
+                .ThenBy(a => a.Parent)
+                .ThenBy(a => a.Name);
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
         }
