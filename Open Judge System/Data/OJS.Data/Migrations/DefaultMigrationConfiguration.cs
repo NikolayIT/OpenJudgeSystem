@@ -212,7 +212,7 @@
                 {
                     Name = "Java code",
                     CompilerType = CompilerType.Java,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType =
                         ExecutionStrategyType
                         .JavaPreprocessCompileExecuteAndCheck,
@@ -224,7 +224,7 @@
                 {
                     Name = "Java zip file",
                     CompilerType = CompilerType.JavaZip,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType =
                         ExecutionStrategyType
                         .JavaZipFileCompileExecuteAndCheck,
@@ -337,7 +337,7 @@
                 {
                     Name = "Java Project Tests",
                     CompilerType = CompilerType.JavaZip,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType = ExecutionStrategyType.JavaProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -347,7 +347,7 @@
                 {
                     Name = "Java Unit Tests",
                     CompilerType = CompilerType.JavaInPlaceCompiler,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType = ExecutionStrategyType.JavaUnitTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
