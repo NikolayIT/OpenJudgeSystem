@@ -65,6 +65,7 @@
 
             var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
             File.WriteAllBytes(submissionFilePath, userSubmissionContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
