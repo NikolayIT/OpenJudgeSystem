@@ -7,7 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
-
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -47,7 +47,7 @@
                 CsProjFileSearchPattern);
 
             var project = new Project(csProjFilePath);
-            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}.cs";
+            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
 
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
@@ -163,11 +163,16 @@
             return compilerResult;
         }
 
+        /// <summary>
+        /// Grabs the last match from a match collection
+        /// thus ensuring that the tests output is the genuine one,
+        /// preventing the user from tampering with it
+        /// </summary>
+        /// <param name="receivedOutput"></param>
+        /// <param name="passedTests"></param>
+        /// <param name="totalTests"></param>
         private void ExtractTestResult(string receivedOutput, out int passedTests, out int totalTests)
-        {
-            // Grabbing the last regex match from the nUnit console
-            // ensures that the expected output is the genuine one
-            // and not some user supplied fake result
+        {           
             var testResultsRegex = new Regex(TestResultsRegex);
             var res = testResultsRegex.Matches(receivedOutput);
             totalTests = int.Parse(res[res.Count - 1].Groups[1].Value);
@@ -176,7 +181,7 @@
 
         private void CorrectProjectReferences(Project project)
         {
-            project.AddItem("Compile", $"{SetupFixtureFileName}.cs");
+            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();

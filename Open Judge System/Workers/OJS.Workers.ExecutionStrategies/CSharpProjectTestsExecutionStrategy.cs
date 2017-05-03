@@ -7,7 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
-
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -97,7 +97,7 @@
             // Modify Project file
             var project = new Project(csProjFilePath);
             var compileDirectory = project.DirectoryPath;
-            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}.cs";
+            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
 
             this.CorrectProjectReferences(executionContext.Tests, project);
             project.Save(csProjFilePath);
@@ -109,7 +109,7 @@
             foreach (var test in executionContext.Tests)
             {
                 var testName = this.TestNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}.cs";
+                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
                 testPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }
@@ -201,11 +201,11 @@
         private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
-            project.AddItem("Compile", $"{SetupFixtureFileName}.cs");
+            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
             foreach (var testName in this.TestNames)
             {
-                project.AddItem("Compile", $"{testName}.cs");
+                project.AddItem("Compile", $"{testName}{GlobalConstants.CSharpFileExtension}");
             }
 
             project.SetProperty("OutputType", "Library");
