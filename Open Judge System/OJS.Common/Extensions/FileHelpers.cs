@@ -59,7 +59,7 @@
         {
             var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            string discoveredFile = files.OrderBy(orderBy).First();
+            string discoveredFile = files.OrderByDescending(orderBy).First();
 
             return ProcessModulePath(discoveredFile);
         }
