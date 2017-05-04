@@ -173,9 +173,9 @@ it('Test{testsCount++}', function(done) {{
                 {
                     message = mochaResult.Error;
                 }
-                else if (mochaResult.TestsErrors[currentTest] != null)
+                else if (mochaResult.TestErrors[currentTest] != null)
                 {
-                    message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
+                    message = $"Unexpected error: {mochaResult.TestErrors[currentTest]}";
                 }
 
                 var testResult = this.ExecuteAndCheckTest(
