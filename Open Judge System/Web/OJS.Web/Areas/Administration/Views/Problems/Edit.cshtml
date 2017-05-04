@@ -1,4 +1,6 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsEdit;
+﻿@using System.Web.Mvc.Expressions
+@using OJS.Web.Areas.Administration.Controllers
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsEdit;
 @using SharedResource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
 
 @model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
@@ -8,7 +10,7 @@
 }
 
 <h2>@ViewBag.Title @SharedResource.For @Model.ContestName</h2>
-<div id="create-form" class="container">
+<div id="edit-form" class="container">
     @using (Html.BeginForm("Edit", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
@@ -245,6 +247,38 @@
         <fieldset>
             <legend>@SharedResource.Submission_types</legend>
             @Html.EditorFor(m => m.SubmissionTypes)
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
+                </div>
+            </div>
+        </fieldset>
+        <br />
+        <fieldset>
+            <legend>@SharedResource.Additional_files</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        <strong>@SharedResource.Additional_files_label</strong>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    @if (Model.HasAdditionalFiles)
+                    {
+                        <div class="k-upload-sync col-xs-4">
+                            @(Html.ActionLink<ProblemsController>("Download", c => c.DownloadAdditionalFiles(Model.Id), null, new { @class = "k-button k-upload-button" }))
+                        </div>
+                    }
+                    <div class="pull-right col-xs-8">
+                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelectCallback = "additionalFilesValidation" })
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@SharedResource.Choose_additional_file" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.AdditionalFiles)
+                </div>
+            </div>
+            <hr />
         </fieldset>
         <br />
         <div class="row">
@@ -259,7 +293,8 @@
 </div>
 
 @section scripts {
-    @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+    @(Html.Kendo().Tooltip().For("#edit-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
+    <script src="~/Scripts/Helpers/validations.js"></script>
     <script src="~/Scripts/Administration/Problems/problems-edit.js"></script>
     <script type="text/x-kendo-template" id="checkers-template">
         <ul style="list-style-type: none">

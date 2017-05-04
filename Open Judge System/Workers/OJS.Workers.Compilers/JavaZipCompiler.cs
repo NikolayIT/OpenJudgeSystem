@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Text;
 
-    using OJS.Common;
     using OJS.Common.Extensions;
 
     public class JavaZipCompiler : Compiler
@@ -27,15 +26,7 @@
             DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
         }
 
-        public override string RenameInputFile(string inputFile)
-        {
-            if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return inputFile;
-            }
-
-            return $"{inputFile}{GlobalConstants.ZipFileExtension}";
-        }
+        public override bool ShouldDeleteSourceFile => false;
 
         public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;
 

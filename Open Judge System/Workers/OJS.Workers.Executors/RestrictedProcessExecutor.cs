@@ -32,10 +32,14 @@ namespace OJS.Workers.Executors
             string inputData,
             int timeLimit,
             int memoryLimit,
-            IEnumerable<string> executionArguments = null)
+            IEnumerable<string> executionArguments = null,
+            string workingDirectory = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
-            var workingDirectory = new FileInfo(fileName).DirectoryName;
+            if (workingDirectory == null)
+            {
+                workingDirectory = new FileInfo(fileName).DirectoryName;
+            }
 
             using (var restrictedProcess = new RestrictedProcess(fileName, workingDirectory, executionArguments, Math.Max(4096, (inputData.Length * 2) + 4)))
             {

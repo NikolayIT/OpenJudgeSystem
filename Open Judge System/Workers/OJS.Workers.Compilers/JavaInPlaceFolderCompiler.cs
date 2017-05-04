@@ -84,7 +84,7 @@
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
             outputDirectory = this.ChangeOutputFileAfterCompilation(outputDirectory);
-            if (!Directory.Exists(outputDirectory) && !compilerOutput.IsSuccessful)
+            if (!compilerOutput.IsSuccessful)
             {
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }

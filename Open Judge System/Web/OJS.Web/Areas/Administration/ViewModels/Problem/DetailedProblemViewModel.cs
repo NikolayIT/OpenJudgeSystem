@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Web;
     using System.Web.Mvc;
 
     using OJS.Common;
@@ -56,6 +58,7 @@
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
                     SolutionSkeletonData = problem.SolutionSkeleton,
+                    HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
                     ModifiedOn = problem.ModifiedOn,
                 };
@@ -119,7 +122,14 @@
         public string Checker { get; set; }
 
         [ExcludeFromExcel]
+        [UIHint("FileUpload")]
+        public HttpPostedFileBase AdditionalFiles { get; set; }
+
+        [ExcludeFromExcel]
         public IEnumerable<SelectListItem> AvailableCheckers { get; set; }
+
+        [ExcludeFromExcel]
+        public bool HasAdditionalFiles { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Order", ResourceType = typeof(Resource))]
@@ -185,6 +195,10 @@
                     : this.SolutionSkeleton;
             }
         }
+
+        [ExcludeFromExcel]
+        [UIHint("FileUpload")]
+        public HttpPostedFileBase Tests { get; set; }
 
         [AllowHtml]
         internal byte[] SolutionSkeletonData { get; set; }

@@ -62,11 +62,38 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Files.
+        /// </summary>
+        public static string Additional_files {
+            get {
+                return ResourceManager.GetString("Additional_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Additional Files (.zip file).
+        /// </summary>
+        public static string Additional_files_label {
+            get {
+                return ResourceManager.GetString("Additional_files_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to - the system does uses case insensitive comparison when comparing symbol by symbol..
         /// </summary>
         public static string Case_insensitive_checker_description {
             get {
                 return ResourceManager.GetString("Case_insensitive_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a .zip file with additional files that will be added to the user code..
+        /// </summary>
+        public static string Choose_additional_file {
+            get {
+                return ResourceManager.GetString("Choose_additional_file", resourceCulture);
             }
         }
         

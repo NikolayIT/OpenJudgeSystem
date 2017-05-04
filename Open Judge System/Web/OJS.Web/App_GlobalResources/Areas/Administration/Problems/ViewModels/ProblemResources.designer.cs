@@ -80,7 +80,7 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accepted length is between {2} and {1} symbols.
+        ///   Looks up a localized string similar to Name length should be between {2} and {1} symbols.
         /// </summary>
         public static string Name_length {
             get {

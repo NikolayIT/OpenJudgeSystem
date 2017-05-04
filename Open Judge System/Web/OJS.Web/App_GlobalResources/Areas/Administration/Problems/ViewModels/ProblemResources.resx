@@ -124,7 +124,7 @@
     <value>Name</value>
   </data>
   <data name="Name_length" xml:space="preserve">
-    <value>Accepted length is between {2} and {1} symbols</value>
+    <value>Name length should be between {2} and {1} symbols</value>
   </data>
   <data name="Name_required" xml:space="preserve">
     <value>The resource name is required!</value>
