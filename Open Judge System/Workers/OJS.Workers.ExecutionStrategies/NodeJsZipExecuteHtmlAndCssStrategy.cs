@@ -270,6 +270,7 @@ describe('TestDOMScope', function() {{
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
             FileHelpers.ConvertContentToZip(submissionFilePath);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
             return submissionFilePath;

@@ -11,6 +11,8 @@
 
     public abstract class ExecutionStrategy : IExecutionStrategy
     {
+        protected const string RemoveMacFolderPattern = "__MACOSX/*";
+
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
 
         protected ExecutionResult CompileExecuteAndCheck(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, IExecutor executor)

@@ -227,6 +227,7 @@ class Classes{{
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, context.FileContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             this.ExtractUserClassNames(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
             this.AddTestRunnerTemplate(submissionFilePath);
@@ -267,7 +268,7 @@ class Classes{{
         {
             this.UserClassNames.AddRange(
                 FileHelpers.GetFilePathsFromZip(submissionFilePath)
-                    .Where(x => !x.EndsWith("/"))
+                    .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
                     .Select(x => x.Contains(".") ? x.Substring(0, x.LastIndexOf(".", StringComparison.Ordinal)) : x)
                     .Select(x => x.Replace("/", ".")));
         }

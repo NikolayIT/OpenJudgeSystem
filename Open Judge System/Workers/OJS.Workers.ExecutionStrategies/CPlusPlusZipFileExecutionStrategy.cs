@@ -39,6 +39,7 @@
             var submissionDestination = $@"{this.WorkingDirectory}\{SubmissionName}";
 
             File.WriteAllBytes(submissionDestination, executionContext.FileContent);
+            FileHelpers.RemoveFilesFromZip(submissionDestination, RemoveMacFolderPattern);
 
             if (!string.IsNullOrEmpty(executionContext.TaskSkeletonAsString))
             {

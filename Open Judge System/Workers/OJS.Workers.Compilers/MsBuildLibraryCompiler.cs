@@ -92,18 +92,7 @@
                 return new CompileResult(false, $"Compiler directory is null. Compiler path value: {compilerPath}");
             }
 
-            var processStartInfo =
-                new ProcessStartInfo(compilerPath)
-                {
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    WorkingDirectory = directoryInfo.ToString(),
-                    Arguments = arguments
-                };
-
-            this.UpdateCompilerProcessStartInfo(processStartInfo);
+            var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             var compilerOutput = ExecuteCompiler(processStartInfo, MsBuildLibraryProcessExitTimeOutMillisecond);
  
