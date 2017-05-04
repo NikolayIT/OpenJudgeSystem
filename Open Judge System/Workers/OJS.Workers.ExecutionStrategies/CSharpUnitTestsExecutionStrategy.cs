@@ -7,6 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
+
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
@@ -176,6 +177,11 @@
         {           
             var testResultsRegex = new Regex(TestResultsRegex);
             var res = testResultsRegex.Matches(receivedOutput);
+            if (res.Count == 0)
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
             totalTests = int.Parse(res[res.Count - 1].Groups[1].Value);
             passedTests = int.Parse(res[res.Count - 1].Groups[2].Value);
         }

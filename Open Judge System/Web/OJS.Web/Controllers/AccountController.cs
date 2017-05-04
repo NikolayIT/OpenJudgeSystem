@@ -1,8 +1,10 @@
-namespace OJS.Web.Controllers
+﻿namespace OJS.Web.Controllers
 {
     using System;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Claims;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -26,6 +28,7 @@ namespace OJS.Web.Controllers
     {
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
+        private const string JsonContentType = "application/json";
 
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
@@ -58,11 +61,28 @@ namespace OJS.Web.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this.UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                ExternalUserViewModel externalUser = null;
+                try
                 {
-                    await this.SignInAsync(user, model.RememberMe);
-                    return this.RedirectToLocal(returnUrl);
+                    externalUser = await this.GetExternalUser(model.UserName);
+                }
+                catch (Exception)
+                {
+                    this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
+                    return this.RedirectToAction("Index", "Home", new { area = string.Empty });
+                }
+
+                if (externalUser != null)
+                {
+                    var userEntity = externalUser.Entity;
+                    this.AddOrUpdateUser(userEntity);
+
+                    var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+                    if (user != null)
+                    {
+                        await this.SignInAsync(userEntity, model.RememberMe);
+                        return this.RedirectToLocal(returnUrl);
+                    }
                 }
 
                 this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
@@ -76,6 +96,8 @@ namespace OJS.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Manage");
@@ -91,6 +113,8 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, bool captchaValid)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.Data.Users.All().Any(x => x.Email == model.Email))
             {
                 this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
@@ -128,9 +152,11 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            IdentityResult result =
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            var result =
                 await
-                this.UserManager.RemoveLoginAsync(this.User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+                this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Disassociate.External_login_removed;
@@ -146,8 +172,21 @@ namespace OJS.Web.Controllers
         // GET: /Account/Manage
         public ActionResult Manage()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             this.ViewBag.HasLocalPassword = this.HasPassword();
-            this.ViewBag.ReturnUrl = this.Url.Action("Manage");
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
+            return this.View();
+        }
+
+        /// <summary>
+        /// Informs the user that the registration proccess is 
+        /// disabled on this site and he must register from exturnal source
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ExternalNotify()
+        {
             return this.View();
         }
 
@@ -156,16 +195,18 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             bool hasPassword = this.HasPassword();
             this.ViewBag.HasLocalPassword = hasPassword;
-            this.ViewBag.ReturnUrl = this.Url.Action("Manage");
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
             {
                 if (this.ModelState.IsValid)
                 {
                     IdentityResult result =
                         await
-                        this.UserManager.ChangePasswordAsync(this.User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                        this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
                         this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
@@ -178,13 +219,16 @@ namespace OJS.Web.Controllers
             else
             {
                 // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                var state = this.ModelState["OldPassword"];
-                state?.Errors.Clear();
+                ModelState state = ModelState["OldPassword"];
+                if (state != null)
+                {
+                    state.Errors.Clear();
+                }
 
                 if (this.ModelState.IsValid)
                 {
-                    var result =
-                        await this.UserManager.AddPasswordAsync(this.User.Identity.GetUserId(), model.NewPassword);
+                    IdentityResult result =
+                        await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
                         this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
@@ -205,16 +249,20 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             // Request a redirect to the external login provider
             return new ChallengeResult(
                 provider,
-                this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
@@ -253,17 +301,21 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             // Request a redirect to the external login provider to link a login for the current user
-            return new ChallengeResult(provider, this.Url.Action("LinkLoginCallback", "Account"), this.User.Identity.GetUserId());
+            return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
 
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, this.User.Identity.GetUserId());
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo != null)
             {
-                var result = await this.UserManager.AddLoginAsync(this.User.Identity.GetUserId(), loginInfo.Login);
+                var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
                 if (result.Succeeded)
                 {
                     return this.RedirectToAction("Manage");
@@ -282,7 +334,9 @@ namespace OJS.Web.Controllers
             ExternalLoginConfirmationViewModel model,
             string returnUrl)
         {
-            if (this.User.Identity.IsAuthenticated)
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            if (User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Manage");
             }
@@ -350,7 +404,9 @@ namespace OJS.Web.Controllers
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
-            var linkedAccounts = this.UserManager.GetLogins(this.User.Identity.GetUserId());
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            var linkedAccounts = this.UserManager.GetLogins(User.Identity.GetUserId());
             this.ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
             return this.PartialView("_RemoveAccountPartial", linkedAccounts);
         }
@@ -358,6 +414,8 @@ namespace OJS.Web.Controllers
         [AllowAnonymous]
         public ActionResult ForgottenPassword()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             return this.View();
         }
 
@@ -365,6 +423,8 @@ namespace OJS.Web.Controllers
         [AllowAnonymous]
         public ActionResult ForgottenPassword(string emailOrUsername)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (string.IsNullOrEmpty(emailOrUsername))
             {
                 this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_required);
@@ -413,6 +473,8 @@ namespace OJS.Web.Controllers
         [AllowAnonymous]
         public ActionResult ChangePassword(string token)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             Guid guid;
 
             if (!Guid.TryParse(token, out guid))
@@ -439,6 +501,8 @@ namespace OJS.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ChangePassword(ForgottenPasswordViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             var user = this.Data.Users.All()
                 .FirstOrDefault(x => x.ForgottenPasswordToken == model.Token);
 
@@ -449,10 +513,15 @@ namespace OJS.Web.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var removePassword = await this.UserManager.RemovePasswordAsync(user.Id);
+                IdentityResult removePassword =
+                                        await
+                                        this.UserManager.RemovePasswordAsync(user.Id);
                 if (removePassword.Succeeded)
                 {
-                    var changePassword = await this.UserManager.AddPasswordAsync(user.Id, model.Password);
+                    IdentityResult changePassword =
+                                        await
+                                        this.UserManager.AddPasswordAsync(user.Id, model.Password);
+
                     if (changePassword.Succeeded)
                     {
                         user.ForgottenPasswordToken = null;
@@ -473,12 +542,16 @@ namespace OJS.Web.Controllers
 
         public ActionResult ChangeEmail()
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             return this.View();
         }
 
         [HttpPost]
         public ActionResult ChangeEmail(ChangeEmailViewModel model)
         {
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
             if (this.ModelState.IsValid)
             {
                 if (this.Data.Users.All().Any(x => x.Email == model.Email))
@@ -511,9 +584,9 @@ namespace OJS.Web.Controllers
         [HttpGet]
         public ActionResult ChangeUsername()
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UsernameRegEx)
-                && this.UserProfile.UserName.Length >= GlobalConstants.UsernameMinLength
-                && this.UserProfile.UserName.Length <= GlobalConstants.UsernameMaxLength)
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
@@ -525,9 +598,9 @@ namespace OJS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
-            if (Regex.IsMatch(this.UserProfile.UserName, GlobalConstants.UsernameRegEx)
-                && this.UserProfile.UserName.Length >= GlobalConstants.UsernameMinLength
-                && this.UserProfile.UserName.Length <= GlobalConstants.UsernameMaxLength)
+            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+
+            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
             }
@@ -562,6 +635,46 @@ namespace OJS.Web.Controllers
             base.Dispose(disposing);
         }
 
+        private void AddOrUpdateUser(UserProfile user)
+        {
+            var existingUser = this.Data.Users.GetById(user.Id);
+            if (existingUser == null)
+            {
+                this.Data.Users.Add(user);
+            }
+            else
+            {
+                existingUser.PasswordHash = user.PasswordHash;
+                existingUser.SecurityStamp = user.SecurityStamp;
+                existingUser.Email = user.Email;
+                existingUser.ForgottenPasswordToken = user.ForgottenPasswordToken;
+                existingUser.IsDeleted = user.IsDeleted;
+                existingUser.DeletedOn = user.DeletedOn;
+                existingUser.ModifiedOn = user.ModifiedOn;
+                existingUser.UserSettings = user.UserSettings;
+            }
+
+            this.Data.SaveChanges();
+        }
+
+        private async Task<ExternalUserViewModel> GetExternalUser(string userName)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(JsonContentType);
+                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
+
+                var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userName });
+                if (response.IsSuccessStatusCode)
+                {
+                    var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
+                    return externalUser;
+                }
+
+                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
+            }
+        }
+
         private void SendForgottenPasswordToUser(UserProfile user)
         {
             var mailSender = MailSender.Instance;
@@ -571,13 +684,18 @@ namespace OJS.Web.Controllers
                                                         user.UserName);
 
             var forgottenPasswordEmailBody = string.Format(
-                Resources.Account.AccountEmails.Forgotten_password_body,
-                user.UserName,
-                this.Url.Action("ChangePassword", "Account", new { token = user.ForgottenPasswordToken }, this.Request.Url.Scheme));
+                                                Resources.Account.AccountEmails.Forgotten_password_body,
+                                                user.UserName,
+                                                Url.Action(
+                                                        "ChangePassword",
+                                                        "Account",
+                                                        new { token = user.ForgottenPasswordToken },
+                                                        Request.Url.Scheme));
 
             mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }
 
+        #region Helpers
         private async Task SignInAsync(UserProfile user, bool isPersistent)
         {
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -595,13 +713,18 @@ namespace OJS.Web.Controllers
 
         private bool HasPassword()
         {
-            var user = this.UserManager.FindById(this.User.Identity.GetUserId());
-            return user?.PasswordHash != null;
+            var user = this.UserManager.FindById(User.Identity.GetUserId());
+            if (user != null)
+            {
+                return user.PasswordHash != null;
+            }
+
+            return false;
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (this.Url.IsLocalUrl(returnUrl))
+            if (Url.IsLocalUrl(returnUrl))
             {
                 return this.Redirect(returnUrl);
             }
@@ -635,5 +758,6 @@ namespace OJS.Web.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, this.LoginProvider);
             }
         }
+        #endregion
     }
 }

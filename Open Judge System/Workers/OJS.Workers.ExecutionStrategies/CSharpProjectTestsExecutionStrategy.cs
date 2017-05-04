@@ -7,6 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
+
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
