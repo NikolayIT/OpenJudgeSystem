@@ -146,7 +146,9 @@
         {
         }
 
-        protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        protected static CompilerOutput ExecuteCompiler(
+            ProcessStartInfo compilerProcessStartInfo, 
+            int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
@@ -193,7 +195,7 @@
                         process.BeginOutputReadLine();
                         process.BeginErrorReadLine();
 
-                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                        var exited = process.WaitForExit(processExitTimeOutMillisecond);
                         if (!exited)
                         {
                             process.CancelOutputRead();

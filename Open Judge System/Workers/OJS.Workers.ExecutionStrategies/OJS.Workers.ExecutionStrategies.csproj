@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="CPlusPlusZipFileExecutionStrategy.cs" />
     <Compile Include="CheckOnlyExecutionStrategy.cs" />
+    <Compile Include="CSharpAspProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpTestRunnerExecutionStrategy.cs" />
     <Compile Include="CSharpUnitTestsExecutionStrategy.cs" />

@@ -50,7 +50,7 @@
             DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
-        protected string NUnitConsoleRunnerPath { get;}
+        protected string NUnitConsoleRunnerPath { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
@@ -68,17 +68,16 @@
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            var csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
+            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
-                CsProjFileSearchPattern);
+                CsProjFileSearchPattern,
+                f => new FileInfo(f).Length);
 
             this.ExtractTestNames(executionContext.Tests);
 
             // Modify Project file
             var project = new Project(csProjFilePath);
             this.CorrectProjectReferences(executionContext.Tests, project);
-            project.Save(csProjFilePath);
-            project.ProjectCollection.UnloadAllProjects();
 
             // Write Test files
             var compileDirectory = Path.GetDirectoryName(csProjFilePath);
@@ -170,7 +169,7 @@
             return errorsByFiles;
         }
 
-        private void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
+        protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
             foreach (var testName in this.TestNames)
             {
@@ -185,10 +184,7 @@
             }
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            var nUnitMetaData = new Dictionary<string, string>();
-            nUnitMetaData.Add("SpecificVersion", "False");
-            nUnitMetaData.Add("Private", "True");
-            project.AddItem("Reference", NUnitReference, nUnitMetaData);
+            this.AddProjectReferences(project, NUnitReference);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items
@@ -196,6 +192,21 @@
             if (vsTestFrameworkReference != null)
             {
                 project.RemoveItem(vsTestFrameworkReference);
+            }
+
+            project.Save(project.FullPath);
+            project.ProjectCollection.UnloadAllProjects();
+        }
+
+        protected void AddProjectReferences(Project project, params string[] references)
+        {
+            var referenceMetaData = new Dictionary<string, string>();
+            foreach (var reference in references)
+            {
+                referenceMetaData.Add("SpecificVersion", "False");
+                referenceMetaData.Add("Private", "True");
+                project.AddItem("Reference", reference, referenceMetaData);
+                referenceMetaData.Clear();
             }
         }
 

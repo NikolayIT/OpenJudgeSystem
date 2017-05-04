@@ -162,7 +162,7 @@ function afterBundling() {
 
             // Copy and unzip the file (save file to WorkingDirectory)
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, AppJsFileName);
+            this.ProgramEntryPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, AppJsFileName);
 
             // Replace the placeholders in the JS Template with the real values
             var codeToExecute = this.PreprocessJsSubmission(
