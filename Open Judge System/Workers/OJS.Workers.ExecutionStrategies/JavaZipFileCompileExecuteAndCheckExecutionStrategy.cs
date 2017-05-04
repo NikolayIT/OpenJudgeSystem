@@ -6,6 +6,7 @@
     using Ionic.Zip;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;
 
@@ -51,11 +52,9 @@
         private string PrepareSubmissionFile(byte[] submissionFileContent)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
-
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
-
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             this.AddSandboxExecutorSourceFileToSubmissionZip(submissionFilePath);
-
             return submissionFilePath;
         }
 

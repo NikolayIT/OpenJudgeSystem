@@ -23,7 +23,7 @@
 
         protected const string JUnitRunnerClassName = "_$TestRunner";
 
-        protected const string AdditionalExecutionArguments = "-Xms8m -Xmx128m";
+        protected const string AdditionalExecutionArguments = "-Dfile.encoding=UTF-8 -Xms8m -Xmx128m";
 
         protected const string TestResultsRegex = @"Total Tests: (\d+) Successful: (\d+) Failed: (\d+)";
 
@@ -283,6 +283,7 @@ public class _$TestRunner {{
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, context.FileContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             this.ExtractUserTestFiles(submissionFilePath);
             this.AddTestRunnerTemplate(submissionFilePath);
             return submissionFilePath;
@@ -300,7 +301,7 @@ public class _$TestRunner {{
         private void ExtractUserTestFiles(string submissionFilePath)
         {
             var fileNames = FileHelpers.GetFilePathsFromZip(submissionFilePath)
-                .Where(x => x.EndsWith(".java"));
+                .Where(x => x.EndsWith(GlobalConstants.JavaSourceFileExtension));
             this.TestNames.AddRange(fileNames);
         }
 

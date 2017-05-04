@@ -76,6 +76,15 @@
             }
         }
 
+        public static void RemoveFilesFromZip(string pathToArchive, string pattern)
+        {
+            using (ZipFile file = new ZipFile(pathToArchive))
+            {
+                file.RemoveSelectedEntries(pattern);
+                file.Save();
+            }
+        }
+
         public static void DeleteFiles(params string[] filePaths)
         {
             foreach (var filePath in filePaths)
