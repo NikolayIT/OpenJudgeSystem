@@ -7,7 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
-
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -16,6 +16,24 @@
 
     public class CSharpProjectTestsExecutionStrategy : ExecutionStrategy
     {
+        protected const string SetupFixtureTemplate = @"
+        using System;
+        using System.IO;
+        using NUnit.Framework;
+
+
+        [SetUpFixture]
+        public class SetUpClass
+        {
+            [OneTimeSetUp]
+            public void RedirectConsoleOutputBeforeEveryTest()
+            {
+                TextWriter writer = new StringWriter();
+                Console.SetOut(writer);
+            }
+        }
+";
+        protected const string SetupFixtureFileName = "_$SetupFixture";
         protected const string ZippedSubmissionName = "Submission.zip";
         protected const string CompeteTest = "Test";
         protected const string TrialTest = "Test.000";
@@ -56,6 +74,8 @@
 
         protected string WorkingDirectory { get; }
 
+        protected string SetupFixturePath { get; set; }
+
         protected List<string> TestNames { get; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
@@ -77,23 +97,31 @@
 
             // Modify Project file
             var project = new Project(csProjFilePath);
+            var compileDirectory = project.DirectoryPath;
+            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
             this.CorrectProjectReferences(executionContext.Tests, project);
 
-            // Write Test files
-            var compileDirectory = Path.GetDirectoryName(csProjFilePath);
+            // Write Test files and SetupFixture           
             var index = 0;
             var testPaths = new List<string>();
             foreach (var test in executionContext.Tests)
             {
                 var testName = this.TestNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}.cs";
+                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
                 testPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }
+      
+            testPaths.Add(this.SetupFixturePath);
 
             // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, csProjFilePath);
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                executionContext.AdditionalCompilerArguments, 
+                csProjFilePath);
 
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
             result.CompilerComment = compilerResult.CompilerComment;
@@ -103,7 +131,7 @@
                 return result;
             }
 
-            // Delete tests before execution so the user can't acces them
+            // Delete tests before execution so the user can't access them
             FileHelpers.DeleteFiles(testPaths.ToArray());
 
             var executor = new RestrictedProcessExecutor();
@@ -138,7 +166,7 @@
 
             foreach (var test in executionContext.Tests)
             {
-                var message = "yes";
+                var message = "Test Passed!";
                 var testFile = this.TestNames[testIndex++];
                 if (errorsByFiles.ContainsKey(testFile))
                 {
@@ -171,9 +199,12 @@
 
         protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
+            File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
+
             foreach (var testName in this.TestNames)
             {
-                project.AddItem("Compile", $"{testName}.cs");
+                project.AddItem("Compile", $"{testName}{GlobalConstants.CSharpFileExtension}");
             }
 
             project.SetProperty("OutputType", "Library");

@@ -128,6 +128,7 @@
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
+        public static readonly string CSharpFileExtension = $".{CompilerType.CSharp.GetFileExtension()}";
         public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
     }
 }
