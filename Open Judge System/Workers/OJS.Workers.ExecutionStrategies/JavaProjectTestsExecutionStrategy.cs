@@ -176,7 +176,7 @@ class Classes{{
             this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
-        }
+        }   
 
         private void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {

@@ -89,6 +89,7 @@
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="JavaProjectTestsExecutionStrategy.cs" />
+    <Compile Include="JavaSpringAndHibernateProjectExecutionStrategy.cs" />
     <Compile Include="JavaUnitTestsExecutionStrategy.cs" />
     <Compile Include="JavaZipFileCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="JsonExecutionResult.cs" />
