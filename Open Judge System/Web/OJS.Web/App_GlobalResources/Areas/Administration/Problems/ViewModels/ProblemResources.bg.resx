@@ -124,7 +124,7 @@
     <value>Име</value>
   </data>
   <data name="Name_length" xml:space="preserve">
-    <value>Позволената дължина е между {2} и {1} символа</value>
+    <value>Името трябва да има дължина между {2} и {1} символа</value>
   </data>
   <data name="Name_required" xml:space="preserve">
     <value>Името на ресурса е задължително!</value>

@@ -110,6 +110,68 @@ class Classes{{
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
 
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            if (!string.IsNullOrWhiteSpace(executionContext.TaskSkeletonAsString))
+            {
+                FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+
+                string className = JavaCodePreprocessorHelper.GetPublicClassName(executionContext.TaskSkeletonAsString);
+                string filePath = $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
+                File.WriteAllText(filePath, executionContext.TaskSkeletonAsString);
+                FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, filePath);
+
+                var preprocessCompileResult = this.Compile(
+                    executionContext.CompilerType,
+                    compilerPath,
+                    combinedArguments,
+                    submissionFilePath);
+
+                result.IsCompiledSuccessfully = preprocessCompileResult.IsCompiledSuccessfully;
+                result.CompilerComment = preprocessCompileResult.CompilerComment;
+                if (!result.IsCompiledSuccessfully)
+                {
+                    return result;
+                }
+
+                var preprocessExecutor = new StandardProcessExecutor();
+
+                var preprocessArguments = new List<string>();
+                preprocessArguments.Add(this.ClassPath);
+                preprocessArguments.Add(AdditionalExecutionArguments);
+                preprocessArguments.Add(className);
+                preprocessArguments.Add(this.WorkingDirectory);
+                preprocessArguments.AddRange(this.UserClassNames);
+
+                var preprocessExecutionResult = preprocessExecutor.Execute(
+                    this.JavaExecutablePath,
+                    string.Empty,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    preprocessArguments,
+                    this.WorkingDirectory);
+
+                if (preprocessExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
+                {
+                    throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
+                }
+
+                var filesToAdd = preprocessExecutionResult
+                    .ReceivedOutput
+                    .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var file in filesToAdd)
+                {
+                    var path = Path.GetDirectoryName(file);
+                    FileHelpers.AddFilesToZipArchive(submissionFilePath, path, this.WorkingDirectory + "\\" + file);
+                }
+
+                File.Delete(filePath);
+            }
+
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
                 compilerPath,
@@ -122,12 +184,6 @@ class Classes{{
             {
                 return result;
             }
-
-            var executor = new RestrictedProcessExecutor();
-            var checker = Checker.CreateChecker(
-                executionContext.CheckerAssemblyName,
-                executionContext.CheckerTypeName,
-                executionContext.CheckerParameter);
 
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);

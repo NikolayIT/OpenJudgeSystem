@@ -130,7 +130,7 @@
     <value>Invalid user</value>
   </data>
   <data name="Must_be_zip_file" xml:space="preserve">
-    <value>Tests must be in a zip file.</value>
+    <value>Uploaded file must be in .ZIP format.</value>
   </data>
   <data name="Problems_deleted" xml:space="preserve">
     <value>Problems deleted successfully.</value>

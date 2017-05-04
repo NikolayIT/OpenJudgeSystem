@@ -1,0 +1,16 @@
+﻿@using Resource = Resources.Areas.Administration.AdministrationGeneral;
+
+@model HttpPostedFileBase
+
+@{
+    var propertyName = this.ViewData.ModelMetadata.PropertyName;
+    var onSelect = this.ViewData["onSelectCallback"];
+}
+
+@if(onSelect != null)
+{
+    @Html.Kendo().Upload().Multiple(false).Name(propertyName).Messages(x => x.Select(Resource.Choose_file)).Events(e => e.Select(onSelect.ToString()))
+}
+else{
+    @Html.Kendo().Upload().Multiple(false).Name(propertyName).Messages(x => x.Select(Resource.Choose_file))
+}

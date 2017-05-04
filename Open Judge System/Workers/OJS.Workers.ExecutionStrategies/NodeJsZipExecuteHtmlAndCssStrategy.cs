@@ -167,7 +167,7 @@ describe('TestDOMScope', function() {{
         {
             var result = new ExecutionResult { IsCompiledSuccessfully = true };
             this.CreateSubmissionFile(executionContext);
-            this.ProgramEntryPath = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, EntryFileName);
+            this.ProgramEntryPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, EntryFileName);
 
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
@@ -232,9 +232,9 @@ describe('TestDOMScope', function() {{
                 {
                     message = mochaResult.Error;
                 }
-                else if (mochaResult.TestsErrors[currentTest] != null)
+                else if (mochaResult.TestErrors[currentTest] != null)
                 {
-                    message = $"Unexpected error: {mochaResult.TestsErrors[currentTest]}";
+                    message = $"Unexpected error: {mochaResult.TestErrors[currentTest]}";
                 }
 
                 var testResult = this.ExecuteAndCheckTest(
@@ -278,7 +278,7 @@ describe('TestDOMScope', function() {{
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, string pathToFile)
         {
-            var userBaseDirectory = FileHelpers.FindFirstFileMatchingPattern(this.WorkingDirectory, EntryFileName);
+            var userBaseDirectory = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, EntryFileName);
             userBaseDirectory = FileHelpers.ProcessModulePath(Path.GetDirectoryName(userBaseDirectory));
 
             var processedCode =

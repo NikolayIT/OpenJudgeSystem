@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using Ionic.Zip;
 
@@ -42,21 +43,25 @@
             }
         }
 
-        public static string FindFirstFileMatchingPattern(string workingDirectory, string pattern)
+        public static string FindFileMatchingPattern(string workingDirectory, string pattern)
         {
-            var files = new List<string>(
-                Directory.GetFiles(
-                    workingDirectory,
-                    pattern,
-                    SearchOption.AllDirectories));
-            if (files.Count == 0)
-            {
-                throw new ArgumentException(
-                    $"'{pattern}' file not found in output directory!",
-                    nameof(pattern));
-            }
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            return ProcessModulePath(files[0]);
+            string discoveredFile = files.First();
+
+            return ProcessModulePath(discoveredFile);
+        }
+
+        public static string FindFileMatchingPattern<TOut>(
+            string workingDirectory,
+            string pattern,
+            Func<string, TOut> orderBy)
+        {
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
+
+            string discoveredFile = files.OrderBy(orderBy).First();
+
+            return ProcessModulePath(discoveredFile);
         }
 
         public static void AddFilesToZipArchive(string archivePath, string pathInArchive, params string[] filePaths)
@@ -97,5 +102,22 @@
         }
 
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
+
+        private static List<string> DiscoverAllFilesMatchingPattern(string workingDirectory, string pattern)
+        {
+            var files = new List<string>(
+                Directory.GetFiles(
+                    workingDirectory,
+                    pattern,
+                    SearchOption.AllDirectories));
+            if (files.Count == 0)
+            {
+                throw new ArgumentException(
+                    $"'{pattern}' file not found in output directory!",
+                    nameof(pattern));
+            }
+
+            return files;
+        }
     }
 }

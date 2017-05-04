@@ -12,16 +12,10 @@
     @using (Html.BeginForm("Create", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationMessage("Resources")
+        @Html.ValidationSummary(false)
 
         @Html.HiddenFor(m => m.ContestName)
         @Html.HiddenFor(m => m.ContestId)
-
-        <div class="row">
-            <div class="editor-label col-xs-3">
-                @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
-            </div>
-        </div>
 
         <fieldset>
             <legend>@SharedResource.General_info</legend>
@@ -219,6 +213,11 @@
         <fieldset>
             <legend>@SharedResource.Submission_types</legend>
             @Html.EditorFor(m => m.SubmissionTypes)
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    @Html.ValidationMessageFor(m => m.SelectedSubmissionTypes)
+                </div>
+            </div>
         </fieldset>
         <br />
         <fieldset>
@@ -232,6 +231,7 @@
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Add_remove_resource" data-tooltip="true"></span>
+                    @Html.ValidationMessage("Resources")
                 </div>
             </div>
 
@@ -252,13 +252,34 @@
                     </div>
                 </div>
                 <div class="col-xs-5">
-                    <div id="tests-file-button" class="btn btn-sm btn-primary pull-right">@Resource.Choose_file</div>
-                    <div class="hidden-file-upload">
-                        <input type="file" name="testArchive" id="tests-upload-input" />
+                    <div class="pull-right">
+                        @Html.EditorFor(m => m.Tests, new { onSelectCallback = "testsValidation" })
                     </div>
                 </div>
                 <div class="editor-field col-xs-3">
-                    <span class="glyphicon glyphicon-question-sign text-primary" id="tests-tooltip"></span>
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Choose_zip_file" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.Tests)
+                </div>
+            </div>
+            <hr />
+        </fieldset>
+        <br />
+        <fieldset>
+            <legend>@SharedResource.Additional_files</legend>
+            <div class="row">
+                <div class="editor-label col-xs-3">
+                    <div class="pull-right">
+                        <strong>@SharedResource.Additional_files_label</strong>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="pull-right">
+                        @Html.EditorFor(m => m.AdditionalFiles, new { onSelectCallback = "additionalFilesValidation" })
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@SharedResource.Choose_additional_file" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.AdditionalFiles)
                 </div>
             </div>
             <hr />
@@ -277,12 +298,8 @@
 
 @section scripts{
     @(Html.Kendo().Tooltip().For("#create-form").Filter("[data-tooltip='true']").Position(TooltipPosition.Bottom).Width(240))
-
+    <script src="~/Scripts/Helpers/validations.js"></script>
     <script src="~/Scripts/Administration/Problems/problems-create.js"></script>
-    <script type="text/x-kendo-template" id="tests-template">
-        @Html.Raw(Resource.Choose_zip_file)
-    </script>
-    
     <script type="text/x-kendo-template" id="checkers-template">
         <ul style="list-style-type: none">
             <li>

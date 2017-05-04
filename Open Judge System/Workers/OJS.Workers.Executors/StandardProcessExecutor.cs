@@ -23,11 +23,19 @@
             //// logger.Info("Initialized.");
         }
 
-        public ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null)
+        public ProcessExecutionResult Execute(
+            string fileName,
+            string inputData,
+            int timeLimit,
+            int memoryLimit,
+            IEnumerable<string> executionArguments = null,
+            string workingDirectory = null)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
-            var workingDirectory = new FileInfo(fileName).DirectoryName;
-            workingDirectory = workingDirectory ?? string.Empty;
+            if (workingDirectory == null)
+            {
+                workingDirectory = new FileInfo(fileName).DirectoryName;
+            }
 
             var processStartInfo = new ProcessStartInfo(fileName)
             {

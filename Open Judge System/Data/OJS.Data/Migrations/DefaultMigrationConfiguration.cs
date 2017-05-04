@@ -362,7 +362,17 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true
-                }
+                },
+                  new SubmissionType
+                {
+                    Name = "C# ASP Project Tests",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);

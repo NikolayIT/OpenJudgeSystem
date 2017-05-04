@@ -1,4 +1,10 @@
-﻿$(document).ready(function () {
+﻿function additionalFilesValidation(e) {
+    var files = e.files;
+    var validationBox = $("span[data-valmsg-for='AdditionalFiles']");
+    validateZipFile(files, validationBox, $("#edit-form form"));
+}
+
+$(document).ready(function () {
 
     $.validator.addMethod(
         'date',
@@ -23,6 +29,7 @@
 
     $.validator.setDefaults({ ignore: '' });
 
+    var form = $("#edit-form form");
     var input = $("#SourceCodeSizeLimit");
     var numericTextBox = input.data("kendoNumericTextBox");
     var checkbox = $('#enable-sclimit');
@@ -32,31 +39,31 @@
         checkbox.attr('checked', true);
         numericTextBox.enable(true);
         input.attr("data-val-required", "Лимита е задължителен!");
-
-        $("form").removeData("validator");
-        $("form").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($('form'));
+        reparseForm(form);
     }
 
     checkbox.change(function () {
-
         if ($(this).is(':checked')) {
             numericTextBox.enable(true);
             input.attr("data-val-required", "Лимита е задължителен!");
-
-            $("form").removeData("validator");
-            $("form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('form'));
+            reparseForm(form);
         }
         else {
             numericTextBox.enable(false);
             input.removeAttr("data-val-required");
-
-            $("form").removeData("validator");
-            $("form").removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($('form'));
+            reparseForm(form);
         }
     });
+
+    function isChecked(elements) {
+        return elements.is(":checked");
+    }
+
+    addSubmitValidation($("#edit-form form"),
+        $("input[name^='SubmissionTypes'][name$='.IsChecked']"),
+        $("span[data-valmsg-for='SelectedSubmissionTypes']"),
+        isChecked,
+        "Choose at least one submission Type!");
 
     $('#checkers-tooltip').kendoTooltip({
         content: kendo.template($("#checkers-template").html()),

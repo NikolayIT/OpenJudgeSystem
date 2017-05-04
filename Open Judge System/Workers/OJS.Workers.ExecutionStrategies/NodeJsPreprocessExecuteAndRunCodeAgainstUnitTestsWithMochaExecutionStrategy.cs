@@ -1,11 +1,10 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-
-    using MissingFeatures;
 
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
@@ -40,6 +39,7 @@
                 baseTimeUsed,
                 baseMemoryUsed)
         {
+            this.Random = new Random();
         }
 
         protected override string JsCodePreevaulationCode => @"
@@ -84,6 +84,8 @@ after(function() {
 
         protected override string JsCodePostevaulationCode => string.Empty;
 
+        private Random Random { get; }
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             // In NodeJS there is no compilation
@@ -91,18 +93,10 @@ after(function() {
 
             var executor = new RestrictedProcessExecutor();
 
-            // Prerun the zero test in order to get the amount of user tests
-            var preRunCode = this.PreprocessPrerunTemplate(
-                this.JsCodeTemplate,
-                executionContext);
-            var prerunCodeSavePath = FileHelpers.SaveStringToTempFile(preRunCode);
-            var numberOfUserTests = this.PrerunSubmission(executionContext, executor, prerunCodeSavePath);
-
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(
                 this.JsCodeTemplate,
-                executionContext,
-                numberOfUserTests);
+                executionContext);
 
             // Save the preprocessed submission which is ready for execution
             var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
@@ -113,52 +107,55 @@ after(function() {
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath, numberOfUserTests);
+            result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
 
             // Clean up
-            File.Delete(prerunCodeSavePath);
             File.Delete(codeSavePath);
 
             return result;
         }
 
-        protected virtual string BuildTests(IEnumerable<TestContext> tests, int numberOfUserTests)
+        protected override string BuildTests(IEnumerable<TestContext> tests)
         {
-            // Swap the testInput every X amount of tests where X is the amount of User Tests
-            // We keep track of the number we must swap at with the variable testCountRoof
-            var testCountRoof = numberOfUserTests;
+            // Swap the testInput for every copy of the user's tests
+            var testGroupRoof = 1;
+
+            // Create a random name for the variable keeping track of the testGroup, so that the user can't manipulate it
+            var testGroupVariableName = "testGroup" + this.Random.Next(10000);
             var problemTests = tests.ToList();
             var testsCode = problemTests[0].Input;
 
             // We set the state of the tested entity in a beforeEach hook to ensure the user doesnt manipulate the entity
-            testsCode += $@"
-let testsCount = 0;
+            testsCode += @"
+let " + testGroupVariableName + $@" = 0;
 beforeEach(function(){{
-    if(testsCount < {testCountRoof}) {{
+    if(" + testGroupVariableName + $@" < {testGroupRoof}) {{
         {problemTests[1].Input}
     }}";
 
-            testCountRoof += numberOfUserTests;
-            var beforeHookTests = problemTests.Skip(2).ToList();
+            testGroupRoof++;
+            var beforeHookTests = problemTests.Skip(1).ToList();
 
             foreach (var test in beforeHookTests)
             {
-                testsCode += $@"
-    else if(testsCount < {testCountRoof}) {{
+                testsCode += @"
+    else if(" + testGroupVariableName + $@" < {testGroupRoof}) {{
         {test.Input}
     }}";
-                testCountRoof += numberOfUserTests;
+                testGroupRoof++;
             }
 
             testsCode += @"
-    testsCount++;
 });";
 
-            // Insert a copy of the user tests for each test file except the first zero test as it just checks the test count
-            for (int i = 1; i <= problemTests.Count - 1; i++)
+            // Insert a copy of the user tests for each test file
+            for (int i = 0; i < problemTests.Count; i++)
             {
                 testsCode += $@"
-describe('JudgeTest{i}', function(){{
+describe('Test {i} ', function(){{
+    after(function () {{
+        " + testGroupVariableName + $@"++;
+    }});
 {UserInputPlaceholder}
 }});";
             }
@@ -166,39 +163,11 @@ describe('JudgeTest{i}', function(){{
             return testsCode;
         }
 
-        protected virtual string BuildPrerunTests(IEnumerable<TestContext> tests)
-        {
-            var testsCode = string.Empty;
-            testsCode += $@"
-                {tests.FirstOrDefault().Input}
-                describe('JudgeTest1', function(){{ 
-                    {UserInputPlaceholder}
-                }});";
-
-            return testsCode;
-        }
-
-        protected virtual int PrerunSubmission(
-            ExecutionContext executionContext,
-            IExecutor executor,
-            string codeSavePath)
-        {
-            var arguments = new List<string>();
-            arguments.Add(this.MochaModulePath);
-            arguments.Add(codeSavePath);
-            arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
-
-            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
-            var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
-            return mochaResult.TotalTests;
-        }
-
-        protected virtual List<TestResult> ProcessTests(
+        protected override List<TestResult> ProcessTests(
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
-            string codeSavePath,
-            int numberOfUserTests)
+            string codeSavePath)
         {
             var testResults = new List<TestResult>();
 
@@ -210,10 +179,14 @@ describe('JudgeTest{i}', function(){{
             var testCount = 0;
             var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
-            var correctSolutionTestPasses = mochaResult.TestsErrors.Take(numberOfUserTests).Count(x => x == null);
-            var testOffset = numberOfUserTests;
+            var numberOfUserTests = mochaResult.UsersTestCount;
+            var correctSolutionTestPasses = mochaResult.InitialPassingTests;
+
+            // an offset for tracking the current subset of tests (by convention we always have 2 Zero tests)
+            var testOffset = numberOfUserTests * 2;
             foreach (var test in executionContext.Tests)
             {
+                var message = "Test Passed!";
                 TestResult testResult = null;
                 if (testCount == 0)
                 {
@@ -221,12 +194,7 @@ describe('JudgeTest{i}', function(){{
                         Regex.Match(
                             test.Input,
                             "<minTestCount>(\\d+)</minTestCount>").Groups[1].Value);
-                    var message = "Test Passed!";
-                    if (numberOfUserTests == 0)
-                    {
-                        message = "The submitted code was either incorrect or contained no tests!";
-                    }
-                    else if (numberOfUserTests < minTestCount)
+                     if (numberOfUserTests < minTestCount)
                     {
                         message = $"Insufficient amount of tests, you have to have atleast {minTestCount} tests!";
                     }
@@ -239,7 +207,6 @@ describe('JudgeTest{i}', function(){{
                 }
                 else if (testCount == 1)
                 {
-                    var message = "Test Passed!";
                     if (numberOfUserTests == 0)
                     {
                         message = "The submitted code was either incorrect or contained no tests!";
@@ -257,15 +224,10 @@ describe('JudgeTest{i}', function(){{
                 }
                 else
                 {
-                    var numberOfPasses = mochaResult.TestsErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == null);
-                    var message = "Test Passed!";
+                    var numberOfPasses = mochaResult.TestErrors.Skip(testOffset).Take(numberOfUserTests).Count(x => x == null);
                     if (numberOfPasses >= correctSolutionTestPasses)
                     {
                         message = "No unit test covering this functionality!";
-                        mochaResult.TestsErrors
-                            .Take(numberOfUserTests)
-                            .Where(x => x != null)
-                            .ForEach(x => message += x);
                     }
 
                     testResult = this.ExecuteAndCheckTest(
@@ -283,7 +245,7 @@ describe('JudgeTest{i}', function(){{
             return testResults;
         }
 
-        protected virtual string PreprocessJsSubmission(string template, ExecutionContext context, int numberOfUserTests)
+        protected override string PreprocessJsSubmission(string template, ExecutionContext context)
         {
             var code = context.Code.Trim(';');
 
@@ -293,24 +255,9 @@ describe('JudgeTest{i}', function(){{
                     .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
                     .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
                     .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
-                    .Replace(TestsPlaceholder, this.BuildTests(context.Tests, numberOfUserTests))
+                    .Replace(TestsPlaceholder, this.BuildTests(context.Tests))
                     .Replace(UserInputPlaceholder, code);
 
-            return processedCode;
-        }
-
-        protected virtual string PreprocessPrerunTemplate(string template, ExecutionContext context)
-        {
-            var code = context.Code.Trim(';');
-
-            var processedCode =
-                template.Replace(RequiredModules, this.JsCodeRequiredModules)
-                    .Replace(PreevaluationPlaceholder, this.JsCodePreevaulationCode)
-                    .Replace(EvaluationPlaceholder, this.JsCodeEvaluation)
-                    .Replace(PostevaluationPlaceholder, this.JsCodePostevaulationCode)
-                    .Replace(NodeDisablePlaceholder, this.JsNodeDisableCode)
-                    .Replace(TestsPlaceholder, this.BuildPrerunTests(context.Tests))
-                    .Replace(UserInputPlaceholder, code);
             return processedCode;
         }
     }

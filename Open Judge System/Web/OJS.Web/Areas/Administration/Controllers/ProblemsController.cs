@@ -6,8 +6,12 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
+
+    using Ionic.Zip;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -28,6 +32,7 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
+    using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
 
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
@@ -49,7 +54,7 @@
         {
             if (id == null || !this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -62,7 +67,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -73,13 +78,13 @@
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             this.ViewBag.ContestId = problem.ContestId;
             this.ViewBag.ProblemId = problem.Id;
 
-            return this.View(GlobalConstants.Index);
+            return this.View(nameof(this.Index));
         }
 
         [HttpGet]
@@ -88,12 +93,12 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -102,7 +107,7 @@
             if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             var problem = this.PrepareProblemViewModelForCreate(contest);
@@ -111,11 +116,11 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, HttpPostedFileBase testArchive, DetailedProblemViewModel problem)
+        public ActionResult Create(int id, DetailedProblemViewModel problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -123,7 +128,7 @@
             if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (problem == null)
@@ -152,6 +157,16 @@
                 }
             }
 
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
+            }
+
+            if (problem.Tests != null && problem.Tests.ContentLength != 0)
+            {
+                this.ValidateUploadedFile(nameof(problem.Tests), problem.Tests);
+            }
+
             if (!this.IsValidProblem(problem) || !this.ModelState.IsValid)
             {
                 problem.AvailableCheckers = this.Data.Checkers.All()
@@ -176,11 +191,16 @@
                 this.AddResourcesToProblem(newProblem, problem.Resources);
             }
 
-            if (testArchive != null && testArchive.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                newProblem.AdditionalFiles = problem.AdditionalFiles.ToByteArray();
+            }
+
+            if (problem.Tests != null && problem.Tests.ContentLength != 0)
             {
                 try
                 {
-                    this.AddTestsToProblem(newProblem, testArchive);
+                    this.AddTestsToProblem(newProblem, problem.Tests);
                 }
                 catch (Exception ex)
                 {
@@ -218,12 +238,12 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -232,7 +252,7 @@
             if (selectedProblem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             this.Data.SubmissionTypes.All()
@@ -255,7 +275,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -264,7 +284,7 @@
             if (existingProblem == null)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, GlobalResource.Problem_not_found);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (problem == null)
@@ -277,6 +297,11 @@
                     Value = checker.Name
                 });
                 return this.View(problem);
+            }
+
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
             }
 
             if (!this.ModelState.IsValid)
@@ -295,6 +320,15 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
+            {
+                using (var archiveStream = new MemoryStream())
+                {
+                    problem.AdditionalFiles.InputStream.CopyTo(archiveStream);
+                    existingProblem.AdditionalFiles = archiveStream.ToArray();
+                }
+            }
 
             problem.SubmissionTypes.ForEach(s =>
             {
@@ -318,12 +352,12 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -335,7 +369,7 @@
             if (selectedProblem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             return this.View(selectedProblem);
@@ -346,7 +380,7 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
@@ -354,7 +388,7 @@
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             this.Data.Resources.Delete(r => r.ProblemId == id);
@@ -379,12 +413,12 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -396,7 +430,7 @@
             if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             return this.View(contest);
@@ -413,7 +447,7 @@
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             this.Data.Resources.Delete(r => r.Problem.ContestId == id);
@@ -437,7 +471,7 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             var problem = this.Data.Problems.All()
@@ -448,16 +482,54 @@
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             return this.View(problem);
+        }
+
+        /// <summary>
+        /// Creates a zip file with all additional files in the problem
+        /// </summary>
+        /// <param name="id">Problem id</param>
+        /// <returns>Zip file containing all additional files</returns>
+        public ActionResult DownloadAdditionalFiles(int id)
+        {
+            var problem = this.Data.Problems.GetById(id);
+
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Problem_not_found);
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(id))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
+
+            var additionalFiles = problem.AdditionalFiles;
+            var zipFileName = $"{problem.Name}_AdditionalFiles_{DateTime.Now}.{GlobalConstants.ZipFileExtension}";
+
+            var stream = new MemoryStream();
+            using (var additionalFilesStream = new MemoryStream(additionalFiles))
+            {
+                using (var zipFile = ZipFile.Read(additionalFilesStream))
+                {
+                    zipFile.Name = zipFileName;
+                    zipFile.Save(stream);
+                    stream.Position = 0;
+                }
+            }
+
+            return this.File(stream, MediaTypeNames.Application.Zip, zipFileName);
         }
 
         public ActionResult Retest(int? id)
@@ -465,7 +537,7 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             var problem = this.Data.Problems
@@ -475,12 +547,12 @@
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(nameof(this.Index));
             }
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -504,7 +576,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -533,7 +605,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -545,7 +617,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -604,7 +676,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(contestIdNumber))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.Json("No premissions");
             }
 
@@ -622,7 +694,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 throw new UnauthorizedAccessException("No premissions");
             }
 
@@ -650,7 +722,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                return this.Json("Нямате привилегиите за това действие");
+                return this.Json(GlobalConstants.NoPrivilegesMessage);
             }
 
             var solutionSkeleton = this.Data.Problems
@@ -671,7 +743,7 @@
 
             var result = this.Data.Problems.All()
                 .Where(x => x.ContestId == id)
-                .OrderBy(x => x.Name)
+                .OrderBy(x => x.OrderBy)
                 .Select(DetailedProblemViewModel.FromProblem);
 
             return result;
@@ -713,13 +785,6 @@
 
         private void AddTestsToProblem(Problem problem, HttpPostedFileBase testArchive)
         {
-            var extension = testArchive.FileName.Substring(testArchive.FileName.Length - 4, 4);
-
-            if (extension != GlobalConstants.ZipFileExtension)
-            {
-                throw new ArgumentException(GlobalResource.Must_be_zip_file);
-            }
-
             using (var memory = new MemoryStream())
             {
                 testArchive.InputStream.CopyTo(memory);
@@ -734,6 +799,16 @@
                 }
 
                 ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+            }
+        }
+
+        private void ValidateUploadedFile(string propertyName, HttpPostedFileBase file)
+        {
+            var extension = Path.GetExtension(file.FileName);
+
+            if (extension != GlobalConstants.ZipFileExtension)
+            {
+                this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
         }
 

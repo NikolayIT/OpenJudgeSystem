@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Additional_files" xml:space="preserve">
+    <value>Additional Files</value>
+  </data>
+  <data name="Additional_files_label" xml:space="preserve">
+    <value>Additional Files (.zip file)</value>
+  </data>
   <data name="Case_insensitive_checker_description" xml:space="preserve">
     <value>- the system does uses case insensitive comparison when comparing symbol by symbol.</value>
+  </data>
+  <data name="Choose_additional_file" xml:space="preserve">
+    <value>Choose a .zip file with additional files that will be added to the user code.</value>
   </data>
   <data name="Choose_code_checker" xml:space="preserve">
     <value>Choose a source code checker for this problem. The basic options are:</value>

@@ -12,6 +12,8 @@
 
     public class MsBuildLibraryCompiler : Compiler
     {
+        private const int MsBuildLibraryProcessExitTimeOutMillisecond = 10000;
+
         protected string InputFile { get; private set; }
 
         public override string GetOutputFileName(string inputFileName)
@@ -92,7 +94,7 @@
 
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
-            var compilerOutput = ExecuteCompiler(processStartInfo);
+            var compilerOutput = ExecuteCompiler(processStartInfo, MsBuildLibraryProcessExitTimeOutMillisecond);
  
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 

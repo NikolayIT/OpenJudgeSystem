@@ -29,6 +29,7 @@
         CSharpProjectTestsExecutionStrategy = 24,
         JavaProjectTestsExecutionStrategy = 25,
         CPlusPlusZipFileExecutionStrategy = 26,
-        JavaUnitTestsExecutionStrategy = 27
+        JavaUnitTestsExecutionStrategy = 27,
+        CSharpAspProjectTestsExecutionStrategy = 28
     }
 }

@@ -16,6 +16,8 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        public virtual bool ShouldDeleteSourceFile => true;
+
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -92,10 +94,12 @@
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
-            // Delete input file
-            if (File.Exists(newInputFilePath))
+            if (this.ShouldDeleteSourceFile)
             {
-                File.Delete(newInputFilePath);
+                if (File.Exists(newInputFilePath))
+                {
+                    File.Delete(newInputFilePath);
+                }
             }
 
             // Check results and return CompilerResult instance
@@ -147,7 +151,9 @@
             };
         }
 
-        protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        protected static CompilerOutput ExecuteCompiler(
+            ProcessStartInfo compilerProcessStartInfo, 
+            int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
@@ -194,7 +200,7 @@
                         process.BeginOutputReadLine();
                         process.BeginErrorReadLine();
 
-                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                        var exited = process.WaitForExit(processExitTimeOutMillisecond);
                         if (!exited)
                         {
                             process.CancelOutputRead();
