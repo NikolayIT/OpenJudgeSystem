@@ -16,6 +16,8 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        public virtual bool ShouldDeleteSourceFile => true;
+
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -85,27 +87,19 @@
             }
 
             // Prepare process start information
-            var processStartInfo =
-                new ProcessStartInfo(compilerPath)
-                {
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    WorkingDirectory = directoryInfo.ToString(),
-                    Arguments = arguments
-                };
-            this.UpdateCompilerProcessStartInfo(processStartInfo);
+            var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             // Execute compiler
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
-            // Delete input file
-            if (File.Exists(newInputFilePath))
+            if (this.ShouldDeleteSourceFile)
             {
-                File.Delete(newInputFilePath);
+                if (File.Exists(newInputFilePath))
+                {
+                    File.Delete(newInputFilePath);
+                }
             }
 
             // Check results and return CompilerResult instance
@@ -142,11 +136,24 @@
 
         public abstract string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments);
 
-        public virtual void UpdateCompilerProcessStartInfo(ProcessStartInfo processStartInfo)
+        public virtual ProcessStartInfo SetCompilerProcessStartInfo(string compilerPath, DirectoryInfo directoryInfo, string arguments)
         {
+            return new ProcessStartInfo(compilerPath)
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                WorkingDirectory = directoryInfo.ToString(),
+                Arguments = arguments,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8
+            };
         }
 
-        protected static CompilerOutput ExecuteCompiler(ProcessStartInfo compilerProcessStartInfo)
+        protected static CompilerOutput ExecuteCompiler(
+            ProcessStartInfo compilerProcessStartInfo, 
+            int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
@@ -193,7 +200,7 @@
                         process.BeginOutputReadLine();
                         process.BeginErrorReadLine();
 
-                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                        var exited = process.WaitForExit(processExitTimeOutMillisecond);
                         if (!exited)
                         {
                             process.CancelOutputRead();
@@ -208,8 +215,8 @@
                             return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
-                        outputWaitHandle.WaitOne(100);
-                        errorWaitHandle.WaitOne(100);
+                        outputWaitHandle.WaitOne(300);
+                        errorWaitHandle.WaitOne(300);
                         exitCode = process.ExitCode;
                     }
                 }

@@ -20,7 +20,7 @@
         }
 
         protected override void Seed(OjsDbContext context)
-        {
+        {        
             if (context.Roles.Any())
             {
                 return;
@@ -142,7 +142,7 @@
                     Name = "C++ code",
                     CompilerType = CompilerType.CPlusPlusGcc,
                     AdditionalCompilerArguments =
-                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                        "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType =
                         ExecutionStrategyType.CompileExecuteAndCheck,
                     IsSelectedByDefault = false,
@@ -212,7 +212,7 @@
                 {
                     Name = "Java code",
                     CompilerType = CompilerType.Java,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType =
                         ExecutionStrategyType
                         .JavaPreprocessCompileExecuteAndCheck,
@@ -224,7 +224,7 @@
                 {
                     Name = "Java zip file",
                     CompilerType = CompilerType.JavaZip,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType =
                         ExecutionStrategyType
                         .JavaZipFileCompileExecuteAndCheck,
@@ -337,7 +337,7 @@
                 {
                     Name = "Java Project Tests",
                     CompilerType = CompilerType.JavaZip,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType = ExecutionStrategyType.JavaProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -347,7 +347,7 @@
                 {
                     Name = "Java Unit Tests",
                     CompilerType = CompilerType.JavaInPlaceCompiler,
-                    AdditionalCompilerArguments = string.Empty,
+                    AdditionalCompilerArguments = "-encoding utf8",
                     ExecutionStrategyType = ExecutionStrategyType.JavaUnitTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
@@ -357,12 +357,22 @@
                 {
                     Name = "C++ Zip File",
                     CompilerType = CompilerType.CPlusPlusZip,
-                    AdditionalCompilerArguments = "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++",
+                    AdditionalCompilerArguments = "-pipe -mtune=generic -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType = ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true
-                }
+                },
+                  new SubmissionType
+                {
+                    Name = "C# ASP Project Tests",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);

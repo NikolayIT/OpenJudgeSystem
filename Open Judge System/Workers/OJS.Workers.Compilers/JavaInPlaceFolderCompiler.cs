@@ -70,21 +70,11 @@
             }
 
             // Prepare process start information
-            var processStartInfo = new ProcessStartInfo(compilerPath)
-                {
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    WorkingDirectory = directoryInfo.ToString(),
-                    Arguments = arguments
-                };
-
-            this.UpdateCompilerProcessStartInfo(processStartInfo);
+            var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
             outputDirectory = this.ChangeOutputFileAfterCompilation(outputDirectory);
-            if (!Directory.Exists(outputDirectory) && !compilerOutput.IsSuccessful)
+            if (!compilerOutput.IsSuccessful)
             {
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }

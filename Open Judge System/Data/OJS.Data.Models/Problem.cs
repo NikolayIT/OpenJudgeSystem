@@ -69,6 +69,12 @@
         /// </summary>
         public byte[] SolutionSkeleton { get; set; }
 
+        /// <summary>
+        /// Problem specific dependencies that will be compiled and executed with the user code
+        /// such as Solution skeletons, mocks or data and text files.
+        /// </summary>
+        public byte[] AdditionalFiles { get; set; }
+
         [DefaultValue(true)]
         [Index]
         public bool ShowResults { get; set; }

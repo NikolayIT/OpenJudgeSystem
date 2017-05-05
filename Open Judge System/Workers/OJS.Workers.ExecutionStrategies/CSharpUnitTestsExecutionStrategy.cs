@@ -8,6 +8,7 @@
 
     using Microsoft.Build.Evaluation;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -39,14 +40,17 @@
 
             var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
             File.WriteAllBytes(submissionFilePath, userSubmissionContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            var csProjFilePath = FileHelpers.FindFirstFileMatchingPattern(
+            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
                 CsProjFileSearchPattern);
 
             var project = new Project(csProjFilePath);
+            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
@@ -75,11 +79,17 @@
 
             foreach (var test in executionContext.Tests)
             {
+                File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+            
                 File.WriteAllText(testedCodePath, test.Input);
 
                 // Compiling
                 var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-                var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, csProjFilePath);
+                var compilerResult = this.Compile(
+                    executionContext.CompilerType, 
+                    compilerPath, 
+                    executionContext.AdditionalCompilerArguments,
+                    csProjFilePath);
 
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
@@ -90,7 +100,7 @@
                 }
 
                 // Delete tests before execution so the user can't acces them
-                File.Delete(testedCodePath);
+                FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
                 arguments.AddRange(AdditionalExecutionArguments.Split(' '));
@@ -134,7 +144,11 @@
             return result;
         }
 
-        protected override CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
+        protected override CompileResult Compile(
+            CompilerType compilerType,
+            string compilerPath,
+            string compilerArguments,
+            string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
@@ -151,16 +165,31 @@
             return compilerResult;
         }
 
+        /// <summary>
+        /// Grabs the last match from a match collection
+        /// thus ensuring that the tests output is the genuine one,
+        /// preventing the user from tampering with it
+        /// </summary>
+        /// <param name="receivedOutput"></param>
+        /// <param name="passedTests"></param>
+        /// <param name="totalTests"></param>
         private void ExtractTestResult(string receivedOutput, out int passedTests, out int totalTests)
-        {
+        {           
             var testResultsRegex = new Regex(TestResultsRegex);
-            var res = testResultsRegex.Match(receivedOutput);
-            totalTests = int.Parse(res.Groups[1].Value);
-            passedTests = int.Parse(res.Groups[2].Value);
+            var res = testResultsRegex.Matches(receivedOutput);
+            if (res.Count == 0)
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
+            totalTests = int.Parse(res[res.Count - 1].Groups[1].Value);
+            passedTests = int.Parse(res[res.Count - 1].Groups[2].Value);
         }
 
         private void CorrectProjectReferences(Project project)
         {
+            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
+
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
             if (projectReference != null)
@@ -179,6 +208,7 @@
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
             var nUnitMetaData = new Dictionary<string, string>();
+            nUnitMetaData.Add("SpecificVersion", "False");
             nUnitMetaData.Add("Private", "True");
             project.AddItem("Reference", NUnitReference, nUnitMetaData);
 
