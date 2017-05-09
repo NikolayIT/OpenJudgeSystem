@@ -3,6 +3,9 @@
     using System;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
+    using Common.Helpers;
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
@@ -10,6 +13,10 @@
     {
         private const string ApplicationPropertiesFileName = "application.properties";
         private const string ResourcesFolderName = "src/main/resources/";
+        private const string MainClassFileName = "main.java";
+        private const string IntelliJTemplateFoldersPattern = "main/java";
+        private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
+        private const string JavaSourceFolder = "src";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -24,22 +31,87 @@
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, context.FileContent);
             FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            this.ManipulateApplicationProperties(submissionFilePath);
+            this.OverwriteApplicationProperties(submissionFilePath);
+            this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
             this.ExtractUserClassNames(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
+            File.Copy(submissionFilePath,"D:\\zip.zip");
             this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
         }
 
-        private void ManipulateApplicationProperties(string submissionZipFilePath)
+        protected override void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
+        {
+            var testNumber = 0;
+            var filePaths = new string[context.Tests.Count()];
+
+            foreach (var test in context.Tests)
+            {
+                var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
+                var testFileName =
+                        $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
+                File.WriteAllText(testFileName, test.Input);
+                filePaths[testNumber] = testFileName;
+                this.TestNames.Add(className);
+                testNumber++;
+            }
+
+            string targetDirectoryInArchive = $"{JavaSourceFolder}/{IntelliJTemplateFoldersPattern}";
+            FileHelpers.AddFilesToZipArchive(submissionZipFilePath, targetDirectoryInArchive, filePaths);
+            FileHelpers.DeleteFiles(filePaths);
+        }
+
+        protected override void ExtractUserClassNames(string submissionFilePath)
+        {
+            this.UserClassNames.AddRange(
+                FileHelpers.GetFilePathsFromZip(submissionFilePath)
+                    .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
+                     .Select(x => x.Contains(IntelliJTemplateFoldersPattern)
+                                ? x.Substring(x.LastIndexOf(
+                                    IntelliJTemplateFoldersPattern,
+                                    StringComparison.Ordinal)
+                                    + IntelliJTemplateFoldersPattern.Length
+                                    + 1)
+                                : x)
+                    .Select(x => x.Contains(".") ? x.Substring(0, x.LastIndexOf(".", StringComparison.Ordinal)) : x)
+                    .Select(x => x.Replace("/", ".")));
+        }
+
+        private void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
+        {
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+
+            string mainClassFilePath = FileHelpers.ExtractFileFromZip(
+                submissionFilePath,
+                MainClassFileName,
+            extractionDirectory);
+
+            string mainClassContent = File.ReadAllText(mainClassFilePath);
+
+            Regex propertySourceMatcher = new Regex(PropertySourcePattern);
+            while (propertySourceMatcher.IsMatch(mainClassContent))
+            {
+                mainClassContent = Regex.Replace(mainClassContent, PropertySourcePattern, string.Empty);
+            }
+            File.WriteAllText(mainClassFilePath, mainClassContent);
+            string mainClassFolderPathInZip = Path
+                .GetDirectoryName(FileHelpers
+                                 .GetFilePathsFromZip(submissionFilePath)
+                                 .FirstOrDefault(f => f.EndsWith(MainClassFileName)));
+
+            FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, mainClassFilePath);
+            DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
+        }
+
+        private void OverwriteApplicationProperties(string submissionZipFilePath)
         {
             string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
             File.WriteAllText(fakeApplicationPropertiesPath, " ");
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 
-            string resourceDirectory = pathsInZip.FirstOrDefault(e => e.EndsWith(ResourcesFolderName));
+            string resourceDirectory = pathsInZip.FirstOrDefault(f => f.EndsWith(ResourcesFolderName));
 
             if (string.IsNullOrEmpty(resourceDirectory))
             {
@@ -50,5 +122,7 @@
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
             File.Delete(fakeApplicationPropertiesPath);
         }
+
+       
     }
 }

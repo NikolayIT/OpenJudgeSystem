@@ -235,7 +235,7 @@ class Classes{{
             return submissionFilePath;
         }   
 
-        protected void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
+        protected virtual void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {
             var testNumber = 0;
             var filePaths = new string[context.Tests.Count()];
@@ -264,7 +264,7 @@ class Classes{{
             FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
         }
 
-        protected void ExtractUserClassNames(string submissionFilePath)
+        protected virtual void ExtractUserClassNames(string submissionFilePath)
         {
             this.UserClassNames.AddRange(
                 FileHelpers.GetFilePathsFromZip(submissionFilePath)
