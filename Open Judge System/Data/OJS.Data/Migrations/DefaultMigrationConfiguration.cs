@@ -363,12 +363,22 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true
                 },
-                  new SubmissionType
+                new SubmissionType
                 {
                     Name = "C# ASP Project Tests",
                     CompilerType = CompilerType.MsBuildLibrary,
                     AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "Java Project (Spring + Hibernate)",
+                    CompilerType = CompilerType.JavaZip,
+                    AdditionalCompilerArguments = "-encoding utf8",
+                    ExecutionStrategyType = ExecutionStrategyType.JavaSpringAndHibernateProjectExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,

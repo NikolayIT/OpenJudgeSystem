@@ -22,22 +22,29 @@
         protected override string PrepareSubmissionFile(ExecutionContext context)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
+            File.WriteAllBytes(submissionFilePath, context.FileContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
             this.ManipulateApplicationProperties(submissionFilePath);
-            return base.PrepareSubmissionFile(context);
+            this.ExtractUserClassNames(submissionFilePath);
+            this.AddTestsToUserSubmission(context, submissionFilePath);
+            this.AddTestRunnerTemplate(submissionFilePath);
+
+            return submissionFilePath;
         }
 
         private void ManipulateApplicationProperties(string submissionZipFilePath)
         {
             string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
-            File.WriteAllText(fakeApplicationPropertiesPath, string.Empty);
+            File.WriteAllText(fakeApplicationPropertiesPath, " ");
 
-            var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath).ToList();
+            var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
+
             string resourceDirectory = pathsInZip.FirstOrDefault(e => e.EndsWith(ResourcesFolderName));
 
             if (string.IsNullOrEmpty(resourceDirectory))
             {
                 throw new FileNotFoundException(
-                    $"{0} not found in the project!", "Resource folder");
+                    $"Resource directory not found in the project!");
             }
 
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
