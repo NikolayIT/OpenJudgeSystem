@@ -26,19 +26,32 @@
         {
         }
 
+        public string ProjectRootDirectoryInSubmissionZip { get; set; } =
+            $"{JavaSourceFolder}/{IntelliJTemplateFoldersPattern}";
+
         protected override string PrepareSubmissionFile(ExecutionContext context)
         {
             var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, context.FileContent);
             FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
+
             this.OverwriteApplicationProperties(submissionFilePath);
             this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
             this.ExtractUserClassNames(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
-            File.Copy(submissionFilePath,"D:\\zip.zip");
             this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
+        }
+
+        protected override void AddTestRunnerTemplate(string submissionFilePath)
+        {
+            File.WriteAllText(this.JUnitTestRunnerSourceFilePath, this.JUnitTestRunnerCode);
+            FileHelpers.AddFilesToZipArchive(
+                submissionFilePath, 
+                this.ProjectRootDirectoryInSubmissionZip, 
+                this.JUnitTestRunnerSourceFilePath);
+            FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
         }
 
         protected override void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
@@ -57,8 +70,10 @@
                 testNumber++;
             }
 
-            string targetDirectoryInArchive = $"{JavaSourceFolder}/{IntelliJTemplateFoldersPattern}";
-            FileHelpers.AddFilesToZipArchive(submissionZipFilePath, targetDirectoryInArchive, filePaths);
+            FileHelpers.AddFilesToZipArchive(
+                submissionZipFilePath,
+                this.ProjectRootDirectoryInSubmissionZip, 
+                filePaths);
             FileHelpers.DeleteFiles(filePaths);
         }
 
@@ -94,6 +109,7 @@
             {
                 mainClassContent = Regex.Replace(mainClassContent, PropertySourcePattern, string.Empty);
             }
+
             File.WriteAllText(mainClassFilePath, mainClassContent);
             string mainClassFolderPathInZip = Path
                 .GetDirectoryName(FileHelpers
@@ -121,8 +137,6 @@
 
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
             File.Delete(fakeApplicationPropertiesPath);
-        }
-
-       
+        } 
     }
 }

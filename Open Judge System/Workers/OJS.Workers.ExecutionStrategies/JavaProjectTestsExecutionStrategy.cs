@@ -255,7 +255,7 @@ class Classes{{
             FileHelpers.DeleteFiles(filePaths);
         }
 
-        protected void AddTestRunnerTemplate(string submissionFilePath)
+        protected virtual void AddTestRunnerTemplate(string submissionFilePath)
         {
             // It is important to call the JUintTestRunnerCodeTemplate after the TestClasses have been filled
             // otherwise no tests will be queued in the JUnitTestRunner, which would result in no tests failing.
