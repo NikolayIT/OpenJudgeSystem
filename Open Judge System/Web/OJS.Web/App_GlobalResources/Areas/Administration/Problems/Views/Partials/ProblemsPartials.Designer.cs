@@ -179,6 +179,15 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retest.
+        /// </summary>
+        public static string Retest {
+            get {
+                return ResourceManager.GetString("Retest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
