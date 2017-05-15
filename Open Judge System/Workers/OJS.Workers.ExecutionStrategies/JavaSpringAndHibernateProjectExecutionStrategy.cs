@@ -14,7 +14,8 @@
         private const string ApplicationPropertiesFileName = "application.properties";
         private const string ResourcesFolderName = "src/main/resources/";
         private const string MainClassFileName = "main.java";
-        private const string IntelliJTemplateFoldersPattern = "main/java";
+        private const string IntelliJTemplateFoldersPattern = "main/java/com/photographyworkshops";
+        private const string IntelliJTestTemplateFoldersPattern = @"test/java/com/photographyworkshops/test";
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
         private const string JavaSourceFolder = "src";
 
@@ -123,7 +124,15 @@
         private void OverwriteApplicationProperties(string submissionZipFilePath)
         {
             string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
-            File.WriteAllText(fakeApplicationPropertiesPath, " ");
+            File.WriteAllText(fakeApplicationPropertiesPath, @"spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.database=HSQL
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.HSQLDialect
+spring.datasource.driverClassName=org.hsqldb.jdbcDriver
+spring.datasource.url=jdbc:hsqldb:mem:.
+spring.datasource.username=sa
+spring.datasource.password=
+
+security.basic.enabled=false");
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 

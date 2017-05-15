@@ -31,6 +31,7 @@
             get
             {
                 return $@"
+package com.photographyworkshops;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -154,7 +155,7 @@ class Classes{{
                     executionContext.MemoryLimit,
                     preprocessArguments,
                     this.WorkingDirectory);
-
+               
                 if (preprocessExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
                     throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -188,8 +189,14 @@ class Classes{{
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);
             arguments.Add(AdditionalExecutionArguments);
-            arguments.Add(JUnitRunnerClassName);
+            arguments.Add("com.photographyworkshops._$TestRunner");
+           // arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
+
+            foreach (var argument in arguments)
+            {
+                File.AppendAllText("D:\\execution.txt", argument + " \n");
+            }        
 
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
@@ -198,7 +205,7 @@ class Classes{{
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
-
+           
             if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {
                 throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -220,6 +227,7 @@ class Classes{{
                 result.TestResults.Add(testResult);
             }
 
+            File.AppendAllText("D:\\logged.txt", processExecutionResult.ErrorOutput);
             return result;
         }
 
