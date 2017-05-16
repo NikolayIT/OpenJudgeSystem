@@ -131,7 +131,7 @@ spring.datasource.driverClassName=org.hsqldb.jdbcDriver
 spring.datasource.url=jdbc:hsqldb:mem:.
 spring.datasource.username=sa
 spring.datasource.password=
-
+spring.main.web-environment=false
 security.basic.enabled=false");
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
