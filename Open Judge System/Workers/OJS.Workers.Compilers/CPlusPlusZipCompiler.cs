@@ -11,7 +11,6 @@
     public class CPlusPlusZipCompiler : Compiler
     {
         private const string CPlusPlusClassFileExtension = ".cpp";
-        private const string CPlusPlusHeaderFileExtension = ".h";
         private const string CClassFileExtension = ".c";
 
         private readonly string workingDirectory;
@@ -54,8 +53,7 @@
                     SearchOption.AllDirectories)
                 .Where(f =>
                     f.EndsWith(CClassFileExtension) ||
-                    f.EndsWith(CPlusPlusClassFileExtension) ||
-                    f.EndsWith(CPlusPlusHeaderFileExtension));
+                    f.EndsWith(CPlusPlusClassFileExtension));
 
             foreach (var file in filesToCompile)
             {

@@ -153,7 +153,7 @@
             ExecutionResult result,
             string compiledFile)
         {
-            var arguments = new List<string> { compiledFile };
+            var arguments = new List<string> { $"\"{compiledFile}\"" };
             arguments.AddRange(AdditionalExecutionArguments.Split(' '));
 
             var processExecutionResult = executor.Execute(
