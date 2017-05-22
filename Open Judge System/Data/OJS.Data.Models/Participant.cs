@@ -10,11 +10,13 @@
     {
         private ICollection<Submission> submissions;
         private ICollection<ParticipantAnswer> answers;
+        private ICollection<ParticipantScore> scores;
 
         public Participant()
         {
             this.submissions = new HashSet<Submission>();
             this.answers = new HashSet<ParticipantAnswer>();
+            this.scores = new HashSet<ParticipantScore>();
         }
 
         public Participant(int contestId, string userId, bool isOfficial)
@@ -52,6 +54,12 @@
         {
             get { return this.answers; }
             set { this.answers = value; }
+        }
+
+        public virtual ICollection<ParticipantScore> Scores
+        {
+            get { return this.scores; }
+            set { this.scores = value; }
         }
     }
 }
