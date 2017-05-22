@@ -285,7 +285,7 @@
 
         public void MoveSubmission(int contestId)
         {
-            Contest categoryContest = this.Data.Contests.GetById(contestId);
+            var categoryContest = this.Data.Contests.GetById(contestId);
 
             var competeOnlyParticipants = categoryContest
                 .Participants
