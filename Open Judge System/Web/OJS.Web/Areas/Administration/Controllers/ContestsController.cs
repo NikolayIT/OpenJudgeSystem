@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
@@ -280,6 +281,78 @@
 
             var ips = ipEntries.Take(10).Select(IpAdministrationViewModel.ViewModel);
             return this.Json(ips, JsonRequestBehavior.AllowGet);
+        }
+
+        public void MoveSubmission(int categoryId)
+        {
+            ContestCategory category = this.Data.ContestCategories.GetById(categoryId);
+
+            foreach (var categoryContest in category.Contests)
+            {
+                var competeOnlyParticipants = categoryContest
+                .Participants
+                .GroupBy(p => p.UserId)
+                .Where(g => g.Count() == 1 && g.All(p => p.IsOfficial))
+                .SelectMany(gr => gr.ToList());
+
+                foreach (Participant participant in competeOnlyParticipants)
+                {
+                    foreach (var participantScore in participant.Scores)
+                    {
+                        participantScore.IsOfficial = false;
+                    }
+
+                    participant.IsOfficial = false;
+                }
+
+                var competeAndPracticeParticipants = categoryContest
+                    .Participants
+                    .GroupBy(p => p.UserId)
+                    .Where(g => g.Count() == 2)
+                    .ToDictionary(grp => grp.Key, grp => grp.OrderBy(p => p.IsOfficial).ToList());
+
+                foreach (KeyValuePair<string, List<Participant>> competeAndPracticeParticipant in competeAndPracticeParticipants)
+                {
+                    var unofficialParticipant = competeAndPracticeParticipants[competeAndPracticeParticipant.Key][0];
+                    var officialParticipant = competeAndPracticeParticipants[competeAndPracticeParticipant.Key][1];
+
+                    foreach (var officialParticipantSubmission in officialParticipant.Submissions)
+                    {
+                        officialParticipantSubmission.Participant = unofficialParticipant;
+                    }
+
+                    foreach (var officialParticipantScore in officialParticipant.Scores.ToList())
+                    {
+                        var unofficialParticipantScore = unofficialParticipant
+                            .Scores
+                            .FirstOrDefault(s => s.ProblemId == officialParticipantScore.ProblemId);
+
+                        officialParticipantScore.IsOfficial = false;
+
+                        officialParticipantScore.Participant = unofficialParticipant;
+
+                        if (unofficialParticipantScore != null)
+                        {
+                            if (unofficialParticipantScore?.Points == officialParticipantScore.Points)
+                            {
+                                unofficialParticipantScore = unofficialParticipantScore.Id > officialParticipantScore.Id
+                                                             ? unofficialParticipantScore
+                                                             : officialParticipantScore;
+                            }
+                            else
+                            {
+                                unofficialParticipantScore = unofficialParticipantScore?.Points >
+                                                             officialParticipantScore.Points
+                                                             ? unofficialParticipantScore
+                                                             : officialParticipantScore;
+                            }
+                        }
+                    }
+
+                    this.Data.Participants.Delete(officialParticipant);
+                    this.Data.SaveChanges();
+                }
+            }
         }
 
         private void PrepareViewBagData()
