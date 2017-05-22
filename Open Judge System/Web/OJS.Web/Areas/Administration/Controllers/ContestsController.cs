@@ -333,7 +333,7 @@
 
                         if (unofficialParticipantScore != null)
                         {
-                            if (unofficialParticipantScore?.Points == officialParticipantScore.Points)
+                            if (unofficialParticipantScore.Points == officialParticipantScore.Points)
                             {
                                 unofficialParticipantScore = unofficialParticipantScore.Id > officialParticipantScore.Id
                                                              ? unofficialParticipantScore
@@ -341,7 +341,7 @@
                             }
                             else
                             {
-                                unofficialParticipantScore = unofficialParticipantScore?.Points >
+                                unofficialParticipantScore = unofficialParticipantScore.Points >
                                                              officialParticipantScore.Points
                                                              ? unofficialParticipantScore
                                                              : officialParticipantScore;
