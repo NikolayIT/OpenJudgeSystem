@@ -302,7 +302,8 @@
                     executionStrategy = new JavaSpringAndHibernateProjectExecutionStrategy(
                         Settings.JavaExecutablePath,
                         GetCompilerPath,
-                        Settings.JavaLibsPath);
+                        Settings.JavaLibsPath,
+                        Settings.MavenPath);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(

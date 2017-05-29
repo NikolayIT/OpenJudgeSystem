@@ -188,15 +188,9 @@ class Classes{{
 
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);
-            arguments.Add(AdditionalExecutionArguments);
-            arguments.Add("com.photographyworkshops._$TestRunner");
-           // arguments.Add(JUnitRunnerClassName);
+            arguments.Add(AdditionalExecutionArguments);           
+            arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
-
-            foreach (var argument in arguments)
-            {
-                File.AppendAllText("D:\\execution.txt", argument + " \n");
-            }        
 
             var processExecutionResult = executor.ExecuteJavaProcess(
                 this.JavaExecutablePath,
@@ -227,7 +221,6 @@ class Classes{{
                 result.TestResults.Add(testResult);
             }
 
-            File.AppendAllText("D:\\logged.txt", processExecutionResult.ErrorOutput);
             return result;
         }
 

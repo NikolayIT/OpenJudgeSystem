@@ -26,10 +26,14 @@
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath)
+            string javaLibsPath,
+            string mavenPath)
             : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
         {
+            this.MavenPath = mavenPath;
         }
+
+        public string MavenPath { get; set; }
 
         public string PackageName { get; set; }
 
@@ -57,19 +61,21 @@
                 return result;
             }
 
-            var executor = new StandardProcessExecutor();
+            // var executor = new StandardProcessExecutor();
+            var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, "pom.xml");
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean test -Dtest=com.photographyworkshops.Test1" };
-            string mavenPath = @"C:\Maven\apache-maven-3.5.0\bin\mvn.cmd";
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean test -Dtest={string.Join(",", this.TestNames)}" };
+
             var processExecutionResult = executor.Execute(
-              mavenPath,
+              this.MavenPath,
               string.Empty,
               executionContext.TimeLimit,
               executionContext.MemoryLimit,
@@ -88,9 +94,7 @@
             this.ExtractPackageAndDirectoryNames(submissionFilePath);
             this.OverwriteApplicationProperties(submissionFilePath);
             this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
-            // this.ExtractUserClassNames(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
-            //  this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
         }
