@@ -63,16 +63,17 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            FileHelpers.UnzipFile(submissionFilePath,this.WorkingDirectory);
+            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, "pom.xml");
 
-            string mavenArgs = $"mvn -f {pomXmlPath} clean test -Dtest=com.photographyworkshops.Test1";
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean test -Dtest=com.photographyworkshops.Test1" };
+            string mavenPath = @"C:\Maven\apache-maven-3.5.0\bin\mvn.cmd";
             var processExecutionResult = executor.Execute(
-              mavenArgs,
+              mavenPath,
               string.Empty,
               executionContext.TimeLimit,
               executionContext.MemoryLimit,
-              null,
+              mavenArgs,
               this.WorkingDirectory);
             return null;
 
@@ -87,9 +88,9 @@
             this.ExtractPackageAndDirectoryNames(submissionFilePath);
             this.OverwriteApplicationProperties(submissionFilePath);
             this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
-          // this.ExtractUserClassNames(submissionFilePath);
+            // this.ExtractUserClassNames(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
-          //  this.AddTestRunnerTemplate(submissionFilePath);
+            //  this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
         }
@@ -108,7 +109,7 @@
 
             this.MainClassFileName = this.MainClassFileName
                                          .Substring(this.MainClassFileName
-                                                    .LastIndexOf(".", StringComparison.Ordinal) + 1) 
+                                                    .LastIndexOf(".", StringComparison.Ordinal) + 1)
                                                     + GlobalConstants.JavaSourceFileExtension;
         }
 
@@ -228,7 +229,7 @@
             spring.datasource.password=
             spring.main.web-environment=false
             security.basic.enabled=false");
-         //   File.WriteAllText(fakeApplicationPropertiesPath, " ");
+            //   File.WriteAllText(fakeApplicationPropertiesPath, " ");
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 
