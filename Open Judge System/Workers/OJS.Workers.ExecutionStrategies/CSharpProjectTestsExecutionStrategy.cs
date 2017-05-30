@@ -45,7 +45,7 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
-        private static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at ([^(){Environment.NewLine}]+?)\(\)";
+        private static readonly string ErrorMessageRegex = $@"\d+\)\s(\w+\s:\s)(\w+)\.(.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at";
 
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
@@ -190,10 +190,10 @@
 
             foreach (Match error in errors)
             {
-                var errorMethod = error.Groups[1].Value;
-                var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
-                var fileName = error.Groups[3].Value;
-                errorsByFiles.Add(fileName, $"{errorMethod} {cause}");
+                var className = error.Groups[2].Value;
+                var errorMethod = error.Groups[1] + error.Groups[3].Value;
+                var cause = error.Groups[4].Value.Replace(Environment.NewLine, string.Empty);
+                errorsByFiles.Add(className, $"{errorMethod} {cause}");
             }
 
             return errorsByFiles;
