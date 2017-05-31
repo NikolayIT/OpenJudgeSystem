@@ -45,7 +45,6 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
-       // private static readonly string ErrorMessageRegex = $@"\d+\)\s(\w+\s:\s)(\w+)\.(.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at";
         private static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
 
         public CSharpProjectTestsExecutionStrategy(
