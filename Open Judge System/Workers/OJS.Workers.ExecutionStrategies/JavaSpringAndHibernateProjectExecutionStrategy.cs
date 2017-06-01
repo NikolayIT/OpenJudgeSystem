@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -22,7 +23,6 @@
         private const string PomXmlNamespace = @"http://maven.apache.org/POM/4.0.0";
         private const string StartClassNodePath = @"//pomns:properties/pomns:start-class";
 
-
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
@@ -31,6 +31,7 @@
             : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
         {
             this.MavenPath = mavenPath;
+            this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
 
         public string MavenPath { get; set; }
@@ -42,6 +43,70 @@
         public string ProjectRootDirectoryInSubmissionZip { get; set; }
 
         public string ProjectTestDirectoryInSubmissionZip { get; set; }
+
+        protected override string JUnitTestRunnerCode
+        {
+            get
+            {
+                return $@"
+package {this.PackageName};
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class _$TestRunner {{
+    public static void main(String[] args) {{
+        for (String arg: args) {{
+            try {{
+                Class currentClass = Class.forName(arg);
+                Classes.allClasses.put(currentClass.getSimpleName(),currentClass);
+            }} catch (ClassNotFoundException e) {{}}
+        }}
+
+        String[] testClasses = new String[]{{{string.Join(", ", this.TestNames)}}};
+
+        InputStream originalIn = System.in;
+        PrintStream originalOut = System.out;
+
+        InputStream in = new ByteArrayInputStream(new byte[0]);
+        System.setIn(in);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        List<Result> results = new ArrayList<>();
+        for (String testClass: testClasses) {{
+            results.add(JUnitCore.runClasses(testClass));
+        }}
+
+        System.setIn(originalIn);
+        System.setOut(originalOut);
+
+        for (Result result : results){{
+            for (Failure failure : result.getFailures()) {{
+                String failureClass = failure.getDescription().getTestClass().getSimpleName();
+                String failureException = failure.getException().toString().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
+                System.out.printf(""%s %s%s"", failureClass, failureException, System.lineSeparator());
+            }}
+        }}
+    }}
+}}
+
+class Classes{{
+    public static Map<String, Class> allClasses = new HashMap<>();
+}}";
+            }
+        }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -61,26 +126,40 @@
                 return result;
             }
 
-            // var executor = new StandardProcessExecutor();
-            var executor = new RestrictedProcessExecutor();
-            var checker = Checker.CreateChecker(
-                executionContext.CheckerAssemblyName,
-                executionContext.CheckerTypeName,
-                executionContext.CheckerParameter);
-
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, "pom.xml");
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean test -Dtest={string.Join(",", this.TestNames)}" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean install -o" };
 
-            var processExecutionResult = executor.Execute(
+            var mavenExecutor = new StandardProcessExecutor();
+
+            var processExecutionResult = mavenExecutor.Execute(
               this.MavenPath,
               string.Empty,
               executionContext.TimeLimit,
               executionContext.MemoryLimit,
               mavenArgs,
               this.WorkingDirectory);
+
+            var restrictedExe = new RestrictedProcessExecutor();
+
+            var arguments = new List<string>();
+            arguments.Add(this.ClassPath);
+            arguments.Add(AdditionalExecutionArguments);
+            arguments.Add(JUnitRunnerClassName);
+
+            // string[] jUnitArgs =
+            //   new[] { $"-Dfile.encoding=UTF-8 -Xms8m -Xmx512m -cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* org.junit.runner.JUnitCore com.photographyworkshops.Test1" };
+
+            var restrictedResult = restrictedExe.Execute(
+                this.JavaExecutablePath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments,
+                this.WorkingDirectory);
+
             return null;
 
         }
@@ -95,6 +174,7 @@
             this.OverwriteApplicationProperties(submissionFilePath);
             this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
+            this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
         }
@@ -165,9 +245,9 @@
                 var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
                 var testFileName =
                         $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
-                File.WriteAllText(testFileName, $"package {PackageName};{Environment.NewLine}{test.Input}");
+                File.WriteAllText(testFileName, $"package {this.PackageName};{Environment.NewLine}{test.Input}");
                 filePaths[testNumber] = testFileName;
-                this.TestNames.Add(className);
+                this.TestNames.Add($"{this.PackageName}.{className}");
                 testNumber++;
             }
 
@@ -233,7 +313,6 @@
             spring.datasource.password=
             spring.main.web-environment=false
             security.basic.enabled=false");
-            //   File.WriteAllText(fakeApplicationPropertiesPath, " ");
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 
