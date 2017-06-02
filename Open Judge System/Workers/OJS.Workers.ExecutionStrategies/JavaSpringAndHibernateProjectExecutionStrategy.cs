@@ -44,70 +44,6 @@
 
         public string ProjectTestDirectoryInSubmissionZip { get; set; }
 
-        protected override string JUnitTestRunnerCode
-        {
-            get
-            {
-                return $@"
-package {this.PackageName};
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class _$TestRunner {{
-    public static void main(String[] args) {{
-        for (String arg: args) {{
-            try {{
-                Class currentClass = Class.forName(arg);
-                Classes.allClasses.put(currentClass.getSimpleName(),currentClass);
-            }} catch (ClassNotFoundException e) {{}}
-        }}
-
-        String[] testClasses = new String[]{{{string.Join(", ", this.TestNames)}}};
-
-        InputStream originalIn = System.in;
-        PrintStream originalOut = System.out;
-
-        InputStream in = new ByteArrayInputStream(new byte[0]);
-        System.setIn(in);
-
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-
-        List<Result> results = new ArrayList<>();
-        for (String testClass: testClasses) {{
-            results.add(JUnitCore.runClasses(testClass));
-        }}
-
-        System.setIn(originalIn);
-        System.setOut(originalOut);
-
-        for (Result result : results){{
-            for (Failure failure : result.getFailures()) {{
-                String failureClass = failure.getDescription().getTestClass().getSimpleName();
-                String failureException = failure.getException().toString().replaceAll(""\r"", ""\\\\r"").replaceAll(""\n"",""\\\\n"");
-                System.out.printf(""%s %s%s"", failureClass, failureException, System.lineSeparator());
-            }}
-        }}
-    }}
-}}
-
-class Classes{{
-    public static Map<String, Class> allClasses = new HashMap<>();
-}}";
-            }
-        }
-
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -134,7 +70,7 @@ class Classes{{
 
             var mavenExecutor = new StandardProcessExecutor();
 
-            var processExecutionResult = mavenExecutor.Execute(
+            var packageExecutionResult = mavenExecutor.Execute(
               this.MavenPath,
               string.Empty,
               executionContext.TimeLimit,
@@ -144,15 +80,19 @@ class Classes{{
 
             var restrictedExe = new RestrictedProcessExecutor();
 
-            var arguments = new List<string>();
-            arguments.Add(this.ClassPath);
-            arguments.Add(AdditionalExecutionArguments);
-            arguments.Add(JUnitRunnerClassName);
-
             // string[] jUnitArgs =
-            //   new[] { $"-Dfile.encoding=UTF-8 -Xms8m -Xmx512m -cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* org.junit.runner.JUnitCore com.photographyworkshops.Test1" };
+            //   new[] { $"-Dfile.encoding=UTF-8 -Xms8m -Xmx512m -cp {this.JavaLibsPath}*
+            //; {this.WorkingDirectory}\\target\\* org.junit.runner.JUnitCore com.photographyworkshops.Test1" };
 
-            var restrictedResult = restrictedExe.Execute(
+            foreach (var testName in this.TestNames)
+            {
+                var arguments = new List<string>();
+                arguments.Add(this.ClassPath);
+                arguments.Add(AdditionalExecutionArguments);
+                arguments.Add("org.junit.runner.JUnitCore");
+                arguments.Add(testName);
+
+                var restrictedResult = restrictedExe.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
@@ -160,8 +100,10 @@ class Classes{{
                 arguments,
                 this.WorkingDirectory);
 
-            return null;
 
+            }
+
+            return null;
         }
 
         protected override string PrepareSubmissionFile(ExecutionContext context)
