@@ -22,6 +22,7 @@
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
         private const string PomXmlNamespace = @"http://maven.apache.org/POM/4.0.0";
         private const string StartClassNodePath = @"//pomns:properties/pomns:start-class";
+        private const string JUnitRunnerConsolePath = @"org.junit.runner.JUnitCore";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -80,18 +81,14 @@
 
             var restrictedExe = new RestrictedProcessExecutor();
 
-            // string[] jUnitArgs =
-            //   new[] { $"-Dfile.encoding=UTF-8 -Xms8m -Xmx512m -cp {this.JavaLibsPath}*
-            //; {this.WorkingDirectory}\\target\\* org.junit.runner.JUnitCore com.photographyworkshops.Test1" };
+            var arguments = new List<string>(4);
+            arguments.Add(this.ClassPath);
+            arguments.Add(AdditionalExecutionArguments);
+            arguments.Add(JUnitRunnerConsolePath);
 
             foreach (var testName in this.TestNames)
             {
-                var arguments = new List<string>();
-                arguments.Add(this.ClassPath);
-                arguments.Add(AdditionalExecutionArguments);
-                arguments.Add("org.junit.runner.JUnitCore");
-                arguments.Add(testName);
-
+                arguments[4] = testName;
                 var restrictedResult = restrictedExe.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
@@ -99,10 +96,7 @@
                 executionContext.MemoryLimit,
                 arguments,
                 this.WorkingDirectory);
-
-
             }
-
             return null;
         }
 
