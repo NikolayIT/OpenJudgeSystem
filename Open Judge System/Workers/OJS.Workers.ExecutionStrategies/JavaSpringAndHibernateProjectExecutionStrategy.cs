@@ -15,6 +15,7 @@
 
     public class JavaSpringAndHibernateProjectExecutionStrategy : JavaProjectTestsExecutionStrategy
     {
+        private const string PomXmlFileNameAndExtension = "pom.xml";
         private const string ApplicationPropertiesFileName = "application.properties";
         private const string ResourcesFolderName = "src/main/resources/";
         private const string IntelliJProjectTemplatePattern = "src/main/java";
@@ -22,7 +23,19 @@
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
         private const string PomXmlNamespace = @"http://maven.apache.org/POM/4.0.0";
         private const string StartClassNodePath = @"//pomns:properties/pomns:start-class";
+        private const string DependencyNodePathTemplate = @"//pomns:dependencies/pomns:dependency[pomns:groupId='##']";
+        private const string DependenciesNodePath = @"//pomns:dependencies";
         private const string JUnitRunnerConsolePath = @"org.junit.runner.JUnitCore";
+        private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
+
+        private const string MavenBuildOutputPattern =
+@"\[INFO\] ------------------------------------------------------------------------
+\[INFO\] BUILD (\w+)
+\[INFO\] ------------------------------------------------------------------------
+\[INFO\] (Total time: [\d.]+\s\w)
+\[INFO\] Finished at: (?:.+)
+\[INFO\] Final Memory: \d+M\/\d+M
+\[INFO\] ------------------------------------------------------------------------\n*(?:\[ERROR\] (.*))*?";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -45,6 +58,55 @@
 
         public string ProjectTestDirectoryInSubmissionZip { get; set; }
 
+        public string PomXmlBuildSettings => @" <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>";
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -65,9 +127,9 @@
 
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
 
-            string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, "pom.xml");
+            string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean install -o" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -79,16 +141,27 @@
               mavenArgs,
               this.WorkingDirectory);
 
+            Regex mavenBuildOutput = new Regex(MavenBuildOutputPattern);
+            Match compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
+            result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
+            result.CompilerComment =
+                $"{compilationMatch.Groups[2].Value}{Environment.NewLine}{compilationMatch.Groups[3]?.Value}";
+
+            if (!compilationMatch.Success)
+            {
+                return result;
+            }
+
             var restrictedExe = new RestrictedProcessExecutor();
 
-            var arguments = new List<string>(4);
+            var arguments = new List<string>();
             arguments.Add(this.ClassPath);
             arguments.Add(AdditionalExecutionArguments);
             arguments.Add(JUnitRunnerConsolePath);
 
             foreach (var testName in this.TestNames)
             {
-                arguments[4] = testName;
+                arguments.Add(testName);
                 var restrictedResult = restrictedExe.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
@@ -96,7 +169,9 @@
                 executionContext.MemoryLimit,
                 arguments,
                 this.WorkingDirectory);
+                arguments.Remove(testName);
             }
+
             return null;
         }
 
@@ -110,7 +185,7 @@
             this.OverwriteApplicationProperties(submissionFilePath);
             this.RemovePropertySourceAnnotationsFromMainClass(submissionFilePath);
             this.AddTestsToUserSubmission(context, submissionFilePath);
-            this.AddTestRunnerTemplate(submissionFilePath);
+            this.PreparePomXml(submissionFilePath);
 
             return submissionFilePath;
         }
@@ -231,7 +306,7 @@
             string mainClassFolderPathInZip = Path
                 .GetDirectoryName(FileHelpers
                                  .GetFilePathsFromZip(submissionFilePath)
-                                 .FirstOrDefault(f => f.EndsWith(MainClassFileName)));
+                                 .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
 
             FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, mainClassFilePath);
             DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
@@ -262,6 +337,100 @@
 
             FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
             File.Delete(fakeApplicationPropertiesPath);
+        }
+
+        private void PreparePomXml(string submissionFilePath)
+        {
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+
+            string pomXmlFilePath = FileHelpers.ExtractFileFromZip(
+                submissionFilePath,
+                PomXmlFileNameAndExtension,
+            extractionDirectory);
+
+            if (string.IsNullOrEmpty(pomXmlFilePath))
+            {
+                throw new FileNotFoundException("Pom.xml not found in submission!");
+            }
+
+            this.AddBuildSettings(pomXmlFilePath);
+            this.AddDependencies(pomXmlFilePath);
+            string mainClassFolderPathInZip = Path
+                .GetDirectoryName(FileHelpers
+                                 .GetFilePathsFromZip(submissionFilePath)
+                                 .FirstOrDefault(f => f.EndsWith(PomXmlFileNameAndExtension)));
+
+            FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, pomXmlFilePath);
+            DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
+        }
+
+        private void AddDependencies(string pomXmlFilePath)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(pomXmlFilePath);
+
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
+            namespaceManager.AddNamespace("pomns", PomXmlNamespace);
+
+            XmlNode rootNode = doc.DocumentElement;
+            if (rootNode == null)
+            {
+                throw new XmlException("Root element not specified in pom.xml");
+            }
+
+            // groupId -> artifactId
+            Dictionary<string, string> dependenciesToInsert = new Dictionary<string, string>()
+            {
+                { "javax.el", "el-api" },
+                { "junit", "junit" },
+                { "org.hsqldb", "hsqldb" }
+            };
+
+            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodePath,namespaceManager);
+            if (dependenciesNode == null)
+            {
+                throw new XmlException("No dependencies specified in pom.xml");
+            }
+             
+            foreach (KeyValuePair<string, string> groupIdArtifactId in dependenciesToInsert)
+            {
+                XmlNode dependencyNode = rootNode
+                    .SelectSingleNode(DependencyNodePathTemplate.Replace("##", groupIdArtifactId.Key), namespaceManager);
+                if (dependencyNode == null)
+                {
+                    dependencyNode = doc.CreateNode(XmlNodeType.Element, "dependency", PomXmlNamespace);
+
+                    XmlNode groupId = doc.CreateNode(XmlNodeType.Element, "groupId", PomXmlNamespace);
+                    groupId.InnerText = groupIdArtifactId.Key;
+                    XmlNode artifactId = doc.CreateNode(XmlNodeType.Element, "artifactId", PomXmlNamespace);
+                    artifactId.InnerText = groupIdArtifactId.Value;
+
+                    if (groupIdArtifactId.Key == "javax.el")
+                    {
+                        XmlNode versionNumber = doc.CreateNode(XmlNodeType.Element, "version", PomXmlNamespace);
+                        versionNumber.InnerText = "2.2";
+                        dependencyNode.AppendChild(versionNumber);
+                    }
+
+                    dependencyNode.AppendChild(groupId);
+                    dependencyNode.AppendChild(artifactId);
+                    dependenciesNode.AppendChild(dependencyNode);
+                }
+            }
+
+            doc.Save(pomXmlFilePath);
+        }
+
+        private void AddBuildSettings(string pomXmlFilePath)
+        {
+            string pomXmlContent = File.ReadAllText(pomXmlFilePath);
+            Regex buildSettingsRegex = new Regex(PomXmlBuildSettingsPattern);
+            if (buildSettingsRegex.IsMatch(pomXmlContent))
+            {
+                pomXmlContent = Regex.Replace(pomXmlContent, PomXmlBuildSettingsPattern, this.PomXmlBuildSettings);
+            }
+
+            File.WriteAllText(pomXmlFilePath, pomXmlContent);
         }
     }
 }
