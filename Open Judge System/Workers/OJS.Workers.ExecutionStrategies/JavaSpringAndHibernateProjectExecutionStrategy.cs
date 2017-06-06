@@ -7,6 +7,7 @@
     using System.Text.RegularExpressions;
     using System.Xml;
     using Checkers;
+    using Common;
     using Common.Helpers;
     using Executors;
     using OJS.Common;
@@ -22,20 +23,17 @@
         private const string IntelliJTestProjectTemplatePattern = "src/test/java";
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
         private const string PomXmlNamespace = @"http://maven.apache.org/POM/4.0.0";
-        private const string StartClassNodePath = @"//pomns:properties/pomns:start-class";
-        private const string DependencyNodePathTemplate = @"//pomns:dependencies/pomns:dependency[pomns:groupId='##']";
-        private const string DependenciesNodePath = @"//pomns:dependencies";
+        private const string StartClassNodeXPath = @"//pomns:properties/pomns:start-class";
+        private const string DependencyNodeXPathTemplate = @"//pomns:dependencies/pomns:dependency[pomns:groupId='##']";
+        private const string DependenciesNodeXPath = @"//pomns:dependencies";
         private const string JUnitRunnerConsolePath = @"org.junit.runner.JUnitCore";
         private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
 
-        private const string MavenBuildOutputPattern =
-@"\[INFO\] ------------------------------------------------------------------------
-\[INFO\] BUILD (\w+)
-\[INFO\] ------------------------------------------------------------------------
-\[INFO\] (Total time: [\d.]+\s\w)
-\[INFO\] Finished at: (?:.+)
-\[INFO\] Final Memory: \d+M\/\d+M
-\[INFO\] ------------------------------------------------------------------------\n*(?:\[ERROR\] (.*))*?";
+        private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)"; 
+        private const string MavenBuildErrorPattern = @"(?:\[ERROR\] (.*))";
+
+        private static readonly string JUnitFailedTestPattern =
+            $@"There was (\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -142,10 +140,12 @@
               this.WorkingDirectory);
 
             Regex mavenBuildOutput = new Regex(MavenBuildOutputPattern);
+            Regex mavenBuildErrors = new Regex(MavenBuildErrorPattern);
+
             Match compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
+            Match errorMatch = mavenBuildErrors.Match(packageExecutionResult.ReceivedOutput);
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
-            result.CompilerComment =
-                $"{compilationMatch.Groups[2].Value}{Environment.NewLine}{compilationMatch.Groups[3]?.Value}";
+            result.CompilerComment = $"{errorMatch.Groups[1]}";
 
             if (!compilationMatch.Success)
             {
@@ -159,20 +159,60 @@
             arguments.Add(AdditionalExecutionArguments);
             arguments.Add(JUnitRunnerConsolePath);
 
-            foreach (var testName in this.TestNames)
+            Regex testErrorMatcher = new Regex(JUnitFailedTestPattern);
+            var checker = Checker.CreateChecker(
+              executionContext.CheckerAssemblyName,
+              executionContext.CheckerTypeName,
+              executionContext.CheckerParameter);
+            var testIndex = 0;
+
+            foreach (var test in executionContext.Tests)
             {
-                arguments.Add(testName);
-                var restrictedResult = restrictedExe.Execute(
+                var testFile = this.TestNames[testIndex++];
+                arguments.Add(testFile);
+
+                var processExecutionResult = restrictedExe.ExecuteJavaProcess(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
-                arguments,
-                this.WorkingDirectory);
-                arguments.Remove(testName);
+                this.WorkingDirectory,
+                arguments);
+
+                arguments.Remove(testFile);
+
+                if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
+                {
+                    throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
+                }
+
+                string message = this.EvaluateJUnitOutput(processExecutionResult.ReceivedOutput, testErrorMatcher);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    processExecutionResult.Type = ProcessExecutionResultType.Success;
+                }
+
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
+                result.TestResults.Add(testResult);
             }
 
-            return null;
+            return result;
+        }
+
+        protected string EvaluateJUnitOutput(string testOutput, Regex testErrorMatcher)
+        {
+            string message = "Test Passed!";
+            MatchCollection errorMatches = testErrorMatcher.Matches(testOutput);
+            Match lastMatch = errorMatches[errorMatches.Count - 1];
+            if (lastMatch.Success)
+            {
+                string errorMethod = lastMatch.Groups[1].Value;
+                string className = lastMatch.Groups[2].Value;
+                string errorReason = lastMatch.Groups[3].Value;
+                message = $"Failed test fixture: {className}{Environment.NewLine}at {errorMethod}{Environment.NewLine}{errorReason}";
+            }
+
+            return message;
         }
 
         protected override string PrepareSubmissionFile(ExecutionContext context)
@@ -225,7 +265,7 @@
 
             XmlNode rootNode = pomXml.DocumentElement;
 
-            XmlNode packageName = rootNode.SelectSingleNode(StartClassNodePath, namespaceManager);
+            XmlNode packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
 
             if (packageName == null)
             {
@@ -386,7 +426,7 @@
                 { "org.hsqldb", "hsqldb" }
             };
 
-            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodePath,namespaceManager);
+            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath,namespaceManager);
             if (dependenciesNode == null)
             {
                 throw new XmlException("No dependencies specified in pom.xml");
@@ -395,7 +435,7 @@
             foreach (KeyValuePair<string, string> groupIdArtifactId in dependenciesToInsert)
             {
                 XmlNode dependencyNode = rootNode
-                    .SelectSingleNode(DependencyNodePathTemplate.Replace("##", groupIdArtifactId.Key), namespaceManager);
+                    .SelectSingleNode(DependencyNodeXPathTemplate.Replace("##", groupIdArtifactId.Key), namespaceManager);
                 if (dependencyNode == null)
                 {
                     dependencyNode = doc.CreateNode(XmlNodeType.Element, "dependency", PomXmlNamespace);
