@@ -24,12 +24,12 @@
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
         private const string PomXmlNamespace = @"http://maven.apache.org/POM/4.0.0";
         private const string StartClassNodeXPath = @"//pomns:properties/pomns:start-class";
-        private const string DependencyNodeXPathTemplate = @"//pomns:dependencies/pomns:dependency[pomns:groupId='##']";
+        private const string DependencyNodeXPathTemplate = @"//pomns:dependencies/pomns:dependency[pomns:groupId='##' and pomns:artifactId='!!']";
         private const string DependenciesNodeXPath = @"//pomns:dependencies";
         private const string JUnitRunnerConsolePath = @"org.junit.runner.JUnitCore";
         private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
 
-        private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)"; 
+        private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)";
         private const string MavenBuildErrorPattern = @"(?:\[ERROR\] (.*))";
 
         private static readonly string JUnitFailedTestPattern =
@@ -127,7 +127,7 @@
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o --X" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -147,7 +147,7 @@
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
             result.CompilerComment = $"{errorMatch.Groups[1]}";
 
-            if (!compilationMatch.Success)
+            if (!result.IsCompiledSuccessfully)
             {
                 return result;
             }
@@ -187,10 +187,6 @@
                 }
 
                 string message = this.EvaluateJUnitOutput(processExecutionResult.ReceivedOutput, testErrorMatcher);
-                if (!string.IsNullOrEmpty(message))
-                {
-                    processExecutionResult.Type = ProcessExecutionResultType.Success;
-                }
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
@@ -203,13 +199,14 @@
         {
             string message = "Test Passed!";
             MatchCollection errorMatches = testErrorMatcher.Matches(testOutput);
-            Match lastMatch = errorMatches[errorMatches.Count - 1];
-            if (lastMatch.Success)
+         
+            if (errorMatches.Count > 0)
             {
+                Match lastMatch = errorMatches[errorMatches.Count - 1];
                 string errorMethod = lastMatch.Groups[1].Value;
                 string className = lastMatch.Groups[2].Value;
                 string errorReason = lastMatch.Groups[3].Value;
-                message = $"Failed test fixture: {className}{Environment.NewLine}at {errorMethod}{Environment.NewLine}{errorReason}";
+                message = $"Failed test fixture: {className} at {errorMethod}; {errorReason}";
             }
 
             return message;
@@ -343,12 +340,12 @@
             }
 
             File.WriteAllText(mainClassFilePath, mainClassContent);
-            string mainClassFolderPathInZip = Path
+            string pomXmlFolderPathInZip = Path
                 .GetDirectoryName(FileHelpers
                                  .GetFilePathsFromZip(submissionFilePath)
                                  .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
 
-            FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, mainClassFilePath);
+            FileHelpers.AddFilesToZipArchive(submissionFilePath, pomXmlFolderPathInZip, mainClassFilePath);
             DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
         }
 
@@ -367,7 +364,7 @@
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 
-            string resourceDirectory = pathsInZip.FirstOrDefault(f => f.EndsWith(ResourcesFolderName));
+            string resourceDirectory = Path.GetDirectoryName(pathsInZip.FirstOrDefault(f => f.EndsWith(ApplicationPropertiesFileName)));
 
             if (string.IsNullOrEmpty(resourceDirectory))
             {
@@ -419,23 +416,27 @@
             }
 
             // groupId -> artifactId
-            Dictionary<string, string> dependenciesToInsert = new Dictionary<string, string>()
+            Dictionary<string, Tuple<string, string>> dependenciesToInsert =
+                new Dictionary<string, Tuple<string, string>>()
             {
-                { "javax.el", "el-api" },
-                { "junit", "junit" },
-                { "org.hsqldb", "hsqldb" }
+                { "javax.el", new Tuple<string, string>( "el-api", "2.2") },
+                { "junit", new Tuple<string, string>( "junit", null) },
+                { "org.hsqldb", new Tuple<string, string>( "hsqldb", null) },
+                {"org.springframework.boot", new Tuple<string, string>("spring-boot-starter-test", "1.5.2.RELEASE") }
             };
 
-            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath,namespaceManager);
+            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath, namespaceManager);
             if (dependenciesNode == null)
             {
                 throw new XmlException("No dependencies specified in pom.xml");
             }
-             
-            foreach (KeyValuePair<string, string> groupIdArtifactId in dependenciesToInsert)
+
+            foreach (KeyValuePair<string, Tuple<string, string>> groupIdArtifactId in dependenciesToInsert)
             {
                 XmlNode dependencyNode = rootNode
-                    .SelectSingleNode(DependencyNodeXPathTemplate.Replace("##", groupIdArtifactId.Key), namespaceManager);
+                    .SelectSingleNode(
+                     DependencyNodeXPathTemplate
+                    .Replace("##", groupIdArtifactId.Key).Replace("!!", groupIdArtifactId.Value.Item1), namespaceManager);
                 if (dependencyNode == null)
                 {
                     dependencyNode = doc.CreateNode(XmlNodeType.Element, "dependency", PomXmlNamespace);
@@ -443,12 +444,12 @@
                     XmlNode groupId = doc.CreateNode(XmlNodeType.Element, "groupId", PomXmlNamespace);
                     groupId.InnerText = groupIdArtifactId.Key;
                     XmlNode artifactId = doc.CreateNode(XmlNodeType.Element, "artifactId", PomXmlNamespace);
-                    artifactId.InnerText = groupIdArtifactId.Value;
+                    artifactId.InnerText = groupIdArtifactId.Value.Item1;
 
-                    if (groupIdArtifactId.Key == "javax.el")
+                    if (groupIdArtifactId.Value.Item2 != null)
                     {
                         XmlNode versionNumber = doc.CreateNode(XmlNodeType.Element, "version", PomXmlNamespace);
-                        versionNumber.InnerText = "2.2";
+                        versionNumber.InnerText = groupIdArtifactId.Value.Item2;
                         dependencyNode.AppendChild(versionNumber);
                     }
 
