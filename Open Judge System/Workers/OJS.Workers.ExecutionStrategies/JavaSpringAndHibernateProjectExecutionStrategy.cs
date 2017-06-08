@@ -18,7 +18,6 @@
     {
         private const string PomXmlFileNameAndExtension = "pom.xml";
         private const string ApplicationPropertiesFileName = "application.properties";
-        private const string ResourcesFolderName = "src/main/resources/";
         private const string IntelliJProjectTemplatePattern = "src/main/java";
         private const string IntelliJTestProjectTemplatePattern = "src/test/java";
         private const string PropertySourcePattern = @"(@PropertySources?\((?:.*?)\))";
@@ -45,6 +44,16 @@
             this.MavenPath = mavenPath;
             this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
+
+        public Dictionary<string, Tuple<string, string>> Dependencies =>
+            new Dictionary<string, Tuple<string, string>>()
+            {
+                { "javax.el", new Tuple<string, string>("el-api", "2.2") },
+                { "junit", new Tuple<string, string>("junit", null) },
+                { "org.hsqldb", new Tuple<string, string>("hsqldb", null) },
+                { "org.springframework.boot", new Tuple<string, string>("spring-boot-starter-test", "1.5.2.RELEASE") },
+                { "com.sun.xml.bind", new Tuple<string, string>("jaxb-impl", "2.2.7") }
+            };
 
         public string MavenPath { get; set; }
 
@@ -127,7 +136,7 @@
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o --X" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -179,8 +188,6 @@
                 this.WorkingDirectory,
                 arguments);
 
-                arguments.Remove(testFile);
-
                 if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
                     throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -190,6 +197,8 @@
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
+
+                arguments.Remove(testFile);
             }
 
             return result;
@@ -199,7 +208,7 @@
         {
             string message = "Test Passed!";
             MatchCollection errorMatches = testErrorMatcher.Matches(testOutput);
-         
+
             if (errorMatches.Count > 0)
             {
                 Match lastMatch = errorMatches[errorMatches.Count - 1];
@@ -415,28 +424,19 @@
                 throw new XmlException("Root element not specified in pom.xml");
             }
 
-            // groupId -> artifactId
-            Dictionary<string, Tuple<string, string>> dependenciesToInsert =
-                new Dictionary<string, Tuple<string, string>>()
-            {
-                { "javax.el", new Tuple<string, string>( "el-api", "2.2") },
-                { "junit", new Tuple<string, string>( "junit", null) },
-                { "org.hsqldb", new Tuple<string, string>( "hsqldb", null) },
-                {"org.springframework.boot", new Tuple<string, string>("spring-boot-starter-test", "1.5.2.RELEASE") }
-            };
-
             XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath, namespaceManager);
             if (dependenciesNode == null)
             {
                 throw new XmlException("No dependencies specified in pom.xml");
             }
 
-            foreach (KeyValuePair<string, Tuple<string, string>> groupIdArtifactId in dependenciesToInsert)
+            foreach (KeyValuePair<string, Tuple<string, string>> groupIdArtifactId in this.Dependencies)
             {
                 XmlNode dependencyNode = rootNode
                     .SelectSingleNode(
                      DependencyNodeXPathTemplate
                     .Replace("##", groupIdArtifactId.Key).Replace("!!", groupIdArtifactId.Value.Item1), namespaceManager);
+
                 if (dependencyNode == null)
                 {
                     dependencyNode = doc.CreateNode(XmlNodeType.Element, "dependency", PomXmlNamespace);
