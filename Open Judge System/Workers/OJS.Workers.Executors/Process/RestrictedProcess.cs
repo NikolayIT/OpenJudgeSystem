@@ -10,12 +10,13 @@
     using System.Text;
 
     using Microsoft.Win32.SafeHandles;
+
     using OJS.Workers.Executors.JobObjects;
 
     public class RestrictedProcess : IDisposable
     {
         private readonly SafeProcessHandle safeProcessHandle;
-        private readonly string fileName = string.Empty;
+        private readonly string fileName;
         private ProcessInformation processInformation;
         private JobObject jobObject;
         private int exitCode;

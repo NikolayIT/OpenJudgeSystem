@@ -33,10 +33,11 @@
             var outputFile = compilerResult.OutputFile;
 
             // Execute and check each test
-            IChecker checker = Checker.CreateChecker(
+            var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
+
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = executor.Execute(
@@ -48,11 +49,13 @@
                     null,
                     false,
                     useSystemEncoding);
+
                 var testResult = this.ExecuteAndCheckTest(
                     test,
                     processExecutionResult,
                     checker,
                     processExecutionResult.ReceivedOutput);
+
                 result.TestResults.Add(testResult);
             }
 
@@ -130,7 +133,7 @@
                 throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
-            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
 
             if (File.Exists(submissionFilePath))
