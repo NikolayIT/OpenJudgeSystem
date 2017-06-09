@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -32,7 +33,7 @@
         private const string MavenBuildErrorPattern = @"(?:\[ERROR\] (.*))";
 
         private static readonly string JUnitFailedTestPattern =
-            $@"There was (\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
+            $@"There was (?:\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -45,6 +46,7 @@
             this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
 
+        // GroupId - > ArtifactId,Version
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
@@ -111,6 +113,23 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>         
+                <groupId>org.codehaus.mojo</groupId>         
+                <artifactId>build-helper-maven-plugin</artifactId>         
+                <version>1.7</version>         
+                <executions>           
+                    <execution>             
+                        <id>remove-old-artifacts</id>             
+                        <phase>package</phase>             
+                        <goals>               
+                            <goal>remove-project-artifact</goal>             
+                        </goals>            
+                        <configuration>  
+                            <removeAll>true</removeAll><!-- When true, remove all built artifacts including all versions. When false, remove all built artifacts of this project version -->             
+                        </configuration>          
+                    </execution>         
+                </executions>       
+            </plugin>
         </plugins>
     </build>";
 
@@ -136,7 +155,7 @@
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -215,7 +234,7 @@
                 string errorMethod = lastMatch.Groups[1].Value;
                 string className = lastMatch.Groups[2].Value;
                 string errorReason = lastMatch.Groups[3].Value;
-                message = $"Failed test fixture: {className} at {errorMethod}; {errorReason}";
+                message = $"Failed test fixture: {errorReason} in CLASS: {className} at METHOD: {errorMethod}";
             }
 
             return message;
@@ -254,42 +273,58 @@
                                                     + GlobalConstants.JavaSourceFileExtension;
         }
 
-        protected string ExtractEntryPointFromPomXml(string submissionFilePath)
+        protected void OverwriteApplicationProperties(string submissionZipFilePath)
         {
-            string pomXmlPath = FileHelpers.ExtractFileFromZip(submissionFilePath, "pom.xml", this.WorkingDirectory);
+            string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
+            File.WriteAllText(fakeApplicationPropertiesPath, @"spring.jpa.hibernate.ddl-auto=create-drop
+            spring.jpa.database=HSQL
+            #spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.HSQLDialect
+            spring.datasource.driverClassName=org.hsqldb.jdbcDriver
+            spring.datasource.url=jdbc:hsqldb:mem:.
+            spring.datasource.username=sa
+            spring.datasource.password=
+            spring.main.web-environment=false
+            security.basic.enabled=false");
 
-            if (string.IsNullOrEmpty(pomXmlPath))
+            var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
+
+            string resourceDirectory = Path.GetDirectoryName(pathsInZip.FirstOrDefault(f => f.EndsWith(ApplicationPropertiesFileName)));
+
+            if (string.IsNullOrEmpty(resourceDirectory))
             {
-                throw new ArgumentException($"{nameof(pomXmlPath)} was not found in submission!");
+                throw new FileNotFoundException(
+                    $"Resource directory not found in the project!");
             }
 
-            XmlDocument pomXml = new XmlDocument();
-            pomXml.Load(pomXmlPath);
-
-            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(pomXml.NameTable);
-            namespaceManager.AddNamespace("pomns", PomXmlNamespace);
-
-            XmlNode rootNode = pomXml.DocumentElement;
-
-            XmlNode packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
-
-            if (packageName == null)
-            {
-                throw new ArgumentException($"Starter path not defined in pom.xml!");
-            }
-
-            FileHelpers.DeleteFiles(pomXmlPath);
-            return packageName.InnerText.Trim();
+            FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
+            File.Delete(fakeApplicationPropertiesPath);
         }
 
-        protected override void AddTestRunnerTemplate(string submissionFilePath)
+        protected void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
         {
-            File.WriteAllText(this.JUnitTestRunnerSourceFilePath, this.JUnitTestRunnerCode);
-            FileHelpers.AddFilesToZipArchive(
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+
+            string mainClassFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
-                this.ProjectTestDirectoryInSubmissionZip,
-                this.JUnitTestRunnerSourceFilePath);
-            FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
+                this.MainClassFileName,
+            extractionDirectory);
+
+            string mainClassContent = File.ReadAllText(mainClassFilePath);
+
+            Regex propertySourceMatcher = new Regex(PropertySourcePattern);
+            while (propertySourceMatcher.IsMatch(mainClassContent))
+            {
+                mainClassContent = Regex.Replace(mainClassContent, PropertySourcePattern, string.Empty);
+            }
+
+            File.WriteAllText(mainClassFilePath, mainClassContent);
+            string pomXmlFolderPathInZip = Path
+                .GetDirectoryName(FileHelpers
+                                 .GetFilePathsFromZip(submissionFilePath)
+                                 .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
+
+            FileHelpers.AddFilesToZipArchive(submissionFilePath, pomXmlFolderPathInZip, mainClassFilePath);
+            DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
         }
 
         protected override void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
@@ -331,61 +366,7 @@
                     .Select(x => x.Replace("/", ".")));
         }
 
-        private void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
-        {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
-
-            string mainClassFilePath = FileHelpers.ExtractFileFromZip(
-                submissionFilePath,
-                this.MainClassFileName,
-            extractionDirectory);
-
-            string mainClassContent = File.ReadAllText(mainClassFilePath);
-
-            Regex propertySourceMatcher = new Regex(PropertySourcePattern);
-            while (propertySourceMatcher.IsMatch(mainClassContent))
-            {
-                mainClassContent = Regex.Replace(mainClassContent, PropertySourcePattern, string.Empty);
-            }
-
-            File.WriteAllText(mainClassFilePath, mainClassContent);
-            string pomXmlFolderPathInZip = Path
-                .GetDirectoryName(FileHelpers
-                                 .GetFilePathsFromZip(submissionFilePath)
-                                 .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
-
-            FileHelpers.AddFilesToZipArchive(submissionFilePath, pomXmlFolderPathInZip, mainClassFilePath);
-            DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
-        }
-
-        private void OverwriteApplicationProperties(string submissionZipFilePath)
-        {
-            string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
-            File.WriteAllText(fakeApplicationPropertiesPath, @"spring.jpa.hibernate.ddl-auto=create-drop
-            spring.jpa.database=HSQL
-            #spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.HSQLDialect
-            spring.datasource.driverClassName=org.hsqldb.jdbcDriver
-            spring.datasource.url=jdbc:hsqldb:mem:.
-            spring.datasource.username=sa
-            spring.datasource.password=
-            spring.main.web-environment=false
-            security.basic.enabled=false");
-
-            var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
-
-            string resourceDirectory = Path.GetDirectoryName(pathsInZip.FirstOrDefault(f => f.EndsWith(ApplicationPropertiesFileName)));
-
-            if (string.IsNullOrEmpty(resourceDirectory))
-            {
-                throw new FileNotFoundException(
-                    $"Resource directory not found in the project!");
-            }
-
-            FileHelpers.AddFilesToZipArchive(submissionZipFilePath, resourceDirectory, fakeApplicationPropertiesPath);
-            File.Delete(fakeApplicationPropertiesPath);
-        }
-
-        private void PreparePomXml(string submissionFilePath)
+        protected void PreparePomXml(string submissionFilePath)
         {
             string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
 
@@ -408,6 +389,18 @@
 
             FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, pomXmlFilePath);
             DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
+        }
+
+        private void AddBuildSettings(string pomXmlFilePath)
+        {
+            string pomXmlContent = File.ReadAllText(pomXmlFilePath);
+            Regex buildSettingsRegex = new Regex(PomXmlBuildSettingsPattern);
+            if (buildSettingsRegex.IsMatch(pomXmlContent))
+            {
+                pomXmlContent = Regex.Replace(pomXmlContent, PomXmlBuildSettingsPattern, this.PomXmlBuildSettings);
+            }
+
+            File.WriteAllText(pomXmlFilePath, pomXmlContent);
         }
 
         private void AddDependencies(string pomXmlFilePath)
@@ -460,18 +453,34 @@
             }
 
             doc.Save(pomXmlFilePath);
-        }
+        }      
 
-        private void AddBuildSettings(string pomXmlFilePath)
+        private string ExtractEntryPointFromPomXml(string submissionFilePath)
         {
-            string pomXmlContent = File.ReadAllText(pomXmlFilePath);
-            Regex buildSettingsRegex = new Regex(PomXmlBuildSettingsPattern);
-            if (buildSettingsRegex.IsMatch(pomXmlContent))
+            string pomXmlPath = FileHelpers.ExtractFileFromZip(submissionFilePath, "pom.xml", this.WorkingDirectory);
+
+            if (string.IsNullOrEmpty(pomXmlPath))
             {
-                pomXmlContent = Regex.Replace(pomXmlContent, PomXmlBuildSettingsPattern, this.PomXmlBuildSettings);
+                throw new ArgumentException($"{nameof(pomXmlPath)} was not found in submission!");
             }
 
-            File.WriteAllText(pomXmlFilePath, pomXmlContent);
+            XmlDocument pomXml = new XmlDocument();
+            pomXml.Load(pomXmlPath);
+
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(pomXml.NameTable);
+            namespaceManager.AddNamespace("pomns", PomXmlNamespace);
+
+            XmlNode rootNode = pomXml.DocumentElement;
+
+            XmlNode packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
+
+            if (packageName == null)
+            {
+                throw new ArgumentException($"Starter path not defined in pom.xml!");
+            }
+
+            FileHelpers.DeleteFiles(pomXmlPath);
+            return packageName.InnerText.Trim();
         }
     }
 }
