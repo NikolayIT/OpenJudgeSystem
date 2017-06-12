@@ -52,7 +52,6 @@
                 arguments.Append(' ');
             }
 
-            File.AppendAllText("D:\\arguments.txt", arguments.ToString());
             return arguments.ToString();
         }
 

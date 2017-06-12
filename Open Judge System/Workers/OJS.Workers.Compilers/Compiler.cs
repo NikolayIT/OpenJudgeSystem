@@ -92,11 +92,6 @@
             // Execute compiler
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
-            if (compilerOutput.IsSuccessful)
-            {
-                
-            }         
-
             if (this.ShouldDeleteSourceFile)
             {
                 if (File.Exists(newInputFilePath))

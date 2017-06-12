@@ -84,9 +84,7 @@
                     {
                         result.ErrorOutput = x.Result;
                     });
-
-                
-
+              
                 // Read memory consumption every few milliseconds to determine the peak memory usage of the process
                 const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
                 var memoryTaskCancellationToken = new CancellationTokenSource();
