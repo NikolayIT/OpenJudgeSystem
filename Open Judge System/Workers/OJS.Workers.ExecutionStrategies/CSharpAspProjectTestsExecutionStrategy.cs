@@ -39,10 +39,9 @@
             }
 
             bool vsToolsImport =
-                project.Imports.Any(
-                    i =>
-                        i.ImportingElement.Project ==
-                        "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
+                project.Imports.Any(i =>
+                    i.ImportingElement.Project ==
+                    "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
 
             if (vsToolsImport)
             {
