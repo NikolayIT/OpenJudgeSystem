@@ -154,7 +154,7 @@ class Classes{{
                     executionContext.MemoryLimit,
                     preprocessArguments,
                     this.WorkingDirectory);
-               
+
                 if (preprocessExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
                     throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -187,7 +187,7 @@ class Classes{{
 
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);
-            arguments.Add(AdditionalExecutionArguments);           
+            arguments.Add(AdditionalExecutionArguments);
             arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
 
@@ -198,7 +198,7 @@ class Classes{{
                 executionContext.MemoryLimit,
                 this.WorkingDirectory,
                 arguments);
-           
+ 
             if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {
                 throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
