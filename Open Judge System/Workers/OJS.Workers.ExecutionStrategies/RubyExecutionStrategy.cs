@@ -12,7 +12,11 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            throw new System.NotImplementedException();
+            var result = new ExecutionResult();
+
+            result.IsCompiledSuccessfully = true;
+
+            return result;
         }
     }
 }
