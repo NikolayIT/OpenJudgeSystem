@@ -373,6 +373,16 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
+                new SubmissionType
+                {
+                    Name = "C# Performance Project Tests",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpPerformanceProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);

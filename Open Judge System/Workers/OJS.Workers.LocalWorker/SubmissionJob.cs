@@ -273,6 +273,9 @@
                 case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CSharpPerformanceProjectTestsExecutionStrategy:
+                    executionStrategy = new CSharpPerformanceProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
+                    break;
                 case ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpAspProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
