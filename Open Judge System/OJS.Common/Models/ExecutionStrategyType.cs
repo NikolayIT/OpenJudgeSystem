@@ -7,6 +7,7 @@
         CSharpUnitTestsExecutionStrategy = 23,
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
+		CSharpPerformanceProjectTestsExecutionStrategy = 29,
         CSharpTestRunner = 10,
         CPlusPlusZipFileExecutionStrategy = 26,
         CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
@@ -31,6 +32,5 @@
         SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase = 15,
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
-        MySqlRunSkeletonRunQueriesAndCheckDatabase = 18
-    }
+        CSharpAspProjectTestsExecutionStrategy = 28    }
 }
