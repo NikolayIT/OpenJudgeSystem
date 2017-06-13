@@ -113,11 +113,11 @@
 
                 entryToExtract.Extract(destinationDirectory);
 
-                string extractedFilePath =
+                string extractedFilePathOld =
                     Directory.EnumerateFiles(destinationDirectory, fileName, SearchOption.AllDirectories)
                         .FirstOrDefault();
+                string extractedFilePath = $"{destinationDirectory}\\{entryToExtract.FileName.Replace("/", "\\")}";
 
-                zip.Save();
                 return extractedFilePath;
             }
         }

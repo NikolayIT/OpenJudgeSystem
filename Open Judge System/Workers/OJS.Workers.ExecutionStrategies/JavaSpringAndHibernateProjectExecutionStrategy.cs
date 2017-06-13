@@ -2,18 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Xml;
-    using Checkers;
-    using Common;
-    using Common.Helpers;
-    using Executors;
+
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
+    using OJS.Workers.Checkers;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Executors;
 
     public class JavaSpringAndHibernateProjectExecutionStrategy : JavaProjectTestsExecutionStrategy
     {
@@ -57,17 +56,17 @@
                 { "com.sun.xml.bind", new Tuple<string, string>("jaxb-impl", "2.2.7") }
             };
 
-        public string MavenPath { get; set; }
+        protected string MavenPath { get; set; }
 
-        public string PackageName { get; set; }
+        protected string PackageName { get; set; }
 
-        public string MainClassFileName { get; set; }
+        protected string MainClassFileName { get; set; }
 
-        public string ProjectRootDirectoryInSubmissionZip { get; set; }
+        protected string ProjectRootDirectoryInSubmissionZip { get; set; }
 
-        public string ProjectTestDirectoryInSubmissionZip { get; set; }
+        protected string ProjectTestDirectoryInSubmissionZip { get; set; }
 
-        public string PomXmlBuildSettings => @" <build>
+        protected string PomXmlBuildSettings => @" <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -210,6 +209,11 @@
                 if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
                     throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
+                }
+
+                if (processExecutionResult.ReceivedOutput.Contains($"Could not find class: {testFile}"))
+                {
+                    throw new FileLoadException("Tests could not be loaded, project structure is incorrect");
                 }
 
                 string message = this.EvaluateJUnitOutput(processExecutionResult.ReceivedOutput, testErrorMatcher);
