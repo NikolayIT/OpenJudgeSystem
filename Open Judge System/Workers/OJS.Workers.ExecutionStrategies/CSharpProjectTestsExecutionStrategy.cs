@@ -34,6 +34,7 @@
             }
         }
 ";
+
         protected const string SetupFixtureFileName = "_$SetupFixture";
         protected const string ZippedSubmissionName = "Submission.zip";
         protected const string CompeteTest = "Test";
@@ -45,8 +46,7 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
-        private static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((?:.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*(.+).cs";
-
+        protected static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
@@ -114,7 +114,7 @@
                 testPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }
-      
+
             testPaths.Add(this.SetupFixturePath);
 
             // Compiling
@@ -122,7 +122,7 @@
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
                 compilerPath,
-                executionContext.AdditionalCompilerArguments, 
+                executionContext.AdditionalCompilerArguments,
                 csProjFilePath);
 
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
@@ -161,7 +161,10 @@
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
-                arguments);
+                arguments,
+                null,
+                false,
+                true);
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
             var testIndex = 0;
@@ -192,8 +195,8 @@
             {
                 var errorMethod = error.Groups[1].Value;
                 var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
-                var fileName = error.Groups[3].Value;
-                errorsByFiles.Add(fileName, $"{errorMethod} {cause}");
+                var fileName = error.Groups[4].Value;
+                errorsByFiles.Add(fileName, $"{errorMethod}{Environment.NewLine}{cause}");
             }
 
             return errorsByFiles;
@@ -243,7 +246,7 @@
             }
         }
 
-        private void ExtractTestNames(IEnumerable<TestContext> tests)
+        protected virtual void ExtractTestNames(IEnumerable<TestContext> tests)
         {
             var trialTests = 1;
             var competeTests = 1;

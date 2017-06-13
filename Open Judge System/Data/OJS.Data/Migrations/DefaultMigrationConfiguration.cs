@@ -144,7 +144,7 @@
                     AdditionalCompilerArguments =
                         "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType =
-                        ExecutionStrategyType.CompileExecuteAndCheck,
+                        ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,
@@ -369,6 +369,16 @@
                     CompilerType = CompilerType.MsBuildLibrary,
                     AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType = ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = "C# Performance Project Tests",
+                    CompilerType = CompilerType.MsBuildLibrary,
+                    AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    ExecutionStrategyType = ExecutionStrategyType.CSharpPerformanceProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
