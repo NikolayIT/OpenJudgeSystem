@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -29,7 +30,9 @@
             int timeLimit,
             int memoryLimit,
             IEnumerable<string> executionArguments = null,
-            string workingDirectory = null)
+            string workingDirectory = null,
+            bool useProcessTime = false,
+            bool useSystemEncoding = false)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             if (workingDirectory == null)
@@ -47,7 +50,8 @@
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
-                WorkingDirectory = workingDirectory
+                WorkingDirectory = workingDirectory,
+                StandardOutputEncoding = useSystemEncoding ? Encoding.Default : new UTF8Encoding(false)
             };
 
             using (var process = System.Diagnostics.Process.Start(processStartInfo))
@@ -84,7 +88,7 @@
                     {
                         result.ErrorOutput = x.Result;
                     });
-
+              
                 // Read memory consumption every few milliseconds to determine the peak memory usage of the process
                 const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
                 var memoryTaskCancellationToken = new CancellationTokenSource();
@@ -172,9 +176,19 @@
                 result.UserProcessorTime = process.UserProcessorTime;
             }
 
-            if (result.TotalProcessorTime.TotalMilliseconds > timeLimit)
+            if (useProcessTime)
             {
-                result.Type = ProcessExecutionResultType.TimeLimit;
+                if (result.TimeWorked.TotalMilliseconds > timeLimit)
+                {
+                    result.Type = ProcessExecutionResultType.TimeLimit;
+                }
+            }
+            else
+            {
+                if (result.TotalProcessorTime.TotalMilliseconds > timeLimit)
+                {
+                    result.Type = ProcessExecutionResultType.TimeLimit;
+                }
             }
 
             if (!string.IsNullOrEmpty(result.ErrorOutput))

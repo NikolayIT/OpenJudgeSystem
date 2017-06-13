@@ -92,8 +92,6 @@
             // Execute compiler
             var compilerOutput = ExecuteCompiler(processStartInfo);
 
-            outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
-
             if (this.ShouldDeleteSourceFile)
             {
                 if (File.Exists(newInputFilePath))
@@ -103,11 +101,13 @@
             }
 
             // Check results and return CompilerResult instance
-            if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)
+            if (!compilerOutput.IsSuccessful)
             {
                 // Compiled file is missing
                 return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
             }
+
+            outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
             if (!string.IsNullOrWhiteSpace(compilerOutput.Output))
             {
@@ -152,7 +152,7 @@
         }
 
         protected static CompilerOutput ExecuteCompiler(
-            ProcessStartInfo compilerProcessStartInfo, 
+            ProcessStartInfo compilerProcessStartInfo,
             int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
         {
             var outputBuilder = new StringBuilder();

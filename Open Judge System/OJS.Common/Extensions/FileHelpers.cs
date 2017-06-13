@@ -101,6 +101,27 @@
             }
         }
 
+        public static string ExtractFileFromZip(string pathToArchive, string fileName, string destinationDirectory)
+        {
+            using (var zip = new ZipFile(pathToArchive))
+            {
+                ZipEntry entryToExtract = zip.Entries.FirstOrDefault(f => f.FileName.EndsWith(fileName));
+                if (entryToExtract == null)
+                {
+                    throw new FileNotFoundException($"{fileName} not found in submission!");
+                }
+
+                entryToExtract.Extract(destinationDirectory);
+
+                string extractedFilePathOld =
+                    Directory.EnumerateFiles(destinationDirectory, fileName, SearchOption.AllDirectories)
+                        .FirstOrDefault();
+                string extractedFilePath = $"{destinationDirectory}\\{entryToExtract.FileName.Replace("/", "\\")}";
+
+                return extractedFilePath;
+            }
+        }
+
         public static string ProcessModulePath(string path) => path.Replace('\\', '/');
 
         private static List<string> DiscoverAllFilesMatchingPattern(string workingDirectory, string pattern)
@@ -119,5 +140,6 @@
 
             return files;
         }
+
     }
 }

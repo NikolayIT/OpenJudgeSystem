@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml;
 
     using Microsoft.Build.Evaluation;
@@ -15,6 +16,7 @@
         protected const string CastleCoreAssemblyReference =
             @"Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc";
         protected const string NuGetXmlNodeXPath = @"//msns:Target[@Name='EnsureNuGetPackageBuildImports']";
+        protected const string VsToolsXmlNodeXPath = @"//msns:Import[@Project='$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets']";
         protected const string MicrosoftCsProjXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
         public CSharpAspProjectTestsExecutionStrategy(
@@ -33,21 +35,31 @@
             bool nuGetPackageImportsTarget = project.Targets.ContainsKey("EnsureNuGetPackageBuildImports");
             if (nuGetPackageImportsTarget)
             {
-                this.RemoveNuGetTarget(project.FullPath);
+                this.RemoveXmlNodeFromCsProj(project.FullPath,NuGetXmlNodeXPath);
+            }
+
+            bool vsToolsImport =
+                project.Imports.Any(i =>
+                    i.ImportingElement.Project ==
+                    "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
+
+            if (vsToolsImport)
+            {
+                this.RemoveXmlNodeFromCsProj(project.FullPath, VsToolsXmlNodeXPath);
             }
         }
 
-        private void RemoveNuGetTarget(string projectFullPath)
+        private void RemoveXmlNodeFromCsProj(string csprojPath, string xpathExpression)
         {
             XmlDocument csprojXml = new XmlDocument();
-            csprojXml.Load(projectFullPath);
+            csprojXml.Load(csprojPath);
             XmlNamespaceManager namespaceManager = new XmlNamespaceManager(csprojXml.NameTable);
             namespaceManager.AddNamespace("msns", MicrosoftCsProjXmlNamespace);
 
             XmlNode rootNode = csprojXml.DocumentElement;
-            var nuGetTargetNode = rootNode.SelectSingleNode(NuGetXmlNodeXPath, namespaceManager);
-            rootNode.RemoveChild(nuGetTargetNode);
-            csprojXml.Save(projectFullPath);
+            var targetNode = rootNode.SelectSingleNode(xpathExpression, namespaceManager);
+            rootNode.RemoveChild(targetNode);
+            csprojXml.Save(csprojPath);
         }
     }
 }

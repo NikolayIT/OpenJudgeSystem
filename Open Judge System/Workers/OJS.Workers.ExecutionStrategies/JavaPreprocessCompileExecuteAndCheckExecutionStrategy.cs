@@ -238,7 +238,10 @@ class _$SandboxSecurityManager extends SecurityManager {
                     test.Input,
                     executionContext.TimeLimit * 2, // Java virtual machine takes more time to start up
                     executionContext.MemoryLimit,
-                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, $"\"{timeMeasurementFilePath}\"" });
+                    new[] { classPathArgument, SandboxExecutorClassName, classToExecute, $"\"{timeMeasurementFilePath}\"" },
+                    null,
+                    false,
+                    true);
 
                 UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
 

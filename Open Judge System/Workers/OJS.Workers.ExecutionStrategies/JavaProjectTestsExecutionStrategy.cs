@@ -191,14 +191,15 @@ class Classes{{
             arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
 
-            var processExecutionResult = executor.ExecuteJavaProcess(
+            var processExecutionResult = executor.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
+                arguments,
                 this.WorkingDirectory,
-                arguments);
-
+                true);
+ 
             if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {
                 throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -233,9 +234,9 @@ class Classes{{
             this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
-        }
+        }   
 
-        private void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
+        protected virtual void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {
             var testNumber = 0;
             var filePaths = new string[context.Tests.Count()];
@@ -255,7 +256,7 @@ class Classes{{
             FileHelpers.DeleteFiles(filePaths);
         }
 
-        private void AddTestRunnerTemplate(string submissionFilePath)
+        protected virtual void AddTestRunnerTemplate(string submissionFilePath)
         {
             // It is important to call the JUintTestRunnerCodeTemplate after the TestClasses have been filled
             // otherwise no tests will be queued in the JUnitTestRunner, which would result in no tests failing.
@@ -264,7 +265,7 @@ class Classes{{
             FileHelpers.DeleteFiles(this.JUnitTestRunnerSourceFilePath);
         }
 
-        private void ExtractUserClassNames(string submissionFilePath)
+        protected virtual void ExtractUserClassNames(string submissionFilePath)
         {
             this.UserClassNames.AddRange(
                 FileHelpers.GetFilePathsFromZip(submissionFilePath)
