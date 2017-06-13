@@ -34,6 +34,7 @@
             }
         }
 ";
+
         protected const string SetupFixtureFileName = "_$SetupFixture";
         protected const string ZippedSubmissionName = "Submission.zip";
         protected const string CompeteTest = "Test";
@@ -114,7 +115,7 @@
                 testPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }
-      
+
             testPaths.Add(this.SetupFixturePath);
 
             // Compiling
@@ -122,7 +123,7 @@
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
                 compilerPath,
-                executionContext.AdditionalCompilerArguments, 
+                executionContext.AdditionalCompilerArguments,
                 csProjFilePath);
 
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
@@ -161,7 +162,10 @@
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
-                arguments);
+                arguments,
+                null,
+                false,
+                true);
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
             var testIndex = 0;

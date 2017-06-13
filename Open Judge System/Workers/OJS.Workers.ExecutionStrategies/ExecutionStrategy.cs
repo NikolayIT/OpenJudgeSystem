@@ -15,7 +15,11 @@
 
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
 
-        protected ExecutionResult CompileExecuteAndCheck(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, IExecutor executor)
+        protected ExecutionResult CompileExecuteAndCheck(
+            ExecutionContext executionContext,
+            Func<CompilerType, string> getCompilerPathFunc,
+            IExecutor executor,
+            bool useSystemEncoding = true)
         {
             var result = new ExecutionResult();
 
@@ -29,11 +33,29 @@
             var outputFile = compilerResult.OutputFile;
 
             // Execute and check each test
-            IChecker checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = executor.Execute(outputFile, test.Input, executionContext.TimeLimit, executionContext.MemoryLimit);
-                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
+                var processExecutionResult = executor.Execute(
+                    outputFile,
+                    test.Input,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    null,
+                    null,
+                    false,
+                    useSystemEncoding);
+
+                var testResult = this.ExecuteAndCheckTest(
+                    test,
+                    processExecutionResult,
+                    checker,
+                    processExecutionResult.ReceivedOutput);
+
                 result.TestResults.Add(testResult);
             }
 
@@ -43,7 +65,11 @@
             return result;
         }
 
-        protected TestResult ExecuteAndCheckTest(TestContext test, ProcessExecutionResult processExecutionResult, IChecker checker, string receivedOutput)
+        protected TestResult ExecuteAndCheckTest(
+            TestContext test,
+            ProcessExecutionResult processExecutionResult,
+            IChecker checker,
+            string receivedOutput)
         {
             var testResult = new TestResult
             {
@@ -107,7 +133,7 @@
                 throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
-            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
 
             if (File.Exists(submissionFilePath))

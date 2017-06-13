@@ -196,13 +196,14 @@ public class _$TestRunner {{
                 arguments.Add(JUnitRunnerClassName);
 
                 // Process the submission and check each test
-                var processExecutionResult = executor.ExecuteJavaProcess(
+                var processExecutionResult = executor.Execute(
                     this.JavaExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
+                    arguments,
                     this.WorkingDirectory,
-                    arguments);
+                    true);
 
                 if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
