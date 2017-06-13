@@ -144,7 +144,7 @@
                     AdditionalCompilerArguments =
                         "-pipe -mtune=generic -O3 -static-libgcc -static-libstdc++ -std=c++11",
                     ExecutionStrategyType =
-                        ExecutionStrategyType.CompileExecuteAndCheck,
+                        ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false,

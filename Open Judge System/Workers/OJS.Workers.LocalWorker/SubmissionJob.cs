@@ -261,6 +261,9 @@
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy:
+                    executionStrategy = new CPlusPlusCompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
                 case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
                     executionStrategy = new CPlusPlusZipFileExecutionStrategy(GetCompilerPath);
                     break;

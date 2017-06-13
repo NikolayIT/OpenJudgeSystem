@@ -8,17 +8,17 @@
 
     public class CompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
     {
-        private readonly Func<CompilerType, string> getCompilerPathFunc;
-
         public CompileExecuteAndCheckExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
         {
-            this.getCompilerPathFunc = getCompilerPathFunc;
+            this.GetCompilerPathFunc = getCompilerPathFunc;
         }
+
+        protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             IExecutor executor = new RestrictedProcessExecutor();
-            var result = this.CompileExecuteAndCheck(executionContext, this.getCompilerPathFunc, executor);
+            var result = this.CompileExecuteAndCheck(executionContext, this.GetCompilerPathFunc, executor);
             return result;
         }
     }

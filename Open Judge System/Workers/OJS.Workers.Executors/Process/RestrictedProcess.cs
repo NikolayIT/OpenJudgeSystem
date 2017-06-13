@@ -10,17 +10,23 @@
     using System.Text;
 
     using Microsoft.Win32.SafeHandles;
+
     using OJS.Workers.Executors.JobObjects;
 
     public class RestrictedProcess : IDisposable
     {
         private readonly SafeProcessHandle safeProcessHandle;
-        private readonly string fileName = string.Empty;
+        private readonly string fileName;
         private ProcessInformation processInformation;
         private JobObject jobObject;
         private int exitCode;
 
-        public RestrictedProcess(string fileName, string workingDirectory, IEnumerable<string> arguments = null, int bufferSize = 4096)
+        public RestrictedProcess(
+            string fileName,
+            string workingDirectory,
+            IEnumerable<string> arguments = null,
+            int bufferSize = 4096,
+            bool useSystemEncoding = false)
         {
             // Initialize fields
             this.fileName = fileName;
@@ -28,7 +34,7 @@
 
             // Prepare startup info and redirect standard IO handles
             var startupInfo = new StartupInfo();
-            this.RedirectStandardIoHandles(ref startupInfo, bufferSize);
+            this.RedirectStandardIoHandles(ref startupInfo, bufferSize, useSystemEncoding);
 
             // Create restricted token
             var restrictedToken = this.CreateRestrictedToken();
@@ -251,7 +257,7 @@
             }
         }
 
-        private void RedirectStandardIoHandles(ref StartupInfo startupInfo, int bufferSize)
+        private void RedirectStandardIoHandles(ref StartupInfo startupInfo, int bufferSize, bool useSystemEncoding)
         {
             // Some of this code is based on System.Diagnostics.Process.StartWithCreateProcess method implementation
             SafeFileHandle standardInputWritePipeHandle;
@@ -270,19 +276,19 @@
 
             this.StandardInput = new StreamWriter(
                 new FileStream(standardInputWritePipeHandle, FileAccess.Write, bufferSize, false),
-                new UTF8Encoding(false),
+                useSystemEncoding ? Encoding.Default : new UTF8Encoding(false),
                 bufferSize)
                 {
                     AutoFlush = true
                 };
             this.StandardOutput = new StreamReader(
                 new FileStream(standardOutputReadPipeHandle, FileAccess.Read, bufferSize, false),
-                new UTF8Encoding(false),
+                useSystemEncoding ? Encoding.Default : new UTF8Encoding(false),
                 true,
                 bufferSize);
             this.StandardError = new StreamReader(
                 new FileStream(standardErrorReadPipeHandle, FileAccess.Read, 4096, false),
-                new UTF8Encoding(false),
+                useSystemEncoding ? Encoding.Default : new UTF8Encoding(false),
                 true,
                 4096);
 
