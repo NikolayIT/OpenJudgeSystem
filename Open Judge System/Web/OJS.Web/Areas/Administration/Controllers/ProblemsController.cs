@@ -313,6 +313,9 @@
                     Text = checker.Name,
                     Value = checker.Name
                 });
+                this.Data.SubmissionTypes.All()
+                    .Select(SubmissionTypeViewModel.ViewModel)
+                    .ForEach(SubmissionTypeViewModel.ApplySelectedTo(problem));
                 return this.View(problem);
             }
 
