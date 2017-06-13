@@ -110,7 +110,10 @@
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    arguments);
+                    arguments,
+                    null,
+                    false,
+                    true);
 
                 var totalTests = 0;
                 var passedTests = 0;

@@ -261,6 +261,9 @@
                 case ExecutionStrategyType.CompileExecuteAndCheck:
                     executionStrategy = new CompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy:
+                    executionStrategy = new CPlusPlusCompileExecuteAndCheckExecutionStrategy(GetCompilerPath);
+                    break;
                 case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
                     executionStrategy = new CPlusPlusZipFileExecutionStrategy(GetCompilerPath);
                     break;
@@ -272,6 +275,9 @@
                     break;
                 case ExecutionStrategyType.CSharpProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.CSharpPerformanceProjectTestsExecutionStrategy:
+                    executionStrategy = new CSharpPerformanceProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpAspProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);

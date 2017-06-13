@@ -191,13 +191,14 @@ class Classes{{
             arguments.Add(JUnitRunnerClassName);
             arguments.AddRange(this.UserClassNames);
 
-            var processExecutionResult = executor.ExecuteJavaProcess(
+            var processExecutionResult = executor.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
+                arguments,
                 this.WorkingDirectory,
-                arguments);
+                true);
  
             if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {

@@ -47,7 +47,10 @@
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { PythonIsolatedModeArgument, PythonOptimizeAndDiscardDocstringsArgument, codeSavePath });
+                    new[] { PythonIsolatedModeArgument, PythonOptimizeAndDiscardDocstringsArgument, codeSavePath },
+                    null,
+                    false,
+                    true);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
