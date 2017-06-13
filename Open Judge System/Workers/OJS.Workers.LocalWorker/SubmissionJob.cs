@@ -298,6 +298,13 @@
                         GetCompilerPath,
                         Settings.JavaLibsPath);
                     break;
+                case ExecutionStrategyType.JavaSpringAndHibernateProjectExecutionStrategy:
+                    executionStrategy = new JavaSpringAndHibernateProjectExecutionStrategy(
+                        Settings.JavaExecutablePath,
+                        GetCompilerPath,
+                        Settings.JavaLibsPath,
+                        Settings.MavenPath);
+                    break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndCheck:
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
                         Settings.NodeJsExecutablePath,
