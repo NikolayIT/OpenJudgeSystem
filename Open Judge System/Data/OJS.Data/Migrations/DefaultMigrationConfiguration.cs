@@ -20,7 +20,7 @@
         }
 
         protected override void Seed(OjsDbContext context)
-        {        
+        {
             if (context.Roles.Any())
             {
                 return;
@@ -383,7 +383,7 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
- 				new SubmissionType
+                new SubmissionType
                 {
                     Name = "Java Project (Spring + Hibernate)",
                     CompilerType = CompilerType.JavaZip,
@@ -395,7 +395,7 @@
                 },
                   new SubmissionType
                   {
-                      Name = "Ruby",
+                      Name = "Ruby Code",
                       CompilerType = CompilerType.None,
                       AdditionalCompilerArguments = string.Empty,
                       ExecutionStrategyType = ExecutionStrategyType.RubyExecutionStrategy,
