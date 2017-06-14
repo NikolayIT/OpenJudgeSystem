@@ -154,7 +154,7 @@
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
