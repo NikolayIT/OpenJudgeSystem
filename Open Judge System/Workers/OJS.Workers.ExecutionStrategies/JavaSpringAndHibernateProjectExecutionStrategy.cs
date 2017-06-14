@@ -198,13 +198,13 @@
                 var testFile = this.TestNames[testIndex++];
                 arguments.Add(testFile);
 
-                var processExecutionResult = restrictedExe.ExecuteJavaProcess(
+                var processExecutionResult = restrictedExe.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
-                this.WorkingDirectory,
-                arguments);
+                arguments,
+                this.WorkingDirectory);
 
                 if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
                 {
@@ -457,7 +457,7 @@
             }
 
             doc.Save(pomXmlFilePath);
-        }      
+        }
 
         private string ExtractEntryPointFromPomXml(string submissionFilePath)
         {

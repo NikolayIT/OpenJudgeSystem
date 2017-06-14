@@ -383,7 +383,7 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
- 				new SubmissionType
+                new SubmissionType
                 {
                     Name = "Java Project (Spring + Hibernate)",
                     CompilerType = CompilerType.JavaZip,

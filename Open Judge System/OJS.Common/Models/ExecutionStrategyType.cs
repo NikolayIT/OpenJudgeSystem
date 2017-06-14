@@ -7,7 +7,7 @@
         CSharpUnitTestsExecutionStrategy = 23,
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
-		CSharpPerformanceProjectTestsExecutionStrategy = 31,
+        CSharpPerformanceProjectTestsExecutionStrategy = 31,
         CSharpTestRunner = 10,
         CPlusPlusZipFileExecutionStrategy = 26,
         CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
@@ -23,7 +23,7 @@
         JavaZipFileCompileExecuteAndCheck = 8,
         JavaProjectTestsExecutionStrategy = 25,
         JavaUnitTestsExecutionStrategy = 27,
- 		JavaSpringAndHibernateProjectExecutionStrategy = 30
+        JavaSpringAndHibernateProjectExecutionStrategy = 30,
         PythonExecuteAndCheck = 9,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6,
