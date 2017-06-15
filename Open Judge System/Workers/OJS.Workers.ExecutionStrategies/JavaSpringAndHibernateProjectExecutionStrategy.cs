@@ -166,6 +166,8 @@
               mavenArgs,
               this.WorkingDirectory);
 
+            File.AppendAllText("D:\\OjsFiles\\Logs\\MavenBuildOutput.txt", packageExecutionResult.ReceivedOutput + "\n");
+
             Regex mavenBuildOutput = new Regex(MavenBuildOutputPattern);
             Regex mavenBuildErrors = new Regex(MavenBuildErrorPattern);
 
