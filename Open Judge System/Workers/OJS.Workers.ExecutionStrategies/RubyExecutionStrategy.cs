@@ -9,19 +9,12 @@
 
     public class RubyExecutionStrategy : ExecutionStrategy
     {
-        protected const string SubmissionFileName = "_$Submission.rb";
 
         public RubyExecutionStrategy(string rubyPath)
         {
             this.RubyPath = rubyPath;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
-
-        ~RubyExecutionStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
-        }
-
+   
         public string RubyPath { get; set; }
 
         public string WorkingDirectory { get; set; }
@@ -32,10 +25,9 @@
 
             result.IsCompiledSuccessfully = true;
 
-            string submissionFullpath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
-            File.WriteAllText(submissionFullpath, executionContext.Code);
+            string submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
 
-            var arguments = new[] { submissionFullpath };
+            var arguments = new[] { submissionFilePath };
 
             IExecutor executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
@@ -60,6 +52,11 @@
                     processExecutionResult.ReceivedOutput);
 
                 result.TestResults.Add(testResult);
+            }
+
+            if (File.Exists(submissionFilePath))
+            {
+                File.Delete(submissionFilePath);
             }
 
             return result;
