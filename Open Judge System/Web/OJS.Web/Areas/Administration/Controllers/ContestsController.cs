@@ -242,7 +242,7 @@
                 .Select(cat =>
                     new
                     {
-                        Parent = cat.Parent != null ? cat.Parent.Name : null,
+                        Parent = cat.Parent?.Name,
                         Name = cat.Name,
                         Value = cat.Id.ToString(CultureInfo.InvariantCulture)
                     })

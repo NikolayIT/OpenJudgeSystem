@@ -1,7 +1,7 @@
 ﻿@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.CategoryDropDown;
 @model int?
 
-@(Html.Kendo().ComboBoxFor(m=>m)
+@(Html.Kendo().ComboBoxFor(m => m)
       .Name("categories")
       .Filter(FilterType.Contains)
       .Placeholder("Select category")
@@ -13,11 +13,11 @@
               .Read(read => read.Action("GetCategories", "Contests").Data("filterContests"));
       })
       .SelectedIndex(0)
-      .HtmlAttributes(new{style="width:100%"}))
+      .HtmlAttributes(new { style = "width:100%" }))
 
 <script>
-    function categoryDropdownTemplate(data){
-        if(data.Parent == undefined) {
+    function categoryDropdownTemplate(data) {
+        if (data.Parent == undefined) {
             return data.Name;
         }
         else {
@@ -30,6 +30,6 @@
         var input = $("#categories").data("kendoComboBox").input.val();
         return {
             contestFilter: input
+        }
     }
-}
 </script>
