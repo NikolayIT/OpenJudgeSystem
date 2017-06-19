@@ -154,7 +154,7 @@
 
             string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -o" };
+            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -165,6 +165,8 @@
               executionContext.MemoryLimit,
               mavenArgs,
               this.WorkingDirectory);
+
+            File.AppendAllText("D:\\OjsFiles\\Logs\\MavenBuildOutput.txt", packageExecutionResult.ReceivedOutput + "\n");
 
             Regex mavenBuildOutput = new Regex(MavenBuildOutputPattern);
             Regex mavenBuildErrors = new Regex(MavenBuildErrorPattern);
