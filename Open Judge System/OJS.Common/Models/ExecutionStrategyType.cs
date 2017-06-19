@@ -10,7 +10,7 @@
 		CSharpPerformanceProjectTestsExecutionStrategy = 29,
         CSharpTestRunner = 10,
         CPlusPlusZipFileExecutionStrategy = 26,
-        CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
+        CPlusPlusCompileExecuteAndCheckExecutionStrategy = 30,
         NodeJsPreprocessExecuteAndCheck = 2,
         NodeJsPreprocessExecuteAndRunUnitTestsWithMocha = 11,
         NodeJsPreprocessExecuteAndRunJsDomUnitTests = 12,
@@ -32,5 +32,5 @@
         SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase = 15,
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
-        CSharpAspProjectTestsExecutionStrategy = 28    }
+    }
 }
