@@ -7,10 +7,10 @@
         CSharpUnitTestsExecutionStrategy = 23,
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
-		CSharpPerformanceProjectTestsExecutionStrategy = 29,
+        CSharpPerformanceProjectTestsExecutionStrategy = 31,
         CSharpTestRunner = 10,
         CPlusPlusZipFileExecutionStrategy = 26,
-        CPlusPlusCompileExecuteAndCheckExecutionStrategy = 30,
+        CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
         NodeJsPreprocessExecuteAndCheck = 2,
         NodeJsPreprocessExecuteAndRunUnitTestsWithMocha = 11,
         NodeJsPreprocessExecuteAndRunJsDomUnitTests = 12,
@@ -23,6 +23,7 @@
         JavaZipFileCompileExecuteAndCheck = 8,
         JavaProjectTestsExecutionStrategy = 25,
         JavaUnitTestsExecutionStrategy = 27,
+        JavaSpringAndHibernateProjectExecutionStrategy = 30,
         PythonExecuteAndCheck = 9,
         PhpCgiExecuteAndCheck = 5,
         PhpCliExecuteAndCheck = 6,
@@ -32,5 +33,4 @@
         SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase = 15,
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
-    }
 }

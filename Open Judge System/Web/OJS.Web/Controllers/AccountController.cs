@@ -156,7 +156,7 @@
 
             var result =
                 await
-                this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+                    this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Disassociate.External_login_removed;
@@ -206,7 +206,7 @@
                 {
                     IdentityResult result =
                         await
-                        this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                            this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
                         this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
@@ -445,8 +445,8 @@
             // using Where() because duplicate email addresses were allowed in the previous
             // judge system
             var usersByEmail = this.Data.Users
-                                    .All()
-                                    .Where(x => x.Email == emailOrUsername).ToList();
+                .All()
+                .Where(x => x.Email == emailOrUsername).ToList();
 
             var usersCount = usersByEmail.Count();
 
@@ -514,13 +514,13 @@
             if (this.ModelState.IsValid)
             {
                 IdentityResult removePassword =
-                                        await
-                                        this.UserManager.RemovePasswordAsync(user.Id);
+                    await
+                        this.UserManager.RemovePasswordAsync(user.Id);
                 if (removePassword.Succeeded)
                 {
                     IdentityResult changePassword =
-                                        await
-                                        this.UserManager.AddPasswordAsync(user.Id, model.Password);
+                        await
+                            this.UserManager.AddPasswordAsync(user.Id, model.Password);
 
                     if (changePassword.Succeeded)
                     {
@@ -680,17 +680,17 @@
             var mailSender = MailSender.Instance;
 
             var forgottenPasswordEmailTitle = string.Format(
-                                                        Resources.Account.AccountEmails.Forgotten_password_title,
-                                                        user.UserName);
+                Resources.Account.AccountEmails.Forgotten_password_title,
+                user.UserName);
 
             var forgottenPasswordEmailBody = string.Format(
-                                                Resources.Account.AccountEmails.Forgotten_password_body,
-                                                user.UserName,
-                                                Url.Action(
-                                                        "ChangePassword",
-                                                        "Account",
-                                                        new { token = user.ForgottenPasswordToken },
-                                                        Request.Url.Scheme));
+                Resources.Account.AccountEmails.Forgotten_password_body,
+                user.UserName,
+                Url.Action(
+                    "ChangePassword",
+                    "Account",
+                    new { token = user.ForgottenPasswordToken },
+                    Request.Url.Scheme));
 
             mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
         }
