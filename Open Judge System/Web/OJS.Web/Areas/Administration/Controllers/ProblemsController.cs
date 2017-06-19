@@ -186,6 +186,11 @@
                 }
             });
 
+            if (problem.SolutionSkeletonData != null && problem.SolutionSkeletonData.Any())
+            {
+                newProblem.SolutionSkeleton = problem.SolutionSkeletonData;
+            }
+
             if (problem.Resources != null && problem.Resources.Any())
             {
                 this.AddResourcesToProblem(newProblem, problem.Resources);
