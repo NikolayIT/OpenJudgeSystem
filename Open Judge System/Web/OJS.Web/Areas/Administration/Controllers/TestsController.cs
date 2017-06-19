@@ -793,7 +793,8 @@
 
             var tests = problem.Tests.OrderBy(x => x.OrderBy);
 
-            var zipFile = new ZipFile(string.Format("{0}_Tests_{1}", problem.Name, DateTime.Now));
+            string zipFileName = $"{problem.Name}_Tests_{DateTime.Now}";
+            var zipFile = new ZipFile(zipFileName);
 
             using (zipFile)
             {
@@ -829,7 +830,7 @@
             zipFile.Save(stream);
             stream.Position = 0;
 
-            return this.File(stream, MediaTypeNames.Application.Zip, zipFile.Name);
+            return this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{GlobalConstants.ZipFileExtension}");
         }
 
         [HttpGet]
