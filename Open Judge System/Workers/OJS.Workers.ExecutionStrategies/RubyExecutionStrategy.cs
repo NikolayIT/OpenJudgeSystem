@@ -17,8 +17,6 @@
    
         public string RubyPath { get; set; }
 
-        public string WorkingDirectory { get; set; }
-
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -42,8 +40,7 @@
                     test.Input,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    arguments,
-                    this.WorkingDirectory);
+                    arguments);
 
                 var testResult = this.ExecuteAndCheckTest(
                     test,
