@@ -65,29 +65,29 @@
 
 @if (Model.IsDeleted)
 {
-    <div class="alert alert-danger">@Resource.Submission_is_deleted</div>
+    <div class="alert alert-danger top-buffer">@Resource.Submission_is_deleted</div>
 }
 
 @if (!Model.Processed)
 {
     if (Model.Processing)
     {
-        <div class="alert alert-info">@Resource.Submission_is_processing</div>
+        <div class="alert alert-info top-buffer">@Resource.Submission_is_processing</div>
     }
     else
     {
-        <div class="alert alert-info">@Resource.Submission_in_queue</div>
+        <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
     }
 }
 else
 {
     if (!Model.IsCompiledSuccessfully)
     {
-        <div class="alert alert-danger">@Resource.Compile_time_error_occured</div>
+        <div class="alert alert-danger top-buffer">@Resource.Compile_time_error_occured</div>
     }
     else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
     {
-        <h2 class="text-success">@Resource.Compiled_successfully</h2>
+        <h2 class="text-success top-buffer">@Resource.Compiled_successfully</h2>
     }
 
     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
@@ -95,15 +95,18 @@ else
         <h2>@Resource.Compilation_result:</h2>
         <pre>@Model.CompilerComment</pre>
     }
+
     if (!Model.HasTestRuns)
-     {
-         {
-             <div class="alert alert-warning">
-                 <p><strong>@Resource.User_retest_prompt</strong></p>
-             </div>
-         }
-    
-         <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>
+    {
+        var message = @Html.Raw(@Resource.User_retest_prompt
+            .Replace("#points", Model.Points.ToString())
+            .Replace("#maxPoints", Model.MaxPoint.ToString()));
+
+        <div class="alert alert-warning top-buffer">
+            <p>@message</p>
+        </div>
+
+        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>            
      }
 }
 

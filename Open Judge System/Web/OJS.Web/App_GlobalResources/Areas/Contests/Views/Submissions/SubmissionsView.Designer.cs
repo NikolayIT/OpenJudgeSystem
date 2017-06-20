@@ -331,7 +331,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, turpis quis consequat mattis, erat ex iaculis dui, ut porttitor orci tellus quis erat.
+        ///   Looks up a localized string similar to Due to changes in the input/ouput data for this problem, your submission (#points/#maxPoints) is outdated.&lt;b&gt; By clicking the button below you have the oppurtunity to resend your solution&lt;/b&gt;. This will lead to re-evaluation of your solution and you will receive feedback for each of the pre-defined pieces of input data (tests). Please keep in mind that it is possible that your solution will evaluate to a different amount of points due to the aformentioned changes in input/output data. Click the &quot;Retest&quot; but [rest of string was truncated]&quot;;.
         /// </summary>
         public static string User_retest_prompt {
             get {
