@@ -219,4 +219,7 @@
   <data name="Your_output" xml:space="preserve">
     <value>Your output:</value>
   </data>
+  <data name="User_retest_prompt" xml:space="preserve">
+    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, turpis quis consequat mattis, erat ex iaculis dui, ut porttitor orci tellus quis erat</value>
+  </data>
 </root>

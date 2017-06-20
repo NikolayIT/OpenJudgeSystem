@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -140,6 +139,14 @@
                             x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
         }
 
+        protected bool CheckIfUserOwnsSubmission(int submissionId)
+        {
+            return this.User.IsAdmin() ||
+                   this.Data.Submissions
+                       .All()
+                       .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
+        }
+
         private SystemMessageCollection PrepareSystemMessages()
         {
             // Warning: always escape data to prevent XSS
@@ -161,7 +168,7 @@
                 {
                     messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
-                
+
                 ////if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") || this.UserProfile.UserName.Length < 5 || this.UserProfile.UserName.Length > 15)
                 ////{
                 ////    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);

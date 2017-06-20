@@ -330,6 +330,7 @@
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }
 
+        [AllowAnonymous]
         public ActionResult Retest(int id)
         {
             var submission = this.Data.Submissions.GetById(id);
@@ -340,7 +341,9 @@
             }
             else
             {
-                if (!submission.ProblemId.HasValue || !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+                if (!submission.ProblemId.HasValue || 
+                    (!this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) 
+                    && !this.CheckIfUserOwnsSubmission(id)))
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });

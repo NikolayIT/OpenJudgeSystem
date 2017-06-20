@@ -95,7 +95,19 @@ else
         <h2>@Resource.Compilation_result:</h2>
         <pre>@Model.CompilerComment</pre>
     }
+    if (!Model.HasTestRuns)
+     {
+         {
+             <div class="alert alert-warning">
+                 <p><strong>@Resource.User_retest_prompt</strong></p>
+             </div>
+         }
+    
+         <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>
+     }
 }
+
+
 
 @if (Model.Processed && (Model.ShowResults || Model.UserHasAdminPermission))
 {

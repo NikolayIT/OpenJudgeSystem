@@ -82,5 +82,7 @@
         public bool ShowDetailedFeedback { get; set; }
 
         public bool UserHasAdminPermission { get; set; }
+
+        public bool HasTestRuns => this.TestRuns.Any();
     }
 }

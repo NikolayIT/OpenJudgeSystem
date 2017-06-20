@@ -331,6 +331,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, turpis quis consequat mattis, erat ex iaculis dui, ut porttitor orci tellus quis erat.
+        /// </summary>
+        public static string User_retest_prompt {
+            get {
+                return ResourceManager.GetString("User_retest_prompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View code.
         /// </summary>
         public static string View_code {
