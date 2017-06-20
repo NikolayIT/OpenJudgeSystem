@@ -341,14 +341,25 @@
             }
             else
             {
-                if (!submission.ProblemId.HasValue || 
-                    (!this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) 
-                    && !this.CheckIfUserOwnsSubmission(id)))
+                bool isAdmin = this.User.IsAdmin();
+                if (isAdmin)
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                    if (!submission.ProblemId.HasValue ||
+                        !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+                    {
+                        this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                        return this.RedirectToAction("Index", "Contests", new {area = "Administration"});
+                    }
                 }
-
+                else
+                {
+                    if (!string.IsNullOrEmpty(submission.TestRunsCache) || !this.CheckIfUserOwnsSubmission(id))
+                    {
+                        this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                        return this.RedirectToAction("Index", "Contests", new { area = "" });
+                    }
+                }
+               
                 using (var scope = new TransactionScope())
                 {
                     this.Data.ParticipantScores.DeleteParticipantScore(submission);
