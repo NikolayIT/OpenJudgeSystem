@@ -100,7 +100,7 @@ else
     {
         var message = @Html.Raw(@Resource.User_retest_prompt
             .Replace("#points", Model.Points.ToString())
-            .Replace("#maxPoints", Model.MaxPoint.ToString()));
+            .Replace("#maxPoints", Model.MaxPoints.ToString()));
 
         <div class="alert alert-warning top-buffer">
             <p>@message</p>
