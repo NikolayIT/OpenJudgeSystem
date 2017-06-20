@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web
 {
+    using System;
     using Microsoft.AspNet.Identity;
     using Microsoft.Owin;
     using Microsoft.Owin.Security.Cookies;
@@ -17,6 +18,9 @@
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+#if DEBUG
+                ExpireTimeSpan = TimeSpan.FromDays(30),
+#endif
                 LoginPath = new PathString("/Account/Login"),
                 CookieName = GlobalConstants.AuthCookieName
             });
