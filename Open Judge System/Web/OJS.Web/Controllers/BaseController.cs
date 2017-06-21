@@ -141,8 +141,7 @@
 
         protected bool CheckIfUserOwnsSubmission(int submissionId)
         {
-            return this.User.IsAdmin() ||
-                   this.Data.Submissions
+            return this.Data.Submissions
                        .All()
                        .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
         }

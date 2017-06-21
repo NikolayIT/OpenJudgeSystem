@@ -338,42 +338,44 @@
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
+                return this.RedirectToAction("Index", "Contests", new { area = "" });
+            }
+
+            bool isAdmin = this.User.IsAdmin();
+            if (isAdmin)
+            {
+                if (!submission.ProblemId.HasValue ||
+                    !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                }
             }
             else
             {
-                bool isAdmin = this.User.IsAdmin();
-                if (isAdmin)
+                if (!submission.ProblemId.HasValue ||
+                    !string.IsNullOrEmpty(submission.TestRunsCache) ||
+                    !this.CheckIfUserOwnsSubmission(id))
                 {
-                    if (!submission.ProblemId.HasValue ||
-                        !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
-                    {
-                        this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                        return this.RedirectToAction("Index", "Contests", new {area = "Administration"});
-                    }
+                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                    return this.RedirectToAction("Index", "Contests", new { area = "" });
                 }
-                else
-                {
-                    if (!string.IsNullOrEmpty(submission.TestRunsCache) || !this.CheckIfUserOwnsSubmission(id))
-                    {
-                        this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                        return this.RedirectToAction("Index", "Contests", new { area = "" });
-                    }
-                }
-               
-                using (var scope = new TransactionScope())
-                {
-                    this.Data.ParticipantScores.DeleteParticipantScore(submission);
-                    this.Data.SaveChanges();
-
-                    submission.Processed = false;
-                    submission.Processing = false;
-                    this.Data.SaveChanges();
-
-                    scope.Complete();
-                }
-
-                this.TempData.AddInfoMessage(Resource.Retest_successful);
             }
+
+            using (var scope = new TransactionScope())
+            {
+                this.Data.ParticipantScores.DeleteParticipantScore(submission);
+                this.Data.SaveChanges();
+
+                submission.Processed = false;
+                submission.Processing = false;
+                this.Data.SaveChanges();
+
+                scope.Complete();
+            }
+
+            this.TempData.AddInfoMessage(Resource.Retest_successful);
+
 
             return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
         }
