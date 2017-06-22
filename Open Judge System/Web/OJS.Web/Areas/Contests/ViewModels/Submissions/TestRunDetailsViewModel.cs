@@ -15,7 +15,8 @@
                 return test => new TestRunDetailsViewModel
                 {
                     IsTrialTest = test.Test.IsTrialTest,
-                    IsOpenTest = test.Test.IsOpenTest,
+                    IsOpenTest = test.Test.IsOpenTest || 
+                    (test.Submission.Problem.Contest.AutoChangeTests && !test.Submission.Participant.IsOfficial),
                     CheckerComment = test.CheckerComment,
                     ExpectedOutputFragment = test.ExpectedOutputFragment,
                     UserOutputFragment = test.UserOutputFragment,

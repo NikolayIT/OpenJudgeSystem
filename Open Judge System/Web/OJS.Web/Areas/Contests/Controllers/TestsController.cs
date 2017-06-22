@@ -21,11 +21,11 @@
         }
 
         [HttpGet]
-        public ActionResult GetInputData(int id)
+        public ActionResult GetInputData(int testId, int submissionId)
         {
             var testInfo = this.Data.Tests
                 .All()
-                .Where(t => t.Id == id)
+                .Where(t => t.Id == testId)
                 .Select(t => new
                 {
                     InputDataAsBytes = t.InputData,
@@ -33,7 +33,8 @@
                     t.IsOpenTest,
                     t.ProblemId,
                     t.Problem.ContestId,
-                    t.Problem.ShowDetailedFeedback
+                    t.Problem.ShowDetailedFeedback,
+                    t.Problem.Contest.AutoChangeTests
                 })
                 .FirstOrDefault();
 
@@ -47,13 +48,18 @@
                 .All()
                 .Any(p => p.UserId == this.UserProfile.Id && p.ContestId == testInfo.ContestId);
 
-            if (hasPermissions || 
-                ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant))
+            var isUnofficialParticipant = this.Data.Submissions
+                .All()
+                .Any(s => s.Id == submissionId && !s.Participant.IsOfficial);
+
+            if (hasPermissions ||
+                ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant) ||
+                  (testInfo.AutoChangeTests && isUnofficialParticipant))
             {
                 var inputDataViewModel = new TestInputDataViewModel
                 {
                     InputData = testInfo.InputDataAsBytes.Decompress(),
-                    TestId = id
+                    TestId = testId
                 };
 
                 return this.PartialView("_GetInputDataPartial", inputDataViewModel);

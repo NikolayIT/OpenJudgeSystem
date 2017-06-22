@@ -34,9 +34,7 @@
                     SubmissionType = submission.SubmissionType,
                     TestRuns = submission.TestRuns.AsQueryable().Select(TestRunDetailsViewModel.FromTestRun),
                     ShowResults = submission.Problem.ShowResults,
-                    ShowDetailedFeedback = submission.Problem.ShowDetailedFeedback || 
-                                           (submission.Problem.Contest.AutoChangeTests 
-                                            && !submission.Participant.IsOfficial)
+                    ShowDetailedFeedback = submission.Problem.ShowDetailedFeedback
                 };
             }
         }

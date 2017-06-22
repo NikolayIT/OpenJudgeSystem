@@ -152,10 +152,10 @@ else
         }
 
         if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
-            (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback))
+            (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback || testResult.IsOpenTest))
         {
             var executionComment = testResult.ExecutionComment;
-            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest && !Model.ShowDetailedFeedback)
+            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest && !Model.ShowDetailedFeedback && !testResult.IsOpenTest)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
@@ -177,13 +177,13 @@ else
             }
 
             <div class="diff">
-                @if (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
+                @if (testResult.IsTrialTest || testResult.IsOpenTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
                 {
                     @(Ajax.ActionLink(
                         Resource.Show_input_text,
                         "GetInputData",
                         "Tests",
-                        new { id = testResult.TestId },
+                        new { testId = testResult.TestId, submissionId = Model.Id},
                         new AjaxOptions
                         {
                             HttpMethod = "Get",
@@ -217,7 +217,7 @@ else
                         Resource.Show_input_text,
                         "GetInputData",
                         "Tests",
-                        new { id = testResult.TestId },
+                        new { testId = testResult.TestId, submissionId = Model.Id },
                         new AjaxOptions
                         {
                             HttpMethod = "Get",
