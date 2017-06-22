@@ -830,7 +830,8 @@
             zipFile.Save(stream);
             stream.Position = 0;
 
-            return this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{GlobalConstants.ZipFileExtension}");
+            var exportedTests = this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{GlobalConstants.ZipFileExtension}");
+            return exportedTests;
         }
 
         [HttpGet]
