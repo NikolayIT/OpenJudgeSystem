@@ -393,16 +393,16 @@
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
                 },
-                  new SubmissionType
-                  {
-                      Name = "Ruby Code",
-                      CompilerType = CompilerType.None,
-                      AdditionalCompilerArguments = string.Empty,
-                      ExecutionStrategyType = ExecutionStrategyType.RubyExecutionStrategy,
-                      IsSelectedByDefault = false,
-                      AllowedFileExtensions = null,
-                      AllowBinaryFilesUpload = false
-                  }
+                new SubmissionType
+                {
+                    Name = "Ruby Code",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.RubyExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false
+                }
             };
 
             context.SubmissionTypes.AddOrUpdate(x => x.Name, submissionTypes);

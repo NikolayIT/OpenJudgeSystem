@@ -9,7 +9,6 @@
 
     public class RubyExecutionStrategy : ExecutionStrategy
     {
-
         public RubyExecutionStrategy(string rubyPath)
         {
             this.RubyPath = rubyPath;
@@ -23,11 +22,11 @@
 
             result.IsCompiledSuccessfully = true;
 
-            string submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
+            var submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
 
             var arguments = new[] { submissionFilePath };
 
-            IExecutor executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
