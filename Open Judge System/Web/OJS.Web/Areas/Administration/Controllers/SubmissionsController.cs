@@ -375,8 +375,6 @@
             }
 
             this.TempData.AddInfoMessage(Resource.Retest_successful);
-
-
             return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
         }
 
