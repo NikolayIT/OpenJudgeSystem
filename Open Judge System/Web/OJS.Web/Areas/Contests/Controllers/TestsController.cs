@@ -53,8 +53,8 @@
                 .Any(s => s.Id == submissionId && !s.Participant.IsOfficial);
 
             if (hasPermissions ||
-                ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant) ||
-                  (testInfo.AutoChangeTests && isUnofficialParticipant))
+               ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant) ||
+                (testInfo.AutoChangeTests && isUnofficialParticipant))
             {
                 var inputDataViewModel = new TestInputDataViewModel
                 {
