@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-
+    using EntityFramework.Extensions;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
@@ -72,8 +72,13 @@
 
             return submissions;
         }
-        
+
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>
             this.All().Any(s => s.ProblemId == problemId && s.Participant.UserId == userId && !s.Processed);
+
+        public void ResetAllProcessingSubmissions()
+        {
+            this.All().Where(s => s.Processing).Update(s => new Submission() { Processing = false });
+        }
     }
 }
