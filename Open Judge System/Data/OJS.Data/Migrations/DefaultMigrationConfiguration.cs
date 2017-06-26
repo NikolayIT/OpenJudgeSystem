@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
-
+    using EntityFramework.Extensions;
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Common;
@@ -20,7 +20,9 @@
         }
 
         protected override void Seed(OjsDbContext context)
-        {        
+        {   
+            ResetAllProcessingSubmissions(context);
+
             if (context.Roles.Any())
             {
                 return;
@@ -37,6 +39,12 @@
             // this.SeedProblem(context);
             // this.SeedTest(context);
             // this.SeedCategoryContestProblem(context);
+        }
+
+        protected void ResetAllProcessingSubmissions(OjsDbContext context)
+        {
+            context.Submissions.Where(s => s.Processing).Update(s => new Submission() { Processing = false });
+            context.SaveChanges();
         }
 
         //// TODO: Add seed with .Any()

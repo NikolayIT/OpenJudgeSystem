@@ -75,10 +75,5 @@
 
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>
             this.All().Any(s => s.ProblemId == problemId && s.Participant.UserId == userId && !s.Processed);
-
-        public void ResetAllProcessingSubmissions()
-        {
-            this.All().Where(s => s.Processing).Update(s => new Submission() { Processing = false });
-        }
     }
 }
