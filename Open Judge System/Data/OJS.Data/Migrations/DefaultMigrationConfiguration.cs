@@ -20,8 +20,8 @@
         }
 
         protected override void Seed(OjsDbContext context)
-        {   
-            ResetAllProcessingSubmissions(context);
+        {
+            this.ResetAllProcessingSubmissions(context);
 
             if (context.Roles.Any())
             {
@@ -41,10 +41,15 @@
             // this.SeedCategoryContestProblem(context);
         }
 
+        /// <summary>
+        /// Sets the Processing property to False for all submissions
+        /// thus ensuring that the worker will process them eventually instead
+        /// of getting stuck in perpetual "Processing..." state
+        /// </summary>
+        /// <param name="context"></param>
         protected void ResetAllProcessingSubmissions(OjsDbContext context)
         {
             context.Submissions.Where(s => s.Processing).Update(s => new Submission() { Processing = false });
-            context.SaveChanges();
         }
 
         //// TODO: Add seed with .Any()
