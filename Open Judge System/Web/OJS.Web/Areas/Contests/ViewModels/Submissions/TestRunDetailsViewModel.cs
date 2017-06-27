@@ -16,7 +16,8 @@
                 {
                     IsTrialTest = test.Test.IsTrialTest,
                     IsOpenTest = test.Test.IsOpenTest || 
-                    (test.Submission.Problem.Contest.AutoChangeTests && !test.Submission.Participant.IsOfficial),
+                                (test.Submission.Problem.Contest.AutoChangeTestsFeedback && 
+                                !test.Submission.Participant.IsOfficial),
                     CheckerComment = test.CheckerComment,
                     ExpectedOutputFragment = test.ExpectedOutputFragment,
                     UserOutputFragment = test.UserOutputFragment,

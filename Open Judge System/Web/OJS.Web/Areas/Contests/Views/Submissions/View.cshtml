@@ -1,5 +1,6 @@
 ﻿@using OJS.Common.Extensions
 @using OJS.Common.Models
+@using OJS.Web.Areas.Contests.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
 
@@ -151,11 +152,25 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
-            (testResult.IsTrialTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback || testResult.IsOpenTest))
+        var displayShowInputButton = testResult.IsTrialTest || 
+                                     testResult.IsOpenTest || 
+                                     Model.UserHasAdminPermission || 
+                                     Model.ShowDetailedFeedback;
+
+        var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
+                                             (testResult.IsTrialTest ||
+                                              Model.UserHasAdminPermission ||
+                                              Model.ShowDetailedFeedback ||
+                                              testResult.IsOpenTest);
+        if (displayExecutionComment)
         {
             var executionComment = testResult.ExecutionComment;
-            if (!Model.UserHasAdminPermission && !testResult.IsTrialTest && !Model.ShowDetailedFeedback && !testResult.IsOpenTest)
+
+            var truncateFeedbackMessage = !Model.UserHasAdminPermission &&
+                                          !testResult.IsTrialTest &&
+                                          !Model.ShowDetailedFeedback &&
+                                          !testResult.IsOpenTest;
+            if (truncateFeedbackMessage)
             {
                 if (Model.SubmissionType.CompilerType == CompilerType.CSharp)
                 {
@@ -175,24 +190,25 @@ else
                     executionComment = executionComment.MaxLengthWithEllipsis(64);
                 }
             }
-
+         
             <div class="diff">
-                @if (testResult.IsTrialTest || testResult.IsOpenTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
+               
+                @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
-                        Resource.Show_input_text,
-                        "GetInputData",
-                        "Tests",
-                        new { testId = testResult.TestId, submissionId = Model.Id},
-                        new AjaxOptions
-                        {
-                            HttpMethod = "Get",
-                            InsertionMode = InsertionMode.Replace,
-                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                            OnSuccess = "onTestInputDataSuccess",
-                            OnBegin = "preventDefaultIfLoadedOnce"
-                        },
-                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                          Resource.Show_input_text,
+                          nameof(TestsController.GetInputData),
+                          "Tests",
+                          new {testId = testResult.TestId, submissionId = Model.Id},
+                          new AjaxOptions
+                          {
+                              HttpMethod = "Get",
+                              InsertionMode = InsertionMode.Replace,
+                              UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                              OnSuccess = "onTestInputDataSuccess",
+                              OnBegin = "preventDefaultIfLoadedOnce"
+                          },
+                          new {id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId}))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -201,11 +217,12 @@ else
             </div>
         }
 
-        if (!string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
-            testResult.ExpectedOutputFragment != null ||
-            testResult.UserOutputFragment != null)
+        var displayCheckerComment = !string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
+                                    testResult.ExpectedOutputFragment != null ||
+                                    testResult.UserOutputFragment != null;
+        if (displayCheckerComment)
         {
-            if (testResult.IsTrialTest || testResult.IsOpenTest || Model.UserHasAdminPermission || Model.ShowDetailedFeedback)
+            if (displayShowInputButton)
             {
                 <div class="diff">
                     @if (!string.IsNullOrWhiteSpace(testResult.CheckerComment))
@@ -215,7 +232,7 @@ else
 
                     @(Ajax.ActionLink(
                         Resource.Show_input_text,
-                        "GetInputData",
+                        nameof(TestsController.GetInputData),
                         "Tests",
                         new { testId = testResult.TestId, submissionId = Model.Id },
                         new AjaxOptions

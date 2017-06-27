@@ -55,7 +55,7 @@
                     OrderBy = contest.OrderBy,
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
-                    AutoChangeTests = contest.AutoChangeTests
+                    AutoChangeTests = contest.AutoChangeTestsFeedback
                 };
             }
         }

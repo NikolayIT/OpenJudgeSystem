@@ -34,7 +34,7 @@
                     t.ProblemId,
                     t.Problem.ContestId,
                     t.Problem.ShowDetailedFeedback,
-                    t.Problem.Contest.AutoChangeTests
+                    t.Problem.Contest.AutoChangeTestsFeedback
                 })
                 .FirstOrDefault();
 
@@ -52,9 +52,14 @@
                 .All()
                 .Any(s => s.Id == submissionId && !s.Participant.IsOfficial);
 
-            if (hasPermissions ||
-               ((testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest) && isParticipant) ||
-                (testInfo.AutoChangeTests && isUnofficialParticipant))
+            bool shouldDisplayDetailedTestInfo = hasPermissions ||
+                                                 ((testInfo.IsTrialTest || 
+                                                   testInfo.ShowDetailedFeedback ||
+                                                   testInfo.IsOpenTest) && 
+                                                   isParticipant) ||
+                                                 (testInfo.AutoChangeTestsFeedback && isUnofficialParticipant);
+
+            if (shouldDisplayDetailedTestInfo)
             {
                 var inputDataViewModel = new TestInputDataViewModel
                 {
