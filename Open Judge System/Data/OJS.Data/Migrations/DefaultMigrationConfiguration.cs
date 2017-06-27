@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using EntityFramework.Extensions;
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Common;
@@ -21,8 +20,6 @@
 
         protected override void Seed(OjsDbContext context)
         {
-            this.ResetAllProcessingSubmissions(context);
-
             if (context.Roles.Any())
             {
                 return;
@@ -39,17 +36,6 @@
             // this.SeedProblem(context);
             // this.SeedTest(context);
             // this.SeedCategoryContestProblem(context);
-        }
-
-        /// <summary>
-        /// Sets the Processing property to False for all submissions
-        /// thus ensuring that the worker will process them eventually instead
-        /// of getting stuck in perpetual "Processing..." state
-        /// </summary>
-        /// <param name="context"></param>
-        protected void ResetAllProcessingSubmissions(OjsDbContext context)
-        {
-            context.Submissions.Where(s => s.Processing).Update(s => new Submission() { Processing = false });
         }
 
         //// TODO: Add seed with .Any()
