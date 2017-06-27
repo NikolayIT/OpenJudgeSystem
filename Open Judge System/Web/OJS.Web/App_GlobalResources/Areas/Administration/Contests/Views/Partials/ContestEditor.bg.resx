@@ -168,4 +168,7 @@
   <data name="Submission_types" xml:space="preserve">
     <value>Видове решения</value>
   </data>
+  <data name="Auto_change_tests" xml:space="preserve">
+    <value>Изберете дали тестовете да имат детайлна обратна връзка според типа на съзтезанието (съзтезание/упражнение)</value>
+  </data>
 </root>
