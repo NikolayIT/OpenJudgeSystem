@@ -111,6 +111,7 @@
     <Compile Include="ExecutionResult.cs" />
     <Compile Include="PythonExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="RemoteExecutionStrategy.cs" />
+    <Compile Include="RubyExecutionStrategy.cs" />
     <Compile Include="SqlStrategies\BaseSqlExecutionStrategy.cs" />
     <Compile Include="SqlStrategies\MySql\BaseMySqlExecutionStrategy.cs" />
     <Compile Include="SqlStrategies\MySql\MySqlPrepareDatabaseAndRunQueriesExecutionStrategy.cs" />

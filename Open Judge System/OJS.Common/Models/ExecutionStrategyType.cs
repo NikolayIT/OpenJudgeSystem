@@ -34,5 +34,6 @@
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
         MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
+        RubyExecutionStrategy = 32
     }
 }
