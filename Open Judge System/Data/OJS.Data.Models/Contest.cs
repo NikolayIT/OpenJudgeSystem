@@ -40,6 +40,8 @@
         [Index]
         public bool IsVisible { get; set; }
 
+        public bool AutoChangeTestsFeedback { get; set; }
+
         public int? CategoryId { get; set; }
 
         public virtual ContestCategory Category { get; set; }

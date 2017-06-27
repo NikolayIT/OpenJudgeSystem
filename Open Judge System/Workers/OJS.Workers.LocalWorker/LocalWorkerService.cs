@@ -1,12 +1,17 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.ServiceProcess;
     using System.Threading;
 
+    using EntityFramework.Extensions;
     using log4net;
 
     using OJS.Common;
+    using OJS.Data;
+    using OJS.Data.Models;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -18,6 +23,7 @@
         {
             logger = LogManager.GetLogger("LocalWorkerService");
             logger.Info("LocalWorkerService initializing...");
+            this.ResetAllProcessingSubmissions();
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
@@ -68,6 +74,36 @@
             }
 
             logger.Info("LocalWorkerService stopped.");
+        }
+
+        /// <summary>
+        /// Sets the Processing property to False for all submissions
+        /// thus ensuring that the worker will process them eventually instead
+        /// of getting stuck in perpetual "Processing..." state
+        /// </summary>
+        private void ResetAllProcessingSubmissions()
+        {
+            using (var context = new OjsData())
+            {
+                var allProcessingSubmissions = context
+                    .Submissions
+                    .All()
+                    .Where(s => s.Processing && !s.Processed && !s.IsDeleted);
+
+                if (allProcessingSubmissions.Any())
+                {
+                    try
+                    {
+                        var affectedRows =
+                            allProcessingSubmissions.Update(s => new Submission() { Processing = false });
+                        logger.InfoFormat("{0} submissions' Processing status reset to False", affectedRows);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.ErrorFormat("Clearing Processing submissions failed with exception {0}", e.Message);
+                    }
+                }
+            }
         }
     }
 }

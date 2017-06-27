@@ -459,7 +459,7 @@
             }
 
             doc.Save(pomXmlFilePath);
-        }      
+        }
 
         private string ExtractEntryPointFromPomXml(string submissionFilePath)
         {

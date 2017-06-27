@@ -282,6 +282,9 @@
                 case ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpAspProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
                     break;
+                case ExecutionStrategyType.RubyExecutionStrategy:
+                    executionStrategy = new RubyExecutionStrategy(Settings.RubyPath);
+                    break;
                 case ExecutionStrategyType.JavaPreprocessCompileExecuteAndCheck:
                     executionStrategy = new JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
                         Settings.JavaExecutablePath,

@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.Contests.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose to automatically determine test detailed feedback visibility depending on contest type (practice/compete).
+        /// </summary>
+        public static string Auto_change_tests {
+            get {
+                return ResourceManager.GetString("Auto_change_tests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the category of the contest.
         /// </summary>
         public static string Choose_category {

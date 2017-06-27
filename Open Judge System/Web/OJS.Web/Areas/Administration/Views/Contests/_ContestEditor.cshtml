@@ -225,7 +225,7 @@
             @Html.ValidationMessageFor(m => m.IsVisible)
         </div>
     </div>
-    <br />
+    <br />  
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -248,6 +248,21 @@
         <div class="editor-field col-xs-4">
             <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете позволените IP-та за състезанието (разделени със ',')" data-tooltip="true"></span>
             @Html.ValidationMessageFor(m => m.AllowedIps)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="editor-label col-xs-3">
+            <div class="pull-right">
+                @Html.LabelFor(m => m.AutoChangeTests)
+            </div>
+        </div>
+        <div class="editor-field col-xs-4">
+            @Html.EditorFor(m => m.AutoChangeTests, new { @class = "form-control pull-left full-editor" })
+        </div>
+        <div class="editor-field col-xs-4">
+            <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Auto_change_tests" data-tooltip="true"></span>
+            @Html.ValidationMessageFor(m => m.AutoChangeTests)
         </div>
     </div>
     <br />
