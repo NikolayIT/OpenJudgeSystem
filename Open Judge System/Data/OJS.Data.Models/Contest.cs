@@ -40,7 +40,7 @@
         [Index]
         public bool IsVisible { get; set; }
 
-        public bool AutoChangeTestsFeedback { get; set; }
+        public bool AutoChangeTestsFeedbackVisibility { get; set; }
 
         public int? CategoryId { get; set; }
 

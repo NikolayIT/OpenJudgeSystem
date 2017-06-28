@@ -55,7 +55,7 @@
                     OrderBy = contest.OrderBy,
                     CreatedOn = contest.CreatedOn,
                     ModifiedOn = contest.ModifiedOn,
-                    AutoChangeTests = contest.AutoChangeTestsFeedback
+                    AutoChangeTestsFeedbackVisibility = contest.AutoChangeTestsFeedbackVisibility,
                 };
             }
         }
@@ -145,8 +145,8 @@
         public bool IsVisible { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Auto_change_tests", ResourceType = typeof(Resource))]
-        public bool AutoChangeTests { get; set; }
+        [Display(Name = "Auto_change_tests_feedback_visibility", ResourceType = typeof(Resource))]
+        public bool AutoChangeTestsFeedbackVisibility { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Category", ResourceType = typeof(Resource))]

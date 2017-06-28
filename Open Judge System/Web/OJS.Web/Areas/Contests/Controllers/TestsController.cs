@@ -34,7 +34,7 @@
                     t.ProblemId,
                     t.Problem.ContestId,
                     t.Problem.ShowDetailedFeedback,
-                    t.Problem.Contest.AutoChangeTestsFeedback
+                    t.Problem.Contest.AutoChangeTestsFeedbackVisibility
                 })
                 .FirstOrDefault();
 
@@ -57,7 +57,7 @@
                                                    testInfo.ShowDetailedFeedback ||
                                                    testInfo.IsOpenTest) && 
                                                    isParticipant) ||
-                                                 (testInfo.AutoChangeTestsFeedback && isUnofficialParticipant);
+                                                 (testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialParticipant);
 
             if (shouldDisplayDetailedTestInfo)
             {

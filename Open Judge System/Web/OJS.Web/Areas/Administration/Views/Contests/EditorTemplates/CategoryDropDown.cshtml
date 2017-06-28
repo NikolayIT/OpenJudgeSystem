@@ -2,7 +2,6 @@
 @model int?
 
 @(Html.Kendo().ComboBoxFor(m => m)
-      .Name("categories")
       .Filter(FilterType.Contains)
       .Placeholder("Select category")
       .DataTextField("Name")
@@ -12,7 +11,6 @@
           data.ServerFiltering(true)
               .Read(read => read.Action("GetCategories", "Contests").Data("filterContests"));
       })
-      .SelectedIndex(0)
       .HtmlAttributes(new { style = "width:100%" }))
 
 <script>
@@ -27,7 +25,7 @@
 </script>
 <script>
     function filterContests() {
-        var input = $("#categories").data("kendoComboBox").input.val();
+        var input = $("#CategoryId").data("kendoComboBox").input.val();
         return {
             contestFilter: input
         }
