@@ -330,6 +330,8 @@
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult Retest(int id)
         {

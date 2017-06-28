@@ -47,14 +47,25 @@
 </ol>
 
 <h2>@ViewBag.Title</h2>
+<div class="row'">
 <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
+    @if (Model.UserHasAdminPermission)
+    {
+        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
+        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
+        <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
+        <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
+        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "form-inline",role="form"}))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" value="@Model.Id" name="id"/>
+            <button type="submit" class="btn btn-sm btn-primary">@Resource.Retest</button>
+        }
+    }
+</div>
+
 @if (Model.UserHasAdminPermission)
 {
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
-    <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>
     <div class="clearfix"></div>
     if (!string.IsNullOrWhiteSpace(Model.ProcessingComment))
     {
@@ -62,7 +73,6 @@
         <pre>@Model.ProcessingComment</pre>
     }
 }
-<br />
 
 @if (Model.IsDeleted)
 {
@@ -107,7 +117,12 @@ else
             <p>@message</p>
         </div>
 
-        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>            
+        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "form-inline",role="form"}))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" value="@Model.Id" name="id"/>
+            <button type="submit" class="btn btn-sm btn-primary">@Resource.Retest</button>
+        }
      }
 }
 
@@ -172,7 +187,7 @@ else
                                      Model.UserHasAdminPermission || 
                                      Model.ShowDetailedFeedback;
 
-        var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
+        var displayExecutionComment= !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
                                              (testResult.IsTrialTest ||
                                               Model.UserHasAdminPermission ||
                                               Model.ShowDetailedFeedback ||
