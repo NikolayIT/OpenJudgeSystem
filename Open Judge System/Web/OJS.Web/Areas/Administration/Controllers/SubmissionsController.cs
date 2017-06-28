@@ -333,6 +333,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
+        [RestrictRequests]
         public ActionResult Retest(int id)
         {
             var submission = this.Data.Submissions.GetById(id);

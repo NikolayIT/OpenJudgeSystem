@@ -55,7 +55,7 @@
         <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
         <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
         <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
-        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "form-inline",role="form"}))
+        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form",role="form"}))
         {
             @Html.AntiForgeryToken()
             <input type="hidden" value="@Model.Id" name="id"/>
@@ -117,7 +117,7 @@ else
             <p>@message</p>
         </div>
 
-        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "form-inline",role="form"}))
+        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
         {
             @Html.AntiForgeryToken()
             <input type="hidden" value="@Model.Id" name="id"/>

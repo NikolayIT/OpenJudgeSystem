@@ -351,3 +351,7 @@ pre {
 .pagination > li > span:focus {
     background-color: #0f7864;
 }
+
+.inline-form {
+    display: inline;
+}
