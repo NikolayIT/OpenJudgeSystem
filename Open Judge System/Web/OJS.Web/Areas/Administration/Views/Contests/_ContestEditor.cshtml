@@ -225,7 +225,7 @@
             @Html.ValidationMessageFor(m => m.IsVisible)
         </div>
     </div>
-    <br />
+    <br />  
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -251,6 +251,21 @@
         </div>
     </div>
     <br />
+    <div class="row">
+        <div class="editor-label col-xs-3">
+            <div class="pull-right">
+                @Html.LabelFor(m => m.AutoChangeTestsFeedbackVisibility)
+            </div>
+        </div>
+        <div class="editor-field col-xs-4">
+            @Html.EditorFor(m => m.AutoChangeTestsFeedbackVisibility, new { @class = "form-control pull-left full-editor" })
+        </div>
+        <div class="editor-field col-xs-4">
+            <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Auto_change_tests" data-tooltip="true"></span>
+            @Html.ValidationMessageFor(m => m.AutoChangeTestsFeedbackVisibility)
+        </div>
+    </div>
+    <br />
 </fieldset>
 
 <script>
@@ -260,4 +275,14 @@
             value: ips.length ? ips[ips.length - 1] : ''
         };
     }
+</script>
+<script>
+    
+    $(function () {
+        var categoryName ="@Model.CategoryName";
+        if (categoryName !== "" && typeof categoryName !== typeof undefined) {
+            $("#CategoryId").data("kendoComboBox").text(categoryName);
+        }
+        
+    });
 </script>

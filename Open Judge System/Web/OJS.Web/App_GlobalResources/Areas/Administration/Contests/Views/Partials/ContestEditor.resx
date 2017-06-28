@@ -168,4 +168,7 @@
   <data name="Submission_types" xml:space="preserve">
     <value>Submission types</value>
   </data>
+  <data name="Auto_change_tests" xml:space="preserve">
+    <value>Choose to automatically determine test detailed feedback visibility depending on contest type (practice/compete)</value>
+  </data>
 </root>

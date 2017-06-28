@@ -225,7 +225,7 @@
             return this.PartialView(GlobalConstants.QuickContestsGrid, latestContests);
         }
 
-        public JsonResult GetCategories()
+        public JsonResult GetCategories(string contestFilter)
         {
             var categories = this.Data.ContestCategories.All();
 
@@ -237,11 +237,12 @@
             }
 
             var dropDownData = categories
+                .Where(c => c.Name.ToLower().Contains(contestFilter.ToLower()))
                 .ToList()
                 .Select(cat =>
                     new
                     {
-                        Parent = cat.Parent != null ? cat.Parent.Name : null,
+                        Parent = cat.Parent?.Name,
                         Name = cat.Name,
                         Value = cat.Id.ToString(CultureInfo.InvariantCulture)
                     })

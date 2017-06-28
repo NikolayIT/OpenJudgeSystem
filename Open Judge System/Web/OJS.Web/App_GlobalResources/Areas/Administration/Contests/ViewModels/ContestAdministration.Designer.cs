@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.Contests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically change test detailed feedback visiblity.
+        /// </summary>
+        public static string Auto_change_tests_feedback_visibility {
+            get {
+                return ResourceManager.GetString("Auto_change_tests_feedback_visibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category.
         /// </summary>
         public static string Category {
