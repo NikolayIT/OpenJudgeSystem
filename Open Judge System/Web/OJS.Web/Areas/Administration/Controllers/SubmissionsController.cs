@@ -378,7 +378,9 @@
             {
                 if (!submission.ProblemId.HasValue ||
                     !string.IsNullOrEmpty(submission.TestRunsCache) ||
-                    !this.CheckIfUserOwnsSubmission(id))
+                    !this.CheckIfUserOwnsSubmission(id) ||
+                    !submission.Processed || 
+                    submission.Processing)
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                     return this.RedirectToAction("Index", "Contests", new { area = "" });

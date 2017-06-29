@@ -107,11 +107,9 @@ else
         <pre>@Model.CompilerComment</pre>
     }
 
-    if (!Model.HasTestRuns)
-    {
-        var message = @Html.Raw(@Resource.User_retest_prompt
-            .Replace("#points", Model.Points.ToString())
-            .Replace("#maxPoints", Model.MaxPoints.ToString()));
+    if (!Model.HasTestRuns && Model.IsCompiledSuccessfully)
+    { 
+        var message = @Html.Raw(string.Format(@Resource.User_retest_prompt ,Model.Points, Model.MaxPoints));
 
         <div class="alert alert-warning top-buffer">
             <p>@message</p>
@@ -125,9 +123,6 @@ else
         }
      }
 }
-
-
-
 @if (Model.Processed && (Model.ShowResults || Model.UserHasAdminPermission))
 {
     foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
