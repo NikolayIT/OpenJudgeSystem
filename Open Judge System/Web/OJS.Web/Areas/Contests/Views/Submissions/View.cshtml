@@ -119,7 +119,7 @@ else
 
         using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
         {
-            @Html.AntiForgeryToken()
+             @Html.AntiForgeryToken()
             <input type="hidden" value="@Model.Id" name="id"/>
             <button type="submit" class="btn btn-sm btn-primary">@Resource.Retest</button>
         }

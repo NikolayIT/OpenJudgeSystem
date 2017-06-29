@@ -24,6 +24,12 @@
 
     public class SubmissionsController : LecturerBaseGridController
     {
+        protected const int RequestsPerInterval = 2;
+
+        protected const int RestrictInterval = 180;
+
+        protected const string TooManyRequestsErrorMessage = "Прекалено много заявки. Моля, опитайте по-късно.";
+
         private const int MaxContestsToTake = 20;
 
         private int? contestId;
@@ -333,10 +339,24 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        [RestrictRequests]
+        [RestrictRequests(
+            RequestsPerInterval = RequestsPerInterval,
+            RestrictInterval = RestrictInterval,
+            ErrorMessage = TooManyRequestsErrorMessage)]
         public ActionResult Retest(int id)
         {
             var submission = this.Data.Submissions.GetById(id);
+
+            if (!this.ModelState.IsValid)
+            {
+                var modelStateErrors = this.ModelState.Values.SelectMany(m => m.Errors);
+                foreach (var modelStateError in modelStateErrors)
+                {
+                    this.TempData.AddDangerMessage(modelStateError.ErrorMessage);
+                }
+
+                return this.RedirectToAction("Index", "Contests", new {area = ""});
+            }
 
             if (submission == null)
             {
