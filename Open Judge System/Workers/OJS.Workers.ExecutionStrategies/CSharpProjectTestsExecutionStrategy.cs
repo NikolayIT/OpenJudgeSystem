@@ -207,6 +207,8 @@
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
+            this.EnsureAssemblyNameIsCorrect(project);
+
             foreach (var testName in this.TestNames)
             {
                 project.AddItem("Compile", $"{testName}{GlobalConstants.CSharpFileExtension}");
@@ -266,6 +268,27 @@
                     competeTests++;
                 }
             }
+        }
+
+        private void EnsureAssemblyNameIsCorrect(Project project)
+        {
+            var assemblyNameProperty = project.AllEvaluatedProperties.FirstOrDefault(x => x.Name == "AssemblyName");
+            if (assemblyNameProperty == null)
+            {
+                throw new ArgumentException("Project file does not contain Assembly Name property!");
+            }
+
+            var csProjFullpath = project.FullPath;
+            string projectName = this.ExtractProjectNameFromCsProjfile(csProjFullpath);
+            project.SetProperty("AssemblyName", projectName);
+        }
+
+        private string ExtractProjectNameFromCsProjfile(string csprojFile)
+        {
+            var indexOfLastSlash = csprojFile.LastIndexOf("\\");
+            var result = csprojFile.Substring(indexOfLastSlash + 1);
+            result = result.Replace(".csproj", "");
+            return result;
         }
     }
 }
