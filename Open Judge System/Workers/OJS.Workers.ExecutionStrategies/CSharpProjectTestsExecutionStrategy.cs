@@ -270,7 +270,7 @@
             }
         }
 
-        private void EnsureAssemblyNameIsCorrect(Project project)
+        protected virtual void EnsureAssemblyNameIsCorrect(Project project)
         {
             var assemblyNameProperty = project.AllEvaluatedProperties.FirstOrDefault(x => x.Name == "AssemblyName");
             if (assemblyNameProperty == null)

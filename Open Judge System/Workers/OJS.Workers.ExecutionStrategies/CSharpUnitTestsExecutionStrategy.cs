@@ -193,6 +193,8 @@
         {
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
+            this.EnsureAssemblyNameIsCorrect(project);
+
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
             if (projectReference != null)
