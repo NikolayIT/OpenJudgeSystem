@@ -354,7 +354,7 @@
                     this.TempData.AddDangerMessage(modelStateError.ErrorMessage);
                 }
 
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new {area = ""});
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
             }
 
             if (submission == null)
@@ -363,42 +363,43 @@
                 return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
             }
 
-            if (this.User.IsAdmin())
+            bool problemIdIsValid = submission.ProblemId.HasValue;
+
+            if (this.User.IsAdmin() &&
+                (!problemIdIsValid ||
+                !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value)))
             {
-                if (!submission.ProblemId.HasValue ||
-                    !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+            }
+
+            if (problemIdIsValid &&
+                string.IsNullOrEmpty(submission.TestRunsCache) &&
+                this.CheckIfUserOwnsSubmission(id) &&
+                submission.Processed &&
+                !submission.Processing)
+            {
+                using (var scope = new TransactionScope())
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                    this.Data.ParticipantScores.DeleteParticipantScore(submission);
+                    this.Data.SaveChanges();
+
+                    submission.Processed = false;
+                    submission.Processing = false;
+                    this.Data.SaveChanges();
+
+                    scope.Complete();
                 }
+
+                this.TempData.AddInfoMessage(Resource.Retest_successful);
+                return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });             
             }
             else
             {
-                if (!submission.ProblemId.HasValue ||
-                    !string.IsNullOrEmpty(submission.TestRunsCache) ||
-                    !this.CheckIfUserOwnsSubmission(id) ||
-                    !submission.Processed || 
-                    submission.Processing)
-                {
-                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction("Index", "Contests", new { area = "" });
-                }
+                this.TempData[GlobalConstants.DangerMessage] = "Решението не може да бъде ритествано в момента";
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
             }
 
-            using (var scope = new TransactionScope())
-            {
-                this.Data.ParticipantScores.DeleteParticipantScore(submission);
-                this.Data.SaveChanges();
-
-                submission.Processed = false;
-                submission.Processing = false;
-                this.Data.SaveChanges();
-
-                scope.Complete();
-            }
-
-            this.TempData.AddInfoMessage(Resource.Retest_successful);
-            return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
         }
 
         public JsonResult GetProblems(string text)
