@@ -169,10 +169,9 @@
             }
 
             var contestMaxPoints = this.data
-                .Contests
-                .GetById(contestId.Value)
                 .Problems
-                .Where(p => !p.IsDeleted)
+                .All()
+                .Where(p => !p.IsDeleted && p.ContestId == contestId)
                 .Select(p => (double)p.MaximumPoints)
                 .DefaultIfEmpty(1)
                 .Sum();
