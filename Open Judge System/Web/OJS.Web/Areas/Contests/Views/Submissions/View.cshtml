@@ -51,15 +51,16 @@
 <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
     @if (Model.UserHasAdminPermission)
     {
-        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
-        <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
-        <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
-        <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
-        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form",role="form"}))
+        @Html.ActionLink(Resource.Update, "Update","Submissions",new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right"})
+        @Html.ActionLink(Resource.Delete, "Delete","Submissions",new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Authors_profile, "Index", "Profile", new {area="Users", id = Model.UserName} , new {@class= "btn btn-sm btn-primary small-margin-right" })  
+        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
         {
             @Html.AntiForgeryToken()
-            <input type="hidden" value="@Model.Id" name="id"/>
-            <button type="submit" class="btn btn-sm btn-primary">@Resource.Retest</button>
+            @Html.HiddenFor(m=>m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value = @Resource.Retest />
+           
         }
     }
 </div>
@@ -117,9 +118,9 @@ else
 
         using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
         {
-             @Html.AntiForgeryToken()
-            <input type="hidden" value="@Model.Id" name="id"/>
-            <button type="submit" class="btn btn-sm btn-primary">@Resource.Retest</button>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m=>m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value = @Resource.Retest />
         }
      }
 }
@@ -178,15 +179,15 @@ else
         }
 
         var displayShowInputButton = testResult.IsTrialTest || 
-                                     testResult.IsOpenTest || 
-                                     Model.UserHasAdminPermission || 
-                                     Model.ShowDetailedFeedback;
+                                    testResult.IsOpenTest || 
+                                    Model.UserHasAdminPermission || 
+                                    Model.ShowDetailedFeedback;
 
-        var displayExecutionComment= !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
-                                             (testResult.IsTrialTest ||
-                                              Model.UserHasAdminPermission ||
-                                              Model.ShowDetailedFeedback ||
-                                              testResult.IsOpenTest);
+        var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
+                                            (testResult.IsTrialTest ||
+                                            Model.UserHasAdminPermission ||
+                                            Model.ShowDetailedFeedback ||
+                                            testResult.IsOpenTest);
         if (displayExecutionComment)
         {
             var executionComment = testResult.ExecutionComment;

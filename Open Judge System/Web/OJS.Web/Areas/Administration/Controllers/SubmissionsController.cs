@@ -25,9 +25,7 @@
     public class SubmissionsController : LecturerBaseGridController
     {
         protected const int RequestsPerInterval = 2;
-
         protected const int RestrictInterval = 180;
-
         protected const string TooManyRequestsErrorMessage = "Прекалено много заявки. Моля, опитайте по-късно.";
 
         private const int MaxContestsToTake = 20;
@@ -338,7 +336,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
+        [OverrideAuthorization]
+        [Authorize]
         [RestrictRequests(
             RequestsPerInterval = RequestsPerInterval,
             RestrictInterval = RestrictInterval,
@@ -355,23 +354,22 @@
                     this.TempData.AddDangerMessage(modelStateError.ErrorMessage);
                 }
 
-                return this.RedirectToAction("Index", "Contests", new {area = ""});
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new {area = ""});
             }
 
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "" });
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
             }
 
-            bool isAdmin = this.User.IsAdmin();
-            if (isAdmin)
+            if (this.User.IsAdmin())
             {
                 if (!submission.ProblemId.HasValue ||
                     !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value))
                 {
                     this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                    return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
                 }
             }
             else

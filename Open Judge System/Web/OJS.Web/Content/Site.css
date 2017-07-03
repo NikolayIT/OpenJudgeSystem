@@ -142,6 +142,9 @@ input[type="checkbox"].input-validation-error {
     margin-top: 10px;
 }
 
+.small-margin-right {
+    margin-right: 5px;
+}
 .captcha-container input {
     line-height: normal !important;
 }
