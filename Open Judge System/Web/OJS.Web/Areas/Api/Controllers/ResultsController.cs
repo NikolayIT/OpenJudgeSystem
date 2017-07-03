@@ -168,25 +168,26 @@
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
             }
 
+            var contestMaxPoints = this.data
+                .Problems
+                .All()
+                .Where(p => !p.IsDeleted && p.ContestId == contestId)
+                .Select(p => (double)p.MaximumPoints)
+                .DefaultIfEmpty(1)
+                .Sum();
+
             var participants = this.data.Participants
                 .All()
                 .Where(x => x.ContestId == contestId.Value)
                 .Select(participant => new
                 {
                     participant.UserId,
-                    ResultsInPercentages = participant.Contest.Problems
-                        .Where(problem => !problem.IsDeleted)
-                        .Select(problem => problem.Submissions
-                            .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
-                            .OrderByDescending(z => z.Points)
-                            .Select(z => z.Points)
-                            .FirstOrDefault())
+                    ResultsInPercentages = participant
+                        .Scores
+                        .Where(s => s.Problem.ContestId == contestId.Value)
+                        .Select(p => p.Points)
                         .DefaultIfEmpty(0)
-                        .Sum() / participant.Contest.Problems
-                            .Where(p => !p.IsDeleted)
-                            .Select(p => (double)p.MaximumPoints)
-                            .DefaultIfEmpty(1)
-                            .Sum() * 100
+                        .Sum() / contestMaxPoints * 100
                 })
                 .ToList()
                 .GroupBy(p => p.UserId)
