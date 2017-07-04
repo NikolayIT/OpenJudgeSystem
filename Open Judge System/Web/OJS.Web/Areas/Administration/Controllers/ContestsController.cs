@@ -322,8 +322,10 @@
 
                 foreach (var officialParticipantSubmission in officialParticipant.Submissions)
                 {
-                    officialParticipantSubmission.Participant = unofficialParticipant;
+                    officialParticipantSubmission.Participant = unofficialParticipant;                   
                 }
+
+                List<ParticipantScore> scoresForDeletion = new List<ParticipantScore>();
 
                 foreach (var officialParticipantScore in officialParticipant.Scores)
                 {
@@ -331,29 +333,40 @@
                         .Scores
                         .FirstOrDefault(s => s.ProblemId == officialParticipantScore.ProblemId);
 
-                    officialParticipantScore.IsOfficial = false;
-
-                    officialParticipantScore.Participant = unofficialParticipant;
-
                     if (unofficialParticipantScore != null)
                     {
                         if (unofficialParticipantScore.Points == officialParticipantScore.Points)
                         {
                             unofficialParticipantScore = unofficialParticipantScore.Id > officialParticipantScore.Id
-                                                             ? unofficialParticipantScore
-                                                             : officialParticipantScore;
+                                ? unofficialParticipantScore
+                                : officialParticipantScore;
                         }
                         else
                         {
-                            unofficialParticipantScore = unofficialParticipantScore.Points > officialParticipantScore.Points
-                                                             ? unofficialParticipantScore
-                                                             : officialParticipantScore;
+                            unofficialParticipantScore = 
+                                unofficialParticipantScore.Points > officialParticipantScore.Points
+                                    ? unofficialParticipantScore
+                                    : officialParticipantScore;
                         }
+
+                        unofficialParticipantScore.IsOfficial = false;
+                        unofficialParticipantScore.Participant = unofficialParticipant;                       
+                        scoresForDeletion.Add(officialParticipantScore);
+                    }
+                    else 
+                    {
+                        officialParticipantScore.IsOfficial = false;
+                        officialParticipantScore.Participant = unofficialParticipant;
                     }
                 }
 
+                foreach (var participantScore in scoresForDeletion)
+                {
+                    this.Data.ParticipantScores.Delete(participantScore);
+                }
+
                 this.Data.Participants.Delete(officialParticipant);
-                this.Data.SaveChanges();
+                this.Data.SaveChanges();            
             }
         }
 
