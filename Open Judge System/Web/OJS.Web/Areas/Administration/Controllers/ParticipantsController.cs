@@ -5,10 +5,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-  
+
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+
     using MissingFeatures;
+
     using Newtonsoft.Json;
 
     using OJS.Common;
@@ -137,8 +139,8 @@
         public JsonResult Contests(string text)
         {
             var contests = this.Data.Contests
-                 .All()
-                 .Select(ContestViewModel.ViewModel);
+                .All()
+                .Select(ContestViewModel.ViewModel);
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -210,7 +212,6 @@
         public ActionResult NormalizeParticipants()
         {
             var problems = this.Data.Problems.All().ToList();
-            
             foreach (var problem in problems)
             {
                 var data = new OjsData();
