@@ -279,16 +279,8 @@
             }
 
             var csProjFullpath = project.FullPath;
-            string projectName = this.ExtractProjectNameFromCsProjfile(csProjFullpath);
+            string projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
-        }
-
-        private string ExtractProjectNameFromCsProjfile(string csprojFile)
-        {
-            var indexOfLastSlash = csprojFile.LastIndexOf("\\");
-            var result = csprojFile.Substring(indexOfLastSlash + 1);
-            result = result.Replace(".csproj", "");
-            return result;
         }
     }
 }

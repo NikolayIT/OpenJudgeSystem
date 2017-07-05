@@ -35,7 +35,7 @@
             bool nuGetPackageImportsTarget = project.Targets.ContainsKey("EnsureNuGetPackageBuildImports");
             if (nuGetPackageImportsTarget)
             {
-                this.RemoveXmlNodeFromCsProj(project.FullPath,NuGetXmlNodeXPath);
+                this.RemoveXmlNodeFromCsProj(project.FullPath, NuGetXmlNodeXPath);
             }
 
             bool vsToolsImport =
