@@ -325,7 +325,7 @@
                     officialParticipantSubmission.Participant = unofficialParticipant;
                 }
 
-                List<ParticipantScore> scoresForDeletion = new List<ParticipantScore>();
+                var scoresForDeletion = new List<ParticipantScore>();
 
                 foreach (var officialParticipantScore in officialParticipant.Scores)
                 {
