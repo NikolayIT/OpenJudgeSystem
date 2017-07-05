@@ -279,7 +279,7 @@
             }
 
             var csProjFullpath = project.FullPath;
-            string projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
+            var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
         }
     }

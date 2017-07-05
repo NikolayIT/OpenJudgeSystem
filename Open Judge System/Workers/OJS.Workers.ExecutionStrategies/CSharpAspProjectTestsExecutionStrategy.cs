@@ -38,7 +38,7 @@
                 this.RemoveXmlNodeFromCsProj(project.FullPath, NuGetXmlNodeXPath);
             }
 
-            bool vsToolsImport =
+            var vsToolsImport =
                 project.Imports.Any(i =>
                     i.ImportingElement.Project ==
                     "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
