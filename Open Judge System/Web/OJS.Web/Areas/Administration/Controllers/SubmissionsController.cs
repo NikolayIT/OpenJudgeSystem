@@ -363,21 +363,22 @@
                 return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
             }
 
-            bool problemIdIsValid = submission.ProblemId.HasValue;
+            var problemIdIsValid = submission.ProblemId.HasValue;
+            var userOwnsSubmission = this.CheckIfUserOwnsSubmission(id);
 
-            if (this.User.IsAdmin() &&
-                (!problemIdIsValid ||
-                !this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value)))
+            if (!problemIdIsValid ||
+                (!this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) &&
+                !userOwnsSubmission))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
             }
 
-            if (problemIdIsValid &&
-                string.IsNullOrEmpty(submission.TestRunsCache) &&
-                this.CheckIfUserOwnsSubmission(id) &&
+            if (this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) ||
+                (string.IsNullOrEmpty(submission.TestRunsCache) &&
+                userOwnsSubmission &&
                 submission.Processed &&
-                !submission.Processing)
+                !submission.Processing))
             {
                 using (var scope = new TransactionScope())
                 {
@@ -392,14 +393,11 @@
                 }
 
                 this.TempData.AddInfoMessage(Resource.Retest_successful);
-                return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });             
-            }
-            else
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Решението не може да бъде ритествано в момента";
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+                return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
             }
 
+            this.TempData[GlobalConstants.DangerMessage] = "Решението не може да бъде ретествано в момента";
+            return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
         }
 
         public JsonResult GetProblems(string text)

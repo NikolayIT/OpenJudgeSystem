@@ -48,19 +48,18 @@
 
 <h2>@ViewBag.Title</h2>
 <div class="row'">
-<a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
+    <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
     @if (Model.UserHasAdminPermission)
     {
-        @Html.ActionLink(Resource.Update, "Update","Submissions",new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right"})
-        @Html.ActionLink(Resource.Delete, "Delete","Submissions",new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right" })
-        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new {area="Administration", id = Model.Id}, new {@class= "btn btn-sm btn-primary small-margin-right" })
-        @Html.ActionLink(Resource.Authors_profile, "Index", "Profile", new {area="Users", id = Model.UserName} , new {@class= "btn btn-sm btn-primary small-margin-right" })  
-        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
+        @Html.ActionLink(Resource.Update, "Update", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Delete, "Delete", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Authors_profile, "Index", "Profile", new { area = "Users", id = Model.UserName }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        using (Html.BeginForm("Retest", "Submissions", new { area = "Administration" }, FormMethod.Post, new { @class = "inline-form", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m=>m.Id)
-            <input type="submit" class="btn btn-sm btn-primary" value = @Resource.Retest />
-           
+            @Html.HiddenFor(m => m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value=@Resource.Retest />
         }
     }
 </div>
@@ -109,20 +108,20 @@ else
     }
 
     if (!Model.HasTestRuns && Model.IsCompiledSuccessfully)
-    { 
-        var message = @Html.Raw(string.Format(@Resource.User_retest_prompt ,Model.Points, Model.MaxPoints));
+    {
+        var message = @Html.Raw(string.Format(@Resource.User_retest_prompt, Model.Points, Model.MaxPoints));
 
         <div class="alert alert-warning top-buffer">
             <p>@message</p>
         </div>
 
-        using (Html.BeginForm("Retest", "Submissions", new {area = "Administration"}, FormMethod.Post, new {@class = "inline-form", role="form"}))
+        using (Html.BeginForm("Retest", "Submissions", new { area = "Administration" }, FormMethod.Post, new { @class = "inline-form", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m=>m.Id)
-            <input type="submit" class="btn btn-sm btn-primary" value = @Resource.Retest />
+            @Html.HiddenFor(m => m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value=@Resource.Retest />
         }
-     }
+    }
 }
 @if (Model.Processed && (Model.ShowResults || Model.UserHasAdminPermission))
 {
@@ -178,16 +177,17 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        var displayShowInputButton = testResult.IsTrialTest || 
-                                    testResult.IsOpenTest || 
-                                    Model.UserHasAdminPermission || 
-                                    Model.ShowDetailedFeedback;
+        var displayShowInputButton = testResult.IsTrialTest ||
+            testResult.IsOpenTest ||
+            Model.UserHasAdminPermission ||
+            Model.ShowDetailedFeedback;
 
         var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
-                                            (testResult.IsTrialTest ||
-                                            Model.UserHasAdminPermission ||
-                                            Model.ShowDetailedFeedback ||
-                                            testResult.IsOpenTest);
+            (testResult.IsTrialTest ||
+            Model.UserHasAdminPermission ||
+            Model.ShowDetailedFeedback ||
+            testResult.IsOpenTest);
+
         if (displayExecutionComment)
         {
             var executionComment = testResult.ExecutionComment;
@@ -216,16 +216,16 @@ else
                     executionComment = executionComment.MaxLengthWithEllipsis(64);
                 }
             }
-         
+
             <div class="diff">
-               
+
                 @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
                           Resource.Show_input_text,
                           nameof(TestsController.GetInputData),
                           "Tests",
-                          new {testId = testResult.TestId, submissionId = Model.Id},
+                          new { testId = testResult.TestId, submissionId = Model.Id },
                           new AjaxOptions
                           {
                               HttpMethod = "Get",
@@ -234,7 +234,7 @@ else
                               OnSuccess = "onTestInputDataSuccess",
                               OnBegin = "preventDefaultIfLoadedOnce"
                           },
-                          new {id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId}))
+                          new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -310,8 +310,8 @@ else
             }
         }
 
-        <div>@Resource.Time_used: @($"{testResult.TimeUsed/1000.0:0.000}") s</div>
-        <div>@Resource.Memory_used: @($"{testResult.MemoryUsed/1024.0/1024.0:0.00}") MB</div>
+        <div>@Resource.Time_used: @($"{testResult.TimeUsed / 1000.0:0.000}") s</div>
+        <div>@Resource.Memory_used: @($"{testResult.MemoryUsed / 1024.0 / 1024.0:0.00}") MB</div>
     }
 }
 
