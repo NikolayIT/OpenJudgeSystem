@@ -54,7 +54,10 @@
         public void RecalculateParticipantScore(int participantId, int problemId)
         {
             var submission = this.Context.Submissions
-                .Where(x => x.ParticipantId == participantId && x.ProblemId == problemId && !x.IsDeleted)
+                .Where(x => x.ParticipantId == participantId
+                            && x.ProblemId == problemId
+                            && !x.IsDeleted
+                            && x.Processed)
                 .OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();

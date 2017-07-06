@@ -254,6 +254,15 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
+            if (!submission.ParticipantId.HasValue)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Потребителя не съществува!";
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+            }
+
+            var submissionProblemId = submission.ProblemId.Value;
+            var submissionParticipantId = submission.ParticipantId.Value;
+
             using (var scope = new TransactionScope())
             {
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
@@ -262,7 +271,12 @@
 
                 this.Data.SaveChanges();
 
-                if (submission.ParticipantId.HasValue && submission.ProblemId.HasValue)
+                var isBestSubmission = this.IsBestSubmission(
+                    submissionProblemId, 
+                    submissionParticipantId, 
+                    submission.Id);
+
+                if (isBestSubmission)
                 {
                     this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
                 }
@@ -283,6 +297,8 @@
             var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
             var submissions = submissionsDataSourceResult.Data;
 
+
+
             using (var scope = new TransactionScope())
             {
                 foreach (GridModelType submission in submissions)
@@ -293,10 +309,24 @@
                 this.Data.SaveChanges();
 
                 foreach (GridModelType submission in submissions)
-                {
+                {                   
                     var dbSubmission = this.Data.Submissions.GetById(submission.Id);
 
-                    if (dbSubmission.ParticipantId.HasValue && dbSubmission.ProblemId.HasValue)
+                    if (!dbSubmission.ParticipantId.HasValue)
+                    {
+                        this.TempData[GlobalConstants.DangerMessage] = "Потребителя не съществува!";
+                        return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                    }
+
+                    var submissionProblemId = dbSubmission.ProblemId.Value;
+                    var submissionParticipantId = dbSubmission.ParticipantId.Value;
+
+                    var isBestSubmission = this.IsBestSubmission(
+                        submissionProblemId, 
+                        submissionParticipantId,
+                        dbSubmission.Id);
+
+                    if (isBestSubmission)
                     {
                         this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
                     }
@@ -380,13 +410,31 @@
                 submission.Processed &&
                 !submission.Processing))
             {
+                if (!submission.ParticipantId.HasValue)
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = "Потребителя не съществува!";
+                    return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                }
+
+                var submissionProblemId = submission.ProblemId.Value;
+                var submissionParticipantId = submission.ParticipantId.Value;
+
                 using (var scope = new TransactionScope())
                 {
-                    this.Data.ParticipantScores.DeleteParticipantScore(submission);
-                    this.Data.SaveChanges();
-
                     submission.Processed = false;
                     submission.Processing = false;
+                    this.Data.SaveChanges();
+
+                    var submissionIsBestSubmission = this.IsBestSubmission(
+                        submissionProblemId,
+                        submissionParticipantId,
+                        submission.Id);
+
+                    if (submissionIsBestSubmission)
+                    {
+                        this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                    }
+
                     this.Data.SaveChanges();
 
                     scope.Complete();
@@ -529,5 +577,16 @@
                 }
             }
         }
+
+        private bool IsBestSubmission(int problemId, int participantId, int submissionId)
+        {
+            var bestScore = this.Data.ParticipantScores
+                .All()
+                .FirstOrDefault(ps => ps.ProblemId == problemId &&
+                                      ps.ParticipantId == participantId);
+
+            return bestScore?.SubmissionId == submissionId;
+        }
+
     }
 }
