@@ -207,6 +207,8 @@
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
+            this.EnsureAssemblyNameIsCorrect(project);
+
             foreach (var testName in this.TestNames)
             {
                 project.AddItem("Compile", $"{testName}{GlobalConstants.CSharpFileExtension}");
@@ -266,6 +268,19 @@
                     competeTests++;
                 }
             }
+        }
+
+        protected void EnsureAssemblyNameIsCorrect(Project project)
+        {
+            var assemblyNameProperty = project.AllEvaluatedProperties.FirstOrDefault(x => x.Name == "AssemblyName");
+            if (assemblyNameProperty == null)
+            {
+                throw new ArgumentException("Project file does not contain Assembly Name property!");
+            }
+
+            var csProjFullpath = project.FullPath;
+            var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
+            project.SetProperty("AssemblyName", projectName);
         }
     }
 }

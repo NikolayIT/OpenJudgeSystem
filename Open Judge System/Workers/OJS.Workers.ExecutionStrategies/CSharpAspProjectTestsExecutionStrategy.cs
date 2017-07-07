@@ -35,10 +35,10 @@
             bool nuGetPackageImportsTarget = project.Targets.ContainsKey("EnsureNuGetPackageBuildImports");
             if (nuGetPackageImportsTarget)
             {
-                this.RemoveXmlNodeFromCsProj(project.FullPath,NuGetXmlNodeXPath);
+                this.RemoveXmlNodeFromCsProj(project.FullPath, NuGetXmlNodeXPath);
             }
 
-            bool vsToolsImport =
+            var vsToolsImport =
                 project.Imports.Any(i =>
                     i.ImportingElement.Project ==
                     "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
