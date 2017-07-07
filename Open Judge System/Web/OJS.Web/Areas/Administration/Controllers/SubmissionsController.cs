@@ -297,8 +297,6 @@
             var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
             var submissions = submissionsDataSourceResult.Data;
 
-
-
             using (var scope = new TransactionScope())
             {
                 foreach (GridModelType submission in submissions)
