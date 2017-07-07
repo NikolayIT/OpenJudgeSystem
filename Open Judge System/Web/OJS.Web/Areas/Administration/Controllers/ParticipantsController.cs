@@ -9,10 +9,13 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using MissingFeatures;
+
     using Newtonsoft.Json;
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
 
@@ -135,7 +138,7 @@
 
         public JsonResult Contests(string text)
         {
-           var contests = this.Data.Contests
+            var contests = this.Data.Contests
                 .All()
                 .Select(ContestViewModel.ViewModel);
 
@@ -204,6 +207,40 @@
             this.Data.SaveChanges();
 
             return this.GridOperation(request, model);
+        }
+
+        public ActionResult NormalizeParticipants()
+        {
+            var problems = this.Data.Problems.All().ToList();
+            foreach (var problem in problems)
+            {
+                var data = new OjsData();
+                var participantScoreByParticipantAndProblemId = data.ParticipantScores.All()
+                    .Where(ps => ps.ProblemId == problem.Id)
+                    .GroupBy(p => new { p.ProblemId, p.ParticipantId });
+
+                var scoresMarkedForDeletion = new List<ParticipantScore>();
+                foreach (var participantScore in participantScoreByParticipantAndProblemId)
+                {
+                    if (participantScore.Count() > 1)
+                    {
+                        participantScore
+                            .OrderByDescending(ps => ps.Points)
+                            .ThenByDescending(ps => ps.Id)
+                            .Skip(1)
+                            .ForEach(ps => scoresMarkedForDeletion.Add(ps));
+                    }
+                }
+
+                foreach (var participantScoreForDeletion in scoresMarkedForDeletion)
+                {
+                    data.ParticipantScores.Delete(participantScoreForDeletion);
+                }
+
+                data.SaveChanges();
+            }
+
+            return null;
         }
     }
 }
