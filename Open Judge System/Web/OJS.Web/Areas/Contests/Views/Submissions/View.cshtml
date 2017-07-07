@@ -53,7 +53,7 @@
     {
         @Html.ActionLink(Resource.Update, "Update", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
         @Html.ActionLink(Resource.Delete, "Delete", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
-        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new { area = "Administration", id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary small-margin-right" })
         @Html.ActionLink(Resource.Authors_profile, "Index", "Profile", new { area = "Users", id = Model.UserName }, new { @class = "btn btn-sm btn-primary small-margin-right" })
         using (Html.BeginForm("Retest", "Submissions", new { area = "Administration" }, FormMethod.Post, new { @class = "inline-form", role = "form" }))
         {
