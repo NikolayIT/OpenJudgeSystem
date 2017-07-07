@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -108,37 +107,36 @@
             };
         }
 
-        protected bool CheckIfUserHasContestPermissions(int contestId)
-        {
-            return this.User.IsAdmin() ||
-                   this.Data.Contests
-                       .All()
-                       .Any(x =>
-                            x.Id == contestId &&
-                            (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                                x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
-        }
+        protected bool CheckIfUserHasContestPermissions(int contestId) =>
+            this.User.IsAdmin() ||
+            this.Data.Contests
+                .All()
+                .Any(x =>
+                    x.Id == contestId &&
+                    (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                    x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
 
-        protected bool CheckIfUserHasProblemPermissions(int problemId)
-        {
-            return this.User.IsAdmin() ||
-                   this.Data.Problems
-                       .All()
-                       .Any(x =>
-                            x.Id == problemId &&
-                            (x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                                x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
-        }
+        protected bool CheckIfUserHasProblemPermissions(int problemId) =>
+            this.User.IsAdmin() ||
+            this.Data.Problems
+                .All()
+                .Any(x =>
+                    x.Id == problemId &&
+                    (x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                    x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
 
-        protected bool CheckIfUserHasContestCategoryPermissions(int categoryId)
-        {
-            return this.User.IsAdmin() ||
-                   this.Data.ContestCategories
-                       .All()
-                       .Any(x =>
-                            x.Id == categoryId &&
-                            x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
-        }
+        protected bool CheckIfUserHasContestCategoryPermissions(int categoryId) =>
+            this.User.IsAdmin() ||
+            this.Data.ContestCategories
+                .All()
+                .Any(x =>
+                    x.Id == categoryId &&
+                    x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+               
+        protected bool CheckIfUserOwnsSubmission(int submissionId) =>
+            this.Data.Submissions
+                .All()
+                .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
 
         private SystemMessageCollection PrepareSystemMessages()
         {
@@ -161,11 +159,6 @@
                 {
                     messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
-                
-                ////if (!Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") || this.UserProfile.UserName.Length < 5 || this.UserProfile.UserName.Length > 15)
-                ////{
-                ////    messages.Add(Resources.Base.Main.Username_in_invalid_format, SystemMessageType.Warning, 0);
-                ////}
             }
 
             return messages;

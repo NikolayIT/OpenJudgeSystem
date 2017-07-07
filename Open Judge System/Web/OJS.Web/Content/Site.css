@@ -142,6 +142,10 @@ input[type="checkbox"].input-validation-error {
     margin-top: 10px;
 }
 
+.small-margin-right {
+    margin-right: 5px;
+}
+
 .captcha-container input {
     line-height: normal !important;
 }
@@ -350,4 +354,8 @@ pre {
 .pagination > li > a:focus, 
 .pagination > li > span:focus {
     background-color: #0f7864;
+}
+
+.inline-form {
+    display: inline;
 }

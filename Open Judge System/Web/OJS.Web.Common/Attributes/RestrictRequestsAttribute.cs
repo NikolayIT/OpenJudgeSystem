@@ -70,7 +70,7 @@
                 // Now we just need the target URL Information
                 var targetInfo = request.RawUrl + request.QueryString;
 
-                // Generate a hash for your strings (this appends each of the bytes of the value into a single hashed string
+                // Generate a hash for your strings (this appends each of the bytes of the value into a single hashed string)
                 var hashValue = string.Join(
                     string.Empty,
                     MD5.Create()
