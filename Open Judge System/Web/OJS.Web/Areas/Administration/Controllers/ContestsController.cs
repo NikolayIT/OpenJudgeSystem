@@ -325,31 +325,37 @@
                     officialParticipantSubmission.Participant = unofficialParticipant;
                 }
 
+                var scoresForDeletion = new List<ParticipantScore>();
+
                 foreach (var officialParticipantScore in officialParticipant.Scores)
                 {
                     var unofficialParticipantScore = unofficialParticipant
                         .Scores
                         .FirstOrDefault(s => s.ProblemId == officialParticipantScore.ProblemId);
 
-                    officialParticipantScore.IsOfficial = false;
-
-                    officialParticipantScore.Participant = unofficialParticipant;
-
                     if (unofficialParticipantScore != null)
                     {
-                        if (unofficialParticipantScore.Points == officialParticipantScore.Points)
+                        if (unofficialParticipantScore.Points < officialParticipantScore.Points ||
+                            (unofficialParticipantScore.Points == officialParticipantScore.Points &&
+                             unofficialParticipantScore.Id < officialParticipantScore.Id))
                         {
-                            unofficialParticipantScore = unofficialParticipantScore.Id > officialParticipantScore.Id
-                                                             ? unofficialParticipantScore
-                                                             : officialParticipantScore;
+                            unofficialParticipantScore = officialParticipantScore;
+                            unofficialParticipantScore.IsOfficial = false;
+                            unofficialParticipantScore.Participant = unofficialParticipant;
                         }
-                        else
-                        {
-                            unofficialParticipantScore = unofficialParticipantScore.Points > officialParticipantScore.Points
-                                                             ? unofficialParticipantScore
-                                                             : officialParticipantScore;
-                        }
+
+                        scoresForDeletion.Add(officialParticipantScore);
                     }
+                    else
+                    {
+                        officialParticipantScore.IsOfficial = false;
+                        officialParticipantScore.Participant = unofficialParticipant;
+                    }
+                }
+
+                foreach (var participantScoreForDeletion in scoresForDeletion)
+                {
+                    this.Data.ParticipantScores.Delete(participantScoreForDeletion);
                 }
 
                 this.Data.Participants.Delete(officialParticipant);
