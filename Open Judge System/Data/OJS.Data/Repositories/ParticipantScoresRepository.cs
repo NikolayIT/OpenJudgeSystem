@@ -44,7 +44,7 @@
                     IsOfficial = participant.IsOfficial
                 });
             }
-            else if (resetScore || submission.Points >= existingScore.Points || submission.Id == existingScore.Id)
+            else if (resetScore || submission.Points >= existingScore.Points || submission.Id == existingScore.SubmissionId)
             {
                 existingScore.SubmissionId = submission.Id;
                 existingScore.Points = submission.Points;
