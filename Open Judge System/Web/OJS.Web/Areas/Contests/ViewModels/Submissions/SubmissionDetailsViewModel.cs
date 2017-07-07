@@ -26,6 +26,7 @@
                     IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
                     IsDeleted = submission.IsDeleted,
                     Points = submission.Points,
+                    MaxPoints = submission.Problem.MaximumPoints,
                     Processed = submission.Processed,
                     Processing = submission.Processing,
                     ProblemId = submission.ProblemId,
@@ -67,6 +68,8 @@
 
         public int Points { get; set; }
 
+        public short MaxPoints { get; set; }
+
         public bool Processed { get; set; }
 
         public bool Processing { get; set; }
@@ -82,5 +85,7 @@
         public bool ShowDetailedFeedback { get; set; }
 
         public bool UserHasAdminPermission { get; set; }
+
+        public bool HasTestRuns => this.TestRuns.Any();
     }
 }

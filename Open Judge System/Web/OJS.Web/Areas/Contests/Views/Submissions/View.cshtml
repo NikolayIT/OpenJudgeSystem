@@ -47,14 +47,25 @@
 </ol>
 
 <h2>@ViewBag.Title</h2>
-<a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
+<div class="row'">
+    <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
+    @if (Model.UserHasAdminPermission)
+    {
+        @Html.ActionLink(Resource.Update, "Update", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Delete, "Delete", "Submissions", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Tests, "Problem", "Tests", new { area = "Administration", id = Model.Id }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        @Html.ActionLink(Resource.Authors_profile, "Index", "Profile", new { area = "Users", id = Model.UserName }, new { @class = "btn btn-sm btn-primary small-margin-right" })
+        using (Html.BeginForm("Retest", "Submissions", new { area = "Administration" }, FormMethod.Post, new { @class = "inline-form", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value=@Resource.Retest />
+        }
+    }
+</div>
+
 @if (Model.UserHasAdminPermission)
 {
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Update/@Model.Id">@Resource.Update</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Delete/@Model.Id">@Resource.Delete</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Tests/Problem/@Model.ProblemId">@Resource.Tests</a>
-    <a class="btn btn-sm btn-primary" href="/Users/@Model.UserName">@Resource.Authors_profile</a>
-    <a class="btn btn-sm btn-primary" href="/Administration/Submissions/Retest/@Model.Id">@Resource.Retest</a>
     <div class="clearfix"></div>
     if (!string.IsNullOrWhiteSpace(Model.ProcessingComment))
     {
@@ -62,33 +73,32 @@
         <pre>@Model.ProcessingComment</pre>
     }
 }
-<br />
 
 @if (Model.IsDeleted)
 {
-    <div class="alert alert-danger">@Resource.Submission_is_deleted</div>
+    <div class="alert alert-danger top-buffer">@Resource.Submission_is_deleted</div>
 }
 
 @if (!Model.Processed)
 {
     if (Model.Processing)
     {
-        <div class="alert alert-info">@Resource.Submission_is_processing</div>
+        <div class="alert alert-info top-buffer">@Resource.Submission_is_processing</div>
     }
     else
     {
-        <div class="alert alert-info">@Resource.Submission_in_queue</div>
+        <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
     }
 }
 else
 {
     if (!Model.IsCompiledSuccessfully)
     {
-        <div class="alert alert-danger">@Resource.Compile_time_error_occured</div>
+        <div class="alert alert-danger top-buffer">@Resource.Compile_time_error_occured</div>
     }
     else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
     {
-        <h2 class="text-success">@Resource.Compiled_successfully</h2>
+        <h2 class="text-success top-buffer">@Resource.Compiled_successfully</h2>
     }
 
     if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
@@ -96,8 +106,23 @@ else
         <h2>@Resource.Compilation_result:</h2>
         <pre>@Model.CompilerComment</pre>
     }
-}
 
+    if (!Model.HasTestRuns && Model.IsCompiledSuccessfully)
+    {
+        var message = @Html.Raw(string.Format(@Resource.User_retest_prompt, Model.Points, Model.MaxPoints));
+
+        <div class="alert alert-warning top-buffer">
+            <p>@message</p>
+        </div>
+
+        using (Html.BeginForm("Retest", "Submissions", new { area = "Administration" }, FormMethod.Post, new { @class = "inline-form", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <input type="submit" class="btn btn-sm btn-primary" value=@Resource.Retest />
+        }
+    }
+}
 @if (Model.Processed && (Model.ShowResults || Model.UserHasAdminPermission))
 {
     foreach (var testResult in Model.TestRuns.OrderByDescending(x => x.IsTrialTest).ThenBy(x => x.Order))
@@ -152,16 +177,17 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        var displayShowInputButton = testResult.IsTrialTest || 
-                                     testResult.IsOpenTest || 
-                                     Model.UserHasAdminPermission || 
-                                     Model.ShowDetailedFeedback;
+        var displayShowInputButton = testResult.IsTrialTest ||
+            testResult.IsOpenTest ||
+            Model.UserHasAdminPermission ||
+            Model.ShowDetailedFeedback;
 
         var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
-                                             (testResult.IsTrialTest ||
-                                              Model.UserHasAdminPermission ||
-                                              Model.ShowDetailedFeedback ||
-                                              testResult.IsOpenTest);
+            (testResult.IsTrialTest ||
+            Model.UserHasAdminPermission ||
+            Model.ShowDetailedFeedback ||
+            testResult.IsOpenTest);
+
         if (displayExecutionComment)
         {
             var executionComment = testResult.ExecutionComment;
@@ -190,16 +216,16 @@ else
                     executionComment = executionComment.MaxLengthWithEllipsis(64);
                 }
             }
-         
+
             <div class="diff">
-               
+
                 @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
                           Resource.Show_input_text,
                           nameof(TestsController.GetInputData),
                           "Tests",
-                          new {testId = testResult.TestId, submissionId = Model.Id},
+                          new { testId = testResult.TestId, submissionId = Model.Id },
                           new AjaxOptions
                           {
                               HttpMethod = "Get",
@@ -208,7 +234,7 @@ else
                               OnSuccess = "onTestInputDataSuccess",
                               OnBegin = "preventDefaultIfLoadedOnce"
                           },
-                          new {id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId}))
+                          new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -284,8 +310,8 @@ else
             }
         }
 
-        <div>@Resource.Time_used: @($"{testResult.TimeUsed/1000.0:0.000}") s</div>
-        <div>@Resource.Memory_used: @($"{testResult.MemoryUsed/1024.0/1024.0:0.00}") MB</div>
+        <div>@Resource.Time_used: @($"{testResult.TimeUsed / 1000.0:0.000}") s</div>
+        <div>@Resource.Memory_used: @($"{testResult.MemoryUsed / 1024.0 / 1024.0:0.00}") MB</div>
     }
 }
 
