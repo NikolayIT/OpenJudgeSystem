@@ -184,7 +184,7 @@
                     participant.UserId,
                     ResultsInPercentages = participant
                         .Scores
-                        .Where(s => s.Problem.ContestId == contestId.Value)
+                        .Where(s => !s.Problem.IsDeleted && s.Problem.ContestId == contestId.Value)
                         .Select(p => p.Points)
                         .DefaultIfEmpty(0)
                         .Sum() / contestMaxPoints * 100
