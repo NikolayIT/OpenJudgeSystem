@@ -23,7 +23,7 @@
 
         protected const string JUnitRunnerClassName = "_$TestRunner";
 
-        protected const string AdditionalExecutionArguments = "-Dfile.encoding=UTF-8 -Xms8m -Xmx128m";
+        protected const string AdditionalExecutionArguments = "-Dfile.encoding=UTF-8 -Xms16m -Xmx256m";
 
         protected const string TestResultsRegex = @"Total Tests: (\d+) Successful: (\d+) Failed: (\d+)";
 
