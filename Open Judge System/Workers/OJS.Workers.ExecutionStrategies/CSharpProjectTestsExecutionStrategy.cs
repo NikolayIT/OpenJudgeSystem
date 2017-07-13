@@ -5,7 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-
+    using Common.Helpers;
     using Microsoft.Build.Evaluation;
 
     using OJS.Common;
@@ -46,7 +46,8 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
-        protected static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
+        protected static readonly string ErrorMessageRegex = $@"\d+\) (Failed\s:\s(.*)\.(.*)){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
+       // protected static readonly string ErrorMessageRegex = $@"\d+\) (Failed\s:\s(.*)\.(.*))";
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
@@ -193,10 +194,10 @@
 
             foreach (Match error in errors)
             {
-                var errorMethod = error.Groups[1].Value;
-                var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
+                var errorMethod = error.Groups[3].Value;
+               // var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
                 var fileName = error.Groups[4].Value;
-                errorsByFiles.Add(fileName, $"{errorMethod}{Environment.NewLine}{cause}");
+                errorsByFiles.Add(fileName, $"{errorMethod}{Environment.NewLine}{error.Groups[0]}");
             }
 
             return errorsByFiles;
@@ -250,24 +251,11 @@
 
         protected virtual void ExtractTestNames(IEnumerable<TestContext> tests)
         {
-            var trialTests = 1;
-            var competeTests = 1;
-
             foreach (var test in tests)
             {
-                if (test.IsTrialTest)
-                {
-                    var testNumber = trialTests < 10 ? $"00{trialTests}" : $"0{trialTests}";
-                    this.TestNames.Add($"{TrialTest}.{testNumber}");
-                    trialTests++;
-                }
-                else
-                {
-                    var testNumber = competeTests < 10 ? $"00{competeTests}" : $"0{competeTests}";
-                    this.TestNames.Add($"{CompeteTest}.{testNumber}");
-                    competeTests++;
-                }
-            }
+                string testName = JavaCodePreprocessorHelper.GetClassName(test.Input);
+                this.TestNames.Add(testName);
+            }           
         }
 
         protected void EnsureAssemblyNameIsCorrect(Project project)
