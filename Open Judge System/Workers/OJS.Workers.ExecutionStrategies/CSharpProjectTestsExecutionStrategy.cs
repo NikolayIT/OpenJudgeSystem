@@ -46,8 +46,8 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts error/failure messages and the class which threw it
-        protected static readonly string ErrorMessageRegex = $@"\d+\) (Failed\s:\s(.*)\.(.*)){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
-       // protected static readonly string ErrorMessageRegex = $@"\d+\) (Failed\s:\s(.*)\.(.*))";
+       // protected static readonly string ErrorMessageRegex = $@"\d+\) (Failed\s:\s(.*)\.(.*)){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
+        protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
@@ -194,10 +194,10 @@
 
             foreach (Match error in errors)
             {
-                var errorMethod = error.Groups[3].Value;
-               // var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
-                var fileName = error.Groups[4].Value;
-                errorsByFiles.Add(fileName, $"{errorMethod}{Environment.NewLine}{error.Groups[0]}");
+                var failedAssert = error.Groups[1].Value;
+                var cause = error.Groups[4].Value.Replace(Environment.NewLine, string.Empty);
+                var fileName = error.Groups[2].Value;
+                errorsByFiles.Add(fileName, $"{failedAssert} : {cause}");
             }
 
             return errorsByFiles;
