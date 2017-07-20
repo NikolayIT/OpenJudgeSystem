@@ -21,6 +21,8 @@
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
+            string sinonModulePath,
+            string sinonChaiModulePath,
             string jsdomModulePath,
             string jqueryModulePath,
             string underscoreModulePath,
@@ -32,6 +34,8 @@
                 nodeJsExecutablePath,
                 mochaModulePath,
                 chaiModulePath,
+                sinonModulePath,
+                sinonChaiModulePath,
                 underscoreModulePath,
                 baseTimeUsed,
                 baseMemoryUsed)
