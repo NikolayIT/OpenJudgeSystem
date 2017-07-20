@@ -15,6 +15,8 @@
             string nodeJsExecutablePath,
             string mochaModulePath,
             string chaiModulePath,
+            string sinonModulePath,
+            string sinonChaiModulePath,
             string underscoreModulePath,
             int baseTimeUsed,
             int baseMemoryUsed)
@@ -34,21 +36,44 @@
                     nameof(chaiModulePath));
             }
 
+            if (!Directory.Exists(sinonModulePath))
+            {
+                throw new ArgumentException(
+                    $"Sinon not found in: {sinonModulePath}",
+                    nameof(sinonModulePath));
+            }
+
+            if (!Directory.Exists(sinonChaiModulePath))
+            {
+                throw new ArgumentException(
+                    $"Sinon-chai not found in: {sinonChaiModulePath}",
+                    nameof(sinonChaiModulePath));
+            }
+
             this.MochaModulePath = mochaModulePath;
             this.ChaiModulePath = FileHelpers.ProcessModulePath(chaiModulePath);
+            this.SinonModulePath = FileHelpers.ProcessModulePath(sinonModulePath);
+            this.SinonChaiModulePath = FileHelpers.ProcessModulePath(sinonChaiModulePath);
         }
 
         protected string MochaModulePath { get; }
 
         protected string ChaiModulePath { get; }
 
+        protected string SinonModulePath { get; }
+
+        protected string SinonChaiModulePath { get; }
+
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
     chai = require('" + this.ChaiModulePath + @"'),
+    sinon = require('" + this.SinonModulePath + @"'),
+    sinonChai = require('" + this.SinonChaiModulePath + @"'),
 	assert = chai.assert,
 	expect = chai.expect,
 	should = chai.should()";
 
         protected override string JsCodePreevaulationCode => @"
+chai.use(sinonChai);
 describe('TestScope', function() {
     let code = {
         run: " + UserInputPlaceholder + @"
@@ -90,7 +115,7 @@ describe('TestScope', function() {
         protected override string JsCodePostevaulationCode => @"
 });";
 
-        protected virtual string TestFuncVariables => "'assert', 'expect', 'should'";
+        protected virtual string TestFuncVariables => "'assert', 'expect', 'should', 'sinon'";
 
         protected override List<TestResult> ProcessTests(
            ExecutionContext executionContext,

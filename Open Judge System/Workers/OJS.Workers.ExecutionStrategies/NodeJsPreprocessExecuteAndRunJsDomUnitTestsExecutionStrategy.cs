@@ -26,6 +26,8 @@
                 nodeJsExecutablePath,
                 mochaModulePath,
                 chaiModulePath,
+                sinonModulePath,
+                sinonChaiModulePath,
                 underscoreModulePath,
                 baseTimeUsed,
                 baseMemoryUsed)
@@ -51,25 +53,9 @@
                     nameof(handlebarsModulePath));
             }
 
-            if (!Directory.Exists(sinonModulePath))
-            {
-                throw new ArgumentException(
-                    $"Sinon not found in: {sinonModulePath}",
-                    nameof(sinonModulePath));
-            }
-
-            if (!Directory.Exists(sinonChaiModulePath))
-            {
-                throw new ArgumentException(
-                    $"Sinon-chai not found in: {sinonChaiModulePath}",
-                    nameof(sinonChaiModulePath));
-            }
-
             this.JsDomModulePath = FileHelpers.ProcessModulePath(jsdomModulePath);
             this.JQueryModulePath = FileHelpers.ProcessModulePath(jqueryModulePath);
             this.HandlebarsModulePath = FileHelpers.ProcessModulePath(handlebarsModulePath);
-            this.SinonModulePath = FileHelpers.ProcessModulePath(sinonModulePath);
-            this.SinonChaiModulePath = FileHelpers.ProcessModulePath(sinonChaiModulePath);
         }
 
         protected string JsDomModulePath { get; }
@@ -77,10 +63,6 @@
         protected string JQueryModulePath { get; }
 
         protected string HandlebarsModulePath { get; }
-
-        protected string SinonModulePath { get; }
-
-        protected string SinonChaiModulePath { get; }
 
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + @",
     jsdom = require('" + this.JsDomModulePath + @"'),
@@ -125,7 +107,7 @@ describe('TestDOMScope', function() {
 
         protected override string JsCodeEvaluation => TestsPlaceholder;
 
-        protected override string TestFuncVariables => base.TestFuncVariables + ", '_', 'sinon'";
+        protected override string TestFuncVariables => base.TestFuncVariables + ", '_'";
 
         protected virtual string BuildTests(IEnumerable<TestContext> tests)
         {

@@ -326,6 +326,8 @@
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath,
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
@@ -399,6 +401,8 @@
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.UnderscoreModulePath,
