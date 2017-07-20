@@ -161,7 +161,7 @@ let adapterFunction = " + AdapterFunctionPlaceholder;
 process.stdin.resume();
 process.stdin.on('data', function(buf) { content += buf.toString(); });
 process.stdin.on('end', function() {
-    content = content.replace(new RegExp(EOL + '$'), '');
+
     let inputData = content.split(EOL);
     let result = adapterFunction(inputData, code.run);
     if (result !== undefined) {
@@ -238,14 +238,21 @@ process.stdin.on('end', function() {
                 executionContext.MemoryLimit + this.BaseMemoryUsed,
                 additionalArguments);
 
-            // No update of time and memory when the result is TimeLimit or MemoryLimit - show how wasteful the solution is
-            if (processExecutionResult.Type != ProcessExecutionResultType.TimeLimit &&
-                processExecutionResult.Type != ProcessExecutionResultType.MemoryLimit)
+            processExecutionResult.MemoryUsed = Math.Max(processExecutionResult.MemoryUsed - this.BaseMemoryUsed, this.BaseMemoryUsed);
+
+            // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
+            // otherwise display TotalProcessorTime, so people have an acurate idea of the time their program used
+            if (processExecutionResult.ProcessWasKilled)
             {
                 processExecutionResult.TimeWorked = processExecutionResult.TimeWorked.TotalMilliseconds > this.BaseTimeUsed
                     ? processExecutionResult.TimeWorked - TimeSpan.FromMilliseconds(this.BaseTimeUsed)
-                    : TimeSpan.FromMilliseconds(this.BaseTimeUsed);
-                processExecutionResult.MemoryUsed = Math.Max(processExecutionResult.MemoryUsed - this.BaseMemoryUsed, this.BaseMemoryUsed);
+                    : processExecutionResult.TimeWorked;
+            }
+            else
+            {
+                processExecutionResult.TimeWorked = processExecutionResult.TotalProcessorTime.TotalMilliseconds > this.BaseTimeUsed
+                    ? processExecutionResult.TotalProcessorTime - TimeSpan.FromMilliseconds(this.BaseTimeUsed)
+                    : processExecutionResult.TotalProcessorTime;
             }
 
             return processExecutionResult;

@@ -318,7 +318,7 @@
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
                         Settings.NodeJsExecutablePath,
                         Settings.UnderscoreModulePath,
-                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds * 2,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
