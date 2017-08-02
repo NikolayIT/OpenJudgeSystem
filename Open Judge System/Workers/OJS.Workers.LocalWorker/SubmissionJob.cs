@@ -1,6 +1,9 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading;
 
@@ -20,11 +23,11 @@
     {
         private readonly ILog logger;
 
-        private readonly SynchronizedHashtable processingSubmissionIds;
+        private readonly ConcurrentQueue<int> submissionsForProcessing;
 
         private bool stopping;
 
-        public SubmissionJob(string name, SynchronizedHashtable processingSubmissionIds)
+        public SubmissionJob(string name, ConcurrentQueue<int> submissionsForProcessing)
         {
             this.Name = name;
 
@@ -32,7 +35,10 @@
             this.logger.Info("SubmissionJob initializing...");
 
             this.stopping = false;
-            this.processingSubmissionIds = processingSubmissionIds;
+
+            // this.processingSubmissionIds = processingSubmissionIds;
+
+            this.submissionsForProcessing = submissionsForProcessing;
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -46,39 +52,45 @@
             {
                 var data = new OjsData();
                 Submission submission;
+                int submissionId;
+
                 try
                 {
-                    submission = data.Submissions.GetSubmissionForProcessing();
+                    var retrievedSubmissionSuccessfully = false;
+                    lock (this.submissionsForProcessing)
+                    {
+                        if (this.submissionsForProcessing.IsEmpty)
+                        {
+                            var submissions = data
+                                .Submissions
+                                .All()
+                                .Where(x => !x.Processed && !x.Processing)
+                                .OrderBy(x => x.Id)
+                                .Select(x => x.Id)
+                                .ToList();
+
+                            submissions.ForEach(this.submissionsForProcessing.Enqueue);
+                        }
+
+                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);                     
+                    }
+
+                    if (retrievedSubmissionSuccessfully)
+                    {
+                        this.logger.InfoFormat("Submission {0} retrieved from database successfully", submissionId);
+                        submission = data.Submissions.GetById(submissionId);
+                        submission.Processing = true;
+                        data.SaveChanges();
+                    }
+                    else
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
                 }
                 catch (Exception exception)
                 {
                     this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
-                    throw;
-                }
-
-                if (submission == null)
-                {
-                    // No submission available. Wait 1 second and try again.
-                    Thread.Sleep(1000);
-                    continue;
-                }
-
-                if (!this.processingSubmissionIds.Add(submission.Id))
-                {
-                    // Other thread is processing the same submission. Wait the other thread to set Processing to true and then try again.
-                    Thread.Sleep(100);
-                    continue;
-                }
-
-                try
-                {
-                    submission.Processing = true;
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
-                    this.processingSubmissionIds.Remove(submission.Id);
                     throw;
                 }
 
@@ -138,7 +150,8 @@
                 }
 
                 // Next line removes the submission from the list. Fixes problem with retesting submissions.
-                this.processingSubmissionIds.Remove(submission.Id);
+                // this.processingSubmissionIds.Remove(submission.Id);
+                this.logger.InfoFormat("Submission {0} successfully processed", submissionId);
             }
 
             this.logger.Info("SubmissionJob stopped.");
