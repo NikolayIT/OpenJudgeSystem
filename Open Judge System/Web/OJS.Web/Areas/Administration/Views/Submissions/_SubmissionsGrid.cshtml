@@ -1,4 +1,6 @@
 ﻿@using System.Collections
+@using OJS.Web.Areas.Administration.ViewModels.Submission
+
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 @using Resource = Resources.Areas.Administration.Submissions.Views.Partials.SubmissionsGrid
 
@@ -8,23 +10,24 @@
     const string ControllerName = "Submissions";
 }
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
+@(Html.Kendo().Grid<SubmissionAdministrationGridViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
     {
-        columns.Bound(model => model.Id);
-        columns.Bound(model => model.ParticipantName);
-        columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
-        columns.Bound(model => model.ContestName).ClientTemplate("<a href='/Contests/#= ContestId #/#= ContestUrlName #'>#= ContestName #</a>");
-        columns.Bound(model => model.SubmissionTypeName);
-        columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
-        columns.Bound(model => model.Points);
-        columns.Bound(model => model.CreatedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
-        columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Retest + "</a>").Title(Resource.Retest);
+    columns.Bound(model => model.Id);
+    columns.Bound(model => model.ParticipantName);
+    columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
+    columns.Bound(model => model.ContestName).ClientTemplate("<a href='/Contests/#= ContestId #/#= ContestUrlName #'>#= ContestName #</a>");
+    columns.Bound(model => model.SubmissionTypeName);
+    columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
+    columns.Bound(model => model.Points);
+    columns.Bound(model => model.CreatedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
+    columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
+    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
+    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
+    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
+    @*columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Retest + "</a>").Title(Resource.Retest);*@
+        columns.Template(@<text></text>).ClientTemplate("#createRetestForm(Id)#").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
@@ -83,4 +86,13 @@
             return confirm('Сигурни ли сте, че искате да изтриете избраните ' + submissionsCount + ' решения? Моля, уверете се, че сте филтрирали коректно преди да продължите.');
         });
     });
+    function createRetestForm(id) {
+        var formOpeningTagHtml = "<form action=\"/Administration/Submissions/Retest\" class=\"inline-form\" method=\"post\" role=\"form\">";
+        var inputHtml = "<input data-val=\"true\" data-val-number=\"The field Id must be a number.\" data-val-required=\"The Id field is required.\" id=\"Id\" name=\"Id\" type=\"hidden\" value=\"" +id +" />";
+        var submitHtml = "<input type=\"submit\" class=\"btn btn-sm btn-primary\" value=Retest />";
+        var formHtmlClosingTag = "</form>";
+        var formHtml = formOpeningTagHtml + inputHtml + submitHtml + formHtmlClosingTag;
+        console.log(formHtml);
+        return formHtml;
+    }
 </script>
