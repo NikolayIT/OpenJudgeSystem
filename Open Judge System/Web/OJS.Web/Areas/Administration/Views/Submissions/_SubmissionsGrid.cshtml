@@ -9,7 +9,7 @@
 @{
     const string ControllerName = "Submissions";
 }
-var asd = @Html.AntiForgeryToken()
+
 @(Html.Kendo().Grid<SubmissionAdministrationGridViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
