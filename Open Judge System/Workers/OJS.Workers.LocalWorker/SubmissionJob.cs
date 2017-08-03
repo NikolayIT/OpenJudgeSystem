@@ -33,8 +33,6 @@
 
             this.stopping = false;
 
-            // this.processingSubmissionIds = processingSubmissionIds;
-
             this.submissionsForProcessing = submissionsForProcessing;
 
             this.logger.Info("SubmissionJob initialized.");
@@ -146,8 +144,6 @@
                     this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
                 }
 
-                // Next line removes the submission from the list. Fixes problem with retesting submissions.
-                // this.processingSubmissionIds.Remove(submission.Id);
                 this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
             }
 
