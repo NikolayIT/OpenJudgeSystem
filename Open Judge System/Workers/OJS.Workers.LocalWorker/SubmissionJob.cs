@@ -2,14 +2,11 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using System.Threading;
 
     using log4net;
 
-    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -77,7 +74,7 @@
 
                     if (retrievedSubmissionSuccessfully)
                     {
-                        this.logger.InfoFormat("Submission {0} retrieved from database successfully", submissionId);
+                        this.logger.InfoFormat("Submission №{0} retrieved from database successfully", submissionId);
                         submission = data.Submissions.GetById(submissionId);
                         submission.Processing = true;
                         data.SaveChanges();
@@ -151,7 +148,7 @@
 
                 // Next line removes the submission from the list. Fixes problem with retesting submissions.
                 // this.processingSubmissionIds.Remove(submission.Id);
-                this.logger.InfoFormat("Submission {0} successfully processed", submissionId);
+                this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
             }
 
             this.logger.Info("SubmissionJob stopped.");

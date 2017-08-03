@@ -10,7 +10,6 @@
     using EntityFramework.Extensions;
     using log4net;
 
-    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
 
@@ -28,7 +27,6 @@
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
-            var processingSubmissionIds = new SynchronizedHashtable();
             var submissionsForProcessing = new ConcurrentQueue<int>();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
