@@ -13,7 +13,22 @@
     {
         protected const string RemoveMacFolderPattern = "__MACOSX/*";
 
+        protected string WorkingDirectory { get; set; }
+
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
+
+        public ExecutionResult SafeExecute(ExecutionContext executionContext)
+        {
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+            try
+            {
+                return this.Execute(executionContext);
+            }
+            finally
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+            }
+        }
 
         protected ExecutionResult CompileExecuteAndCheck(
             ExecutionContext executionContext,
@@ -145,3 +160,4 @@
         }
     }
 }
+
