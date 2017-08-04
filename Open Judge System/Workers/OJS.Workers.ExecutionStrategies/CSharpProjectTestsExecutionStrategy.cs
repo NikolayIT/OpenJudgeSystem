@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Common.Helpers;
     using Microsoft.Build.Evaluation;
 
     using OJS.Common;
@@ -13,6 +12,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class CSharpProjectTestsExecutionStrategy : ExecutionStrategy
@@ -170,10 +170,10 @@
                 false,
                 true);
 
-            var totalFailedTestsCount = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
+            var (totalTestsCount, failedTestsCount) = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
 
-            if (totalFailedTestsCount != errorsByFiles.Count)
+            if (failedTestsCount != errorsByFiles.Count || totalTestsCount != executionContext.Tests.Count())
             {
                 throw new ArgumentException("Failing tests not captured properly, please contact an administrator");
             }
@@ -281,7 +281,7 @@
             project.SetProperty("AssemblyName", projectName);
         }
 
-        private int ExtractTotalFailedTestsCount(string testsOutput)
+        private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
         {
             var testsSummaryMatcher = new Regex(TestResultsRegex);
             var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
@@ -290,8 +290,9 @@
                 throw new ArgumentException("The process did not produce any output!");
             }
 
-            int totalFailedTests = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
-            return totalFailedTests;
+            var failedTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
+            var totalTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[1].Value);
+            return (totalTestsCount, failedTestsCount);
         }
     }
 }
