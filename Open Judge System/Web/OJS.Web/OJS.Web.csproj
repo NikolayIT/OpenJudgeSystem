@@ -1865,7 +1865,6 @@
     <Content Include="Areas\Administration\Views\Resources\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
-    <Content Include="JSLintNet.json" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\NonEditable.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\MultiLineText.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\SingleLineText.cshtml" />
