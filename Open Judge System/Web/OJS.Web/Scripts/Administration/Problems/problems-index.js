@@ -64,6 +64,7 @@ function populateDropDowns(contestIdAsString) {
             }
         });
 
+        /* eslint max-nested-callbacks: 0 */
         // TODO: Refactor using promises or async/await
         categoriesData.fetch(function () {
             categories.dataSource.data(categoriesData);

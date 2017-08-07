@@ -109,6 +109,7 @@ $(document).ready(function () {
         position: 'bottom'
     });
 
+    /* eslint max-nested-callbacks: 0 */
     // TODO: Callback hell - refactor using promises or async/await
     $('#add-resource').click(function (e) {
         e.preventDefault();

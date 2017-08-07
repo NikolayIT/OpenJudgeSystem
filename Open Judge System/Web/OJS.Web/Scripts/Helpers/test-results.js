@@ -34,6 +34,7 @@
     return result;
 };
 
+/* eslint max-params: 0 */
 // TODO: Refactor - too many params
 /* exported testResult */
 function testResult(
