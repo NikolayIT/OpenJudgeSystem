@@ -26,7 +26,7 @@
     columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
     columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
     columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);  
-        columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
+    columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
@@ -93,7 +93,6 @@
         var submitHtml = "<input type=\"submit\" class=\"k-button k-button-icontext\" value=Retest />";
         var formHtmlClosingTag = "</form>";
         var formHtml = formOpeningTagHtml + inputHtml + antiforgeryTokenHtml + submitHtml + formHtmlClosingTag;
-        console.log(formHtml);
         return formHtml;
     }
 </script>
