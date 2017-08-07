@@ -8,6 +8,7 @@ function CategoryExpander() {
     var data = [];
     var firstLoad = true;
 
+    /* eslint consistent-this: 0 */
     var self;
 
     var init = function(treeView, treeViewSelector) {

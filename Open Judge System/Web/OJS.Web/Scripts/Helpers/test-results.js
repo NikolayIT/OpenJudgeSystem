@@ -49,6 +49,7 @@ function testResult(
 
     var result = '';
 
+    /* eslint no-negated-condition: 0 */
     if (!processed) {
         result += '<span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>';
         result += '<strong class="text-primary"> Обработва се...</strong>';

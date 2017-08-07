@@ -22,6 +22,8 @@ function CreateExportToExcelButton(elementId) {
     CreateKendoSubmitParamsButton('export', elementId);
 }
 
+/* eslint new-cap: 0 */
+// TODO: Convert to lower-case
 function CreateKendoSubmitParamsButton(buttonId, elementId) {
     'use strict';
 
@@ -49,6 +51,7 @@ function CreateKendoSubmitParamsButton(buttonId, elementId) {
     href = href.replace(/sort=([^&]*)/, 'sort=' + requestObject.sort || '~');
 
     // Update the 'pageSize' parameter with the grid's current pageSize
+    /* eslint no-underscore-dangle: 0 */
     href = href.replace(/pageSize=([^&]*)/, 'pageSize=' + grid.dataSource._pageSize);
 
     //update filter descriptor with the filters applied
