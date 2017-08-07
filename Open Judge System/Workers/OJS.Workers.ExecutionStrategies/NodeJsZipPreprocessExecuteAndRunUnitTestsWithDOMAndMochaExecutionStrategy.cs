@@ -71,18 +71,11 @@
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
-        ~NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
-        }
-
         protected string BrowserifyModulePath { get; }
 
         protected string BabelifyModulePath { get; }
 
         protected string EcmaScriptImportPluginPath { get; }
-
-        protected string WorkingDirectory { get; set; }
 
         protected string ProgramEntryPath { get; set; }
 
@@ -171,7 +164,7 @@ function afterBundling() {
                 this.ProgramEntryPath);
 
             // Save code to file
-            var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
+            var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
 
             // Create a Restricted Process Executor
             var executor = new RestrictedProcessExecutor();
@@ -232,7 +225,7 @@ function afterBundling() {
 
         protected virtual string PrepareSubmissionFile(byte[] submissionFileContent)
         {
-            var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
+            var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";           
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
             FileHelpers.ConvertContentToZip(submissionFilePath);
             FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);

@@ -17,10 +17,26 @@
             return tempFilePath;
         }
 
+        public static string SaveStringToTempFile(string directory, string stringToWrite)
+        {
+            var tempFilePath = Path.GetTempFileName();
+            var fullTempFilePath = $"{directory}\\{tempFilePath}";
+            File.WriteAllText(fullTempFilePath, stringToWrite);
+            return tempFilePath;
+        }
+
         public static string SaveByteArrayToTempFile(byte[] dataToWrite)
         {
             var tempFilePath = Path.GetTempFileName();
             File.WriteAllBytes(tempFilePath, dataToWrite);
+            return tempFilePath;
+        }
+
+        public static string SaveByteArrayToTempFile(string directory, byte[] dataToWrite)
+        {
+            var tempFilePath = Path.GetTempFileName();
+            var fullTempFilePath = $"{directory}\\{tempFilePath}";
+            File.WriteAllBytes(fullTempFilePath, dataToWrite);
             return tempFilePath;
         }
 

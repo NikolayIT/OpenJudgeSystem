@@ -25,13 +25,6 @@
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
-        ~CPlusPlusZipFileExecutionStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
-        }
-
-        public string WorkingDirectory { get; set; }
-
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
