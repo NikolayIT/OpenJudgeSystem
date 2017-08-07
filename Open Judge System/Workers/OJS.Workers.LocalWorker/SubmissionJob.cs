@@ -56,8 +56,7 @@
                     {
                         if (this.submissionsForProcessing.IsEmpty)
                         {
-                            var submissions = data
-                                .Submissions
+                            var submissions = data.Submissions
                                 .All()
                                 .Where(x => !x.Processed && !x.Processing)
                                 .OrderBy(x => x.Id)
