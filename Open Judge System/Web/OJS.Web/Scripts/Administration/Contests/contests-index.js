@@ -1,4 +1,5 @@
-﻿function getTypeName(type) {
+﻿/* exported getTypeName */
+function getTypeName(type) {
     'use strict';
 
     switch (type) {
@@ -15,6 +16,7 @@
     }
 }
 
+/* exported copyFromContest */
 function copyFromContest(ev, contestId) {
     'use strict';
 

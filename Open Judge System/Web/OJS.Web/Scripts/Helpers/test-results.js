@@ -35,6 +35,7 @@
 };
 
 // TODO: Refactor - too many params
+/* exported testResult */
 function testResult(
     tests,
     points,

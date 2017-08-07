@@ -1,4 +1,5 @@
-﻿function additionalFilesValidation(e) {
+﻿/* exported additionalFilesValidation */
+function additionalFilesValidation(e) {
     'use strict';
 
     var files = e.files;
@@ -11,7 +12,7 @@ $(document).ready(function () {
 
     $.validator.addMethod(
         'date',
-        function (value, element, params) {
+        function (value, element) {
             if (this.optional(element)) {
                 return true;
             }

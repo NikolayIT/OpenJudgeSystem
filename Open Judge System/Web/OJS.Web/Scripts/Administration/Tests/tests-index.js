@@ -1,4 +1,5 @@
-﻿function onAdditionalData() {
+﻿/* exported onAdditionalData */
+function onAdditionalData() {
     'use strict';
 
     return {
@@ -6,6 +7,7 @@
     };
 }
 
+/* exported onSearchSelect */
 function onSearchSelect(e) {
     'use strict';
 
@@ -14,6 +16,7 @@ function onSearchSelect(e) {
     populateDropDowns(problemId);
 }
 
+/* exported filterContests */
 function filterContests() {
     'use strict';
 
@@ -22,6 +25,7 @@ function filterContests() {
     };
 }
 
+/* exported filterProblems */
 function filterProblems() {
     'use strict';
 
@@ -30,6 +34,7 @@ function filterProblems() {
     };
 }
 
+/* exported onProblemSelect */
 function onProblemSelect() {
     'use strict';
 
@@ -48,6 +53,7 @@ function onProblemSelect() {
     }
 }
 
+/* exported getTestTypeString */
 function getTestTypeString(type) {
     'use strict';
 
@@ -90,23 +96,23 @@ function populateDropDowns(problemIdAsString) {
             }
         });
 
-        var contestsData = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: '/Administration/Tests/GetCascadeContests/' + categoryId.toString(),
-                    dataType: 'json'
-                }
-            }
-        });
+        ////var contestsData = new kendo.data.DataSource({
+        ////    transport: {
+        ////        read: {
+        ////            url: '/Administration/Tests/GetCascadeContests/' + categoryId.toString(),
+        ////            dataType: 'json'
+        ////        }
+        ////    }
+        ////});
 
-        var problemsData = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: '/Administration/Tests/GetCascadeProblems/' + contestId.toString(),
-                    dataType: 'json'
-                }
-            }
-        });
+        ////var problemsData = new kendo.data.DataSource({
+        ////    transport: {
+        ////        read: {
+        ////            url: '/Administration/Tests/GetCascadeProblems/' + contestId.toString(),
+        ////            dataType: 'json'
+        ////        }
+        ////    }
+        ////});
 
         function categoriesCascade() {
             contests.dataSource.fetch(function () {
@@ -149,50 +155,50 @@ function initializeGrid(problemId, contestId) {
     'use strict';
 
     var response;
-    var grid;
 
     $('#status').show();
 
-    var request = $.get('/Administration/Tests/ProblemTests/' + problemId, function (data) {
+    $.get('/Administration/Tests/ProblemTests/' + problemId, function (data) {
         response = data;
-    })
-        .then(function () {
-            $('#status').hide();
-            $('#grid').html('');
+    }).then(function () {
+        $('#status').hide();
+        $('#grid').html('');
 
-            $('#grid').kendoGrid({
-                dataSource: new kendo.data.DataSource({
-                    data: response
-                }),
-                scrollable: false,
-                toolbar: [{
-                    template: '<a href="/Administration/Tests/Create/' + problemId +
-                    '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Tests/DeleteAll/' + problemId +
-                    '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/Contest/' + contestId +
-                    '" class="btn btn-sm btn-primary">Към задачите</a>' +
-                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId +
-                    '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a href="/Administration/Tests/Export/' + problemId +
-                    '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>' +
-                    ' <a href="/Contests/Practice/Index/' + contestId +
-                    '" class="btn btn-sm btn-primary">Изпрати решение/я</a>'
-                }],
-                columns: [
-                    { field: 'Input', title: 'Вход' },
-                    { field: 'Output', title: 'Изход' },
-                    { field: 'TypeName', title: 'Вид тест', template: '#= getTestTypeString(Type) #', sortable: false },
-                    { field: 'OrderBy', title: 'Подредба' },
-                    { field: 'TestRunsCount', title: 'Изпълнения' },
-                    { title: 'Операции', width: '25%', template: '<a href="/Administration/Tests/Details/#= Id #" ' +
+        $('#grid').kendoGrid({
+            dataSource: new kendo.data.DataSource({
+                data: response
+            }),
+            scrollable: false,
+            toolbar: [{
+                template: '<a href="/Administration/Tests/Create/' + problemId +
+                '" class="btn btn-sm btn-primary">Добавяне</a>' +
+                ' <a href="/Administration/Tests/DeleteAll/' + problemId +
+                '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
+                ' <a href="/Administration/Problems/Contest/' + contestId +
+                '" class="btn btn-sm btn-primary">Към задачите</a>' +
+                ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId +
+                '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
+                ' <a href="/Administration/Tests/Export/' + problemId +
+                '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>' +
+                ' <a href="/Contests/Practice/Index/' + contestId +
+                '" class="btn btn-sm btn-primary">Изпрати решение/я</a>'
+            }],
+            columns: [
+                { field: 'Input', title: 'Вход' },
+                { field: 'Output', title: 'Изход' },
+                { field: 'TypeName', title: 'Вид тест', template: '#= getTestTypeString(Type) #', sortable: false },
+                { field: 'OrderBy', title: 'Подредба' },
+                { field: 'TestRunsCount', title: 'Изпълнения' },
+                {
+                    title: 'Операции', width: '25%', template: '<a href="/Administration/Tests/Details/#= Id #" ' +
                         'class="btn btn-sm btn-primary">Детайли</a>&nbsp;' +
                         '<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
-                        '<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }
-                ],
-                sortable: true
-            });
+                        '<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>'
+                }
+            ],
+            sortable: true
         });
+    });
 }
 
 $(document).ready(function () {

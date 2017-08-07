@@ -1,5 +1,6 @@
 ﻿// TODO: Convert these events to unobtrusive with $(parent).on('click')...
 
+/* exported startUploadForm */
 function startUploadForm(e) {
     'use strict';
 
@@ -7,6 +8,7 @@ function startUploadForm(e) {
     $('#Resources_' + id + '__File').click();
 }
 
+/* exported selectedFile */
 function selectedFile(e) {
     'use strict';
 
@@ -15,6 +17,7 @@ function selectedFile(e) {
     $('#file-button-' + id).text(fileName.length > 20 ? fileName.substring(0, 20) + '...' : fileName);
 }
 
+/* exported additionalFilesValidation */
 function additionalFilesValidation(e) {
     'use strict';
 
@@ -23,6 +26,7 @@ function additionalFilesValidation(e) {
     validateZipFile(files, validationBox, $('#create-form form'));
 }
 
+/* exported testsValidation */
 function testsValidation(e) {
     'use strict';
 
@@ -31,6 +35,7 @@ function testsValidation(e) {
     validateZipFile(files, validationBox, $('#create-form form'));
 }
 
+/* exported onResourceTypeSelect */
 function onResourceTypeSelect() {
     'use strict';
 

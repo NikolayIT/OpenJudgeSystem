@@ -1,15 +1,18 @@
-﻿function removeOutputAjaxLink() {
+﻿/* exported removeOutputAjaxLink */
+function removeOutputAjaxLink() {
     'use strict';
 
     $('#ajax-output-link').hide();
 }
 
+/* exported removeInputAjaxLink */
 function removeInputAjaxLink() {
     'use strict';
 
     $('#ajax-input-link').hide();
 }
 
+/* exported testResult */
 function testResult(test) {
     'use strict';
 
@@ -38,6 +41,7 @@ function testResult(test) {
     return result;
 }
 
+/* exported initilizeTestRuns */
 function initilizeTestRuns(response) {
     'use strict';
 

@@ -1,5 +1,6 @@
 ﻿// TODO: Add to module
 
+/* exported addSubmitValidation */
 function addSubmitValidation(form, elements, validartionField, validationFunction, validationMessage) {
     'use strict';
 
@@ -15,14 +16,7 @@ function addSubmitValidation(form, elements, validartionField, validationFunctio
     });
 }
 
-function reparseForm(form) {
-    'use strict';
-
-    form.removeData('validator');
-    form.removeData('unobtrusiveValidation');
-    $.validator.unobtrusive.parse(form);
-}
-
+/* exported validateZipFile */
 function validateZipFile(files, validationField, form) {
     'use strict';
 
@@ -39,3 +33,11 @@ function validateZipFile(files, validationField, form) {
 
     reparseForm(form);
 }
+
+var reparseForm = function (form) {
+    'use strict';
+
+    form.removeData('validator');
+    form.removeData('unobtrusiveValidation');
+    $.validator.unobtrusive.parse(form);
+};

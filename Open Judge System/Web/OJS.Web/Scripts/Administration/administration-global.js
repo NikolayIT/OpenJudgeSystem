@@ -1,4 +1,5 @@
-﻿function validateModelStateErrors(args) {
+﻿/* exported validateModelStateErrors */
+function validateModelStateErrors(args) {
     'use strict';
 
     if (args.errors) {

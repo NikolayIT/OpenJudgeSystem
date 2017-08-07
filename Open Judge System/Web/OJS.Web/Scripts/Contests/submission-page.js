@@ -1,4 +1,5 @@
-﻿var countdownTimer = function (endingTime) {
+﻿/* exported countdownTimer */
+var countdownTimer = function (endingTime) {
     'use strict';
 
     var endTime = new Date(
@@ -135,6 +136,7 @@ function getCodeMirrorInstance() {
     return codeMirrorInstance;
 }
 
+/* exported displayMaximumValues */
 var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeString) {
     'use strict';
 
@@ -144,6 +146,7 @@ var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeStrin
     return result;
 };
 
+/* exported validateSubmissionContent */
 function validateSubmissionContent() {
     'use strict';
 
@@ -162,6 +165,7 @@ function validateSubmissionContent() {
     return true;
 }
 
+/* exported validateBinaryFileExists */
 function validateBinaryFileExists(fileInput) {
     'use strict';
 
@@ -175,6 +179,7 @@ function validateBinaryFileExists(fileInput) {
     return true;
 }
 
+/* exported validateBinaryFileSize */
 function validateBinaryFileSize(fileInput, size) {
     'use strict';
 
@@ -194,6 +199,7 @@ function validateBinaryFileSize(fileInput, size) {
     return true;
 }
 
+/* exported validateBinaryFileAllowedExtensions */
 function validateBinaryFileAllowedExtensions(fileInput, extensions) {
     'use strict';
 
@@ -217,7 +223,7 @@ function validateBinaryFileAllowedExtensions(fileInput, extensions) {
 
 var messageNotifier = new Notifier();
 
-// validate the submission time
+/* exported submissionTimeValidator */
 var submissionTimeValidator = function (initialServerTime) {
     'use strict';
 
@@ -357,6 +363,7 @@ $(document).ready(function () {
     tabStripManager.init(tabStrip);
 });
 
+/* exported cloneSubmissionsGridPager */
 function cloneSubmissionsGridPager() {
     'use strict';
 

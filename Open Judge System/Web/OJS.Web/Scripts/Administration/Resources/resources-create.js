@@ -1,4 +1,5 @@
-﻿function onEditResourceTypeSelect() {
+﻿/* exported onEditResourceTypeSelect */
+function onEditResourceTypeSelect() {
     'use strict';
 
     var val = parseInt(this.value());

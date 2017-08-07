@@ -1,4 +1,6 @@
-﻿function onAdditionalData() {
+﻿
+/* exported onAdditionalData */
+function onAdditionalData() {
     'use strict';
 
     return {
@@ -6,6 +8,7 @@
     };
 }
 
+/* exported onSearchSelect */
 function onSearchSelect(e) {
     'use strict';
 
@@ -13,12 +16,14 @@ function onSearchSelect(e) {
     populateDropDowns(contestId);
 }
 
+/* exported onContestSelect */
 function onContestSelect() {
     'use strict';
 
     initializeGrid(parseInt($('#contests').val()));
 }
 
+/* exported filterContests */
 function filterContests() {
     'use strict';
 
@@ -214,6 +219,7 @@ function initializeGrid(contestId) {
     });
 }
 
+/* exported hideTheadFromGrid */
 function hideTheadFromGrid() {
     'use strict';
 

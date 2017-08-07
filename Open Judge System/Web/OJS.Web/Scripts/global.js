@@ -14,6 +14,7 @@
     });
 });
 
+/* exported CreateExportToExcelButton */
 function CreateExportToExcelButton(elementId) {
     'use strict';
 
@@ -81,6 +82,7 @@ function getCookie(cname) {
     return '';
 }
 
+/* exported calculateRemainingTimeOnClient */
 function calculateRemainingTimeOnClient(condownTimerContainerId, remainingTimeFormat, remainingTimeOnServerInMilliseconds) {
     'use strict';
 
