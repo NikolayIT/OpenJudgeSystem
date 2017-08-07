@@ -46,7 +46,7 @@
             while (!this.stopping)
             {
                 var data = new OjsData();
-                Submission submission;
+                Submission submission = null;
                 int submissionId;
 
                 try
@@ -66,21 +66,25 @@
                             submissions.ForEach(this.submissionsForProcessing.Enqueue);
                         }
 
-                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);                     
+                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);
+
+                        if (retrievedSubmissionSuccessfully)
+                        {
+                            this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
+                            submission = data.Submissions.GetById(submissionId);
+                            if (!submission.Processing)
+                            {
+                                submission.Processing = true;
+                                data.SaveChanges();
+                            }                     
+                        }
                     }
 
-                    if (retrievedSubmissionSuccessfully)
-                    {
-                        this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
-                        submission = data.Submissions.GetById(submissionId);
-                        submission.Processing = true;
-                        data.SaveChanges();
-                    }
-                    else
+                    if (!retrievedSubmissionSuccessfully || submission == null)
                     {
                         Thread.Sleep(1000);
                         continue;
-                    }
+                    }                   
                 }
                 catch (Exception exception)
                 {
