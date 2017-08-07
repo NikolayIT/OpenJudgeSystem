@@ -1,57 +1,69 @@
 ﻿function onAdditionalData() {
+    'use strict';
+
     return {
-        text: $("#search").val()
+        text: $('#search').val()
     };
 }
 
 function onSearchSelect(e) {
+    'use strict';
+
     var problemId = this.dataItem(e.item.index()).Id;
     $('#problemId').val(problemId);
     populateDropDowns(problemId);
 }
 
 function filterContests() {
+    'use strict';
+
     return {
-        id: $("#categories").val()
+        id: $('#categories').val()
     };
 }
 
 function filterProblems() {
+    'use strict';
+
     return {
-        id: $("#contests").val()
+        id: $('#contests').val()
     };
 }
 
-function onProblemSelect(e) {
+function onProblemSelect() {
+    'use strict';
+
     var problemId = $('#problems').val();
 
-    if (problemId != "") {
+    if (problemId) {
         $('#controls').show();
         $('#problemId').val(problemId);
         $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemId);
 
-        initializeGrid(parseInt(problemId), parseInt($("#contests").val()));
+        initializeGrid(parseInt(problemId), parseInt($('#contests').val()));
         $('#grid').show();
-    }
-    else {
+    } else {
         $('#controls').hide();
         $('#grid').hide();
     }
 }
 
 function getTestTypeString(type) {
+    'use strict';
+
     if (type === 1) {
-        return "Contest";
+        return 'Contest';
     } else if (type === 2) {
-        return "Open";
+        return 'Open';
     } else if (type === 3) {
-        return "Practice";
+        return 'Practice';
     }
 
     return type;
 }
 
 function populateDropDowns(problemIdAsString) {
+    'use strict';
 
     $('#controls').show();
     $('#exportFile').attr('href', '/Administration/Tests/Export/' + problemIdAsString);
@@ -65,9 +77,9 @@ function populateDropDowns(problemIdAsString) {
         var contestId = response.Contest;
         var problemId = parseInt(problemIdAsString);
 
-        var categories = $("#categories").data("kendoDropDownList");
-        var contests = $("#contests").data("kendoDropDownList");
-        var problems = $("#problems").data("kendoDropDownList");
+        var categories = $('#categories').data('kendoDropDownList');
+        var contests = $('#contests').data('kendoDropDownList');
+        var problems = $('#problems').data('kendoDropDownList');
 
         var categoriesData = new kendo.data.DataSource({
             transport: {
@@ -101,7 +113,7 @@ function populateDropDowns(problemIdAsString) {
                 contests.dataSource.read();
 
                 contests.select(function (dataItem) {
-                    return dataItem.Id == contestId;
+                    return dataItem.Id === contestId;
                 });
             });
         }
@@ -111,13 +123,13 @@ function populateDropDowns(problemIdAsString) {
                 problems.dataSource.read();
 
                 problems.select(function (dataItem) {
-                    return dataItem.Id == problemId;
+                    return dataItem.Id === problemId;
                 });
             });
         }
 
-        categories.bind("cascade", categoriesCascade);
-        contests.bind("cascade", contestsCascade);
+        categories.bind('cascade', categoriesCascade);
+        contests.bind('cascade', contestsCascade);
 
         categoriesData.fetch(function () {
             categories.dataSource.data(categoriesData);
@@ -134,6 +146,7 @@ function populateDropDowns(problemIdAsString) {
 }
 
 function initializeGrid(problemId, contestId) {
+    'use strict';
 
     var response;
     var grid;
@@ -143,42 +156,53 @@ function initializeGrid(problemId, contestId) {
     var request = $.get('/Administration/Tests/ProblemTests/' + problemId, function (data) {
         response = data;
     })
-    .then(function () {
-        $('#status').hide();
-        $('#grid').html('');
+        .then(function () {
+            $('#status').hide();
+            $('#grid').html('');
 
-        $('#grid').kendoGrid({
-            dataSource: new kendo.data.DataSource({
-                data: response
-            }),
-            scrollable: false,
-            toolbar: [{
-                template: '<a href="/Administration/Tests/Create/' + problemId + '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Tests/DeleteAll/' + problemId + '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/Contest/' + contestId + '" class="btn btn-sm btn-primary">Към задачите</a>' +
-                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId + '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a href="/Administration/Tests/Export/' + problemId + '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>' +
-                    ' <a href="/Contests/Practice/Index/' + contestId + '" class="btn btn-sm btn-primary">Изпрати решение/я</a>',
-            }],
-            columns: [
-                { field: "Input", title: "Вход" },
-                { field: "Output", title: "Изход" },
-                { field: "TypeName", title: "Вид тест", template: '#= getTestTypeString(Type) #', sortable: false},
-                { field: "OrderBy", title: "Подредба" },
-                { field: "TestRunsCount", title: "Изпълнения" },
-                { title: "Операции", width: "25%", template: '<a href="/Administration/Tests/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }
-            ],
-            sortable: true
+            $('#grid').kendoGrid({
+                dataSource: new kendo.data.DataSource({
+                    data: response
+                }),
+                scrollable: false,
+                toolbar: [{
+                    template: '<a href="/Administration/Tests/Create/' + problemId +
+                    '" class="btn btn-sm btn-primary">Добавяне</a>' +
+                    ' <a href="/Administration/Tests/DeleteAll/' + problemId +
+                    '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
+                    ' <a href="/Administration/Problems/Contest/' + contestId +
+                    '" class="btn btn-sm btn-primary">Към задачите</a>' +
+                    ' <a href="/Administration/Tests/ExportToExcel?id=' + problemId +
+                    '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
+                    ' <a href="/Administration/Tests/Export/' + problemId +
+                    '" class="btn btn-sm btn-primary" id="exportFile">Експортиране към ZIP файл</a>' +
+                    ' <a href="/Contests/Practice/Index/' + contestId +
+                    '" class="btn btn-sm btn-primary">Изпрати решение/я</a>'
+                }],
+                columns: [
+                    { field: 'Input', title: 'Вход' },
+                    { field: 'Output', title: 'Изход' },
+                    { field: 'TypeName', title: 'Вид тест', template: '#= getTestTypeString(Type) #', sortable: false },
+                    { field: 'OrderBy', title: 'Подредба' },
+                    { field: 'TestRunsCount', title: 'Изпълнения' },
+                    { title: 'Операции', width: '25%', template: '<a href="/Administration/Tests/Details/#= Id #" ' +
+                        'class="btn btn-sm btn-primary">Детайли</a>&nbsp;' +
+                        '<a href="/Administration/Tests/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
+                        '<a href="/Administration/Tests/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>' }
+                ],
+                sortable: true
+            });
         });
-    });
 }
 
 $(document).ready(function () {
+    'use strict';
+
     $('#status').hide();
     $('#controls').hide();
     $('#problemId').hide();
 
-    if ($('#problemId').val() != '') {
+    if ($('#problemId').val()) {
         populateDropDowns($('#problemId').val());
     }
 });
