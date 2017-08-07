@@ -71,7 +71,7 @@
 
                     if (retrievedSubmissionSuccessfully)
                     {
-                        this.logger.InfoFormat("Submission №{0} retrieved from database successfully", submissionId);
+                        this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
                         submission = data.Submissions.GetById(submissionId);
                         submission.Processing = true;
                         data.SaveChanges();
