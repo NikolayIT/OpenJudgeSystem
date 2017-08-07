@@ -1807,6 +1807,7 @@
     <Content Include="Areas\Administration\Views\Navigation\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Index.cshtml" />
     <Content Include="google95e631afa25e7960.html" />
+    <Content Include="gulpfile.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\administration-global.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
@@ -1924,6 +1925,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\SubmissionTypeViewModel.cshtml" />
+    <Content Include="package.json" />
+    <Content Include=".eslintrc" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
