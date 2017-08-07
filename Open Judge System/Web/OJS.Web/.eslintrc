@@ -268,7 +268,7 @@
     "sort-vars": 0,
     "sort-imports": 0,
     "space-before-blocks": 0,
-    "space-before-function-paren": [ "error", "always" ],
+    "space-before-function-paren": 0,
     "space-in-parens": 0,
     "space-infix-ops": 0,
     "space-unary-ops": 0,
