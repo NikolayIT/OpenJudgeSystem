@@ -16,13 +16,13 @@ var countdownTimer = function (endingTime) {
     var hoursContainer = $('#hours-remaining');
     var minutesContainer = $('#minutes-remaining');
     var secondsContainer = $('#seconds-remaining');
-    var countdownTimer = $('#countdown-timer');
+    var countdownTimerContainer = $('#countdown-timer');
 
     function updateCountdown() {
         hoursContainer.text(ts.hours);
         minutesContainer.text(ts.minutes);
         secondsContainer.text(ts.seconds);
-        countdownTimer.show();
+        countdownTimerContainer.show();
     }
 
     var start = function () {
@@ -30,8 +30,8 @@ var countdownTimer = function (endingTime) {
 
         var timerId = window.setInterval(function () {
             if (ts.hours === 0 && ts.minutes <= 4) {
-                if (!countdownTimer.hasClass('countdown-warning')) {
-                    countdownTimer.addClass('countdown-warning');
+                if (!countdownTimerContainer.hasClass('countdown-warning')) {
+                    countdownTimerContainer.addClass('countdown-warning');
                 }
 
                 if (ts.start > ts.end) {
@@ -310,6 +310,7 @@ function TabStripManager() {
         var element = $('.code-for-problem:visible')[0];
 
         if (!$(element).data('CodeMirrorInstance')) {
+            /* eslint new-cap: 0 */
             var editor = new CodeMirror.fromTextArea(element, {
                 lineNumbers: true,
                 matchBrackets: true,
