@@ -20,10 +20,6 @@
     {
         private const string TestedCode = "TestedCode.cs";
 
-        // Extracts the number of total and passed tests 
-        private const string TestResultsRegex =
-            @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
-
         public CSharpUnitTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)

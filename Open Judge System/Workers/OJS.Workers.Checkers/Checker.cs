@@ -148,7 +148,7 @@
             string correctLine,
             string userLine)
         {
-            const int FragmentMaxLength = 256;
+            const int FragmentMaxLength = 512;
 
             var adminCheckerDetails = new CheckerDetails
             {
@@ -177,7 +177,7 @@
             string userLine,
             string correctLine)
         {
-            const int FragmentMaxLength = 256;
+            const int FragmentMaxLength = 512;
 
             var adminCheckerDetails = new CheckerDetails
             {
