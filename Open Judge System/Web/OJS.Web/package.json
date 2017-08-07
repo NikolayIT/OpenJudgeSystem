@@ -1,0 +1,13 @@
+{
+  "name": "ojs.web",
+  "version": "1.0.0",
+  "description": "Open source system for online algorithm competitions.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  },
+  "scripts": {},
+  "author": "OJS",
+  "license": "GPL-3.0"
+}
