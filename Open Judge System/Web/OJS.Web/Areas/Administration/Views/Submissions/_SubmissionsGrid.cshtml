@@ -14,19 +14,19 @@
     .Name("DataGrid")
     .Columns(columns =>
     {
-    columns.Bound(model => model.Id);
-    columns.Bound(model => model.ParticipantName);
-    columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
-    columns.Bound(model => model.ContestName).ClientTemplate("<a href='/Contests/#= ContestId #/#= ContestUrlName #'>#= ContestName #</a>");
-    columns.Bound(model => model.SubmissionTypeName);
-    columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
-    columns.Bound(model => model.Points);
-    columns.Bound(model => model.CreatedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
-    columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
-    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
-    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
-    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
-    columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
+        columns.Bound(model => model.Id);
+        columns.Bound(model => model.ParticipantName);
+        columns.Bound(model => model.ProblemName).ClientTemplate("<a href='" + Url.Action("Details", "Problems") + "/#= ProblemId #'>#= ProblemName #</a>");
+        columns.Bound(model => model.ContestName).ClientTemplate("<a href='/Contests/#= ContestId #/#= ContestUrlName #'>#= ContestName #</a>");
+        columns.Bound(model => model.SubmissionTypeName);
+        columns.ForeignKey(model => model.Status, (IEnumerable)ViewBag.SubmissionStatusData, "Id", "Name");
+        columns.Bound(model => model.Points);
+        columns.Bound(model => model.CreatedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
+        columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
+        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
+        columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
