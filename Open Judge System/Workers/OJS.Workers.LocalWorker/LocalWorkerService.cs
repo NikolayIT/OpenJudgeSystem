@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.ServiceProcess;
@@ -9,7 +10,6 @@
     using EntityFramework.Extensions;
     using log4net;
 
-    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
 
@@ -27,11 +27,11 @@
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
-            var processingSubmissionIds = new SynchronizedHashtable();
+            var submissionsForProcessing = new ConcurrentQueue<int>();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob(string.Format("Job №{0}", i), processingSubmissionIds);
+                var job = new SubmissionJob(string.Format("Job №{0}", i), submissionsForProcessing);
                 var thread = new Thread(job.Start) { Name = string.Format("Thread №{0}", i) };
                 this.jobs.Add(job);
                 this.threads.Add(thread);
