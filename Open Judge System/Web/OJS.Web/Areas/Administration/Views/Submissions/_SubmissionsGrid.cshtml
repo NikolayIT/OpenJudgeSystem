@@ -25,7 +25,7 @@
     columns.Bound(model => model.ModifiedOn).Filterable(x => x.UI(GridFilterUIRole.DateTimePicker)).Hidden();
     columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
     columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
-    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);  
+    columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
     columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
@@ -88,9 +88,9 @@
     function createRetestForm(id) {
         var token = $("[name='__RequestVerificationToken']").val();
         var formOpeningTagHtml = "<form action=\"/Administration/Submissions/Retest\" class=\"inline-form\" method=\"post\" role=\"form\">";
-        var antiforgeryTokenHtml = "<input name=\"__RequestVerificationToken\" type=hidden value=\"" + token + "\">";
+        var antiforgeryTokenHtml = "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"" + token + "\">";
         var inputHtml = "<input data-val=\"true\" data-val-number=\"The field Id must be a number.\" data-val-required=\"The Id field is required.\" id=\"Id\" name=\"Id\" type=\"hidden\" value=\"" + id + "\" />";
-        var submitHtml = "<input type=\"submit\" class=\"k-button k-button-icontext\" value=Retest />";
+        var submitHtml = "<input type=\"submit\" class=\"k-button k-button-icontext\" value=\"Retest\" />";
         var formHtmlClosingTag = "</form>";
         var formHtml = formOpeningTagHtml + inputHtml + antiforgeryTokenHtml + submitHtml + formHtmlClosingTag;
         return formHtml;
