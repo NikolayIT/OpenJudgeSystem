@@ -191,7 +191,11 @@
       }
     ],
     "id-match": 0,
-    "indent": [ "error", 4 ],
+    "indent": [
+      "error",
+      4,
+      { "SwitchCase": 1 }
+    ],
     "jsx-quotes": 0,
     "key-spacing": 0,
     "keyword-spacing": 0,
@@ -252,7 +256,7 @@
     "one-var": [ "error", "never" ],
     "one-var-declaration-per-line": 0,
     "operator-assignment": 0,
-    "operator-linebreak": [ "error", "before" ],
+    "operator-linebreak": [ "error", "after" ],
     "padded-blocks": 0,
     "quote-props": 0,
     "quotes": [ "error", "single", "avoid-escape" ],
