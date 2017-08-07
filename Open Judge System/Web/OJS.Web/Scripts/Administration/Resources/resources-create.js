@@ -1,17 +1,20 @@
 ﻿function onEditResourceTypeSelect() {
-    var val = this.value();
+    'use strict';
 
-    if (val == 3) {
+    var val = parseInt(this.value());
+
+    if (val === 3) {
         $('#file-select').hide();
         $('#link-input').show();
-    }
-    else {
+    } else {
         $('#link-input').hide();
         $('#file-select').show();
     }
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
+    'use strict';
+
     $('#link-input').hide();
 
     $('#file-button-resource').click(function() {
@@ -22,4 +25,4 @@ $(document).ready(function () {
         var fileName = this.files[0].name;
         $('#file-button-resource').text(fileName.length > 20 ? fileName.substring(0, 20) + '...' : fileName);
     });
-})
+});

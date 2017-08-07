@@ -1,32 +1,39 @@
 ﻿$(document).ready(function () {
-    kendo.culture("en-GB");
+    'use strict';
 
-    if (getCookie("cookies-notification") != "ok") {
-        $("#cookies-notification").show();
+    kendo.culture('en-GB');
+
+    if (getCookie('cookies-notification') !== 'ok') {
+        $('#cookies-notification').show();
     }
 
-    $("#cookies-notification-button").click(function () {
-        $("#cookies-notification").hide();
-        setCookie("cookies-notification", "ok", 3650);
+    $('#cookies-notification-button').click(function () {
+        $('#cookies-notification').hide();
+        setCookie('cookies-notification', 'ok', 3650);
         return false;
     });
 });
 
 function CreateExportToExcelButton(elementId) {
-    elementId = typeof elementId !== 'undefined' ? elementId : "DataGrid";
-    CreateKendoSubmitParamsButton("export", elementId);
+    'use strict';
+
+    elementId = typeof elementId === 'undefined' ? 'DataGrid' : elementId;
+    CreateKendoSubmitParamsButton('export', elementId);
 }
 
 function CreateKendoSubmitParamsButton(buttonId, elementId) {
-    elementId = typeof elementId !== 'undefined' ? elementId : "DataGrid";
+    'use strict';
+
+    elementId = typeof elementId === 'undefined' ? 'DataGrid' : elementId;
     var grid = $('#' + elementId).data('kendoGrid');
+
     // ask the parameterMap to create the request object for you
-    var requestObject = (new kendo.data.transports["aspnetmvc-server"]({ prefix: "" }))
-    .options.parameterMap({
-        page: grid.dataSource.page(),
-        sort: grid.dataSource.sort(),
-        filter: grid.dataSource.filter()
-    });
+    var requestObject = (new kendo.data.transports['aspnetmvc-server']({ prefix: '' }))
+        .options.parameterMap({
+            page: grid.dataSource.page(),
+            sort: grid.dataSource.sort(),
+            filter: grid.dataSource.filter()
+        });
 
     // Get the export link as jQuery object
     var $exportLink = $('#' + buttonId);
@@ -52,31 +59,33 @@ function CreateKendoSubmitParamsButton(buttonId, elementId) {
 }
 
 function setCookie(cname, cvalue, exdays) {
+    'use strict';
+
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+    var expires = 'expires=' + d.toGMTString();
+    document.cookie = cname + '=' + cvalue + '; ' + expires;
 }
 
 function getCookie(cname) {
-    var name = cname + "=";
+    'use strict';
+
+    var name = cname + '=';
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i].trim();
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
     }
-    return "";
+    return '';
 }
 
 function calculateRemainingTimeOnClient(condownTimerContainerId, remainingTimeFormat, remainingTimeOnServerInMilliseconds) {
+    'use strict';
+
     $('#' + condownTimerContainerId).prepend(remainingTimeFormat);
-    var remainingTimeOnServer;
-    if (typeof stringValue) {
-        remainingTimeOnServer = parseInt(remainingTimeOnServerInMilliseconds);
-    }
-    else {
-        remainingTimeOnServer = remainingTimeOnServerInMillisecond;
-    }
+    var remainingTimeOnServer = parseInt(remainingTimeOnServerInMilliseconds);
     var currentTimeOnClient = new Date();
     var remainingTimeOnClient = currentTimeOnClient;
     remainingTimeOnClient.setTime(currentTimeOnClient.getTime() + remainingTimeOnServer);
@@ -95,7 +104,9 @@ function calculateRemainingTimeOnClient(condownTimerContainerId, remainingTimeFo
 var Ojs = Ojs || {};
 Ojs.KendoControls = Ojs.KendoControls || {};
 
-Ojs.KendoControls.DropDownList = (function() {
+Ojs.KendoControls.DropDownList = (function () {
+    'use strict';
+
     function alignDropDownToInput(ev) {
         setTimeout(function () {
             var position = $(ev.sender.element).parent().offset();
