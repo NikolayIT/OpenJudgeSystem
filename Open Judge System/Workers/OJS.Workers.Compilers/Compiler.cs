@@ -168,28 +168,44 @@
                         process.StartInfo = compilerProcessStartInfo;
 
                         process.OutputDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
                             {
-                                if (e.Data == null)
+                                if (outputWaitHandle.SafeWaitHandle.IsClosed)
+                                {
+                                    File.AppendAllText("D:\\SafeHandlerLog.txt", $"Thread {Thread.CurrentThread.ManagedThreadId} is accessing already closed safe handle(OUTPUT)\n");
+                                }
+
+                                if (!outputWaitHandle.SafeWaitHandle.IsClosed)
                                 {
                                     outputWaitHandle.Set();
                                 }
-                                else
-                                {
-                                    outputBuilder.AppendLine(e.Data);
-                                }
-                            };
+                            }
+                            else
+                            {
+                                outputBuilder.AppendLine(e.Data);
+                            }
+                        };
 
                         process.ErrorDataReceived += (sender, e) =>
+                        {
+                            if (e.Data == null)
                             {
-                                if (e.Data == null)
+                                if (errorWaitHandle.SafeWaitHandle.IsClosed)
+                                {
+                                    File.AppendAllText("D:\\SafeHandlerLog.txt", $"Thread {Thread.CurrentThread.ManagedThreadId} is accessing already closed safe handle(ERROR)\n");
+                                }
+
+                                if (!errorWaitHandle.SafeWaitHandle.IsClosed)
                                 {
                                     errorWaitHandle.Set();
                                 }
-                                else
-                                {
-                                    errorOutputBuilder.AppendLine(e.Data);
-                                }
-                            };
+                            }
+                            else
+                            {
+                                errorOutputBuilder.AppendLine(e.Data);
+                            }
+                        };
 
                         var started = process.Start();
                         if (!started)
@@ -215,8 +231,8 @@
                             return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
-                        outputWaitHandle.WaitOne(300);
-                        errorWaitHandle.WaitOne(300);
+                        outputWaitHandle.WaitOne(100);
+                        errorWaitHandle.WaitOne(100);
                         exitCode = process.ExitCode;
                     }
                 }
