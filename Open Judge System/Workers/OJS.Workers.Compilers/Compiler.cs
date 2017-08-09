@@ -159,53 +159,42 @@
             var errorOutputBuilder = new StringBuilder();
             int exitCode;
 
-            using (var outputWaitHandle = new AutoResetEvent(false))
+            var outputWaitHandle = new AutoResetEvent(false);
+            var errorWaitHandle = new AutoResetEvent(false);
+            using (outputWaitHandle)
             {
-                using (var errorWaitHandle = new AutoResetEvent(false))
+                using (errorWaitHandle)
                 {
                     using (var process = new Process())
                     {
                         process.StartInfo = compilerProcessStartInfo;
 
-                        process.OutputDataReceived += (sender, e) =>
+                        var outputHandle = new DataReceivedEventHandler((sender, e) =>
                         {
                             if (e.Data == null)
                             {
-                                if (outputWaitHandle.SafeWaitHandle.IsClosed)
-                                {
-                                    File.AppendAllText("D:\\SafeHandlerLog.txt", $"Thread {Thread.CurrentThread.ManagedThreadId} is accessing already closed safe handle(OUTPUT)\n");
-                                }
-
-                                if (!outputWaitHandle.SafeWaitHandle.IsClosed)
-                                {
-                                    outputWaitHandle.Set();
-                                }
+                                outputWaitHandle.Set();
                             }
                             else
                             {
                                 outputBuilder.AppendLine(e.Data);
                             }
-                        };
+                        });
 
-                        process.ErrorDataReceived += (sender, e) =>
+                        var errorHandle = new DataReceivedEventHandler((sender, e) =>
                         {
                             if (e.Data == null)
                             {
-                                if (errorWaitHandle.SafeWaitHandle.IsClosed)
-                                {
-                                    File.AppendAllText("D:\\SafeHandlerLog.txt", $"Thread {Thread.CurrentThread.ManagedThreadId} is accessing already closed safe handle(ERROR)\n");
-                                }
-
-                                if (!errorWaitHandle.SafeWaitHandle.IsClosed)
-                                {
-                                    errorWaitHandle.Set();
-                                }
+                                errorWaitHandle.Set();
                             }
                             else
                             {
                                 errorOutputBuilder.AppendLine(e.Data);
                             }
-                        };
+                        });
+
+                        process.OutputDataReceived += outputHandle;
+                        process.ErrorDataReceived += errorHandle;
 
                         var started = process.Start();
                         if (!started)
@@ -231,8 +220,10 @@
                             return new CompilerOutput(1, "Compiler process timed out.");
                         }
 
-                        outputWaitHandle.WaitOne(100);
-                        errorWaitHandle.WaitOne(100);
+                        outputWaitHandle.WaitOne(300);
+                        errorWaitHandle.WaitOne(300);
+                        process.OutputDataReceived -= outputHandle;
+                        process.ErrorDataReceived -= errorHandle;
                         exitCode = process.ExitCode;
                     }
                 }
