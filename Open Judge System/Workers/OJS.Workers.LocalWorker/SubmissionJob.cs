@@ -1,12 +1,12 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading;
 
     using log4net;
 
-    using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -20,11 +20,11 @@
     {
         private readonly ILog logger;
 
-        private readonly SynchronizedHashtable processingSubmissionIds;
+        private readonly ConcurrentQueue<int> submissionsForProcessing;
 
         private bool stopping;
 
-        public SubmissionJob(string name, SynchronizedHashtable processingSubmissionIds)
+        public SubmissionJob(string name, ConcurrentQueue<int> submissionsForProcessing)
         {
             this.Name = name;
 
@@ -32,7 +32,8 @@
             this.logger.Info("SubmissionJob initializing...");
 
             this.stopping = false;
-            this.processingSubmissionIds = processingSubmissionIds;
+
+            this.submissionsForProcessing = submissionsForProcessing;
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -45,40 +46,49 @@
             while (!this.stopping)
             {
                 var data = new OjsData();
-                Submission submission;
+                Submission submission = null;
+                int submissionId;
+
                 try
                 {
-                    submission = data.Submissions.GetSubmissionForProcessing();
+                    var retrievedSubmissionSuccessfully = false;
+                    lock (this.submissionsForProcessing)
+                    {
+                        if (this.submissionsForProcessing.IsEmpty)
+                        {
+                            var submissions = data.Submissions
+                                .All()
+                                .Where(x => !x.Processed && !x.Processing)
+                                .OrderBy(x => x.Id)
+                                .Select(x => x.Id)
+                                .ToList();
+
+                            submissions.ForEach(this.submissionsForProcessing.Enqueue);
+                        }
+
+                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);
+
+                        if (retrievedSubmissionSuccessfully)
+                        {
+                            this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
+                            submission = data.Submissions.GetById(submissionId);
+                            if (!submission.Processing)
+                            {
+                                submission.Processing = true;
+                                data.SaveChanges();
+                            }                     
+                        }
+                    }
+
+                    if (!retrievedSubmissionSuccessfully || submission == null)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }                   
                 }
                 catch (Exception exception)
                 {
                     this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
-                    throw;
-                }
-
-                if (submission == null)
-                {
-                    // No submission available. Wait 1 second and try again.
-                    Thread.Sleep(1000);
-                    continue;
-                }
-
-                if (!this.processingSubmissionIds.Add(submission.Id))
-                {
-                    // Other thread is processing the same submission. Wait the other thread to set Processing to true and then try again.
-                    Thread.Sleep(100);
-                    continue;
-                }
-
-                try
-                {
-                    submission.Processing = true;
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.Error("Unable to set dbSubmission.Processing to true! Exception: {0}", exception);
-                    this.processingSubmissionIds.Remove(submission.Id);
                     throw;
                 }
 
@@ -137,8 +147,7 @@
                     this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
                 }
 
-                // Next line removes the submission from the list. Fixes problem with retesting submissions.
-                this.processingSubmissionIds.Remove(submission.Id);
+                this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
             }
 
             this.logger.Info("SubmissionJob stopped.");
@@ -318,7 +327,7 @@
                     executionStrategy = new NodeJsPreprocessExecuteAndCheckExecutionStrategy(
                         Settings.NodeJsExecutablePath,
                         Settings.UnderscoreModulePath,
-                        Settings.NodeJsBaseTimeUsedInMilliseconds,
+                        Settings.NodeJsBaseTimeUsedInMilliseconds * 2,
                         Settings.NodeJsBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.NodeJsPreprocessExecuteAndRunUnitTestsWithMocha:
@@ -326,6 +335,8 @@
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
                         Settings.UnderscoreModulePath,
                         Settings.NodeJsBaseTimeUsedInMilliseconds,
                         Settings.NodeJsBaseMemoryUsedInBytes);
@@ -399,6 +410,8 @@
                         Settings.NodeJsExecutablePath,
                         Settings.MochaModulePath,
                         Settings.ChaiModulePath,
+                        Settings.SinonModulePath,
+                        Settings.SinonChaiModulePath,
                         Settings.JsDomModulePath,
                         Settings.JQueryModulePath,
                         Settings.UnderscoreModulePath,

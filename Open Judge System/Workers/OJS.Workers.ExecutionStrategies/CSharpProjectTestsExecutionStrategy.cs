@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-
     using Microsoft.Build.Evaluation;
 
     using OJS.Common;
@@ -13,6 +12,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class CSharpProjectTestsExecutionStrategy : ExecutionStrategy
@@ -45,8 +45,12 @@
 
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
-        // Extracts error/failure messages and the class which threw it
-        protected static readonly string ErrorMessageRegex = $@"\d+\) (.*){Environment.NewLine}((.+{Environment.NewLine})*?)\s*at (?:[^(){Environment.NewLine}]+?)\(\) in \w:\\(?:[^\\{Environment.NewLine}]+\\)*.*(Test.\d+).cs";
+        // Extracts the number of total and passed tests 
+        protected const string TestResultsRegex =
+            @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
+        // Extracts error/failure messages and the class which threw it       
+        protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
+      
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
@@ -166,7 +170,14 @@
                 false,
                 true);
 
+            var (totalTestsCount, failedTestsCount) = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
+
+            if (failedTestsCount != errorsByFiles.Count || totalTestsCount != executionContext.Tests.Count())
+            {
+                throw new ArgumentException("Failing tests not captured properly, please contact an administrator");
+            }
+
             var testIndex = 0;
 
             foreach (var test in executionContext.Tests)
@@ -193,10 +204,10 @@
 
             foreach (Match error in errors)
             {
-                var errorMethod = error.Groups[1].Value;
-                var cause = error.Groups[2].Value.Replace(Environment.NewLine, string.Empty);
-                var fileName = error.Groups[4].Value;
-                errorsByFiles.Add(fileName, $"{errorMethod}{Environment.NewLine}{cause}");
+                var failedAssert = error.Groups[1].Value;
+                var cause = error.Groups[4].Value.Replace(Environment.NewLine, string.Empty);
+                var fileName = error.Groups[2].Value;
+                errorsByFiles.Add(fileName, $"{failedAssert} : {cause}");
             }
 
             return errorsByFiles;
@@ -250,24 +261,11 @@
 
         protected virtual void ExtractTestNames(IEnumerable<TestContext> tests)
         {
-            var trialTests = 1;
-            var competeTests = 1;
-
             foreach (var test in tests)
             {
-                if (test.IsTrialTest)
-                {
-                    var testNumber = trialTests < 10 ? $"00{trialTests}" : $"0{trialTests}";
-                    this.TestNames.Add($"{TrialTest}.{testNumber}");
-                    trialTests++;
-                }
-                else
-                {
-                    var testNumber = competeTests < 10 ? $"00{competeTests}" : $"0{competeTests}";
-                    this.TestNames.Add($"{CompeteTest}.{testNumber}");
-                    competeTests++;
-                }
-            }
+                string testName = JavaCodePreprocessorHelper.GetClassName(test.Input);
+                this.TestNames.Add(testName);
+            }           
         }
 
         protected void EnsureAssemblyNameIsCorrect(Project project)
@@ -281,6 +279,20 @@
             var csProjFullpath = project.FullPath;
             var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
+        }
+
+        private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
+        {
+            var testsSummaryMatcher = new Regex(TestResultsRegex);
+            var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
+            if (testsSummaryMatches.Count == 0)
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
+            var failedTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
+            var totalTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[1].Value);
+            return (totalTestsCount, failedTestsCount);
         }
     }
 }

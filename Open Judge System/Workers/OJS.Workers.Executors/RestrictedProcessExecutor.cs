@@ -35,7 +35,8 @@ namespace OJS.Workers.Executors
             IEnumerable<string> executionArguments = null,
             string workingDirectory = null,
             bool useProcessTime = false,
-            bool useSystemEncoding = false)
+            bool useSystemEncoding = false,
+            double timeoutMultiplier = 1.5)
         {
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             if (workingDirectory == null)
@@ -102,7 +103,7 @@ namespace OJS.Workers.Executors
 
                 // Wait the process to complete. Kill it after (timeLimit * 1.5) milliseconds if not completed.
                 // We are waiting the process for more than defined time and after this we compare the process time with the real time limit.
-                var exited = restrictedProcess.WaitForExit((int)(timeLimit * 1.5));
+                var exited = restrictedProcess.WaitForExit((int)(timeLimit * timeoutMultiplier));
                 if (!exited)
                 {
                     restrictedProcess.Kill();
@@ -110,6 +111,7 @@ namespace OJS.Workers.Executors
                     // Wait for the associated process to exit before continuing
                     restrictedProcess.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
 
+                    result.ProcessWasKilled = true;
                     result.Type = ProcessExecutionResultType.TimeLimit;
                 }
 

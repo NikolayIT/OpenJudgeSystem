@@ -118,3 +118,6 @@ $tf/
 
 #Visual studio config folder
 .vs/
+
+# Release Web.Config with sensitive data
+/Open Judge System/Web/OJS.Web/Web.Release.config
