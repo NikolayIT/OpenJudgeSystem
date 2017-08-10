@@ -11,6 +11,7 @@
             this.ExitCode = 0;
             this.Type = ProcessExecutionResultType.Success;
             this.TimeWorked = default(TimeSpan);
+            this.ProcessWasKilled = false;
             this.MemoryUsed = 0;
         }
 
@@ -29,6 +30,8 @@
         public TimeSpan PrivilegedProcessorTime { get; set; }
 
         public TimeSpan UserProcessorTime { get; set; }
+
+        public bool ProcessWasKilled { get; set; }
 
         public TimeSpan TotalProcessorTime => this.PrivilegedProcessorTime + this.UserProcessorTime;
     }

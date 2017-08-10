@@ -159,37 +159,42 @@
             var errorOutputBuilder = new StringBuilder();
             int exitCode;
 
-            using (var outputWaitHandle = new AutoResetEvent(false))
+            var outputWaitHandle = new AutoResetEvent(false);
+            var errorWaitHandle = new AutoResetEvent(false);
+            using (outputWaitHandle)
             {
-                using (var errorWaitHandle = new AutoResetEvent(false))
+                using (errorWaitHandle)
                 {
                     using (var process = new Process())
                     {
                         process.StartInfo = compilerProcessStartInfo;
 
-                        process.OutputDataReceived += (sender, e) =>
+                        var outputHandle = new DataReceivedEventHandler((sender, e) =>
+                        {
+                            if (e.Data == null)
                             {
-                                if (e.Data == null)
-                                {
-                                    outputWaitHandle.Set();
-                                }
-                                else
-                                {
-                                    outputBuilder.AppendLine(e.Data);
-                                }
-                            };
+                                outputWaitHandle.Set();
+                            }
+                            else
+                            {
+                                outputBuilder.AppendLine(e.Data);
+                            }
+                        });
 
-                        process.ErrorDataReceived += (sender, e) =>
+                        var errorHandle = new DataReceivedEventHandler((sender, e) =>
+                        {
+                            if (e.Data == null)
                             {
-                                if (e.Data == null)
-                                {
-                                    errorWaitHandle.Set();
-                                }
-                                else
-                                {
-                                    errorOutputBuilder.AppendLine(e.Data);
-                                }
-                            };
+                                errorWaitHandle.Set();
+                            }
+                            else
+                            {
+                                errorOutputBuilder.AppendLine(e.Data);
+                            }
+                        });
+
+                        process.OutputDataReceived += outputHandle;
+                        process.ErrorDataReceived += errorHandle;
 
                         var started = process.Start();
                         if (!started)
@@ -217,6 +222,8 @@
 
                         outputWaitHandle.WaitOne(300);
                         errorWaitHandle.WaitOne(300);
+                        process.OutputDataReceived -= outputHandle;
+                        process.ErrorDataReceived -= errorHandle;
                         exitCode = process.ExitCode;
                     }
                 }

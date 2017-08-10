@@ -1,4 +1,6 @@
 ﻿@using System.Collections
+@using OJS.Web.Areas.Administration.ViewModels.Submission
+
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 @using Resource = Resources.Areas.Administration.Submissions.Views.Partials.SubmissionsGrid
 
@@ -8,7 +10,7 @@
     const string ControllerName = "Submissions";
 }
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
+@(Html.Kendo().Grid<SubmissionAdministrationGridViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
     {
@@ -24,7 +26,7 @@
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Update", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Change + "</a>").Title(GeneralResource.Change);
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Delete", ControllerName) + "/#= Id #' class='k-button k-button-icontext'>" + GeneralResource.Delete + "</a>").Title(GeneralResource.Delete);
         columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("View", "Submissions", new { Area = "Contests" }) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Details + "</a>").Title(Resource.Details);
-        columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("Retest", ControllerName) + "/#= Id #' class='k-button k-button-icontext' target='_blank'>" + Resource.Retest + "</a>").Title(Resource.Retest);
+        columns.Template(@<text></text>).ClientTemplate("#=createRetestForm(Id)#").Title(Resource.Retest);
     })
     .ToolBar(toolbar =>
     {
@@ -83,4 +85,14 @@
             return confirm('Сигурни ли сте, че искате да изтриете избраните ' + submissionsCount + ' решения? Моля, уверете се, че сте филтрирали коректно преди да продължите.');
         });
     });
+    function createRetestForm(id) {
+        var token = $("[name='__RequestVerificationToken']").val();
+        var formOpeningTagHtml = "<form action=\"/Administration/Submissions/Retest\" class=\"inline-form\" method=\"post\" role=\"form\">";
+        var antiforgeryTokenHtml = "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"" + token + "\">";
+        var inputHtml = "<input data-val=\"true\" data-val-number=\"The field Id must be a number.\" data-val-required=\"The Id field is required.\" id=\"Id\" name=\"Id\" type=\"hidden\" value=\"" + id + "\" />";
+        var submitHtml = "<input type=\"submit\" class=\"k-button k-button-icontext\" value=\"Retest\" />";
+        var formHtmlClosingTag = "</form>";
+        var formHtml = formOpeningTagHtml + inputHtml + antiforgeryTokenHtml + submitHtml + formHtmlClosingTag;
+        return formHtml;
+    }
 </script>
