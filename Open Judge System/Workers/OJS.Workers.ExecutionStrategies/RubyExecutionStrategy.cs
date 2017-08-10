@@ -13,7 +13,7 @@
         {
             this.RubyPath = rubyPath;
         }
-   
+
         public string RubyPath { get; set; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)

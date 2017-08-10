@@ -63,7 +63,6 @@
             }
 
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
         }
