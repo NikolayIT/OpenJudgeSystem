@@ -96,24 +96,6 @@ function populateDropDowns(problemIdAsString) {
             }
         });
 
-        ////var contestsData = new kendo.data.DataSource({
-        ////    transport: {
-        ////        read: {
-        ////            url: '/Administration/Tests/GetCascadeContests/' + categoryId.toString(),
-        ////            dataType: 'json'
-        ////        }
-        ////    }
-        ////});
-
-        ////var problemsData = new kendo.data.DataSource({
-        ////    transport: {
-        ////        read: {
-        ////            url: '/Administration/Tests/GetCascadeProblems/' + contestId.toString(),
-        ////            dataType: 'json'
-        ////        }
-        ////    }
-        ////});
-
         function categoriesCascade() {
             contests.dataSource.fetch(function () {
                 contests.dataSource.read();
