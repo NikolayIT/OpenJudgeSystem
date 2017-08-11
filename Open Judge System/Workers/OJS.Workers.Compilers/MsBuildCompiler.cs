@@ -18,41 +18,28 @@
         private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
         private const int NuGetRestoreProcessExitTimeOutMilliseconds = 2 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
 
-        private static readonly Random Rand = new Random();
-
-        private readonly string inputPath;
-        private readonly string outputPath;
-
-        public MsBuildCompiler()
-        {
-            this.inputPath = DirectoryHelpers.CreateTempDirectory();
-            this.outputPath = DirectoryHelpers.CreateTempDirectory();
-        }
-
-        // TODO: delete the temp files manually somehow
-        ~MsBuildCompiler()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.inputPath, true);
-            DirectoryHelpers.SafeDeleteDirectory(this.outputPath, true);
-        }
+        private readonly string compilationDirectory = "CompileDir";
 
         public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
+            var submissionDirectory = Path.GetDirectoryName(outputFile);
+            var outputDirectory = $"{submissionDirectory}\\{this.compilationDirectory}";
+
             var newOutputFile = Directory
-                .EnumerateFiles(this.outputPath)
+                .EnumerateFiles(outputDirectory)
                 .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
             if (newOutputFile == null)
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
                 Directory.Delete(tempDir);
-                Directory.Move(this.outputPath, tempDir);
+                Directory.Move(outputDirectory, tempDir);
                 return tempDir;
             }
 
-            var tempFile = Path.GetTempFileName() + Rand.Next();
-            var tempExeFile = $"{tempFile}{GlobalConstants.ExecutableFileExtension}";
+            var tempFile = Path.GetTempFileName();
+            var tempExeFile = $"{submissionDirectory}\\{Path.GetFileName(tempFile)}{GlobalConstants.ExecutableFileExtension}";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
             return tempExeFile;
@@ -61,9 +48,11 @@
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
+            var compilingDirectory = $"{Path.GetDirectoryName(inputFile)}\\{this.compilationDirectory}";
+            Directory.CreateDirectory(compilingDirectory);
 
-            FileHelpers.UnzipFile(inputFile, this.inputPath);
-            var solutionOrProjectFile = this.FindSolutionOrProjectFile();
+            FileHelpers.UnzipFile(inputFile, compilingDirectory);
+            var solutionOrProjectFile = this.FindSolutionOrProjectFile(compilingDirectory);
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
@@ -72,16 +61,11 @@
                     nameof(inputFile));
             }
 
-            ////if (solutionOrProjectFile.EndsWith(SolutionFileExtension))
-            ////{
-            ////    RestoreNugetPackages(solutionOrProjectFile);
-            ////}
-
             // Input file argument
             arguments.Append($"\"{solutionOrProjectFile}\" ");
 
             // Output path argument
-            arguments.Append($"/p:OutputPath=\"{this.outputPath}\" ");
+            arguments.Append($"/p:OutputPath=\"{compilingDirectory}\" ");
 
             // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
@@ -120,16 +104,16 @@
             }
         }
 
-        private string FindSolutionOrProjectFile()
+        private string FindSolutionOrProjectFile(string compilingDirectory)
         {
             var solutionOrProjectFile = Directory
-                .EnumerateFiles(this.inputPath, SolutionFilesSearchPattern, SearchOption.AllDirectories)
+                .EnumerateFiles(compilingDirectory, SolutionFilesSearchPattern, SearchOption.AllDirectories)
                 .FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
                 solutionOrProjectFile = Directory
-                    .EnumerateFiles(this.inputPath, AllFilesSearchPattern, SearchOption.AllDirectories)
+                    .EnumerateFiles(compilingDirectory, AllFilesSearchPattern, SearchOption.AllDirectories)
                     .FirstOrDefault(x =>
                         x.EndsWith(CsharpProjectFileExtension, StringComparison.OrdinalIgnoreCase) ||
                         x.EndsWith(VisualBasicProjectFileExtension, StringComparison.OrdinalIgnoreCase));

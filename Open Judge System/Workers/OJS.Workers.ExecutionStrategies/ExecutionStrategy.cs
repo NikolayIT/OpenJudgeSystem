@@ -19,9 +19,11 @@
 
         public ExecutionResult SafeExecute(ExecutionContext executionContext)
         {
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();        
             try
             {
+                File.AppendAllText("D:\\info.txt",
+                    $"{executionContext.SubmissionId} resides in {Path.GetFileName(this.WorkingDirectory)}\n");
                 return this.Execute(executionContext);
             }
             finally

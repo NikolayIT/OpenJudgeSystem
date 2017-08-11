@@ -33,10 +33,7 @@
                 .FirstOrDefault(x => x.EndsWith(compiledFileName));
             if (newOutputFile == null)
             {
-                var tempDir = DirectoryHelpers.CreateTempDirectory();
-                Directory.Delete(tempDir);
-                Directory.Move(outputFolder, tempDir);
-                return tempDir;
+                return outputFolder;
             }
 
             return newOutputFile;

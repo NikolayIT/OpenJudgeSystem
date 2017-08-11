@@ -22,7 +22,6 @@
         public CPlusPlusZipFileExecutionStrategy(Func<CompilerType, string> getCompilerPath)
         {
             this.getCompilerPathFunc = getCompilerPath;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
