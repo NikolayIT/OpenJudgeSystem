@@ -1,6 +1,7 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System.Collections.Generic;
+
     using OJS.Common.Extensions;
 
     public class DoNothingExecutionStrategy : IExecutionStrategy
