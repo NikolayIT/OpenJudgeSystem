@@ -16,14 +16,6 @@
 
         protected string InputFile { get; private set; }
 
-        public override string GetOutputFileName(string inputFileName)
-        {
-            var inputFolder = Path.GetDirectoryName(inputFileName);
-            var outputPath = $"{inputFolder}\\_Compiled";
-            Directory.CreateDirectory(outputPath);
-            return outputPath;
-        }
-
         public override string ChangeOutputFileAfterCompilation(string outputFolder)
         {
             var compiledFileName = Path.GetFileNameWithoutExtension(this.InputFile);
@@ -71,6 +63,9 @@
                 return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
 
+            this.CompilationDirectory = $"{Path.GetDirectoryName(inputFile)}\\{CompilationDirectoryName}";
+            Directory.CreateDirectory(this.CompilationDirectory);
+
             string newInputFilePath = this.RenameInputFile(inputFile);
             if (newInputFilePath != inputFile)
             {
@@ -80,7 +75,7 @@
 
             this.InputFile = inputFile;
 
-            var outputFile = this.GetOutputFileName(inputFile);
+            var outputFile = this.CompilationDirectory;
             var arguments = this.BuildCompilerArguments(inputFile, outputFile, additionalArguments);
 
             var directoryInfo = new FileInfo(compilerPath).Directory;

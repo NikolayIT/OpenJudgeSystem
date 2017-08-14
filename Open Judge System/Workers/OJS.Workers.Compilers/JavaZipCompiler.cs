@@ -21,8 +21,6 @@
         public override string BuildCompilerArguments(string inputFile, string outputDirectory, string additionalArguments)
         {
             var arguments = new StringBuilder();
-            var compilingDirectory = $"{Path.GetDirectoryName(inputFile)}\\CompileDir";
-            Directory.CreateDirectory(compilingDirectory);
 
             // Output path argument
             arguments.Append($"-d \"{outputDirectory}\" ");
@@ -31,11 +29,11 @@
             arguments.Append(additionalArguments);
             arguments.Append(' ');
 
-            FileHelpers.UnzipFile(inputFile, compilingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
 
             // Input files arguments
             var filesToCompile =
-                Directory.GetFiles(compilingDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
+                Directory.GetFiles(this.CompilationDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
             for (var i = 0; i < filesToCompile.Length; i++)
             {
                 arguments.Append($"\"{filesToCompile[i]}\"");

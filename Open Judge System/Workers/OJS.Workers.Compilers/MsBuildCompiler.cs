@@ -18,28 +18,23 @@
         private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
         private const int NuGetRestoreProcessExitTimeOutMilliseconds = 2 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
 
-        private readonly string compilationDirectory = "CompileDir";
-
         public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
-            var submissionDirectory = Path.GetDirectoryName(outputFile);
-            var outputDirectory = $"{submissionDirectory}\\{this.compilationDirectory}";
-
             var newOutputFile = Directory
-                .EnumerateFiles(outputDirectory)
+                .EnumerateFiles(this.CompilationDirectory)
                 .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
             if (newOutputFile == null)
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
                 Directory.Delete(tempDir);
-                Directory.Move(outputDirectory, tempDir);
+                Directory.Move(this.CompilationDirectory, tempDir);
                 return tempDir;
             }
 
             var tempFile = Path.GetTempFileName();
-            var tempExeFile = $"{submissionDirectory}\\{Path.GetFileName(tempFile)}{GlobalConstants.ExecutableFileExtension}";
+            var tempExeFile = $"{Path.GetDirectoryName(outputFile)}\\{Path.GetFileName(tempFile)}{GlobalConstants.ExecutableFileExtension}";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
             return tempExeFile;
@@ -48,11 +43,9 @@
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
-            var compilingDirectory = $"{Path.GetDirectoryName(inputFile)}\\{this.compilationDirectory}";
-            Directory.CreateDirectory(compilingDirectory);
 
-            FileHelpers.UnzipFile(inputFile, compilingDirectory);
-            var solutionOrProjectFile = this.FindSolutionOrProjectFile(compilingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
+            var solutionOrProjectFile = this.FindSolutionOrProjectFile(this.CompilationDirectory);
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
@@ -65,7 +58,7 @@
             arguments.Append($"\"{solutionOrProjectFile}\" ");
 
             // Output path argument
-            arguments.Append($"/p:OutputPath=\"{compilingDirectory}\" ");
+            arguments.Append($"/p:OutputPath=\"{this.CompilationDirectory}\" ");
 
             // Disable pre and post build events
             arguments.Append("/p:PreBuildEvent=\"\" /p:PostBuildEvent=\"\" ");
