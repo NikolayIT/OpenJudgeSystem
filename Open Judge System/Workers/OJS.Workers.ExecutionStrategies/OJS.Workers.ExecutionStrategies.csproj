@@ -91,6 +91,7 @@
     <Compile Include="CSharpTestRunnerExecutionStrategy.cs" />
     <Compile Include="CSharpUnitTestsExecutionStrategy.cs" />
     <Compile Include="DoNothingExecutionStrategy.cs" />
+    <Compile Include="DotNetCoreProjectExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
