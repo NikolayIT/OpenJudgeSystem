@@ -25,13 +25,6 @@
             var newOutputFile = Directory
                 .EnumerateFiles(this.CompilationDirectory)
                 .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
-            if (newOutputFile == null)
-            {
-                var tempDir = DirectoryHelpers.CreateTempDirectory();
-                Directory.Delete(tempDir);
-                Directory.Move(this.CompilationDirectory, tempDir);
-                return tempDir;
-            }
 
             var tempFile = Path.GetTempFileName();
             var tempExeFile = $"{Path.GetDirectoryName(outputFile)}\\{Path.GetFileName(tempFile)}{GlobalConstants.ExecutableFileExtension}";

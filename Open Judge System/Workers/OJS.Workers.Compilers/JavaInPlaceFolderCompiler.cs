@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Text;
-
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class JavaInPlaceFolderCompiler : Compiler
@@ -52,6 +52,12 @@
             }
 
             this.CompilationDirectory = $"{inputDirectory}\\{CompilationDirectoryName}";
+
+            if (Directory.Exists(this.CompilationDirectory))
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.CompilationDirectory, true);
+            }
+
             Directory.CreateDirectory(this.CompilationDirectory);
 
             // Build compiler arguments

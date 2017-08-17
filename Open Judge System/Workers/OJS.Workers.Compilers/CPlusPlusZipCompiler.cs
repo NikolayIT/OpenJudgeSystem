@@ -26,19 +26,17 @@
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();
-            var compilingDirectory = $"{Path.GetDirectoryName(inputFile)}\\CompileDir";
-            Directory.CreateDirectory(compilingDirectory);
 
             arguments.Append($"-o \"{outputFile}\"");
             arguments.Append(' ');
 
             arguments.Append(additionalArguments);
             arguments.Append(' ');
-            FileHelpers.UnzipFile(inputFile, compilingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
 
             var filesToCompile = Directory
                 .EnumerateFiles(
-                    compilingDirectory,
+                    this.CompilationDirectory,
                     "*.*",
                     SearchOption.AllDirectories)
                 .Where(f =>

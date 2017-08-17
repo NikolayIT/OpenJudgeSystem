@@ -64,6 +64,12 @@
             }
 
             this.CompilationDirectory = $"{Path.GetDirectoryName(inputFile)}\\{CompilationDirectoryName}";
+
+            if (Directory.Exists(this.CompilationDirectory))
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.CompilationDirectory, true);
+            }
+
             Directory.CreateDirectory(this.CompilationDirectory);
 
             string newInputFilePath = this.RenameInputFile(inputFile);
