@@ -38,7 +38,7 @@
             var arguments = new StringBuilder();
 
             FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
-            var solutionOrProjectFile = this.FindSolutionOrProjectFile(this.CompilationDirectory);
+            var solutionOrProjectFile = this.FindSolutionOrProjectFile();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
@@ -90,16 +90,16 @@
             }
         }
 
-        private string FindSolutionOrProjectFile(string compilingDirectory)
+        private string FindSolutionOrProjectFile()
         {
             var solutionOrProjectFile = Directory
-                .EnumerateFiles(compilingDirectory, SolutionFilesSearchPattern, SearchOption.AllDirectories)
+                .EnumerateFiles(this.CompilationDirectory, SolutionFilesSearchPattern, SearchOption.AllDirectories)
                 .FirstOrDefault();
 
             if (string.IsNullOrWhiteSpace(solutionOrProjectFile))
             {
                 solutionOrProjectFile = Directory
-                    .EnumerateFiles(compilingDirectory, AllFilesSearchPattern, SearchOption.AllDirectories)
+                    .EnumerateFiles(this.CompilationDirectory, AllFilesSearchPattern, SearchOption.AllDirectories)
                     .FirstOrDefault(x =>
                         x.EndsWith(CsharpProjectFileExtension, StringComparison.OrdinalIgnoreCase) ||
                         x.EndsWith(VisualBasicProjectFileExtension, StringComparison.OrdinalIgnoreCase));
