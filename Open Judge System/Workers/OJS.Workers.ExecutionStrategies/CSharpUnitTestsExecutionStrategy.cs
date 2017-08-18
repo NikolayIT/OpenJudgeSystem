@@ -133,6 +133,10 @@
                     {
                         message = "Not all tests passed on the correct solution.";
                     }
+                    else
+                    {
+                        message = "Test Passed!";
+                    }
                 }
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
