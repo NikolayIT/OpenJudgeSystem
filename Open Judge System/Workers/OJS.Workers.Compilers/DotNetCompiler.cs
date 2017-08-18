@@ -8,6 +8,8 @@
         public override int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds +
                                                                 5000;
 
+        public override bool ShouldDeleteSourceFile => false;
+
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();

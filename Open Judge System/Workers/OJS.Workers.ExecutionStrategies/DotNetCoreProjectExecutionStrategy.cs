@@ -31,7 +31,7 @@
         {
             { "Microsoft.NET.Test.Sdk", "15.5.0-preview-20170727-01"},
             { "NUnit", "3.7.1" },
-            { "NUnit3TestAdapter", "3.8.0-alpha1" }
+            { "NUnit3TestAdapter", "3.8" }
         };
 
         public DotNetCoreProjectExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
@@ -124,7 +124,8 @@
             arguments.Add(compiledFile);
             arguments.Add("--no-build");
             arguments.Add("--no-restore");
-            arguments.Add(@"-s C:\Windows\Temp\setting.runsettings");         
+            arguments.Add(@"-s C:\Windows\Temp\setting.runsettings");
+            arguments.Add(@"-- NUnit.InProcess=true");
 
             var dotNetCli = this.GetCompilerPathFunc(executionContext.CompilerType);
 
