@@ -73,7 +73,9 @@
             var originalTestsPassed = -1;
             var count = 0;
 
-            foreach (var test in executionContext.Tests)
+            var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy);
+
+            foreach (var test in tests)
             {
                 File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             
