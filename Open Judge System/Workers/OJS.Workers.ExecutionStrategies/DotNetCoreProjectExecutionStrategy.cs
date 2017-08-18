@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Xml;
+    using Checkers;
     using Common;
     using Executors;
     using OJS.Common;
@@ -23,7 +25,9 @@
             @"ItemGroup/PackageReference[@Include='##packageName##']";
 
         protected const string SuccessfulRestorationPattern = @"Restore completed in \d+[,.]*\d+ sec for (.+)##csProjFileName##\.csproj";
-        protected static readonly Dictionary<string, string> RequiredReferencedAndVersions = new Dictionary<string, string>()
+
+        // TODO: update to newer versions
+        protected static readonly Dictionary<string, string> RequiredReferencedAndVersions = new Dictionary<string, string>
         {
             { "Microsoft.NET.Test.Sdk", "15.5.0-preview-20170727-01"},
             { "NUnit", "3.7.1" },
@@ -33,10 +37,7 @@
         public DotNetCoreProjectExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
             : base(getCompilerPathFunc)
         {
-            this.GetCompilerPathFunc = getCompilerPathFunc;
         }
-
-        protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -78,12 +79,15 @@
                 "##csProjFileName##",
                 Path.GetFileNameWithoutExtension(csProjFilePath)));
 
-            if (restoreResult.Type != ProcessExecutionResultType.Success
-                || !restoreMatcher.IsMatch(restoreResult.ReceivedOutput))
+            if (restoreResult.Type != ProcessExecutionResultType.Success || 
+                !restoreMatcher.IsMatch(restoreResult.ReceivedOutput))
             {
                 result.IsCompiledSuccessfully = false;
                 return result;
             }
+
+            //var expendableCsProjFile = $"{Path.GetDirectoryName(csProjFilePath)}\\{Path.GetFileNameWithoutExtension(csProjFilePath)}Copy.csproj";
+            //File.Copy(csProjFilePath, expendableCsProjFile);
 
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -91,9 +95,50 @@
                 executionContext.AdditionalCompilerArguments,
                 csProjFilePath);
 
+            if (!compilerResult.IsCompiledSuccessfully)
+            {
+                result.IsCompiledSuccessfully = false;
+                return result;
+            }
+
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            result = this.RunUnitTests(executionContext, executor, checker, result, csProjFilePath);
+
             return result;
         }
 
+        protected override ExecutionResult RunUnitTests(
+            ExecutionContext executionContext,
+            IExecutor executor, 
+            IChecker checker,
+            ExecutionResult result,
+            string compiledFile)
+        {
+            List<string> arguments = new List<string>();
+            arguments.Add("test");
+            arguments.Add(compiledFile);
+            arguments.Add("--no-build");
+            arguments.Add("--no-restore");
+            arguments.Add(@"-s C:\Windows\Temp\setting.runsettings");         
+
+            var dotNetCli = this.GetCompilerPathFunc(executionContext.CompilerType);
+
+            var executionResult = executor.Execute(
+                dotNetCli,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments,
+                this.WorkingDirectory);                  
+
+            return null;
+        }
+         
         private ProcessExecutionResult RunDotNetRestoreOnProject(
             string dotNetCli,
             int timeLimit,
