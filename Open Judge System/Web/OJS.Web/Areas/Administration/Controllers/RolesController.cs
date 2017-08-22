@@ -3,11 +3,12 @@
     using System;
     using System.Collections;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
-
+    using Data.Models;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Common;
@@ -131,15 +132,19 @@
         public ActionResult DeleteUserFromRole([DataSourceRequest]DataSourceRequest request, string id, DetailModelType model)
         {
             var user = this.Data.Users.GetById(model.UserId);
-            var role = user.Roles.FirstOrDefault(r => r.RoleId == id);
 
-            if (role != null && role.Role.Name == GlobalConstants.LecturerRoleName)
+            var roleStore = new RoleStore<IdentityRole>();
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+            var role = roleManager.Roles.FirstOrDefault(r => r.Id == id);
+
+            if (role != null && role.Name == GlobalConstants.LecturerRoleName)
             {
                 this.Data.LecturersInContests.Delete(x => x.LecturerId == model.UserId);
                 this.Data.LecturersInContestCategories.Delete(x => x.LecturerId == model.UserId);
             }
 
-            user.Roles.Remove(role);
+            var userRole = user.Roles.FirstOrDefault(r => r.RoleId == id);
+            user.Roles.Remove(userRole);
             this.Data.SaveChanges();
 
             return this.Json(this.ModelState.ToDataSourceResult());

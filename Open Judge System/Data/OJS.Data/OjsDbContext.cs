@@ -23,7 +23,7 @@
         }
 
         public OjsDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+            : base(nameOrConnectionString, throwIfV1Schema:false)
         {
         }
 

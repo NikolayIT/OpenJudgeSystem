@@ -4,18 +4,25 @@
     using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Areas.Api.Models;
+    using OJS.Web.Common;
 
     public class ResultsController : ApiController
     {
         private readonly IOjsData data;
 
+        private readonly UserManager<UserProfile> userManager;
+
         public ResultsController(IOjsData data)
         {
             this.data = data;
+            this.userManager = new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext));
         }
 
         // TODO: Extract method from these two methods since 90% of their code is the same
@@ -26,10 +33,11 @@
                 return this.Content("ERROR: Invalid arguments");
             }
 
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
+                    (userIsAdmin ||
                     x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
@@ -69,11 +77,12 @@
                 return this.Content("ERROR: Invalid arguments");
             }
 
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
-                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                          (userIsAdmin ||
+                           x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
                 return this.Content("ERROR: Invalid API key");
@@ -111,11 +120,12 @@
                 return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
             }
 
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
-                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                          (userIsAdmin ||
+                           x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
@@ -158,11 +168,12 @@
                 return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
             }
 
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
-                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                          (userIsAdmin ||
+                           x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
@@ -203,11 +214,12 @@
                 return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
             }
 
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                    (x.Roles.Any(y => y.Role.Name == GlobalConstants.AdministratorRoleName) ||
-                    x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                          (userIsAdmin ||
+                           x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
