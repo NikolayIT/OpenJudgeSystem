@@ -213,7 +213,7 @@
             ExecutionResult executionResult;
             try
             {
-                executionResult = executionStrategy.Execute(context);
+                executionResult = executionStrategy.SafeExecute(context);
             }
             catch (Exception exception)
             {

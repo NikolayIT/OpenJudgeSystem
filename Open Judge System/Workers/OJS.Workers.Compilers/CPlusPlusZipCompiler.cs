@@ -13,18 +13,6 @@
         private const string CPlusPlusClassFileExtension = ".cpp";
         private const string CClassFileExtension = ".c";
 
-        private readonly string workingDirectory;
-
-        public CPlusPlusZipCompiler()
-        {
-            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
-        }
-
-        ~CPlusPlusZipCompiler()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
-        }
-
         public override string RenameInputFile(string inputFile)
         {
             if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
@@ -44,11 +32,11 @@
 
             arguments.Append(additionalArguments);
             arguments.Append(' ');
-            FileHelpers.UnzipFile(inputFile, this.workingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
 
             var filesToCompile = Directory
                 .EnumerateFiles(
-                    this.workingDirectory,
+                    this.CompilationDirectory,
                     "*.*",
                     SearchOption.AllDirectories)
                 .Where(f =>

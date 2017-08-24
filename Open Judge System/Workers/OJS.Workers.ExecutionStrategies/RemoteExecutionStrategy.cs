@@ -7,6 +7,11 @@
 
     public class RemoteExecutionStrategy : IExecutionStrategy
     {
+        public ExecutionResult SafeExecute(ExecutionContext executionContext)
+        {
+            throw new NotImplementedException();
+        }
+
         public ExecutionResult Execute(ExecutionContext executionContext)
         {
             throw new NotImplementedException();
