@@ -13,7 +13,7 @@
         {
             this.RubyPath = rubyPath;
         }
-   
+
         public string RubyPath { get; set; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
@@ -22,7 +22,7 @@
 
             result.IsCompiledSuccessfully = true;
 
-            var submissionFilePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
+            var submissionFilePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, executionContext.Code);
 
             var arguments = new[] { submissionFilePath };
 

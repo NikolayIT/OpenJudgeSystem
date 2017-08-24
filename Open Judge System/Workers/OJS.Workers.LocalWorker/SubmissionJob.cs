@@ -202,20 +202,23 @@
                 MemoryLimit = submission.Problem.MemoryLimit,
                 TimeLimit = submission.Problem.TimeLimit,
                 TaskSkeleton = submission.Problem.SolutionSkeleton,
-                Tests = submission.Problem.Tests.AsQueryable().Select(x =>
-                        new TestContext
-                        {
-                            Id = x.Id,
-                            Input = x.InputDataAsString,
-                            Output = x.OutputDataAsString,
-                            IsTrialTest = x.IsTrialTest
-                        }).ToList(),
+                Tests = submission.Problem.Tests
+                    .AsQueryable()
+                    .Select(x =>
+                            new TestContext
+                            {
+                                Id = x.Id,
+                                Input = x.InputDataAsString,
+                                Output = x.OutputDataAsString,
+                                IsTrialTest = x.IsTrialTest,
+                                OrderBy = x.OrderBy
+                            }).ToList(),
             };
 
             ExecutionResult executionResult;
             try
             {
-                executionResult = executionStrategy.Execute(context);
+                executionResult = executionStrategy.SafeExecute(context);
             }
             catch (Exception exception)
             {
@@ -487,3 +490,4 @@
         }
     }
 }
+

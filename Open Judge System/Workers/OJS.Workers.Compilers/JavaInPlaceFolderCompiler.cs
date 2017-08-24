@@ -4,19 +4,12 @@
     using System.Diagnostics;
     using System.IO;
     using System.Text;
-
+    using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class JavaInPlaceFolderCompiler : Compiler
     {
         private const string JavaSourceFilesSearchPattern = "*.java";
-
-        public override string GetOutputFileName(string inputDirectoryName)
-        {
-            var outputPath = $"{inputDirectoryName}\\_Compiled";
-            Directory.CreateDirectory(outputPath);
-            return outputPath;
-        }
 
         public override string BuildCompilerArguments(string inputFolder, string outputDirectory, string additionalArguments)
         {
@@ -58,8 +51,17 @@
                 return new CompileResult(false, $"Input directory not found! Searched in: {inputDirectory}");
             }
 
+            this.CompilationDirectory = $"{inputDirectory}\\{CompilationDirectoryName}";
+
+            if (Directory.Exists(this.CompilationDirectory))
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.CompilationDirectory, true);
+            }
+
+            Directory.CreateDirectory(this.CompilationDirectory);
+
             // Build compiler arguments
-            var outputDirectory = this.GetOutputFileName(inputDirectory);
+            var outputDirectory = this.CompilationDirectory;
             var arguments = this.BuildCompilerArguments(inputDirectory, outputDirectory, additionalArguments);
 
             // Find compiler directory

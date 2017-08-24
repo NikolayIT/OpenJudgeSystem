@@ -146,7 +146,9 @@ public class _$TestRunner {{
             var originalTestsPassed = int.MaxValue;
             var count = 0;
 
-            foreach (var test in executionContext.Tests)
+            var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy);
+
+            foreach (var test in tests)
             {
                 var fileNames = new List<string>();
                 var classes = test.Input.Split(new[] { GlobalConstants.ClassDelimiter }, StringSplitOptions.RemoveEmptyEntries);
