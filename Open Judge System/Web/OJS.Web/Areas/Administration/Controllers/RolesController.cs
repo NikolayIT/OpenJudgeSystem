@@ -3,11 +3,11 @@
     using System;
     using System.Collections;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-    using Data.Models;
+
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 

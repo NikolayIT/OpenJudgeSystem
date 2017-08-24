@@ -38,7 +38,7 @@
         [RegularExpression(GlobalConstants.EmailRegEx)]
         [IsUnicode(false)]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public override string Email { get; set; }
 
         /// <summary>
         /// This property is true when the user comes from the old system and is not preregistered in the new system.
