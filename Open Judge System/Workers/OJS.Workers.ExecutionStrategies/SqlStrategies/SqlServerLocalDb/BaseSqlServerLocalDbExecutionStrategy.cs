@@ -44,7 +44,7 @@
 
         protected override IDbConnection GetOpenConnection(string databaseName)
         {
-            var databaseFilePath = $"C:\\Windows\\Temp\\{databaseName}.mdf";
+            var databaseFilePath = $"C:\\Windows\\Temp\\{this.WorkingDirectory}\\{databaseName}.mdf";
 
             using (var connection = new SqlConnection(this.masterDbConnectionString))
             {

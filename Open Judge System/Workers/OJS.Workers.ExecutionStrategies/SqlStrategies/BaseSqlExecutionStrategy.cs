@@ -10,7 +10,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
 
-    public abstract class BaseSqlExecutionStrategy
+    public abstract class BaseSqlExecutionStrategy : IExecutionStrategy
     {
         protected static readonly Type DecimalType = typeof(decimal);
         protected static readonly Type DoubleType = typeof(double);
@@ -20,6 +20,23 @@
         protected static readonly Type TimeSpanType = typeof(TimeSpan);
 
         private const int DefaultTimeLimit = 2 * 60 * 1000;
+
+        public string WorkingDirectory { get; set; }
+
+        public ExecutionResult SafeExecute(ExecutionContext executionContext)
+        {
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+            try
+            {
+                return this.Execute(executionContext);
+            }
+            finally
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+            }
+        }
+
+        public abstract ExecutionResult Execute(ExecutionContext executionContext);
 
         public virtual ExecutionResult Execute(
             ExecutionContext executionContext,

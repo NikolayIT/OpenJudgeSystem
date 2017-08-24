@@ -1,6 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb
 {
-    public class SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy : BaseSqlServerLocalDbExecutionStrategy, IExecutionStrategy
+    public class SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy : BaseSqlServerLocalDbExecutionStrategy
     {
         public SqlServerLocalDbRunQueriesAndCheckDatabaseExecutionStrategy(
             string masterDbConnectionString,
@@ -10,7 +10,7 @@
         {
         }
 
-        public ExecutionResult Execute(ExecutionContext executionContext)
+        public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             return this.Execute(
                 executionContext,

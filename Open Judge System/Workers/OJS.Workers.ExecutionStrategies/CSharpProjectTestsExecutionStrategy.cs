@@ -63,21 +63,13 @@
             }
 
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
-        }
-
-        ~CSharpProjectTestsExecutionStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
         protected string NUnitConsoleRunnerPath { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
-
-        protected string WorkingDirectory { get; }
 
         protected string SetupFixturePath { get; set; }
 

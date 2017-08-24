@@ -14,18 +14,6 @@
         private const string MainClassFileName = "Main.class";
         private const string MainClassFilePathSuffix = "\\" + MainClassFileName;
 
-        private readonly string workingDirectory;
-
-        public JavaZipCompiler()
-        {
-            this.workingDirectory = DirectoryHelpers.CreateTempDirectory();
-        }
-
-        ~JavaZipCompiler()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.workingDirectory, true);
-        }
-
         public override bool ShouldDeleteSourceFile => false;
 
         public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;
@@ -41,11 +29,11 @@
             arguments.Append(additionalArguments);
             arguments.Append(' ');
 
-            FileHelpers.UnzipFile(inputFile, this.workingDirectory);
+            FileHelpers.UnzipFile(inputFile, this.CompilationDirectory);
 
             // Input files arguments
             var filesToCompile =
-                Directory.GetFiles(this.workingDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
+                Directory.GetFiles(this.CompilationDirectory, JavaSourceFilesSearchPattern, SearchOption.AllDirectories);
             for (var i = 0; i < filesToCompile.Length; i++)
             {
                 arguments.Append($"\"{filesToCompile[i]}\"");

@@ -107,7 +107,7 @@ else
         <pre>@Model.CompilerComment</pre>
     }
 
-    if (!Model.HasTestRuns && Model.IsCompiledSuccessfully && string.IsNullOrEmpty(Model.ProcessingComment))
+    if (!Model.HasTestRuns && Model.IsCompiledSuccessfully && string.IsNullOrEmpty(Model.ProcessingComment) && Model.TotalTests > 0)
     {
         var message = @Html.Raw(string.Format(@Resource.User_retest_prompt, Model.Points, Model.MaxPoints));
 

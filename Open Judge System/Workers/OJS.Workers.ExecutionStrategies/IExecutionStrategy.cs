@@ -2,6 +2,8 @@
 {
     public interface IExecutionStrategy
     {
+        ExecutionResult SafeExecute(ExecutionContext executionContext);
+
         ExecutionResult Execute(ExecutionContext executionContext);
     }
 }

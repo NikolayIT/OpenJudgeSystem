@@ -16,7 +16,11 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        protected const string CompilationDirectoryName = "CompilationDir";  
+
         public virtual bool ShouldDeleteSourceFile => true;
+
+        protected string CompilationDirectory { get; set; }
 
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
@@ -66,6 +70,9 @@
             {
                 return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
+
+            this.CompilationDirectory = $"{Path.GetDirectoryName(inputFile)}\\{CompilationDirectoryName}";
+            Directory.CreateDirectory(this.CompilationDirectory);
 
             // Move source file if needed
             string newInputFilePath = this.RenameInputFile(inputFile);

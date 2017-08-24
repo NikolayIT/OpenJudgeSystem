@@ -17,11 +17,29 @@
             return tempFilePath;
         }
 
-        public static string SaveByteArrayToTempFile(byte[] dataToWrite)
+        public static string SaveStringToTempFile(string directory, string stringToWrite)
         {
             var tempFilePath = Path.GetTempFileName();
+            File.Delete(tempFilePath);
+            var fullTempFilePath = $"{directory}\\{Path.GetFileName(tempFilePath)}";
+            File.WriteAllText(fullTempFilePath, stringToWrite);
+            return fullTempFilePath;
+        }
+
+        public static string SaveByteArrayToTempFile(byte[] dataToWrite)
+        {
+            var tempFilePath = Path.GetFileName(Path.GetTempFileName());
             File.WriteAllBytes(tempFilePath, dataToWrite);
             return tempFilePath;
+        }
+
+        public static string SaveByteArrayToTempFile(string directory, byte[] dataToWrite)
+        {
+            var tempFilePath = Path.GetTempFileName();
+            File.Delete(tempFilePath);
+            var fullTempFilePath = $"{directory}\\{Path.GetFileName(tempFilePath)}";
+            File.WriteAllBytes(fullTempFilePath, dataToWrite);
+            return fullTempFilePath;
         }
 
         public static void ConvertContentToZip(string submissionZipFilePath)
