@@ -115,6 +115,10 @@
                     entity.Processed = false;
                     entity.Processing = false;
                     this.BaseCreate(entity);
+
+                    this.AddSubmissionForProcessing(model.Id.Value);
+                    this.Data.SaveChanges();
+
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -241,7 +245,7 @@
             var submission = this.Data.Submissions
                 .All()
                 .FirstOrDefault(subm => subm.Id == id);
-
+            
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
@@ -268,6 +272,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
+                this.RemoveSubmissionForProcessing(id);
 
                 this.Data.SaveChanges();
 
@@ -302,6 +307,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
+                    this.RemoveSubmissionForProcessing(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -421,6 +427,8 @@
                 {
                     submission.Processed = false;
                     submission.Processing = false;
+
+                    this.AddSubmissionForProcessing(submission.Id);
                     this.Data.SaveChanges();
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
@@ -586,5 +594,37 @@
             return bestScore?.SubmissionId == submissionId;
         }
 
+        private void AddSubmissionForProcessing(int submissionId)
+        {
+            var submissionForProcessing = this.Data.SubmissionsForProcessing
+                .All()
+                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+            if (submissionForProcessing != null)
+            {
+                submissionForProcessing.Processing = false;
+                submissionForProcessing.Processed = false;
+            }
+            else
+            {
+                submissionForProcessing = new SubmissionsForProcessing()
+                {
+                    SubmissionId = submissionId
+                };
+                this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
+            }
+        }
+
+        private void RemoveSubmissionForProcessing(int id)
+        {
+            var submissionForProcessing = this.Data.SubmissionsForProcessing
+                .All()
+                .FirstOrDefault(sfp => sfp.SubmissionId == id);
+
+            if (submissionForProcessing != null)
+            {
+                this.Data.SubmissionsForProcessing.Delete(submissionForProcessing);
+            }
+        }
     }
 }

@@ -569,7 +569,8 @@
                 this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
                 this.Data.SaveChanges();
 
-                this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ForEach(this.RetestSubmission);
+                var submissions = this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ToList();
+                submissions.ForEach(this.RetestSubmission);
                 this.Data.SaveChanges();
 
                 scope.Complete();
@@ -822,11 +823,34 @@
 
         private void RetestSubmission(int submissionId)
         {
-            var submission = new Submission { Id = submissionId, Processed = false, Processing = false };
+            var submission = new Submission
+            {
+                Id = submissionId,
+                Processed = false,
+                Processing = false
+            };
             this.Data.Context.Submissions.Attach(submission);
-            var entry = this.Data.Context.Entry(submission);
-            entry.Property(pr => pr.Processed).IsModified = true;
-            entry.Property(pr => pr.Processing).IsModified = true;
+            var submissionEntry = this.Data.Context.Entry(submission);
+            submissionEntry.Property(pr => pr.Processed).IsModified = true;
+            submissionEntry.Property(pr => pr.Processing).IsModified = true;
+
+            var submissionForProcessing = this.Data.SubmissionsForProcessing
+                .All()
+                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+            if (submissionForProcessing != null)
+            {
+                submissionForProcessing.Processing = false;
+                submissionForProcessing.Processed = false;
+            }
+            else
+            {
+                submissionForProcessing = new SubmissionsForProcessing()
+                {
+                    SubmissionId = submissionId
+                };
+                this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
+            }
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
@@ -840,7 +864,11 @@
         private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
         {
             var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
-            var lastProblem = this.Data.Problems.All().Where(x => x.ContestId == contest.Id).OrderByDescending(x => x.OrderBy).FirstOrDefault();
+            var lastProblem = this.Data.Problems
+                .All()
+                .Where(x => x.ContestId == contest.Id)
+                .OrderByDescending(x => x.OrderBy)
+                .FirstOrDefault();
 
             if (lastProblem != null)
             {

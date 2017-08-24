@@ -8,6 +8,6 @@
 
         public bool Processing { get; set; }
 
-       // public bool Processed { get; set; }
+        public bool Processed { get; set; }
     }
 }

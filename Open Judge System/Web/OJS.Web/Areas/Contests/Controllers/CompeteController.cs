@@ -324,7 +324,7 @@
 
             var contest = participant.Contest;
 
-            this.Data.Submissions.Add(new Submission
+            var newSubmission = new Submission
             {
                 ContentAsString = participantSubmission.Content,
                 ProblemId = participantSubmission.ProblemId,
@@ -332,11 +332,19 @@
                 ParticipantId = participant.Id,
                 IpAddress = this.Request.UserHostAddress,
                 IsPublic = ((participant.IsOfficial && contest.ContestPassword == null) ||
-                     (!participant.IsOfficial && contest.PracticePassword == null))
-                    && contest.IsVisible && !contest.IsDeleted
-                    && problem.ShowResults
-            });
+                            (!participant.IsOfficial && contest.PracticePassword == null))
+                           && contest.IsVisible && !contest.IsDeleted
+                           && problem.ShowResults
+            };
 
+            this.Data.Submissions.Add(newSubmission);
+            this.Data.SaveChanges();
+
+            var submissionForProcessing = new SubmissionsForProcessing()
+            {
+                SubmissionId = newSubmission.Id
+            };
+            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
             this.Data.SaveChanges();
 
             return this.Json(participantSubmission.ProblemId);
@@ -415,7 +423,13 @@
             };
 
             this.Data.Submissions.Add(newSubmission);
+            this.Data.SaveChanges();
 
+            var submissionForProcessing = new SubmissionsForProcessing()
+            {
+                SubmissionId = newSubmission.Id
+            };
+            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
             this.Data.SaveChanges();
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
