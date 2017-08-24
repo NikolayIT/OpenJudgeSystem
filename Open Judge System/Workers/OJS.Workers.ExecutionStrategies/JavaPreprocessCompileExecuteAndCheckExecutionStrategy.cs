@@ -27,16 +27,15 @@
             }
 
             this.JavaExecutablePath = javaExecutablePath;
-            this.GetCompilerPathFunc = getCompilerPathFunc;
-            this.SandboxExecutorSourceFilePath =
-                $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{GlobalConstants.JavaSourceFileExtension}";
+            this.GetCompilerPathFunc = getCompilerPathFunc;              
         }
 
         protected string JavaExecutablePath { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
-        protected string SandboxExecutorSourceFilePath { get; }
+        protected string SandboxExecutorSourceFilePath =>
+            $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{GlobalConstants.JavaSourceFileExtension}";
 
         protected string SandboxExecutorCode => @"
 import java.io.File;
