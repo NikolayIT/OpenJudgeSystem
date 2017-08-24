@@ -53,7 +53,6 @@
 
         public CSharpProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
         {
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
         }
