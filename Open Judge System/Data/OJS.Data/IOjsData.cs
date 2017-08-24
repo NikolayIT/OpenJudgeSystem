@@ -46,6 +46,8 @@
 
         ISubmissionsRepository Submissions { get; }
 
+        IRepository<SubmissionsForProcessing> SubmissionsForProcessing { get; }
+
         IRepository<SubmissionType> SubmissionTypes { get; }
 
         IDeletableEntityRepository<SourceCode> SourceCodes { get; }

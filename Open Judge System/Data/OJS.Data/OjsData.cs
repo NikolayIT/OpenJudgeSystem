@@ -48,6 +48,9 @@
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
+        public IRepository<SubmissionsForProcessing> SubmissionsForProcessing => this
+            .GetRepository<SubmissionsForProcessing>();
+
         public IRepository<SubmissionType> SubmissionTypes => this.GetRepository<SubmissionType>();
 
         public IDeletableEntityRepository<SourceCode> SourceCodes => this.GetDeletableEntityRepository<SourceCode>();

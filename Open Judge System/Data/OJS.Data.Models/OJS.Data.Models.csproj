@@ -79,6 +79,7 @@
     <Compile Include="ProblemResource.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SourceCode.cs" />
+    <Compile Include="SubmissionsForProcessing.cs" />
     <Compile Include="SubmissionType.cs" />
     <Compile Include="Contest.cs" />
     <Compile Include="ContestCategory.cs" />

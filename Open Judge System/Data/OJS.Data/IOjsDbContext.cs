@@ -34,6 +34,8 @@
 
         IDbSet<Submission> Submissions { get; set; }
 
+        IDbSet<SubmissionsForProcessing> SubmissionsForProcessing { get; set; } 
+            
         IDbSet<SubmissionType> SubmissionTypes { get; set; }
 
         IDbSet<SourceCode> SourceCodes { get; set; }
