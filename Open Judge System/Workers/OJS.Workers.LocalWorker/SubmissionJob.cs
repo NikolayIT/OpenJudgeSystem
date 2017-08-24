@@ -176,6 +176,8 @@
                 case CompilerType.JavaZip:
                 case CompilerType.JavaInPlaceCompiler:
                     return Settings.JavaCompilerPath;
+                case CompilerType.DotNetCompiler:
+                    return Settings.DotNetCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
             }
@@ -293,6 +295,9 @@
                     break;
                 case ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpAspProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.DotNetCoreProjectExecutionStrategy:
+                    executionStrategy = new DotNetCoreProjectExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.RubyExecutionStrategy:
                     executionStrategy = new RubyExecutionStrategy(Settings.RubyPath);

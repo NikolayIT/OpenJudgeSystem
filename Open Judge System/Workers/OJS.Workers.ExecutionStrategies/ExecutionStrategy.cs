@@ -136,7 +136,11 @@
             return compilerResult;
         }
 
-        protected virtual CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
+        protected virtual CompileResult Compile(
+            CompilerType compilerType, 
+            string compilerPath,
+            string compilerArguments,
+            string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
