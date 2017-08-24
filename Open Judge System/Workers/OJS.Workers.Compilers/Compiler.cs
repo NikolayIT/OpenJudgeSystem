@@ -18,6 +18,8 @@
     {
         public virtual bool ShouldDeleteSourceFile => true;
 
+        public virtual int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
+
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
             switch (compilerType)
@@ -40,12 +42,17 @@
                     return new MsBuildLibraryCompiler();
                 case CompilerType.CPlusPlusZip:
                     return new CPlusPlusZipCompiler();
+                    case CompilerType.DotNetCompiler: 
+                    return new DotNetCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
         }
 
-        public virtual CompileResult Compile(string compilerPath, string inputFile, string additionalArguments)
+        public virtual CompileResult Compile(
+            string compilerPath, 
+            string inputFile,
+            string additionalArguments)
         {
             if (compilerPath == null)
             {
@@ -90,7 +97,7 @@
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             // Execute compiler
-            var compilerOutput = ExecuteCompiler(processStartInfo);
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutMillisecond);
 
             if (this.ShouldDeleteSourceFile)
             {
