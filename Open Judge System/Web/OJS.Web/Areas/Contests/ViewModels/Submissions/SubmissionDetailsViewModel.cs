@@ -35,12 +35,15 @@
                     SubmissionType = submission.SubmissionType,
                     TestRuns = submission.TestRuns.AsQueryable().Select(TestRunDetailsViewModel.FromTestRun),
                     ShowResults = submission.Problem.ShowResults,
-                    ShowDetailedFeedback = submission.Problem.ShowDetailedFeedback
+                    ShowDetailedFeedback = submission.Problem.ShowDetailedFeedback,
+                    TotalTests = submission.Problem.Tests.Count
                 };
             }
         }
 
         public IEnumerable<TestRunDetailsViewModel> TestRuns { get; set; }
+
+        public int TotalTests { get; set; }
 
         public string UserId { get; set; }
 
