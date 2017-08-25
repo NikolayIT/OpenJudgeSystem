@@ -50,7 +50,13 @@
             @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
         // Extracts error/failure messages and the class which threw it       
         protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
-      
+
+        public CSharpProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
+        {
+            this.GetCompilerPathFunc = getCompilerPathFunc;
+            this.TestNames = new List<string>();
+        }
+
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc)
@@ -63,21 +69,13 @@
             }
 
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
-        }
-
-        ~CSharpProjectTestsExecutionStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
         protected string NUnitConsoleRunnerPath { get; }
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
-
-        protected string WorkingDirectory { get; }
 
         protected string SetupFixturePath { get; set; }
 

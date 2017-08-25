@@ -82,7 +82,7 @@
                                 submission.Processing = true;
                                 submissionForProcessing.Processing = true;
                                 data.SaveChanges();
-                            }                     
+                            }
                         }
                     }
 
@@ -90,7 +90,7 @@
                     {
                         Thread.Sleep(1000);
                         continue;
-                    }                   
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -183,6 +183,8 @@
                 case CompilerType.JavaZip:
                 case CompilerType.JavaInPlaceCompiler:
                     return Settings.JavaCompilerPath;
+                case CompilerType.DotNetCompiler:
+                    return Settings.DotNetCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
             }
@@ -207,20 +209,23 @@
                 MemoryLimit = submission.Problem.MemoryLimit,
                 TimeLimit = submission.Problem.TimeLimit,
                 TaskSkeleton = submission.Problem.SolutionSkeleton,
-                Tests = submission.Problem.Tests.AsQueryable().Select(x =>
-                        new TestContext
-                        {
-                            Id = x.Id,
-                            Input = x.InputDataAsString,
-                            Output = x.OutputDataAsString,
-                            IsTrialTest = x.IsTrialTest
-                        }).ToList(),
+                Tests = submission.Problem.Tests
+                    .AsQueryable()
+                    .Select(x =>
+                            new TestContext
+                            {
+                                Id = x.Id,
+                                Input = x.InputDataAsString,
+                                Output = x.OutputDataAsString,
+                                IsTrialTest = x.IsTrialTest,
+                                OrderBy = x.OrderBy
+                            }).ToList(),
             };
 
             ExecutionResult executionResult;
             try
             {
-                executionResult = executionStrategy.Execute(context);
+                executionResult = executionStrategy.SafeExecute(context);
             }
             catch (Exception exception)
             {
@@ -297,6 +302,9 @@
                     break;
                 case ExecutionStrategyType.CSharpAspProjectTestsExecutionStrategy:
                     executionStrategy = new CSharpAspProjectTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.DotNetCoreProjectExecutionStrategy:
+                    executionStrategy = new DotNetCoreProjectExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.RubyExecutionStrategy:
                     executionStrategy = new RubyExecutionStrategy(Settings.RubyPath);
@@ -489,3 +497,4 @@
         }
     }
 }
+

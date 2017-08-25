@@ -14,6 +14,8 @@
             Logger = LogManager.GetLogger("Settings");
         }
 
+        public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
+
         public static string MavenPath => GetSetting("MavenPath");
 
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");

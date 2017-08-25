@@ -9,5 +9,7 @@
         public string Output { get; set; }
 
         public bool IsTrialTest { get; set; }
+
+        public int OrderBy { get; set; }
     }
 }
