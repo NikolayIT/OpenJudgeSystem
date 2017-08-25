@@ -47,6 +47,7 @@
             {
                 var data = new OjsData();
                 Submission submission = null;
+                SubmissionsForProcessing submissionForProcessing = null;
                 int submissionId;
 
                 try
@@ -56,11 +57,11 @@
                     {
                         if (this.submissionsForProcessing.IsEmpty)
                         {
-                            var submissions = data.Submissions
+                            var submissions = data.SubmissionsForProcessing
                                 .All()
                                 .Where(x => !x.Processed && !x.Processing)
                                 .OrderBy(x => x.Id)
-                                .Select(x => x.Id)
+                                .Select(x => x.SubmissionId)
                                 .ToList();
 
                             submissions.ForEach(this.submissionsForProcessing.Enqueue);
@@ -72,9 +73,14 @@
                         {
                             this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
                             submission = data.Submissions.GetById(submissionId);
+                            submissionForProcessing = data.SubmissionsForProcessing
+                                .All()
+                                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
                             if (!submission.Processing)
                             {
                                 submission.Processing = true;
+                                submissionForProcessing.Processing = true;
                                 data.SaveChanges();
                             }                     
                         }
@@ -117,7 +123,8 @@
 
                 submission.Processed = true;
                 submission.Processing = false;
-
+                submissionForProcessing.Processed = true;
+                submissionForProcessing.Processing = false;
                 try
                 {
                     data.ParticipantScores.SaveParticipantScore(submission);

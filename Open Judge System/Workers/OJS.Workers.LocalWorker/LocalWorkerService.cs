@@ -97,20 +97,26 @@
                         var affectedRows =
                             allProcessingSubmissions.Update(s => new Submission() { Processing = false });
 
-                        foreach (var processingSubmission in allProcessingSubmissions)
+                        var unprocessedSubmissions = data.Submissions
+                            .All()
+                            .Where(s => !s.Processed && !s.Processing && !s.IsDeleted);
+
+                        foreach (var unprocessedSubmission in unprocessedSubmissions)
                         {
                             var submissionForProcessing = data.SubmissionsForProcessing
                                 .All()
-                                .FirstOrDefault(sfp => sfp.SubmissionId == processingSubmission.Id);
+                                .FirstOrDefault(sfp => sfp.SubmissionId == unprocessedSubmission.Id);
+
                             if (submissionForProcessing != null)
                             {
                                 submissionForProcessing.Processing = false;
+                                submissionForProcessing.Processed = false;
                             }
                             else
                             {
                                 submissionForProcessing = new SubmissionsForProcessing()
                                 {
-                                    SubmissionId = processingSubmission.Id
+                                    SubmissionId = unprocessedSubmission.Id
                                 };
                                 data.SubmissionsForProcessing.Add(submissionForProcessing);
                             }
