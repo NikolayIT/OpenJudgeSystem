@@ -38,8 +38,8 @@
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                        (userIsAdmin ||
-                        x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+
             if (!isValidApiKey)
             {
                 return this.Content("ERROR: Invalid API key");
@@ -82,8 +82,8 @@
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                        (userIsAdmin ||
-                        x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+
             if (!isValidApiKey)
             {
                 return this.Content("ERROR: Invalid API key");
@@ -125,8 +125,8 @@
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                        (userIsAdmin ||
-                        x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
@@ -173,8 +173,8 @@
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                        (userIsAdmin ||
-                        x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
@@ -219,8 +219,8 @@
             var isValidApiKey = this.data.Users
                 .All()
                 .Any(x => x.Id == apiKey &&
-                        (userIsAdmin ||
-                        x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
+
             if (!isValidApiKey)
             {
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
