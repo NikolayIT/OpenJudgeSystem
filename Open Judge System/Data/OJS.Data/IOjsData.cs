@@ -46,7 +46,7 @@
 
         ISubmissionsRepository Submissions { get; }
 
-        IRepository<SubmissionsForProcessing> SubmissionsForProcessing { get; }
+        ISubmissionsForProcessingRepository SubmissionsForProcessing { get; }
 
         IRepository<SubmissionType> SubmissionTypes { get; }
 

@@ -834,23 +834,7 @@
             submissionEntry.Property(pr => pr.Processed).IsModified = true;
             submissionEntry.Property(pr => pr.Processing).IsModified = true;
 
-            var submissionForProcessing = this.Data.SubmissionsForProcessing
-                .All()
-                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
-
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = false;
-            }
-            else
-            {
-                submissionForProcessing = new SubmissionsForProcessing()
-                {
-                    SubmissionId = submissionId
-                };
-                this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            }
+            this.Data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)

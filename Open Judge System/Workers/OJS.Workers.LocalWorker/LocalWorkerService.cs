@@ -103,26 +103,8 @@
 
                         foreach (var unprocessedSubmission in unprocessedSubmissions)
                         {
-                            var submissionForProcessing = data.SubmissionsForProcessing
-                                .All()
-                                .FirstOrDefault(sfp => sfp.SubmissionId == unprocessedSubmission.Id);
-
-                            if (submissionForProcessing != null)
-                            {
-                                submissionForProcessing.Processing = false;
-                                submissionForProcessing.Processed = false;
-                            }
-                            else
-                            {
-                                submissionForProcessing = new SubmissionsForProcessing()
-                                {
-                                    SubmissionId = unprocessedSubmission.Id
-                                };
-                                data.SubmissionsForProcessing.Add(submissionForProcessing);
-                            }
+                           data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(unprocessedSubmission.Id);
                         }
-
-                        data.SaveChanges();
 
                         logger.InfoFormat("{0} submissions' Processing status reset to False", affectedRows);
                     }

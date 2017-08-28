@@ -48,8 +48,8 @@
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
-        public IRepository<SubmissionsForProcessing> SubmissionsForProcessing => this
-            .GetRepository<SubmissionsForProcessing>();
+        public ISubmissionsForProcessingRepository SubmissionsForProcessing => (SubmissionsForProcessingRepository)
+            this.GetRepository<SubmissionsForProcessing>();
 
         public IRepository<SubmissionType> SubmissionTypes => this.GetRepository<SubmissionType>();
 
@@ -144,6 +144,11 @@
                 if (typeof(T).IsAssignableFrom(typeof(ParticipantScore)))
                 {
                     type = typeof(ParticipantScoresRepository);
+                }
+
+                if (typeof(T).IsAssignableFrom(typeof(SubmissionsForProcessing)))
+                {
+                    type = typeof(SubmissionsForProcessingRepository);
                 }
 
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));

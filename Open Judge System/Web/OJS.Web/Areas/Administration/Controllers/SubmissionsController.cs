@@ -115,9 +115,7 @@
                     entity.Processed = false;
                     entity.Processing = false;
                     this.BaseCreate(entity);
-
-                    this.AddSubmissionForProcessing(model.Id.Value);
-                    this.Data.SaveChanges();
+                    this.Data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(model.Id.Value);
 
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
@@ -428,7 +426,7 @@
                     submission.Processed = false;
                     submission.Processing = false;
 
-                    this.AddSubmissionForProcessing(submission.Id);
+                    this.Data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(submission.Id);
                     this.Data.SaveChanges();
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
@@ -592,27 +590,6 @@
                                       ps.ParticipantId == participantId);
 
             return bestScore?.SubmissionId == submissionId;
-        }
-
-        private void AddSubmissionForProcessing(int submissionId)
-        {
-            var submissionForProcessing = this.Data.SubmissionsForProcessing
-                .All()
-                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
-
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = false;
-            }
-            else
-            {
-                submissionForProcessing = new SubmissionsForProcessing()
-                {
-                    SubmissionId = submissionId
-                };
-                this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            }
         }
 
         private void RemoveSubmissionForProcessing(int id)
