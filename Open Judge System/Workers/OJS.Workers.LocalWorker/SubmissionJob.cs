@@ -77,7 +77,7 @@
                                 .All()
                                 .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
 
-                            if (!submission.Processing)
+                            if (submission != null && submissionForProcessing != null && !submission.Processing)
                             {
                                 submission.Processing = true;
                                 submissionForProcessing.Processing = true;
@@ -123,8 +123,8 @@
 
                 submission.Processed = true;
                 submission.Processing = false;
-                submissionForProcessing.Processed = true;
-                submissionForProcessing.Processing = false;
+                data.SubmissionsForProcessing.Delete(submissionForProcessing);
+
                 try
                 {
                     data.ParticipantScores.SaveParticipantScore(submission);
