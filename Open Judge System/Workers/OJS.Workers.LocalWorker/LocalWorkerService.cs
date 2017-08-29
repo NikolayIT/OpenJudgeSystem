@@ -86,27 +86,20 @@
             using (var data = new OjsData())
             {
                 var allProcessingSubmissions = data
-                    .Submissions
+                    .SubmissionsForProcessing
                     .All()
-                    .Where(s => s.Processing && !s.Processed && !s.IsDeleted);
+                    .Where(s => s.Processing && !s.Processed);
 
                 if (allProcessingSubmissions.Any())
                 {
                     try
                     {
-                        var affectedRows =
-                            allProcessingSubmissions.Update(s => new Submission() { Processing = false });
-
-                        var unprocessedSubmissions = data.Submissions
-                            .All()
-                            .Where(s => !s.Processed && !s.Processing && !s.IsDeleted);
-
-                        foreach (var unprocessedSubmission in unprocessedSubmissions)
+                        foreach (var unprocessedSubmission in allProcessingSubmissions)
                         {
-                           data.SubmissionsForProcessing.AddOrUpdate(unprocessedSubmission.Id);
+                            unprocessedSubmission.Processing = false;
                         }
 
-                        logger.InfoFormat("{0} submissions' Processing status reset to False", affectedRows);
+                        data.SaveChanges();
                     }
                     catch (Exception e)
                     {

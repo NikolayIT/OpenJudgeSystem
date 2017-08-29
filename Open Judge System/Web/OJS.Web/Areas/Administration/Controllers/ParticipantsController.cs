@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-
+    using EntityFramework.Extensions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
@@ -239,6 +239,18 @@
 
                 data.SaveChanges();
             }
+
+            return null;
+        }
+
+        public ActionResult ResetSubmissions()
+        {
+            var allProcessingSubmissions = this.Data
+                .Submissions
+                .All()
+                .Where(s => s.Processing && !s.Processed && !s.IsDeleted);
+
+            allProcessingSubmissions.Update(s => new Submission() { Processing = false });
 
             return null;
         }

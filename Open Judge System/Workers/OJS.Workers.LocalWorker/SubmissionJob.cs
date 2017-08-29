@@ -72,6 +72,7 @@
                         if (retrievedSubmissionSuccessfully)
                         {
                             this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
+
                             submission = data.Submissions.GetById(submissionId);
                             submissionForProcessing = data.SubmissionsForProcessing
                                 .All()
@@ -79,7 +80,6 @@
 
                             if (submission != null && submissionForProcessing != null && !submission.Processing)
                             {
-                                submission.Processing = true;
                                 submissionForProcessing.Processing = true;
                                 data.SaveChanges();
                             }
@@ -122,7 +122,6 @@
                 }
 
                 submission.Processed = true;
-                submission.Processing = false;
                 data.SubmissionsForProcessing.Delete(submissionForProcessing);
 
                 try
