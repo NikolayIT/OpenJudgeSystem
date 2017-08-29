@@ -115,7 +115,7 @@
                     entity.Processed = false;
                     entity.Processing = false;
                     this.BaseCreate(entity);
-                    this.Data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(model.Id.Value);
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
 
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
@@ -270,7 +270,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.RemoveSubmissionForProcessing(id);
+                this.Data.SubmissionsForProcessing.Remove(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -305,7 +305,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.RemoveSubmissionForProcessing(submission.Id);
+                    this.Data.SubmissionsForProcessing.Remove(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -426,7 +426,7 @@
                     submission.Processed = false;
                     submission.Processing = false;
 
-                    this.Data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(submission.Id);
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
                     this.Data.SaveChanges();
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
@@ -590,18 +590,6 @@
                                       ps.ParticipantId == participantId);
 
             return bestScore?.SubmissionId == submissionId;
-        }
-
-        private void RemoveSubmissionForProcessing(int id)
-        {
-            var submissionForProcessing = this.Data.SubmissionsForProcessing
-                .All()
-                .FirstOrDefault(sfp => sfp.SubmissionId == id);
-
-            if (submissionForProcessing != null)
-            {
-                this.Data.SubmissionsForProcessing.Delete(submissionForProcessing);
-            }
         }
     }
 }

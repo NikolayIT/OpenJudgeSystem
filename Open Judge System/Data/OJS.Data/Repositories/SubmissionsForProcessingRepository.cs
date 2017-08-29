@@ -12,7 +12,7 @@
         {
         }
 
-        public void AddOrUpdateSubmissionForProcessing(int submissionId)
+        public void AddOrUpdate(int submissionId)
         {
             var submissionForProcessing = this.Context.SubmissionsForProcessing
                 .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
@@ -32,6 +32,17 @@
             }
 
             this.Context.SaveChanges();      
+        }
+
+        public void Remove(int submissionId)
+        {
+            var submissionForProcessing = this.Context.SubmissionsForProcessing
+                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+            if (submissionForProcessing != null)
+            {
+                this.Delete(submissionForProcessing.Id);
+            }
         }
     }
 }

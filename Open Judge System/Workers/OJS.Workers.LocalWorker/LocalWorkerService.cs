@@ -103,7 +103,7 @@
 
                         foreach (var unprocessedSubmission in unprocessedSubmissions)
                         {
-                           data.SubmissionsForProcessing.AddOrUpdateSubmissionForProcessing(unprocessedSubmission.Id);
+                           data.SubmissionsForProcessing.AddOrUpdate(unprocessedSubmission.Id);
                         }
 
                         logger.InfoFormat("{0} submissions' Processing status reset to False", affectedRows);
