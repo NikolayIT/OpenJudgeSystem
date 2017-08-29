@@ -12,6 +12,8 @@ namespace OJS.Web
     using Ninject.Modules;
     using Ninject.Web.Common;
 
+    using OJS.Common.BackgroundJobs;
+    using OJS.Common.BackgroundJobs.Contracts;
     using OJS.Data;
     using OJS.Workers.Tools.AntiCheat;
     using OJS.Workers.Tools.AntiCheat.Contracts;
@@ -75,6 +77,7 @@ namespace OJS.Web
             kernel.Bind<IOjsData>().To<OjsData>().InRequestScope();
             kernel.Bind<ISimilarityFinder>().To<SimilarityFinder>().InRequestScope();
             kernel.Bind<IPlagiarismDetectorFactory>().To<PlagiarismDetectorFactory>().InRequestScope();
+            kernel.Bind<IBackgroundJobService>().To<HangfireBackgroundJobService>().InRequestScope();
         }
     }
 }
