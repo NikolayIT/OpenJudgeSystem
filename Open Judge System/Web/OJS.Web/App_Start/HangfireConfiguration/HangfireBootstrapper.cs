@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.HangfireConfiguration
 {
     using System.Web.Hosting;
+
     using Hangfire;
 
     public class HangfireBootstrapper : IRegisteredObject
