@@ -27,7 +27,8 @@
             }
 
             this.JavaExecutablePath = javaExecutablePath;
-			this.GetCompilerPathFunc = getCompilerPathFunc;        }
+            this.GetCompilerPathFunc = getCompilerPathFunc;
+        }
 
         protected string JavaExecutablePath { get; }
 
