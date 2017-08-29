@@ -48,7 +48,7 @@
                     HostingEnvironment.RegisterObject(this);
 
                     GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-                   //GlobalConfiguration.Configuration.UseNinjectActivator(new Ninject.Web.Common.Bootstrapper().Kernel);
+                    GlobalConfiguration.Configuration.UseNinjectActivator(new Ninject.Web.Common.Bootstrapper().Kernel);
                     this.backgroundJobServer = new BackgroundJobServer();
                 }
             }
