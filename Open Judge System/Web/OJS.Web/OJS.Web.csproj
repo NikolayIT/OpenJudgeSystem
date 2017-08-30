@@ -35,6 +35,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +103,15 @@
     <Reference Include="Glimpse.Mvc4, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Glimpse.Mvc4.1.5.3\lib\net40\Glimpse.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.6.15\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Ninject, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Ninject.1.2.0\lib\net45\Hangfire.Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.SqlServer.1.6.15\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -1512,6 +1522,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\GlimpseSecurityPolicy.cs" />
+    <Compile Include="App_Start\HangfireConfiguration\HangfireBootstrapper.cs" />
+    <Compile Include="App_Start\HangfireConfiguration\OjsPreloader.cs" />
     <Compile Include="App_Start\LoggingModule.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -3281,6 +3293,10 @@
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
       <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
+      <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
+      <Name>OJS.Services.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj">
       <Project>{a1f48412-495a-434c-bdd0-e70aedad6897}</Project>
