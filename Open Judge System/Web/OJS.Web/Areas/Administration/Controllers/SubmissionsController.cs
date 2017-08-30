@@ -115,6 +115,8 @@
                     entity.Processed = false;
                     entity.Processing = false;
                     this.BaseCreate(entity);
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
+
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -240,8 +242,8 @@
         {
             var submission = this.Data.Submissions
                 .All()
-                .FirstOrDefault(subm => subm.Id == id);
-
+                .FirstOrDefault(s => s.Id == id);
+            
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
@@ -268,6 +270,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
+                this.Data.SubmissionsForProcessing.Remove(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -302,6 +305,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
+                    this.Data.SubmissionsForProcessing.Remove(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -421,6 +425,8 @@
                 {
                     submission.Processed = false;
                     submission.Processing = false;
+
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
                     this.Data.SaveChanges();
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
@@ -585,6 +591,5 @@
 
             return bestScore?.SubmissionId == submissionId;
         }
-
     }
 }

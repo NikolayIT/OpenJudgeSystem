@@ -47,6 +47,7 @@
             {
                 var data = new OjsData();
                 Submission submission = null;
+                SubmissionForProcessing submissionForProcessing = null;
                 int submissionId;
 
                 try
@@ -56,11 +57,11 @@
                     {
                         if (this.submissionsForProcessing.IsEmpty)
                         {
-                            var submissions = data.Submissions
+                            var submissions = data.SubmissionsForProcessing
                                 .All()
                                 .Where(x => !x.Processed && !x.Processing)
                                 .OrderBy(x => x.Id)
-                                .Select(x => x.Id)
+                                .Select(x => x.SubmissionId)
                                 .ToList();
 
                             submissions.ForEach(this.submissionsForProcessing.Enqueue);
@@ -71,10 +72,15 @@
                         if (retrievedSubmissionSuccessfully)
                         {
                             this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
+
                             submission = data.Submissions.GetById(submissionId);
-                            if (!submission.Processing)
+                            submissionForProcessing = data.SubmissionsForProcessing
+                                .All()
+                                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+                            if (submission != null && submissionForProcessing != null && !submission.Processing)
                             {
-                                submission.Processing = true;
+                                submissionForProcessing.Processing = true;
                                 data.SaveChanges();
                             }
                         }
@@ -116,7 +122,7 @@
                 }
 
                 submission.Processed = true;
-                submission.Processing = false;
+                data.SubmissionsForProcessing.Delete(submissionForProcessing);
 
                 try
                 {
