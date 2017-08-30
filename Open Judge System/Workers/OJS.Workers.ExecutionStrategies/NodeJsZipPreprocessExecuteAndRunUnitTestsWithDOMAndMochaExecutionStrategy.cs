@@ -68,7 +68,6 @@
             this.BrowserifyModulePath = FileHelpers.ProcessModulePath(browserifyModulePath);
             this.BabelifyModulePath = FileHelpers.ProcessModulePath(babelifyModulePath);
             this.EcmaScriptImportPluginPath = FileHelpers.ProcessModulePath(ecmaScriptImportPluginPath);
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
         protected string BrowserifyModulePath { get; }
