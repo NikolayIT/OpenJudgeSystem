@@ -340,7 +340,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionsForProcessing()
+            var submissionForProcessing = new SubmissionForProcessing()
             {
                 SubmissionId = newSubmission.Id
             };
@@ -425,7 +425,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionsForProcessing()
+            var submissionForProcessing = new SubmissionForProcessing()
             {
                 SubmissionId = newSubmission.Id
             };

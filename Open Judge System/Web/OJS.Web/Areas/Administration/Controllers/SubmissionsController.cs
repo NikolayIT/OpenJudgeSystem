@@ -242,7 +242,7 @@
         {
             var submission = this.Data.Submissions
                 .All()
-                .FirstOrDefault(subm => subm.Id == id);
+                .FirstOrDefault(s => s.Id == id);
             
             if (submission == null)
             {

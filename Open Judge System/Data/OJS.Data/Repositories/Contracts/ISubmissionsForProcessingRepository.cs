@@ -3,7 +3,7 @@
     using Data.Contracts;
     using Models;
 
-    public interface ISubmissionsForProcessingRepository : IRepository<SubmissionsForProcessing>
+    public interface ISubmissionsForProcessingRepository : IRepository<SubmissionForProcessing>
     {
         void AddOrUpdate(int submissionId);
 

@@ -53,7 +53,7 @@
 
         public virtual IDbSet<Submission> Submissions { get; set; }
 
-        public virtual IDbSet<SubmissionsForProcessing> SubmissionsForProcessing { get; set; }
+        public virtual IDbSet<SubmissionForProcessing> SubmissionsForProcessing { get; set; }
 
         public virtual IDbSet<SubmissionType> SubmissionTypes { get; set; }
 

@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("SubmissionsForProcessing")]
-    public class SubmissionsForProcessing
+    public class SubmissionForProcessing
     {
         public int Id { get; set; }
 

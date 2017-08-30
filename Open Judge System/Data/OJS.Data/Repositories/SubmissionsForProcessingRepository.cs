@@ -5,7 +5,7 @@
     using Contracts;
     using Models;
 
-    public class SubmissionsForProcessingRepository : GenericRepository<SubmissionsForProcessing>, ISubmissionsForProcessingRepository
+    public class SubmissionsForProcessingRepository : GenericRepository<SubmissionForProcessing>, ISubmissionsForProcessingRepository
     {
         public SubmissionsForProcessingRepository(IOjsDbContext context) 
             : base(context)
@@ -24,7 +24,7 @@
             }
             else
             {
-                submissionForProcessing = new SubmissionsForProcessing()
+                submissionForProcessing = new SubmissionForProcessing()
                 {
                     SubmissionId = submissionId
                 };

@@ -47,7 +47,7 @@
             {
                 var data = new OjsData();
                 Submission submission = null;
-                SubmissionsForProcessing submissionForProcessing = null;
+                SubmissionForProcessing submissionForProcessing = null;
                 int submissionId;
 
                 try
