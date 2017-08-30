@@ -2,7 +2,7 @@ namespace OJS.Data.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class identity_update : DbMigration
     {
         public override void Up()
@@ -28,29 +28,29 @@ namespace OJS.Data.Migrations
             this.CreateIndex("dbo.AspNetRoles", "Name", unique: true, name: "RoleNameIndex");
             this.DropColumn("dbo.AspNetUsers", "Discriminator");
         }
-        
+
         public override void Down()
         {
-            AddColumn("dbo.AspNetUsers", "Discriminator", c => c.String(nullable: false, maxLength: 128));
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropPrimaryKey("dbo.AspNetUserLogins");
-            AlterColumn("dbo.AspNetRoles", "Name", c => c.String(nullable: false));
-            AlterColumn("dbo.AspNetUsers", "CreatedOn", c => c.DateTime());
-            AlterColumn("dbo.AspNetUsers", "IsDeleted", c => c.Boolean());
-            AlterColumn("dbo.AspNetUsers", "IsGhostUser", c => c.Boolean());
-            AlterColumn("dbo.AspNetUsers", "Email", c => c.String(maxLength: 80, unicode: false));
-            AlterColumn("dbo.AspNetUsers", "UserName", c => c.String(nullable: false, maxLength: 50, unicode: false));
-            DropColumn("dbo.AspNetUsers", "AccessFailedCount");
-            DropColumn("dbo.AspNetUsers", "LockoutEnabled");
-            DropColumn("dbo.AspNetUsers", "LockoutEndDateUtc");
-            DropColumn("dbo.AspNetUsers", "TwoFactorEnabled");
-            DropColumn("dbo.AspNetUsers", "PhoneNumberConfirmed");
-            DropColumn("dbo.AspNetUsers", "PhoneNumber");
-            DropColumn("dbo.AspNetUsers", "EmailConfirmed");
-            AddPrimaryKey("dbo.AspNetUserLogins", new[] { "UserId", "LoginProvider", "ProviderKey" });
-            RenameIndex(table: "dbo.AspNetUserClaims", name: "IX_UserId", newName: "IX_User_Id");
-            RenameColumn(table: "dbo.AspNetUserClaims", name: "UserId", newName: "User_Id");
+            this.AddColumn("dbo.AspNetUsers", "Discriminator", c => c.String(nullable: false, maxLength: 128));
+            this.DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            this.DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            this.DropPrimaryKey("dbo.AspNetUserLogins");
+            this.AlterColumn("dbo.AspNetRoles", "Name", c => c.String(nullable: false));
+            this.AlterColumn("dbo.AspNetUsers", "CreatedOn", c => c.DateTime());
+            this.AlterColumn("dbo.AspNetUsers", "IsDeleted", c => c.Boolean());
+            this.AlterColumn("dbo.AspNetUsers", "IsGhostUser", c => c.Boolean());
+            this.AlterColumn("dbo.AspNetUsers", "Email", c => c.String(maxLength: 80, unicode: false));
+            this.AlterColumn("dbo.AspNetUsers", "UserName", c => c.String(nullable: false, maxLength: 50, unicode: false));
+            this.DropColumn("dbo.AspNetUsers", "AccessFailedCount");
+            this.DropColumn("dbo.AspNetUsers", "LockoutEnabled");
+            this.DropColumn("dbo.AspNetUsers", "LockoutEndDateUtc");
+            this.DropColumn("dbo.AspNetUsers", "TwoFactorEnabled");
+            this.DropColumn("dbo.AspNetUsers", "PhoneNumberConfirmed");
+            this.DropColumn("dbo.AspNetUsers", "PhoneNumber");
+            this.DropColumn("dbo.AspNetUsers", "EmailConfirmed");
+            this.AddPrimaryKey("dbo.AspNetUserLogins", new[] { "UserId", "LoginProvider", "ProviderKey" });
+            this.RenameIndex(table: "dbo.AspNetUserClaims", name: "IX_UserId", newName: "IX_User_Id");
+            this.RenameColumn(table: "dbo.AspNetUserClaims", name: "UserId", newName: "User_Id");
         }
     }
 }
