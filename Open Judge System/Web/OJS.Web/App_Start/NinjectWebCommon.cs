@@ -5,16 +5,14 @@ namespace OJS.Web
 {
     using System;
     using System.Web;
-
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Modules;
     using Ninject.Web.Common;
 
-    using OJS.Common.BackgroundJobs;
-    using OJS.Common.BackgroundJobs.Contracts;
     using OJS.Data;
+    using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Common.BackgroundJobs.Contracts;
     using OJS.Workers.Tools.AntiCheat;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Similarity;

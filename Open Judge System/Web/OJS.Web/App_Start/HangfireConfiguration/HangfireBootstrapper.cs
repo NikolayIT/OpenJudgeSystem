@@ -8,10 +8,9 @@
     {
         private static readonly object LockObject = new object();
 
-        public static HangfireBootstrapper instance;
+        private static HangfireBootstrapper instance;
    
         private bool started;
-
         private BackgroundJobServer backgroundJobServer;
 
         private HangfireBootstrapper()
@@ -46,7 +45,6 @@
                     this.started = true;
 
                     HostingEnvironment.RegisterObject(this);
-
                     GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
                     GlobalConfiguration.Configuration.UseNinjectActivator(new Ninject.Web.Common.Bootstrapper().Kernel);
                     this.backgroundJobServer = new BackgroundJobServer();

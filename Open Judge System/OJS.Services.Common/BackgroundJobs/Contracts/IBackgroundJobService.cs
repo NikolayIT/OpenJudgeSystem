@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.BackgroundJobs.Contracts
+﻿namespace OJS.Services.Common.BackgroundJobs.Contracts
 {
     using System;
     using System.Linq.Expressions;
