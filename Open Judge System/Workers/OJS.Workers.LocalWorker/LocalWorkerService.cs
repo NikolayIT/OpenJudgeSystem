@@ -83,20 +83,23 @@
         /// </summary>
         private void ResetAllProcessingSubmissions()
         {
-            using (var context = new OjsData())
+            using (var data = new OjsData())
             {
-                var allProcessingSubmissions = context
-                    .Submissions
+                var allProcessingSubmissions = data
+                    .SubmissionsForProcessing
                     .All()
-                    .Where(s => s.Processing && !s.Processed && !s.IsDeleted);
+                    .Where(s => s.Processing && !s.Processed);
 
                 if (allProcessingSubmissions.Any())
                 {
                     try
                     {
-                        var affectedRows =
-                            allProcessingSubmissions.Update(s => new Submission() { Processing = false });
-                        logger.InfoFormat("{0} submissions' Processing status reset to False", affectedRows);
+                        foreach (var unprocessedSubmission in allProcessingSubmissions)
+                        {
+                            unprocessedSubmission.Processing = false;
+                        }
+
+                        data.SaveChanges();
                     }
                     catch (Exception e)
                     {

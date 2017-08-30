@@ -1,6 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.SqlStrategies.MySql
 {
-    public class MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy : BaseMySqlExecutionStrategy, IExecutionStrategy
+    public class MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy : BaseMySqlExecutionStrategy
     {
         public MySqlRunSkeletonRunQueriesAndCheckDatabaseExecutionStrategy(
             string sysDbConnectionString,
@@ -10,7 +10,7 @@
         {
         }
 
-        public ExecutionResult Execute(ExecutionContext executionContext)
+        public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             return this.Execute(
                 executionContext,

@@ -1,20 +1,26 @@
-﻿function onEditResourceTypeSelect() {
-    var val = this.value();
+﻿/* exported onEditResourceTypeSelect */
+function onEditResourceTypeSelect() {
+    'use strict';
+
+    var val = parseInt(this.value());
     hideInput(val);
 }
 
 function hideInput(val) {
-    if (val == 3) {
+    'use strict';
+
+    if (val === 3) {
         $('#file-select').hide();
         $('#link-input').show();
-    }
-    else {
+    } else {
         $('#link-input').hide();
         $('#file-select').show();
     }
 }
 
 $(document).ready(function () {
+    'use strict';
+
     var value = $('#Type').data('kendoDropDownList').value();
     hideInput(value);
 

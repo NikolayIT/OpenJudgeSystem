@@ -1,4 +1,5 @@
-﻿var countdownTimer = function (endingTime) {
+﻿/* exported countdownTimer */
+var countdownTimer = function (endingTime) {
     'use strict';
 
     var endTime = new Date(
@@ -15,13 +16,13 @@
     var hoursContainer = $('#hours-remaining');
     var minutesContainer = $('#minutes-remaining');
     var secondsContainer = $('#seconds-remaining');
-    var countdownTimer = $('#countdown-timer');
+    var countdownTimerContainer = $('#countdown-timer');
 
     function updateCountdown() {
         hoursContainer.text(ts.hours);
         minutesContainer.text(ts.minutes);
         secondsContainer.text(ts.seconds);
-        countdownTimer.show();
+        countdownTimerContainer.show();
     }
 
     var start = function () {
@@ -29,12 +30,13 @@
 
         var timerId = window.setInterval(function () {
             if (ts.hours === 0 && ts.minutes <= 4) {
-                if (!countdownTimer.hasClass('countdown-warning')) {
-                    countdownTimer.addClass('countdown-warning');
+                if (!countdownTimerContainer.hasClass('countdown-warning')) {
+                    countdownTimerContainer.addClass('countdown-warning');
                 }
 
                 if (ts.start > ts.end) {
                     window.clearInterval(timerId);
+
                     // TODO: Handle contest over.
                 }
             }
@@ -50,13 +52,15 @@
 };
 
 function Notifier() {
+    'use strict';
+
     function showMessage(data) {
         var container = $("div[id^='notify-container']").filter(':visible');
 
         var notification = $('<div/>', {
             text: data.message,
-            "class": data.cssClass,
-            style: "display: none"
+            'class': data.cssClass,
+            style: 'display: none'
         }).appendTo(container);
 
         notification.show({
@@ -71,7 +75,7 @@ function Notifier() {
         }
 
         setTimeout(function () {
-            var dropdown = $("[id^=SubmissionsTabStrip-]").filter(':visible').find('input[id^="dropdown_"]').getKendoDropDownList();
+            var dropdown = $('[id^=SubmissionsTabStrip-]').filter(':visible').find('input[id^="dropdown_"]').getKendoDropDownList();
             dropdown.close();
             notification.hide(500, function () {
                 notification.remove();
@@ -81,26 +85,26 @@ function Notifier() {
 
     function notifySuccess(response) {
         var codeMirrorInstance = getCodeMirrorInstance();
-        codeMirrorInstance.setValue("");
+        codeMirrorInstance.setValue('');
 
         showMessage({
-            message: "Успешно изпратено!",
+            message: 'Успешно изпратено!',
             response: response,
-            cssClass: "alert alert-success"
+            cssClass: 'alert alert-success'
         });
     }
 
     function notifyFailure(error) {
         showMessage({
             message: error.statusText,
-            cssClass: "alert alert-danger"
+            cssClass: 'alert alert-danger'
         });
     }
 
     function notifyWarning(warning) {
         showMessage({
             message: warning.statusText,
-            cssClass: "alert alert-warning"
+            cssClass: 'alert alert-warning'
         });
     }
 
@@ -125,26 +129,34 @@ function Notifier() {
 //  });
 
 function getCodeMirrorInstance() {
-    var codeMirrorContainer = $(".CodeMirror:visible").siblings('textarea')[0];
+    'use strict';
+
+    var codeMirrorContainer = $('.CodeMirror:visible').siblings('textarea')[0];
     var codeMirrorInstance = $.data(codeMirrorContainer, 'CodeMirrorInstance');
     return codeMirrorInstance;
 }
 
+/* exported displayMaximumValues */
 var displayMaximumValues = function (maxMemory, maxTime, memoryString, timeString) {
+    'use strict';
+
     var memoryInMb = (maxMemory / 1024 / 1024).toFixed(2);
     var maxTimeInSeconds = (maxTime / 1000).toFixed(3);
-    var result = memoryString + ": " + memoryInMb + " MB <br />" + timeString + ": " + maxTimeInSeconds + " s";
+    var result = memoryString + ': ' + memoryInMb + ' MB <br />' + timeString + ': ' + maxTimeInSeconds + ' s';
     return result;
 };
 
+/* exported validateSubmissionContent */
 function validateSubmissionContent() {
+    'use strict';
+
     var codeMirrorInstance = getCodeMirrorInstance();
     var codeMirrorText = codeMirrorInstance.getValue();
 
     if (!codeMirrorText || codeMirrorText.length < 5) {
         messageNotifier.showMessage({
-            message: "Решението трябва да съдържа поне 5 символа!",
-            cssClass: "alert alert-warning"
+            message: 'Решението трябва да съдържа поне 5 символа!',
+            cssClass: 'alert alert-warning'
         });
 
         return false;
@@ -153,7 +165,10 @@ function validateSubmissionContent() {
     return true;
 }
 
+/* exported validateBinaryFileExists */
 function validateBinaryFileExists(fileInput) {
+    'use strict';
+
     if (!fileInput.files[0]) {
         messageNotifier.notifyWarning({
             statusText: 'Моля изберете файл, който да изпратите.'
@@ -164,7 +179,10 @@ function validateBinaryFileExists(fileInput) {
     return true;
 }
 
+/* exported validateBinaryFileSize */
 function validateBinaryFileSize(fileInput, size) {
+    'use strict';
+
     if (!size) {
         return true;
     }
@@ -181,11 +199,14 @@ function validateBinaryFileSize(fileInput, size) {
     return true;
 }
 
+/* exported validateBinaryFileAllowedExtensions */
 function validateBinaryFileAllowedExtensions(fileInput, extensions) {
+    'use strict';
+
     var fileName = fileInput.files[0].name;
     var fileExtension = fileName.split('.')[fileName.split('.').length - 1].toLowerCase();
 
-    if (!extensions || extensions.length == 0) {
+    if (!extensions || extensions.length === 0) {
         return true;
     }
 
@@ -202,8 +223,10 @@ function validateBinaryFileAllowedExtensions(fileInput, extensions) {
 
 var messageNotifier = new Notifier();
 
-// validate the submission time
+/* exported submissionTimeValidator */
 var submissionTimeValidator = function (initialServerTime) {
+    'use strict';
+
     var lastSubmissionTime;
     var currentServerTime = initialServerTime;
 
@@ -252,10 +275,10 @@ var submissionTimeValidator = function (initialServerTime) {
 var tabStripManager = new TabStripManager();
 
 function TabStripManager() {
+    'use strict';
+
     var tabStrip;
     var index = 0;
-
-    var self;
 
     function selectTabWithIndex(ind) {
         tabStrip.select(ind);
@@ -263,10 +286,9 @@ function TabStripManager() {
     }
 
     function init(tabstrip) {
-        self = this;
         tabStrip = tabstrip;
 
-        tabStrip = $("#SubmissionsTabStrip").data("kendoTabStrip");
+        tabStrip = $('#SubmissionsTabStrip').data('kendoTabStrip');
         if (tabstrip) {
             var hashIndex = getSelectedIndexFromHashtag();
             if (!hashIndex) {
@@ -288,25 +310,26 @@ function TabStripManager() {
         var element = $('.code-for-problem:visible')[0];
 
         if (!$(element).data('CodeMirrorInstance')) {
+            /* eslint new-cap: 0 */
             var editor = new CodeMirror.fromTextArea(element, {
                 lineNumbers: true,
                 matchBrackets: true,
-                mode: "text/x-csharp",
-                theme: "the-matrix",
+                mode: 'text/x-csharp',
+                theme: 'the-matrix',
                 showCursorWhenSelecting: true,
                 undoDepth: 100,
-                lineWrapping: true,
+                lineWrapping: true
             });
 
             $.data(element, 'CodeMirrorInstance', editor);
         }
-    };
+    }
 
     function onContentLoad() {
         createCodeMirrorForTextBox();
         var hashTag = getSelectedIndexFromHashtag();
         selectTabWithIndex(hashTag);
-    };
+    }
 
     function currentIndex() {
         return index;
@@ -322,27 +345,40 @@ function TabStripManager() {
 }
 
 function getSelectedIndexFromHashtag() {
+    'use strict';
+
     return parseInt(window.location.hash.substr(1) || '0');
 }
 
 $(document).ready(function () {
-    $(window).on("hashchange", function () {
+    'use strict';
+
+    $(window).on('hashchange', function () {
         var hashIndex = getSelectedIndexFromHashtag();
         if (hashIndex !== tabStripManager.currentIndex()) {
             tabStripManager.selectTabWithIndex(hashIndex);
         }
     });
 
-    var tabStrip = $("#SubmissionsTabStrip").data("kendoTabStrip");
+    var tabStrip = $('#SubmissionsTabStrip').data('kendoTabStrip');
     tabStripManager.init(tabStrip);
 });
 
+/* exported cloneSubmissionsGridPager */
 function cloneSubmissionsGridPager() {
-    var submissionsGrid = this;
-    if (submissionsGrid.dataSource.total() && typeof(submissionsGrid.pagerTop) === "undefined") {
-        var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertAfter(submissionsGrid.element.find('.k-toolbar'));
-        submissionsGrid.pagerTop = new kendo.ui.Pager(wrapper, $.extend({}, submissionsGrid.options.pageable, { dataSource: submissionsGrid.dataSource }));
-        submissionsGrid.element.height('').find('.pagerTop').css('border-width', '0 0 1px 0');
-        submissionsGrid.element.find('.k-toolbar').css('border-width', '1px 0');
+    'use strict';
+
+    var self = this; // submission grid
+    if (self.dataSource.total() && typeof(self.pagerTop) === 'undefined') {
+        var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertAfter(self.element.find('.k-toolbar'));
+        self.pagerTop = new kendo.ui.Pager(
+            wrapper,
+            $.extend(
+                {},
+                self.options.pageable,
+                { dataSource: self.dataSource }));
+
+        self.element.height('').find('.pagerTop').css('border-width', '0 0 1px 0');
+        self.element.find('.k-toolbar').css('border-width', '1px 0');
     }
 }

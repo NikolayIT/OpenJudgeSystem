@@ -16,7 +16,13 @@
     /// <remarks>Template method design pattern is used.</remarks>
     public abstract class Compiler : ICompiler
     {
+        protected const string CompilationDirectoryName = "CompilationDir";
+
         public virtual bool ShouldDeleteSourceFile => true;
+
+        public virtual int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
+
+        protected string CompilationDirectory { get; set; }
 
         public static ICompiler CreateCompiler(CompilerType compilerType)
         {
@@ -40,12 +46,17 @@
                     return new MsBuildLibraryCompiler();
                 case CompilerType.CPlusPlusZip:
                     return new CPlusPlusZipCompiler();
+                    case CompilerType.DotNetCompiler: 
+                    return new DotNetCompiler();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
         }
 
-        public virtual CompileResult Compile(string compilerPath, string inputFile, string additionalArguments)
+        public virtual CompileResult Compile(
+            string compilerPath, 
+            string inputFile,
+            string additionalArguments)
         {
             if (compilerPath == null)
             {
@@ -66,6 +77,9 @@
             {
                 return new CompileResult(false, $"Input file not found! Searched in: {inputFile}");
             }
+
+            this.CompilationDirectory = $"{Path.GetDirectoryName(inputFile)}\\{CompilationDirectoryName}";
+            Directory.CreateDirectory(this.CompilationDirectory);
 
             // Move source file if needed
             string newInputFilePath = this.RenameInputFile(inputFile);
@@ -90,7 +104,7 @@
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             // Execute compiler
-            var compilerOutput = ExecuteCompiler(processStartInfo);
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutMillisecond);
 
             if (this.ShouldDeleteSourceFile)
             {

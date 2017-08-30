@@ -72,12 +72,6 @@
             this.JQueryModulePath = FileHelpers.ProcessModulePath(jqueryModulePath);
             this.BootstrapModulePath = FileHelpers.ProcessModulePath(bootsrapModulePath);
             this.BootstrapCssPath = FileHelpers.ProcessModulePath(bootstrapCssPath);
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
-        }
-
-        ~NodeJsZipExecuteHtmlAndCssStrategy()
-        {
-            DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
         }
 
         protected string JsDomModulePath { get; }
@@ -87,8 +81,6 @@
         protected string BootstrapModulePath { get; }
 
         protected string BootstrapCssPath { get; }
-
-        protected string WorkingDirectory { get; set; }
 
         protected string ProgramEntryPath { get; set; }
 
@@ -178,7 +170,7 @@ describe('TestDOMScope', function() {{
                 executionContext,
                 this.ProgramEntryPath);
 
-            var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
+            var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
             var executor = new RestrictedProcessExecutor();
 
             var checker = Checker.CreateChecker(

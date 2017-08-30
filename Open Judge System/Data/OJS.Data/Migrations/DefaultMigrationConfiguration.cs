@@ -401,6 +401,16 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = null,
                     AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = ".NET Core Project",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true
                 }
             };
 

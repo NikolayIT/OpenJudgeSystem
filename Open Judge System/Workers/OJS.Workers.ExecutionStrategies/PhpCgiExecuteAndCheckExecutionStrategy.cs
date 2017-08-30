@@ -31,7 +31,7 @@
             // PHP code is not compiled
             result.IsCompiledSuccessfully = true;
 
-            var codeSavePath = FileHelpers.SaveStringToTempFile(executionContext.Code);
+            var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, executionContext.Code);
 
             // Process the submission and check each test
             var executor = new RestrictedProcessExecutor();

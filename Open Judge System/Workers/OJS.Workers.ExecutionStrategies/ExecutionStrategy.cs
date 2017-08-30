@@ -13,7 +13,22 @@
     {
         protected const string RemoveMacFolderPattern = "__MACOSX/*";
 
+        protected string WorkingDirectory { get; set; }
+
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
+
+        public ExecutionResult SafeExecute(ExecutionContext executionContext)
+        {
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();        
+            try
+            {
+                return this.Execute(executionContext);
+            }
+            finally
+            {
+                DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+            }
+        }
 
         protected ExecutionResult CompileExecuteAndCheck(
             ExecutionContext executionContext,
@@ -110,8 +125,8 @@
         protected CompileResult ExecuteCompiling(ExecutionContext executionContext, Func<CompilerType, string> getCompilerPathFunc, ExecutionResult result)
         {
             var submissionFilePath = string.IsNullOrEmpty(executionContext.AllowedFileExtensions)
-                                         ? FileHelpers.SaveStringToTempFile(executionContext.Code)
-                                         : FileHelpers.SaveByteArrayToTempFile(executionContext.FileContent);
+                ? FileHelpers.SaveStringToTempFile(this.WorkingDirectory, executionContext.Code)
+                : FileHelpers.SaveByteArrayToTempFile(this.WorkingDirectory, executionContext.FileContent);
 
             var compilerPath = getCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(executionContext.CompilerType, compilerPath, executionContext.AdditionalCompilerArguments, submissionFilePath);
@@ -121,7 +136,11 @@
             return compilerResult;
         }
 
-        protected virtual CompileResult Compile(CompilerType compilerType, string compilerPath, string compilerArguments, string submissionFilePath)
+        protected virtual CompileResult Compile(
+            CompilerType compilerType, 
+            string compilerPath,
+            string compilerArguments,
+            string submissionFilePath)
         {
             if (compilerType == CompilerType.None)
             {
@@ -145,3 +164,4 @@
         }
     }
 }
+

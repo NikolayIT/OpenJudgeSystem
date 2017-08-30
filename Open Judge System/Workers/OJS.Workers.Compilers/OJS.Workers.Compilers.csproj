@@ -60,6 +60,7 @@
     <Compile Include="CPlusPlusCompiler.cs" />
     <Compile Include="CPlusPlusZipCompiler.cs" />
     <Compile Include="CSharpCompiler.cs" />
+    <Compile Include="DotNetCompiler.cs" />
     <Compile Include="JavaCompiler.cs" />
     <Compile Include="JavaZipCompiler.cs" />
     <Compile Include="JavaInPlaceFolderCompiler.cs" />

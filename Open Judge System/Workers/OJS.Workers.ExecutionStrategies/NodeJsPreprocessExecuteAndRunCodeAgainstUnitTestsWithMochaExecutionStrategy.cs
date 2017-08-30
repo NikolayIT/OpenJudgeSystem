@@ -99,7 +99,7 @@ after(function() {
                 executionContext);
 
             // Save the preprocessed submission which is ready for execution
-            var codeSavePath = FileHelpers.SaveStringToTempFile(codeToExecute);
+            var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
 
             // Process the submission and check each test
             var checker = Checker.CreateChecker(
