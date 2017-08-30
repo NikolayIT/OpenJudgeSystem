@@ -15,7 +15,7 @@
         public DefaultMigrationConfiguration()
         {
             this.AutomaticMigrationsEnabled = true;
-            this.AutomaticMigrationDataLossAllowed = true;
+            this.AutomaticMigrationDataLossAllowed = false;
         }
 
         protected override void Seed(OjsDbContext context)
