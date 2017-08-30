@@ -1,7 +1,7 @@
 ﻿namespace OJS.Data.Repositories.Contracts
 {
-    using Data.Contracts;
-    using Models;
+    using OJS.Data.Contracts;
+    using OJS.Data.Models;
 
     public interface ISubmissionsForProcessingRepository : IRepository<SubmissionForProcessing>
     {

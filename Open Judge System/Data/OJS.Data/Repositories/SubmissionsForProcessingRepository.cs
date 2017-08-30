@@ -1,9 +1,10 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System.Linq;
-    using Base;
-    using Contracts;
-    using Models;
+
+    using OJS.Data.Models;
+    using OJS.Data.Repositories.Base;
+    using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsForProcessingRepository : GenericRepository<SubmissionForProcessing>, ISubmissionsForProcessingRepository
     {
