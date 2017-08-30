@@ -72,7 +72,6 @@
             this.JQueryModulePath = FileHelpers.ProcessModulePath(jqueryModulePath);
             this.BootstrapModulePath = FileHelpers.ProcessModulePath(bootsrapModulePath);
             this.BootstrapCssPath = FileHelpers.ProcessModulePath(bootstrapCssPath);
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
         }
 
         protected string JsDomModulePath { get; }
