@@ -1,9 +1,0 @@
-﻿{
-  "output": "Error",
-  "runOnSave": false,
-  "runOnBuild": false,
-  "cancelBuild": false,
-  "ignore": [
-    "\\Scripts\\Administration\\Tests\\tests-details.js"
-  ]
-}

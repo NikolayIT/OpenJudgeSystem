@@ -1,9 +1,14 @@
 ﻿// TODO: Fix nesting problem
 function CategoryExpander() {
-    var treeview, treeviewSelector, currentlySelectedId;
+    'use strict';
+
+    var treeview;
+    var treeviewSelector;
+    var currentlySelectedId;
     var data = [];
     var firstLoad = true;
 
+    /* eslint consistent-this: 0 */
     var self;
 
     var init = function(treeView, treeViewSelector) {
@@ -26,8 +31,8 @@ function CategoryExpander() {
 
         var nodeToSelect = {
             elementId: categoryId,
-            elementName: element !== undefined ? element.NameUrl : null,
-            uid: element !== undefined ? element.uid : null
+            elementName: element === undefined ? null : element.NameUrl,
+            uid: element === undefined ? null : element.uid
         };
 
         if (categoryId) {
@@ -36,8 +41,8 @@ function CategoryExpander() {
     }
 
     var categorySelected = function(e) {
-        $("#contestsList").html("");
-        $("#contestsList").addClass("k-loading");
+        $('#contestsList').html('');
+        $('#contestsList').addClass('k-loading');
 
         var elementId;
         var elementName;
@@ -65,9 +70,9 @@ function CategoryExpander() {
             window.location.hash = '!/List/ByCategory/' + elementId + '/' + elementName;
         }
 
-        var ajaxUrl = "/Contests/List/ByCategory/" + elementId;
-        $("#contestsList").load(ajaxUrl, function() {
-            $("#contestsList").removeClass("k-loading");
+        var ajaxUrl = '/Contests/List/ByCategory/' + elementId;
+        $('#contestsList').load(ajaxUrl, function() {
+            $('#contestsList').removeClass('k-loading');
         });
     };
 
@@ -89,12 +94,12 @@ function CategoryExpander() {
 
         var el = treeview.dataSource.get(id);
         if (!el && data.indexOf(id) < 0) {
-            var parentsUrl = "/Contests/List/GetParents/" + id;
+            var parentsUrl = '/Contests/List/GetParents/' + id;
 
             $.ajax({
                 url: parentsUrl,
-                success: function(data) {
-                    self.setNestingData(data);
+                success: function(result) {
+                    self.setNestingData(result);
                     self.expandSubcategories();
                 }
             });
@@ -127,6 +132,8 @@ function CategoryExpander() {
 }
 
 function getCategoryIdFromHash() {
+    'use strict';
+
     var hash = window.location.hash;
     var categoryId = hash.split('/')[3];
     return categoryId;
@@ -134,15 +141,17 @@ function getCategoryIdFromHash() {
 
 var expander = new CategoryExpander();
 
-$(document).ready(function() {
-    $(window).on("hashchange", function() {
+$(document).ready(function () {
+    'use strict';
+
+    $(window).on('hashchange', function() {
         var categoryId = getCategoryIdFromHash();
         if (expander && categoryId !== expander.currentId()) {
             expander.select(categoryId);
         }
     });
 
-    var treeviewSelector = $("#contestsCategories");
-    var treeview = treeviewSelector.data("kendoTreeView");
+    var treeviewSelector = $('#contestsCategories');
+    var treeview = treeviewSelector.data('kendoTreeView');
     expander.init(treeview, treeviewSelector);
 });

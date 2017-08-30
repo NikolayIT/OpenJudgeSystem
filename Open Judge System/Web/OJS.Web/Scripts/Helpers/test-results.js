@@ -1,7 +1,7 @@
 ﻿var displayTestRuns = function (testRuns) {
-    "use strict";
+    'use strict';
 
-    var result = "";
+    var result = '';
     var i;
 
     for (i = 0; i < testRuns.length; i++) {
@@ -25,29 +25,45 @@
             case 4:
                 result += '<span class="glyphicon glyphicon-asterisk text-danger" title="Грешка при изпълнение"></span>';
                 break;
+            default:
+                throw new Error('Invalid execution result');
         }
     }
 
-    result += " ";
+    result += ' ';
     return result;
 };
 
-function testResult(tests, points, problemMaximumPoints, maxUsedMemory, maxUsedTime, processed, isCompiledSuccessfully, submissionType) {
+/* eslint max-params: 0 */
+// TODO: Refactor - too many params
+/* exported testResult */
+function testResult(
+    tests,
+    points,
+    problemMaximumPoints,
+    maxUsedMemory,
+    maxUsedTime,
+    processed,
+    isCompiledSuccessfully,
+    submissionType) {
+    'use strict';
+
     var result = '';
 
+    /* eslint no-negated-condition: 0 */
     if (!processed) {
         result += '<span class="glyphicon glyphicon-time text-primary" title="Loading..."></span>';
         result += '<strong class="text-primary"> Обработва се...</strong>';
-    }
-    else if (!isCompiledSuccessfully) {
+    } else if (!isCompiledSuccessfully) {
         result += '<span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>';
         result += '<strong class="text-danger"> Грешка при компилация</strong>';
-    }
-    else {
-        result += "<div><strong class ='text-primary'> " + points + " / " + problemMaximumPoints + "</strong>" +
-        "<small> " + (maxUsedMemory / 1024 / 1024).toFixed(2) + " MB | " + (maxUsedTime / 1000).toFixed(3) + " sec. | " + submissionType + "</small></div> ";
+    } else {
+        result += '<div><strong class="text-primary"> ' + points +
+            ' / ' + problemMaximumPoints + '</strong>' +
+            '<small> ' + (maxUsedMemory / 1024 / 1024).toFixed(2) + ' MB | ' +
+            (maxUsedTime / 1000).toFixed(3) + ' sec. | ' + submissionType + '</small></div> ';
         result += displayTestRuns(tests);
     }
 
     return result;
-};
+}
