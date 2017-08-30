@@ -7,13 +7,13 @@ namespace OJS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class identity_update : IMigrationMetadata
+    public sealed partial class IdentityMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(identity_update));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(IdentityMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708220830272_identity_update"; }
+            get { return "201708301414567_IdentityMigration"; }
         }
         
         string IMigrationMetadata.Source

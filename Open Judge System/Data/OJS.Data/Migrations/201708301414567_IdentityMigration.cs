@@ -2,8 +2,8 @@ namespace OJS.Data.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-
-    public partial class identity_update : DbMigration
+    
+    public partial class IdentityMigration : DbMigration
     {
         public override void Up()
         {
@@ -28,7 +28,7 @@ namespace OJS.Data.Migrations
             this.CreateIndex("dbo.AspNetRoles", "Name", unique: true, name: "RoleNameIndex");
             this.DropColumn("dbo.AspNetUsers", "Discriminator");
         }
-
+        
         public override void Down()
         {
             this.AddColumn("dbo.AspNetUsers", "Discriminator", c => c.String(nullable: false, maxLength: 128));
