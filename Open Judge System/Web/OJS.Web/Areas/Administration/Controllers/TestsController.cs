@@ -161,7 +161,13 @@
 
                 this.Data.SaveChanges();
 
-                this.RetestSubmissions(problem.Id);
+                using (var scope = new TransactionScope())
+                {
+                    this.RetestSubmissions(problem.Id);
+
+                    this.Data.SaveChanges();
+                    scope.Complete();
+                }
 
                 this.TempData.AddInfoMessage(Resource.Test_added_successfully);
                 return this.RedirectToAction("Problem", new { id });
@@ -862,11 +868,17 @@
             this.Data.ParticipantScores.DeleteParticipantScores(problemId);
             this.Data.SaveChanges();
 
-            this.Data.Submissions.Update(
-                submission => submission.ProblemId == problemId,
-                submission => new Submission { Processed = false, Processing = false });
+            var submissions = this.Data.Problems
+                .GetById(problemId)
+                .Submissions
+                .Where(s => !s.IsDeleted)
+                .ToList();
 
-            this.Data.SaveChanges();
+            foreach (var submission in submissions)
+            {
+                submission.Processed = false;
+                this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
+            }          
         }
     }
 }

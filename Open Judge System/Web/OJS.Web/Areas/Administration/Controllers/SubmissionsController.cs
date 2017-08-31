@@ -116,6 +116,7 @@
                     entity.Processing = false;
                     this.BaseCreate(entity);
                     this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
+                    this.Data.SaveChanges();
 
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
