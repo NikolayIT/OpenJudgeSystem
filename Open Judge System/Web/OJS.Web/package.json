@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "codemirror": "^5.29.0",
     "countdown": "^2.6.0",
     "jquery": "^3.2.1",
     "jquery-ajax-unobtrusive": "^3.2.4",
