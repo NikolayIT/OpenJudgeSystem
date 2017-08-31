@@ -3,7 +3,7 @@
     using Microsoft.AspNet.Identity;
 
     public class OjsUserManager<T> : UserManager<T>
-        where T : IUser
+        where T : class, IUser
     {
         public OjsUserManager(IUserStore<T> userStore)
             : base(userStore)
