@@ -23,6 +23,9 @@ const Assets = [{
 }, {
     origin: 'countdown/countdown.js',
     target: 'countdown'
+}, {
+    origin: 'codemirror/',
+    target: 'codemirror'
 }];
 
 module.exports = {
