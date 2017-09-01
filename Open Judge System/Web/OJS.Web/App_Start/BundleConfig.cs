@@ -16,15 +16,16 @@
                       "~/Scripts/global.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.js"));
+                        "~/Dependencies/jquery/jquery.js",
+                        "~/Dependencies/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+                        "~/Dependencies/jquery-validation/jquery.validate.js",
+                        "~/Dependencies/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Dependencies/bootstrap/js/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                       "~/Scripts/knockout-{version}.js"));
