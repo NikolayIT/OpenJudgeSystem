@@ -21,7 +21,7 @@ module.exports = {
         app: './Scripts/global.js'
     },
     output: {
-        path: __dirname + '/Test/',
+        path: __dirname + '/Dependencies/',
         filename: '[name].bundle.js'
     },
     plugins: [
@@ -29,7 +29,7 @@ module.exports = {
             Assets.map(asset => {
                 return {
                     from: path.resolve(__dirname, `./node_modules/${asset.origin}`),
-                    to: path.resolve(__dirname, `./Test/npm/${asset.target}`)
+                    to: path.resolve(__dirname, `./dependencies/${asset.target}`)
                 };
             })
         )
