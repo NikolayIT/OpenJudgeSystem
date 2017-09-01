@@ -31,8 +31,6 @@
                 };
                 this.Context.SubmissionsForProcessing.Add(submissionForProcessing);
             }
-
-            this.Context.SaveChanges();      
         }
 
         public void Remove(int submissionId)

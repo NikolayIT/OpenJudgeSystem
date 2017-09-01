@@ -114,9 +114,16 @@
                     var entity = model.GetEntityModel();
                     entity.Processed = false;
                     entity.Processing = false;
-                    this.BaseCreate(entity);
-                    this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
 
+                    using (var scope = new TransactionScope())
+                    {
+                        this.BaseCreate(entity);
+                        this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
+
+                        this.Data.SaveChanges();
+                        scope.Complete();
+                    }
+                   
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
