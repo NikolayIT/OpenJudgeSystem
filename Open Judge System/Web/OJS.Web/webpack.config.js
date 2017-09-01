@@ -20,6 +20,9 @@ const Assets = [{
 }, {
     origin: 'jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js',
     target: 'jquery-ajax-unobtrusive'
+}, {
+    origin: 'countdown/countdown.js',
+    target: 'countdown'
 }];
 
 module.exports = {

@@ -2795,7 +2795,6 @@
     <Folder Include="App_GlobalResources\Areas\Administration\Shared\Views\EditorTemplates\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
-    <Folder Include="Test\npm\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
