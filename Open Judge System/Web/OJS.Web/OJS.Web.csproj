@@ -1692,10 +1692,6 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.css" />
@@ -1884,7 +1880,6 @@
     <Content Include="Dependencies\jquery\jquery.slim.js" />
     <Content Include="Dependencies\jquery\jquery.slim.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Administration\Views\Web.Config" />
@@ -1903,8 +1898,6 @@
     <Content Include="Scripts\Administration\Resources\resources-edit.js" />
     <Content Include="Scripts\Administration\Tests\tests-details.js" />
     <Content Include="Scripts\Administration\Tests\tests-index.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CodeMirror\addon\diff_match_patch.js" />
     <Content Include="Scripts\CodeMirror\addon\merge.js" />
     <Content Include="Scripts\CodeMirror\codemirror.js" />
@@ -2000,14 +1993,6 @@
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
     <Content Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\SubmissionTypeViewModel.cshtml" />
     <Content Include="package.json" />
     <Content Include=".eslintrc" />
@@ -2023,18 +2008,7 @@
     <Content Include="Dependencies\jquery\jquery.slim.min.map" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
-    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\Helpers\validations.js" />
-    <Content Include="Scripts\jquery-2.2.0.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.bg.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.en-GB.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\kendo.all.js" />
