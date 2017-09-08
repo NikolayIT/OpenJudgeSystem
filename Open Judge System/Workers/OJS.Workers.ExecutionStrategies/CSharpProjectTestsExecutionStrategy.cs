@@ -261,7 +261,7 @@
         {
             foreach (var test in tests)
             {
-                string testName = CSharpPreprocessorHelper.GetClassName(test.Input);
+                string testName = JavaCodePreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
             }           
         }
