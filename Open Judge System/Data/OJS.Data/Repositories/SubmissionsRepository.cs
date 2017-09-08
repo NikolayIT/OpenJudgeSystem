@@ -1,4 +1,7 @@
-﻿namespace OJS.Data.Repositories
+﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+
+namespace OJS.Data.Repositories
 {
     using System;
     using System.Data.Entity;
@@ -14,19 +17,30 @@
         {
         }
 
-        public IQueryable<Submission> AllPublic()
-        {
-            return this.All()
-                .Where(x => x.IsPublic ??
-                    (((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
-                     (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
-                    && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
-                    && x.Problem.ShowResults));
-        }
+        public IQueryable<Submission> AllPublic() => 
+            this.All()
+                .Where(x => x.IsPublic 
+                    ?? (((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
+                    (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null)) &&
+                     x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted &&
+                     x.Problem.ShowResults));
 
-        public Submission GetSubmissionForProcessing()
+        public IQueryable<Submission> AllForLecturer(string lecturerId)
         {
-            var submission =
+            var problemsIds = new HashSet<int>(
+                this.Context
+                        .Contests
+                        .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
+                                    c.Lecturers.Any(l => l.LecturerId == lecturerId))
+                        .SelectMany(c => c.Problems.Select(p => p.Id)));
+
+            var submissions = this.All()
+                .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
+
+            return submissions;
+        }  
+
+        public Submission GetSubmissionForProcessing() =>
                 this.All()
                     .Where(x => !x.Processed && !x.Processing)
                     .OrderBy(x => x.Id)
@@ -35,9 +49,6 @@
                     .Include(x => x.Problem.Checker)
                     .Include(x => x.SubmissionType)
                     .FirstOrDefault();
-
-            return submission;
-        }
 
         public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)
         {

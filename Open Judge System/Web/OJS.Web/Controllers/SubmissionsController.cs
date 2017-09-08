@@ -1,4 +1,6 @@
-﻿namespace OJS.Web.Controllers
+﻿using OJS.Data.Models;
+
+namespace OJS.Web.Controllers
 {
     using System.Diagnostics;
     using System.Linq;
@@ -66,7 +68,20 @@
             bool notProcessedOnly = false,
             int? contestId = null)
         {
-            var data = this.User.IsAdmin() ? this.Data.Submissions.All() : this.Data.Submissions.AllPublic();
+            IQueryable<Submission> data = null;
+
+            if (this.User.IsLecturer())
+            {
+                data = this.Data.Submissions.AllForLecturer(this.UserProfile.Id);
+            }
+            else if (this.User.IsAdmin())
+            {
+                data = this.Data.Submissions.All();
+            }
+            else
+            {
+                data = this.Data.Submissions.AllPublic();
+            }
 
             // UserId filter is available only for administrators and lecturers
             if (!this.User.IsAdmin() && !this.User.IsLecturer())
