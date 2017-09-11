@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-
-namespace OJS.Data.Repositories
+﻿namespace OJS.Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
@@ -28,11 +27,10 @@ namespace OJS.Data.Repositories
         public IQueryable<Submission> AllForLecturer(string lecturerId)
         {
             var problemsIds = new HashSet<int>(
-                this.Context
-                        .Contests
-                        .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
-                                    c.Lecturers.Any(l => l.LecturerId == lecturerId))
-                        .SelectMany(c => c.Problems.Select(p => p.Id)));
+                this.Context.Contests
+                    .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
+                        c.Lecturers.Any(l => l.LecturerId == lecturerId))
+                    .SelectMany(c => c.Problems.Select(p => p.Id)));
 
             var submissions = this.All()
                 .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
