@@ -1,6 +1,4 @@
-﻿using OJS.Data.Models;
-
-namespace OJS.Web.Controllers
+﻿namespace OJS.Web.Controllers
 {
     using System.Diagnostics;
     using System.Linq;
@@ -13,6 +11,7 @@ namespace OJS.Web.Controllers
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
