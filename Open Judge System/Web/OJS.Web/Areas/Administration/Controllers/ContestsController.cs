@@ -292,28 +292,29 @@
         [HttpGet]
         public ActionResult TransferParticipants(int id, string returnUrl)
         {
-            if (string.IsNullOrWhiteSpace(returnUrl) && this.Request.UrlReferrer != null)
-            {
-                returnUrl = this.Request.UrlReferrer.AbsolutePath;
-            }
-            else
-            {
-                returnUrl = UrlHelpers.ExtractFullContestsTreeUrlFromPath(returnUrl);
-            }
+            returnUrl = string.IsNullOrWhiteSpace(returnUrl) ?
+                this.Request.UrlReferrer?.AbsolutePath :
+                UrlHelpers.ExtractFullContestsTreeUrlFromPath(returnUrl);
 
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var contest = this.Data.Contests
-                .All()
-                .Where(con => con.Id == id)
+            var contest = this.Data.Contests.AllPast()
+                .Where(c => c.Id == id)
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
 
+            if (contest == null)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
             this.ViewBag.ReturnUrl = returnUrl;
+            
             return this.View(contest);
         }
 
@@ -323,11 +324,17 @@
         {
             if (!this.CheckIfUserHasContestPermissions(model.Id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
             var categoryContest = this.Data.Contests.GetById(model.Id);
+
+            if (categoryContest.CanBeCompeted)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
 
             var competeOnlyParticipants = categoryContest
                 .Participants
