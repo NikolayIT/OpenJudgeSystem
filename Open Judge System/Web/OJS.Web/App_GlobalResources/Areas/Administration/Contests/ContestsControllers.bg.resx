@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Active_contest_permited_for_transfer" xml:space="preserve">
+    <value>Състезанието е активно и не може да се местят участници</value>
+  </data>
   <data name="Contest" xml:space="preserve">
     <value>състезание</value>
   </data>
@@ -141,8 +144,14 @@
   <data name="No_latest_contests" xml:space="preserve">
     <value>Нямa последни състезaния</value>
   </data>
+  <data name="No_privileges_for_action" xml:space="preserve">
+    <value>Нямате привилегиите за това действие!</value>
+  </data>
   <data name="No_question_by_id" xml:space="preserve">
     <value>Не може да се намери въпрос по зададеното Id</value>
+  </data>
+  <data name="Participants_transferred" xml:space="preserve">
+    <value>Участниците са преместени успешно!</value>
   </data>
   <data name="Practice" xml:space="preserve">
     <value>практика</value>

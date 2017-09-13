@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is active and participants cannot be transferred.
+        /// </summary>
+        public static string Active_contest_permited_for_transfer {
+            get {
+                return ResourceManager.GetString("Active_contest_permited_for_transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to contest.
         /// </summary>
         public static string Contest {
@@ -129,6 +138,15 @@ namespace Resources.Areas.Administration.Contests {
         public static string No_latest_contests {
             get {
                 return ResourceManager.GetString("No_latest_contests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission for this action!.
+        /// </summary>
+        public static string No_privileges_for_action {
+            get {
+                return ResourceManager.GetString("No_privileges_for_action", resourceCulture);
             }
         }
         
