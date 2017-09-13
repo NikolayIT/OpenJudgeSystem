@@ -143,6 +143,15 @@
                         <td class="edit-contest">
                             <a href="/Administration/Contests/Edit/@contest.Id"><span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span></a>
                             <a href="/Administration/Problems/Contest/@contest.Id"><span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span></a>
+                            <a href="/Administration/Contests/TransferParticipants/@contest.Id"><span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span></a>
+                        </td>
+                    }
+                    else if (User.IsLecturer() &&
+                        contest.OfficialParticipants > 0 &&
+                        (Model.IsUserLecturerInContestCategory || contest.UserIsLecturerInContest))
+                    {
+                        <td class="edit-contest">
+                            <a href="/Administration/Contests/TransferParticipants/@contest.Id"><span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span></a>
                         </td>
                     }
                 </tr>
