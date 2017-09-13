@@ -7,7 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 <div id="create-form" class="container">
-    @using (Html.BeginForm("TransferParticipants", "Contests", FormMethod.Post))
+    @using (Html.BeginForm("TransferParticipants", "Contests", new {returnUrl = ViewBag.ReturnUrl}))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
@@ -21,7 +21,7 @@
                 <button type="submit" class="btn btn-primary pull-right">@Resource.Transfer</button>
             </div>
             <div class="editor-label col-xs-4">
-                <a href="/Administration/Contests" class="btn btn-primary">@Resource.Cancel</a>
+                <a href=@ViewBag.ReturnUrl class="btn btn-primary">@Resource.Cancel</a>
             </div>
         </div>
     }

@@ -290,8 +290,17 @@
         }
 
         [HttpGet]
-        public ActionResult TransferParticipants(int id)
+        public ActionResult TransferParticipants(int id, string returnUrl)
         {
+            if (string.IsNullOrWhiteSpace(returnUrl) && this.Request.UrlReferrer != null)
+            {
+                returnUrl = this.Request.UrlReferrer.AbsolutePath;
+            }
+            else
+            {
+                returnUrl = UrlHelpers.ExtractFullContestsTreeUrlFromPath(returnUrl);
+            }
+
             if (!this.CheckIfUserHasContestPermissions(id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
@@ -304,12 +313,13 @@
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
 
+            this.ViewBag.ReturnUrl = returnUrl;
             return this.View(contest);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TransferParticipants(ShortViewModelType model)
+        public ActionResult TransferParticipants(ShortViewModelType model, string returnUrl)
         {
             if (!this.CheckIfUserHasContestPermissions(model.Id))
             {
@@ -389,7 +399,13 @@
             }
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.Participants_transferred);
-            return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            return this.Redirect(returnUrl);
         }
 
         private void PrepareViewBagData()
