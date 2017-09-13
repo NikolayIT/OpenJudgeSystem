@@ -6,6 +6,8 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using MissingFeatures;
+
     using OJS.Data;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
@@ -23,6 +25,7 @@
         public ActionResult Index()
         {
             var contests = this.Data.Contests.All().Select(ContestViewModel.FromContest).ToList();
+
             return this.View(contests);
         }
 
@@ -30,9 +33,9 @@
         {
             var categories = this.Data.ContestCategories
                 .All()
-                .Where(x => x.IsVisible)
-                .Where(x => id.HasValue ? x.ParentId == id : x.ParentId == null)
-                .OrderBy(x => x.OrderBy)
+                .Where(cc => cc.IsVisible)
+                .Where(cc => id.HasValue ? cc.ParentId == id : cc.ParentId == null)
+                .OrderBy(cc => cc.OrderBy)
                 .Select(ContestCategoryListViewModel.FromCategory);
 
             return this.Json(categories, JsonRequestBehavior.AllowGet);
@@ -64,8 +67,8 @@
             {
                 contestCategory = this.Data.ContestCategories
                     .All()
-                    .Where(x => x.Id == id && !x.IsDeleted && x.IsVisible)
-                    .OrderBy(x => x.OrderBy)
+                    .Where(cc => cc.Id == id && !cc.IsDeleted && cc.IsVisible)
+                    .OrderBy(cc => cc.OrderBy)
                     .Select(ContestCategoryViewModel.FromContestCategory)
                     .FirstOrDefault();
             }
@@ -77,8 +80,8 @@
                     Contests = new HashSet<ContestViewModel>(),
                     SubCategories = this.Data.ContestCategories
                         .All()
-                        .Where(x => x.IsVisible && !x.IsDeleted && x.Parent == null)
-                        .OrderBy(x => x.OrderBy)
+                        .Where(cc => cc.IsVisible && !cc.IsDeleted && cc.Parent == null)
+                        .OrderBy(cc => cc.OrderBy)
                         .Select(ContestCategoryListViewModel.FromCategory)
                 };
             }
@@ -87,6 +90,14 @@
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Category_not_found);
             }
+
+            contestCategory.Contests
+                .ForEach(c => c.UserIsLecturerInContest = this.UserProfile != null &&
+                    this.CheckIfUserHasContestPermissions(c.Id));
+
+            contestCategory.IsUserLecturerInContestCategory =
+                this.UserProfile != null &&
+                this.CheckIfUserHasContestCategoryPermissions(contestCategory.Id);
 
             if (this.Request.IsAjaxRequest())
             {
@@ -105,7 +116,7 @@
             {
                 submissionType = this.Data.SubmissionTypes
                     .All()
-                    .Where(x => x.Id == id.Value)
+                    .Where(st => st.Id == id.Value)
                     .Select(SubmissionTypeViewModel.FromSubmissionType)
                     .FirstOrDefault();
             }
