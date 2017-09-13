@@ -144,6 +144,9 @@
   <data name="No_question_by_id" xml:space="preserve">
     <value>Question could not be found by given Id</value>
   </data>
+  <data name="Participants_transferred" xml:space="preserve">
+    <value>Participants transferred successfully</value>
+  </data>
   <data name="Practice" xml:space="preserve">
     <value>practice</value>
   </data>

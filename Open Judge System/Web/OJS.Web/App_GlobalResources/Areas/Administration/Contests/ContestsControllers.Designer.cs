@@ -19,7 +19,7 @@ namespace Resources.Areas.Administration.Contests {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ContestsControllers {
@@ -138,6 +138,15 @@ namespace Resources.Areas.Administration.Contests {
         public static string No_question_by_id {
             get {
                 return ResourceManager.GetString("No_question_by_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participants transferred successfully.
+        /// </summary>
+        public static string Participants_transferred {
+            get {
+                return ResourceManager.GetString("Participants_transferred", resourceCulture);
             }
         }
         

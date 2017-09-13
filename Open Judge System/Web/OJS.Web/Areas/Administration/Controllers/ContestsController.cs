@@ -289,9 +289,35 @@
             return this.Json(ips, JsonRequestBehavior.AllowGet);
         }
 
-        public void MoveSubmission(int contestId)
+        [HttpGet]
+        public ActionResult TransferParticipants(int id)
         {
-            var categoryContest = this.Data.Contests.GetById(contestId);
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var contest = this.Data.Contests
+                .All()
+                .Where(con => con.Id == id)
+                .Select(TransferParticipantsViewModel.FromContest)
+                .FirstOrDefault();
+
+            return this.View(contest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TransferParticipants(ShortViewModelType model)
+        {
+            if (!this.CheckIfUserHasContestPermissions(model.Id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var categoryContest = this.Data.Contests.GetById(model.Id);
 
             var competeOnlyParticipants = categoryContest
                 .Participants
@@ -361,6 +387,9 @@
                 this.Data.Participants.Delete(officialParticipant);
                 this.Data.SaveChanges();
             }
+
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Participants_transferred);
+            return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
         }
 
         private void PrepareViewBagData()
