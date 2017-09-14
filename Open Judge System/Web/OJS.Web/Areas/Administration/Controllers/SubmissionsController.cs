@@ -206,12 +206,13 @@
 
                 if (this.ModelState.IsValid)
                 {
-                    var entity = this.GetById(model.Id) as DatabaseModelType;
-                    entity.Processed = false;
-                    entity.Processing = false;
+                    var submission = this.GetById(model.Id) as DatabaseModelType;
 
-                    this.UpdateAuditInfoValues(model, entity);
-                    this.BaseUpdate(model.GetEntityModel(entity));
+                    this.UpdateAuditInfoValues(model, submission);
+                    this.BaseUpdate(model.GetEntityModel(submission));
+
+                    this.RetestSubmission(submission);
+
                     this.TempData.AddInfoMessage(Resource.Successful_edit_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -425,31 +426,7 @@
                     return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
                 }
 
-                var submissionProblemId = submission.ProblemId.Value;
-                var submissionParticipantId = submission.ParticipantId.Value;
-
-                using (var scope = new TransactionScope())
-                {
-                    submission.Processed = false;
-                    submission.Processing = false;
-
-                    this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
-                    this.Data.SaveChanges();
-
-                    var submissionIsBestSubmission = this.IsBestSubmission(
-                        submissionProblemId,
-                        submissionParticipantId,
-                        submission.Id);
-
-                    if (submissionIsBestSubmission)
-                    {
-                        this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
-                    }
-
-                    this.Data.SaveChanges();
-
-                    scope.Complete();
-                }
+                this.RetestSubmission(submission);
 
                 this.TempData.AddInfoMessage(Resource.Retest_successful);
                 return this.RedirectToAction("View", "Submissions", new { area = "Contests", id });
@@ -597,6 +574,41 @@
                                       ps.ParticipantId == participantId);
 
             return bestScore?.SubmissionId == submissionId;
+        }
+
+        private bool RetestSubmission(DatabaseModelType submission)
+        {
+            if (submission.ProblemId.HasValue && submission.ParticipantId.HasValue)
+            {
+                var submissionProblemId = submission.ProblemId.Value;
+                var submissionParticipantId = submission.ParticipantId.Value;
+
+                using (var scope = new TransactionScope())
+                {
+                    submission.Processed = false;
+                    submission.Processing = false;
+
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
+                    this.Data.SaveChanges();
+
+                    var submissionIsBestSubmission = this.IsBestSubmission(
+                        submission.ProblemId.Value,
+                        submissionParticipantId,
+                        submission.Id);
+
+                    if (submissionIsBestSubmission)
+                    {
+                        this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                    }
+
+                    this.Data.SaveChanges();
+
+                    scope.Complete();
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
