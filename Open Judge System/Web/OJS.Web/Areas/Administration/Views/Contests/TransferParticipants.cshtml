@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = Resource.Page_title;
+    const string defaultReturnUrl = "/Administration/Contests";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -15,13 +16,20 @@
         <hr />
         <div class="alert">Сигурни ли сте, че искате да прехвърлите 
             <strong>@Model.OfficialParticipantsCount участници</strong> от Contest в Practice за състезанието 
-            <strong>@Model.Name</strong> от <strong>@Model.CategoryName</strong>?</div>
+            <strong>@Model.Name</strong> от категорията <strong>@Model.CategoryName</strong>?</div>
         <div class="row">
             <div class="editor-label col-xs-3">
                 <button type="submit" class="btn btn-primary pull-right">@Resource.Transfer</button>
             </div>
             <div class="editor-label col-xs-4">
-                <a href=@ViewBag.ReturnUrl class="btn btn-primary">@Resource.Cancel</a>
+                @{
+                    var returnUrl = defaultReturnUrl;
+                    if (ViewBag.ReturnUrl != null)
+                    {
+                        returnUrl = ViewBag.ReturnUrl;
+                    }
+                }
+                <a href=@returnUrl class="btn btn-primary">@Resource.Cancel</a>
             </div>
         </div>
     }
