@@ -307,7 +307,7 @@
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
 
-            if (contest == null)
+            if (contest == null || contest.OfficialParticipantsCount == 0)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Contest_not_valid;
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
