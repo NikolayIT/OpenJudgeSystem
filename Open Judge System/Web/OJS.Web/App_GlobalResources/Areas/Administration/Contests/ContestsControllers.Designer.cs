@@ -106,6 +106,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is not valid.
+        /// </summary>
+        public static string Contest_not_valid {
+            get {
+                return ResourceManager.GetString("Contest_not_valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contest start date must be before the contest end date.
         /// </summary>
         public static string Contest_start_date_before_end {

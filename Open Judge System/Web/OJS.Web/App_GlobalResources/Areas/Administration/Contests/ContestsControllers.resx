@@ -132,6 +132,9 @@
   <data name="Contest_not_found" xml:space="preserve">
     <value>Contest not found</value>
   </data>
+  <data name="Contest_not_valid" xml:space="preserve">
+    <value>Contest is not valid</value>
+  </data>
   <data name="Contest_start_date_before_end" xml:space="preserve">
     <value>Contest start date must be before the contest end date</value>
   </data>

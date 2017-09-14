@@ -132,6 +132,9 @@
   <data name="Contest_not_found" xml:space="preserve">
     <value>Състезанието не е намерено</value>
   </data>
+  <data name="Contest_not_valid" xml:space="preserve">
+    <value>Невалидно състезание</value>
+  </data>
   <data name="Contest_start_date_before_end" xml:space="preserve">
     <value>Началната дата на състезанието не може да бъде след крайната дата на състезанието</value>
   </data>

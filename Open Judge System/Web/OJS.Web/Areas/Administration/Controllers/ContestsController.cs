@@ -309,7 +309,7 @@
 
             if (contest == null)
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Contest_not_valid;
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -405,7 +405,7 @@
                 this.Data.SaveChanges();
             }
 
-            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Participants_transferred);
+            this.TempData[GlobalConstants.InfoMessage] = Resource.Participants_transferred;
 
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
