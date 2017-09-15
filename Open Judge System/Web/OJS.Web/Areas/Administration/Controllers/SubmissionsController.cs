@@ -582,6 +582,13 @@
                 return;
             }
 
+            var submissionForProcessing = this.Data.SubmissionsForProcessing.GetById(submission.Id);
+
+            if (submissionForProcessing != null && !submissionForProcessing.Processed)
+            {
+                return;
+            }
+
             var submissionProblemId = submission.ProblemId.Value;
             var submissionParticipantId = submission.ParticipantId.Value;
 
