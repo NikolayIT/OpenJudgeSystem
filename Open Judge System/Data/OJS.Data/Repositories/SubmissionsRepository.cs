@@ -1,8 +1,10 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
@@ -14,38 +16,45 @@
         {
         }
 
-        public IQueryable<Submission> AllPublic()
-        {
-            return this.All()
-                .Where(x => x.IsPublic ??
-                    (((x.Participant.IsOfficial && x.Problem.Contest.ContestPassword == null) ||
-                     (!x.Participant.IsOfficial && x.Problem.Contest.PracticePassword == null))
-                    && x.Problem.Contest.IsVisible && !x.Problem.Contest.IsDeleted
-                    && x.Problem.ShowResults));
-        }
+        public IQueryable<Submission> AllPublic() => 
+            this.All()
+                .Where(s => s.IsPublic ??
+                    (((s.Participant.IsOfficial && s.Problem.Contest.ContestPassword == null) ||
+                    (!s.Participant.IsOfficial && s.Problem.Contest.PracticePassword == null)) &&
+                    s.Problem.Contest.IsVisible && !s.Problem.Contest.IsDeleted &&
+                    s.Problem.ShowResults));
 
-        public Submission GetSubmissionForProcessing()
+        public IQueryable<Submission> AllForLecturer(string lecturerId)
         {
-            var submission =
+            var problemsIds = new HashSet<int>(
+                this.Context.Contests
+                    .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
+                        c.Lecturers.Any(l => l.LecturerId == lecturerId))
+                    .SelectMany(c => c.Problems.Select(p => p.Id)));
+
+            var submissions = this.All()
+                .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
+
+            return submissions;
+        }  
+
+        public Submission GetSubmissionForProcessing() =>
                 this.All()
-                    .Where(x => !x.Processed && !x.Processing)
-                    .OrderBy(x => x.Id)
-                    .Include(x => x.Problem)
-                    .Include(x => x.Problem.Tests)
-                    .Include(x => x.Problem.Checker)
-                    .Include(x => x.SubmissionType)
+                    .Where(s => !s.Processed && !s.Processing)
+                    .OrderBy(s => s.Id)
+                    .Include(s => s.Problem)
+                    .Include(s => s.Problem.Tests)
+                    .Include(s => s.Problem.Checker)
+                    .Include(s => s.SubmissionType)
                     .FirstOrDefault();
-
-            return submission;
-        }
 
         public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)
         {
             var lastSubmission =
                 this.All()
-                    .Where(x => x.ParticipantId == participantId)
-                    .OrderByDescending(x => x.CreatedOn)
-                    .Select(x => new { x.Id, x.CreatedOn })
+                    .Where(s => s.ParticipantId == participantId)
+                    .OrderByDescending(s => s.CreatedOn)
+                    .Select(s => new { s.Id, s.CreatedOn })
                     .FirstOrDefault();
 
             if (lastSubmission != null)
@@ -66,7 +75,7 @@
         {
             // TODO: add language type
             var submissions = this.AllPublic()
-                .OrderByDescending(x => x.CreatedOn)
+                .OrderByDescending(s => s.CreatedOn)
                 .Take(50);
 
             return submissions;
