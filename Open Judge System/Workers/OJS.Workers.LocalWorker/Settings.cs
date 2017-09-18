@@ -14,6 +14,8 @@
             Logger = LogManager.GetLogger("Settings");
         }
 
+        public static string ExecutionStrategyTempPath => GetSetting("ExecutionStrategyTemp");
+
         public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
 
         public static string MavenPath => GetSetting("MavenPath");
