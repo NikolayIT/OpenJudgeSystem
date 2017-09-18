@@ -20,7 +20,7 @@
         public ExecutionResult SafeExecute(ExecutionContext executionContext)
         {
             Exception innerException = null;
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
             try
             {
                 return this.Execute(executionContext);
