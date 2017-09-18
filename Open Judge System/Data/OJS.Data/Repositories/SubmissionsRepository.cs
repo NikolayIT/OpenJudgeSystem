@@ -20,8 +20,9 @@
             this.All()
                 .Where(s => s.IsPublic ??
                     (((s.Participant.IsOfficial && s.Problem.Contest.ContestPassword == null) ||
-                    (!s.Participant.IsOfficial && s.Problem.Contest.PracticePassword == null)) &&
-                    s.Problem.Contest.IsVisible && !s.Problem.Contest.IsDeleted &&
+                        (!s.Participant.IsOfficial && s.Problem.Contest.PracticePassword == null)) &&
+                    s.Problem.Contest.IsVisible &&
+                    !s.Problem.Contest.IsDeleted &&
                     s.Problem.ShowResults));
 
         public IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId)
@@ -32,8 +33,9 @@
                         c.Lecturers.Any(l => l.LecturerId == lecturerId))
                     .SelectMany(c => c.Problems.Select(p => p.Id)));
 
-            var submissions = this.All()
-                .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
+            var submissions =
+                this.All()
+                    .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
 
             return submissions;
         }  
