@@ -107,7 +107,7 @@ namespace Resources.Areas.Administration.Submissions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submission is processig and cannot be retested!.
+        ///   Looks up a localized string similar to Submission is being processed and cannot be retested right now!.
         /// </summary>
         public static string Submission_is_processing {
             get {
