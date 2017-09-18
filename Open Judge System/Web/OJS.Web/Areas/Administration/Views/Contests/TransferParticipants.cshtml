@@ -14,9 +14,9 @@
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
         <hr />
-        <div class="alert">Сигурни ли сте, че искате да прехвърлите 
-            <strong>@Model.OfficialParticipantsCount участници</strong> от Contest в Practice за състезанието 
-            <strong>@Model.Name</strong> от категорията <strong>@Model.CategoryName</strong>?</div>
+        <div class="alert">
+            @Html.Raw(string.Format(Resource.Confirm_transfer_message, Model.OfficialParticipantsCount, Model.Name, Model.CategoryName))
+        </div>
         <div class="row">
             <div class="editor-label col-xs-3">
                 <button type="submit" class="btn btn-primary pull-right">@Resource.Transfer</button>

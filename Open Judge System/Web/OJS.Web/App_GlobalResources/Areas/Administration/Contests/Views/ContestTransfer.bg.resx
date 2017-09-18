@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
+  <data name="Confirm_transfer_message" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да прехвърлите &lt;strong&gt;{0}&lt;/strong&gt; участници от Състезание в Практика за състезанието &lt;strong&gt;{1}&lt;/strong&gt; от категорията &lt;strong&gt;{2}&lt;/strong&gt;?</value>
+  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Прехвърляне на участници</value>
   </data>
