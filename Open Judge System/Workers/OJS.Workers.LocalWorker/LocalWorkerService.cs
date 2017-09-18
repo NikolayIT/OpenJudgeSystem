@@ -10,6 +10,7 @@
 
     using log4net;
 
+    using OJS.Common;
     using OJS.Data;
 
     internal class LocalWorkerService : ServiceBase
@@ -116,7 +117,7 @@
         /// </summary>
         private void CreateExecutionStrategyDirectoryInTemp()
         {
-            var path = Path.Combine(Path.GetTempPath(), Settings.ExecutionStrategyTempPath);
+            var path = GlobalConstants.ExecutionStrategyTempPath;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
