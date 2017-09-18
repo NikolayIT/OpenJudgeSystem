@@ -205,9 +205,9 @@ function initializeGrid(contestId) {
             var tr = target.closest('tr');
             var grid = $('#problems-grid').data('kendoGrid');
 
-            if (target.data('expanded')) {
+            if (!target.data('expanded')) {
                 grid.expandRow(tr);
-                target.data('expanded', false);
+                target.data('expanded', true);
             } else {
                 grid.collapseRow(tr);
                 target.removeData('expanded');
