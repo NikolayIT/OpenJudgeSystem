@@ -184,11 +184,8 @@
                         }
                     }
                 }
-            }
 
-            if (this.ModelState.IsValid)
-            {
-                if (model.ProblemId.HasValue)
+                if (this.ModelState.IsValid)
                 {
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
@@ -202,18 +199,48 @@
                         this.ValidateSubmissionContentLength(model, problem);
                         this.ValidateBinarySubmission(model, problem, submissionType);
                     }
-                }
 
-                if (this.ModelState.IsValid)
-                {
-                    var entity = this.GetById(model.Id) as DatabaseModelType;
-                    entity.Processed = false;
-                    entity.Processing = false;
+                    if (this.ModelState.IsValid)
+                    {
+                        if (this.IsSubmissionProcessing(submission))
+                        {
+                            this.TempData[GlobalConstants.DangerMessage] = Resource.Submission_is_processing;
+                            return this.RedirectToAction(nameof(this.Update), "Submissions", new { area = "Administration" });
+                        }
 
-                    this.UpdateAuditInfoValues(model, entity);
-                    this.BaseUpdate(model.GetEntityModel(entity));
-                    this.TempData.AddInfoMessage(Resource.Successful_edit_message);
-                    return this.RedirectToAction(GlobalConstants.Index);
+                        var submissionProblemId = model.ProblemId.Value;
+                        var submissionParticipantId = model.ParticipantId.Value;
+
+                        using (var scope = new TransactionScope())
+                        {
+                            submission.Processed = false;
+                            submission.Processing = false;
+
+                            this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
+                            this.Data.SaveChanges();
+
+                            var submissionIsBestSubmission = this.IsBestSubmission(
+                                submissionProblemId,
+                                submissionParticipantId,
+                                submission.Id);
+
+                            if (submissionIsBestSubmission)
+                            {
+                                this.Data.ParticipantScores
+                                    .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                            }
+
+                            this.Data.SaveChanges();
+
+                            this.UpdateAuditInfoValues(model, submission);
+                            this.BaseUpdate(model.GetEntityModel(submission));
+
+                            scope.Complete();
+                        }
+
+                        this.TempData.AddInfoMessage(Resource.Successful_edit_message);
+                        return this.RedirectToAction(GlobalConstants.Index);
+                    }
                 }
             }
 
@@ -288,7 +315,8 @@
 
                 if (isBestSubmission)
                 {
-                    this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+                    this.Data.ParticipantScores
+                        .RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
                 }
 
                 this.Data.SaveChanges();
@@ -337,7 +365,10 @@
 
                     if (isBestSubmission)
                     {
-                        this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
+                        this.Data.ParticipantScores
+                            .RecalculateParticipantScore(
+                                dbSubmission.ParticipantId.Value,
+                                dbSubmission.ProblemId.Value);
                     }
                 }
 
@@ -425,6 +456,12 @@
                     return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
                 }
 
+                if (this.IsSubmissionProcessing(submission))
+                {
+                    this.TempData[GlobalConstants.DangerMessage] = Resource.Submission_is_processing;
+                    return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                }
+
                 var submissionProblemId = submission.ProblemId.Value;
                 var submissionParticipantId = submission.ParticipantId.Value;
 
@@ -443,7 +480,8 @@
 
                     if (submissionIsBestSubmission)
                     {
-                        this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                        this.Data.ParticipantScores
+                            .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
                     }
 
                     this.Data.SaveChanges();
@@ -538,7 +576,10 @@
             return this.File(
                 submission.Content,
                 GlobalConstants.BinaryFileMimeType,
-                string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
+                string.Format("{0}_{1}.{2}",
+                    submission.Participant.User.UserName,
+                    submission.Problem.Name,
+                    submission.FileExtension));
         }
 
         private SubmissionType GetSubmissionType(int submissionTypeId)
@@ -597,6 +638,20 @@
                                       ps.ParticipantId == participantId);
 
             return bestScore?.SubmissionId == submissionId;
+        }
+
+        private bool IsSubmissionProcessing(Submission submission)
+        {
+            if (submission.Processed)
+            {
+                return false;
+            }
+
+            var submissionForProcessing = this.Data.SubmissionsForProcessing
+                .All()
+                .FirstOrDefault(sfp => sfp.SubmissionId == submission.Id);
+
+            return submissionForProcessing != null && !submissionForProcessing.Processed;
         }
     }
 }
