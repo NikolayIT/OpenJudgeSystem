@@ -320,7 +320,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TransferParticipants(ShortViewModelType model, string returnUrl)
+        public ActionResult TransferParticipants(ShortContestAdministrationViewModel model, string returnUrl)
         {
             if (!this.CheckIfUserHasContestPermissions(model.Id))
             {
