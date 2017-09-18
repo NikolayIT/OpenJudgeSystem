@@ -226,7 +226,8 @@
 
                             if (submissionIsBestSubmission)
                             {
-                                this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                                this.Data.ParticipantScores
+                                    .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
                             }
 
                             this.Data.SaveChanges();
@@ -314,7 +315,8 @@
 
                 if (isBestSubmission)
                 {
-                    this.Data.ParticipantScores.RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+                    this.Data.ParticipantScores
+                        .RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
                 }
 
                 this.Data.SaveChanges();
@@ -363,7 +365,10 @@
 
                     if (isBestSubmission)
                     {
-                        this.Data.ParticipantScores.RecalculateParticipantScore(dbSubmission.ParticipantId.Value, dbSubmission.ProblemId.Value);
+                        this.Data.ParticipantScores
+                            .RecalculateParticipantScore(
+                                dbSubmission.ParticipantId.Value,
+                                dbSubmission.ProblemId.Value);
                     }
                 }
 
@@ -475,7 +480,8 @@
 
                     if (submissionIsBestSubmission)
                     {
-                        this.Data.ParticipantScores.RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                        this.Data.ParticipantScores
+                            .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
                     }
 
                     this.Data.SaveChanges();
@@ -570,7 +576,10 @@
             return this.File(
                 submission.Content,
                 GlobalConstants.BinaryFileMimeType,
-                string.Format("{0}_{1}.{2}", submission.Participant.User.UserName, submission.Problem.Name, submission.FileExtension));
+                string.Format("{0}_{1}.{2}",
+                    submission.Participant.User.UserName,
+                    submission.Problem.Name,
+                    submission.FileExtension));
         }
 
         private SubmissionType GetSubmissionType(int submissionTypeId)
