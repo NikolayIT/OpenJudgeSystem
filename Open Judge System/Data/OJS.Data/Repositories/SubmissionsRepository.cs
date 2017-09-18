@@ -24,7 +24,7 @@
                     s.Problem.Contest.IsVisible && !s.Problem.Contest.IsDeleted &&
                     s.Problem.ShowResults));
 
-        public IQueryable<Submission> AllForLecturer(string lecturerId)
+        public IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId)
         {
             var problemsIds = new HashSet<int>(
                 this.Context.Contests

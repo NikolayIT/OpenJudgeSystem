@@ -71,7 +71,7 @@
 
             if (this.User.IsLecturer())
             {
-                data = this.Data.Submissions.AllForLecturer(this.UserProfile.Id);
+                data = this.Data.Submissions.AllPublicWithLecturerContests(this.UserProfile.Id);
             }
             else if (this.User.IsAdmin())
             {

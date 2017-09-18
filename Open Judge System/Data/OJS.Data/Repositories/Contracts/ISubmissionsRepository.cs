@@ -9,7 +9,7 @@
     {
         IQueryable<Submission> AllPublic();
 
-        IQueryable<Submission> AllForLecturer(string lecturerId);
+        IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId);
 
         Submission GetSubmissionForProcessing();
 
