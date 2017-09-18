@@ -132,6 +132,9 @@
   <data name="Submission_content_length_invalid" xml:space="preserve">
     <value>Submission is over the size limit!</value>
   </data>
+  <data name="Submission_is_processing" xml:space="preserve">
+    <value>Submission is processig and cannot be retested!</value>
+  </data>
   <data name="Successful_creation_message" xml:space="preserve">
     <value>Submission added successfully!</value>
   </data>
