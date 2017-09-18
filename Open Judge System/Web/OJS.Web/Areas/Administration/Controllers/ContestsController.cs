@@ -289,9 +289,52 @@
             return this.Json(ips, JsonRequestBehavior.AllowGet);
         }
 
-        public void MoveSubmission(int contestId)
+        [HttpGet]
+        public ActionResult TransferParticipants(int id, string returnUrl)
         {
-            var categoryContest = this.Data.Contests.GetById(contestId);
+            returnUrl = string.IsNullOrWhiteSpace(returnUrl) ?
+                this.Request.UrlReferrer?.AbsolutePath :
+                UrlHelpers.ExtractFullContestsTreeUrlFromPath(returnUrl);
+
+            if (!this.CheckIfUserHasContestPermissions(id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var contest = this.Data.Contests.AllPast()
+                .Where(c => c.Id == id)
+                .Select(TransferParticipantsViewModel.FromContest)
+                .FirstOrDefault();
+
+            if (contest == null || contest.OfficialParticipantsCount == 0)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Contest_not_valid;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            this.ViewBag.ReturnUrl = returnUrl;
+            
+            return this.View(contest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TransferParticipants(ShortContestAdministrationViewModel model, string returnUrl)
+        {
+            if (!this.CheckIfUserHasContestPermissions(model.Id))
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var categoryContest = this.Data.Contests.GetById(model.Id);
+
+            if (categoryContest.CanBeCompeted)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
 
             var competeOnlyParticipants = categoryContest
                 .Participants
@@ -361,6 +404,15 @@
                 this.Data.Participants.Delete(officialParticipant);
                 this.Data.SaveChanges();
             }
+
+            this.TempData[GlobalConstants.InfoMessage] = Resource.Participants_transferred;
+
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            return this.Redirect(returnUrl);
         }
 
         private void PrepareViewBagData()

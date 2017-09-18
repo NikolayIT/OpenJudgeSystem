@@ -153,4 +153,7 @@
   <data name="Problems_count" xml:space="preserve">
     <value>Брой задачи</value>
   </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>Прехвърли</value>
+  </data>
 </root>

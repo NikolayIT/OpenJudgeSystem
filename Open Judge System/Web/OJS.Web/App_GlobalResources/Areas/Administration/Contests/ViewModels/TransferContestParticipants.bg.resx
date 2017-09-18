@@ -117,58 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_permited_for_transfer" xml:space="preserve">
-    <value>Състезанието е активно и не може да се местят участници</value>
+  <data name="Category_name" xml:space="preserve">
+    <value>Категория</value>
   </data>
-  <data name="Contest" xml:space="preserve">
-    <value>състезание</value>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
   </data>
-  <data name="Contest_added" xml:space="preserve">
-    <value>Състезанието беше добавено успешно</value>
+  <data name="Name_required" xml:space="preserve">
+    <value>Името е задължително!</value>
   </data>
-  <data name="Contest_edited" xml:space="preserve">
-    <value>Състезанието беше променено успешно</value>
-  </data>
-  <data name="Contest_not_found" xml:space="preserve">
-    <value>Състезанието не е намерено</value>
-  </data>
-  <data name="Contest_not_valid" xml:space="preserve">
-    <value>Невалидно състезание</value>
-  </data>
-  <data name="Contest_start_date_before_end" xml:space="preserve">
-    <value>Началната дата на състезанието не може да бъде след крайната дата на състезанието</value>
-  </data>
-  <data name="No_active_contests" xml:space="preserve">
-    <value>Няма активни състезания</value>
-  </data>
-  <data name="No_future_contests" xml:space="preserve">
-    <value>Няма бъдещи състезания</value>
-  </data>
-  <data name="No_latest_contests" xml:space="preserve">
-    <value>Нямa последни състезaния</value>
-  </data>
-  <data name="No_privileges_for_action" xml:space="preserve">
-    <value>Нямате привилегиите за това действие!</value>
-  </data>
-  <data name="No_question_by_id" xml:space="preserve">
-    <value>Не може да се намери въпрос по зададеното Id</value>
-  </data>
-  <data name="Participants_transferred" xml:space="preserve">
-    <value>Участниците са преместени успешно!</value>
-  </data>
-  <data name="Practice" xml:space="preserve">
-    <value>практика</value>
-  </data>
-  <data name="Practice_start_date_before_end" xml:space="preserve">
-    <value>Началната дата за упражнения не може да бъде след крайната дата за упражнения</value>
-  </data>
-  <data name="Report_excel_format" xml:space="preserve">
-    <value>Класиране за {0} {1}.xls</value>
-  </data>
-  <data name="Report_zip_format" xml:space="preserve">
-    <value>{1} решения за {0}.zip</value>
-  </data>
-  <data name="Select_one_submission_type" xml:space="preserve">
-    <value>Изберете поне един вид решение!</value>
+  <data name="Official_participants_count" xml:space="preserve">
+    <value>Брой на официалните участници</value>
   </data>
 </root>

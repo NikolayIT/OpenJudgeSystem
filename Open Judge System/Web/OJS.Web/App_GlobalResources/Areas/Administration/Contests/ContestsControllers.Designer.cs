@@ -19,7 +19,7 @@ namespace Resources.Areas.Administration.Contests {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ContestsControllers {
@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is active and participants cannot be transferred.
+        /// </summary>
+        public static string Active_contest_permited_for_transfer {
+            get {
+                return ResourceManager.GetString("Active_contest_permited_for_transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to contest.
         /// </summary>
         public static string Contest {
@@ -93,6 +102,15 @@ namespace Resources.Areas.Administration.Contests {
         public static string Contest_not_found {
             get {
                 return ResourceManager.GetString("Contest_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contest is not valid.
+        /// </summary>
+        public static string Contest_not_valid {
+            get {
+                return ResourceManager.GetString("Contest_not_valid", resourceCulture);
             }
         }
         
@@ -133,11 +151,29 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission for this action!.
+        /// </summary>
+        public static string No_privileges_for_action {
+            get {
+                return ResourceManager.GetString("No_privileges_for_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Question could not be found by given Id.
         /// </summary>
         public static string No_question_by_id {
             get {
                 return ResourceManager.GetString("No_question_by_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participants transferred successfully.
+        /// </summary>
+        public static string Participants_transferred {
+            get {
+                return ResourceManager.GetString("Participants_transferred", resourceCulture);
             }
         }
         

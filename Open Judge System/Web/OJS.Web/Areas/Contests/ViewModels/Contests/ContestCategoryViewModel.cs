@@ -16,6 +16,7 @@
                 return contestCategory =>
                     new ContestCategoryViewModel
                     {
+                        Id = contestCategory.Id,
                         CategoryName = contestCategory.Name,
                         Contests = contestCategory.Contests
                             .AsQueryable()
@@ -32,10 +33,14 @@
             }
         }
 
+        public int Id { get; set; }
+
         public string CategoryName { get; set; }
 
         public IEnumerable<ContestViewModel> Contests { get; set; }
 
         public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; }
+
+        public bool IsUserLecturerInContestCategory { get; set; }
     }
 }
