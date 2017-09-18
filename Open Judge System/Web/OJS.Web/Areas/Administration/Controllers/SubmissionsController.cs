@@ -638,7 +638,8 @@
                 return false;
             }
 
-            var submissionForProcessing = this.Data.SubmissionsForProcessing.All()
+            var submissionForProcessing = this.Data.SubmissionsForProcessing
+                .All()
                 .FirstOrDefault(sfp => sfp.SubmissionId == submission.Id);
 
             return submissionForProcessing != null && !submissionForProcessing.Processed;
