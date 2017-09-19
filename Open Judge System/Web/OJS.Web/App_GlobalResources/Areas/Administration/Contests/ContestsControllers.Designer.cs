@@ -151,15 +151,6 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have permission for this action!.
-        /// </summary>
-        public static string No_privileges_for_action {
-            get {
-                return ResourceManager.GetString("No_privileges_for_action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Question could not be found by given Id.
         /// </summary>
         public static string No_question_by_id {

@@ -157,9 +157,11 @@
                     }
                     else if (User.IsLecturer())
                     {
-                        if (contest.OfficialParticipants > 0 &&
+                        var isContestValidForTransfer = contest.OfficialParticipants > 0 &&
                             !contest.CanBeCompeted &&
-                            (Model.IsUserLecturerInContestCategory || contest.UserIsLecturerInContest))
+                            (Model.IsUserLecturerInContestCategory || contest.UserIsLecturerInContest);
+
+                        if (isContestValidForTransfer)
                         {
                             <td class="edit-contest">
                                 <a href=@Url.Action("TransferParticipants", "Contests", new {area = "Administration", id = contest.Id, returnUrl = this.Request.Url?.AbsolutePath})>

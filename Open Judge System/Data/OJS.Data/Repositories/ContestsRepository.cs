@@ -14,33 +14,22 @@
         {
         }
 
-        public IQueryable<Contest> AllActive()
-        {
-            return this.All()
+        public IQueryable<Contest> AllActive() =>
+            this.All()
                 .Where(c => !c.IsDeleted &&
-                    c.IsVisible &&
-                    c.StartTime <= DateTime.Now &&
-                    DateTime.Now <= c.EndTime);
-        }
+                c.IsVisible &&
+                c.StartTime <= DateTime.Now &&
+                DateTime.Now <= c.EndTime);
 
-        public IQueryable<Contest> AllFuture()
-        {
-            return this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
-        }
+        public IQueryable<Contest> AllFuture() =>
+            this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
 
-        public IQueryable<Contest> AllPast()
-        {
-            return this.All().Where(c => !c.IsDeleted && c.EndTime < DateTime.Now && c.IsVisible);
-        }
+        public IQueryable<Contest> AllPast() =>
+            this.All().Where(c => !c.IsDeleted && c.EndTime < DateTime.Now && c.IsVisible);
 
-        public IQueryable<Contest> AllVisible()
-        {
-            return this.All().Where(c => c.IsVisible);
-        }
+        public IQueryable<Contest> AllVisible() => this.All().Where(c => c.IsVisible);
 
-        public IQueryable<Contest> AllVisibleInCategory(int categoryId)
-        {
-            return this.All().Where(c => c.IsVisible && c.CategoryId == categoryId);
-        }
+        public IQueryable<Contest> AllVisibleInCategory(int categoryId) => 
+            this.All().Where(c => c.IsVisible && c.CategoryId == categoryId);
     }
 }

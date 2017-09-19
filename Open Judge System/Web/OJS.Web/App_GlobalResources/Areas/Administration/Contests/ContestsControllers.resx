@@ -147,9 +147,6 @@
   <data name="No_latest_contests" xml:space="preserve">
     <value>No latest contests</value>
   </data>
-  <data name="No_privileges_for_action" xml:space="preserve">
-    <value>You don't have permission for this action!</value>
-  </data>
   <data name="No_question_by_id" xml:space="preserve">
     <value>Question could not be found by given Id</value>
   </data>

@@ -72,8 +72,8 @@
         {
             if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             if (!this.IsValidContest(model))
@@ -103,8 +103,8 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             var contest = this.Data.Contests
@@ -129,8 +129,8 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             if (!this.IsValidContest(model))
@@ -169,8 +169,8 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             this.BaseDestroy(model.Id);
@@ -257,8 +257,8 @@
         {
             if (!this.CheckIfUserHasContestPermissions(inputModel.ContestCreateId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             var contest = this.Data.Contests.GetById(inputModel.ContestCreateId);
@@ -298,11 +298,12 @@
 
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
-            var contest = this.Data.Contests.AllPast()
+            var contest = this.Data.Contests
+                .AllPast()
                 .Where(c => c.Id == id)
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
@@ -310,7 +311,7 @@
             if (contest == null || contest.OfficialParticipantsCount == 0)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Contest_not_valid;
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             this.ViewBag.ReturnUrl = returnUrl;
@@ -324,8 +325,8 @@
         {
             if (!this.CheckIfUserHasContestPermissions(model.Id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.No_privileges_for_action;
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             var categoryContest = this.Data.Contests.GetById(model.Id);
@@ -333,7 +334,7 @@
             if (categoryContest.CanBeCompeted)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             var competeOnlyParticipants = categoryContest
@@ -409,7 +410,7 @@
 
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(cc => cc.Index());
             }
 
             return this.Redirect(returnUrl);

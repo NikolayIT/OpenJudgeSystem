@@ -7,14 +7,13 @@
     const string DefaultReturnUrl = "/Administration/Contests";
 }
 
-<h2>@ViewBag.Title</h2>
+<h1>@ViewBag.Title</h1>
 <div id="create-form" class="container">
     @using (Html.BeginForm("TransferParticipants", "Contests", new {returnUrl = ViewBag.ReturnUrl}))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
-        <hr />
         <div class="alert">
             @Html.Raw(string.Format(Resource.Confirm_transfer_message, Model.OfficialParticipantsCount, Model.Name, Model.CategoryName))
         </div>

@@ -147,9 +147,6 @@
   <data name="No_latest_contests" xml:space="preserve">
     <value>Нямa последни състезaния</value>
   </data>
-  <data name="No_privileges_for_action" xml:space="preserve">
-    <value>Нямате привилегиите за това действие!</value>
-  </data>
   <data name="No_question_by_id" xml:space="preserve">
     <value>Не може да се намери въпрос по зададеното Id</value>
   </data>
