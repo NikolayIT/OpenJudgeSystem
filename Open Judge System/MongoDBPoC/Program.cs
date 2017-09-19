@@ -12,44 +12,45 @@
         {
             const string ConnectionString = "mongodb://localhost:27017";
             var client = new MongoClient(ConnectionString);
-            IMongoDatabase db = client.GetDatabase("OJS");
-            var collection = db.GetCollection<SubmissionForProcessing>("submissionsForProcessing");
+            var db = client.GetDatabase("OJS");
+            var submissionsForProcessingCollection = db
+                .GetCollection<SubmissionForProcessing>("submissionsForProcessing");
 
-            InsertSubmissions(collection);
+            InsertSubmissions(submissionsForProcessingCollection);
 
-            var filter = new FilterDefinitionBuilder<SubmissionForProcessing>().Where(s => s.Processed);
-            collection.Find(filter).ToList()
+            var processedSubmissionsFilter = 
+                new FilterDefinitionBuilder<SubmissionForProcessing>()
+                .Where(s => s.Processed);
+
+            submissionsForProcessingCollection
+                .Find(processedSubmissionsFilter)
+                .ToList()
                 .ForEach(s => Console.WriteLine(
-                             $"ID: {s.SubmissionId}; Processed: {s.Processed}; Processing: {s.Processing}"));
-
+                    $"ID: {s.SubmissionId}; Processed: {s.Processed}; Processing: {s.Processing}"));
         }
 
         private static void InsertSubmissions(IMongoCollection<SubmissionForProcessing> collection)
         {
-            var submissionOne = new SubmissionForProcessing()
+            var submissions = new List<SubmissionForProcessing>()
             {
-                Processed = false,
-                Processing = true,
-                SubmissionId = 1
-            };
-            var submissionTwo = new SubmissionForProcessing()
-            {
-                Processed = false,
-                Processing = false,
-                SubmissionId = 2
-            };
-            var submissionThree = new SubmissionForProcessing()
-            {
+               new SubmissionForProcessing
+               {
+                    Processed = false,
+                    Processing = true,
+                    SubmissionId = 1
+                },
+                new SubmissionForProcessing
+                {
+                    Processed = false,
+                    Processing = false,
+                    SubmissionId = 2
+                },
+                new SubmissionForProcessing
+                {
                 Processed = true,
                 Processing = false,
                 SubmissionId = 3
-            };
-
-            var submissions = new List<SubmissionForProcessing>()
-            {
-                submissionOne,
-                submissionTwo,
-                submissionThree
+                }
             };
 
             collection.InsertMany(submissions);
