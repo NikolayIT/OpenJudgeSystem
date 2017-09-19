@@ -9,6 +9,8 @@
     {
         IQueryable<Submission> AllPublic();
 
+        IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId);
+
         Submission GetSubmissionForProcessing();
 
         bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions);
