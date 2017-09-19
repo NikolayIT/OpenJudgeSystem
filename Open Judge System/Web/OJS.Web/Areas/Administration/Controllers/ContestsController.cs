@@ -73,7 +73,7 @@
             if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             if (!this.IsValidContest(model))
@@ -91,7 +91,7 @@
                 this.Data.SaveChanges();
 
                 this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.PrepareViewBagData();
@@ -104,7 +104,7 @@
             if (!this.CheckIfUserHasContestPermissions(id))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var contest = this.Data.Contests
@@ -116,7 +116,7 @@
             if (contest == null)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.PrepareViewBagData();
@@ -130,7 +130,7 @@
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             if (!this.IsValidContest(model))
@@ -145,7 +145,7 @@
                 if (contest == null)
                 {
                     this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
-                    return this.RedirectToAction(GlobalConstants.Index);
+                    return this.RedirectToAction<ContestsController>(c => c.Index());
                 }
 
                 contest = model.GetEntityModel(contest);
@@ -157,7 +157,7 @@
                 this.Data.SaveChanges();
 
                 this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.PrepareViewBagData();
@@ -170,7 +170,7 @@
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.BaseDestroy(model.Id);
@@ -258,7 +258,7 @@
             if (!this.CheckIfUserHasContestPermissions(inputModel.ContestCreateId))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var contest = this.Data.Contests.GetById(inputModel.ContestCreateId);
@@ -296,10 +296,10 @@
                 this.Request.UrlReferrer?.AbsolutePath :
                 UrlHelpers.ExtractFullContestsTreeUrlFromPath(returnUrl);
 
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!this.User.IsAdmin())
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var contest = this.Data.Contests
@@ -311,7 +311,7 @@
             if (contest == null || contest.OfficialParticipantsCount == 0)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Contest_not_valid;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.ViewBag.ReturnUrl = returnUrl;
@@ -323,10 +323,10 @@
         [ValidateAntiForgeryToken]
         public ActionResult TransferParticipants(ShortContestAdministrationViewModel model, string returnUrl)
         {
-            if (!this.CheckIfUserHasContestPermissions(model.Id))
+            if (!this.User.IsAdmin())
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var categoryContest = this.Data.Contests.GetById(model.Id);
@@ -334,7 +334,7 @@
             if (categoryContest.CanBeCompeted)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var competeOnlyParticipants = categoryContest
@@ -410,7 +410,7 @@
 
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
-                return this.RedirectToAction<ContestsController>(cc => cc.Index());
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             return this.Redirect(returnUrl);

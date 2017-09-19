@@ -155,25 +155,6 @@
                             }
                         </td>
                     }
-                    else if (User.IsLecturer())
-                    {
-                        var isContestValidForTransfer = contest.OfficialParticipants > 0 &&
-                            !contest.CanBeCompeted &&
-                            (Model.IsUserLecturerInContestCategory || contest.UserIsLecturerInContest);
-
-                        if (isContestValidForTransfer)
-                        {
-                            <td class="edit-contest">
-                                <a href=@Url.Action("TransferParticipants", "Contests", new {area = "Administration", id = contest.Id, returnUrl = this.Request.Url?.AbsolutePath})>
-                                    <span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span>
-                                </a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="edit-contest"></td>
-                        }
-                    }
                 </tr>
             }
         </table>
