@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -18,6 +19,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Common.BackgroundJobs.Contracts;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
 
@@ -28,9 +30,12 @@
 
     public class ParticipantsController : LecturerBaseGridController
     {
-        public ParticipantsController(IOjsData data)
+        private readonly IBackgroundJobService backgroundJobs;
+
+        public ParticipantsController(IOjsData data, IBackgroundJobService backgroundJobs)
             : base(data)
         {
+            this.backgroundJobs = backgroundJobs;
         }
 
         public override IEnumerable GetData()
@@ -255,6 +260,31 @@
             allProcessingSubmissions.Update(s => new Submission() { Processing = false });
 
             return null;
+        }
+
+        // TODO: Remove this method after the job is registered
+        public ActionResult DeleteLeftOverFilesInTemp()
+        {
+            var cron = "0 1 * * *";
+            this.backgroundJobs.AddOrUpdateRecurringJob(
+                "DeleteLeftOverFoldersInTemp",
+                () => this.DeleteLeftOverFoldersInTemp(),
+                cron);
+
+            return null;
+        }
+
+        // TODO: Remove this method after the job is registered
+        public void DeleteLeftOverFoldersInTemp()
+        {
+            foreach (var dirPath in Directory.GetDirectories(GlobalConstants.ExecutionStrategyTempPath).ToArray())
+            {
+                var dir = new DirectoryInfo(dirPath);
+                if (dir.Exists && dir.CreationTime < DateTime.Now.AddHours(-1))
+                {
+                    dir.Delete(true);
+                }
+            }
         }
     }
 }
