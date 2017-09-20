@@ -22,7 +22,7 @@
                     c.StartTime <= DateTime.Now &&
                     DateTime.Now <= c.EndTime);
 
-        public IQueryable<Contest> AllFuture() =>
+        public IQueryable<Contest> AllUpcoming() =>
             this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
 
         public IQueryable<Contest> AllPast() =>
@@ -30,7 +30,7 @@
 
         public IQueryable<Contest> AllVisible() => this.All().Where(c => c.IsVisible);
 
-        public IQueryable<Contest> AllVisibleInCategory(int categoryId) => 
+        public IQueryable<Contest> AllVisibleByCategory(int categoryId) =>
             this.All().Where(c => c.IsVisible && c.CategoryId == categoryId);
     }
 }

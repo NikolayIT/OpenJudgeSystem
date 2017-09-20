@@ -15,7 +15,10 @@
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
 
         <div class="alert">
-            @Html.Raw(string.Format(Resource.Confirm_transfer_message, Model.OfficialParticipantsCount, Model.Name, Model.CategoryName))
+            @Html.Raw(string.Format(
+                Resource.Confirm_transfer_message,
+                Model.OfficialParticipantsCount,
+                Model.Name, Model.CategoryName))
         </div>
         <div class="row">
             <div class="editor-label col-xs-3">
@@ -29,6 +32,7 @@
                         returnUrl = ViewBag.ReturnUrl;
                     }
                 }
+
                 <a href=@returnUrl class="btn btn-primary">@Resource.Cancel</a>
             </div>
         </div>

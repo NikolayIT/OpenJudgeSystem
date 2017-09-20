@@ -11,20 +11,20 @@
     {
         public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromContestCategory =>
             contestCategory => new ContestCategoryViewModel
-                {
-                    Id = contestCategory.Id,
-                    CategoryName = contestCategory.Name,
-                    Contests = contestCategory.Contests.AsQueryable()
-                        .Where(x => x.IsVisible && !x.IsDeleted)
-                        .OrderBy(x => x.OrderBy)
-                        .ThenByDescending(x => x.EndTime)
-                        .Select(ContestViewModel.FromContest),
-                    SubCategories = contestCategory.Children
-                        .AsQueryable()
-                        .Where(x => !x.IsDeleted && x.IsVisible)
-                        .OrderBy(x => x.OrderBy)
-                        .Select(ContestCategoryListViewModel.FromCategory)
-                };
+            {
+                Id = contestCategory.Id,
+                CategoryName = contestCategory.Name,
+                Contests = contestCategory.Contests.AsQueryable()
+                    .Where(x => x.IsVisible && !x.IsDeleted)
+                    .OrderBy(x => x.OrderBy)
+                    .ThenByDescending(x => x.EndTime)
+                    .Select(ContestViewModel.FromContest),
+                SubCategories = contestCategory.Children
+                    .AsQueryable()
+                    .Where(x => !x.IsDeleted && x.IsVisible)
+                    .OrderBy(x => x.OrderBy)
+                    .Select(ContestCategoryListViewModel.FromCategory)
+            };
 
         public int Id { get; set; }
 

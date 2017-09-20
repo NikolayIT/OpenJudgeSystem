@@ -180,7 +180,7 @@
         public ActionResult GetFutureContests([DataSourceRequest]DataSourceRequest request)
         {
             var futureContests = this.Data.Contests
-                .AllFuture()
+                .AllUpcoming()
                 .OrderBy(contest => contest.StartTime)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);

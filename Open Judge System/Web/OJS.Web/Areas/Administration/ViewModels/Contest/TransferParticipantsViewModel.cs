@@ -15,11 +15,11 @@
         [ExcludeFromExcel]
         public static Expression<Func<Contest, TransferParticipantsViewModel>> FromContest =>
             contest => new TransferParticipantsViewModel
-                {
-                    Name = contest.Name,
-                    CategoryName = contest.Category.Name,
-                    OfficialParticipantsCount = contest.Participants.Count(p => p.IsOfficial)
-                };
+            {
+                Name = contest.Name,
+                CategoryName = contest.Category.Name,
+                OfficialParticipantsCount = contest.Participants.Count(p => p.IsOfficial)
+            };
 
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         [Required(
