@@ -215,6 +215,7 @@
             return this.GridOperation(request, model);
         }
 
+        // TODO: DELETE ALL METHODS BELOW
         public ActionResult NormalizeParticipants()
         {
             var problems = this.Data.Problems.All().ToList();

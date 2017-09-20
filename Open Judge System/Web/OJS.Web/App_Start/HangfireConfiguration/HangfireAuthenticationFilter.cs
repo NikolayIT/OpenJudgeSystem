@@ -11,8 +11,8 @@
         public bool Authorize(DashboardContext context)
         {
             var owinContext = new OwinContext(context.GetOwinEnvironment());
-
-            return owinContext.Authentication.User.IsAdmin();
+            var isUserAdmin = owinContext.Authentication.User.IsAdmin();
+            return isUserAdmin;
         }
     }
 }
