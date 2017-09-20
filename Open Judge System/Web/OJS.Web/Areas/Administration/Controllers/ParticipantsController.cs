@@ -263,7 +263,7 @@
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
         {
-            string cron = "0 6 * * *";
+            string cron = "0 0 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
                 "CleanSubmissionsForProcessingTable",
                 () => this.CleanSubmissionsForProcessing(),
