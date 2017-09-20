@@ -18,6 +18,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Common.BackgroundJobs.Contracts;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
 
@@ -28,9 +29,12 @@
 
     public class ParticipantsController : LecturerBaseGridController
     {
-        public ParticipantsController(IOjsData data)
+        private readonly IBackgroundJobService backgroundJobs;
+
+        public ParticipantsController(IOjsData data, IBackgroundJobService backgroundJobs)
             : base(data)
         {
+            this.backgroundJobs = backgroundJobs;
         }
 
         public override IEnumerable GetData()
@@ -255,6 +259,24 @@
             allProcessingSubmissions.Update(s => new Submission() { Processing = false });
 
             return null;
+        }
+
+        public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
+        {
+            string cron = "0 0 * * *";
+            this.backgroundJobs.AddOrUpdateRecurringJob(
+                "CleanSubmissionsForProcessingTable",
+                () => this.CleanSubmissionsForProcessing(),
+                cron);
+
+            return null;
+        }
+
+        public void CleanSubmissionsForProcessing()
+        {
+            this.Data.Context.SubmissionsForProcessing
+                .Where(s => s.Processed && s.Processing == false)
+                .Delete();
         }
     }
 }
