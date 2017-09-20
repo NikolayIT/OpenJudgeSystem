@@ -29,12 +29,12 @@
 
     public class ParticipantsController : LecturerBaseGridController
     {
-        private readonly IBackgroundJobService service;
+        private readonly IBackgroundJobService backgroundJobs;
 
-        public ParticipantsController(IOjsData data, IBackgroundJobService service)
+        public ParticipantsController(IOjsData data, IBackgroundJobService backgroundJobs)
             : base(data)
         {
-            this.service = service;
+            this.backgroundJobs = backgroundJobs;
         }
 
         public override IEnumerable GetData()
@@ -264,7 +264,7 @@
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
         {
             string cron = "0 6 * * *";
-            this.service.AddOrUpdateRecurringJob(
+            this.backgroundJobs.AddOrUpdateRecurringJob(
                 "CleanSubmissionsForProcessingTable",
                 () => this.CleanSubmissionsForProcessing(),
                 cron);
