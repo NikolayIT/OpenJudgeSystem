@@ -32,7 +32,7 @@
         {
             var categories = this.Data.ContestCategories
                 .All()
-                .Where(cc => cc.IsVisible && id.HasValue ? cc.ParentId == id : cc.ParentId == null)
+                .Where(cc => cc.IsVisible && (id.HasValue ? cc.ParentId == id : cc.ParentId == null))
                 .OrderBy(cc => cc.OrderBy)
                 .Select(ContestCategoryListViewModel.FromCategory);
 
