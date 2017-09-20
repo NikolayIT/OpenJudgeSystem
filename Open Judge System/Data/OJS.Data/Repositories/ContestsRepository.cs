@@ -16,10 +16,11 @@
 
         public IQueryable<Contest> AllActive() =>
             this.All()
-                .Where(c => !c.IsDeleted &&
-                c.IsVisible &&
-                c.StartTime <= DateTime.Now &&
-                DateTime.Now <= c.EndTime);
+                .Where(c =>
+                    !c.IsDeleted &&
+                    c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    DateTime.Now <= c.EndTime);
 
         public IQueryable<Contest> AllFuture() =>
             this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
