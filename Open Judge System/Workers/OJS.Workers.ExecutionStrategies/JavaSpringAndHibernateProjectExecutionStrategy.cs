@@ -42,7 +42,6 @@
             : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
         {
             this.MavenPath = mavenPath;
-            this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
 
         // GroupId - > ArtifactId,Version
@@ -131,6 +130,8 @@
             </plugin>
         </plugins>
     </build>";
+
+        protected override string ClassPath => $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {

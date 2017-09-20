@@ -44,17 +44,13 @@
             }
 
             this.JavaLibsPath = javaLibsPath;
-            this.JUnitTestRunnerSourceFilePath =
-                $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
             this.TestNames = new List<string>();
-            this.ClassPath = $@" -classpath ""{this.JavaLibsPath}*""";
         }
 
         protected string JavaLibsPath { get; }
 
-        protected string ClassPath { get; set; }
-
-        protected string JUnitTestRunnerSourceFilePath { get; }
+        protected string JUnitTestRunnerSourceFilePath
+            => $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
 
         protected List<string> TestNames { get; }
 
@@ -116,6 +112,8 @@ public class _$TestRunner {{
 }}";
             }
         }
+
+        protected virtual string ClassPath => $@" -classpath ""{this.JavaLibsPath}*""";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -182,7 +180,7 @@ public class _$TestRunner {{
                     combinedArguments,
                     this.WorkingDirectory);
 
-                this.ClassPath = $@" -classpath ""{this.JavaLibsPath}*;{compilerResult.OutputFile}""";
+                var classPathWithCompiledFile = $@" -classpath ""{this.JavaLibsPath}*;{compilerResult.OutputFile}""";
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
                 if (!result.IsCompiledSuccessfully)
@@ -193,7 +191,7 @@ public class _$TestRunner {{
                 fileNames.ForEach(File.Delete);
 
                 var arguments = new List<string>();
-                arguments.Add(this.ClassPath);
+                arguments.Add(classPathWithCompiledFile);
                 arguments.Add(AdditionalExecutionArguments);
                 arguments.Add(JUnitRunnerClassName);
 

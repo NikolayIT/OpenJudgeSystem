@@ -21,10 +21,11 @@
             : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
         {
             this.UserClassNames = new List<string>();
-            this.ClassPath = $@" -classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
         }
 
         protected List<string> UserClassNames { get; }
+
+        protected override string ClassPath => $@" -classpath ""{this.WorkingDirectory};{this.JavaLibsPath}*""";
 
         protected override string JUnitTestRunnerCode
         {
