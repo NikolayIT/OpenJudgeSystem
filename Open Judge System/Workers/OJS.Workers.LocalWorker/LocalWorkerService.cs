@@ -24,7 +24,7 @@
             logger = LogManager.GetLogger("LocalWorkerService");
             logger.Info("LocalWorkerService initializing...");
             this.ResetAllProcessingSubmissions();
-            this.CreateExecutionStrategyDirectoryInTemp();
+            this.CreateExecutionStrategiesDirectoryInTemp();
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
@@ -115,7 +115,7 @@
         /// in which all strategies create their own working directories
         /// making easier the deletion of left-over files by the background job
         /// </summary>
-        private void CreateExecutionStrategyDirectoryInTemp()
+        private void CreateExecutionStrategiesDirectoryInTemp()
         {
             var path = GlobalConstants.ExecutionStrategiesPath;
             if (!Directory.Exists(path))
