@@ -1,0 +1,40 @@
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestTransfer
+
+@model OJS.Web.Areas.Administration.ViewModels.Contest.TransferParticipantsViewModel
+
+@{
+    ViewBag.Title = Resource.Page_title;
+    const string DefaultReturnUrl = "/Administration/Contests";
+}
+
+<h1>@ViewBag.Title</h1>
+<div id="create-form" class="container">
+    @using (Html.BeginForm("TransferParticipants", "Contests", new {returnUrl = ViewBag.ReturnUrl}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationMessage(GlobalConstants.DateTimeError)
+
+        <div class="alert">
+            @Html.Raw(string.Format(
+                Resource.Confirm_transfer_message,
+                Model.OfficialParticipantsCount,
+                Model.Name, Model.CategoryName))
+        </div>
+        <div class="row">
+            <div class="editor-label col-xs-3">
+                <button type="submit" class="btn btn-primary pull-right">@Resource.Transfer</button>
+            </div>
+            <div class="editor-label col-xs-4">
+                @{
+                    var returnUrl = DefaultReturnUrl;
+                    if (ViewBag.ReturnUrl != null)
+                    {
+                        returnUrl = ViewBag.ReturnUrl;
+                    }
+                }
+
+                <a href=@returnUrl class="btn btn-primary">@Resource.Cancel</a>
+            </div>
+        </div>
+    }
+</div>
