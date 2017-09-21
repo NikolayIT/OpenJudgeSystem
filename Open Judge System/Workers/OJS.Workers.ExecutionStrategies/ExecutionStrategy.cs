@@ -38,7 +38,7 @@
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(e.Message, innerException);
+                    throw new Exception($"{e.Message}{Environment.NewLine}{e.StackTrace}", innerException);
                 }
             }
         }

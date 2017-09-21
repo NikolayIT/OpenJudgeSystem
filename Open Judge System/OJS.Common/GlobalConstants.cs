@@ -77,7 +77,7 @@
         public const string ClassLibraryFileExtension = ".dll";
 
         // Folder names
-        public const string ExecutionStrategyTemp = "ExecutionStrategyTemp";
+        public const string ExecutionStrategiesFolderName = "ExecutionStrategies";
 
         // News
         public const int NewsTitleMaxLength = 200;
@@ -139,7 +139,7 @@
         public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
 
         // Temp Directory folder paths
-        public static readonly string ExecutionStrategyTempPath = 
-            Path.Combine(Path.GetTempPath(), ExecutionStrategyTemp);
+        public static readonly string ExecutionStrategiesPath = 
+            Path.Combine(Path.GetTempPath(), ExecutionStrategiesFolderName);
     }
 }

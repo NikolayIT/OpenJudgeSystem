@@ -117,7 +117,7 @@
         /// </summary>
         private void CreateExecutionStrategyDirectoryInTemp()
         {
-            var path = GlobalConstants.ExecutionStrategyTempPath;
+            var path = GlobalConstants.ExecutionStrategiesPath;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

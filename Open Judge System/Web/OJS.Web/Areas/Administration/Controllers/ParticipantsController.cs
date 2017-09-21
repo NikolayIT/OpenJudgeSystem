@@ -3,9 +3,10 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Web.Mvc;
 
     using EntityFramework.Extensions;
@@ -18,6 +19,7 @@
     using Newtonsoft.Json;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Common.BackgroundJobs.Contracts;
@@ -217,6 +219,7 @@
             return this.GridOperation(request, model);
         }
 
+        // TODO: Remove this method
         public ActionResult NormalizeParticipants()
         {
             var problems = this.Data.Problems.All().ToList();
@@ -251,6 +254,7 @@
             return null;
         }
 
+        // TODO: Remove this method
         public ActionResult ResetSubmissions()
         {
             var allProcessingSubmissions = this.Data
@@ -263,8 +267,28 @@
             return null;
         }
 
+        // TODO: Remove this method
+        public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
+        {
+            string cron = "0 0 * * *";
+            this.backgroundJobs.AddOrUpdateRecurringJob(
+                "CleanSubmissionsForProcessingTable",
+                () => this.CleanSubmissionsForProcessing(),
+                cron);
+
+            return null;
+        }
+
+        // TODO: Remove this method
+        public void CleanSubmissionsForProcessing()
+        {
+            this.Data.Context.SubmissionsForProcessing
+                .Where(s => s.Processed && s.Processing == false)
+                .Delete();
+        }
+
         // TODO: Remove this method after the job is registered
-        public ActionResult DeleteLeftOverFilesInTemp()
+        public ActionResult RegisterJobForDeletingLeftOverFilesInTemp()
         {
             var cron = "0 1 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
@@ -278,28 +302,26 @@
         // TODO: Remove this method after the job is registered
         public void DeleteLeftOverFoldersInTemp()
         {
-            foreach (var dirPath in Directory.GetDirectories(GlobalConstants.ExecutionStrategyTempPath).ToArray())
+            foreach (var dirPath in Directory.GetDirectories(GlobalConstants.ExecutionStrategiesPath).ToArray())
             {
                 var dir = new DirectoryInfo(dirPath);
                 if (dir.Exists && dir.CreationTime < DateTime.Now.AddHours(-1))
                 {
                     var isDeleted = false;
-                    Stopwatch watch = new Stopwatch();
-                    watch.Start();
-                    while (!isDeleted || watch.Elapsed < TimeSpan.FromSeconds(1))
+                    var triesToDelete = 0;
+                    while (!isDeleted || triesToDelete <= 3)
                     {
                         try
                         {
-                            dir.Delete(true);
+                            DirectoryHelpers.SafeDeleteDirectory(dirPath, true);
                             isDeleted = true;
                         }
                         catch
                         {
-                            // ignored
+                            Thread.Sleep(1000);
+                            triesToDelete++;
                         }
                     }
-
-                    watch.Stop();
                 }
             }
         }

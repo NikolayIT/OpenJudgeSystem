@@ -4,6 +4,8 @@ namespace OJS.Web
 {
     using Hangfire;
 
+    using OJS.Web.HangfireConfiguration;
+
     using Owin;
 
     public partial class Startup
@@ -18,8 +20,11 @@ namespace OJS.Web
         {
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
 
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
+            var options = new DashboardOptions
+            {
+                Authorization = new[] { new HangFireAuthenticationFilter(), }
+            };
+            app.UseHangfireDashboard("/hangfire", options);
         }
     }
 }

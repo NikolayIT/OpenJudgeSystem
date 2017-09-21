@@ -117,43 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Category_is_empty" xml:space="preserve">
-    <value>Избраната категория е празна.</value>
+  <data name="Category_name" xml:space="preserve">
+    <value>Категория</value>
   </data>
-  <data name="Compete" xml:space="preserve">
-    <value>Участвай</value>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
   </data>
-  <data name="Contest_results" xml:space="preserve">
-    <value>Резултати от състезание</value>
+  <data name="Name_required" xml:space="preserve">
+    <value>Името е задължително!</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Промяна</value>
-  </data>
-  <data name="Has_compete_password" xml:space="preserve">
-    <value>Има парола</value>
-  </data>
-  <data name="Has_practice_password" xml:space="preserve">
-    <value>Състезанието е защитено с парола</value>
-  </data>
-  <data name="Has_questions_to_be_answered" xml:space="preserve">
-    <value>За да участвате в състезанието, трябва да отговорите на въпроси</value>
-  </data>
-  <data name="Participant_count" xml:space="preserve">
-    <value>Участници</value>
-  </data>
-  <data name="Practice" xml:space="preserve">
-    <value>Практикувай</value>
-  </data>
-  <data name="Practice_results" xml:space="preserve">
-    <value>Резултати от практика</value>
-  </data>
-  <data name="Problems" xml:space="preserve">
-    <value>Задачи</value>
-  </data>
-  <data name="Problems_count" xml:space="preserve">
-    <value>Брой задачи</value>
-  </data>
-  <data name="Transfer" xml:space="preserve">
-    <value>Прехвърли</value>
+  <data name="Official_participants_count" xml:space="preserve">
+    <value>Брой на официалните участници</value>
   </data>
 </root>

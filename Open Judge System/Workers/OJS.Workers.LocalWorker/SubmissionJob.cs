@@ -86,7 +86,7 @@
                         }
                     }
 
-                    if (!retrievedSubmissionSuccessfully || submission == null)
+                    if (!retrievedSubmissionSuccessfully || submission == null || submissionForProcessing == null)
                     {
                         Thread.Sleep(1000);
                         continue;
@@ -122,7 +122,8 @@
                 }
 
                 submission.Processed = true;
-                data.SubmissionsForProcessing.Delete(submissionForProcessing);
+                submissionForProcessing.Processed = true;
+                submissionForProcessing.Processing = false;
 
                 try
                 {
@@ -496,4 +497,3 @@
         }
     }
 }
-

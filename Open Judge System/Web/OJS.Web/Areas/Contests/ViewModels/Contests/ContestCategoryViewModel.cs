@@ -9,33 +9,31 @@
 
     public class ContestCategoryViewModel
     {
-        public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromContestCategory
-        {
-            get
+        public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromContestCategory =>
+            contestCategory => new ContestCategoryViewModel
             {
-                return contestCategory =>
-                    new ContestCategoryViewModel
-                    {
-                        CategoryName = contestCategory.Name,
-                        Contests = contestCategory.Contests
-                            .AsQueryable()
-                            .Where(x => x.IsVisible && !x.IsDeleted)
-                            .OrderBy(x => x.OrderBy)
-                            .ThenByDescending(x => x.EndTime)
-                            .Select(ContestViewModel.FromContest),
-                        SubCategories = contestCategory.Children
-                            .AsQueryable()
-                            .Where(x => !x.IsDeleted && x.IsVisible)
-                            .OrderBy(x => x.OrderBy)
-                            .Select(ContestCategoryListViewModel.FromCategory)
-                    };
-            }
-        }
+                Id = contestCategory.Id,
+                CategoryName = contestCategory.Name,
+                Contests = contestCategory.Contests.AsQueryable()
+                    .Where(x => x.IsVisible && !x.IsDeleted)
+                    .OrderBy(x => x.OrderBy)
+                    .ThenByDescending(x => x.EndTime)
+                    .Select(ContestViewModel.FromContest),
+                SubCategories = contestCategory.Children
+                    .AsQueryable()
+                    .Where(x => !x.IsDeleted && x.IsVisible)
+                    .OrderBy(x => x.OrderBy)
+                    .Select(ContestCategoryListViewModel.FromCategory)
+            };
+
+        public int Id { get; set; }
 
         public string CategoryName { get; set; }
 
         public IEnumerable<ContestViewModel> Contests { get; set; }
 
         public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; }
+
+        public bool IsUserLecturerInContestCategory { get; set; }
     }
 }

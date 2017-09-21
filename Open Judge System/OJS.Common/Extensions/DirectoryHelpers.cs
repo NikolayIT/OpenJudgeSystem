@@ -25,7 +25,7 @@
             while (true)
             {
                 var randomDirectoryName = Path.GetRandomFileName();
-                var path = Path.Combine(GlobalConstants.ExecutionStrategyTempPath, randomDirectoryName);
+                var path = Path.Combine(GlobalConstants.ExecutionStrategiesPath, randomDirectoryName);
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
