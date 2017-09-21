@@ -215,6 +215,7 @@
             return this.GridOperation(request, model);
         }
 
+        // TODO: Remove this method
         public ActionResult NormalizeParticipants()
         {
             var problems = this.Data.Problems.All().ToList();
@@ -249,6 +250,7 @@
             return null;
         }
 
+        // TODO: Remove this method
         public ActionResult ResetSubmissions()
         {
             var allProcessingSubmissions = this.Data
@@ -261,6 +263,7 @@
             return null;
         }
 
+        // TODO: Remove this method
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
         {
             string cron = "0 0 * * *";
@@ -272,6 +275,7 @@
             return null;
         }
 
+        // TODO: Remove this method
         public void CleanSubmissionsForProcessing()
         {
             this.Data.Context.SubmissionsForProcessing
