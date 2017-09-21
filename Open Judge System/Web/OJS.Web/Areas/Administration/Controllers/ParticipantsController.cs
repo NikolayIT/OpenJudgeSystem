@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Web.Mvc;
@@ -282,7 +283,23 @@
                 var dir = new DirectoryInfo(dirPath);
                 if (dir.Exists && dir.CreationTime < DateTime.Now.AddHours(-1))
                 {
-                    dir.Delete(true);
+                    var isDeleted = false;
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
+                    while (!isDeleted || watch.Elapsed < TimeSpan.FromSeconds(1))
+                    {
+                        try
+                        {
+                            dir.Delete(true);
+                            isDeleted = true;
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+
+                    watch.Stop();
                 }
             }
         }
