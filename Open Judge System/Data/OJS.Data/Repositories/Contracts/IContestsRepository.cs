@@ -9,6 +9,8 @@
     {
         IQueryable<Contest> AllActive();
 
+        IQueryable<Contest> AllInactive();
+
         IQueryable<Contest> AllUpcoming();
 
         IQueryable<Contest> AllPast();

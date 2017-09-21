@@ -303,7 +303,7 @@
             }
 
             var contest = this.Data.Contests
-                .AllPast()
+                .AllInactive()
                 .Where(c => c.Id == id)
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();

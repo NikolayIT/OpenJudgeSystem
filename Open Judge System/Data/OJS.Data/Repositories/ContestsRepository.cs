@@ -22,6 +22,12 @@
                     c.StartTime <= DateTime.Now &&
                     DateTime.Now <= c.EndTime);
 
+        public IQueryable<Contest> AllInactive() =>
+            this.All()
+                .Where(c =>
+                    !c.IsDeleted &&
+                    (c.StartTime > DateTime.Now || c.EndTime < DateTime.Now));
+
         public IQueryable<Contest> AllUpcoming() =>
             this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
 
