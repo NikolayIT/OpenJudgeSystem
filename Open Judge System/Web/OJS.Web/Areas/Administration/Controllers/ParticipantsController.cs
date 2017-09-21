@@ -309,7 +309,7 @@
                 {
                     var isDeleted = false;
                     var triesToDelete = 0;
-                    while (!isDeleted || triesToDelete <= 3)
+                    while (!isDeleted && triesToDelete <= 3)
                     {
                         try
                         {
