@@ -44,7 +44,7 @@
             this.MavenPath = mavenPath;
         }
 
-        // GroupId - > ArtifactId,Version
+        // GroupId - > ArtifactId, Version
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
@@ -131,7 +131,7 @@
         </plugins>
     </build>";
 
-        protected override string ClassPath => $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
+        protected override string ClassPath => $"-cp {this.JavaLibrariesPath}*;{this.WorkingDirectory}\\target\\* ";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {

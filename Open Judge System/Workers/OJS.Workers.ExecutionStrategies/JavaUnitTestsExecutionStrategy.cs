@@ -33,21 +33,21 @@
         public JavaUnitTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath)
+            string javaLibrariesPath)
             : base(javaExecutablePath, getCompilerPathFunc)
         {
-            if (!Directory.Exists(javaLibsPath))
+            if (!Directory.Exists(javaLibrariesPath))
             {
                 throw new ArgumentException(
-                    $"Java libraries not found in: {javaLibsPath}",
-                    nameof(javaLibsPath));
+                    $"Java libraries not found in: {javaLibrariesPath}",
+                    nameof(javaLibrariesPath));
             }
 
-            this.JavaLibsPath = javaLibsPath;
+            this.JavaLibrariesPath = javaLibrariesPath;
             this.TestNames = new List<string>();
         }
 
-        protected string JavaLibsPath { get; }
+        protected string JavaLibrariesPath { get; }
 
         protected string JUnitTestRunnerSourceFilePath
             => $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
@@ -113,7 +113,7 @@ public class _$TestRunner {{
             }
         }
 
-        protected virtual string ClassPath => $@" -classpath ""{this.JavaLibsPath}*""";
+        protected virtual string ClassPath => $@" -classpath ""{this.JavaLibrariesPath}*""";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -180,7 +180,7 @@ public class _$TestRunner {{
                     combinedArguments,
                     this.WorkingDirectory);
 
-                var classPathWithCompiledFile = $@" -classpath ""{this.JavaLibsPath}*;{compilerResult.OutputFile}""";
+                var classPathWithCompiledFile = $@" -classpath ""{this.JavaLibrariesPath}*;{compilerResult.OutputFile}""";
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
                 if (!result.IsCompiledSuccessfully)
