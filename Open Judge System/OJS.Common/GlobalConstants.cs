@@ -139,7 +139,7 @@
         public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
 
         // Temp Directory folder paths
-        public static readonly string ExecutionStrategiesPath = 
+        public static readonly string ExecutionStrategiesWorkingDirectoryPath =
             Path.Combine(Path.GetTempPath(), ExecutionStrategiesFolderName);
     }
 }

@@ -3,10 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    
-    using System.IO;
     using System.Linq;
-    using System.Threading;
     using System.Web.Mvc;
 
     using EntityFramework.Extensions;
@@ -293,37 +290,10 @@
             var cron = "0 1 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
                 "DeleteLeftOverFoldersInTemp",
-                () => this.DeleteLeftOverFoldersInTemp(),
+                () => DirectoryHelpers.DeleteLeftOverExecutionStrategiesWorkingDirectories(),
                 cron);
 
             return null;
-        }
-
-        // TODO: Remove this method after the job is registered
-        public void DeleteLeftOverFoldersInTemp()
-        {
-            foreach (var dirPath in Directory.GetDirectories(GlobalConstants.ExecutionStrategiesPath).ToArray())
-            {
-                var dir = new DirectoryInfo(dirPath);
-                if (dir.Exists && dir.CreationTime < DateTime.Now.AddHours(-1))
-                {
-                    var isDeleted = false;
-                    var triesToDelete = 0;
-                    while (!isDeleted && triesToDelete <= 3)
-                    {
-                        try
-                        {
-                            DirectoryHelpers.SafeDeleteDirectory(dirPath, true);
-                            isDeleted = true;
-                        }
-                        catch
-                        {
-                            Thread.Sleep(1000);
-                            triesToDelete++;
-                        }
-                    }
-                }
-            }
         }
     }
 }
