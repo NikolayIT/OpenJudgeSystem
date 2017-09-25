@@ -280,7 +280,7 @@
         public void CleanSubmissionsForProcessing()
         {
             this.Data.Context.SubmissionsForProcessing
-                .Where(s => s.Processed && s.Processing == false)
+                .Where(s => s.Processed && !s.Processing)
                 .Delete();
         }
 
@@ -290,7 +290,7 @@
             var cron = "0 1 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
                 "DeleteLeftOverFoldersInTemp",
-                () => DirectoryHelpers.DeleteLeftOverExecutionStrategiesWorkingDirectories(),
+                () => DirectoryHelpers.DeleteExecutionStrategiesWorkingDirectories(),
                 cron);
 
             return null;

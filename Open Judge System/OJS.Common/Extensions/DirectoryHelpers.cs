@@ -47,7 +47,7 @@
             }
         }
 
-        public static void DeleteLeftOverExecutionStrategiesWorkingDirectories()
+        public static void DeleteExecutionStrategiesWorkingDirectories()
         {
             var directoryPaths = Directory.GetDirectories(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath);
             foreach (var dirPath in directoryPaths)
