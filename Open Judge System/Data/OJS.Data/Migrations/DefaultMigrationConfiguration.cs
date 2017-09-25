@@ -197,10 +197,9 @@
                 },
                 new SubmissionType
                 {
-                    Name = ".NET Test Runner",
-                    CompilerType = CompilerType.MsBuild,
-                    AdditionalCompilerArguments =
-                        "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
+                    Name = ".NET Core Test Runner",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
                     ExecutionStrategyType =
                         ExecutionStrategyType.DotNetTestRunner,
                     IsSelectedByDefault = false,

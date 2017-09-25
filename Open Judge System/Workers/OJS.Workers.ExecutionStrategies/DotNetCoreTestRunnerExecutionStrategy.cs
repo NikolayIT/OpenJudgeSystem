@@ -7,12 +7,12 @@
     using System.Linq;
 
     using Microsoft.CSharp;
-
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
-    public class DotNetCoreTestRunnerExecutionStrategy : ExecutionStrategy
+    public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
@@ -46,8 +46,8 @@
             var currentDirectory = Environment.CurrentDirectory;
 
             var allTypes = new List<Type>();
-
-            foreach (var file in Directory.GetFiles(currentDirectory).Where(f => f.EndsWith("".dll"") || f.EndsWith("".exe"")))
+            
+            foreach (var file in Directory.GetFiles(currentDirectory).Where(f => f.EndsWith("".dll"")))
             {
                 var assembly = Assembly.LoadFrom(file);
                 foreach (var type in assembly.GetTypes())
@@ -55,7 +55,10 @@
                     allTypes.Add(type);
                 }
 
-                var referenced = assembly.GetReferencedAssemblies().Where(r => r.Name != ""mscorlib"" && r.Name != ""System.Core"");
+                var referenced = assembly
+                    .GetReferencedAssemblies()
+                    .Where(r => r.Name.StartsWith(""Microsoft"") && r.Name.StartsWith(""System""));
+
                 foreach (var reference in referenced)
                 {
                     var refAssembly = Assembly.Load(reference);
@@ -105,19 +108,42 @@
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
         public DotNetCoreTestRunnerExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
+            : base(getCompilerPathFunc)
         {
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            var solution = executionContext.FileContent;
             var result = new ExecutionResult();
-            var compileResult = this.ExecuteCompiling(executionContext, this.getCompilerPathFunc, result);
+
+            var userSubmissionContent = executionContext.FileContent;
+            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
+            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
+            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            File.Delete(submissionFilePath);
+
+            // TODO: multiple projects?
+            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
+                this.WorkingDirectory,
+                CsProjFileSearchPattern,
+                f => new FileInfo(f).Length);
+
+            var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
+
+            var compileResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                executionContext.AdditionalCompilerArguments,
+                csProjFilePath);
+
             if (!compileResult.IsCompiledSuccessfully)
             {
                 return result;
             }
+
+            result.IsCompiledSuccessfully = compileResult.IsCompiledSuccessfully;
 
             var outputAssemblyPath = this.PreprocessAndCompileTestRunner(executionContext, Path.GetDirectoryName(compileResult.OutputFile));
 
@@ -150,7 +176,8 @@
             compilerParameters.ReferencedAssemblies.Add("mscorlib.dll");
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
-            compilerParameters.ReferencedAssemblies.AddRange(Directory.GetFiles(outputDirectory).Where(f => f.EndsWith(".dll") || f.EndsWith(".exe")).ToArray());
+            var referencedTypes = Directory.GetFiles(outputDirectory).Where(f => f.EndsWith(".dll") || f.EndsWith(".exe")).ToArray();
+            compilerParameters.ReferencedAssemblies.AddRange(referencedTypes);
             compilerParameters.GenerateInMemory = false;
             compilerParameters.GenerateExecutable = true;
             var compilerResult = compiler.CompileAssemblyFromSource(compilerParameters, testRunnerCode);
