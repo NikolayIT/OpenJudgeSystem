@@ -12,7 +12,7 @@
     using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
-    public class CSharpTestRunnerExecutionStrategy : ExecutionStrategy
+    public class DotNetCoreTestRunnerExecutionStrategy : ExecutionStrategy
     {
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
@@ -104,7 +104,7 @@
 
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
-        public CSharpTestRunnerExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
+        public DotNetCoreTestRunnerExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
         {
             this.getCompilerPathFunc = getCompilerPathFunc;
         }
@@ -119,7 +119,7 @@
                 return result;
             }
 
-            var outputAssemblyPath = this.PreprocessAndCompileTestRunner(executionContext, compileResult.OutputFile);
+            var outputAssemblyPath = this.PreprocessAndCompileTestRunner(executionContext, Path.GetDirectoryName(compileResult.OutputFile));
 
             IExecutor executor = new RestrictedProcessExecutor();
             var processExecutionResult = executor.Execute(outputAssemblyPath, string.Empty, executionContext.TimeLimit, executionContext.MemoryLimit);

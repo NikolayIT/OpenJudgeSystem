@@ -197,12 +197,12 @@
                 },
                 new SubmissionType
                 {
-                    Name = "C# test runner",
+                    Name = ".NET Test Runner",
                     CompilerType = CompilerType.MsBuild,
                     AdditionalCompilerArguments =
                         "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
                     ExecutionStrategyType =
-                        ExecutionStrategyType.CSharpTestRunner,
+                        ExecutionStrategyType.DotNetTestRunner,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
