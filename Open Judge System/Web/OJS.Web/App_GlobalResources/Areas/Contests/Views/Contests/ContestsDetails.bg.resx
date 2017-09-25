@@ -177,4 +177,7 @@
   <data name="Practice_results" xml:space="preserve">
     <value>Резултати от практиката</value>
   </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>Прехвърляне</value>
+  </data>
 </root>

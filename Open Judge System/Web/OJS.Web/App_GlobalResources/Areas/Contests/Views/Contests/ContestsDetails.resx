@@ -177,4 +177,7 @@
   <data name="Practice_results" xml:space="preserve">
     <value>Practice results</value>
   </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
 </root>
