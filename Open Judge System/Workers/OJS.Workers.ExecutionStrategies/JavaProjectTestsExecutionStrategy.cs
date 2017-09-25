@@ -17,8 +17,8 @@
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
+            string javaLibrariesPath)
+            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
         {
             this.UserClassNames = new List<string>();
         }

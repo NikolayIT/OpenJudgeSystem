@@ -37,9 +37,9 @@
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath,
+            string javaLibrariesPath,
             string mavenPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
+            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
         {
             this.MavenPath = mavenPath;
         }
