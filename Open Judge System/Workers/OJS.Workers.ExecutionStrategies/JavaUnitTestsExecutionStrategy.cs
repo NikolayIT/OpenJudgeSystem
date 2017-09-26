@@ -33,28 +33,24 @@
         public JavaUnitTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath)
+            string javaLibrariesPath)
             : base(javaExecutablePath, getCompilerPathFunc)
         {
-            if (!Directory.Exists(javaLibsPath))
+            if (!Directory.Exists(javaLibrariesPath))
             {
                 throw new ArgumentException(
-                    $"Java libraries not found in: {javaLibsPath}",
-                    nameof(javaLibsPath));
+                    $"Java libraries not found in: {javaLibrariesPath}",
+                    nameof(javaLibrariesPath));
             }
 
-            this.JavaLibsPath = javaLibsPath;
-            this.JUnitTestRunnerSourceFilePath =
-                $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
+            this.JavaLibrariesPath = javaLibrariesPath;
             this.TestNames = new List<string>();
-            this.ClassPath = $@" -classpath ""{this.JavaLibsPath}*""";
         }
 
-        protected string JavaLibsPath { get; }
+        protected string JavaLibrariesPath { get; }
 
-        protected string ClassPath { get; set; }
-
-        protected string JUnitTestRunnerSourceFilePath { get; }
+        protected string JUnitTestRunnerSourceFilePath =>
+            $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
 
         protected List<string> TestNames { get; }
 
@@ -116,6 +112,8 @@ public class _$TestRunner {{
 }}";
             }
         }
+
+        protected virtual string ClassPath => $@" -classpath ""{this.JavaLibrariesPath}*""";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -182,7 +180,7 @@ public class _$TestRunner {{
                     combinedArguments,
                     this.WorkingDirectory);
 
-                this.ClassPath = $@" -classpath ""{this.JavaLibsPath}*;{compilerResult.OutputFile}""";
+                var classPathWithCompiledFile = $@" -classpath ""{this.JavaLibrariesPath}*;{compilerResult.OutputFile}""";
                 result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
                 result.CompilerComment = compilerResult.CompilerComment;
                 if (!result.IsCompiledSuccessfully)
@@ -193,7 +191,7 @@ public class _$TestRunner {{
                 fileNames.ForEach(File.Delete);
 
                 var arguments = new List<string>();
-                arguments.Add(this.ClassPath);
+                arguments.Add(classPathWithCompiledFile);
                 arguments.Add(AdditionalExecutionArguments);
                 arguments.Add(JUnitRunnerClassName);
 

@@ -37,15 +37,14 @@
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath,
+            string javaLibrariesPath,
             string mavenPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
+            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
         {
             this.MavenPath = mavenPath;
-            this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
 
-        // GroupId - > ArtifactId,Version
+        // Property contains Dictionary<GroupId, Tuple<ArtifactId, Version>>
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
@@ -131,6 +130,8 @@
             </plugin>
         </plugins>
     </build>";
+
+        protected override string ClassPath => $"-cp {this.JavaLibrariesPath}*;{this.WorkingDirectory}\\target\\* ";
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -308,7 +309,7 @@
 
         protected void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string mainClassFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
@@ -374,7 +375,7 @@
 
         protected void PreparePomXml(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string pomXmlFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
