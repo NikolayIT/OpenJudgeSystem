@@ -8,6 +8,8 @@
 
     public static class DirectoryHelpers
     {
+        private const int ThreadSleepMilliseconds = 1000;
+
         public static string CreateTempDirectory()
         {
             while (true)
@@ -56,7 +58,6 @@
         public static void DeleteExecutionStrategyWorkingDirectories()
         {
             var directoryPaths = Directory.GetDirectories(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath);
-            const int threadSleepMilliseconds = 1000;
             foreach (var directoryPath in directoryPaths)
             {
                 var directory = new DirectoryInfo(directoryPath);
@@ -73,7 +74,7 @@
                         }
                         catch
                         {
-                            Thread.Sleep(threadSleepMilliseconds);
+                            Thread.Sleep(ThreadSleepMilliseconds);
                             retryCount++;
                         }
                     }
