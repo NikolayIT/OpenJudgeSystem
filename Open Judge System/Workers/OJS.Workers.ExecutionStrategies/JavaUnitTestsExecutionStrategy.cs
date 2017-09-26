@@ -49,8 +49,8 @@
 
         protected string JavaLibrariesPath { get; }
 
-        protected string JUnitTestRunnerSourceFilePath
-            => $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
+        protected string JUnitTestRunnerSourceFilePath =>
+            $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
 
         protected List<string> TestNames { get; }
 
