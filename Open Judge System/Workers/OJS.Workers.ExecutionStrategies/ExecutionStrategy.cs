@@ -25,9 +25,9 @@
             {
                 return this.Execute(executionContext);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                innerException = e;
+                innerException = ex;
                 throw;
             }
             finally
@@ -36,9 +36,9 @@
                 {
                     DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    throw new Exception($"{e.Message}{Environment.NewLine}{e.StackTrace}", innerException);
+                    throw new Exception($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", innerException);
                 }
             }
         }

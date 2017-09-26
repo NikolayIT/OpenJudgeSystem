@@ -285,12 +285,12 @@
         }
 
         // TODO: Remove this method after the job is registered
-        public ActionResult RegisterJobForDeletingLeftOverFilesInTemp()
+        public ActionResult RegisterJobForDeletingLeftOverFilesInTempFolder()
         {
             var cron = "0 1 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
-                "DeleteLeftOverFoldersInTemp",
-                () => DirectoryHelpers.DeleteExecutionStrategiesWorkingDirectories(),
+                "DeleteLeftOverFoldersInTempFolder",
+                () => DirectoryHelpers.DeleteExecutionStrategyWorkingDirectories(),
                 cron);
 
             return null;
