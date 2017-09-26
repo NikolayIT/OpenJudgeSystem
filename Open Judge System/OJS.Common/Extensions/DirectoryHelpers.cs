@@ -24,16 +24,22 @@
 
         public static string CreateTempDirectoryForExecutionStrategy()
         {
-            while (true)
+            var isDirectoryCreated = false;
+            var path = string.Empty;
+            while (!isDirectoryCreated)
             {
                 var randomDirectoryName = Path.GetRandomFileName();
-                var path = Path.Combine(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath, randomDirectoryName);
-                if (!Directory.Exists(path))
+                path = Path.Combine(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath, randomDirectoryName);
+                if (Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(path);
-                    return path;
+                    continue;
                 }
+
+                Directory.CreateDirectory(path);
+                isDirectoryCreated = true;
             }
+
+            return path;
         }
 
         public static void SafeDeleteDirectory(string path, bool recursive = false)
@@ -50,10 +56,11 @@
         public static void DeleteExecutionStrategiesWorkingDirectories()
         {
             var directoryPaths = Directory.GetDirectories(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath);
-            foreach (var dirPath in directoryPaths)
+            const int threadSleepMilliseconds = 1000;
+            foreach (var directoryPath in directoryPaths)
             {
-                var dir = new DirectoryInfo(dirPath);
-                if (dir.Exists && dir.CreationTime < DateTime.Now.AddHours(-1))
+                var directory = new DirectoryInfo(directoryPath);
+                if (directory.Exists && directory.CreationTime < DateTime.Now.AddHours(-1))
                 {
                     var isDeleted = false;
                     var retryCount = 0;
@@ -61,12 +68,12 @@
                     {
                         try
                         {
-                            SafeDeleteDirectory(dirPath, true);
+                            SafeDeleteDirectory(directoryPath, true);
                             isDeleted = true;
                         }
                         catch
                         {
-                            Thread.Sleep(1000);
+                            Thread.Sleep(threadSleepMilliseconds);
                             retryCount++;
                         }
                     }
