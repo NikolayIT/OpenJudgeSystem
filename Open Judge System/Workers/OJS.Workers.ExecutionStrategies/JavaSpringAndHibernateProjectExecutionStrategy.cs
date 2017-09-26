@@ -309,7 +309,7 @@
 
         protected void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string mainClassFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
@@ -375,7 +375,7 @@
 
         protected void PreparePomXml(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string pomXmlFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,

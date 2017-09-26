@@ -229,7 +229,7 @@
             }
             catch (Exception exception)
             {
-                this.logger.ErrorFormat("executionStrategy.Execute on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                this.logger.Error($"executionStrategy.Execute on submission №{submission.Id} has thrown an exception:", exception);
                 submission.ProcessingComment = $"Exception in executionStrategy.Execute: {exception.Message}";
                 return;
             }

@@ -16,6 +16,7 @@
     using Newtonsoft.Json;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Common.BackgroundJobs.Contracts;
@@ -279,8 +280,20 @@
         public void CleanSubmissionsForProcessing()
         {
             this.Data.Context.SubmissionsForProcessing
-                .Where(s => s.Processed && s.Processing == false)
+                .Where(s => s.Processed && !s.Processing)
                 .Delete();
+        }
+
+        // TODO: Remove this method after the job is registered
+        public ActionResult RegisterJobForDeletingLeftOverFilesInTemp()
+        {
+            var cron = "0 1 * * *";
+            this.backgroundJobs.AddOrUpdateRecurringJob(
+                "DeleteLeftOverFoldersInTemp",
+                () => DirectoryHelpers.DeleteExecutionStrategiesWorkingDirectories(),
+                cron);
+
+            return null;
         }
     }
 }
