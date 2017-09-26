@@ -44,7 +44,7 @@
             this.MavenPath = mavenPath;
         }
 
-        // GroupId - > ArtifactId, Version
+        // Property contains Dictionary<GroupId, Tuple<ArtifactId, Version>>
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
