@@ -1672,6 +1672,7 @@
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
+    <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
@@ -2776,6 +2777,7 @@
     <Folder Include="App_GlobalResources\Areas\Administration\Shared\Views\EditorTemplates\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
+    <Folder Include="Views\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
