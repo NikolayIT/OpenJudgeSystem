@@ -53,7 +53,7 @@
             }
         }
 
-        public static void DeleteExecutionStrategiesWorkingDirectories()
+        public static void DeleteExecutionStrategyWorkingDirectories()
         {
             var directoryPaths = Directory.GetDirectories(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath);
             const int threadSleepMilliseconds = 1000;

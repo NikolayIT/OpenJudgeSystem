@@ -290,7 +290,7 @@
             var cron = "0 1 * * *";
             this.backgroundJobs.AddOrUpdateRecurringJob(
                 "DeleteLeftOverFoldersInTempFolder",
-                () => DirectoryHelpers.DeleteExecutionStrategiesWorkingDirectories(),
+                () => DirectoryHelpers.DeleteExecutionStrategyWorkingDirectories(),
                 cron);
 
             return null;
