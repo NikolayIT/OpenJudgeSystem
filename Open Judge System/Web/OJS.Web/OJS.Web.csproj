@@ -3338,6 +3338,10 @@
       <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
+      <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
+      <Name>OJS.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj">
       <Project>{a1f48412-495a-434c-bdd0-e70aedad6897}</Project>
       <Name>OJS.Workers.Tools</Name>
