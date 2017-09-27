@@ -6,18 +6,12 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using EntityFramework.Extensions;
-
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
-    using MissingFeatures;
-
     using Newtonsoft.Json;
 
     using OJS.Common;
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Participant;
 
@@ -209,54 +203,6 @@
             this.Data.SaveChanges();
 
             return this.GridOperation(request, model);
-        }
-
-        // TODO: Remove this method
-        public ActionResult NormalizeParticipants()
-        {
-            var problems = this.Data.Problems.All().ToList();
-            foreach (var problem in problems)
-            {
-                var data = new OjsData();
-                var participantScoreByParticipantAndProblemId = data.ParticipantScores.All()
-                    .Where(ps => ps.ProblemId == problem.Id)
-                    .GroupBy(p => new { p.ProblemId, p.ParticipantId });
-
-                var scoresMarkedForDeletion = new List<ParticipantScore>();
-                foreach (var participantScore in participantScoreByParticipantAndProblemId)
-                {
-                    if (participantScore.Count() > 1)
-                    {
-                        participantScore
-                            .OrderByDescending(ps => ps.Points)
-                            .ThenByDescending(ps => ps.Id)
-                            .Skip(1)
-                            .ForEach(ps => scoresMarkedForDeletion.Add(ps));
-                    }
-                }
-
-                foreach (var participantScoreForDeletion in scoresMarkedForDeletion)
-                {
-                    data.ParticipantScores.Delete(participantScoreForDeletion);
-                }
-
-                data.SaveChanges();
-            }
-
-            return null;
-        }
-
-        // TODO: Remove this method
-        public ActionResult ResetSubmissions()
-        {
-            var allProcessingSubmissions = this.Data
-                .Submissions
-                .All()
-                .Where(s => s.Processing && !s.Processed && !s.IsDeleted);
-
-            allProcessingSubmissions.Update(s => new Submission() { Processing = false });
-
-            return null;
         }
     }
 }
