@@ -29,10 +29,10 @@
         private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
 
         private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)";
-        private const string MavenBuildErrorPattern = @"\[ERROR\](?:\s)*((?:.*)\n)*(?=\[INFO\]\s\d)";
-
         private static readonly string JUnitFailedTestPattern =
             $@"There was (?:\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
+
+        private static readonly string MavenBuildErrorPattern = $@"\[ERROR\](?:\s)*((?:.*){Environment.NewLine})*(?=\[INFO\]\s\d)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -74,6 +74,10 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <compilerArgs>
+                        <arg>-XDignore.symbol.file</arg>
+                    </compilerArgs>
+                    <fork>true</fork>
                 </configuration>
             </plugin>
             <plugin>
