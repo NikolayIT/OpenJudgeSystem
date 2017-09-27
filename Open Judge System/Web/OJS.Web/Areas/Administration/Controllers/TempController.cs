@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Controllers
+﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Linq;
     using System.Web.Mvc;
@@ -10,9 +10,10 @@
     using OJS.Data;
     using OJS.Services.Common.BackgroundJobs.Contracts;
     using OJS.Web.Common.Attributes;
+    using OJS.Web.Controllers;
 
     [AuthorizeRoles(SystemRole.Administrator)]
-    public class TempController : BaseController
+    public class TempController : AdministrationController
     {
         private readonly IBackgroundJobService backgroundJobs;
 

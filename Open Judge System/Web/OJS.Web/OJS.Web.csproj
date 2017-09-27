@@ -1672,7 +1672,7 @@
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
-    <Compile Include="Controllers\TempController.cs" />
+    <Compile Include="Areas\Administration\Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
