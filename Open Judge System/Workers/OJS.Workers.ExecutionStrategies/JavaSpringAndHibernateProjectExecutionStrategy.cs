@@ -74,10 +74,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgs>
-                        <arg>-XDignore.symbol.file</arg>
-                    </compilerArgs>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
             <plugin>
