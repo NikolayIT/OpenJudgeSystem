@@ -11,6 +11,7 @@ namespace OJS.Web
     using Ninject.Web.Common;
 
     using OJS.Data;
+    using OJS.Data.Repositories;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -79,7 +80,7 @@ namespace OJS.Web
             kernel.Bind<IPlagiarismDetectorFactory>().To<PlagiarismDetectorFactory>().InRequestScope();
             kernel.Bind<IHangfireBackgroundJobService>().To<HangfireBackgroundJobService>().InRequestScope();
             kernel.Bind<ISubmissionsForProcessingDataService>().To<SubmissionsForProcessingDataService>().InRequestScope();
-            kernel.Bind<ISubmissionsForProcessingRepository>().To<ISubmissionsForProcessingRepository>().InRequestScope();
+            kernel.Bind<ISubmissionsForProcessingRepository>().To<SubmissionsForProcessingRepository>().InRequestScope();
         }
     }
 }
