@@ -29,10 +29,10 @@
         private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
 
         private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)";
-        private const string MavenBuildErrorPattern = @"(?:\[ERROR\] (.*))";
-
         private static readonly string JUnitFailedTestPattern =
             $@"There was (?:\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
+
+        private static readonly string MavenBuildErrorPattern = $@"\[ERROR\](?:\s)*((?:.*){Environment.NewLine})*(?=\[INFO\]\s\d)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -175,7 +175,7 @@
             Match compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
             Match errorMatch = mavenBuildErrors.Match(packageExecutionResult.ReceivedOutput);
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
-            result.CompilerComment = $"{errorMatch.Groups[1]}";
+            result.CompilerComment = $"{errorMatch.Groups[0]}";
 
             if (!result.IsCompiledSuccessfully)
             {
