@@ -14,6 +14,8 @@
 
     public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
+        private const string CsProjFileIdentifierPattern = "<Project Sdk";
+
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
     using System;
@@ -124,10 +126,10 @@
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            // TODO: multiple projects?
             var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
                 CsProjFileSearchPattern,
+                this.IsDotNetCoreFile,
                 f => new FileInfo(f).Length);
 
             var compilerPath = this.getCompilerPathFunc(executionContext.CompilerType);
@@ -217,5 +219,7 @@
                 index++;
             }
         }
+
+        private bool IsDotNetCoreFile(string f) => File.ReadAllLines(f)[0].StartsWith(CsProjFileIdentifierPattern);
     }
 }

@@ -82,6 +82,19 @@
             return ProcessModulePath(discoveredFile);
         }
 
+        public static string FindFileMatchingPattern<TOut>(
+            string workingDirectory,
+            string pattern,
+            Func<string, bool> where,
+            Func<string, TOut> orderBy)
+        {
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
+
+            string discoveredFile = files.Where(where).OrderByDescending(orderBy).First();
+
+            return ProcessModulePath(discoveredFile);
+        }
+
         public static void AddFilesToZipArchive(string archivePath, string pathInArchive, params string[] filePaths)
         {
             using (var zipFile = new ZipFile(archivePath))
