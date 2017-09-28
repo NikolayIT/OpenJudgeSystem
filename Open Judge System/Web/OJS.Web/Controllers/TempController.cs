@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.Controllers
+﻿namespace OJS.Web.Controllers
 {
     using System.Web.Mvc;
 
@@ -8,10 +8,9 @@
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
-    using OJS.Web.Controllers;
 
     [AuthorizeRoles(SystemRole.Administrator)]
-    public class TempController : AdministrationController
+    public class TempController : BaseController
     {
         private readonly IHangfireBackgroundJobService backgroundJobs;
 
