@@ -14,7 +14,7 @@
 
     public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
-        private const string CsProjFileIdentifierPattern = "<Project Sdk";
+        private const string DotNetCoreCsProjIdentifierPattern = "<Project Sdk";
 
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
@@ -220,6 +220,7 @@
             }
         }
 
-        private bool IsDotNetCoreFile(string f) => File.ReadAllLines(f)[0].StartsWith(CsProjFileIdentifierPattern);
+        private bool IsDotNetCoreFile(string filePath) =>
+            File.ReadAllLines(filePath)[0].StartsWith(DotNetCoreCsProjIdentifierPattern);
     }
 }
