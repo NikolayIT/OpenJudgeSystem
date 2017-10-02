@@ -48,25 +48,40 @@
             var currentDirectory = Environment.CurrentDirectory;
 
             var allTypes = new List<Type>();
-            
-            foreach (var file in Directory.GetFiles(currentDirectory).Where(f => f.EndsWith("".dll"")))
+            try
             {
-                var assembly = Assembly.LoadFrom(file);
-                foreach (var type in assembly.GetTypes())
+                foreach (var file in Directory.GetFiles(currentDirectory).Where(f => f.EndsWith("".dll"")))
                 {
-                    allTypes.Add(type);
-                }
-
-                var referenced = assembly
-                    .GetReferencedAssemblies()
-                    .Where(r => r.Name.StartsWith(""Microsoft"") && r.Name.StartsWith(""System""));
-
-                foreach (var reference in referenced)
-                {
-                    var refAssembly = Assembly.Load(reference);
-                    foreach (var type in refAssembly.GetTypes())
+                    var assembly = Assembly.LoadFrom(file);
+                    foreach (var type in assembly.GetTypes())
                     {
                         allTypes.Add(type);
+                    }
+
+                    var referenced = assembly
+                        .GetReferencedAssemblies()
+                        .Where(r => !r.Name.StartsWith(""Microsoft"") && !r.Name.StartsWith(""System""));
+
+                    foreach (var reference in referenced)
+                    {
+                        var refAssembly = Assembly.Load(reference);
+                        foreach (var type in refAssembly.GetTypes())
+                        {
+                            allTypes.Add(type);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                if (ex is ReflectionTypeLoadException)
+                {
+                    var loadException = ex as ReflectionTypeLoadException;
+                    foreach (var loaderEx in loadException.LoaderExceptions)
+                    {
+                        Console.WriteLine(""Loader exception:"" + loaderEx.Message);
                     }
                 }
             }
