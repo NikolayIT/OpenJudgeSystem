@@ -24,6 +24,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
 
     public class LocalCSharpTestRunner
     {
@@ -74,16 +75,19 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                var exceptionMessage = new StringBuilder();
+                exceptionMessage.AppendLine(ex.Message);
 
                 if (ex is ReflectionTypeLoadException)
                 {
                     var loadException = ex as ReflectionTypeLoadException;
                     foreach (var loaderEx in loadException.LoaderExceptions)
                     {
-                        Console.WriteLine(""Loader exception:"" + loaderEx.Message);
+                        exceptionMessage.AppendLine(""Loader exception: "" + loaderEx.Message);
                     }
                 }
+
+                throw new Exception(exceptionMessage.ToString().TrimEnd());
             }
 
             var results = new List<FuncTestResult>();
@@ -166,6 +170,11 @@
 
             IExecutor executor = new RestrictedProcessExecutor();
             var processExecutionResult = executor.Execute(outputAssemblyPath, string.Empty, executionContext.TimeLimit, executionContext.MemoryLimit);
+
+            if (!string.IsNullOrWhiteSpace(processExecutionResult.ErrorOutput))
+            {
+                throw new ArgumentException(processExecutionResult.ErrorOutput);
+            }
 
             var workingDirectory = compileResult.OutputFile;
             if (Directory.Exists(workingDirectory))
