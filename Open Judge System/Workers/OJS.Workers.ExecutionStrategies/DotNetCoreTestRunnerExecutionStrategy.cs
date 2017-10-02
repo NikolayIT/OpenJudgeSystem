@@ -14,7 +14,7 @@
 
     public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
-        private const string DotNetCoreCsProjIdentifierPattern = "<Project Sdk";
+        private const string DotNetCoreCsProjIdentifierPattern = "<Project";
 
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
