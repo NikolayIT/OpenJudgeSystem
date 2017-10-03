@@ -41,7 +41,11 @@
         protected const string TrialTest = "Test.000";
         protected const string CsProjFileSearchPattern = "*.csproj";
         protected const string NUnitReference =
-            "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+            "nunit.framework, Version=3.8.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+        protected const string EntityFrameworkCoreInMemory =
+                "Microsoft.EntityFrameworkCore.InMemory, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL";
+        protected const string SystemDataCommon =
+                "System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL";
 
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
@@ -231,7 +235,7 @@
             }
 
             // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            this.AddProjectReferences(project, NUnitReference);
+            this.AddProjectReferences(project, NUnitReference, EntityFrameworkCoreInMemory, SystemDataCommon);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items
@@ -263,7 +267,7 @@
             {
                 string testName = CSharpPreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
-            }           
+            }
         }
 
         protected void EnsureAssemblyNameIsCorrect(Project project)
