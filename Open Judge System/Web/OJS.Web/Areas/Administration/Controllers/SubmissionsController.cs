@@ -11,6 +11,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
@@ -29,12 +30,16 @@
         protected const string TooManyRequestsErrorMessage = "Прекалено много заявки. Моля, опитайте по-късно.";
 
         private const int MaxContestsToTake = 20;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
         private int? contestId;
 
-        public SubmissionsController(IOjsData data)
+        public SubmissionsController(
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         public override IEnumerable GetData()
@@ -118,9 +123,8 @@
                     using (var scope = new TransactionScope())
                     {
                         this.BaseCreate(entity);
-                        this.Data.SubmissionsForProcessing.AddOrUpdate(model.Id.Value);
+                        this.submissionsForProcessingData.AddOrUpdate(model.Id.Value);
 
-                        this.Data.SaveChanges();
                         scope.Complete();
                     }
                    
@@ -216,8 +220,7 @@
                             submission.Processed = false;
                             submission.Processing = false;
 
-                            this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
-                            this.Data.SaveChanges();
+                            this.submissionsForProcessingData.AddOrUpdate(submission.Id);
 
                             var submissionIsBestSubmission = this.IsBestSubmission(
                                 submissionProblemId,
@@ -304,7 +307,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.Data.SubmissionsForProcessing.Remove(submission.Id);
+                this.submissionsForProcessingData.Remove(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -340,7 +343,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.Data.SubmissionsForProcessing.Remove(submission.Id);
+                    this.submissionsForProcessingData.Remove(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -470,8 +473,7 @@
                     submission.Processed = false;
                     submission.Processing = false;
 
-                    this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
-                    this.Data.SaveChanges();
+                    this.submissionsForProcessingData.AddOrUpdate(submission.Id);
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
                         submissionProblemId,
@@ -647,9 +649,7 @@
                 return false;
             }
 
-            var submissionForProcessing = this.Data.SubmissionsForProcessing
-                .All()
-                .FirstOrDefault(sfp => sfp.SubmissionId == submission.Id);
+            var submissionForProcessing = this.submissionsForProcessingData.GetById(submission.Id);
 
             return submissionForProcessing != null && !submissionForProcessing.Processed;
         }

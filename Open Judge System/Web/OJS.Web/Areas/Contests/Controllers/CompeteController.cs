@@ -15,10 +15,10 @@
     using MissingFeatures;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -31,18 +31,24 @@
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
-    {
+    {  
         public const string CompeteActionName = "Compete";
         public const string PracticeActionName = "Practice";
+
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
         public CompeteController(IOjsData data)
             : base(data)
         {
         }
 
-        public CompeteController(IOjsData data, UserProfile userProfile)
+        public CompeteController(
+            IOjsData data,
+            UserProfile userProfile,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data, userProfile)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         /// <summary>

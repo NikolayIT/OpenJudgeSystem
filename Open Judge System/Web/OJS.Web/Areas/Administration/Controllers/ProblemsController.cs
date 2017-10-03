@@ -23,6 +23,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
@@ -40,9 +41,14 @@
 
     public class ProblemsController : LecturerBaseController
     {
-        public ProblemsController(IOjsData data)
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+
+        public ProblemsController(
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         public ActionResult Index()
@@ -834,7 +840,7 @@
             submissionEntry.Property(pr => pr.Processed).IsModified = true;
             submissionEntry.Property(pr => pr.Processing).IsModified = true;
 
-            this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
+            this.submissionsForProcessingData.AddOrUpdate(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)

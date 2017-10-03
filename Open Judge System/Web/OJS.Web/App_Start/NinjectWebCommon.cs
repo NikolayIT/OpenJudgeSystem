@@ -80,7 +80,6 @@ namespace OJS.Web
             kernel.Bind<IPlagiarismDetectorFactory>().To<PlagiarismDetectorFactory>().InRequestScope();
             kernel.Bind<IHangfireBackgroundJobService>().To<HangfireBackgroundJobService>().InRequestScope();
             kernel.Bind<ISubmissionsForProcessingDataService>().To<SubmissionsForProcessingDataService>().InRequestScope();
-            kernel.Bind<ISubmissionsForProcessingRepository>().To<SubmissionsForProcessingRepository>().InRequestScope();
         }
     }
 }
