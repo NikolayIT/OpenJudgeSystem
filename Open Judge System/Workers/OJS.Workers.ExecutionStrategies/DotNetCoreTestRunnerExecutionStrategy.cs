@@ -7,6 +7,7 @@
     using System.Linq;
 
     using Microsoft.CSharp;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;

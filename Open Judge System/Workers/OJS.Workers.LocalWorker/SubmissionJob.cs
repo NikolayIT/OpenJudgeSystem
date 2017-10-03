@@ -288,7 +288,7 @@
                 case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
                     executionStrategy = new CPlusPlusZipFileExecutionStrategy(GetCompilerPath);
                     break;
-                case ExecutionStrategyType.DotNetTestRunner:
+                case ExecutionStrategyType.DotNetCoreTestRunner:
                     executionStrategy = new DotNetCoreTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:

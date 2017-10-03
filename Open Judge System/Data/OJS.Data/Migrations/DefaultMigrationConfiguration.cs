@@ -201,7 +201,7 @@
                     CompilerType = CompilerType.DotNetCompiler,
                     AdditionalCompilerArguments = string.Empty,
                     ExecutionStrategyType =
-                        ExecutionStrategyType.DotNetTestRunner,
+                        ExecutionStrategyType.DotNetCoreTestRunner,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
