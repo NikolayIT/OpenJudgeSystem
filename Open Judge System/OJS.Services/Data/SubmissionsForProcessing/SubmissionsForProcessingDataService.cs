@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Data.SubmissionsForProcessing
 {
-    using System;
     using System.Linq;
 
     using EntityFramework.Extensions;
