@@ -225,13 +225,7 @@
             }
 
             project.SetProperty("OutputType", "Library");
-            var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
-            if (nUnitPrevReference != null)
-            {
-                project.RemoveItem(nUnitPrevReference);
-            }
 
-            // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
             this.AddProjectReferences(project, NUnitReference, EntityFrameworkCoreInMemory);
 
             // Check for VSTT just in case, we don't want Assert conflicts
@@ -248,6 +242,7 @@
 
         protected void AddProjectReferences(Project project, params string[] references)
         {
+            this.RemoveExistingReferences(project, references);
             var referenceMetaData = new Dictionary<string, string>();
             foreach (var reference in references)
             {
@@ -255,6 +250,19 @@
                 referenceMetaData.Add("Private", "True");
                 project.AddItem("Reference", reference, referenceMetaData);
                 referenceMetaData.Clear();
+            }
+        }
+
+        private void RemoveExistingReferences(Project project, string[] references)
+        {
+            foreach (var reference in references)
+            {
+                string referenceName = reference.Substring(0, reference.IndexOf(","));
+                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
+                if (existingReference != null)
+                {
+                    project.RemoveItem(existingReference);
+                }
             }
         }
 
