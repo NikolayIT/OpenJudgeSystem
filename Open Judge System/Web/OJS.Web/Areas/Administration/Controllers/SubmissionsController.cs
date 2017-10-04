@@ -649,7 +649,7 @@
                 return false;
             }
 
-            var submissionForProcessing = this.submissionsForProcessingData.GetById(submission.Id);
+            var submissionForProcessing = this.submissionsForProcessingData.GetBySubmissionId(submission.Id);
 
             return submissionForProcessing != null && !submissionForProcessing.Processed;
         }

@@ -5,7 +5,7 @@
 
     public interface ISubmissionsForProcessingDataService : IService
     {
-        SubmissionForProcessing GetById(int id);
+        SubmissionForProcessing GetBySubmissionId(int submissionId);
 
         void AddOrUpdate(int submissionId);
 

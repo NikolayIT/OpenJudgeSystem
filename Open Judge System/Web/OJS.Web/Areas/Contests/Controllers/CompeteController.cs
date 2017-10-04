@@ -37,18 +37,19 @@
 
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
-        public CompeteController(IOjsData data)
+        public CompeteController(
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         public CompeteController(
             IOjsData data,
-            UserProfile userProfile,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            UserProfile userProfile)
             : base(data, userProfile)
         {
-            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         /// <summary>
@@ -346,12 +347,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionForProcessing()
-            {
-                SubmissionId = newSubmission.Id
-            };
-            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            this.Data.SaveChanges();
+            this.submissionsForProcessingData.AddOrUpdate(newSubmission.Id);
 
             return this.Json(participantSubmission.ProblemId);
         }
@@ -431,12 +427,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionForProcessing()
-            {
-                SubmissionId = newSubmission.Id
-            };
-            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            this.Data.SaveChanges();
+            this.submissionsForProcessingData.AddOrUpdate(newSubmission.Id);
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
             return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteActionName : PracticeActionName));

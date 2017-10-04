@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.SubmissionsForProcessing
 {
+    using System;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -16,11 +17,12 @@
             this.SubmissionsForProcessing = submissionsForProcessing;
         }
 
-        public SubmissionForProcessing GetById(int id) => this.SubmissionsForProcessing.GetById(id);
+        public SubmissionForProcessing GetBySubmissionId(int submissionId) =>
+            this.SubmissionsForProcessing.All().FirstOrDefault(s => s.SubmissionId == submissionId);
 
         public void AddOrUpdate(int submissionId)
         {
-            var submissionForProcessing = this.SubmissionsForProcessing.GetById(submissionId);
+            var submissionForProcessing = this.GetBySubmissionId(submissionId);
 
             if (submissionForProcessing != null)
             {
@@ -41,7 +43,7 @@
 
         public void Remove(int submissionId)
         {
-            var submissionForProcessing = this.SubmissionsForProcessing.GetById(submissionId);
+            var submissionForProcessing = this.GetBySubmissionId(submissionId);
 
             if (submissionForProcessing != null)
             {
