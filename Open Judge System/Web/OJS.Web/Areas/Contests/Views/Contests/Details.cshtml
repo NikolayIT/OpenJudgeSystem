@@ -143,8 +143,18 @@
 
         @if (userHasAdminRights)
         {
-            <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Contests/Edit/@Model.Id">@Resource.Edit</a>
-            <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Administration/Problems/Contest/@Model.Id">@Resource.Problems</a>
+            <a href="@Url.Action("Edit", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
+                @Resource.Edit
+            </a>
+            <a href="@Url.Action("Contest", "Problems", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
+                @Resource.Problems
+            </a>
+            if (!Model.CanBeCompeted && Model.OfficialParticipants > 0)
+            {
+                <a href="@Url.Action("TransferParticipants", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
+                    @Resource.Transfer
+                </a>
+            }
         }
     </div>
 </div>
