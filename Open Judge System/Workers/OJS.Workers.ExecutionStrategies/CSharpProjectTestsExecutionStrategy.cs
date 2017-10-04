@@ -253,19 +253,6 @@
             }
         }
 
-        private void RemoveExistingReferences(Project project, string[] references)
-        {
-            foreach (var reference in references)
-            {
-                string referenceName = reference.Substring(0, reference.IndexOf(","));
-                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
-                if (existingReference != null)
-                {
-                    project.RemoveItem(existingReference);
-                }
-            }
-        }
-
         protected virtual void ExtractTestNames(IEnumerable<TestContext> tests)
         {
             foreach (var test in tests)
@@ -286,6 +273,19 @@
             var csProjFullpath = project.FullPath;
             var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
+        }
+
+        private void RemoveExistingReferences(Project project, string[] references)
+        {
+            foreach (var reference in references)
+            {
+                string referenceName = reference.Substring(0, reference.IndexOf(","));
+                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
+                if (existingReference != null)
+                {
+                    project.RemoveItem(existingReference);
+                }
+            }
         }
 
         private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
