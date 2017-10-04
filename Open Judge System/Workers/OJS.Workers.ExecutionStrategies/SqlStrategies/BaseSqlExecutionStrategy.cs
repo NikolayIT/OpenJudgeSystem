@@ -25,7 +25,7 @@
 
         public ExecutionResult SafeExecute(ExecutionContext executionContext)
         {
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
             try
             {
                 return this.Execute(executionContext);

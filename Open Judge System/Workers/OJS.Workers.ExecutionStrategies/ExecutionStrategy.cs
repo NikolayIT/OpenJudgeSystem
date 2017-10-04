@@ -19,14 +19,27 @@
 
         public ExecutionResult SafeExecute(ExecutionContext executionContext)
         {
-            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectory();        
+            Exception innerException = null;
+            this.WorkingDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
             try
             {
                 return this.Execute(executionContext);
             }
+            catch (Exception ex)
+            {
+                innerException = ex;
+                throw;
+            }
             finally
             {
-                DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+                try
+                {
+                    DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", innerException);
+                }
             }
         }
 
