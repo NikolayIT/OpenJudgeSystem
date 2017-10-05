@@ -10,6 +10,8 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Data.Repositories.Base;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
@@ -24,7 +26,9 @@
 
         private bool stopping;
 
-        public SubmissionJob(string name, ConcurrentQueue<int> submissionsForProcessing)
+        public SubmissionJob(
+            string name,
+            ConcurrentQueue<int> submissionsForProcessing)
         {
             this.Name = name;
 
@@ -46,6 +50,9 @@
             while (!this.stopping)
             {
                 var data = new OjsData();
+                var submissionsForProccessingData = new SubmissionsForProcessingDataService(
+                    new GenericRepository<SubmissionForProcessing>(data.Context));
+
                 Submission submission = null;
                 SubmissionForProcessing submissionForProcessing = null;
                 int submissionId;
@@ -57,9 +64,8 @@
                     {
                         if (this.submissionsForProcessing.IsEmpty)
                         {
-                            var submissions = data.SubmissionsForProcessing
-                                .All()
-                                .Where(x => !x.Processed && !x.Processing)
+                            var submissions = submissionsForProccessingData
+                                .GetUnprocessedSubmissions()
                                 .OrderBy(x => x.Id)
                                 .Select(x => x.SubmissionId)
                                 .ToList();
@@ -71,17 +77,17 @@
 
                         if (retrievedSubmissionSuccessfully)
                         {
-                            this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
+                            this.logger
+                                .InfoFormat($"Submission №{submissionId} retrieved from data store successfully");
 
                             submission = data.Submissions.GetById(submissionId);
-                            submissionForProcessing = data.SubmissionsForProcessing
-                                .All()
-                                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+                            submissionForProcessing = submissionsForProccessingData
+                                .GetBySubmissionId(submissionId);
 
                             if (submission != null && submissionForProcessing != null && !submission.Processing)
                             {
-                                submissionForProcessing.Processing = true;
-                                data.SaveChanges();
+                                submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
                             }
                         }
                     }
@@ -122,8 +128,7 @@
                 }
 
                 submission.Processed = true;
-                submissionForProcessing.Processed = true;
-                submissionForProcessing.Processing = false;
+                submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
 
                 try
                 {

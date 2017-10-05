@@ -840,7 +840,7 @@
             submissionEntry.Property(pr => pr.Processed).IsModified = true;
             submissionEntry.Property(pr => pr.Processing).IsModified = true;
 
-            this.submissionsForProcessingData.AddOrUpdate(submissionId);
+            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)

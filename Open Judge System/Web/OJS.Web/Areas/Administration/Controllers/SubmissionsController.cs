@@ -123,7 +123,7 @@
                     using (var scope = new TransactionScope())
                     {
                         this.BaseCreate(entity);
-                        this.submissionsForProcessingData.AddOrUpdate(model.Id.Value);
+                        this.submissionsForProcessingData.AddOrUpdateBySubmissionId(model.Id.Value);
 
                         scope.Complete();
                     }
@@ -220,7 +220,7 @@
                             submission.Processed = false;
                             submission.Processing = false;
 
-                            this.submissionsForProcessingData.AddOrUpdate(submission.Id);
+                            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 
                             var submissionIsBestSubmission = this.IsBestSubmission(
                                 submissionProblemId,
@@ -307,7 +307,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.submissionsForProcessingData.Remove(submission.Id);
+                this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -343,7 +343,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.submissionsForProcessingData.Remove(submission.Id);
+                    this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -473,7 +473,7 @@
                     submission.Processed = false;
                     submission.Processing = false;
 
-                    this.submissionsForProcessingData.AddOrUpdate(submission.Id);
+                    this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
                         submissionProblemId,
