@@ -5,41 +5,16 @@
 
     using log4net;
 
-    using OJS.Data.Models;
-    using OJS.Data.Repositories.Base;
+    using OJS.Services.Data.SubmissionsForProcessing;
 
     public class SubmissionsForProcessingBusinessService : ISubmissionsForProcessingBusinessService
     {
-        private readonly GenericRepository<SubmissionForProcessing> submissionsForProcessing;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
         public SubmissionsForProcessingBusinessService(
-            GenericRepository<SubmissionForProcessing> submissionsForProcessing)
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
         {
-            this.submissionsForProcessing = submissionsForProcessing;
-        }
-
-        public IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions() =>
-            this.submissionsForProcessing
-                .All()
-                .Where(x => !x.Processed && !x.Processing);
-
-        public void SetToProcessing(SubmissionForProcessing submissionForProcessing)
-        {
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = true;
-                this.submissionsForProcessing.SaveChanges();
-            }
-        }
-
-        public void SetToProcessed(SubmissionForProcessing submissionForProcessing)
-        {
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processed = true;
-                submissionForProcessing.Processing = false;
-                this.submissionsForProcessing.SaveChanges();
-            }
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         /// <summary>
@@ -49,9 +24,7 @@
         /// </summary>
         public void ResetAllProcessingSubmissions(ILog logger)
         {
-            var allProcessingSubmissions = this.submissionsForProcessing
-                .All()
-                .Where(s => s.Processing && !s.Processed);
+            var allProcessingSubmissions = this.submissionsForProcessingData.GetProcessingSubmissions();
 
             if (allProcessingSubmissions.Any())
             {
@@ -59,14 +32,12 @@
                 {
                     foreach (var unprocessedSubmission in allProcessingSubmissions)
                     {
-                        unprocessedSubmission.Processing = false;
+                        this.submissionsForProcessingData.ResetForProcessing(unprocessedSubmission.Id);
                     }
-
-                    this.submissionsForProcessing.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    logger.ErrorFormat("Clearing Processing submissions failed with exception {0}", ex.Message);
+                    logger.ErrorFormat($"Clearing Processing submissions failed with exception {ex.Message}");
                 }
             }
         }
