@@ -58,6 +58,10 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -93,7 +97,9 @@
     <None Include="Batch Files\StopService.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
@@ -111,6 +117,14 @@
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
+      <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
+      <Name>OJS.Services.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
+      <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
+      <Name>OJS.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">
       <Project>{93ec1d66-2ce1-4682-ac09-c8c40178a9ad}</Project>
