@@ -279,7 +279,7 @@
         {
             foreach (var reference in references)
             {
-                string referenceName = reference.Substring(0, reference.IndexOf(","));
+                var referenceName = reference.Substring(0, reference.IndexOf(","));
                 var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
                 if (existingReference != null)
                 {
