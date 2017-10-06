@@ -58,14 +58,18 @@
                 executionContext.CheckerParameter);
 
             List<string> arguments = new List<string>();
-            arguments.Add(compilerResult.OutputFile);
-            arguments.Add(AdditionalExecutionArguments);
+            string path =
+                @"C:\SideAndTestProjects\DotNetCoreTestRunnerTestProject\CoreTestingApp\bin\Debug\netcoreapp1.1\CoreTestingApp.dll";
+
+            arguments.Add(path); 
+            //arguments.Add(AdditionalExecutionArguments);
+            arguments.Add("--noresult");
 
             foreach (var test in executionContext.Tests)
             {
                 var processExecutionResult = executor.Execute(
                     compilerPath,
-                    test.Input,
+                    string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
                     arguments,
