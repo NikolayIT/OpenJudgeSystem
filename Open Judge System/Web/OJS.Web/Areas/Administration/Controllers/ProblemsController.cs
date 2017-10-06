@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -550,6 +551,7 @@
 
             var problem = this.Data.Problems
                 .All()
+                .AsNoTracking()
                 .FirstOrDefault(pr => pr.Id == id);
 
             if (problem == null)
@@ -564,13 +566,23 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
+            var submissionIds = problem.Submissions.Where(s => !s.IsDeleted).Select(s => s.Id).ToList();
+
             using (var scope = new TransactionScope())
             {
                 this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
                 this.Data.SaveChanges();
 
-                var submissions = this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ToList();
-                submissions.ForEach(this.RetestSubmission);
+                try
+                {
+                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                    submissionIds.ForEach(this.SetForRetestSubmission);
+                }
+                finally
+                {
+                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                }
+                
                 this.Data.SaveChanges();
 
                 scope.Complete();
@@ -821,18 +833,14 @@
             }
         }
 
-        private void RetestSubmission(int submissionId)
+        private void SetForRetestSubmission(int submissionId)
         {
-            var submission = new Submission
-            {
-                Id = submissionId,
-                Processed = false,
-                Processing = false
-            };
-            this.Data.Context.Submissions.Attach(submission);
+            var submission = this.Data.Submissions.GetById(submissionId);
+
+            submission.Processed = false;
+
             var submissionEntry = this.Data.Context.Entry(submission);
             submissionEntry.Property(pr => pr.Processed).IsModified = true;
-            submissionEntry.Property(pr => pr.Processing).IsModified = true;
 
             this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
         }
