@@ -24,15 +24,15 @@
         /// </summary>
         public void ResetAllProcessingSubmissions(ILog logger)
         {
-            var allProcessingSubmissions = this.submissionsForProcessingData.GetProcessingSubmissions();
+            var allProcessingSubmissionIds = this.submissionsForProcessingData.GetProcessingSubmissionIds();
 
-            if (allProcessingSubmissions.Any())
+            if (allProcessingSubmissionIds.Count > 0)
             {
                 try
                 {
-                    foreach (var unprocessedSubmission in allProcessingSubmissions)
+                    foreach (var submissionForProcessingId in allProcessingSubmissionIds)
                     {
-                        this.submissionsForProcessingData.ResetForProcessing(unprocessedSubmission.Id);
+                        this.submissionsForProcessingData.ResetForProcessing(submissionForProcessingId);
                     }
                 }
                 catch (Exception ex)

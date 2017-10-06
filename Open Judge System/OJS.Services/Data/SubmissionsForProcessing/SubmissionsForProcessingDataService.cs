@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.SubmissionsForProcessing
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -82,17 +83,17 @@
         }
 
         public SubmissionForProcessing GetBySubmissionId(int submissionId) =>
-            this.submissionsForProcessing.All().FirstOrDefault(s => s.SubmissionId == submissionId);
+            this.submissionsForProcessing.All().FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
 
         public IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions() =>
-            this.submissionsForProcessing.All().Where(x => !x.Processed && !x.Processing);
+            this.submissionsForProcessing.All().Where(sfp => !sfp.Processed && !sfp.Processing);
 
-        public IQueryable<SubmissionForProcessing> GetProcessingSubmissions() =>
-            this.submissionsForProcessing.All().Where(s => s.Processing && !s.Processed);
+        public ICollection<int> GetProcessingSubmissionIds() => this.submissionsForProcessing
+            .All().Where(sfp => sfp.Processing && !sfp.Processed).Select(sfp => sfp.Id).ToList();
 
         public void Clean() => this.submissionsForProcessing
             .All()
-            .Where(s => s.Processed && !s.Processing)
+            .Where(sfp => sfp.Processed && !sfp.Processing)
             .Delete();
     }
 }

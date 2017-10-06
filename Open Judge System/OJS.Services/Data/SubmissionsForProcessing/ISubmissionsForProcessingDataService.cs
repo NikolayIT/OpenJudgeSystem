@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.SubmissionsForProcessing
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -11,7 +12,7 @@
 
         IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions();
 
-        IQueryable<SubmissionForProcessing> GetProcessingSubmissions();
+        ICollection<int> GetProcessingSubmissionIds();
 
         void AddOrUpdateBySubmissionId(int submissionId);
 
