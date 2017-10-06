@@ -59,7 +59,7 @@
 
             List<string> arguments = new List<string>();
             string path =
-                @"C:\SideAndTestProjects\DotNetCoreTestRunnerTestProject\CoreTestingApp\bin\Debug\netcoreapp1.1\CoreTestingApp.dll";
+                @"C:\SideAndTestProjects\DotNetCoreTestRunnerTestProject\CoreTestingApp\bin\Debug\netcoreapp2.0\CoreTestingApp.dll";
 
             arguments.Add(path); 
             //arguments.Add(AdditionalExecutionArguments);
