@@ -541,6 +541,14 @@
             return this.File(stream, MediaTypeNames.Application.Zip, zipFileName);
         }
 
+        [HttpGet]
+        public ActionResult Retest(int id)
+        {
+            return this.View("RetestConfirmation");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Retest(int? id)
         {
             if (id == null)

@@ -2770,6 +2770,7 @@
     <Content Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
     <Content Include="Views\Shared\_SimplePagination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

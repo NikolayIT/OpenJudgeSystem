@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Retest";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    @using (Html.BeginForm("Retest", "Problems", new { area = "Administration" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationMessage(GlobalConstants.DateTimeError)
+
+        <div class="alert">
+            Сигурни ли сте, че искате Ретест?
+        </div>
+        <div class="row">
+            <div class="editor-label col-xs-3">
+                <button type="submit" class="btn btn-primary pull-right">Retest</button>
+            </div>
+            <div class="editor-label col-xs-4">
+                <a href=@ViewBag.ReturnUrl class="btn btn-primary">Cancel</a>
+            </div>
+        </div>
+    }
+</body>
+</html>
