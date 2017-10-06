@@ -576,7 +576,7 @@
                 try
                 {
                     this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                    submissionIds.ForEach(this.SetForRetestSubmission);
+                    submissionIds.ForEach(this.SetSubmissionForRetest);
                 }
                 finally
                 {
@@ -833,7 +833,7 @@
             }
         }
 
-        private void SetForRetestSubmission(int submissionId)
+        private void SetSubmissionForRetest(int submissionId)
         {
             var submission = this.Data.Submissions.GetById(submissionId);
 
