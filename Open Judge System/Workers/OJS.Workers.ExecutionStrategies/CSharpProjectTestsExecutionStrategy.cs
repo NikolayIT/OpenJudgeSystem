@@ -41,8 +41,9 @@
         protected const string TrialTest = "Test.000";
         protected const string CsProjFileSearchPattern = "*.csproj";
         protected const string NUnitReference =
-            "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
-
+            "nunit.framework, Version=3.8.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+        protected const string EntityFrameworkCoreInMemory =
+                "Microsoft.EntityFrameworkCore.InMemory, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL";
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts the number of total and passed tests 
@@ -224,14 +225,8 @@
             }
 
             project.SetProperty("OutputType", "Library");
-            var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
-            if (nUnitPrevReference != null)
-            {
-                project.RemoveItem(nUnitPrevReference);
-            }
 
-            // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            this.AddProjectReferences(project, NUnitReference);
+            this.AddProjectReferences(project, NUnitReference, EntityFrameworkCoreInMemory);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items
@@ -247,6 +242,7 @@
 
         protected void AddProjectReferences(Project project, params string[] references)
         {
+            this.RemoveExistingReferences(project, references);
             var referenceMetaData = new Dictionary<string, string>();
             foreach (var reference in references)
             {
@@ -261,9 +257,9 @@
         {
             foreach (var test in tests)
             {
-                string testName = JavaCodePreprocessorHelper.GetClassName(test.Input);
+                string testName = CSharpPreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
-            }           
+            }
         }
 
         protected void EnsureAssemblyNameIsCorrect(Project project)
@@ -277,6 +273,19 @@
             var csProjFullpath = project.FullPath;
             var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
+        }
+
+        private void RemoveExistingReferences(Project project, string[] references)
+        {
+            foreach (var reference in references)
+            {
+                var referenceName = reference.Substring(0, reference.IndexOf(","));
+                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
+                if (existingReference != null)
+                {
+                    project.RemoveItem(existingReference);
+                }
+            }
         }
 
         private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)

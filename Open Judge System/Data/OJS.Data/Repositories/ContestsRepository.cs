@@ -14,33 +14,29 @@
         {
         }
 
-        public IQueryable<Contest> AllActive()
-        {
-            return
-                this.All()
-                    .Where(x => x.StartTime <= DateTime.Now && DateTime.Now <= x.EndTime && x.IsVisible);
-        }
+        public IQueryable<Contest> AllActive() =>
+            this.All()
+                .Where(c =>
+                    !c.IsDeleted &&
+                    c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    DateTime.Now <= c.EndTime);
 
-        public IQueryable<Contest> AllFuture()
-        {
-            return this.All().Where(x => x.StartTime > DateTime.Now && x.IsVisible);
-        }
+        public IQueryable<Contest> AllInactive() =>
+            this.All()
+                .Where(c =>
+                    !c.IsDeleted &&
+                    (c.StartTime > DateTime.Now || c.EndTime < DateTime.Now));
 
-        public IQueryable<Contest> AllPast()
-        {
-            return this.All().Where(x => x.EndTime < DateTime.Now && x.IsVisible);
-        }
+        public IQueryable<Contest> AllUpcoming() =>
+            this.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
 
-        public IQueryable<Contest> AllVisible()
-        {
-            return this.All()
-                .Where(x => x.IsVisible);
-        }
+        public IQueryable<Contest> AllPast() =>
+            this.All().Where(c => !c.IsDeleted && c.EndTime < DateTime.Now && c.IsVisible);
 
-        public IQueryable<Contest> AllVisibleInCategory(int categoryId)
-        {
-            return this.All()
-                .Where(x => x.IsVisible && x.CategoryId == categoryId);
-        }
+        public IQueryable<Contest> AllVisible() => this.All().Where(c => c.IsVisible);
+
+        public IQueryable<Contest> AllVisibleByCategory(int categoryId) =>
+            this.All().Where(c => c.IsVisible && c.CategoryId == categoryId);
     }
 }

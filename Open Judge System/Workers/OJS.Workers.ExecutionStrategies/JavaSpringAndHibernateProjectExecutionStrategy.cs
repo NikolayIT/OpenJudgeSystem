@@ -29,23 +29,22 @@
         private const string PomXmlBuildSettingsPattern = @"<build>(?s:.)*<\/build>";
 
         private const string MavenBuildOutputPattern = @"\[INFO\] BUILD (\w+)";
-        private const string MavenBuildErrorPattern = @"(?:\[ERROR\] (.*))";
-
         private static readonly string JUnitFailedTestPattern =
             $@"There was (?:\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
+
+        private static readonly string MavenBuildErrorPattern = $@"\[ERROR\](?:\s)*((?:.*){Environment.NewLine})*(?=\[INFO\]\s\d)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibsPath,
+            string javaLibrariesPath,
             string mavenPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibsPath)
+            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
         {
             this.MavenPath = mavenPath;
-            this.ClassPath = $"-cp {this.JavaLibsPath}*;{this.WorkingDirectory}\\target\\* ";
         }
 
-        // GroupId - > ArtifactId,Version
+        // Property contains Dictionary<GroupId, Tuple<ArtifactId, Version>>
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
@@ -132,6 +131,8 @@
         </plugins>
     </build>";
 
+        protected override string ClassPath => $"-cp {this.JavaLibrariesPath}*;{this.WorkingDirectory}\\target\\* ";
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -174,7 +175,7 @@
             Match compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
             Match errorMatch = mavenBuildErrors.Match(packageExecutionResult.ReceivedOutput);
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
-            result.CompilerComment = $"{errorMatch.Groups[1]}";
+            result.CompilerComment = $"{errorMatch.Groups[0]}";
 
             if (!result.IsCompiledSuccessfully)
             {
@@ -308,7 +309,7 @@
 
         protected void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string mainClassFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
@@ -374,7 +375,7 @@
 
         protected void PreparePomXml(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectory();
+            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
             string pomXmlFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,

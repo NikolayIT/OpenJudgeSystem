@@ -15,12 +15,10 @@
         }
 
         [Column("FirstName")]
-        [MinLength(GlobalConstants.NameMinLength)]
         [MaxLength(GlobalConstants.NameMaxLength)]
         public string FirstName { get; set; }
 
         [Column("LastName")]
-        [MinLength(GlobalConstants.NameMinLength)]
         [MaxLength(GlobalConstants.NameMaxLength)]
         public string LastName { get; set; }
 

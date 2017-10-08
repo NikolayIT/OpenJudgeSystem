@@ -1,6 +1,7 @@
 ﻿namespace OJS.Common
 {
     using System;
+    using System.IO;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
@@ -75,6 +76,9 @@
         public const string ExecutableFileExtension = ".exe";
         public const string ClassLibraryFileExtension = ".dll";
 
+        // Folder names
+        public const string ExecutionStrategiesFolderName = "ExecutionStrategies";
+
         // News
         public const int NewsTitleMaxLength = 200;
         public const int NewsTitleMinLength = 1;
@@ -133,5 +137,10 @@
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
         public static readonly string CSharpFileExtension = $".{CompilerType.CSharp.GetFileExtension()}";
         public static readonly string ClassDelimiter = $"~~!!!==#==!!!~~{Environment.NewLine}";
+
+        // Temp Directory folder paths
+        public static readonly string ExecutionStrategiesWorkingDirectoryPath =
+            Path.Combine(Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine),
+                ExecutionStrategiesFolderName);
     }
 }

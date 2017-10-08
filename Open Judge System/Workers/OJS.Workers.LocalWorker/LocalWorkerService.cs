@@ -3,15 +3,15 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.ServiceProcess;
     using System.Threading;
 
-    using EntityFramework.Extensions;
     using log4net;
 
+    using OJS.Common;
     using OJS.Data;
-    using OJS.Data.Models;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -24,6 +24,7 @@
             logger = LogManager.GetLogger("LocalWorkerService");
             logger.Info("LocalWorkerService initializing...");
             this.ResetAllProcessingSubmissions();
+            this.CreateExecutionStrategiesWorkingDirectory();
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
@@ -106,6 +107,20 @@
                         logger.ErrorFormat("Clearing Processing submissions failed with exception {0}", e.Message);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Creates folder in the Temp directory if not already created,
+        /// in which all strategies create their own working directories
+        /// making easier the deletion of left-over files by the background job
+        /// </summary>
+        private void CreateExecutionStrategiesWorkingDirectory()
+        {
+            var path = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
         }
     }

@@ -9,12 +9,14 @@
     {
         IQueryable<Contest> AllActive();
 
-        IQueryable<Contest> AllFuture();
+        IQueryable<Contest> AllInactive();
+
+        IQueryable<Contest> AllUpcoming();
 
         IQueryable<Contest> AllPast();
 
         IQueryable<Contest> AllVisible();
 
-        IQueryable<Contest> AllVisibleInCategory(int categoryId);
+        IQueryable<Contest> AllVisibleByCategory(int categoryId);
     }
 }
