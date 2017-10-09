@@ -542,43 +542,65 @@
         }
 
         [HttpGet]
-        public ActionResult Retest(int id)
-        {
-            return this.View("RetestConfirmation");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Retest(int? id)
         {
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var problem = this.Data.Problems
                 .All()
-                .AsNoTracking()
+                .Select(ProblemRetestViewModel.FromProblem)
                 .FirstOrDefault(pr => pr.Id == id);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var submissionIds = problem.Submissions.Where(s => !s.IsDeleted).Select(s => s.Id).ToList();
+            if (this.HttpContext.Request.UrlReferrer != null)
+            {
+                this.ViewBag.ReturnUrl = this.HttpContext.Request.UrlReferrer.AbsolutePath;
+            }
+
+            return this.View("RetestConfirmation", problem);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Retest(ProblemRetestViewModel model)
+        {
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
+            var problem = this.Data.Problems.All().AsNoTracking().FirstOrDefault(p => p.Id == model.Id);
+
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
+            var submissionIds = problem
+                .Submissions
+                .Select(s => s.Id)
+                .AsEnumerable();
 
             using (var scope = new TransactionScope())
             {
-                this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
+                this.Data.ParticipantScores.DeleteParticipantScores(model.Id);
                 this.Data.SaveChanges();
 
                 try
@@ -590,7 +612,7 @@
                 {
                     this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
                 }
-                
+
                 this.Data.SaveChanges();
 
                 scope.Complete();
