@@ -31,7 +31,7 @@
 
             this.CreateExecutionStrategiesWorkingDirectory();
             this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
-            this.PopulateJobsAndThreads(this.jobs, this.threads, submissionsForProcessing);
+            this.SpawnJobsAndThreads(this.jobs, this.threads, submissionsForProcessing);
 
             logger.Info("LocalWorkerService initialized.");
         }
@@ -58,9 +58,9 @@
             logger.Info("LocalWorkerService stopped.");
         }
 
-        private void PopulateJobsAndThreads(
-            ICollection<IJob> jobsToPopulate,
-            ICollection<Thread> threadsToPopulate,
+        private void SpawnJobsAndThreads(
+            ICollection<IJob> jobsToSpawn,
+            ICollection<Thread> threadsToSpawn,
             ConcurrentQueue<int> submissionsForProcessing)
         {
             for (var i = 1; i <= Settings.ThreadsCount; i++)
@@ -71,8 +71,8 @@
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 
-                jobsToPopulate.Add(job);
-                threadsToPopulate.Add(thread);
+                jobsToSpawn.Add(job);
+                threadsToSpawn.Add(thread);
             }
         }
 

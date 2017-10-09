@@ -71,7 +71,7 @@
             }
         }
 
-        public void ResetForProcessing(int id)
+        public void ResetProcessingStatus(int id)
         {
             var submissionForProcessing = this.submissionsForProcessing.GetById(id);
             if (submissionForProcessing != null)

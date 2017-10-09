@@ -32,7 +32,7 @@
                 {
                     foreach (var submissionForProcessingId in allProcessingSubmissionIds)
                     {
-                        this.submissionsForProcessingData.ResetForProcessing(submissionForProcessingId);
+                        this.submissionsForProcessingData.ResetProcessingStatus(submissionForProcessingId);
                     }
                 }
                 catch (Exception ex)

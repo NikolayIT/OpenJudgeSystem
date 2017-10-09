@@ -22,7 +22,7 @@
 
         void SetToProcessed(int id);
 
-        void ResetForProcessing(int id);
+        void ResetProcessingStatus(int id);
 
         void Clean();
     }
