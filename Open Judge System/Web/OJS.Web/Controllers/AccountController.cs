@@ -83,29 +83,17 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult Register() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(RegisterViewModel model, bool captchaValid)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult Register(RegisterViewModel model, bool captchaValid) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        public ActionResult Disassociate(string loginProvider, string providerKey)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult Disassociate(string loginProvider, string providerKey) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
-        public ActionResult Manage()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult Manage() => this.RedirectToExternalSystemMessage();
 
         /// <summary>
         /// Informs the user that the registration proccess is 
@@ -113,51 +101,30 @@
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ExternalNotify()
-        {
-            return this.View();
-        }
+        public ActionResult ExternalNotify() => this.View();
 
         [HttpPost]
-        public ActionResult Manage(ManageUserViewModel model)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult Manage(ManageUserViewModel model) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ExternalLogin(string provider, string returnUrl) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ExternalLoginCallback(string returnUrl)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ExternalLoginCallback(string returnUrl) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        public ActionResult LinkLogin(string provider)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult LinkLogin(string provider) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
-        public ActionResult LinkLoginCallback()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult LinkLoginCallback() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
         public ActionResult ExternalLoginConfirmation(
             ExternalLoginConfirmationViewModel model,
-            string returnUrl)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+            string returnUrl) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         public ActionResult LogOff()
@@ -168,69 +135,39 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return this.View();
-        }
+        public ActionResult ExternalLoginFailure() => this.View();
 
         [ChildActionOnly]
-        public ActionResult RemoveAccountList()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult RemoveAccountList() => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ForgottenPassword()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ForgottenPassword() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ForgottenPassword(string emailOrUsername)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ForgottenPassword(string emailOrUsername) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ChangePassword(string token)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangePassword(string token) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ChangePassword(ForgottenPasswordViewModel model)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangePassword(ForgottenPasswordViewModel model) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
-        public ActionResult ChangeEmail()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangeEmail() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        public ActionResult ChangeEmail(ChangeEmailViewModel model)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangeEmail(ChangeEmailViewModel model) => this.RedirectToExternalSystemMessage();
 
         [HttpGet]
         [Authorize]
-        public ActionResult ChangeUsername()
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangeUsername() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        public ActionResult ChangeUsername(ChangeUsernameViewModel model)
-        {
-            return this.RedirectToExternalSystemMessage();
-        }
+        public ActionResult ChangeUsername(ChangeUsernameViewModel model) => this.RedirectToExternalSystemMessage();
 
         protected override void Dispose(bool disposing)
         {
@@ -243,10 +180,10 @@
             base.Dispose(disposing);
         }
 
-        private ActionResult RedirectToExternalSystemMessage()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-        }
+        private ActionResult RedirectToExternalSystemMessage() => this.RedirectToAction(
+            nameof(this.ExternalNotify),
+            "Account",
+            new { area = string.Empty });
 
         private void AddOrUpdateUser(UserProfile user)
         {
