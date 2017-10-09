@@ -21,7 +21,7 @@
         </div>
         <div class="editor-label">
             <div>
-                <input type="submit" class="btn btn-primary pull-left" value="@Resource.Retest" />
+                <input type="submit" class="btn btn-primary pull-left" value="@Resource.Retest" onclick="this.disabled = true; this.form.submit();" />
             </div>
             <div class="col-xs-4">
                 <a href=@ViewBag.ReturnUrl class="btn btn-primary">@SharedResource.Cancel</a>

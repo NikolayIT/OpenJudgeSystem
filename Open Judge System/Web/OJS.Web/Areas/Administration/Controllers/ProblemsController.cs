@@ -552,6 +552,7 @@
 
             var problem = this.Data.Problems
                 .All()
+                .AsNoTracking()
                 .Select(ProblemRetestViewModel.FromProblem)
                 .FirstOrDefault(pr => pr.Id == id);
 
@@ -585,7 +586,10 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems.All().AsNoTracking().FirstOrDefault(p => p.Id == model.Id);
+            var problem = this.Data.Problems
+                .All()
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Id == model.Id);
 
             if (problem == null)
             {
