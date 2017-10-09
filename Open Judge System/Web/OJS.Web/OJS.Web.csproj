@@ -806,6 +806,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsPartials.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.bg.designer.cs">
+      <DependentUpon>ProblemsRetest.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -855,6 +860,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsEdit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.designer.cs">
+      <DependentUpon>ProblemsRetest.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1604,6 +1614,7 @@
     <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\ProblemRetestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ShortContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
@@ -2108,6 +2119,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestTransfer.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestTransfer.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2323,6 +2335,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsPartials.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2334,6 +2347,11 @@
       <LastGenOutput>SubmissionTypeViewModel.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.EditorTemplates</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsRetest.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2384,6 +2402,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsEdit.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsRetest.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -1,31 +1,31 @@
-﻿@{
-    ViewBag.Title = "Retest";
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsRetest;
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+
+@model OJS.Web.Areas.Administration.ViewModels.Problem.ProblemRetestViewModel
+
+@{
+    ViewBag.Title = Resource.Retest;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-</head>
-<body>
+<h1 class="text-danger">&nbsp;<span class="glyphicon glyphicon-warning-sign"></span> @ViewBag.Title</h1>
+<p><span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;<strong>@Model.ContestName</strong></p>
+<div class="container ">
     @using (Html.BeginForm("Retest", "Problems", new { area = "Administration" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
+        @Html.HiddenFor(p => p.ContestId)
 
         <div class="alert">
-            Сигурни ли сте, че искате Ретест?
+            <p>@Html.Raw(string.Format(Resource.Retest_confirmation_message, Model.SubmissionsCount, Model.Name))</p>
         </div>
-        <div class="row">
-            <div class="editor-label col-xs-3">
-                <button type="submit" class="btn btn-primary pull-right">Retest</button>
+        <div class="editor-label">
+            <div>
+                <input type="submit" class="btn btn-primary pull-left" value="@Resource.Retest" />
             </div>
-            <div class="editor-label col-xs-4">
-                <a href=@ViewBag.ReturnUrl class="btn btn-primary">Cancel</a>
+            <div class="col-xs-4">
+                <a href=@ViewBag.ReturnUrl class="btn btn-primary">@SharedResource.Cancel</a>
             </div>
         </div>
     }
-</body>
-</html>
+</div>
