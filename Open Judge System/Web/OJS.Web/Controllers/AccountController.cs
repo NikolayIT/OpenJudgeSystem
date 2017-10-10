@@ -35,7 +35,6 @@
 
         private IAuthenticationManager AuthenticationManager => this.HttpContext.GetOwinContext().Authentication;
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -81,7 +80,6 @@
             return this.View(model);
         }
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult Register() => this.RedirectToExternalSystemMessage();
 
@@ -92,14 +90,12 @@
         [HttpPost]
         public ActionResult Disassociate(string loginProvider, string providerKey) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         public ActionResult Manage() => this.RedirectToExternalSystemMessage();
 
         /// <summary>
         /// Informs the user that the registration proccess is 
         /// disabled on this site and he must register from exturnal source
         /// </summary>
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalNotify() => this.View();
 
@@ -110,14 +106,12 @@
         [AllowAnonymous]
         public ActionResult ExternalLogin(string provider, string returnUrl) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalLoginCallback(string returnUrl) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         public ActionResult LinkLogin(string provider) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         public ActionResult LinkLoginCallback() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
@@ -133,14 +127,12 @@
             return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure() => this.View();
 
         [ChildActionOnly]
         public ActionResult RemoveAccountList() => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgottenPassword() => this.RedirectToExternalSystemMessage();
 
@@ -148,7 +140,6 @@
         [AllowAnonymous]
         public ActionResult ForgottenPassword(string emailOrUsername) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ChangePassword(string token) => this.RedirectToExternalSystemMessage();
 
@@ -156,13 +147,11 @@
         [AllowAnonymous]
         public ActionResult ChangePassword(ForgottenPasswordViewModel model) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         public ActionResult ChangeEmail() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         public ActionResult ChangeEmail(ChangeEmailViewModel model) => this.RedirectToExternalSystemMessage();
 
-        [HttpGet]
         [Authorize]
         public ActionResult ChangeUsername() => this.RedirectToExternalSystemMessage();
 
