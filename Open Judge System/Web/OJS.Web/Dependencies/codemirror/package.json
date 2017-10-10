@@ -6,19 +6,19 @@
     ]
   ],
   "_from": "codemirror@>=5.29.0-0 <6.0.0-0",
-  "_id": "codemirror@5.29.0",
+  "_id": "codemirror@5.30.0",
   "_inCache": true,
   "_location": "/codemirror",
-  "_nodeVersion": "6.9.1",
+  "_nodeVersion": "8.4.0",
   "_npmOperationalInternal": {
     "host": "s3://npm-registry-packages",
-    "tmp": "tmp/codemirror-5.29.0.tgz_1503575187064_0.6573793694842607"
+    "tmp": "tmp/codemirror-5.30.0.tgz_1505899683657_0.2515621967613697"
   },
   "_npmUser": {
     "email": "marijnh@gmail.com",
     "name": "marijn"
   },
-  "_npmVersion": "5.3.0",
+  "_npmVersion": "5.4.2",
   "_phantomChildren": {},
   "_requested": {
     "name": "codemirror",
@@ -31,8 +31,8 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/codemirror/-/codemirror-5.29.0.tgz",
-  "_shasum": "e68de1350e2f0ce804a3930576d0ae318736e967",
+  "_resolved": "https://registry.npmjs.org/codemirror/-/codemirror-5.30.0.tgz",
+  "_shasum": "86e57dd5ea5535acbcf9c720797b4cefe05b5a70",
   "_shrinkwrap": null,
   "_spec": "codemirror@^5.29.0",
   "_where": "C:\\Users\\Teodor92\\Desktop\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web",
@@ -41,7 +41,7 @@
   },
   "contributors": [
     {
-      "name": "jwallers@gmail.com"
+      "name": "Justin Hileman"
     },
     {
       "name": "List of CodeMirror contributors. Updated before every release."
@@ -246,6 +246,9 @@
     },
     {
       "name": "AQNOUCH Mohammed"
+    },
+    {
+      "name": "Aram Shatakhtsyan"
     },
     {
       "name": "areos"
@@ -509,6 +512,9 @@
       "name": "Daniel Parnell"
     },
     {
+      "name": "Daniel Thwaites"
+    },
+    {
       "name": "Danila Malyutin"
     },
     {
@@ -683,7 +689,13 @@
       "name": "Forrest Oliphant"
     },
     {
+      "name": "Franco Catena"
+    },
+    {
       "name": "Frank Wiegand"
+    },
+    {
+      "name": "Fredrik Borg"
     },
     {
       "name": "Gabriel Gheorghian"
@@ -807,6 +819,9 @@
     },
     {
       "name": "Ian Beck"
+    },
+    {
+      "name": "Ian Davies"
     },
     {
       "name": "Ian Dickinson"
@@ -1059,10 +1074,10 @@
       "name": "Justin Andresen"
     },
     {
-      "name": "Justin Hileman"
+      "name": "4r2r"
     },
     {
-      "name": "4r2r"
+      "name": "jwallers@gmail.com"
     },
     {
       "name": "kaniga"
@@ -1171,6 +1186,9 @@
     },
     {
       "name": "Lorenzo Stoakes"
+    },
+    {
+      "name": "Louis Mauchet"
     },
     {
       "name": "Luca Fabbri"
@@ -2026,6 +2044,9 @@
       "name": "Wesley Wiser"
     },
     {
+      "name": "Weston Ruter"
+    },
+    {
       "name": "Will Binns-Smith"
     },
     {
@@ -2100,11 +2121,11 @@
     "lib": "./lib"
   },
   "dist": {
-    "integrity": "sha512-nlG9m0YQ0gFhdEdnKDG+XJRB/bW+K6M9Axs01+LScjVamWtd4dEwgyohf/r4voW1efnGi6U6hHHvDQ9tt9BtoA==",
-    "shasum": "e68de1350e2f0ce804a3930576d0ae318736e967",
-    "tarball": "https://registry.npmjs.org/codemirror/-/codemirror-5.29.0.tgz"
+    "integrity": "sha512-pfJV/7fLAUUenuGK3iANkQu1AxNLuWpeF7HV6YFDjSBMp53F8FTa2F6oPs9NKAHFweT2m08usmXUIA+7sohdew==",
+    "shasum": "86e57dd5ea5535acbcf9c720797b4cefe05b5a70",
+    "tarball": "https://registry.npmjs.org/codemirror/-/codemirror-5.30.0.tgz"
   },
-  "gitHead": "ab868db8edda2293ffcda96390bd2cb29e97698f",
+  "gitHead": "a0c562953581be28659ff8517a1d8879d40c56e4",
   "homepage": "http://codemirror.net",
   "installable": true,
   "jspm": {
@@ -2139,5 +2160,5 @@
     "watch": "rollup -w -c"
   },
   "style": "lib/codemirror.css",
-  "version": "5.29.0"
+  "version": "5.30.0"
 }
