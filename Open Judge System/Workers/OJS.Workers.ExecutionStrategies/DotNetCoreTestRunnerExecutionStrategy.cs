@@ -16,7 +16,14 @@
     public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
         private const string DotNetCoreCsProjIdentifierPattern = "<Project";
-
+        private const string DotNetCoreCompiledFileExtention = ".dll";
+        private const string DotNetFrameworkCompiledFileExtention = ".exe";
+        private const string SystemAssembly = "System.dll";
+        private const string SystemCoreAssembly = "System.Core.dll";
+        private const string MsCoreLibAssembly = "mscorlib.dll";
+        private const string LocalTestRunnerCompiledFileFullName = "LocalTestRunner.exe";
+        private const string TestInputPlaceholder = "#testInput#";
+        private const string AllTestsPlaceholder = "#allTests#";
         private const string TestRunnerTemplate = @"namespace LocalDefinedCSharpTestRunner
 {
     using System;
@@ -167,10 +174,16 @@
 
             result.IsCompiledSuccessfully = compileResult.IsCompiledSuccessfully;
 
-            var outputAssemblyPath = this.PreprocessAndCompileTestRunner(executionContext, Path.GetDirectoryName(compileResult.OutputFile));
+            var outputAssemblyPath = this.PreprocessAndCompileTestRunner(
+                executionContext,
+                Path.GetDirectoryName(compileResult.OutputFile));
 
             IExecutor executor = new RestrictedProcessExecutor();
-            var processExecutionResult = executor.Execute(outputAssemblyPath, string.Empty, executionContext.TimeLimit, executionContext.MemoryLimit);
+            var processExecutionResult = executor.Execute(
+                outputAssemblyPath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit);
 
             if (!string.IsNullOrWhiteSpace(processExecutionResult.ErrorOutput))
             {
@@ -192,30 +205,39 @@
             var testStrings = new List<string>();
             foreach (var test in executionContext.Tests)
             {
-                testStrings.Add(TestTemplate.Replace("#testInput#", test.Input));
+                testStrings.Add(TestTemplate.Replace(TestInputPlaceholder, test.Input));
             }
 
             var allTests = string.Join(",", testStrings);
 
-            var testRunnerCode = TestRunnerTemplate.Replace("#allTests#", allTests);
+            var testRunnerCode = TestRunnerTemplate.Replace(AllTestsPlaceholder, allTests);
             var compiler = new CSharpCodeProvider();
             var compilerParameters = new CompilerParameters();
-            compilerParameters.ReferencedAssemblies.Add("mscorlib.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
-            var referencedTypes = Directory.GetFiles(outputDirectory).Where(f => f.EndsWith(".dll") || f.EndsWith(".exe")).ToArray();
+            compilerParameters.ReferencedAssemblies.Add(MsCoreLibAssembly);
+            compilerParameters.ReferencedAssemblies.Add(SystemAssembly);
+            compilerParameters.ReferencedAssemblies.Add(SystemCoreAssembly);
+
+            var referencedTypes = Directory
+                .GetFiles(outputDirectory)
+                .Where(f => f.EndsWith(DotNetCoreCompiledFileExtention) ||
+                    f.EndsWith(DotNetFrameworkCompiledFileExtention))
+                .ToArray();
+
             compilerParameters.ReferencedAssemblies.AddRange(referencedTypes);
             compilerParameters.GenerateInMemory = false;
             compilerParameters.GenerateExecutable = true;
             var compilerResult = compiler.CompileAssemblyFromSource(compilerParameters, testRunnerCode);
 
-            var outputAssemblyPath = outputDirectory + "\\LocalTestRunner.exe";
+            var outputAssemblyPath = $@"{outputDirectory}\{LocalTestRunnerCompiledFileFullName}";
             File.Move(compilerResult.PathToAssembly, outputAssemblyPath);
 
             return outputAssemblyPath;
         }
 
-        private void ProcessTests(ProcessExecutionResult processExecutionResult, ExecutionContext executionContext, ExecutionResult result)
+        private void ProcessTests(
+            ProcessExecutionResult processExecutionResult,
+            ExecutionContext executionContext,
+            ExecutionResult result)
         {
             var jsonResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput, true, true);
 

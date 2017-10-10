@@ -200,8 +200,7 @@
                     Name = ".NET Core Test Runner",
                     CompilerType = CompilerType.DotNetCompiler,
                     AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType =
-                        ExecutionStrategyType.DotNetCoreTestRunner,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreTestRunner,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
