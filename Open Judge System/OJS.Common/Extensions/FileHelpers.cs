@@ -65,7 +65,7 @@
         {
             var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            string discoveredFile = files.First();
+            var discoveredFile = files.First();
 
             return ProcessModulePath(discoveredFile);
         }
@@ -77,7 +77,7 @@
         {
             var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            string discoveredFile = files.OrderByDescending(orderBy).First();
+            var discoveredFile = files.OrderByDescending(orderBy).First();
 
             return ProcessModulePath(discoveredFile);
         }
@@ -90,7 +90,7 @@
         {
             var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
 
-            string discoveredFile = files.Where(where).OrderByDescending(orderBy).First();
+            var discoveredFile = files.Where(where).OrderByDescending(orderBy).First();
 
             return ProcessModulePath(discoveredFile);
         }
@@ -106,7 +106,7 @@
 
         public static IEnumerable<string> GetFilePathsFromZip(string archivePath)
         {
-            using (ZipFile file = new ZipFile(archivePath))
+            using (var file = new ZipFile(archivePath))
             {
                 return file.EntryFileNames;
             }
@@ -114,7 +114,7 @@
 
         public static void RemoveFilesFromZip(string pathToArchive, string pattern)
         {
-            using (ZipFile file = new ZipFile(pathToArchive))
+            using (var file = new ZipFile(pathToArchive))
             {
                 file.RemoveSelectedEntries(pattern);
                 file.Save();
@@ -136,7 +136,7 @@
         {
             using (var zip = new ZipFile(pathToArchive))
             {
-                ZipEntry entryToExtract = zip.Entries.FirstOrDefault(f => f.FileName.EndsWith(fileName));
+                var entryToExtract = zip.Entries.FirstOrDefault(f => f.FileName.EndsWith(fileName));
                 if (entryToExtract == null)
                 {
                     throw new FileNotFoundException($"{fileName} not found in submission!");
@@ -144,10 +144,7 @@
 
                 entryToExtract.Extract(destinationDirectory);
 
-                string extractedFilePathOld =
-                    Directory.EnumerateFiles(destinationDirectory, fileName, SearchOption.AllDirectories)
-                        .FirstOrDefault();
-                string extractedFilePath = $"{destinationDirectory}\\{entryToExtract.FileName.Replace("/", "\\")}";
+                var extractedFilePath = $"{destinationDirectory}\\{entryToExtract.FileName.Replace("/", "\\")}";
 
                 return extractedFilePath;
             }
@@ -165,12 +162,11 @@
             if (files.Count == 0)
             {
                 throw new ArgumentException(
-                    $"'{pattern}' file not found in output directory!",
+                    $@"'{pattern}' file not found in output directory!",
                     nameof(pattern));
             }
 
             return files;
         }
-
     }
 }
