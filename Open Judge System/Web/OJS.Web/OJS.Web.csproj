@@ -209,9 +209,6 @@
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Recaptcha">
-      <HintPath>..\..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
@@ -286,6 +283,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\AccountEmails.bg.Designer.cs">
       <DependentUpon>AccountEmails.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2335,6 +2342,16 @@
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\ContestQuestionType.cshtml" />
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AccessLogs\Views\AccessLogsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessLogsIndex.Designer.cs</LastGenOutput>
