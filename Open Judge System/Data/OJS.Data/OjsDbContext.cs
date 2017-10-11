@@ -22,8 +22,8 @@
         {
         }
 
-        public OjsDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString, throwIfV1Schema:false)
+        protected OjsDbContext(string nameOrConnectionString)
+            : base(nameOrConnectionString, throwIfV1Schema: false)
         {
         }
 

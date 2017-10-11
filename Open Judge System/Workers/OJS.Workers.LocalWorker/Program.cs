@@ -7,11 +7,8 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
-    using Ninject;
-
-    using OJS.Data;
-    using OJS.Services.Business.SubmissionsForProcessing;
-    using OJS.Services.Data.SubmissionsForProcessing;
+    using SimpleInjector;
+    using SimpleInjector.Lifestyles;
 
     internal static class Program
     {
@@ -26,20 +23,13 @@ namespace OJS.Workers.LocalWorker
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
+                
+                var container = new Container();
+                Bootstrap.Start(container);
 
-                using (IKernel kernel = new StandardKernel())
+                using (ThreadScopedLifestyle.BeginScope(container))
                 {
-                    kernel.Bind<IOjsDbContext>().To<OjsDbContext>();
-
-                    kernel
-                        .Bind<ISubmissionsForProcessingDataService>()
-                        .To<SubmissionsForProcessingDataService>();
-
-                    kernel
-                        .Bind<ISubmissionsForProcessingBusinessService>()
-                        .To<SubmissionsForProcessingBusinessService>();
-
-                    var localWorkerService = kernel.Get<LocalWorkerService>();
+                    var localWorkerService = container.GetInstance<LocalWorkerService>();
 
                     // Run the service
                     var servicesToRun = new ServiceBase[] { localWorkerService };
