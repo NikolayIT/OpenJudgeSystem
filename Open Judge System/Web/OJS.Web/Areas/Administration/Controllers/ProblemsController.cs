@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -11,6 +10,8 @@
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
+
+    using EntityFramework.Extensions;
 
     using Ionic.Zip;
 
@@ -552,7 +553,6 @@
 
             var problem = this.Data.Problems
                 .All()
-                .AsNoTracking()
                 .Select(ProblemRetestViewModel.FromProblem)
                 .FirstOrDefault(pr => pr.Id == id);
 
@@ -586,10 +586,7 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems
-                .All()
-                .AsNoTracking()
-                .FirstOrDefault(p => p.Id == model.Id);
+            var problem = this.Data.Problems.GetById(model.Id);
 
             if (problem == null)
             {
@@ -607,18 +604,16 @@
                 this.Data.ParticipantScores.DeleteParticipantScores(model.Id);
                 this.Data.SaveChanges();
 
-                try
+                this.Data.Context.Submissions
+                    .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
+                    .Update(x => new Submission { Processed = false });
+
+                foreach (var submissionId in submissionIds)
                 {
-                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                    submissionIds.ForEach(this.SetSubmissionForRetest);
-                }
-                finally
-                {
-                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
+                    this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
                 }
 
                 this.Data.SaveChanges();
-
                 scope.Complete();
             }
 
@@ -865,18 +860,6 @@
             {
                 this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
-        }
-
-        private void SetSubmissionForRetest(int submissionId)
-        {
-            var submission = this.Data.Submissions.GetById(submissionId);
-
-            submission.Processed = false;
-
-            var submissionEntry = this.Data.Context.Entry(submission);
-            submissionEntry.Property(pr => pr.Processed).IsModified = true;
-
-            this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
