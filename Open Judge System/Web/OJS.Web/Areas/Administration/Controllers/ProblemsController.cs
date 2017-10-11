@@ -596,6 +596,7 @@
 
             var submissionIds = problem
                 .Submissions
+                .Where(s => !s.IsDeleted)
                 .Select(s => s.Id)
                 .AsEnumerable();
 
@@ -608,9 +609,17 @@
                     .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
                     .Update(x => new Submission { Processed = false });
 
-                foreach (var submissionId in submissionIds)
+                try
                 {
-                    this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
+                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                    foreach (var submissionId in submissionIds)
+                    {
+                        this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
+                    }
+                }
+                finally
+                {
+                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
                 }
 
                 this.Data.SaveChanges();
