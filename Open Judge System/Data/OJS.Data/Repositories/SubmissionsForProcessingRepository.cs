@@ -1,5 +1,7 @@
 ﻿namespace OJS.Data.Repositories
 {
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -25,12 +27,48 @@
             }
             else
             {
-                submissionForProcessing = new SubmissionForProcessing()
+                submissionForProcessing = new SubmissionForProcessing
                 {
                     SubmissionId = submissionId
                 };
+
                 this.Context.SubmissionsForProcessing.Add(submissionForProcessing);
             }
+        }
+
+        public void BulkAddOrUpdate(IEnumerable<int> submissionIds)
+        {
+            try
+            {
+                this.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                foreach (var submissionId in submissionIds)
+                {
+                    var submissionForProcessing = this.Context.SubmissionsForProcessing
+                        .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+                    if (submissionForProcessing != null)
+                    {
+                        this.Context.Entry(submissionForProcessing).Entity.Processed = false;
+                        this.Context.Entry(submissionForProcessing).Entity.Processing = false;
+                        this.Context.Entry(submissionForProcessing).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        submissionForProcessing = new SubmissionForProcessing
+                        {
+                            SubmissionId = submissionId
+                        };
+
+                        this.Context.Entry(submissionForProcessing).State = EntityState.Added;
+                        this.Context.SubmissionsForProcessing.Add(submissionForProcessing);
+                    }
+                }
+            }
+            finally
+            {
+                this.Context.SaveChanges();
+                this.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
+            }           
         }
 
         public void Remove(int submissionId)

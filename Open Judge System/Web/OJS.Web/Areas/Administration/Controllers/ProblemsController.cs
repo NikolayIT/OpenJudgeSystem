@@ -609,20 +609,8 @@
                     .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
                     .Update(x => new Submission { Processed = false });
 
-                try
-                {
-                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                    foreach (var submissionId in submissionIds)
-                    {
-                        this.Data.SubmissionsForProcessing.AddOrUpdate(submissionId);
-                    }
-                }
-                finally
-                {
-                    this.Data.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                }
+                this.Data.SubmissionsForProcessing.BulkAddOrUpdate(submissionIds);
 
-                this.Data.SaveChanges();
                 scope.Complete();
             }
 
