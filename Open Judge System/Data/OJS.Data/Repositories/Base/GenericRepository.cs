@@ -115,6 +115,8 @@
             entry.State = EntityState.Detached;
         }
 
+        public int SaveChanges() => this.Context.SaveChanges();
+
         /// <summary>
         /// This method updates database values by using expression. It works with both anonymous and class objects.
         /// It is used in one of the following ways:

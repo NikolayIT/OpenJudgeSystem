@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{93034417-0AAA-4E72-84EA-767DB4EF5283}"
 EndProject
@@ -86,6 +86,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Models.Tests", "Tests\OJS.Data.Models.Tests\OJS.Data.Models.Tests.csproj", "{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Services.Common", "OJS.Services.Common\OJS.Services.Common.csproj", "{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{C2202A63-6CAA-49DA-B60B-FB855F8AB1EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Services", "OJS.Services\OJS.Services.csproj", "{44659A90-F81E-4007-8729-C37F4F650A81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -213,6 +217,10 @@ Global
 		{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44659A90-F81E-4007-8729-C37F4F650A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44659A90-F81E-4007-8729-C37F4F650A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44659A90-F81E-4007-8729-C37F4F650A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44659A90-F81E-4007-8729-C37F4F650A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -246,6 +254,8 @@ Global
 		{8EB6D313-B16D-4F4C-9187-F58BFE5292CB} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{757DED16-A6CC-4686-B9AF-496A409F5A47} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
 		{1E19D588-2F3D-4CFE-A377-E21D3D6A1BB4} = {9DAC057C-7607-48F0-B961-70BAAF4C368A}
+		{A7DE52AC-62E7-43F0-8F73-047728EB5AF2} = {C2202A63-6CAA-49DA-B60B-FB855F8AB1EC}
+		{44659A90-F81E-4007-8729-C37F4F650A81} = {C2202A63-6CAA-49DA-B60B-FB855F8AB1EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B5311A49-0404-4F3C-8303-22F50BEE9DFD}

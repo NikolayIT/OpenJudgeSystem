@@ -21,6 +21,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
@@ -38,14 +39,21 @@
     /// </summary>
     public class TestsController : LecturerBaseController
     {
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsController"/> class.
         /// </summary>
         /// <param name="data">Open Judge System Database context for the control
         /// ler to work with</param>
-        public TestsController(IOjsData data)
+        /// <param name="submissionsForProcessingData">ISubmissionsForProcessingDataService
+        /// for the controller to work with the SubmissionsForProcessing table via a service</param>
+        public TestsController(
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         /// <summary>
@@ -877,7 +885,7 @@
             foreach (var submission in submissions)
             {
                 submission.Processed = false;
-                this.Data.SubmissionsForProcessing.AddOrUpdate(submission.Id);
+                this.submissionsForProcessingData.AddOrUpdate(submission.Id);
             }          
         }
     }
