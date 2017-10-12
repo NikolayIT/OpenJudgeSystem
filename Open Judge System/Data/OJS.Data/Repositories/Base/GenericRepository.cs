@@ -109,8 +109,6 @@
 
         public int SaveChanges() => this.Context.SaveChanges();
 
-        public DbEntityEntry<T> GetEntry(T entity) => this.Context.Entry(entity);
-
         /// <summary>
         /// This method updates database values by using expression. It works with both anonymous and class objects.
         /// It is used in one of the following ways:

@@ -1,7 +1,6 @@
 ﻿namespace OJS.Services.Data.SubmissionsForProcessing
 {
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -23,25 +22,11 @@
 
         public void AddOrUpdate(int submissionId)
         {
-            var submissionForProcessing = this.GetBySubmissionId(submissionId);
-
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = false;
-            }
-            else
-            {
-                submissionForProcessing = new SubmissionForProcessing
-                {
-                    SubmissionId = submissionId
-                };
-
-                this.submissionsForProcessing.Add(submissionForProcessing);
-                this.submissionsForProcessing.SaveChanges();
-            }
+            this.AddOrUpdateWithNoSaveChanges(submissionId);
+            this.submissionsForProcessing.SaveChanges();
         }
 
+        //used optimization from this article https://msdn.microsoft.com/en-us/data/jj556205 for better performance
         public void AddOrUpdate(IEnumerable<int> submissionIds)
         {
             try
@@ -49,32 +34,15 @@
                 this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = false;
                 foreach (var submissionId in submissionIds)
                 {
-                    var submissionForProcessing = this.GetBySubmissionId(submissionId);
-
-                    if (submissionForProcessing != null)
-                    {
-                        var entry = this.submissionsForProcessing.GetEntry(submissionForProcessing);
-                        entry.Entity.Processed = false;
-                        entry.Entity.Processing = false;
-
-                        entry.State = EntityState.Modified;
-                    }
-                    else
-                    {
-                        submissionForProcessing = new SubmissionForProcessing
-                        {
-                            SubmissionId = submissionId
-                        };
-
-                        this.submissionsForProcessing.GetEntry(submissionForProcessing).State = EntityState.Added;
-                    }
+                    this.AddOrUpdateWithNoSaveChanges(submissionId);
                 }
             }
             finally
             {
-                this.submissionsForProcessing.SaveChanges();
                 this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = true;
             }
+
+            this.submissionsForProcessing.SaveChanges();
         }
 
         public void Remove(int submissionId)
@@ -94,6 +62,26 @@
                 .All()
                 .Where(s => s.Processed && !s.Processing)
                 .Delete();
+        }
+
+        private void AddOrUpdateWithNoSaveChanges(int submissionId)
+        {
+            var submissionForProcessing = this.GetBySubmissionId(submissionId);
+
+            if (submissionForProcessing != null)
+            {
+                submissionForProcessing.Processing = false;
+                submissionForProcessing.Processed = false;
+            }
+            else
+            {
+                submissionForProcessing = new SubmissionForProcessing
+                {
+                    SubmissionId = submissionId
+                };
+
+                this.submissionsForProcessing.Add(submissionForProcessing);
+            }
         }
     }
 }
