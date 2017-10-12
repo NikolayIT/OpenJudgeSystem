@@ -1,22 +1,4 @@
 ﻿{
-  "ecmaFeatures": {
-    "binaryLiterals": false,
-    "blockBindings": false,
-    "defaultParams": false,
-    "forOf": false,
-    "generators": false,
-    "objectLiteralComputedProperties": false,
-    "objectLiteralDuplicateProperties": false,
-    "objectLiteralShorthandMethods": false,
-    "objectLiteralShorthandProperties": false,
-    "octalLiterals": false,
-    "regexUFlag": false,
-    "regexYFlag": false,
-    "templateStrings": false,
-    "unicodeCodePointEscapes": false,
-    "jsx": false
-  },
-
   "env": {
     "browser": true,
     "node": false,
@@ -34,10 +16,28 @@
 
   "plugins": [
   ],
-
+  "parserOptions": {
+    "ecmaVersion": 5,
+    "ecmaFeatures": {
+      "binaryLiterals": false,
+      "blockBindings": false,
+      "defaultParams": false,
+      "forOf": false,
+      "generators": false,
+      "objectLiteralComputedProperties": false,
+      "objectLiteralDuplicateProperties": false,
+      "objectLiteralShorthandMethods": false,
+      "objectLiteralShorthandProperties": false,
+      "octalLiterals": false,
+      "regexUFlag": false,
+      "regexYFlag": false,
+      "templateStrings": false,
+      "unicodeCodePointEscapes": false,
+      "jsx": false
+    }
+  },
   "rules": {
     //"yoda": [ "error", "never" ],
-
     "comma-dangle": [ "error", "never" ],
     "no-cond-assign": [ "error", "always" ],
     "no-console": 0,
