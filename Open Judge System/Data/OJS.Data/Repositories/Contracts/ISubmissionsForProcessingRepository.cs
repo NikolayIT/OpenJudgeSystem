@@ -5,8 +5,5 @@
 
     public interface ISubmissionsForProcessingRepository : IRepository<SubmissionForProcessing>
     {
-        void AddOrUpdate(int submissionId);
-
-        void Remove(int submissionId);
     }
 }
