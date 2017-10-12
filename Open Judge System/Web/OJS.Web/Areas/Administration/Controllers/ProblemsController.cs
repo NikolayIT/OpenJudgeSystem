@@ -614,7 +614,7 @@
                     .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
                     .Update(x => new Submission { Processed = false });
 
-                this.Data.SubmissionsForProcessing.AddOrUpdate(submissionIds);
+                this.submissionsForProcessingData.AddOrUpdate(submissionIds);
 
                 scope.Complete();
             }

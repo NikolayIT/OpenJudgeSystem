@@ -36,40 +36,6 @@
             }
         }
 
-        public void AddOrUpdate(IEnumerable<int> submissionIds)
-        {
-            try
-            {
-                this.Context.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                foreach (var submissionId in submissionIds)
-                {
-                    var submissionForProcessing = this.Context.SubmissionsForProcessing
-                        .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
-
-                    if (submissionForProcessing != null)
-                    {
-                        this.Context.Entry(submissionForProcessing).Entity.Processed = false;
-                        this.Context.Entry(submissionForProcessing).Entity.Processing = false;
-                        this.Context.Entry(submissionForProcessing).State = EntityState.Modified;
-                    }
-                    else
-                    {
-                        submissionForProcessing = new SubmissionForProcessing
-                        {
-                            SubmissionId = submissionId
-                        };
-
-                        this.Context.Entry(submissionForProcessing).State = EntityState.Added;
-                    }
-                }
-            }
-            finally
-            {
-                this.Context.SaveChanges();
-                this.Context.DbContext.Configuration.AutoDetectChangesEnabled = true;
-            }           
-        }
-
         public void Remove(int submissionId)
         {
             var submissionForProcessing = this.Context.SubmissionsForProcessing
