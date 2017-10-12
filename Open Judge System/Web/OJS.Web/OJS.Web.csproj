@@ -209,9 +209,6 @@
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Recaptcha">
-      <HintPath>..\..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
@@ -286,6 +283,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\AccountEmails.bg.Designer.cs">
       <DependentUpon>AccountEmails.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1683,6 +1690,7 @@
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
+    <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
@@ -2346,6 +2354,16 @@
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\ContestQuestionType.cshtml" />
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AccessLogs\Views\AccessLogsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessLogsIndex.Designer.cs</LastGenOutput>
@@ -3145,6 +3163,7 @@
     <Folder Include="App_GlobalResources\Areas\Administration\Shared\Views\EditorTemplates\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
+    <Folder Include="Views\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3704,6 +3723,10 @@
     <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
       <Name>OJS.Services.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
+      <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
+      <Name>OJS.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj">
       <Project>{a1f48412-495a-434c-bdd0-e70aedad6897}</Project>

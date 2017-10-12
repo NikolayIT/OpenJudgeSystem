@@ -95,10 +95,6 @@
     <Compile Include="Configurations\ParticipantScoresConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
-    <Compile Include="Migrations\201708301414567_IdentityMigration.cs" />
-    <Compile Include="Migrations\201708301414567_IdentityMigration.Designer.cs">
-      <DependentUpon>201708301414567_IdentityMigration.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
@@ -147,11 +143,6 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708301414567_IdentityMigration.resx">
-      <DependentUpon>201708301414567_IdentityMigration.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

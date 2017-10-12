@@ -35,18 +35,12 @@
         }
 
         [HttpPost]
-        ////[RecaptchaControlMvc.CaptchaValidator]
         [RestrictRequests(
             RequestsPerInterval = RequestsPerInterval,
             RestrictInterval = RestrictInterval,
             ErrorMessage = "Прекалено много заявки. Моля, опитайте по-късно.")]
         public ActionResult Index(FeedbackViewModel model, bool? captchaValid = null)
         {
-            ////if (!captchaValid)
-            ////{
-            ////    this.ModelState.AddModelError("Captcha", Resource.FeedbackIndex.Invalid_captcha);
-            ////}
-
             if (this.ModelState.IsValid)
             {
                 var report = new FeedbackReport

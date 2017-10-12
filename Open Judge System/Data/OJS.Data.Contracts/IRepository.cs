@@ -29,6 +29,8 @@
 
         void Detach(T entity);
 
+        int SaveChanges();
+
         void UpdateValues(Expression<Func<T, object>> entity);
     }
 }

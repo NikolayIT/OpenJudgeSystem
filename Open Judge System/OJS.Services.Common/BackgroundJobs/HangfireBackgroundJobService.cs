@@ -5,12 +5,16 @@
 
     using Hangfire;
 
-    using OJS.Services.Common.BackgroundJobs.Contracts;
-    public class HangfireBackgroundJobService : IBackgroundJobService
+    public class HangfireBackgroundJobService : IHangfireBackgroundJobService
     {
         public void AddOrUpdateRecurringJob(
             object recurringJobId,
             Expression<Action> methodCall,
+            string cronExpression) => RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
+
+        public void AddOrUpdateRecurringJob<T>(
+            object recurringJobId,
+            Expression<Action<T>> methodCall,
             string cronExpression) => RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
     }
 }
