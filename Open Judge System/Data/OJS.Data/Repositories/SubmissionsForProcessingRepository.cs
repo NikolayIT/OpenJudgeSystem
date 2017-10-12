@@ -60,7 +60,6 @@
                         };
 
                         this.Context.Entry(submissionForProcessing).State = EntityState.Added;
-                        this.Context.SubmissionsForProcessing.Add(submissionForProcessing);
                     }
                 }
             }
