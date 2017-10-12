@@ -36,7 +36,7 @@
             }
         }
 
-        public void BulkAddOrUpdate(IEnumerable<int> submissionIds)
+        public void AddOrUpdate(IEnumerable<int> submissionIds)
         {
             try
             {

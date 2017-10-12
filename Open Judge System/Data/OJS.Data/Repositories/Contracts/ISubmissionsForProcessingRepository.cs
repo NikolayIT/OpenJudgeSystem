@@ -9,7 +9,7 @@
     {
         void AddOrUpdate(int submissionId);
 
-        void BulkAddOrUpdate(IEnumerable<int> submissionIds);
+        void AddOrUpdate(IEnumerable<int> submissionIds);
 
         void Remove(int submissionId);
     }
