@@ -29,10 +29,10 @@
 
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
-            this.Configuration = context.DbContext.Configuration;
+            this.ContextConfiguration = context.DbContext.Configuration;
         }
 
-        public DbContextConfiguration Configuration { get; }
+        public DbContextConfiguration ContextConfiguration { get; }
 
         protected IDbSet<T> DbSet { get; set; }
 

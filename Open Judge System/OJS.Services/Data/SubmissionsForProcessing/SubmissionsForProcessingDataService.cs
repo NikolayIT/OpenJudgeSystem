@@ -46,7 +46,7 @@
         {
             try
             {
-                this.submissionsForProcessing.Configuration.AutoDetectChangesEnabled = false;
+                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = false;
                 foreach (var submissionId in submissionIds)
                 {
                     var submissionForProcessing = this.GetBySubmissionId(submissionId);
@@ -73,7 +73,7 @@
             finally
             {
                 this.submissionsForProcessing.SaveChanges();
-                this.submissionsForProcessing.Configuration.AutoDetectChangesEnabled = true;
+                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = true;
             }
         }
 
