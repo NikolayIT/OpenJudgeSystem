@@ -1,6 +1,9 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    public class DotNetCoreProjectTestsExecutionStrategy
+    using System;
+    using OJS.Common.Models;
+
+    public class DotNetCoreProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
         // This code will be used in the next testing strategy. DO NOT DELETE!
 
@@ -102,5 +105,20 @@
            
         //     return false;
         // }
+        public DotNetCoreProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc) 
+            : base(getCompilerPathFunc)
+        {
+        }
+
+        public override ExecutionResult Execute(ExecutionContext executionContext)
+        {
+            var result = new ExecutionResult();
+
+            var userSubmission = executionContext.FileContent;
+
+            this.ExtractFilesInWorkingDirectory(userSubmission);
+
+            return result;
+        }
     }
 }

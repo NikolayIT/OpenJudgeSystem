@@ -10,6 +10,7 @@
         CSharpPerformanceProjectTestsExecutionStrategy = 31,
         CSharpTestRunner = 10,
         DotNetCoreProjectExecutionStrategy = 33,
+        DotNetCoreProjectTestsExecutionStrategy = 34,
         CPlusPlusZipFileExecutionStrategy = 26,
         CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
         NodeJsPreprocessExecuteAndCheck = 2,

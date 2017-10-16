@@ -87,11 +87,7 @@
             var result = new ExecutionResult();
             var userSubmissionContent = executionContext.FileContent;
 
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
-            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
-            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
-            File.Delete(submissionFilePath);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent);
 
             var csProjFilePath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
@@ -273,6 +269,15 @@
             var csProjFullpath = project.FullPath;
             var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
             project.SetProperty("AssemblyName", projectName);
+        }
+
+        protected void ExtractFilesInWorkingDirectory(byte[] userSubmissionContent)
+        {
+            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
+            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
+            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            File.Delete(submissionFilePath);
         }
 
         private void RemoveExistingReferences(Project project, string[] references)
