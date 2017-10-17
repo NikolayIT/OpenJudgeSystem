@@ -103,7 +103,7 @@
             this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
 
             this.CorrectProjectReferences(executionContext.Tests, project);
-            this.WriteTestFiles(executionContext, compileDirectory);
+            this.WriteTestFiles(executionContext.Tests, compileDirectory);
 
             this.TestPaths.Add(this.SetupFixturePath);
 
@@ -136,10 +136,10 @@
             return result;
         }
 
-        protected void WriteTestFiles(ExecutionContext executionContext, string compileDirectory)
+        protected void WriteTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
         {       
             var index = 0;
-            foreach (var test in executionContext.Tests)
+            foreach (var test in tests)
             {
                 var testName = this.TestNames[index++];
                 var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
@@ -256,7 +256,7 @@
         {
             foreach (var test in tests)
             {
-                string testName = CSharpPreprocessorHelper.GetClassName(test.Input);
+                var testName = CSharpPreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
             }
         }
@@ -283,6 +283,20 @@
             File.Delete(submissionFilePath);
         }
 
+        protected(int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
+        {
+            var testsSummaryMatcher = new Regex(TestResultsRegex);
+            var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
+            if (testsSummaryMatches.Count == 0)
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
+            var failedTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
+            var totalTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[1].Value);
+            return (totalTestsCount, failedTestsCount);
+        }
+
         protected virtual string GetCsProjFilePath() => FileHelpers.FindFileMatchingPattern(
             this.WorkingDirectory,
             CsProjFileSearchPattern,
@@ -299,20 +313,6 @@
                     project.RemoveItem(existingReference);
                 }
             }
-        }
-
-        private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
-        {
-            var testsSummaryMatcher = new Regex(TestResultsRegex);
-            var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
-            if (testsSummaryMatches.Count == 0)
-            {
-                throw new ArgumentException("The process did not produce any output!");
-            }
-
-            var failedTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
-            var totalTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[1].Value);
-            return (totalTestsCount, failedTestsCount);
         }
     }
 }
