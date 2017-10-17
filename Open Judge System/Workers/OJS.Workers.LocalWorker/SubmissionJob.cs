@@ -438,6 +438,9 @@
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);
                     break;
+                case ExecutionStrategyType.PhpProjectExecutionStrategy:
+                    executionStrategy = new PhpProjectExecutionStrategy(Settings.PhpCliExecutablePath);
+                    break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);
                     break;

@@ -109,6 +109,7 @@
     <Compile Include="NodeJsZipPreprocessExecuteAndRunUnitTestsWithDOMAndMochaExecutionStrategy.cs" />
     <Compile Include="PhpCgiExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="PhpCliExecuteAndCheckExecutionStrategy.cs" />
+    <Compile Include="PhpProjectExecutionStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="ExecutionContext.cs" />
