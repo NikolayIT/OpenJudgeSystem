@@ -26,7 +26,7 @@
             this.submissionsForProcessing.SaveChanges();
         }
 
-        //used optimization from this article https://msdn.microsoft.com/en-us/data/jj556205 for better performance
+        // Used optimization from this article https://msdn.microsoft.com/en-us/data/jj556205 for better performance
         public void AddOrUpdate(IEnumerable<int> submissionIds)
         {
             try
