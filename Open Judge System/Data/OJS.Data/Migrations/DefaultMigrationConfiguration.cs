@@ -416,7 +416,7 @@
                 {
                     Name = ".NET Core Project Tests",
                     CompilerType = CompilerType.DotNetCompiler,
-                    AdditionalCompilerArguments = "--noresult",
+                    AdditionalCompilerArguments = string.Empty,
                     ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",

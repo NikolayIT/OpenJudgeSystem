@@ -56,6 +56,7 @@
         {
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
+            this.TestPaths = new List<string>();
         }
 
         public CSharpProjectTestsExecutionStrategy(
@@ -72,6 +73,7 @@
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
+            this.TestPaths = new List<string>();
         }
 
         protected string NUnitConsoleRunnerPath { get; }
@@ -82,6 +84,8 @@
 
         protected List<string> TestNames { get; }
 
+        protected List<string> TestPaths { get; }
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
@@ -89,10 +93,7 @@
 
             this.ExtractFilesInWorkingDirectory(userSubmissionContent);
 
-            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
-                this.WorkingDirectory,
-                CsProjFileSearchPattern,
-                f => new FileInfo(f).Length);
+            var csProjFilePath = this.GetCsProjFilePath();
 
             this.ExtractTestNames(executionContext.Tests);
 
@@ -102,19 +103,9 @@
             this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
 
             this.CorrectProjectReferences(executionContext.Tests, project);
+            this.WriteTestFiles(executionContext, compileDirectory);
 
-            // Write Test files and SetupFixture           
-            var index = 0;
-            var testPaths = new List<string>();
-            foreach (var test in executionContext.Tests)
-            {
-                var testName = this.TestNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
-                testPaths.Add(testedCodePath);
-                File.WriteAllText(testedCodePath, test.Input);
-            }
-
-            testPaths.Add(this.SetupFixturePath);
+            this.TestPaths.Add(this.SetupFixturePath);
 
             // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
@@ -133,7 +124,7 @@
             }
 
             // Delete tests before execution so the user can't access them
-            FileHelpers.DeleteFiles(testPaths.ToArray());
+            FileHelpers.DeleteFiles(this.TestPaths.ToArray());
 
             var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
@@ -143,6 +134,18 @@
 
             result = this.RunUnitTests(executionContext, executor, checker, result, compilerResult.OutputFile);
             return result;
+        }
+
+        protected void WriteTestFiles(ExecutionContext executionContext, string compileDirectory)
+        {       
+            var index = 0;
+            foreach (var test in executionContext.Tests)
+            {
+                var testName = this.TestNames[index++];
+                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
+                this.TestPaths.Add(testedCodePath);
+                File.WriteAllText(testedCodePath, test.Input);
+            }
         }
 
         protected virtual ExecutionResult RunUnitTests(
@@ -279,6 +282,11 @@
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
         }
+
+        protected virtual string GetCsProjFilePath() => FileHelpers.FindFileMatchingPattern(
+            this.WorkingDirectory,
+            CsProjFileSearchPattern,
+            f => new FileInfo(f).Length);
 
         private void RemoveExistingReferences(Project project, string[] references)
         {
