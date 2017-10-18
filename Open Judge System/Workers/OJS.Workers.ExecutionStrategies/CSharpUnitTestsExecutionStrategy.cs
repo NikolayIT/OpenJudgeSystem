@@ -57,16 +57,26 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result = this.RunUnitTests(executionContext, executor, checker, result, csProjFilePath);
+            result = this.RunUnitTests(
+                this.NUnitConsoleRunnerPath,
+                executionContext,
+                executor,
+                checker,
+                result,
+                csProjFilePath,
+                AdditionalExecutionArguments);
+
             return result;
         }
 
         protected override ExecutionResult RunUnitTests(
+            string consoleRunnerPath,
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string csProjFilePath)
+            string csProjFilePath,
+            string additionalExecutionArguments)
         {
             var projectDirectory = Path.GetDirectoryName(csProjFilePath);
             var testedCodePath = $"{projectDirectory}\\{TestedCode}";
@@ -101,10 +111,10 @@
                 FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
-                arguments.AddRange(AdditionalExecutionArguments.Split(' '));
+                arguments.AddRange(additionalExecutionArguments.Split(' '));
 
                 var processExecutionResult = executor.Execute(
-                    this.NUnitConsoleRunnerPath,
+                    consoleRunnerPath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
@@ -113,10 +123,11 @@
                     false,
                     true);
 
-                var totalTests = 0;
-                var passedTests = 0;
+                this.ExtractTestResult(
+                    processExecutionResult.ReceivedOutput,
+                    out var passedTests,
+                    out var totalTests);
 
-                this.ExtractTestResult(processExecutionResult.ReceivedOutput, out passedTests, out totalTests);
                 var message = "Test Passed!";
 
                 if (totalTests == 0)
@@ -165,7 +176,7 @@
                 throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
-            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
             return compilerResult;
         }

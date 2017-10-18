@@ -132,7 +132,15 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result = this.RunUnitTests(executionContext, executor, checker, result, compilerResult.OutputFile);
+            result = this.RunUnitTests(
+                this.NUnitConsoleRunnerPath,
+                executionContext,
+                executor,
+                checker,
+                result,
+                compilerResult.OutputFile,
+                AdditionalExecutionArguments);
+
             return result;
         }
 
@@ -149,17 +157,19 @@
         }
 
         protected virtual ExecutionResult RunUnitTests(
+            string consoleRunnerPath,
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string compiledFile)
+            string compiledFile,
+            string additionalExecutionArguments)
         {
             var arguments = new List<string> { $"\"{compiledFile}\"" };
-            arguments.AddRange(AdditionalExecutionArguments.Split(' '));
+            arguments.AddRange(additionalExecutionArguments.Split(' '));
 
             var processExecutionResult = executor.Execute(
-                this.NUnitConsoleRunnerPath,
+                consoleRunnerPath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
