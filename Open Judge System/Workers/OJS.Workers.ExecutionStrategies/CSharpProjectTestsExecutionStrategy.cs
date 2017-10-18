@@ -101,13 +101,12 @@
             // Modify Project file
             var project = new Project(csProjFilePath);
             var compileDirectory = project.DirectoryPath;
-            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
+            this.WriteTestFiles(executionContext.Tests, compileDirectory);
+            this.WriteSetupFixture(compileDirectory);
 
             this.CorrectProjectReferences(executionContext.Tests, project);
-            this.WriteTestFiles(executionContext.Tests, compileDirectory);
-
-            this.TestPaths.Add(this.SetupFixturePath);
-
+            
             // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
@@ -143,6 +142,13 @@
                 AdditionalExecutionArguments);
 
             return result;
+        }
+
+        protected void WriteSetupFixture(string directory)
+        {
+            this.SetupFixturePath = $"{directory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+            File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+            this.TestPaths.Add(this.SetupFixturePath);
         }
 
         protected void WriteTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
@@ -224,7 +230,6 @@
 
         protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
-            File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
             this.EnsureAssemblyNameIsCorrect(project);

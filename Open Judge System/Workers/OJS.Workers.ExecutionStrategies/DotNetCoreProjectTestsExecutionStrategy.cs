@@ -65,7 +65,9 @@
 
             this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
             this.ExtractTestNames(executionContext.Tests);
+
             this.WriteTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
+            this.WriteSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
             var userCsProjFilePath = this.GetCsProjFilePath();
 

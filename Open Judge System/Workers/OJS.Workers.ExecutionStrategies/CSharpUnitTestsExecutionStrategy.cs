@@ -40,8 +40,8 @@
             var csProjFilePath = this.GetCsProjFilePath();
 
             var project = new Project(csProjFilePath);
-            this.SetupFixturePath =
-                $@"{project.DirectoryPath}\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
+            this.WriteSetupFixture(project.DirectoryPath);
 
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
