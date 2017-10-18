@@ -554,7 +554,7 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
             var problem = this.Data.Problems
