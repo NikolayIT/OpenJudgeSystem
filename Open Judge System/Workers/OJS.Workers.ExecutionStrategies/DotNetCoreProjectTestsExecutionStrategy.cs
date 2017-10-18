@@ -84,7 +84,7 @@
 
             result.IsCompiledSuccessfully = consoleAppCompilerResult.IsCompiledSuccessfully;
             
-            if (!consoleAppCompilerResult.IsCompiledSuccessfully)
+            if (!result.IsCompiledSuccessfully)
             {
                 result.CompilerComment = consoleAppCompilerResult.CompilerComment;
                 return result;

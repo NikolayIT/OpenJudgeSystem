@@ -32,20 +32,16 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
+
             var userSubmissionContent = executionContext.FileContent;
 
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
-            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
-            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
-            File.Delete(submissionFilePath);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent);
 
-            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
-                this.WorkingDirectory,
-                CsProjFileSearchPattern);
+            var csProjFilePath = this.GetCsProjFilePath();
 
             var project = new Project(csProjFilePath);
-            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+            this.SetupFixturePath =
+                $@"{project.DirectoryPath}\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
 
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
