@@ -21,7 +21,7 @@
 
             var userSubmissionContent = executionContext.FileContent;
 
-            this.ExtractFilesInWorkingDirectory(userSubmissionContent);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent, this.WorkingDirectory);
 
             var csProjFilePath = this.GetCsProjFilePath();
 

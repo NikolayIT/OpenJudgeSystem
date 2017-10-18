@@ -14,9 +14,10 @@
         private new const string AdditionalExecutionArguments = "--noresult";
         private const string CsProjFileExtention = ".csproj";
         private const string ProjectPathPlaceholder = "##projectPath##";
-        private const string NunitLiteConsoleAppFolderName = "NunitLiteConsoleApp";
-        private const string NunitLiteConsoleAppProgramName = "Program";
-        private const string NunitLiteConsoleAppProgramTemplate = @"
+        private const string NUnitLiteConsoleAppFolderName = "NUnitLiteConsoleApp";
+        private const string UserSubmissionFolderName = "UserProject";
+        private const string NUnitLiteConsoleAppProgramName = "Program";
+        private const string NUnitLiteConsoleAppProgramTemplate = @"
             using System;
             using System.Reflection;
             using NUnit.Common;
@@ -47,27 +48,31 @@
         {
         }
 
-        private string NunitLiteConsoleAppDirectory =>
-            Path.Combine(this.WorkingDirectory, NunitLiteConsoleAppFolderName);
+        private string NUnitLiteConsoleAppDirectory =>
+            Path.Combine(this.WorkingDirectory, NUnitLiteConsoleAppFolderName);
+
+        private string UserProjectDirectory =>
+            Path.Combine(this.WorkingDirectory, UserSubmissionFolderName);
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            DirectoryHelpers.CreateDirecory(this.NunitLiteConsoleAppDirectory);
+            DirectoryHelpers.CreateDirecory(this.NUnitLiteConsoleAppDirectory);
+            DirectoryHelpers.CreateDirecory(this.UserProjectDirectory);
 
             var result = new ExecutionResult();
 
             var userSubmission = executionContext.FileContent;
 
-            this.ExtractFilesInWorkingDirectory(userSubmission);
+            this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
             this.ExtractTestNames(executionContext.Tests);
-            this.WriteTestFiles(executionContext.Tests, this.NunitLiteConsoleAppDirectory);
+            this.WriteTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
 
             var userCsProjFilePath = this.GetCsProjFilePath();
 
             var nunitLiteConsoleAppCsProjPath = this.CreateNunitLiteConsoleApp(
-                NunitLiteConsoleAppProgramTemplate,
+                NUnitLiteConsoleAppProgramTemplate,
                 this.nunitLiteConsoleAppCsProjTemplate,
-                this.NunitLiteConsoleAppDirectory,
+                this.NUnitLiteConsoleAppDirectory,
                 userCsProjFilePath);
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
@@ -114,12 +119,12 @@
             string csProjToTestFilePath)
         {
             var consoleAppEntryPointPath =
-                $@"{directoryPath}\{NunitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
+                $@"{directoryPath}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
             File.WriteAllText(consoleAppEntryPointPath, nUnitLiteProgramTemplate);
 
             nUnitLiteCsProjTemplate = nUnitLiteCsProjTemplate.Replace(ProjectPathPlaceholder, csProjToTestFilePath);
 
-            var consoleAppCsProjPath = $@"{directoryPath}\{NunitLiteConsoleAppFolderName}{CsProjFileExtention}";
+            var consoleAppCsProjPath = $@"{directoryPath}\{NUnitLiteConsoleAppFolderName}{CsProjFileExtention}";
             File.WriteAllText(consoleAppCsProjPath, nUnitLiteCsProjTemplate);
 
             return consoleAppCsProjPath;

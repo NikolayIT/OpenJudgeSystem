@@ -92,7 +92,7 @@
             var result = new ExecutionResult();
             var userSubmissionContent = executionContext.FileContent;
 
-            this.ExtractFilesInWorkingDirectory(userSubmissionContent);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent, this.WorkingDirectory);
 
             var csProjFilePath = this.GetCsProjFilePath();
 
@@ -285,12 +285,12 @@
             project.SetProperty("AssemblyName", projectName);
         }
 
-        protected void ExtractFilesInWorkingDirectory(byte[] userSubmissionContent)
+        protected virtual void ExtractFilesInWorkingDirectory(byte[] userSubmissionContent, string workingDirectory)
         {
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
+            var submissionFilePath = $"{workingDirectory}\\{ZippedSubmissionName}";
             File.WriteAllBytes(submissionFilePath, userSubmissionContent);
             FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            FileHelpers.UnzipFile(submissionFilePath, workingDirectory);
             File.Delete(submissionFilePath);
         }
 
