@@ -8,7 +8,7 @@
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
         CSharpPerformanceProjectTestsExecutionStrategy = 31,
-        CSharpTestRunner = 10,
+        DotNetCoreTestRunner = 10,
         DotNetCoreProjectExecutionStrategy = 33,
         DotNetCoreProjectTestsExecutionStrategy = 34,
         CPlusPlusZipFileExecutionStrategy = 26,

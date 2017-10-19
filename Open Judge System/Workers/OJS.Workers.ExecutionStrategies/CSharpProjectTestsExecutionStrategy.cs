@@ -43,8 +43,10 @@
         protected const string CsProjFileSearchPattern = "*.csproj";
         protected const string NUnitReference =
             "nunit.framework, Version=3.8.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
-        protected const string EntityFrameworkCoreInMemory =
+        protected const string EntityFrameworkCoreInMemoryReference =
                 "Microsoft.EntityFrameworkCore.InMemory, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL";
+        protected const string SystemDataCommonReference =
+            "System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL";
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts the number of total and passed tests 
@@ -241,7 +243,11 @@
 
             project.SetProperty("OutputType", "Library");
 
-            this.AddProjectReferences(project, NUnitReference, EntityFrameworkCoreInMemory);
+            this.AddProjectReferences(
+                project,
+                NUnitReference, 
+                EntityFrameworkCoreInMemoryReference, 
+                SystemDataCommonReference);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items

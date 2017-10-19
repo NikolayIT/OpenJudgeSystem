@@ -15,10 +15,10 @@
     using MissingFeatures;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -31,16 +31,23 @@
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
-    {
+    {  
         public const string CompeteActionName = "Compete";
         public const string PracticeActionName = "Practice";
 
-        public CompeteController(IOjsData data)
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+
+        public CompeteController(
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
-        public CompeteController(IOjsData data, UserProfile userProfile)
+        public CompeteController(
+            IOjsData data,
+            UserProfile userProfile)
             : base(data, userProfile)
         {
         }
@@ -340,12 +347,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionForProcessing()
-            {
-                SubmissionId = newSubmission.Id
-            };
-            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            this.Data.SaveChanges();
+            this.submissionsForProcessingData.AddOrUpdate(newSubmission.Id);
 
             return this.Json(participantSubmission.ProblemId);
         }
@@ -425,12 +427,7 @@
             this.Data.Submissions.Add(newSubmission);
             this.Data.SaveChanges();
 
-            var submissionForProcessing = new SubmissionForProcessing()
-            {
-                SubmissionId = newSubmission.Id
-            };
-            this.Data.SubmissionsForProcessing.Add(submissionForProcessing);
-            this.Data.SaveChanges();
+            this.submissionsForProcessingData.AddOrUpdate(newSubmission.Id);
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
             return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteActionName : PracticeActionName));
