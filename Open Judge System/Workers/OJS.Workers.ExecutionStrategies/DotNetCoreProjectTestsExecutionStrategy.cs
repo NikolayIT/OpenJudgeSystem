@@ -1,7 +1,9 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -14,6 +16,7 @@
         private new const string AdditionalExecutionArguments = "--noresult";
         private const string CsProjFileExtention = ".csproj";
         private const string ProjectPathPlaceholder = "##projectPath##";
+        private const string ProjectReferencesPlaceholder = "##ProjectReferences##";
         private const string NUnitLiteConsoleAppFolderName = "NUnitLiteConsoleApp";
         private const string UserSubmissionFolderName = "UserProject";
         private const string NUnitLiteConsoleAppProgramName = "Program";
@@ -39,11 +42,17 @@
                 </PropertyGroup>
                 <ItemGroup>
                     <PackageReference Include=""NUnitLite"" Version=""3.8.1"" />
-                    <ProjectReference Include=""{ProjectPathPlaceholder}"" />
+                    <PackageReference Include=""Microsoft.EntityFrameworkCore.InMemory"" Version=""2.0.0"" />
+                </ItemGroup>
+                <ItemGroup>
+                    {ProjectReferencesPlaceholder}
                 </ItemGroup>
             </Project>";
 
-        public DotNetCoreProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc) 
+        private readonly string projectReferenceTemplate =
+            $@"<ProjectReference Include=""{ProjectPathPlaceholder}"" />";
+
+        public DotNetCoreProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
             : base(getCompilerPathFunc)
         {
         }
@@ -69,13 +78,14 @@
             this.WriteTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
             this.WriteSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
-            var userCsProjFilePath = this.GetCsProjFilePath();
+            var userCsProjPaths = FileHelpers.FindAllFilesMatchingPattern(
+                this.UserProjectDirectory, CsProjFileSearchPattern);
 
             var nunitLiteConsoleAppCsProjPath = this.CreateNunitLiteConsoleApp(
                 NUnitLiteConsoleAppProgramTemplate,
                 this.nunitLiteConsoleAppCsProjTemplate,
                 this.NUnitLiteConsoleAppDirectory,
-                userCsProjFilePath);
+                userCsProjPaths);
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
 
@@ -86,7 +96,7 @@
                 nunitLiteConsoleAppCsProjPath);
 
             result.IsCompiledSuccessfully = consoleAppCompilerResult.IsCompiledSuccessfully;
-            
+
             if (!result.IsCompiledSuccessfully)
             {
                 result.CompilerComment = consoleAppCompilerResult.CompilerComment;
@@ -118,13 +128,17 @@
             string nUnitLiteProgramTemplate,
             string nUnitLiteCsProjTemplate,
             string directoryPath,
-            string csProjToTestFilePath)
+            IEnumerable<string> userCsProjPaths)
         {
             var consoleAppEntryPointPath =
                 $@"{directoryPath}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
             File.WriteAllText(consoleAppEntryPointPath, nUnitLiteProgramTemplate);
 
-            nUnitLiteCsProjTemplate = nUnitLiteCsProjTemplate.Replace(ProjectPathPlaceholder, csProjToTestFilePath);
+            var references = userCsProjPaths
+                .Select(path => this.projectReferenceTemplate.Replace(ProjectPathPlaceholder, path));
+
+            nUnitLiteCsProjTemplate = nUnitLiteCsProjTemplate
+                .Replace(ProjectReferencesPlaceholder, string.Join(Environment.NewLine, references));
 
             var consoleAppCsProjPath = $@"{directoryPath}\{NUnitLiteConsoleAppFolderName}{CsProjFileExtention}";
             File.WriteAllText(consoleAppCsProjPath, nUnitLiteCsProjTemplate);
