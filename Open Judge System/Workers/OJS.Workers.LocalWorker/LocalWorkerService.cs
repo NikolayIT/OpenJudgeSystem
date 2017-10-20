@@ -12,6 +12,7 @@
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Workers.Common;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -21,7 +22,7 @@
 
         public LocalWorkerService()
         {
-            logger = LogManager.GetLogger("LocalWorkerService");
+            logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
             logger.Info("LocalWorkerService initializing...");
             this.ResetAllProcessingSubmissions();
             this.CreateExecutionStrategiesWorkingDirectory();

@@ -3,6 +3,8 @@
     using System;
     using System.IO;
 
+    using log4net;
+
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -13,32 +15,33 @@
     {
         protected const string RemoveMacFolderPattern = "__MACOSX/*";
 
+        private readonly ILog logger;
+
+        protected ExecutionStrategy()
+        {
+            this.logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
+        }
+
         protected string WorkingDirectory { get; set; }
 
         public abstract ExecutionResult Execute(ExecutionContext executionContext);
 
         public ExecutionResult SafeExecute(ExecutionContext executionContext)
         {
-            Exception innerException = null;
             this.WorkingDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
             try
             {
                 return this.Execute(executionContext);
             }
-            catch (Exception ex)
-            {
-                innerException = ex;
-                throw;
-            }
             finally
             {
                 try
                 {
-                    DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+                   DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", innerException);
+                    this.logger.Error("executionStrategy.SafeDeleteDirectory has thrown an exception:", ex);
                 }
             }
         }
