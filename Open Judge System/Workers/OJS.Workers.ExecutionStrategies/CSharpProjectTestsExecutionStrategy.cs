@@ -100,16 +100,14 @@
 
             this.ExtractTestNames(executionContext.Tests);
 
-            // Modify Project file
             var project = new Project(csProjFilePath);
             var compileDirectory = project.DirectoryPath;
 
-            this.WriteTestFiles(executionContext.Tests, compileDirectory);
-            this.WriteSetupFixture(compileDirectory);
+            this.SaveTestFiles(executionContext.Tests, compileDirectory);
+            this.SaveSetupFixture(compileDirectory);
 
             this.CorrectProjectReferences(executionContext.Tests, project);
             
-            // Compiling
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -146,14 +144,14 @@
             return result;
         }
 
-        protected void WriteSetupFixture(string directory)
+        protected void SaveSetupFixture(string directory)
         {
             this.SetupFixturePath = $"{directory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             this.TestPaths.Add(this.SetupFixturePath);
         }
 
-        protected void WriteTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
+        protected void SaveTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
         {       
             var index = 0;
             foreach (var test in tests)

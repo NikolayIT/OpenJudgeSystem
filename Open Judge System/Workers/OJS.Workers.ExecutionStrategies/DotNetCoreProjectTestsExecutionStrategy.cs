@@ -25,6 +25,7 @@
             using System.Reflection;
             using NUnit.Common;
             using NUnitLite;
+
             public class Program
             {
                 public static void Main(string[] args)
@@ -65,8 +66,8 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            DirectoryHelpers.CreateDirecory(this.NUnitLiteConsoleAppDirectory);
-            DirectoryHelpers.CreateDirecory(this.UserProjectDirectory);
+            Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
+            Directory.CreateDirectory(this.UserProjectDirectory);
 
             var result = new ExecutionResult();
 
@@ -75,8 +76,8 @@
             this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
             this.ExtractTestNames(executionContext.Tests);
 
-            this.WriteTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
-            this.WriteSetupFixture(this.NUnitLiteConsoleAppDirectory);
+            this.SaveTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
+            this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
             var userCsProjPaths = FileHelpers.FindAllFilesMatchingPattern(
                 this.UserProjectDirectory, CsProjFileSearchPattern);
@@ -89,17 +90,17 @@
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
 
-            var consoleAppCompilerResult = this.Compile(
+            var compilerResult = this.Compile(
                 executionContext.CompilerType,
                 compilerPath,
                 executionContext.AdditionalCompilerArguments,
                 nunitLiteConsoleAppCsProjPath);
 
-            result.IsCompiledSuccessfully = consoleAppCompilerResult.IsCompiledSuccessfully;
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
 
             if (!result.IsCompiledSuccessfully)
             {
-                result.CompilerComment = consoleAppCompilerResult.CompilerComment;
+                result.CompilerComment = compilerResult.CompilerComment;
                 return result;
             }
 
@@ -118,7 +119,7 @@
                 executor,
                 checker,
                 result,
-                consoleAppCompilerResult.OutputFile,
+                compilerResult.OutputFile,
                 AdditionalExecutionArguments);
 
             return result;

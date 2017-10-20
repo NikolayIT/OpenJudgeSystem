@@ -41,7 +41,7 @@
 
             var project = new Project(csProjFilePath);
 
-            this.WriteSetupFixture(project.DirectoryPath);
+            this.SaveSetupFixture(project.DirectoryPath);
 
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);

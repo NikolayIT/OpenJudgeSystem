@@ -10,14 +10,6 @@
     {
         private const int ThreadSleepMilliseconds = 1000;
 
-        public static void CreateDirecory(string directoryPath)
-        {
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-        }
-
         public static string CreateTempDirectory()
         {
             while (true)
