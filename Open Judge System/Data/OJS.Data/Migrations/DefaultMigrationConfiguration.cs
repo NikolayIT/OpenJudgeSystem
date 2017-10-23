@@ -412,13 +412,13 @@
                 },
                 new SubmissionType
                 {
-                    Name = ".NET Core Project Tests",
-                    CompilerType = CompilerType.DotNetCompiler,
+                    Name = "PHP Project",
+                    CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = string.Empty,
-                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpProjectExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
-                    AllowBinaryFilesUpload = true
+                    AllowBinaryFilesUpload = true,
                 }
             };
 
