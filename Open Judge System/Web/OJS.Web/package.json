@@ -7,7 +7,7 @@
     "bootstrap": "^3.3.7",
     "codemirror": "^5.29.0",
     "countdown": "^2.6.0",
-    "jquery": "^3.2.1",
+    "jquery": "2.2.4",
     "jquery-ajax-unobtrusive": "^3.2.4",
     "jquery-validation": "^1.17.0",
     "jquery-validation-unobtrusive": "^3.2.6"
