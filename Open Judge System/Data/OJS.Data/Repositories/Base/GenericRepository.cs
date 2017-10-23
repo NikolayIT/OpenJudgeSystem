@@ -29,21 +29,18 @@
 
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
+            this.ContextConfiguration = context.DbContext.Configuration;
         }
+
+        public DbContextConfiguration ContextConfiguration { get; }
 
         protected IDbSet<T> DbSet { get; set; }
 
         protected IOjsDbContext Context { get; set; }
 
-        public virtual IQueryable<T> All()
-        {
-            return this.DbSet.AsQueryable();
-        }
+        public virtual IQueryable<T> All() => this.DbSet.AsQueryable();
 
-        public virtual T GetById(int id)
-        {
-            return this.DbSet.Find(id);
-        }
+        public virtual T GetById(int id) => this.DbSet.Find(id);
 
         public virtual void Add(T entity)
         {
@@ -58,10 +55,7 @@
             }
         }
 
-        public void Add(IEnumerable<T> entities)
-        {
-            this.Context.DbContext.BulkInsert(entities);
-        }
+        public void Add(IEnumerable<T> entities) => this.Context.DbContext.BulkInsert(entities);
 
         public virtual void Update(T entity)
         {
@@ -74,10 +68,10 @@
             entry.State = EntityState.Modified;
         }
 
-        public virtual int Update(Expression<Func<T, bool>> filterExpression, Expression<Func<T, T>> updateExpression)
-        {
-            return this.DbSet.Where(filterExpression).Update(updateExpression);
-        }
+        public virtual int Update(
+            Expression<Func<T, bool>> filterExpression,
+            Expression<Func<T, T>> updateExpression) =>
+                this.DbSet.Where(filterExpression).Update(updateExpression);
 
         public virtual void Delete(T entity)
         {
@@ -103,10 +97,8 @@
             }
         }
 
-        public virtual int Delete(Expression<Func<T, bool>> filterExpression)
-        {
-            return this.DbSet.Where(filterExpression).Delete();
-        }
+        public virtual int Delete(Expression<Func<T, bool>> filterExpression) =>
+            this.DbSet.Where(filterExpression).Delete();
 
         public virtual void Detach(T entity)
         {

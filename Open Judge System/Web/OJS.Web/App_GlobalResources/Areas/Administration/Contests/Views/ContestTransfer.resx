@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="Confirm_transfer_message" xml:space="preserve">
     <value>Are you sure you want to transfer &lt;strong&gt;{0}&lt;/strong&gt; participants from Contest to Practice for the contest &lt;strong&gt;{1}&lt;/strong&gt; from the category &lt;strong&gt;{2}&lt;/strong&gt;?</value>
   </data>

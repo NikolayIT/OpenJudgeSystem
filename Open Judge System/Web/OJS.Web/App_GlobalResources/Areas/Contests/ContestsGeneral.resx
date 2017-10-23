@@ -183,4 +183,7 @@
   <data name="User_is_not_registered_for_exam" xml:space="preserve">
     <value>You are not registered for this exam!</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

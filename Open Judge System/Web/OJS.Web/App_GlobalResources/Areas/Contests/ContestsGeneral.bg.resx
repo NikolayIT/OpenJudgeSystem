@@ -183,4 +183,7 @@
   <data name="User_has_not_processed_submission_for_problem" xml:space="preserve">
     <value>Имате необработено решение за тази задача. Моля изчакайте решението да бъде обработено.</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отказ</value>
+  </data>
 </root>

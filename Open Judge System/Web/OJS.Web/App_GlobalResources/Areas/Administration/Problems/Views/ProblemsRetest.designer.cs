@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration.Contests.Views {
+namespace Resources.Areas.Administration.Problems.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration.Contests.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ContestTransfer {
+    public class ProblemsRetest {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ContestTransfer() {
+        internal ProblemsRetest() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Contests.Views.ContestTransfer", typeof(ContestTransfer).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Problems.Views.ProblemsRetest", typeof(ProblemsRetest).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to transfer &lt;strong&gt;{0}&lt;/strong&gt; participants from Contest to Practice for the contest &lt;strong&gt;{1}&lt;/strong&gt; from the category &lt;strong&gt;{2}&lt;/strong&gt;?.
+        ///   Looks up a localized string similar to Retest.
         /// </summary>
-        public static string Confirm_transfer_message {
+        public static string Retest {
             get {
-                return ResourceManager.GetString("Confirm_transfer_message", resourceCulture);
+                return ResourceManager.GetString("Retest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transfer participants.
+        ///   Looks up a localized string similar to Are you sure you want to Retest &lt;strong&gt;{0} submissions&lt;/strong&gt; from the problem &lt;strong&gt;{1}&lt;/strong&gt;?.
         /// </summary>
-        public static string Page_title {
+        public static string Retest_confirmation_message {
             get {
-                return ResourceManager.GetString("Page_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfer.
-        /// </summary>
-        public static string Transfer {
-            get {
-                return ResourceManager.GetString("Transfer", resourceCulture);
+                return ResourceManager.GetString("Retest_confirmation_message", resourceCulture);
             }
         }
     }

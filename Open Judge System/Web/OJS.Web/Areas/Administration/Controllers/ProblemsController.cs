@@ -11,6 +11,8 @@
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
 
+    using EntityFramework.Extensions;
+
     using Ionic.Zip;
 
     using Kendo.Mvc.Extensions;
@@ -546,38 +548,79 @@
             return this.File(stream, MediaTypeNames.Application.Zip, zipFileName);
         }
 
+        [HttpGet]
         public ActionResult Retest(int? id)
         {
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
             var problem = this.Data.Problems
                 .All()
+                .Select(ProblemRetestViewModel.FromProblem)
                 .FirstOrDefault(pr => pr.Id == id);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
+
+            if (this.HttpContext.Request.UrlReferrer != null)
+            {
+                this.ViewBag.ReturnUrl = this.HttpContext.Request.UrlReferrer.AbsolutePath;
+            }
+
+            return this.View("RetestConfirmation", problem);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Retest(ProblemRetestViewModel model)
+        {
+            if (model == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
+            var problem = this.Data.Problems.GetById(model.Id);
+
+            if (problem == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
+            var submissionIds = problem
+                .Submissions
+                .Where(s => !s.IsDeleted)
+                .Select(s => s.Id)
+                .AsEnumerable();
 
             using (var scope = new TransactionScope())
             {
-                this.Data.ParticipantScores.DeleteParticipantScores(id.Value);
-                this.Data.SaveChanges();
+                this.Data.ParticipantScores.DeleteParticipantScores(model.Id);
 
-                var submissions = this.Data.Submissions.All().Where(s => s.ProblemId == id).Select(s => s.Id).ToList();
-                submissions.ForEach(this.RetestSubmission);
-                this.Data.SaveChanges();
+                this.Data.Context.Submissions
+                    .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
+                    .Update(x => new Submission { Processed = false });
+
+                this.submissionsForProcessingData.AddOrUpdate(submissionIds);
 
                 scope.Complete();
             }
@@ -825,22 +868,6 @@
             {
                 this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
-        }
-
-        private void RetestSubmission(int submissionId)
-        {
-            var submission = new Submission
-            {
-                Id = submissionId,
-                Processed = false,
-                Processing = false
-            };
-            this.Data.Context.Submissions.Attach(submission);
-            var submissionEntry = this.Data.Context.Entry(submission);
-            submissionEntry.Property(pr => pr.Processed).IsModified = true;
-            submissionEntry.Property(pr => pr.Processing).IsModified = true;
-
-            this.submissionsForProcessingData.AddOrUpdate(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
