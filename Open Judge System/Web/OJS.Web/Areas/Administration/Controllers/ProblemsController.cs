@@ -586,6 +586,12 @@
         [ValidateAntiForgeryToken]
         public ActionResult Retest(ProblemRetestViewModel model)
         {
+            if (model == null)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                return this.RedirectToAction<ProblemsController>(c => c.Index());
+            }
+
             if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);

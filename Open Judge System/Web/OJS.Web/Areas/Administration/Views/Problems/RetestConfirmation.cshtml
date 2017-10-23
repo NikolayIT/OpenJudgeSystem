@@ -1,7 +1,10 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsRetest;
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.Problem
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsRetest;
 @using SharedResource = Resources.Areas.Contests.ContestsGeneral;
 
-@model OJS.Web.Areas.Administration.ViewModels.Problem.ProblemRetestViewModel
+@model ProblemRetestViewModel
 
 @{
     ViewBag.Title = Resource.Retest;
@@ -10,7 +13,7 @@
 <h1 class="text-danger">&nbsp;<span class="glyphicon glyphicon-warning-sign"></span> @ViewBag.Title</h1>
 <p><span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;<strong>@Model.ContestName</strong></p>
 <div class="container ">
-    @using (Html.BeginForm("Retest", "Problems", new { area = "Administration" }))
+    @using (Html.BeginForm<ProblemsController>(c => c.Retest((ProblemRetestViewModel)null), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationMessage(GlobalConstants.DateTimeError)
