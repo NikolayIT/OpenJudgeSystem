@@ -1,10 +1,7 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
 
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Executors;
@@ -24,17 +21,9 @@
 
             var userSubmissionContent = executionContext.FileContent;
 
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
-            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
-            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent, this.WorkingDirectory);
 
-            File.Delete(submissionFilePath);
-
-            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
-                this.WorkingDirectory,
-                CsProjFileSearchPattern,
-                f => new FileInfo(f).Length);
+            var csProjFilePath = this.GetCsProjFilePath();
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);         
 
@@ -48,6 +37,7 @@
 
             if (!result.IsCompiledSuccessfully)
             {
+                result.CompilerComment = compilerResult.CompilerComment;
                 return result;
             }
            
@@ -57,9 +47,11 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            List<string> arguments = new List<string>();
-            arguments.Add(compilerResult.OutputFile);
-            arguments.Add(AdditionalExecutionArguments);
+            var arguments = new string[]
+            {
+                compilerResult.OutputFile,
+                AdditionalExecutionArguments
+            };
 
             foreach (var test in executionContext.Tests)
             {

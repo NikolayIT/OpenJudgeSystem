@@ -306,6 +306,9 @@
                 case ExecutionStrategyType.DotNetCoreProjectExecutionStrategy:
                     executionStrategy = new DotNetCoreProjectExecutionStrategy(GetCompilerPath);
                     break;
+                case ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy:
+                    executionStrategy = new DotNetCoreProjectTestsExecutionStrategy(GetCompilerPath);
+                    break;
                 case ExecutionStrategyType.RubyExecutionStrategy:
                     executionStrategy = new RubyExecutionStrategy(Settings.RubyPath);
                     break;
