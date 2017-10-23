@@ -37,7 +37,7 @@
             {
                 try
                 {
-                   DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+                    DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
                 }
                 catch (Exception ex)
                 {
@@ -180,4 +180,3 @@
         }
     }
 }
-
