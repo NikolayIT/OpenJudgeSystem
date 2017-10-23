@@ -95,6 +95,15 @@
             return ProcessModulePath(discoveredFile);
         }
 
+        public static IEnumerable<string> FindAllFilesMatchingPattern(
+            string workingDirectory,
+            string pattern)
+        {
+            var files = DiscoverAllFilesMatchingPattern(workingDirectory, pattern);
+
+            return files.Select(ProcessModulePath).ToList();
+        }
+
         public static void AddFilesToZipArchive(string archivePath, string pathInArchive, params string[] filePaths)
         {
             using (var zipFile = new ZipFile(archivePath))

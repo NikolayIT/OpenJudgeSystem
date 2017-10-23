@@ -205,12 +205,12 @@ function initializeGrid(contestId) {
             var tr = target.closest('tr');
             var grid = $('#problems-grid').data('kendoGrid');
 
-            if (!target.data('expanded')) {
-                grid.expandRow(tr);
-                target.data('expanded', true);
-            } else {
+            if (target.data('expanded')) {
                 grid.collapseRow(tr);
                 target.removeData('expanded');
+            } else {
+                grid.expandRow(tr);
+                target.data('expanded', true);
             }
         });
 

@@ -20,20 +20,22 @@
         protected List<string> TestClassNames { get; }
 
         protected override ExecutionResult RunUnitTests(
+            string consoleRunnerPath,
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string compiledFile)
+            string compiledFile,
+            string additionalExecutionArguments)
         {
             var testIndex = 0;
             foreach (var test in executionContext.Tests)
             {
                 var arguments = new List<string> { $"--where \"class == {this.TestClassNames[testIndex]}\" \"{compiledFile}\"" };
-                arguments.AddRange(AdditionalExecutionArguments.Split(' '));
+                arguments.AddRange(additionalExecutionArguments.Split(' '));
 
                 var processExecutionResult = executor.Execute(
-                    this.NUnitConsoleRunnerPath,
+                    consoleRunnerPath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
