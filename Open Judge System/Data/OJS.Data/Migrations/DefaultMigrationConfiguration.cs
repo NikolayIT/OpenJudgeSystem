@@ -419,6 +419,15 @@
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = ".NET Core Project Tests",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = true
                 }
             };
 
