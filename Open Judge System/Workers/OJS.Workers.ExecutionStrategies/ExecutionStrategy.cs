@@ -17,10 +17,8 @@
 
         private readonly ILog logger;
 
-        protected ExecutionStrategy()
-        {
+        protected ExecutionStrategy() =>
             this.logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
-        }
 
         protected string WorkingDirectory { get; set; }
 
