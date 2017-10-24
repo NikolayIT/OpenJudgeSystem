@@ -1705,7 +1705,7 @@
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
-    <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackages.cs" />
+    <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />

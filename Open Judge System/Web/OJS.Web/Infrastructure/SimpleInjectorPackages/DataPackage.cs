@@ -5,7 +5,7 @@
     using SimpleInjector;
     using SimpleInjector.Packaging;
 
-    public class DataPackages : IPackage
+    public class DataPackage : IPackage
     {
         public void RegisterServices(Container container)
         {
