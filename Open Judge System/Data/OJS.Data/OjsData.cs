@@ -22,7 +22,7 @@
         {
         }
 
-        public OjsData(IOjsDbContext context)
+        protected OjsData(IOjsDbContext context)
         {
             this.context = context;
         }

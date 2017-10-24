@@ -1,0 +1,22 @@
+﻿namespace OJS.Web.Infrastructure.SimpleInjectorPackages
+{
+    using SimpleInjector;
+    using SimpleInjector.Packaging;
+
+    using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.SubmissionsForProcessing;
+
+    public class ServicesPackage : IPackage
+    {
+        public void RegisterServices(Container container)
+        {
+            container.Register<
+                IHangfireBackgroundJobService,
+                HangfireBackgroundJobService>();
+
+            container.Register<
+                ISubmissionsForProcessingDataService,
+                SubmissionsForProcessingDataService>();
+        }
+    }
+}
