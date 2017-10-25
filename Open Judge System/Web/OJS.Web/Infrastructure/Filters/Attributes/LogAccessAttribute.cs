@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Common.Attributes
+﻿namespace OJS.Web.Infrastructure.Filters.Attributes
 {
     using System;
 

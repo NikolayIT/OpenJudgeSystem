@@ -1,26 +1,29 @@
-﻿namespace OJS.Web.Common.Attributes
+﻿namespace OJS.Web.Infrastructure.Filters
 {
     using System.Web.Mvc;
 
     using Microsoft.AspNet.Identity;
 
-    using OJS.Data;
+    using OJS.Data.Contracts;
     using OJS.Data.Models;
+    using OJS.Web.Infrastructure.Filters.Attributes;
+    using OJS.Web.Infrastructure.Filters.Contracts;
 
-    public class LoggerFilterAttribute : IActionFilter
+    public class LogAccessFilter : IActionFilter<LogAccessAttribute>
     {
-        private readonly IOjsData data;
+        private readonly IRepository<AccessLog> accessLogs;
 
-        public LoggerFilterAttribute(IOjsData data)
+        public LogAccessFilter(IRepository<AccessLog> accessLogs) => this.accessLogs = accessLogs;
+
+        public virtual void OnActionExecuting(
+            LogAccessAttribute attribute,
+            ActionExecutingContext filterContext)
         {
-            this.data = data;
         }
 
-        public virtual void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-        }
-
-        public virtual void OnActionExecuted(ActionExecutedContext filterContext)
+        public virtual void OnActionExecuted(
+            LogAccessAttribute attribute,
+            ActionExecutedContext filterContext)
         {
             this.LogAction(filterContext);
         }
@@ -34,7 +37,7 @@
             }
 
             var request = filterContext.RequestContext.HttpContext.Request;
-            this.data.AccessLogs.Add(new AccessLog
+            this.accessLogs.Add(new AccessLog
             {
                 IpAddress = request.UserHostAddress,
                 Url = request.RawUrl,
@@ -43,7 +46,7 @@
                 PostParams = request.Unvalidated.Form.ToString(),
             });
 
-            this.data.SaveChanges();
+            this.accessLogs.SaveChanges();
         }
     }
 }
