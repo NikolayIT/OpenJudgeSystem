@@ -3,6 +3,7 @@
     using System.Web.Hosting;
 
     using Hangfire;
+    using Hangfire.SimpleInjector;
 
     public class HangfireBootstrapper : IRegisteredObject
     {
@@ -46,7 +47,8 @@
 
                     HostingEnvironment.RegisterObject(this);
                     GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-                    GlobalConfiguration.Configuration.UseNinjectActivator(new Ninject.Web.Common.Bootstrapper().Kernel);
+                    GlobalConfiguration.Configuration
+                        .UseActivator(new SimpleInjectorJobActivator(SimpleInjectorConfig.Container));
                     this.backgroundJobServer = new BackgroundJobServer();
                 }
             }

@@ -5,6 +5,9 @@
 
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Workers.Tools.AntiCheat;
+    using OJS.Workers.Tools.AntiCheat.Contracts;
+    using OJS.Workers.Tools.Similarity;
 
     public class ServicesPackage : IPackage
     {
@@ -17,6 +20,9 @@
             container.Register<
                 ISubmissionsForProcessingDataService,
                 SubmissionsForProcessingDataService>();
+
+            container.Register<ISimilarityFinder, SimilarityFinder>();
+            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>();
         }
     }
 }

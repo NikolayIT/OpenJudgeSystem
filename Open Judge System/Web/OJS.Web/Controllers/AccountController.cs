@@ -25,7 +25,7 @@
         {
         }
 
-        public AccountController(IOjsData data, UserManager<UserProfile> userManager)
+        protected AccountController(IOjsData data, UserManager<UserProfile> userManager)
             : base(data)
         {
             this.UserManager = userManager;

@@ -11,11 +11,15 @@ namespace OJS.Web
 
     public static class SimpleInjectorConfig
     {
+        public static Container Container { get; private set; }
+
         public static void Initialize()
         {
             var container = BuildContainer();
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+
+            Container = container;
         }
 
         private static Container BuildContainer()
@@ -25,6 +29,10 @@ namespace OJS.Web
             container.Options.DefaultLifestyle = new WebRequestLifestyle();
 
             container.RegisterPackages(new[] { Assembly.GetExecutingAssembly() });
+
+            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+
+            container.RegisterMvcIntegratedFilterProvider();
 
             container.Verify();
 

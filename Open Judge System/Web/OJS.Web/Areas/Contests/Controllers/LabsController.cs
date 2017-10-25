@@ -13,14 +13,11 @@
         {
         }
 
-        public LabsController(IOjsData data, UserProfile profile)
+        protected LabsController(IOjsData data, UserProfile profile)
             : base(data, profile)
         {
         }
 
-        public ActionResult Index()
-        {
-            return this.View();
-        }
+        public ActionResult Index() => this.View();
     }
 }

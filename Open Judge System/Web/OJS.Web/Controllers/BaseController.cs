@@ -22,7 +22,7 @@
             this.Data = data;
         }
 
-        public BaseController(IOjsData data, UserProfile profile)
+        protected BaseController(IOjsData data, UserProfile profile)
             : this(data)
         {
             this.UserProfile = profile;
