@@ -7,7 +7,7 @@
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
 
-    public class TestRepository : GenericRepository<Test>, ITestRepository
+    public class TestRepository : EfGenericRepository<Test>, ITestRepository
     {
         public TestRepository(IOjsDbContext context)
             : base(context)

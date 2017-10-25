@@ -4,7 +4,7 @@
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
 
-    public class SubmissionsForProcessingRepository : GenericRepository<SubmissionForProcessing>, ISubmissionsForProcessingRepository
+    public class SubmissionsForProcessingRepository : EfGenericRepository<SubmissionForProcessing>, ISubmissionsForProcessingRepository
     {
         public SubmissionsForProcessingRepository(IOjsDbContext context) 
             : base(context)

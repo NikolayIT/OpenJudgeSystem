@@ -100,10 +100,11 @@
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
     <Compile Include="Repositories\ContestsRepository.cs" />
     <Compile Include="Repositories\Base\DeletableEntityRepository.cs" />
-    <Compile Include="Repositories\Base\GenericRepository.cs" />
+    <Compile Include="Repositories\Base\EfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\IContestsRepository.cs" />
     <Compile Include="IOjsData.cs" />
     <Compile Include="IOjsDbContext.cs" />
+    <Compile Include="Repositories\Contracts\IEfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\IParticipantScoresRepository.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsForProcessingRepository.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsRepository.cs" />

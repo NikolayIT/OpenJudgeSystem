@@ -109,7 +109,7 @@
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {
-                var type = typeof(GenericRepository<T>);
+                var type = typeof(EfGenericRepository<T>);
 
                 if (typeof(T).IsAssignableFrom(typeof(Contest)))
                 {
