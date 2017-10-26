@@ -39,7 +39,8 @@
                         "~/Dependencies/codemirror/mode/javascript/javascript.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/codemirrormerge").Include(
-                        "~/Dependencies/codemirror/addon/merge/merge.js"));
+                        "~/Dependencies/codemirror/addon/merge/merge.js",
+                        "~/Dependencies/diff_match_patch/lib/diff_match_patch.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
