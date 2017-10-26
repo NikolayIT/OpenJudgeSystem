@@ -25,12 +25,12 @@ namespace OJS.Web
         private static Container BuildContainer()
         {
             var container = new Container();
+            var assembly = Assembly.GetExecutingAssembly();
 
             container.Options.DefaultLifestyle = new WebRequestLifestyle();
 
-            container.RegisterPackages(new[] { Assembly.GetExecutingAssembly() });
-
-            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+            container.RegisterPackages(new[] { assembly });
+            container.RegisterMvcControllers(assembly);
 
             container.Verify();
 
