@@ -22,10 +22,7 @@
         {
         }
 
-        protected OjsData(IOjsDbContext context)
-        {
-            this.context = context;
-        }
+        protected OjsData(IOjsDbContext context) => this.context = context;
 
         public IContestsRepository Contests => (ContestsRepository)this.GetRepository<Contest>();
 

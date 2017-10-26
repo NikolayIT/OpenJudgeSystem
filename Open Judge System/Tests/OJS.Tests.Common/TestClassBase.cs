@@ -10,8 +10,7 @@
         protected TestClassBase()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FakeOjsDbContext, DatabaseConfiguration>());
-            //Resolve this
-            //this.OjsData = new OjsData(new FakeOjsDbContext());
+            this.OjsData = new FakeOjsData(new FakeOjsDbContext());
             this.InitializeEmptyOjsData();
         }
 
@@ -24,8 +23,7 @@
             Database.SetInitializer(new DropCreateDatabaseAlways<FakeEmptyOjsDbContext>());
             var fakeEmptyOjsDbContext = new FakeEmptyOjsDbContext();
             fakeEmptyOjsDbContext.Database.Initialize(true);
-            //Resolve this
-            //this.EmptyOjsData = new OjsData(fakeEmptyOjsDbContext);
+            this.EmptyOjsData = new FakeOjsData(fakeEmptyOjsDbContext);
         }
     }
 }
