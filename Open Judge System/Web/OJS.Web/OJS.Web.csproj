@@ -2135,6 +2135,8 @@
     <Content Include="Dependencies\codemirror\theme\yeti.css" />
     <Content Include="Dependencies\codemirror\theme\zenburn.css" />
     <Content Include="Dependencies\countdown\countdown.js" />
+    <Content Include="Dependencies\diff_match_patch\lib\diff_match_patch.js" />
+    <Content Include="Dependencies\diff_match_patch\tests\diff_match_patch_test.js" />
     <Content Include="Dependencies\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.js" />
     <Content Include="Dependencies\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Dependencies\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
@@ -2335,6 +2337,9 @@
     <Content Include="Dependencies\codemirror\LICENSE" />
     <Content Include="Dependencies\codemirror\package.json" />
     <Content Include="Dependencies\codemirror\README.md" />
+    <Content Include="Dependencies\diff_match_patch\.npmignore" />
+    <Content Include="Dependencies\diff_match_patch\package.json" />
+    <Content Include="Dependencies\diff_match_patch\README.markdown" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

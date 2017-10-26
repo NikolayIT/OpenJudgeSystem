@@ -26,6 +26,9 @@ const Assets = [{
 }, {
     origin: 'codemirror/',
     target: 'codemirror'
+},{
+    origin: 'diff_match_patch/',
+    target: 'diff_match_patch'
 }];
 
 module.exports = {
