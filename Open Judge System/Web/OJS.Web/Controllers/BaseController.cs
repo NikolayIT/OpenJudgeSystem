@@ -17,16 +17,10 @@
 
     public class BaseController : Controller
     {
-        public BaseController(IOjsData data)
-        {
-            this.Data = data;
-        }
+        public BaseController(IOjsData data) => this.Data = data;
 
         protected BaseController(IOjsData data, UserProfile profile)
-            : this(data)
-        {
-            this.UserProfile = profile;
-        }
+            : this(data) => this.UserProfile = profile;
 
         protected IOjsData Data { get; set; }
 
