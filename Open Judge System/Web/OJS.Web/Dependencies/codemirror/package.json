@@ -2,7 +2,7 @@
   "_args": [
     [
       "codemirror@^5.29.0",
-      "C:\\Users\\Teodor92\\Desktop\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web"
+      "C:\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web"
     ]
   ],
   "_from": "codemirror@>=5.29.0-0 <6.0.0-0",
@@ -35,7 +35,7 @@
   "_shasum": "86e57dd5ea5535acbcf9c720797b4cefe05b5a70",
   "_shrinkwrap": null,
   "_spec": "codemirror@^5.29.0",
-  "_where": "C:\\Users\\Teodor92\\Desktop\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web",
+  "_where": "C:\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web",
   "bugs": {
     "url": "http://github.com/codemirror/CodeMirror/issues"
   },

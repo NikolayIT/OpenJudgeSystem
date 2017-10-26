@@ -1,0 +1,83 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "diff_match_patch",
+        "scope": null,
+        "escapedName": "diff_match_patch",
+        "name": "diff_match_patch",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web"
+    ]
+  ],
+  "_from": "diff_match_patch@latest",
+  "_id": "diff_match_patch@0.1.1",
+  "_inCache": true,
+  "_location": "/diff_match_patch",
+  "_nodeSupported": true,
+  "_nodeVersion": "v0.2.0",
+  "_npmVersion": "0.2.10-1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "diff_match_patch",
+    "scope": null,
+    "escapedName": "diff_match_patch",
+    "name": "diff_match_patch",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/diff_match_patch/-/diff_match_patch-0.1.1.tgz",
+  "_shasum": "d3f14d5b76fb4b5a9cf44706261dadb5bd97edbc",
+  "_shrinkwrap": null,
+  "_spec": "diff_match_patch",
+  "_where": "C:\\OpenJudgeSystem\\Open Judge System\\Web\\OJS.Web",
+  "author": {
+    "name": "Neil Fraser"
+  },
+  "bugs": {
+    "url": "https://github.com/lfborjas/node_diff_match_patch/issues"
+  },
+  "dependencies": {},
+  "description": "node module package of the Neil Fraser's diff_match_patch javascript library",
+  "devDependencies": {},
+  "directories": {
+    "lib": "./lib"
+  },
+  "dist": {
+    "shasum": "d3f14d5b76fb4b5a9cf44706261dadb5bd97edbc",
+    "tarball": "https://registry.npmjs.org/diff_match_patch/-/diff_match_patch-0.1.1.tgz"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "homepage": "https://github.com/lfborjas/node_diff_match_patch#readme",
+  "licenses": [
+    {
+      "type": "Apache",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "main": "./lib/diff_match_patch",
+  "mantainers": [
+    {
+      "name": "Luis Borjas",
+      "email": "me@lfborjas.com"
+    }
+  ],
+  "name": "diff_match_patch",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lfborjas/node_diff_match_patch.git"
+  },
+  "version": "0.1.1"
+}
