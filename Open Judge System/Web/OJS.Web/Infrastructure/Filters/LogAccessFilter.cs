@@ -28,7 +28,7 @@
             this.LogAction(filterContext);
         }
 
-        protected virtual void LogAction(ActionExecutedContext filterContext)
+        private void LogAction(ActionExecutedContext filterContext)
         {
             string userId = null;
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)

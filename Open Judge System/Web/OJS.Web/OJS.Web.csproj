@@ -1691,6 +1691,7 @@
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />

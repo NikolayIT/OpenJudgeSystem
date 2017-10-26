@@ -32,8 +32,6 @@ namespace OJS.Web
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
-            container.RegisterMvcIntegratedFilterProvider();
-
             container.Verify();
 
             return container;

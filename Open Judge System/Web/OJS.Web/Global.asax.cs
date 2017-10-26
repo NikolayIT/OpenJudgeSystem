@@ -12,6 +12,7 @@
     using OJS.Data;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
+    using OJS.Web.Infrastructure.Filters;
 
     public class Global : HttpApplication
     {
@@ -22,7 +23,9 @@
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
             AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            FilterConfig.RegisterGlobalFilters(
+                GlobalFilters.Filters,
+                new object[] { new ActionFilterDispatcher(SimpleInjectorConfig.Container.GetAllInstances) });
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);
