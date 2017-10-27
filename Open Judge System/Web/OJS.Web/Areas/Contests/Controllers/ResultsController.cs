@@ -58,14 +58,14 @@
             var results = this.Data.ParticipantScores
                 .All()
                 .Where(x => x.ProblemId == problem.Id && x.IsOfficial == official)
-                .OrderByDescending(x => x.Points)
                 .Select(x => new ProblemResultViewModel
                 {
                     SubmissionId = x.SubmissionId,
                     ParticipantName = x.ParticipantName,
                     MaximumPoints = problem.MaximumPoints,
                     Result = x.Points
-                });
+                })
+                .ToList();
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
