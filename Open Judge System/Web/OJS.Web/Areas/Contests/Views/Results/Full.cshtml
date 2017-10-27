@@ -49,7 +49,7 @@
     <script src="/Scripts/Helpers/test-results.js"></script>
     <table class="table table-striped">
         <tr>
-            <th>No</th>
+            <th>№</th>
             <th>@Resource.User</th>
             <th>@Resource.UserFullName</th>
             @{
@@ -62,11 +62,11 @@
             }
             <th>@Resource.Total</th>
         </tr>
-        @{ var count = 1; }
-        @foreach (var participant in Model.Results)
+        @for (var i = 0; i < results.Count; i++)
         {
+            var participant = results[i];
             <tr>
-                <td><strong>@count.</strong></td>
+                <td><strong>@((Model.CurrentPage - 1) * resultsOnPage + i + 1).</strong></td>
                 <th><a href="/Users/@participant.ParticipantUsername">@participant.ParticipantUsername</a></th>
                 <td>@participant.ParticipantFullName</td>
                 @foreach (var problemResult in participant.ProblemResults)
@@ -101,7 +101,6 @@
                 }
                 <td>@participant.Total</td>
             </tr>
-            { count++; }
         }
     </table>
             }
