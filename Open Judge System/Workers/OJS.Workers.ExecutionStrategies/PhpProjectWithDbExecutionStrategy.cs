@@ -1,15 +1,18 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
+
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Workers.Checkers;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
+    using OJS.Workers.Executors;
 
     public class PhpProjectWithDbExecutionStrategy : PhpProjectExecutionStrategy
     {
         protected const string DatabaseConfigurationFileName = "db.ini";
+        protected const string TestRunnerClassName = "JudgeTestRunner";
         private readonly string restrictedUserId;
         private readonly string restrictedUserPassword;
 
@@ -29,10 +32,12 @@
             this.restrictedUserPassword = restrictedUserPassword;
         }
 
-        protected string ConnectionStringTemplate => @"
-            dsn=""mysql:host=localhost;port=3306;dbname=##dbName##""
+        protected string ConnectionStringTemplate => @"dsn=""mysql:host=localhost;port=3306;dbname=##dbName##""
             user=""##username##""
             pass=""##password##""";
+
+        protected string TestRunnerCodeTemplate => @"if(class_exists(""##testRunnerClassName##""))
+    \##testRunnerClassName##::test();";
 
         protected BaseMySqlExecutionStrategy MySqlHelperStrategy { get; set; }
 
@@ -40,38 +45,83 @@
         {
             var result = new ExecutionResult();
             var databaseName = this.MySqlHelperStrategy.GetDatabaseName();
-            var connectionString = string.Empty;
 
-            var databaseConfiguration = this.ConnectionStringTemplate
-                .Replace("##dbname##", databaseName)
-                .Replace("##username##", this.restrictedUserId)
-                .Replace("##password##", this.restrictedUserPassword);
+            // PHP code is not compiled
+            result.IsCompiledSuccessfully = true;
 
             string submissionPath =
                 $@"{this.WorkingDirectory}\\{ZippedSubmissionName}{GlobalConstants.ZipFileExtension}";
             File.WriteAllBytes(submissionPath, executionContext.FileContent);
+            FileHelpers.UnzipFile(submissionPath, this.WorkingDirectory);
+            File.Delete(submissionPath);
 
-            var dbIniZipPath = FileHelpers.GetFilePathsFromZip(submissionPath)
-                .FirstOrDefault(f => f.EndsWith(DatabaseConfigurationFileName));
+            this.ReplaceDatabaseConfigurationFile(databaseName);
+            var applicationEntryPointPath = this.AddTestRunnerTemplateToApplicationEntryPoint();
+            this.RequireSuperGlobalsTemplateInUserCode(applicationEntryPointPath);
 
-            if (string.IsNullOrEmpty(dbIniZipPath))
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            result.TestResults = new List<TestResult>();
+
+            var executor = new RestrictedProcessExecutor();
+            foreach (var test in executionContext.Tests)
             {
-                throw new ArgumentException($"{DatabaseConfigurationFileName} not found in the submission");
+                var dbConnection = this.MySqlHelperStrategy.GetOpenConnection(databaseName);
+                dbConnection.Close();
+
+                File.WriteAllText(this.SuperGlobalsTemplatePath, test.Input);
+
+                var processExecutionResult = executor.Execute(
+                    this.phpCliExecutablePath,
+                    string.Empty,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    new[] { applicationEntryPointPath });
+
+                var testResult = this.ExecuteAndCheckTest(
+                    test,
+                    processExecutionResult,
+                    checker,
+                    processExecutionResult.ReceivedOutput);
+
+                result.TestResults.Add(testResult);
+                this.MySqlHelperStrategy.DropDatabase(databaseName);
             }
 
-            var databaseConfigurationPath = $"{this.WorkingDirectory}\\{DatabaseConfigurationFileName}";
-            File.WriteAllText(databaseConfigurationPath, databaseConfiguration);
-            FileHelpers.AddFilesToZipArchive(submissionPath, dbIniZipPath, databaseConfigurationPath);
+            return result;
+        }
 
-            using (var connection = this.MySqlHelperStrategy.GetOpenConnection(databaseName))
-            {
-                connectionString = connection.ConnectionString;
-            }
+        private string AddTestRunnerTemplateToApplicationEntryPoint()
+        {
+            var applicationEntryPointPath = FileHelpers.FindFileMatchingPattern(
+                this.WorkingDirectory,
+                ApplicationEntryPoint);
+          
+            var entryPointContent = File.ReadAllText(applicationEntryPointPath);
 
-            result.IsCompiledSuccessfully = true;
-            return null;
+            var testRunnerCode = this.TestRunnerCodeTemplate.Replace("##testRunnerClassName##", TestRunnerClassName);
+            entryPointContent += testRunnerCode;
+            File.WriteAllText(applicationEntryPointPath, entryPointContent);
 
+            return applicationEntryPointPath;
+        }
+
+        private void ReplaceDatabaseConfigurationFile(string databaseName)
+        {
+            var databaseConfiguration = this.ConnectionStringTemplate
+                .Replace("##dbName##", databaseName)
+                .Replace("##username##", this.restrictedUserId)
+                .Replace("##password##", this.restrictedUserPassword)
+                .Replace(" ", string.Empty);
+
+            var databaseConfigurationFilePath = FileHelpers.FindFileMatchingPattern(
+                this.WorkingDirectory,
+                DatabaseConfigurationFileName);
+
+            File.WriteAllText(databaseConfigurationFilePath, databaseConfiguration);
         }
     }
-
 }
