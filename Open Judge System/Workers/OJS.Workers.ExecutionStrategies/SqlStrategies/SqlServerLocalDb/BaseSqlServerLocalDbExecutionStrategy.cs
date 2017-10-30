@@ -42,7 +42,7 @@
             this.restrictedUserPassword = restrictedUserPassword;
         }
 
-        protected override IDbConnection GetOpenConnection(string databaseName)
+        public override IDbConnection GetOpenConnection(string databaseName)
         {
             var databaseFilePath = $"{this.WorkingDirectory}\\{databaseName}.mdf";
 
@@ -82,7 +82,7 @@ ALTER ROLE [db_owner] ADD MEMBER [{this.restrictedUserId}];");
             return createdDbConnection;
         }
 
-        protected override void DropDatabase(string databaseName)
+        public override void DropDatabase(string databaseName)
         {
             using (var connection = new SqlConnection(this.masterDbConnectionString))
             {

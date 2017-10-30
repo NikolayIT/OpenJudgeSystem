@@ -11,7 +11,7 @@
 
     public class PhpProjectExecutionStrategy : ExecutionStrategy
     {
-        private const string ZippedSubmissionName = "_$Submission";
+        protected const string ZippedSubmissionName = "_$Submission";
         private const string SuperGlobalsTemplateName = "_Superglobals.php";
         private const string SubmissionEntryPoint = "index.php";
         private const string SuperGlobalsRequireStatementTemplate = "<?php require_once '##templateName##'; ?>";
