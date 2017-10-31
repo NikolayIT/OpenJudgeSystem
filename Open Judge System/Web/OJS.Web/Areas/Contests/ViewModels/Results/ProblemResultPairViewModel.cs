@@ -7,9 +7,5 @@
         public bool ShowResult { get; set; }
 
         public BestSubmissionViewModel BestSubmission { get; set; }
-
-        public string ProblemName { get; set; }
-
-        public int ProblemOrderBy { get; set; }
     }
 }

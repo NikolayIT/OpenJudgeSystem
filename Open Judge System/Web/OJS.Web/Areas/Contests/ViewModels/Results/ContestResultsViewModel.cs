@@ -12,9 +12,9 @@
 
         public int CurrentPage { get; set; }
         
-        public IEnumerable<ContestProblemViewModel> Problems { get; set; }
+        public IEnumerable<ContestProblemSimpleViewModel> Problems { get; set; }
 
-        public IEnumerable<ParticipantResultViewModel> Results { get; set; }
+        public IList<ParticipantResultViewModel> Results { get; set; }
 
         public bool ContestCanBeCompeted { get; set; }
 

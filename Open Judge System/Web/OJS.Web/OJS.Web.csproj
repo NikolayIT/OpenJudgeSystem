@@ -1657,6 +1657,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemSimpleViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
