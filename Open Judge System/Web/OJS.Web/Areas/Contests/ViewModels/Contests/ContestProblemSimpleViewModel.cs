@@ -10,11 +10,14 @@
             pr => new ContestProblemSimpleViewModel
                 {
                     Name = pr.Name,
-                    ShowResults = pr.ShowResults
+                    ShowResults = pr.ShowResults,
+                    MaximumPoints = pr.MaximumPoints
                 };
 
         public string Name { get; set; }
         
         public bool ShowResults { get; set; }
+
+        public short MaximumPoints { get; set; }
     }
 }
