@@ -9,7 +9,8 @@
     {
         public static IEnumerable<Attribute> GetAppliedCustomAttributes(this ActionDescriptor actionDescriptor)
         {
-            var attributes = actionDescriptor.ControllerDescriptor.GetCustomAttributes(true)
+            var attributes = actionDescriptor.ControllerDescriptor
+                .GetCustomAttributes(true)
                 .Concat(actionDescriptor.GetCustomAttributes(true))
                 .Cast<Attribute>();
 
