@@ -10,12 +10,10 @@
         public string ParticipantFullName { get; set; }
 
         public IEnumerable<ProblemResultPairViewModel> ProblemResults { get; set; }
-            = new List<ProblemResultPairViewModel>();
 
         public int Total =>
-            this.ProblemResults.Where(x => x.ShowResult).Sum(x => x.BestSubmission?.Points ?? 0);
+            this.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points);
 
-        public int AdminTotal =>
-            this.ProblemResults.Sum(x => x.BestSubmission?.Points ?? 0);
+        public int AdminTotal => this.ProblemResults.Sum(pr => pr.BestSubmission.Points);
     }
 }

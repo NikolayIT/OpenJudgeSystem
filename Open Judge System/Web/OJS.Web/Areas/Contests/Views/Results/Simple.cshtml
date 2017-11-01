@@ -2,6 +2,8 @@
 
 @using System.Web.Mvc.Expressions
 @using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.Areas.Users.Controllers
+@using X.PagedList.Mvc
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
@@ -16,11 +18,6 @@
 
 @section Styles {
     <link href="/Content/Contests/results-page.css" rel="stylesheet" />
-    <style>
-        tr.success a, tr.success a:hover {
-            color: #fff;
-        }
-    </style>
 }
 
 <ol class="breadcrumb">
@@ -64,11 +61,14 @@
                 }
                 @foreach (var problem in Model.Problems)
                 {
-                    if (problem.ShowResults || (Model.ContestCanBePracticed && !ViewBag.IsOfficial) || User.IsAdmin() || Model.UserIsLecturerInContest)
+                    if (problem.ShowResults ||
+                        (Model.ContestCanBePracticed && !ViewBag.IsOfficial) ||
+                        User.IsAdmin() ||
+                        Model.UserIsLecturerInContest)
                     {
                         <th class="text-center">
                             @if (displayLink)
-                        {
+                            {
                                 <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
                                 problemCounter++;
                             }
@@ -86,34 +86,34 @@
             @for (var i = 0; i < results.Count; i++)
             {
                 var participant = results[i];
+                var problems = Model.Problems.ToArray();
+                var participantResults = participant.ProblemResults.ToArray();
                 var className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
                 <tr class="@className">
                     <td>@((Model.Results.PageNumber - 1) * resultsOnPage + i + 1)</td>
-                    <td><a href="/Users/Profile?id=@participant.ParticipantUsername">@participant.ParticipantUsername</a></td>
+                    <td>
+                        <a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a>
+                    </td>
                     <td>@participant.ParticipantFullName</td>
-                    @foreach (var participantResult in participant.ProblemResults)
+                    @for (var resultIndex = 0; resultIndex < problems.Length; resultIndex++)
                     {
-                        if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                        try
                         {
-                            if (participantResult.BestSubmission == null)
+                            var participantResult = participantResults[resultIndex];
+                            if (User.IsAdmin() || Model.UserIsLecturerInContest)
                             {
-                                <td>0</td>
+                                <td>
+                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(participantResult.BestSubmission.Id)))">@participantResult.BestSubmission.Points</a>
+                                </td>
                             }
-                            else
-                            {
-                                <td><a href="/Contests/Submissions/View/@participantResult.BestSubmission.Id">@participantResult.BestSubmission.Points</a></td>
-                            }
-                        }
-                        else if (participantResult.ShowResult)
-                        {
-                            if (participantResult.BestSubmission == null)
-                            {
-                                <td>0</td>
-                            }
-                            else
+                            else if (participantResult.ShowResult)
                             {
                                 <td>@participantResult.BestSubmission.Points</td>
                             }
+                        }
+                        catch
+                        {
+                            <td>0</td>
                         }
                     }
                     @if (User.IsAdmin() || Model.UserIsLecturerInContest)
