@@ -1,16 +1,18 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestFullResultsViewModel
 
+@using System.Web.Mvc.Expressions
 @using OJS.Common.Models
-@using OJS.Web.ViewModels.Shared
-@using Resource = Resources.Areas.Contests.Views.ResultsFull
+@using X.PagedList.Mvc
 @using OJS.Web.Areas.Contests.Controllers
+
+@using Resource = Resources.Areas.Contests.Views.ResultsFull
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    string isOfficial = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-    var resultsOnPage = ResultsController.NotOfficialResultsPageSize;
+    var isOfficialStr = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+    bool isOfficial = ViewBag.IsOfficial;
 
-    var results = Model.Results.ToList();
+    var results = Model.Results;
 }
 
 <ol class="breadcrumb">
@@ -39,9 +41,12 @@
 
 <br />
 
-@if ((Model.CurrentPage == 1 && Model.Results.Count() == resultsOnPage) || Model.CurrentPage > 1)
+@if (results.PageCount > 1)
 {
-    @Html.Partial("_SimplePagination", new SimplePaginationViewModel { HasNext = results.Count == resultsOnPage, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Full/" + Model.Id + "?page=" })
+    @Html.PagedListPager(
+        Model.Results,
+        page => Url.Action<ResultsController>(
+            c => c.Full(Model.Id, isOfficial, page)))
 }
 
 @if (Model.Results.Any())
@@ -53,11 +58,11 @@
             <th>@Resource.User</th>
             <th>@Resource.UserFullName</th>
             @{
-                int problemNumber = 0;
+                var problemNumber = 0;
             }
             @foreach (var problem in Model.Problems)
             {
-                <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
+                <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
                 problemNumber++;
             }
             <th>@Resource.Total</th>
@@ -110,7 +115,10 @@
                 <h2>@Resource.NoMoreResults</h2>
             }
 
-@if ((Model.CurrentPage == 1 && Model.Results.Count() == resultsOnPage) || Model.CurrentPage > 1)
+@if (results.PageCount > 1)
 {
-    @Html.Partial("_SimplePagination", new SimplePaginationViewModel { HasNext = results.Count == resultsOnPage, CurrentPage = Model.CurrentPage, Url = "/Contests/" + isOfficial + "/Results/Full/" + Model.Id + "?page=" })
+    @Html.PagedListPager(
+        Model.Results,
+        page => Url.Action<ResultsController>(
+            c => c.Full(Model.Id, isOfficial, page)))
 }

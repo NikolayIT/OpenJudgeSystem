@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
 
+    using X.PagedList;
+
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
-    // TODO: Refactor to reuse same logic with ContestResultsViewModel
     public class ContestFullResultsViewModel
     {
         public int Id { get; set; }
@@ -15,6 +16,6 @@
 
         public IEnumerable<ContestProblemSimpleViewModel> Problems { get; set; }
 
-        public IEnumerable<ParticipantFullResultViewModel> Results { get; set; }
+        public IPagedList<ParticipantFullResultViewModel> Results { get; set; }
     }
 }

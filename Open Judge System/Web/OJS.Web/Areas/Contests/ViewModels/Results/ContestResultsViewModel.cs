@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using X.PagedList;
+
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     public class ContestResultsViewModel
@@ -14,7 +16,7 @@
         
         public IEnumerable<ContestProblemSimpleViewModel> Problems { get; set; }
 
-        public IList<ParticipantResultViewModel> Results { get; set; }
+        public IPagedList<ParticipantResultViewModel> Results { get; set; }
 
         public bool ContestCanBeCompeted { get; set; }
 
