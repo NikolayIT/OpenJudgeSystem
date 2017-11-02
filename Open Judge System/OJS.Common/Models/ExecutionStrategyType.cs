@@ -37,6 +37,7 @@
         MySqlRunQueriesAndCheckDatabase = 17,
         MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
         RubyExecutionStrategy = 32,
-        PhpProjectExecutionStrategy = 34
+        PhpProjectExecutionStrategy = 34,
+        PhpProjectWithDbExecutionStrategy = 36
     }
 }

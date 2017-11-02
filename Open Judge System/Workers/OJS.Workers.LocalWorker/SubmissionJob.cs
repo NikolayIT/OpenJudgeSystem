@@ -444,6 +444,13 @@
                 case ExecutionStrategyType.PhpProjectExecutionStrategy:
                     executionStrategy = new PhpProjectExecutionStrategy(Settings.PhpCliExecutablePath);
                     break;
+                case ExecutionStrategyType.PhpProjectWithDbExecutionStrategy:
+                    executionStrategy = new PhpProjectWithDbExecutionStrategy(
+                        Settings.PhpCliExecutablePath, 
+                        Settings.MySqlSysDbConnectionString,
+                        Settings.MySqlRestrictedUserId,
+                        Settings.MySqlRestrictedUserPassword);
+                    break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);
                     break;

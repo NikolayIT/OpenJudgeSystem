@@ -40,7 +40,7 @@
             this.restrictedUserPassword = restrictedUserPassword;
         }
 
-        protected override IDbConnection GetOpenConnection(string databaseName)
+        public override IDbConnection GetOpenConnection(string databaseName)
         {
             using (var connection = new MySqlConnection(this.sysDbConnectionString))
             {
@@ -69,7 +69,7 @@ FLUSH PRIVILEGES;");
             return createdDbConnection;
         }
 
-        protected override void DropDatabase(string databaseName)
+        public override void DropDatabase(string databaseName)
         {
             using (var connection = new MySqlConnection(this.sysDbConnectionString))
             {
