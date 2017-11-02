@@ -53,13 +53,14 @@
             <th>@Resource.User</th>
             <th>@Resource.UserFullName</th>
             @{
-                int problemNumber = 0;
+                var problemNumber = 0;
             }
             @foreach (var problem in Model.Problems)
             {
                 <th><a href="/Contests/@isOfficial/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
                 problemNumber++;
             }
+
             <th>@Resource.Total</th>
         </tr>
         @for (var i = 0; i < results.Count; i++)
@@ -83,7 +84,7 @@
                             if (!problemResult.BestSubmission.IsCompiledSuccessfully)
                             {
                                 @:Compilation failed!
-                        }
+                            }
                             foreach (var testRun in problemResult.BestSubmission.TestRuns)
                             {
                                 var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
@@ -97,13 +98,16 @@
                                 }
                             }
                         }
+
                     </td>
                 }
+
                 <td>@participant.Total</td>
             </tr>
         }
+
     </table>
-            }
+}
             else
             {
                 <h2>@Resource.NoMoreResults</h2>
