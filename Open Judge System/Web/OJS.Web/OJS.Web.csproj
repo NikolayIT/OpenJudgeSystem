@@ -1663,7 +1663,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemSimpleViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
@@ -1672,17 +1672,13 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\NewContestIpViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Participants\ParticipantViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Problems\ProblemListItemViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Results\ParticipantFullResultViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Results\ProblemFullResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultPairViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ProblemResultViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\QuestionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ParticipantResultViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Results\SubmissionFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\TestRunFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\SubmissionResultIsCompiledViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Submissions\SubmissionResultViewModel.cs" />
@@ -1736,7 +1732,6 @@
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
-    <Compile Include="ViewModels\Shared\SimplePaginationViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionsFilterViewModel.cs" />
     <Compile Include="ViewModels\Submission\SubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Tests\TestInputDataViewModel.cs" />
@@ -3166,7 +3161,6 @@
     <Content Include="Views\Account\ExternalNotify.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DropDownList.cshtml" />
     <Content Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
-    <Content Include="Views\Shared\_SimplePagination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
   </ItemGroup>

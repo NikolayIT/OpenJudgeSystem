@@ -11,10 +11,8 @@
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public int CurrentPage { get; set; }
         
-        public IEnumerable<ContestProblemSimpleViewModel> Problems { get; set; }
+        public IEnumerable<ContestProblemListViewModel> Problems { get; set; }
 
         public IPagedList<ParticipantResultViewModel> Results { get; set; }
 

@@ -4,10 +4,10 @@
     using System.Linq.Expressions;
     using OJS.Data.Models;
 
-    public class ContestProblemSimpleViewModel
+    public class ContestProblemListViewModel
     {
-        public static Expression<Func<Problem, ContestProblemSimpleViewModel>> FromProblem =>
-            pr => new ContestProblemSimpleViewModel
+        public static Expression<Func<Problem, ContestProblemListViewModel>> FromProblem =>
+            pr => new ContestProblemListViewModel
                 {
                     Name = pr.Name,
                     ShowResults = pr.ShowResults,
