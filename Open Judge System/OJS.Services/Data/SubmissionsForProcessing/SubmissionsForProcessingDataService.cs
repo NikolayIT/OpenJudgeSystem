@@ -7,12 +7,13 @@
 
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
+    using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsForProcessingDataService : ISubmissionsForProcessingDataService
     {
-        private readonly GenericRepository<SubmissionForProcessing> submissionsForProcessing;
+        private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
-        public SubmissionsForProcessingDataService(GenericRepository<SubmissionForProcessing> submissionsForProcessing)
+        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing)
         {
             this.submissionsForProcessing = submissionsForProcessing;
         }

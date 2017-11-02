@@ -16,11 +16,12 @@
 
     using OJS.Common.Extensions;
     using OJS.Data.Contracts;
+    using OJS.Data.Repositories.Contracts;
 
-    public class GenericRepository<T> : IRepository<T>
+    public class EfGenericRepository<T> : IEfGenericRepository<T>
         where T : class
     {
-        public GenericRepository(IOjsDbContext context)
+        public EfGenericRepository(IOjsDbContext context)
         {
             if (context == null)
             {

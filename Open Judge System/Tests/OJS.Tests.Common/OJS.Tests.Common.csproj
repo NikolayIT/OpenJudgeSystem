@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="DataFakes\DatabaseConfiguration.cs" />
     <Compile Include="DataFakes\FakeEmptyOjsDbContext.cs" />
+    <Compile Include="DataFakes\FakeOjsData.cs" />
     <Compile Include="DataFakes\FakeOjsDbContext.cs" />
     <Compile Include="DataFakes\ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
