@@ -9,10 +9,13 @@
         public static Expression<Func<Problem, ContestProblemListViewModel>> FromProblem =>
             pr => new ContestProblemListViewModel
                 {
+                    Id = pr.Id,
                     Name = pr.Name,
                     ShowResults = pr.ShowResults,
                     MaximumPoints = pr.MaximumPoints
                 };
+
+        public int Id { get; set; }
 
         public string Name { get; set; }
         

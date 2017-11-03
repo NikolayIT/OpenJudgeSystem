@@ -4,6 +4,7 @@
 @using OJS.Web.Areas.Contests.Controllers
 @using OJS.Web.Areas.Users.Controllers
 @using X.PagedList.Mvc
+
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
@@ -14,6 +15,7 @@
         : ResultsController.NotOfficialResultsPageSize;
     bool isOfficial = ViewBag.IsOfficial;
     var results = Model.Results;
+    var problems = Model.Problems.ToArray();
 }
 
 @section Styles {
@@ -46,7 +48,7 @@
             c => c.Simple(Model.Id, isOfficial, page)))
 }
 
-@if (Model.Results.Any())
+@if (results.Count > 0)
 {
     <table class="table table-responsive table-bordered table-striped text-white text-center width100percent">
         <thead>
@@ -59,7 +61,8 @@
                     var displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
                     var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
                 }
-                @foreach (var problem in Model.Problems)
+
+                @foreach (var problem in problems)
                 {
                     if (problem.ShowResults ||
                         (Model.ContestCanBePracticed && !ViewBag.IsOfficial) ||
@@ -76,9 +79,11 @@
                             {
                                 @problem.Name
                             }
+
                         </th>
                     }
                 }
+
                 <th class="text-center">@Resource.Total</th>
             </tr>
         </thead>
@@ -86,7 +91,6 @@
             @for (var i = 0; i < results.Count; i++)
             {
                 var participant = results[i];
-                var problems = Model.Problems.ToArray();
                 var participantResults = participant.ProblemResults.ToArray();
                 var className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
                 <tr class="@className">
@@ -116,6 +120,7 @@
                             <td>0</td>
                         }
                     }
+
                     @if (User.IsAdmin() || Model.UserIsLecturerInContest)
                     {
                         <td>@participant.AdminTotal</td>
@@ -124,8 +129,10 @@
                     {
                         <td>@participant.Total</td>
                     }
+
                 </tr>
             }
+
         </tbody>
     </table>
 }

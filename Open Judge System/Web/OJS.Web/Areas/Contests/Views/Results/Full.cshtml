@@ -1,9 +1,10 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
 @using System.Web.Mvc.Expressions
-@using OJS.Common.Models
 @using X.PagedList.Mvc
+@using OJS.Common.Models
 @using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.Areas.Users.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.ResultsFull
 
@@ -11,8 +12,8 @@
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
     var isOfficialStr = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
     bool isOfficial = ViewBag.IsOfficial;
-
     var results = Model.Results;
+    var problems = Model.Problems.ToArray();
 }
 
 <ol class="breadcrumb">
@@ -23,7 +24,7 @@
 
 <h1>@ViewBag.Title</h1>
 <h2>
-    <span>@Html.ActionLink(Resource.Public_results, "Simple", new { id = Model.Id, official = ViewBag.IsOfficial }, new { @class = "btn btn-primary" })</span>
+    <span>@Html.ActionLink(Resource.Public_results, "Simple", new {id = Model.Id, official = ViewBag.IsOfficial}, new {@class = "btn btn-primary"})</span>
 </h2>
 
 <br />
@@ -49,47 +50,46 @@
             c => c.Full(Model.Id, isOfficial, page)))
 }
 
-@if (Model.Results.Any())
+@if (results.Count > 0)
 {
     <script src="/Scripts/Helpers/test-results.js"></script>
     <table class="table table-striped">
         <tr>
-            <th>No</th>
+            <th>№</th>
             <th>@Resource.User</th>
             <th>@Resource.UserFullName</th>
             @{
                 var problemNumber = 0;
             }
-            @foreach (var problem in Model.Problems)
+            @foreach (var problem in problems)
             {
                 <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
                 problemNumber++;
             }
             <th>@Resource.Total</th>
         </tr>
-        @{ var count = 1; }
-        @foreach (var participant in Model.Results)
+        @for (var i = 0; i < results.Count; i++)
         {
+            var participant = results[i];
+            var participantResults = participant.ProblemResults.ToArray();
             <tr>
-                <td><strong>@count.</strong></td>
-                <th><a href="/Users/@participant.ParticipantUsername">@participant.ParticipantUsername</a></th>
+                <td><strong>@((Model.Results.PageNumber - 1) * Model.Results.PageSize + i + 1).</strong></td>
+                <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
                 <td>@participant.ParticipantFullName</td>
-                @foreach (var problemResult in participant.ProblemResults)
+                @for (var resultIndex = 0; resultIndex < problems.Length; resultIndex++)
                 {
                     <td style="white-space: nowrap">
-                        @if (problemResult.BestSubmission == null)
+                        @try
                         {
-                            <span>@Resource.No_solution</span>
-                        }
-                        else
-                        {
-                            <strong><a href="/Contests/Submissions/View/@problemResult.BestSubmission.Id">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong> @problemResult.BestSubmission.SubmissionType
+                            var participantResult = participantResults[resultIndex];
+                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(participantResult.BestSubmission.Id)))">@participantResult.BestSubmission.Points / @participantResult.MaximumPoints</a></strong>
+                            @participantResult.BestSubmission.SubmissionType
                             <br />
-                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                            if (!participantResult.BestSubmission.IsCompiledSuccessfully)
                             {
                                 @:Compilation failed!
-                        }
-                            foreach (var testRun in problemResult.BestSubmission.TestRuns)
+                            }
+                            foreach (var testRun in participantResult.BestSubmission.TestRuns)
                             {
                                 var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
                                 switch (testRun.ResultType)
@@ -102,18 +102,23 @@
                                 }
                             }
                         }
+                        catch
+                        {
+                            <span>@Resource.No_solution</span>
+                        }
+
                     </td>
                 }
+
                 <td>@participant.Total</td>
             </tr>
-            { count++; }
         }
     </table>
-            }
-            else
-            {
-                <h2>@Resource.NoMoreResults</h2>
-            }
+}
+else
+{
+    <h2>@Resource.NoMoreResults</h2>
+}
 
 @if (results.PageCount > 1)
 {
