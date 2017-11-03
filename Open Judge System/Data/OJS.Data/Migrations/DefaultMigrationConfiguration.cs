@@ -428,6 +428,15 @@
                     ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
+                    Name = "PHP Project with DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpProjectWithDbExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = true
                 }
             };
 

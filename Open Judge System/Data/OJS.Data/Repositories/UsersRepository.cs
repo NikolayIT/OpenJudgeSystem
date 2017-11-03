@@ -7,7 +7,7 @@
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
 
-    public class UsersRepository : GenericRepository<UserProfile>, IUsersRepository
+    public class UsersRepository : EfGenericRepository<UserProfile>, IUsersRepository
     {
         public UsersRepository(IOjsDbContext context)
             : base(context)

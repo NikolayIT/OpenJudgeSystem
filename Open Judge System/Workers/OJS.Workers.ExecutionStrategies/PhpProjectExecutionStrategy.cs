@@ -11,11 +11,11 @@
 
     public class PhpProjectExecutionStrategy : ExecutionStrategy
     {
-        private const string ZippedSubmissionName = "_$Submission";
+        protected const string ZippedSubmissionName = "_$Submission";
+        protected const string ApplicationEntryPoint = "index.php";
+        protected readonly string phpCliExecutablePath;
         private const string SuperGlobalsTemplateName = "_Superglobals.php";
-        private const string SubmissionEntryPoint = "index.php";
         private const string SuperGlobalsRequireStatementTemplate = "<?php require_once '##templateName##'; ?>";
-        private readonly string phpCliExecutablePath;
 
         public PhpProjectExecutionStrategy(string phpCliExecutablePath)
         {
@@ -44,15 +44,15 @@
             FileHelpers.UnzipFile(submissionPath, this.WorkingDirectory);
             File.Delete(submissionPath);
 
-            string submissionEntryPointPath =
-                FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, SubmissionEntryPoint);
+            string applicationEntryPointPath =
+                FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, ApplicationEntryPoint);
 
-            if (string.IsNullOrEmpty(submissionEntryPointPath))
+            if (string.IsNullOrEmpty(applicationEntryPointPath))
             {
-                throw new ArgumentException($"{SubmissionEntryPoint} not found in submission folder!");
+                throw new ArgumentException($"{ApplicationEntryPoint} not found in submission folder!");
             }
 
-            this.RequireSuperGlobalsTemplateInUserCode(submissionEntryPointPath);
+            this.RequireSuperGlobalsTemplateInUserCode(applicationEntryPointPath);
 
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName, 
@@ -71,7 +71,7 @@
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { submissionEntryPointPath });
+                    new[] { applicationEntryPointPath });
 
                 var testResult = this.ExecuteAndCheckTest(
                     test, 
@@ -85,7 +85,7 @@
             return result;
         }
 
-        private void RequireSuperGlobalsTemplateInUserCode(string pathToSubmissionEntryPoint)
+        protected void RequireSuperGlobalsTemplateInUserCode(string pathToSubmissionEntryPoint)
         {
             string entryPointContents = File.ReadAllText(pathToSubmissionEntryPoint);
 

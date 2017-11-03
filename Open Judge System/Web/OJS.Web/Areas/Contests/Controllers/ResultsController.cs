@@ -59,15 +59,15 @@
 
             var results = this.Data.ParticipantScores
                 .All()
-                .Where(x => x.ProblemId == problem.Id && x.IsOfficial == official)
-                .OrderByDescending(x => x.Points)
-                .Select(x => new ProblemResultViewModel
+                .Where(ps => ps.ProblemId == problem.Id && ps.IsOfficial == official)
+                .Select(ps => new ProblemResultViewModel
                 {
-                    SubmissionId = x.SubmissionId,
-                    ParticipantName = x.ParticipantName,
+                    SubmissionId = ps.SubmissionId,
+                    ParticipantName = ps.ParticipantName,
                     MaximumPoints = problem.MaximumPoints,
-                    Result = x.Points
-                });
+                    Result = ps.Points
+                })
+                .ToList();
 
             return this.Json(results.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }

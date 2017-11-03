@@ -66,6 +66,7 @@
                 <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
                 problemNumber++;
             }
+
             <th>@Resource.Total</th>
         </tr>
         @for (var i = 0; i < results.Count; i++)
@@ -113,6 +114,7 @@
                 <td>@participant.Total</td>
             </tr>
         }
+
     </table>
 }
 else

@@ -73,11 +73,11 @@
             return result;
         }
 
-        protected abstract IDbConnection GetOpenConnection(string databaseName);
+        public abstract IDbConnection GetOpenConnection(string databaseName);
 
-        protected abstract void DropDatabase(string databaseName);
+        public abstract void DropDatabase(string databaseName);
 
-        protected virtual string GetDatabaseName() => Guid.NewGuid().ToString();
+        public virtual string GetDatabaseName() => Guid.NewGuid().ToString();
 
         protected virtual string GetDataRecordFieldValue(IDataRecord dataRecord, int index)
         {

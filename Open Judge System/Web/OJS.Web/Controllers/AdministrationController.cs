@@ -15,7 +15,7 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data;
-    using OJS.Web.Common.Attributes;
+    using OJS.Web.Infrastructure.Filters.Attributes;
 
     [LogAccess]
     public abstract class AdministrationController : BaseController

@@ -93,10 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AuthorizeRolesAttribute.cs" />
-    <Compile Include="Attributes\LogAccessAttribute.cs" />
-    <Compile Include="Attributes\LoggerFilterAttribute.cs" />
     <Compile Include="Attributes\RestrictRequestsAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
+    <Compile Include="Extensions\ActionDescriptorExtensions.cs" />
     <Compile Include="Extensions\TempDataExtentions.cs" />
     <Compile Include="Extensions\UrlHelpers.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />

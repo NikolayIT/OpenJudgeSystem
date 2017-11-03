@@ -8,7 +8,7 @@
 
     using OJS.Data.Contracts;
 
-    public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T>
+    public class DeletableEntityRepository<T> : EfGenericRepository<T>, IDeletableEntityRepository<T>
         where T : class, IDeletableEntity, new()
     {
         public DeletableEntityRepository(IOjsDbContext context)
