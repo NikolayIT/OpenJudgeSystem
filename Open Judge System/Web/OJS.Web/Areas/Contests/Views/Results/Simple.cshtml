@@ -15,7 +15,6 @@
         : ResultsController.NotOfficialResultsPageSize;
     bool isOfficial = ViewBag.IsOfficial;
     var results = Model.Results;
-    var problems = Model.Problems.ToArray();
 }
 
 @section Styles {
@@ -62,7 +61,7 @@
                     var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
                 }
 
-                @foreach (var problem in problems)
+                @foreach (var problem in Model.Problems)
                 {
                     if (problem.ShowResults ||
                         (Model.ContestCanBePracticed && !ViewBag.IsOfficial) ||
@@ -91,7 +90,6 @@
             @for (var i = 0; i < results.Count; i++)
             {
                 var participant = results[i];
-                var participantResults = participant.ProblemResults.ToArray();
                 var className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
                 <tr class="@className">
                     <td>@((Model.Results.PageNumber - 1) * resultsOnPage + i + 1)</td>
@@ -99,25 +97,31 @@
                         <a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a>
                     </td>
                     <td>@participant.ParticipantFullName</td>
-                    @for (var resultIndex = 0; resultIndex < problems.Length; resultIndex++)
+                    @foreach (var participantResult in participant.ProblemResults)
                     {
-                        try
+                        if (User.IsAdmin() || Model.UserIsLecturerInContest)
                         {
-                            var participantResult = participantResults[resultIndex];
-                            if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                            if (participantResult.BestSubmission == null)
+                            {
+                                <td>0</td>
+                            }
+                            else
                             {
                                 <td>
                                     <a href="@(Url.Action<SubmissionsController>(c => c.Details(participantResult.BestSubmission.Id)))">@participantResult.BestSubmission.Points</a>
                                 </td>
                             }
-                            else if (participantResult.ShowResult)
+                        }
+                        else if (participantResult.ShowResult)
+                        {
+                            if (participantResult.BestSubmission == null)
+                            {
+                                <td>0</td>
+                            }
+                            else
                             {
                                 <td>@participantResult.BestSubmission.Points</td>
                             }
-                        }
-                        catch
-                        {
-                            <td>0</td>
                         }
                     }
 

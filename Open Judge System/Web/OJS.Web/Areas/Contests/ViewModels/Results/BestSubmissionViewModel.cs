@@ -12,6 +12,8 @@
 
         public string SubmissionType { get; set; }
 
+        public string TestRunsCache { get; set; }
+
         public IEnumerable<TestRunFullResultsViewModel> TestRuns { get; set; }
     }
 }

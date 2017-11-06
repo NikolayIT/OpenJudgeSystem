@@ -8,9 +8,7 @@
     {
         Contest GetFirstOrDefault(int id);
 
-        Contest GetContestForSimpleResults(int id);
-
-        Contest GetContestForFullResults(int id);
+        IQueryable<Contest> All();
 
         bool UserHasAccessToContest(int contestId, string userId, bool isAdmin);
 

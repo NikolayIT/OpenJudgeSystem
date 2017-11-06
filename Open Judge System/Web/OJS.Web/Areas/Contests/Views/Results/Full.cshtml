@@ -13,7 +13,6 @@
     var isOfficialStr = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
     bool isOfficial = ViewBag.IsOfficial;
     var results = Model.Results;
-    var problems = Model.Problems.ToArray();
 }
 
 <ol class="breadcrumb">
@@ -61,7 +60,7 @@
             @{
                 var problemNumber = 0;
             }
-            @foreach (var problem in problems)
+            @foreach (var problem in Model.Problems)
             {
                 <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
                 problemNumber++;
@@ -77,20 +76,23 @@
                 <td><strong>@((Model.Results.PageNumber - 1) * Model.Results.PageSize + i + 1).</strong></td>
                 <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
                 <td>@participant.ParticipantFullName</td>
-                @for (var resultIndex = 0; resultIndex < problems.Length; resultIndex++)
+                @foreach (var problemResult in participant.ProblemResults)
                 {
                     <td style="white-space: nowrap">
-                        @try
+                        @if (problemResult.BestSubmission == null)
                         {
-                            var participantResult = participantResults[resultIndex];
-                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(participantResult.BestSubmission.Id)))">@participantResult.BestSubmission.Points / @participantResult.MaximumPoints</a></strong>
-                            @participantResult.BestSubmission.SubmissionType
+                            <span>@Resource.No_solution</span>
+                        }
+                        else
+                        {
+                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
+                            @problemResult.BestSubmission.SubmissionType
                             <br />
-                            if (!participantResult.BestSubmission.IsCompiledSuccessfully)
+                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
                             {
                                 @:Compilation failed!
                             }
-                            foreach (var testRun in participantResult.BestSubmission.TestRuns)
+                            foreach (var testRun in problemResult.BestSubmission.TestRuns)
                             {
                                 var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
                                 switch (testRun.ResultType)
@@ -102,10 +104,6 @@
                                     case TestRunResultType.RunTimeError:<span style="@style" class="glyphicon glyphicon-asterisk text-danger" title=@Resource.Runtime_error></span>break;
                                 }
                             }
-                        }
-                        catch
-                        {
-                            <span>@Resource.No_solution</span>
                         }
 
                     </td>
