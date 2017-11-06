@@ -12,11 +12,11 @@
     {
         public void RegisterServices(Container container)
         {
-            container.Register<IOjsData, OjsData>();
-            container.Register<IOjsDbContext, OjsDbContext>();
+            container.Register<IOjsData, OjsData>(Lifestyle.Scoped);
+            container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
 
-            container.Register(typeof(IRepository<>), typeof(EfGenericRepository<>));
-            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>));
+            container.Register(typeof(IRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
+            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace OJS.Web
     using SimpleInjector;
     using SimpleInjector.Integration.Web;
     using SimpleInjector.Integration.Web.Mvc;
+    using SimpleInjector.Lifestyles;
 
     public static class SimpleInjectorConfig
     {
@@ -27,7 +28,9 @@ namespace OJS.Web
             var container = new Container();
             var assembly = Assembly.GetExecutingAssembly();
 
-            container.Options.DefaultLifestyle = new WebRequestLifestyle();
+            container.Options.DefaultScopedLifestyle = Lifestyle.CreateHybrid(
+                new WebRequestLifestyle(),
+                new AsyncScopedLifestyle());
 
             container.RegisterPackages(new[] { assembly });
             container.RegisterMvcControllers(assembly);

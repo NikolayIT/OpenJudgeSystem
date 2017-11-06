@@ -34,13 +34,13 @@
 
             foreach (var registration in registrations)
             {
-                container.Register(registration.Service, registration.Implementation);
+                container.Register(registration.Service, registration.Implementation, Lifestyle.Scoped);
             }
 
-            container.Register<IHangfireBackgroundJobService, HangfireBackgroundJobService>();
+            container.Register<IHangfireBackgroundJobService, HangfireBackgroundJobService>(Lifestyle.Scoped);
 
-            container.Register<ISimilarityFinder, SimilarityFinder>();
-            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>();
+            container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
+            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);
         }
     }
 }
