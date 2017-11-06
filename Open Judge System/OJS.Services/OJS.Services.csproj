@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Contests\ContestsDataService.cs" />
+    <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
