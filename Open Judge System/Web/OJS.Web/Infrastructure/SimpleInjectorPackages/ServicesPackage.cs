@@ -15,14 +15,19 @@
         {
             container.Register<
                 IHangfireBackgroundJobService,
-                HangfireBackgroundJobService>();
+                HangfireBackgroundJobService>(Lifestyle.Scoped);
 
             container.Register<
                 ISubmissionsForProcessingDataService,
-                SubmissionsForProcessingDataService>();
+                SubmissionsForProcessingDataService>(Lifestyle.Scoped);
 
-            container.Register<ISimilarityFinder, SimilarityFinder>();
-            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>();
+            container.Register<
+                ISimilarityFinder,
+                SimilarityFinder>(Lifestyle.Scoped);
+
+            container.Register<
+                IPlagiarismDetectorFactory,
+                PlagiarismDetectorFactory>(Lifestyle.Scoped);
         }
     }
 }
