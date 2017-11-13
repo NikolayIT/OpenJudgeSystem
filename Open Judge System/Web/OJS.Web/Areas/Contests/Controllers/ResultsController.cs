@@ -12,12 +12,12 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    using MissingFeatures;
-
     using X.PagedList;
 
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Extensions;
@@ -31,9 +31,17 @@
         public const int NotOfficialResultsPageSize = 50;
 
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
-        public ResultsController(IOjsData data, IContestsDataService contestsData)
-            : base(data) => this.contestsData = contestsData;
+        public ResultsController(
+            IOjsData data,
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
+            : base(data)
+        {
+            this.contestsData = contestsData;
+            this.participantsData = participantsData;
+        }
 
         /// <summary>
         /// Gets the results for a particular problem for users with at least one submission.
@@ -47,7 +55,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {
@@ -84,7 +92,7 @@
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
         {
-            var contest = this.contestsData.GetFirstOrDefault(id);
+            var contest = this.contestsData.GetWithProblems(id);
 
             if (contest == null)
             {
@@ -95,7 +103,7 @@
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
                 official &&
-                !this.Data.Participants.Any(id, this.UserProfile.Id, official) &&
+                !this.participantsData.Any(id, this.UserProfile.Id, official) &&
                 !this.User.IsAdmin())
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
@@ -129,15 +137,12 @@
                 }
 
                 contestResults = this.GetContestResults(
-                    id,
+                    contest,
                     official,
                     isFullResults: false,
                     isUserAdminOrLecturer: isUserAdminOrLecturerInContest,
                     page: page.Value,
                     resultsInPage: resultsInPage);
-
-                contestResults.ContestCanBeCompeted = contest.CanBeCompeted;
-                contestResults.ContestCanBePracticed = contest.CanBePracticed;
 
                 if (!official && !isUserAdminOrLecturerInContest)
                 {
@@ -173,7 +178,7 @@
                 page = 1;
             }
 
-            var contest = this.contestsData.GetFirstOrDefault(id);
+            var contest = this.contestsData.GetWithProblems(id);
 
             if (contest == null)
             {
@@ -181,15 +186,12 @@
             }
 
             var contestResults = this.GetContestResults(
-                id,
+                contest,
                 official,
                 isFullResults: true,
                 isUserAdminOrLecturer: true,
                 page: page.Value,
                 resultsInPage: NotOfficialResultsPageSize);
-
-            contestResults.ContestCanBeCompeted = contest.CanBeCompeted;
-            contestResults.ContestCanBePracticed = contest.CanBePracticed;
 
             if (contestResults == null)
             {
@@ -209,12 +211,14 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contestResults = this.GetContestResults(id, official, true, true);
+            var contest = this.contestsData.GetWithProblems(id);
 
-            if (contestResults == null)
+            if (contest == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
+
+            var contestResults = this.GetContestResults(contest, official, true, true);
 
             return this.View(contestResults);
         }
@@ -238,8 +242,8 @@
                     })
                     .FirstOrDefault();
 
-            var submissions = this.Data.Participants
-                .All()
+            var submissions = this.participantsData
+                .GetAll()
                 .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                 .SelectMany(participant =>
                     participant.Contest.Problems
@@ -296,12 +300,14 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contestResults = this.GetContestResults(contestId, official, true, true);
+            var contest = this.contestsData.GetWithProblems(contestId);
 
-            if (contestResults == null)
+            if (contest == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
+
+            var contestResults = this.GetContestResults(contest, official, true, true);
 
             var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
 
@@ -373,73 +379,40 @@
         }
 
         private ContestResultsViewModel GetContestResults(
-            int contestId,
+            Contest contest,
             bool official,
             bool isFullResults,
             bool isUserAdminOrLecturer,
             int page = 1,
-            int resultsInPage = int.MaxValue)
-        {
-            var contestResults = this.contestsData
-                .All()
-                .Include(c => c.Problems)
-                .Where(contest => contest.Id == contestId)
-                .Select(contest => new ContestResultsViewModel
+            int resultsInPage = int.MaxValue) =>
+                new ContestResultsViewModel
                 {
                     Id = contest.Id,
                     Name = contest.Name,
+                    ContestCanBeCompeted = contest.CanBeCompeted,
+                    ContestCanBePracticed = contest.CanBePracticed,
                     Problems = contest.Problems
                         .AsQueryable()
                         .Where(pr => !pr.IsDeleted)
                         .OrderBy(pr => pr.OrderBy)
                         .ThenBy(pr => pr.Name)
-                        .Select(ContestProblemListViewModel.FromProblem)
-                })
-                .FirstOrDefault();
+                        .Select(ContestProblemListViewModel.FromProblem),
+                    Results = this.GetParticipantResults(contest.Id, isFullResults, official)
+                        .OrderByDescending(parResult => isUserAdminOrLecturer ? parResult.AdminTotal : parResult.Total)
+                        .ThenByDescending(parResult => parResult.ProblemResults
+                            .OrderBy(prRes => prRes.BestSubmission?.Id ?? 0)
+                            .Select(prRes => prRes.BestSubmission?.Id ?? 0)
+                            .FirstOrDefault())
+                        .ToPagedList(page, resultsInPage)
+                };
 
-            if (contestResults == null)
-            {
-                return null;
-            }
-
-            var resultsAsQueryable = this.GetParticipantResults(contestId, isFullResults, official);
-            contestResults.Results = resultsAsQueryable.ToPagedList(
-                results => isUserAdminOrLecturer ? results.AdminTotal : results.Total,
-                page,
-                resultsInPage);
-
-            contestResults.Results
-                .ForEach(r => r.ParticipantFullName = $"{r.ParticipantFirstName} {r.ParticipantLastName}");
-
-            if (isFullResults)
-            {
-                contestResults.Results
-                    .ForEach(r => r.ProblemResults
-                        .ForEach(pr =>
-                        {
-                            if (pr.BestSubmission != null)
-                            {
-                                pr.BestSubmission.TestRuns = TestRunFullResultsViewModel.FromCache(
-                                    pr.BestSubmission?.TestRunsCache);
-                            }
-                        }));
-            }
-
-            return contestResults;
-        }
-
-        private IQueryable<ParticipantResultViewModel> GetParticipantResults(int contestId, bool isFullResults, bool official)
+        private IEnumerable<ParticipantResultViewModel> GetParticipantResults(int contestId, bool isFullResults, bool official)
         {
             if (isFullResults)
             {
-                return this.Data.Participants
-                    .All()
-                    .Include(par => par.User)
-                    .Include(par => par.Contest.Problems
-                        .Select(pr => pr.ParticipantScores
-                            .Select(sc => sc.Submission)))
+                return this.participantsData
+                    .GetWithUsersScoresAndSubmissionForContest(contestId, official)
                     .AsNoTracking()
-                    .Where(p => p.IsOfficial == official && p.ContestId == contestId)
                     .Select(par => new ParticipantResultViewModel
                     {
                         ParticipantUsername = par.User.UserName,
@@ -471,12 +444,9 @@
                     });
             }
 
-            return this.Data.Participants
-                .All()
-                .Include(par => par.User)
-                .Include(par => par.Contest.Problems.Select(pr => pr.ParticipantScores))
+            return this.participantsData
+                .GetWithUsersAndScoresForContest(contestId, official)
                 .AsNoTracking()
-                .Where(p => p.IsOfficial == official && p.ContestId == contestId)
                 .Select(par => new ParticipantResultViewModel
                 {
                     ParticipantUsername = par.User.UserName,

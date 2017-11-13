@@ -14,6 +14,7 @@
 
         public string TestRunsCache { get; set; }
 
-        public IEnumerable<TestRunFullResultsViewModel> TestRuns { get; set; }
+        public IEnumerable<TestRunFullResultsViewModel> TestRuns =>
+            TestRunFullResultsViewModel.FromCache(this.TestRunsCache);
     }
 }

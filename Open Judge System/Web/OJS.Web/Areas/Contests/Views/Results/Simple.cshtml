@@ -42,7 +42,7 @@
 @if (results.PageCount > 1)
 {
     @Html.PagedListPager(
-        Model.Results,
+        results,
         page => Url.Action<ResultsController>(
             c => c.Simple(Model.Id, isOfficial, page)))
 }
@@ -92,7 +92,7 @@
                 var participant = results[i];
                 var className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
                 <tr class="@className">
-                    <td>@((Model.Results.PageNumber - 1) * resultsOnPage + i + 1)</td>
+                    <td>@((results.PageNumber - 1) * resultsOnPage + i + 1)</td>
                     <td>
                         <a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a>
                     </td>
@@ -148,7 +148,7 @@ else
 @if (results.PageCount > 1)
 {
     @Html.PagedListPager(
-        Model.Results,
+        results,
         page => Url.Action<ResultsController>(
             c => c.Simple(Model.Id, isOfficial, page)
             ))

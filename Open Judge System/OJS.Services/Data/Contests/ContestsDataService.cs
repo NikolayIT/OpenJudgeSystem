@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Contests
 {
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -11,10 +12,10 @@
         public ContestsDataService(IEfGenericRepository<Contest> contests) =>
             this.contests = contests;
 
-        public Contest GetFirstOrDefault(int id) =>
-            this.contests.All().FirstOrDefault(c => c.Id == id);
+        public IQueryable<Contest> GetAll() => this.contests.All();
 
-        public IQueryable<Contest> All() => this.contests.All();
+        public Contest GetWithProblems(int contestId)
+            => this.contests.All().Include(c => c.Problems).FirstOrDefault(c => c.Id == contestId);
 
         public bool UserHasAccessToContest(int contestId, string userId, bool isAdmin) =>
             isAdmin ||

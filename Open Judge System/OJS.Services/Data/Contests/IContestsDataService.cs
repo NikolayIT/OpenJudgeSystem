@@ -6,12 +6,12 @@
 
     public interface IContestsDataService : IService
     {
-        Contest GetFirstOrDefault(int id);
-
-        IQueryable<Contest> All();
+        IQueryable<Contest> GetAll();
 
         bool UserHasAccessToContest(int contestId, string userId, bool isAdmin);
 
         IQueryable<Contest> GetByIdQuery(int id);
+
+        Contest GetWithProblems(int contestId);
     }
 }

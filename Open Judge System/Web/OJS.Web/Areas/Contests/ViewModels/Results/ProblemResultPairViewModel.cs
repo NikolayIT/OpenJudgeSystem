@@ -1,7 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
-    using OJS.Data.Models;
-
     public class ProblemResultPairViewModel
     {
         public int Id { get; set; }
