@@ -393,9 +393,9 @@
                     ContestCanBePracticed = contest.CanBePracticed,
                     Problems = contest.Problems
                         .AsQueryable()
-                        .Where(pr => !pr.IsDeleted)
                         .OrderBy(pr => pr.OrderBy)
                         .ThenBy(pr => pr.Name)
+                        .Where(pr => !pr.IsDeleted)
                         .Select(ContestProblemListViewModel.FromProblem),
                     Results = this.GetParticipantResults(contest.Id, isFullResults, official)
                         .OrderByDescending(parResult => isUserAdminOrLecturer ? parResult.AdminTotal : parResult.Total)
@@ -420,8 +420,6 @@
                         ParticipantLastName = par.User.UserSettings.LastName,
                         ProblemResults = par.Contest.Problems
                             .Where(pr => !pr.IsDeleted)
-                            .OrderBy(pr => pr.OrderBy)
-                            .ThenBy(pr => pr.Name)
                             .Select(pr => new ProblemResultPairViewModel
                             {
                                 Id = pr.Id,
@@ -441,6 +439,8 @@
                                     })
                                     .FirstOrDefault()
                             })
+                            .OrderBy(prp => prp.OrderBy)
+                            .ThenBy(prp => prp.ProblemName)
                     });
             }
 
@@ -454,12 +454,12 @@
                     ParticipantLastName = par.User.UserSettings.LastName,
                     ProblemResults = par.Contest.Problems
                         .Where(pr => !pr.IsDeleted)
-                        .OrderBy(pr => pr.OrderBy)
-                        .ThenBy(pr => pr.Name)
                         .Select(pr => new ProblemResultPairViewModel
                         {
                             Id = pr.Id,
                             ShowResult = pr.ShowResults,
+                            OrderBy = pr.OrderBy,
+                            ProblemName = pr.Name,
                             BestSubmission = pr.ParticipantScores
                                 .Where(parScore =>
                                     parScore.ParticipantId == par.Id &&
@@ -471,6 +471,8 @@
                                 })
                                 .FirstOrDefault()
                         })
+                        .OrderBy(prp => prp.OrderBy)
+                        .ThenBy(prp => prp.ProblemName)
                 });
         }
     }
