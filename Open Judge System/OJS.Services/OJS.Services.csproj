@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Data\Contests\ContestsDataService.cs" />
     <Compile Include="Data\Contests\IContestsDataService.cs" />
+    <Compile Include="Data\Participants\IParticipantsDataService.cs" />
+    <Compile Include="Data\Participants\ParticipantsDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
