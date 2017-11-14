@@ -21,6 +21,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
@@ -40,6 +41,7 @@
     public class TestsController : LecturerBaseController
     {
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IParticipantScoresDataService participantScoresData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsController"/> class.
@@ -48,12 +50,16 @@
         /// ler to work with</param>
         /// <param name="submissionsForProcessingData">ISubmissionsForProcessingDataService
         /// for the controller to work with the SubmissionsForProcessing table via a service</param>
+        /// /// <param name="participantScoresData">IParticipantScoresDataService
+        /// for the controller to work with the ParticipantScore table via a service</param>
         public TestsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.participantScoresData = participantScoresData;
         }
 
         /// <summary>
@@ -873,7 +879,7 @@
 
         private void RetestSubmissions(int problemId)
         {
-            this.Data.ParticipantScores.DeleteParticipantScores(problemId);
+            this.participantScoresData.DeleteParticipantScores(problemId);
             this.Data.SaveChanges();
 
             var submissions = this.Data.Problems

@@ -10,6 +10,9 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Data.Repositories.Base;
+    using OJS.Services.Data.Participants;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
@@ -46,6 +49,9 @@
             while (!this.stopping)
             {
                 var data = new OjsData();
+                var participantScoresData = new ParticipantScoresDataService(
+                    new EfGenericRepository<ParticipantScore>(data.Context),
+                    new ParticipantsDataService(new EfGenericRepository<Participant>(data.Context)));
                 Submission submission = null;
                 SubmissionForProcessing submissionForProcessing = null;
                 int submissionId;
@@ -127,7 +133,7 @@
 
                 try
                 {
-                    data.ParticipantScores.SaveParticipantScore(submission);
+                    participantScoresData.SaveParticipantScore(submission);
                 }
                 catch (Exception exception)
                 {
