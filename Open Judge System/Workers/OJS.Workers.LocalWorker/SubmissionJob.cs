@@ -4,7 +4,7 @@
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading;
-
+    using System.Transactions;
     using log4net;
 
     using OJS.Common.Models;
@@ -133,7 +133,13 @@
 
                 try
                 {
-                    participantScoresData.Save(submission);
+                    using (var scope = new TransactionScope())
+                    {
+                        if (participantScoresData.Save(submission))
+                        {
+                            scope.Complete();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {

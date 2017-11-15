@@ -1,7 +1,6 @@
 ﻿namespace OJS.Services.Data.ParticipantScores
 {
     using System.Linq;
-    using System.Transactions;
 
     using EntityFramework.Extensions;
 
@@ -40,56 +39,56 @@
 
         public bool Save(Submission submission, bool resetScore = false)
         {
-            using (var transaction = new TransactionScope())
+            if (submission.ParticipantId == null || submission.ProblemId == null)
             {
-                if (submission.ParticipantId == null || submission.ProblemId == null)
-                {
-                    return false;
-                }
-
-                var participant = this.participantsData
-                        .GetByIdQuery(submission.ParticipantId.Value)
-                        .Select(p => new
-                        {
-                            p.IsOfficial,
-                            p.User.UserName
-                        })
-                        .FirstOrDefault();
-
-                if (participant == null)
-                {
-                    return false;
-                }
-
-                var existingScore = this.Get(
-                    submission.ParticipantId.Value,
-                    submission.ProblemId.Value,
-                    participant.IsOfficial);
-
-                if (existingScore == null)
-                {
-                    this.participantScores.Add(new ParticipantScore
-                    {
-                        ParticipantId = submission.ParticipantId.Value,
-                        ProblemId = submission.ProblemId.Value,
-                        SubmissionId = submission.Id,
-                        ParticipantName = participant.UserName,
-                        Points = submission.Points,
-                        IsOfficial = participant.IsOfficial
-                    });
-                }
-                else if (resetScore ||
-                    submission.Points >= existingScore.Points ||
-                    submission.Id == existingScore.SubmissionId)
-                {
-                    existingScore.SubmissionId = submission.Id;
-                    existingScore.Points = submission.Points;
-                }
-
-                this.participantScores.SaveChanges();
-                transaction.Complete();
-                return true;
+                return false;
             }
+
+            var participant = this.participantsData
+                    .GetByIdQuery(submission.ParticipantId.Value)
+                    .Select(p => new
+                    {
+                        p.IsOfficial,
+                        p.User.UserName
+                    })
+                    .FirstOrDefault();
+
+            if (participant == null)
+            {
+                return false;
+            }
+
+            var existingScore = this.Get(
+                submission.ParticipantId.Value,
+                submission.ProblemId.Value,
+                participant.IsOfficial);
+
+            if (existingScore == null)
+            {
+                this.participantScores.Add(new ParticipantScore
+                {
+                    ParticipantId = submission.ParticipantId.Value,
+                    ProblemId = submission.ProblemId.Value,
+                    SubmissionId = submission.Id,
+                    ParticipantName = participant.UserName,
+                    Points = submission.Points,
+                    IsOfficial = participant.IsOfficial
+                });
+            }
+            else if (resetScore ||
+                     submission.Points >= existingScore.Points ||
+                     submission.Id == existingScore.SubmissionId)
+            {
+                existingScore.SubmissionId = submission.Id;
+                existingScore.Points = submission.Points;
+            }
+            else
+            {
+                return false;
+            }
+
+            this.participantScores.SaveChanges();
+            return true;
         }
 
         public void DeleteAllByProblem(int problemId) =>
