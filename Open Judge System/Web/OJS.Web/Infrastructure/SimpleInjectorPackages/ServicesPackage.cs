@@ -1,7 +1,9 @@
 ﻿namespace OJS.Web.Infrastructure.SimpleInjectorPackages
 {
     using System.Linq;
-    
+
+    using MissingFeatures;
+
     using SimpleInjector;
     using SimpleInjector.Packaging;
 
@@ -16,17 +18,21 @@
     {
         public void RegisterServices(Container container)
         {
-            var servicesAssembly = typeof(ISubmissionsForProcessingDataService).Assembly;
+            var serviceAssemblies = new[]
+            {
+                typeof(ISubmissionsForProcessingDataService).Assembly,
+                typeof(IHangfireBackgroundJobService).Assembly
+            };
 
-            var registrations = servicesAssembly
-                .GetExportedTypes()
+            var registrations = serviceAssemblies
+                .SelectMany(a => a.GetExportedTypes())
                 .Where(type => typeof(IService).IsAssignableFrom(type) &&
                                !type.IsAbstract &&
                                !type.IsGenericTypeDefinition)
                 .Select(type => new
                 {
-                    Service = type.GetInterfaces()
-                        .Single(i => i.IsPublic &&
+                    ServiceTypes = type.GetInterfaces()
+                        .Where(i => i.IsPublic &&
                                      !i.GenericTypeArguments.Any() &&
                                      i != typeof(IService)),
                     Implementation = type
@@ -34,15 +40,12 @@
 
             foreach (var registration in registrations)
             {
-                container.Register(registration.Service, registration.Implementation);
+                registration.ServiceTypes.ForEach(
+                    service => container.Register(service, registration.Implementation, Lifestyle.Scoped));
             }
 
-            container.Register<
-                IHangfireBackgroundJobService,
-                HangfireBackgroundJobService>();
-
-            container.Register<ISimilarityFinder, SimilarityFinder>();
-            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>();
+            container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
+            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);
         }
     }
 }
