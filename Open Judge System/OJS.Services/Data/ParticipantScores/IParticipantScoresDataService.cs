@@ -7,8 +7,10 @@
     {
         ParticipantScore GetParticipantScore(int participantId, int problemId, bool isOfficial);
 
-        void SaveParticipantScore(Submission submission, bool resetScore = false);
+        bool SaveParticipantScore(Submission submission, bool resetScore = false);
 
         void DeleteParticipantScores(int problemId);
+
+        void DeleteParticipantScore(int participantId, int problemId);
     }
 }

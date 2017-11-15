@@ -15,5 +15,12 @@
             this.participants
                 .All()
                 .Where(x => x.Id == participantId);
+
+        public bool IsOfficial(int participantId) =>
+            this.participants
+                .All()
+                .Where(x => x.Id == participantId)
+                .Select(x => x.IsOfficial)
+                .FirstOrDefault();
     }
 }

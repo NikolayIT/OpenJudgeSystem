@@ -11,6 +11,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
@@ -31,15 +32,18 @@
 
         private const int MaxContestsToTake = 20;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IParticipantScoresBusinessService participantScoresBusiness;
 
         private int? contestId;
 
         public SubmissionsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IParticipantScoresBusinessService participantScoresBusiness)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.participantScoresBusiness = participantScoresBusiness;
         }
 
         public override IEnumerable GetData()
@@ -229,8 +233,9 @@
 
                             if (submissionIsBestSubmission)
                             {
-                                this.Data.ParticipantScores
-                                    .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                                this.participantScoresBusiness.RecalculateParticipantScore(
+                                    submissionParticipantId,
+                                    submissionProblemId);
                             }
 
                             this.Data.SaveChanges();
@@ -318,8 +323,9 @@
 
                 if (isBestSubmission)
                 {
-                    this.Data.ParticipantScores
-                        .RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+                    this.participantScoresBusiness.RecalculateParticipantScore(
+                        submission.ParticipantId.Value,
+                        submission.ProblemId.Value);
                 }
 
                 this.Data.SaveChanges();
@@ -368,10 +374,9 @@
 
                     if (isBestSubmission)
                     {
-                        this.Data.ParticipantScores
-                            .RecalculateParticipantScore(
-                                dbSubmission.ParticipantId.Value,
-                                dbSubmission.ProblemId.Value);
+                        this.participantScoresBusiness.RecalculateParticipantScore(
+                            dbSubmission.ParticipantId.Value,
+                            dbSubmission.ProblemId.Value);
                     }
                 }
 
@@ -482,8 +487,9 @@
 
                     if (submissionIsBestSubmission)
                     {
-                        this.Data.ParticipantScores
-                            .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                        this.participantScoresBusiness.RecalculateParticipantScore(
+                            submissionParticipantId,
+                            submissionProblemId);
                     }
 
                     this.Data.SaveChanges();

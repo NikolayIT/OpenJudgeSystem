@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Transactions;
+
     using EntityFramework.Extensions;
 
     using OJS.Data.Models;
@@ -23,27 +24,33 @@
             
 
         public ParticipantScore GetParticipantScore(int participantId, int problemId, bool isOfficial) =>
-            this.participantScores.All()
-                .FirstOrDefault(x => x.ParticipantId == participantId &&
-                    x.ProblemId == problemId &&
-                    x.IsOfficial == isOfficial);
+            this.participantScores
+                .All()
+                .FirstOrDefault(ps => ps.ParticipantId == participantId &&
+                    ps.ProblemId == problemId &&
+                    ps.IsOfficial == isOfficial);
 
-        public void SaveParticipantScore(Submission submission, bool resetScore = false)
+        public bool SaveParticipantScore(Submission submission, bool resetScore = false)
         {
             using (var transaction = new TransactionScope())
             {
-                var participant = this.participantsData
-                    .GetByIdQuery(submission.ParticipantId.Value)
-                    .Select(p => new
-                    {
-                        p.IsOfficial,
-                        p.User.UserName
-                    })
-                    .FirstOrDefault();
-
                 if (submission.ParticipantId == null || submission.ProblemId == null)
                 {
-                    return;
+                    return false;
+                }
+
+                var participant = this.participantsData
+                        .GetByIdQuery(submission.ParticipantId.Value)
+                        .Select(p => new
+                        {
+                            p.IsOfficial,
+                            p.User.UserName
+                        })
+                        .FirstOrDefault();
+
+                if (participant == null)
+                {
+                    return false;
                 }
 
                 var existingScore = this.GetParticipantScore(
@@ -63,7 +70,9 @@
                         IsOfficial = participant.IsOfficial
                     });
                 }
-                else if (resetScore || submission.Points >= existingScore.Points || submission.Id == existingScore.SubmissionId)
+                else if (resetScore ||
+                    submission.Points >= existingScore.Points ||
+                    submission.Id == existingScore.SubmissionId)
                 {
                     existingScore.SubmissionId = submission.Id;
                     existingScore.Points = submission.Points;
@@ -71,6 +80,7 @@
 
                 this.participantScores.SaveChanges();
                 transaction.Complete();
+                return true;
             }
         }
 
@@ -79,5 +89,17 @@
                 .Where(x => x.ProblemId == problemId)
                 .Delete();
 
+        public void DeleteParticipantScore(int participantId, int problemId)
+        {
+            var isOfficial = this.participantsData.IsOfficial(participantId);
+
+            var existingScore = this.GetParticipantScore(participantId, problemId, isOfficial);
+
+            if (existingScore != null)
+            {
+                this.participantScores.Delete(existingScore);
+                this.participantScores.SaveChanges();
+            }
+        }
     }
 }
