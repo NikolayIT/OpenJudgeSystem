@@ -1,16 +1,23 @@
 ﻿namespace OJS.Services.Data.ParticipantScores
 {
+    using System.Linq;
     using OJS.Data.Models;
     using OJS.Services.Common;
 
     public interface IParticipantScoresDataService : IService
     {
-        ParticipantScore GetParticipantScore(int participantId, int problemId, bool isOfficial);
+        ParticipantScore Get(int participantId, int problemId);
 
-        bool SaveParticipantScore(Submission submission, bool resetScore = false);
+        ParticipantScore Get(int participantId, int problemId, bool isOfficial);
 
-        void DeleteParticipantScores(int problemId);
+        IQueryable<ParticipantScore> GetAll();
 
-        void DeleteParticipantScore(int participantId, int problemId);
+        bool Save(Submission submission, bool resetScore = false);
+
+        void DeleteAllByProblem(int problemId);
+
+        void Delete(int participantId, int problemId);
+
+        void Delete(ParticipantScore participantScore);
     }
 }

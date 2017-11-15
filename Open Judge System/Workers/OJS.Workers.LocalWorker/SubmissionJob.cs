@@ -133,7 +133,7 @@
 
                 try
                 {
-                    participantScoresData.SaveParticipantScore(submission);
+                    participantScoresData.Save(submission);
                 }
                 catch (Exception exception)
                 {

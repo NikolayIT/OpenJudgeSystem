@@ -12,6 +12,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ParticipantScores;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
@@ -33,17 +34,20 @@
         private const int MaxContestsToTake = 20;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresBusinessService participantScoresBusiness;
+        private readonly IParticipantScoresDataService participantScoresData;
 
         private int? contestId;
 
         public SubmissionsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresBusinessService participantScoresBusiness)
+            IParticipantScoresBusinessService participantScoresBusiness,
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresBusiness = participantScoresBusiness;
+            this.participantScoresData = participantScoresData;
         }
 
         public override IEnumerable GetData()
@@ -640,10 +644,7 @@
 
         private bool IsBestSubmission(int problemId, int participantId, int submissionId)
         {
-            var bestScore = this.Data.ParticipantScores
-                .All()
-                .FirstOrDefault(ps => ps.ProblemId == problemId &&
-                                      ps.ParticipantId == participantId);
+            var bestScore = this.participantScoresData.Get(participantId, problemId);
 
             return bestScore?.SubmissionId == submissionId;
         }

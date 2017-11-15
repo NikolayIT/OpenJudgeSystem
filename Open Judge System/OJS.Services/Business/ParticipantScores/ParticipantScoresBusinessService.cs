@@ -24,11 +24,11 @@
 
             if (submission != null)
             {
-                this.participantScoresData.SaveParticipantScore(submission, true);
+                this.participantScoresData.Save(submission, true);
             }
             else
             {
-                this.participantScoresData.DeleteParticipantScore(participantId, problemId);
+                this.participantScoresData.Delete(participantId, problemId);
             }
         }
     }

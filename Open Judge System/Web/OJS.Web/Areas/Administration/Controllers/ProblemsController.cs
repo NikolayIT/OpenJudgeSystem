@@ -618,7 +618,7 @@
 
             using (var scope = new TransactionScope())
             {
-                this.participantScoresData.DeleteParticipantScores(model.Id);
+                this.participantScoresData.DeleteAllByProblem(model.Id);
 
                 this.Data.Context.Submissions
                     .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)

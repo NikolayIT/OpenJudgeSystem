@@ -14,6 +14,7 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Extensions;
@@ -26,10 +27,11 @@
         public const int OfficialResultsPageSize = 100;
         public const int NotOfficialResultsPageSize = 50;
 
-        public ResultsController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly IParticipantScoresDataService participantScoresData;
+
+        public ResultsController(IOjsData data, IParticipantScoresDataService participantScoresData)
+            : base(data) =>
+                this.participantScoresData = participantScoresData;
 
         /// <summary>
         /// Gets the results for a particular problem for users with at least one submission.
@@ -55,8 +57,8 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }
 
-            var results = this.Data.ParticipantScores
-                .All()
+            var results = this.participantScoresData
+                .GetAll()
                 .Where(ps => ps.ProblemId == problem.Id && ps.IsOfficial == official)
                 .Select(ps => new ProblemResultViewModel
                 {

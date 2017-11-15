@@ -21,16 +21,24 @@
             this.participantScores = participantScores;
             this.participantsData = participantsData;
         }
-            
 
-        public ParticipantScore GetParticipantScore(int participantId, int problemId, bool isOfficial) =>
+        public ParticipantScore Get(int participantId, int problemId) =>
+            this.participantScores
+                .All()
+                .FirstOrDefault(ps => ps.ParticipantId == participantId &&
+                    ps.ProblemId == problemId);
+
+        public ParticipantScore Get(int participantId, int problemId, bool isOfficial) =>
             this.participantScores
                 .All()
                 .FirstOrDefault(ps => ps.ParticipantId == participantId &&
                     ps.ProblemId == problemId &&
                     ps.IsOfficial == isOfficial);
 
-        public bool SaveParticipantScore(Submission submission, bool resetScore = false)
+        public IQueryable<ParticipantScore> GetAll()
+            => this.participantScores.All();
+
+        public bool Save(Submission submission, bool resetScore = false)
         {
             using (var transaction = new TransactionScope())
             {
@@ -53,7 +61,7 @@
                     return false;
                 }
 
-                var existingScore = this.GetParticipantScore(
+                var existingScore = this.Get(
                     submission.ParticipantId.Value,
                     submission.ProblemId.Value,
                     participant.IsOfficial);
@@ -84,22 +92,28 @@
             }
         }
 
-        public void DeleteParticipantScores(int problemId) =>
+        public void DeleteAllByProblem(int problemId) =>
             this.participantScores.All()
                 .Where(x => x.ProblemId == problemId)
                 .Delete();
 
-        public void DeleteParticipantScore(int participantId, int problemId)
+        public void Delete(int participantId, int problemId)
         {
             var isOfficial = this.participantsData.IsOfficial(participantId);
 
-            var existingScore = this.GetParticipantScore(participantId, problemId, isOfficial);
+            var existingScore = this.Get(participantId, problemId, isOfficial);
 
             if (existingScore != null)
             {
                 this.participantScores.Delete(existingScore);
                 this.participantScores.SaveChanges();
             }
+        }
+
+        public void Delete(ParticipantScore participantScore)
+        {
+            this.participantScores.Delete(participantScore);
+            this.participantScores.SaveChanges();
         }
     }
 }

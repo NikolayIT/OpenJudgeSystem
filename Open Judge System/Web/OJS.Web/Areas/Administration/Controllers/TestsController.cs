@@ -416,8 +416,8 @@
                 var participants = topResults.Keys.ToList();
 
                 // find all participant scores for the test's problem
-                var existingScores = this.Data.ParticipantScores
-                    .All()
+                var existingScores = this.participantScoresData
+                    .GetAll()
                     .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
                     .ToList();
 
@@ -879,7 +879,7 @@
 
         private void RetestSubmissions(int problemId)
         {
-            this.participantScoresData.DeleteParticipantScores(problemId);
+            this.participantScoresData.DeleteAllByProblem(problemId);
             this.Data.SaveChanges();
 
             var submissions = this.Data.Problems
