@@ -18,9 +18,7 @@
 
         public void RecalculateParticipantScore(int participantId, int problemId)
         {
-            var submission = this.submissionsData.GetLastBestSubmissionForParticipantByProblem(
-                participantId,
-                problemId);
+            var submission = this.submissionsData.GetBestSubmission(participantId, problemId);
 
             if (submission != null)
             {

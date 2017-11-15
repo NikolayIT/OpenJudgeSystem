@@ -12,7 +12,7 @@
         public SubmissionsDataService(IEfGenericRepository<Submission> submissions) =>
             this.submissions = submissions;
 
-        public Submission GetLastBestSubmissionForParticipantByProblem(int participantId, int problemId) =>
+        public Submission GetBestSubmission(int participantId, int problemId) =>
             this.submissions
                 .All()
                 .Where(s => s.ParticipantId == participantId
