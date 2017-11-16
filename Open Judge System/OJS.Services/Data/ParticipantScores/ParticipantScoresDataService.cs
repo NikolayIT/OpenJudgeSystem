@@ -1,5 +1,8 @@
 ﻿namespace OJS.Services.Data.ParticipantScores
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -37,58 +40,38 @@
         public IQueryable<ParticipantScore> GetAll()
             => this.participantScores.All();
 
-        public bool Save(Submission submission, bool resetScore = false)
+        public void Save(Submission submission, bool resetScore = false)
         {
-            if (submission.ParticipantId == null || submission.ProblemId == null)
+            if (submission.ParticipantId == null)
             {
-                return false;
+                return;
             }
 
-            var participant = this.participantsData
-                    .GetByIdQuery(submission.ParticipantId.Value)
-                    .Select(p => new
-                    {
-                        p.IsOfficial,
-                        p.User.UserName
-                    })
-                    .FirstOrDefault();
+            var participant = this.GetParticipantData(submission.ParticipantId.Value);
 
-            if (participant == null)
+            if (participant != null)
             {
-                return false;
+                this.Save(submission, participant.Item1, participant.Item2, resetScore);
+            }
+        }
+
+        public void SaveInTransaction(Submission submission, bool resetScore = false)
+        {
+            if (submission.ParticipantId == null)
+            {
+                return;
             }
 
-            var existingScore = this.Get(
-                submission.ParticipantId.Value,
-                submission.ProblemId.Value,
-                participant.IsOfficial);
+            var participant = this.GetParticipantData(submission.ParticipantId.Value);
 
-            if (existingScore == null)
+            if (participant != null)
             {
-                this.participantScores.Add(new ParticipantScore
+                using (var transaction = this.participantScores.BeginTransaction())
                 {
-                    ParticipantId = submission.ParticipantId.Value,
-                    ProblemId = submission.ProblemId.Value,
-                    SubmissionId = submission.Id,
-                    ParticipantName = participant.UserName,
-                    Points = submission.Points,
-                    IsOfficial = participant.IsOfficial
-                });
+                    this.Save(submission, participant.Item1, participant.Item2, resetScore);
+                    transaction.Commit();
+                }
             }
-            else if (resetScore ||
-                     submission.Points >= existingScore.Points ||
-                     submission.Id == existingScore.SubmissionId)
-            {
-                existingScore.SubmissionId = submission.Id;
-                existingScore.Points = submission.Points;
-            }
-            else
-            {
-                return false;
-            }
-
-            this.participantScores.SaveChanges();
-            return true;
         }
 
         public void DeleteAllByProblem(int problemId) =>
@@ -109,10 +92,77 @@
             }
         }
 
-        public void Delete(ParticipantScore participantScore)
+        public void Delete(IEnumerable<ParticipantScore> participantScoresEnumerable)
         {
-            this.participantScores.Delete(participantScore);
+            foreach (var participantScore in participantScoresEnumerable)
+            {
+                this.participantScores.Delete(participantScore);
+            }
+            
             this.participantScores.SaveChanges();
+        }
+
+        private void Save(Submission submission, string participantUsername, bool isOfficial, bool resetScore)
+        {
+            if (submission.ParticipantId != null && submission.ProblemId != null)
+            {
+                var existingScore = this.Get(
+                    submission.ParticipantId.Value,
+                    submission.ProblemId.Value,
+                    isOfficial);
+
+                if (existingScore == null)
+                {
+                    this.AddNew(submission, participantUsername, isOfficial);
+                }
+                else if (resetScore ||
+                    submission.Points >= existingScore.Points ||
+                    submission.Id == existingScore.SubmissionId)
+                {
+                    this.Update(existingScore, submission.Id, submission.Points);
+                }
+            }
+        }
+
+        private void AddNew(Submission submission, string participantName, bool isOfficial)
+        {
+            this.participantScores.Add(new ParticipantScore
+            {
+                ParticipantId = submission.ParticipantId.Value,
+                ProblemId = submission.ProblemId.Value,
+                SubmissionId = submission.Id,
+                ParticipantName = participantName,
+                Points = submission.Points,
+                IsOfficial = isOfficial
+            });
+
+            this.participantScores.SaveChanges();
+        }
+
+        private void Update(ParticipantScore participantScore, int submissionId, int submissionPoints)
+        {
+            participantScore.SubmissionId = submissionId;
+            participantScore.Points = submissionPoints;
+
+            this.participantScores.Update(participantScore);
+            this.participantScores.SaveChanges();
+        }
+
+        //TODO: use new Value Tuples structure when updated to .NET Framework 4.7 or above
+        private Tuple<string, bool> GetParticipantData(int participantId)
+        {
+            var participant = this.participantsData
+                .GetByIdQuery(participantId)
+                .Select(p => new
+                {
+                    p.IsOfficial,
+                    p.User.UserName
+                })
+                .FirstOrDefault();
+
+            return participant != null ?
+                new Tuple<string, bool>(participant.UserName, participant.IsOfficial) :
+                null;
         }
     }
 }

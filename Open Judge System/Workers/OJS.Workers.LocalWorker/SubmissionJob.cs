@@ -4,7 +4,6 @@
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading;
-    using System.Transactions;
 
     using log4net;
 
@@ -50,9 +49,13 @@
             while (!this.stopping)
             {
                 var data = new OjsData();
+
+                var participantsData = new ParticipantsDataService(
+                    new EfGenericRepository<Participant>(data.Context));
                 var participantScoresData = new ParticipantScoresDataService(
                     new EfGenericRepository<ParticipantScore>(data.Context),
-                    new ParticipantsDataService(new EfGenericRepository<Participant>(data.Context)));
+                    participantsData);
+                
                 Submission submission = null;
                 SubmissionForProcessing submissionForProcessing = null;
                 int submissionId;
@@ -134,13 +137,7 @@
 
                 try
                 {
-                    using (var scope = new TransactionScope())
-                    {
-                        if (participantScoresData.Save(submission))
-                        {
-                            scope.Complete();
-                        }
-                    }
+                    participantScoresData.SaveInTransaction(submission);
                 }
                 catch (Exception exception)
                 {

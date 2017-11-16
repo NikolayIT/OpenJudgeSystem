@@ -1,6 +1,8 @@
 ﻿namespace OJS.Services.Data.ParticipantScores
 {
+    using System.Collections.Generic;
     using System.Linq;
+
     using OJS.Data.Models;
     using OJS.Services.Common;
 
@@ -12,12 +14,12 @@
 
         IQueryable<ParticipantScore> GetAll();
 
-        bool Save(Submission submission, bool resetScore = false);
+        void Save(Submission submission, bool resetScore = false);
 
         void DeleteAllByProblem(int problemId);
 
         void Delete(int participantId, int problemId);
 
-        void Delete(ParticipantScore participantScore);
+        void Delete(IEnumerable<ParticipantScore> participantScores);
     }
 }

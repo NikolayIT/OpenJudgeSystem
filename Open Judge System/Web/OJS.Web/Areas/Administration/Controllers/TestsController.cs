@@ -880,7 +880,6 @@
         private void RetestSubmissions(int problemId)
         {
             this.participantScoresData.DeleteAllByProblem(problemId);
-            this.Data.SaveChanges();
 
             var submissions = this.Data.Problems
                 .GetById(problemId)

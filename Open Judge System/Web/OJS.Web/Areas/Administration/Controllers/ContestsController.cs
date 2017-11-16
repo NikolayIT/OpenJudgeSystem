@@ -401,10 +401,7 @@
                     }
                 }
 
-                foreach (var participantScoreForDeletion in scoresForDeletion)
-                {
-                    this.participantScoresData.Delete(participantScoreForDeletion);
-                }
+                this.participantScoresData.Delete(scoresForDeletion);
 
                 this.Data.Participants.Delete(officialParticipant);
                 this.Data.SaveChanges();
