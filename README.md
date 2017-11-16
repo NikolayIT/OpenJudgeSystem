@@ -21,6 +21,7 @@ Other contributors:
 * Rositsa Popova (https://github.com/rozay)
 * Viktor Kazakov (https://github.com/Innos)
 * Svetlin Galov (https://github.com/jicata)
+* Georgi Georgiev (https://github.com/gogo4ds)
 
 ## License
 
