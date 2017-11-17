@@ -1,8 +1,6 @@
 ﻿namespace OJS.Services.Data.ParticipantScores
 {
-    using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -42,33 +40,40 @@
 
         public void Save(Submission submission, bool resetScore = false)
         {
-            if (submission.ParticipantId == null)
+            if (submission.ParticipantId == null || submission.ProblemId == null)
             {
                 return;
             }
 
-            var participant = this.GetParticipantData(submission.ParticipantId.Value);
-
-            if (participant != null)
-            {
-                this.Save(submission, participant.Item1, participant.Item2, resetScore);
-            }
-        }
-
-        public void SaveInTransaction(Submission submission, bool resetScore = false)
-        {
-            if (submission.ParticipantId == null)
-            {
-                return;
-            }
-
-            var participant = this.GetParticipantData(submission.ParticipantId.Value);
+            var participant = this.participantsData
+                .GetByIdQuery(submission.ParticipantId.Value)
+                .Select(p => new
+                {
+                    p.IsOfficial,
+                    p.User.UserName
+                })
+                .FirstOrDefault();
 
             if (participant != null)
             {
                 using (var transaction = this.participantScores.BeginTransaction())
                 {
-                    this.Save(submission, participant.Item1, participant.Item2, resetScore);
+                    var existingScore = this.Get(
+                        submission.ParticipantId.Value,
+                        submission.ProblemId.Value,
+                        participant.IsOfficial);
+
+                    if (existingScore == null)
+                    {
+                        this.AddNew(submission, participant.UserName, participant.IsOfficial);
+                    }
+                    else if (resetScore ||
+                             submission.Points >= existingScore.Points ||
+                             submission.Id == existingScore.SubmissionId)
+                    {
+                        this.Update(existingScore, submission.Id, submission.Points);
+                    }
+
                     transaction.Commit();
                 }
             }
@@ -102,28 +107,6 @@
             this.participantScores.SaveChanges();
         }
 
-        private void Save(Submission submission, string participantUsername, bool isOfficial, bool resetScore)
-        {
-            if (submission.ParticipantId != null && submission.ProblemId != null)
-            {
-                var existingScore = this.Get(
-                    submission.ParticipantId.Value,
-                    submission.ProblemId.Value,
-                    isOfficial);
-
-                if (existingScore == null)
-                {
-                    this.AddNew(submission, participantUsername, isOfficial);
-                }
-                else if (resetScore ||
-                    submission.Points >= existingScore.Points ||
-                    submission.Id == existingScore.SubmissionId)
-                {
-                    this.Update(existingScore, submission.Id, submission.Points);
-                }
-            }
-        }
-
         private void AddNew(Submission submission, string participantName, bool isOfficial)
         {
             this.participantScores.Add(new ParticipantScore
@@ -146,23 +129,6 @@
 
             this.participantScores.Update(participantScore);
             this.participantScores.SaveChanges();
-        }
-
-        //TODO: use new Value Tuples structure when updated to .NET Framework 4.7 or above
-        private Tuple<string, bool> GetParticipantData(int participantId)
-        {
-            var participant = this.participantsData
-                .GetByIdQuery(participantId)
-                .Select(p => new
-                {
-                    p.IsOfficial,
-                    p.User.UserName
-                })
-                .FirstOrDefault();
-
-            return participant != null ?
-                new Tuple<string, bool>(participant.UserName, participant.IsOfficial) :
-                null;
         }
     }
 }
