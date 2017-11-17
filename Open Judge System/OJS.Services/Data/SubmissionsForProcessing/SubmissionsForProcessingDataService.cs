@@ -6,15 +6,33 @@
     using EntityFramework.Extensions;
 
     using OJS.Data.Models;
-    using OJS.Data.Repositories.Base;
+    using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsForProcessingDataService : ISubmissionsForProcessingDataService
     {
-        private readonly GenericRepository<SubmissionForProcessing> submissionsForProcessing;
+        private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
-        public SubmissionsForProcessingDataService(GenericRepository<SubmissionForProcessing> submissionsForProcessing)
+        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing)
         {
             this.submissionsForProcessing = submissionsForProcessing;
+        }
+
+        public void AddOrUpdate(IEnumerable<int> submissionIds)
+        {
+            try
+            {
+                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = false;
+                foreach (var submissionId in submissionIds)
+                {
+                    this.AddOrUpdateWithNoSaveChanges(submissionId);
+                }
+            }
+            finally
+            {
+                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = true;
+            }
+
+            this.submissionsForProcessing.SaveChanges();
         }
 
         public void AddOrUpdateBySubmissionId(int submissionId)
@@ -95,5 +113,25 @@
             .All()
             .Where(sfp => sfp.Processed && !sfp.Processing)
             .Delete();
+
+        private void AddOrUpdateWithNoSaveChanges(int submissionId)
+        {
+            var submissionForProcessing = this.GetBySubmissionId(submissionId);
+
+            if (submissionForProcessing != null)
+            {
+                submissionForProcessing.Processing = false;
+                submissionForProcessing.Processed = false;
+            }
+            else
+            {
+                submissionForProcessing = new SubmissionForProcessing
+                {
+                    SubmissionId = submissionId
+                };
+
+                this.submissionsForProcessing.Add(submissionForProcessing);
+            }
+        }
     }
 }

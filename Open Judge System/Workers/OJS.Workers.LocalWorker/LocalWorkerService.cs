@@ -24,16 +24,11 @@
         {
             logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
             logger.Info("LocalWorkerService initializing...");
-            this.ResetAllProcessingSubmissions();
-            this.CreateExecutionStrategiesWorkingDirectory();
 
             this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
             var submissionsForProcessing = new ConcurrentQueue<int>();
-
-            logger = LogManager.GetLogger("LocalWorkerService");
-            logger.Info("LocalWorkerService initializing...");
 
             this.CreateExecutionStrategiesWorkingDirectory();
             this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
