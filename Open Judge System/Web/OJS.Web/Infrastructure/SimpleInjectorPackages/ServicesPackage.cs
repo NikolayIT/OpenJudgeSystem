@@ -27,14 +27,15 @@
             var registrations = serviceAssemblies
                 .SelectMany(a => a.GetExportedTypes())
                 .Where(type => typeof(IService).IsAssignableFrom(type) &&
-                               !type.IsAbstract &&
-                               !type.IsGenericTypeDefinition)
+                    !type.IsAbstract &&
+                    !type.IsGenericTypeDefinition)
                 .Select(type => new
                 {
-                    ServiceTypes = type.GetInterfaces()
+                    ServiceTypes = type
+                        .GetInterfaces()
                         .Where(i => i.IsPublic &&
-                                     !i.GenericTypeArguments.Any() &&
-                                     i != typeof(IService)),
+                            !i.GenericTypeArguments.Any() &&
+                            i != typeof(IService)),
                     Implementation = type
                 });
 
