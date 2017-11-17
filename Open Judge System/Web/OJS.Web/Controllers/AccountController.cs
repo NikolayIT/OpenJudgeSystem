@@ -1,12 +1,8 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
-    using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Security.Claims;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -21,31 +17,21 @@
     using OJS.Web.Common;
     using OJS.Web.ViewModels.Account;
 
-    using Recaptcha;
-
     [Authorize]
     public class AccountController : BaseController
     {
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-        private const string JsonContentType = "application/json";
-
         public AccountController(IOjsData data)
             : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
         {
         }
 
-        public AccountController(IOjsData data, UserManager<UserProfile> userManager)
-            : base(data)
-        {
-            this.UserManager = userManager;
-        }
+        protected AccountController(IOjsData data, UserManager<UserProfile> userManager)
+            : base(data) => this.UserManager = userManager;
 
         public UserManager<UserProfile> UserManager { get; private set; }
 
         private IAuthenticationManager AuthenticationManager => this.HttpContext.GetOwinContext().Authentication;
 
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -53,7 +39,6 @@
             return this.View();
         }
 
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -61,14 +46,14 @@
         {
             if (this.ModelState.IsValid)
             {
-                ExternalUserViewModel externalUser = null;
+                ExternalUserViewModel externalUser;
                 try
                 {
                     externalUser = await this.GetExternalUser(model.UserName);
                 }
                 catch (Exception)
                 {
-                    this.TempData[GlobalConstants.InfoMessage] = "Съжаляваме, но в момента системата за вход не е активна.";
+                    this.TempData[GlobalConstants.InfoMessage] = Resources.Account.AccountControllers.Inactive_login_system;
                     return this.RedirectToAction("Index", "Home", new { area = string.Empty });
                 }
 
@@ -92,537 +77,83 @@
             return this.View(model);
         }
 
-        // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult Register() => this.RedirectToExternalSystemMessage();
 
-            if (this.User.Identity.IsAuthenticated)
-            {
-                return this.RedirectToAction("Manage");
-            }
-
-            return this.View();
-        }
-
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [RecaptchaControlMvc.CaptchaValidator]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, bool captchaValid)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult Register(RegisterViewModel model, bool captchaValid) => this.RedirectToExternalSystemMessage();
 
-            if (this.Data.Users.All().Any(x => x.Email == model.Email))
-            {
-                this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
-            }
-
-            if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
-            {
-                this.ModelState.AddModelError("UserName", Resources.Account.AccountViewModels.User_already_registered);
-            }
-
-            if (!captchaValid)
-            {
-                this.ModelState.AddModelError("Captcha", Resources.Account.Views.General.Captcha_invalid);
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                var user = new UserProfile { UserName = model.UserName, Email = model.Email };
-                var result = await this.UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await this.SignInAsync(user, isPersistent: false);
-                    return this.RedirectToAction(GlobalConstants.Index, "Home");
-                }
-
-                this.AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return this.View(model);
-        }
-
-        // POST: /Account/Disassociate
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult Disassociate(string loginProvider, string providerKey) => this.RedirectToExternalSystemMessage();
 
-            var result =
-                await
-                    this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
-            if (result.Succeeded)
-            {
-                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Disassociate.External_login_removed;
-            }
-            else
-            {
-                this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.Disassociate.Error;
-            }
-
-            return this.RedirectToAction("Manage");
-        }
-
-        // GET: /Account/Manage
-        public ActionResult Manage()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            this.ViewBag.HasLocalPassword = this.HasPassword();
-            this.ViewBag.ReturnUrl = Url.Action("Manage");
-            return this.View();
-        }
+        public ActionResult Manage() => this.RedirectToExternalSystemMessage();
 
         /// <summary>
         /// Informs the user that the registration proccess is 
         /// disabled on this site and he must register from exturnal source
         /// </summary>
-        [HttpGet]
         [AllowAnonymous]
-        public ActionResult ExternalNotify()
-        {
-            return this.View();
-        }
+        public ActionResult ExternalNotify() => this.View();
 
-        // POST: /Account/Manage
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Manage(ManageUserViewModel model)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult Manage(ManageUserViewModel model) => this.RedirectToExternalSystemMessage();
 
-            bool hasPassword = this.HasPassword();
-            this.ViewBag.HasLocalPassword = hasPassword;
-            this.ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasPassword)
-            {
-                if (this.ModelState.IsValid)
-                {
-                    IdentityResult result =
-                        await
-                            this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
-                        return this.RedirectToAction(GlobalConstants.Index, new { controller = "Settings", area = "Users" });
-                    }
-
-                    this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Password_incorrect);
-                }
-            }
-            else
-            {
-                // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (this.ModelState.IsValid)
-                {
-                    IdentityResult result =
-                        await this.UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.Manage.Password_updated;
-                        return this.RedirectToAction(GlobalConstants.Index, new { controller = "Settings", area = "Users" });
-                    }
-
-                    this.AddErrors(result);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return this.View(model);
-        }
-
-        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult ExternalLogin(string provider, string returnUrl) => this.RedirectToExternalSystemMessage();
 
-            // Request a redirect to the external login provider
-            return new ChallengeResult(
-                provider,
-                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
-        }
-
-        // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult ExternalLoginCallback(string returnUrl) => this.RedirectToExternalSystemMessage();
 
-            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-            {
-                return this.RedirectToAction("Login");
-            }
-
-            // Sign in the user with this external login provider if the user already has a login
-            var user = await this.UserManager.FindAsync(loginInfo.Login);
-            if (user != null)
-            {
-                await this.SignInAsync(user, isPersistent: false);
-                return this.RedirectToLocal(returnUrl);
-            }
-
-            // If a user account was not found - check if he has already registered his email.
-            ClaimsIdentity claimsIdentity = this.AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie).Result;
-            var email = claimsIdentity.FindFirstValue(ClaimTypes.Email);
-
-            if (this.Data.Users.All().Any(x => x.Email == email))
-            {
-                this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginCallback.Email_already_registered;
-                return this.RedirectToAction("Login");
-            }
-
-            // If the user does not have an account, then prompt the user to create an account
-            this.ViewBag.ReturnUrl = returnUrl;
-            this.ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-
-            return this.View(
-                "ExternalLoginConfirmation",
-                new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName, Email = email });
-        }
-
-        // POST: /Account/LinkLogin
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LinkLogin(string provider)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult LinkLogin(string provider) => this.RedirectToExternalSystemMessage();
 
-            // Request a redirect to the external login provider to link a login for the current user
-            return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
-        }
+        public ActionResult LinkLoginCallback() => this.RedirectToExternalSystemMessage();
 
-        // GET: /Account/LinkLoginCallback
-        public async Task<ActionResult> LinkLoginCallback()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-            if (loginInfo != null)
-            {
-                var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-                if (result.Succeeded)
-                {
-                    return this.RedirectToAction("Manage");
-                }
-            }
-
-            this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginConfirmation.Error;
-            return this.RedirectToAction("Manage");
-        }
-
-        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(
+        public ActionResult ExternalLoginConfirmation(
             ExternalLoginConfirmationViewModel model,
-            string returnUrl)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+            string returnUrl) => this.RedirectToExternalSystemMessage();
 
-            if (User.Identity.IsAuthenticated)
-            {
-                return this.RedirectToAction("Manage");
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await this.AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return this.View("ExternalLoginFailure");
-                }
-
-                if (this.Data.Users.All().Any(x => x.Email == model.Email))
-                {
-                    this.TempData[GlobalConstants.DangerMessage] = Resources.Account.Views.ExternalLoginConfirmation.Email_already_registered;
-                    return this.RedirectToAction("ForgottenPassword");
-                }
-
-                if (this.Data.Users.All().Any(x => x.UserName == model.UserName))
-                {
-                    this.ModelState.AddModelError("Username", Resources.Account.Views.ExternalLoginConfirmation.User_already_registered);
-                }
-
-                if (!this.ModelState.IsValid)
-                {
-                    return this.View(model);
-                }
-
-                var user = new UserProfile { UserName = model.UserName, Email = model.Email };
-                var result = await this.UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await this.UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await this.SignInAsync(user, isPersistent: false);
-                        return this.RedirectToLocal(returnUrl);
-                    }
-                }
-
-                this.AddErrors(result);
-            }
-
-            this.ViewBag.ReturnUrl = returnUrl;
-            return this.View(model);
-        }
-
-        // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             this.AuthenticationManager.SignOut();
             return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
 
-        // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return this.View();
-        }
+        public ActionResult ExternalLoginFailure() => this.View();
 
         [ChildActionOnly]
-        public ActionResult RemoveAccountList()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            var linkedAccounts = this.UserManager.GetLogins(User.Identity.GetUserId());
-            this.ViewBag.ShowRemoveButton = this.HasPassword() || linkedAccounts.Count > 1;
-            return this.PartialView("_RemoveAccountPartial", linkedAccounts);
-        }
+        public ActionResult RemoveAccountList() => this.RedirectToExternalSystemMessage();
 
         [AllowAnonymous]
-        public ActionResult ForgottenPassword()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            return this.View();
-        }
+        public ActionResult ForgottenPassword() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ForgottenPassword(string emailOrUsername)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            if (string.IsNullOrEmpty(emailOrUsername))
-            {
-                this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_required);
-                return this.View();
-            }
-
-            var userByUsername = this.Data.Users.GetByUsername(emailOrUsername);
-
-            if (userByUsername != null)
-            {
-                userByUsername.ForgottenPasswordToken = Guid.NewGuid();
-                this.Data.SaveChanges();
-                this.SendForgottenPasswordToUser(userByUsername);
-                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ForgottenPassword.Email_sent;
-                return this.RedirectToAction("ForgottenPassword");
-            }
-
-            // using Where() because duplicate email addresses were allowed in the previous
-            // judge system
-            var usersByEmail = this.Data.Users
-                .All()
-                .Where(x => x.Email == emailOrUsername).ToList();
-
-            var usersCount = usersByEmail.Count();
-
-            // notify the user if there are no users registered with this email or username
-            if (usersCount == 0)
-            {
-                this.ModelState.AddModelError("emailOrUsername", Resources.Account.Views.ForgottenPassword.Email_or_username_not_registered);
-                return this.View();
-            }
-
-            // if there are users registered with this email - send a forgotten password email
-            // to each one of them
-            foreach (var user in usersByEmail)
-            {
-                user.ForgottenPasswordToken = Guid.NewGuid();
-                this.Data.SaveChanges();
-                this.SendForgottenPasswordToUser(user);
-            }
-
-            this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ForgottenPassword.Email_sent;
-            return this.RedirectToAction("ForgottenPassword");
-        }
+        public ActionResult ForgottenPassword(string emailOrUsername) => this.RedirectToExternalSystemMessage();
 
         [AllowAnonymous]
-        public ActionResult ChangePassword(string token)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            Guid guid;
-
-            if (!Guid.TryParse(token, out guid))
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
-            }
-
-            var user = this.Data.Users.All().FirstOrDefault(x => x.ForgottenPasswordToken == guid);
-
-            if (user == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
-            }
-
-            var forgottenPasswordModel = new ForgottenPasswordViewModel
-            {
-                Token = guid
-            };
-
-            return this.View(forgottenPasswordModel);
-        }
+        public ActionResult ChangePassword(string token) => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> ChangePassword(ForgottenPasswordViewModel model)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
+        public ActionResult ChangePassword(ForgottenPasswordViewModel model) => this.RedirectToExternalSystemMessage();
 
-            var user = this.Data.Users.All()
-                .FirstOrDefault(x => x.ForgottenPasswordToken == model.Token);
-
-            if (user == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid token!");
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                IdentityResult removePassword =
-                    await
-                        this.UserManager.RemovePasswordAsync(user.Id);
-                if (removePassword.Succeeded)
-                {
-                    IdentityResult changePassword =
-                        await
-                            this.UserManager.AddPasswordAsync(user.Id, model.Password);
-
-                    if (changePassword.Succeeded)
-                    {
-                        user.ForgottenPasswordToken = null;
-                        this.Data.SaveChanges();
-
-                        this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ChangePasswordView.Password_updated;
-                        return this.RedirectToAction("Login");
-                    }
-
-                    this.AddErrors(changePassword);
-                }
-
-                this.AddErrors(removePassword);
-            }
-
-            return this.View(model);
-        }
-
-        public ActionResult ChangeEmail()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            return this.View();
-        }
+        public ActionResult ChangeEmail() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        public ActionResult ChangeEmail(ChangeEmailViewModel model)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            if (this.ModelState.IsValid)
-            {
-                if (this.Data.Users.All().Any(x => x.Email == model.Email))
-                {
-                    this.ModelState.AddModelError("Email", Resources.Account.AccountViewModels.Email_already_registered);
-                }
-
-                var passwordVerificationResult = this.UserManager.PasswordHasher.VerifyHashedPassword(this.UserProfile.PasswordHash, model.Password);
-
-                if (passwordVerificationResult != PasswordVerificationResult.Success)
-                {
-                    this.ModelState.AddModelError("Password", Resources.Account.AccountViewModels.Incorrect_password);
-                }
-
-                if (this.ModelState.IsValid)
-                {
-                    var currentUser = this.Data.Users.GetById(this.UserProfile.Id);
-
-                    currentUser.Email = model.Email;
-                    this.Data.SaveChanges();
-                    this.TempData[GlobalConstants.InfoMessage] = "Success";
-                    return this.RedirectToAction("Profile", new { controller = "Users", area = string.Empty });
-                }
-            }
-
-            return this.View(model);
-        }
+        public ActionResult ChangeEmail(ChangeEmailViewModel model) => this.RedirectToExternalSystemMessage();
 
         [Authorize]
-        [HttpGet]
-        public ActionResult ChangeUsername()
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
-            {
-                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
-            }
-
-            return this.View();
-        }
+        public ActionResult ChangeUsername() => this.RedirectToExternalSystemMessage();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ChangeUsername(ChangeUsernameViewModel model)
-        {
-            return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
-
-            if (Regex.IsMatch(this.UserProfile.UserName, "^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$") && this.UserProfile.UserName.Length >= 5 && this.UserProfile.UserName.Length <= 15)
-            {
-                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                if (this.Data.Users.All().Any(x => x.UserName == model.Username))
-                {
-                    this.ModelState.AddModelError("Username", "This username is not available");
-                    return this.View(model);
-                }
-
-                this.UserProfile.UserName = model.Username;
-                this.Data.SaveChanges();
-
-                this.TempData[GlobalConstants.InfoMessage] = Resources.Account.Views.ChangeUsernameView.Username_changed;
-                this.AuthenticationManager.SignOut();
-                return this.RedirectToAction("Login", new { controller = "Account", area = string.Empty });
-            }
-
-            return this.View(model);
-        }
+        public ActionResult ChangeUsername(ChangeUsernameViewModel model) => this.RedirectToExternalSystemMessage();
 
         protected override void Dispose(bool disposing)
         {
@@ -634,6 +165,11 @@
 
             base.Dispose(disposing);
         }
+
+        private ActionResult RedirectToExternalSystemMessage() => this.RedirectToAction(
+            nameof(this.ExternalNotify),
+            "Account",
+            new { area = string.Empty });
 
         private void AddOrUpdateUser(UserProfile user)
         {
@@ -661,7 +197,7 @@
         {
             using (var httpClient = new HttpClient())
             {
-                var jsonMediaType = new MediaTypeWithQualityHeaderValue(JsonContentType);
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
                 httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
 
                 var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userName });
@@ -675,27 +211,6 @@
             }
         }
 
-        private void SendForgottenPasswordToUser(UserProfile user)
-        {
-            var mailSender = MailSender.Instance;
-
-            var forgottenPasswordEmailTitle = string.Format(
-                Resources.Account.AccountEmails.Forgotten_password_title,
-                user.UserName);
-
-            var forgottenPasswordEmailBody = string.Format(
-                Resources.Account.AccountEmails.Forgotten_password_body,
-                user.UserName,
-                Url.Action(
-                    "ChangePassword",
-                    "Account",
-                    new { token = user.ForgottenPasswordToken },
-                    Request.Url.Scheme));
-
-            mailSender.SendMail(user.Email, forgottenPasswordEmailTitle, forgottenPasswordEmailBody);
-        }
-
-        #region Helpers
         private async Task SignInAsync(UserProfile user, bool isPersistent)
         {
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -703,61 +218,14 @@
             this.AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, identity);
         }
 
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                this.ModelState.AddModelError(string.Empty, error);
-            }
-        }
-
-        private bool HasPassword()
-        {
-            var user = this.UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-
-            return false;
-        }
-
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (this.Url.IsLocalUrl(returnUrl))
             {
                 return this.Redirect(returnUrl);
             }
 
             return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
-
-        private class ChallengeResult : HttpUnauthorizedResult
-        {
-            public ChallengeResult(string provider, string redirectUri, string userId = null)
-            {
-                this.LoginProvider = provider;
-                this.RedirectUri = redirectUri;
-                this.UserId = userId;
-            }
-
-            private string LoginProvider { get; set; }
-
-            private string RedirectUri { get; set; }
-
-            private string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = this.RedirectUri };
-                if (this.UserId != null)
-                {
-                    properties.Dictionary[AccountController.XsrfKey] = this.UserId;
-                }
-
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, this.LoginProvider);
-            }
-        }
-        #endregion
     }
 }

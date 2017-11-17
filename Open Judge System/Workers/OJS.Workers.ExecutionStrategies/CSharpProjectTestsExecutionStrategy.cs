@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+
     using Microsoft.Build.Evaluation;
 
     using OJS.Common;
@@ -41,8 +42,11 @@
         protected const string TrialTest = "Test.000";
         protected const string CsProjFileSearchPattern = "*.csproj";
         protected const string NUnitReference =
-            "nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
-
+            "nunit.framework, Version=3.8.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+        protected const string EntityFrameworkCoreInMemoryReference =
+                "Microsoft.EntityFrameworkCore.InMemory, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL";
+        protected const string SystemDataCommonReference =
+            "System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL";
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
 
         // Extracts the number of total and passed tests 
@@ -55,6 +59,7 @@
         {
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
+            this.TestPaths = new List<string>();
         }
 
         public CSharpProjectTestsExecutionStrategy(
@@ -71,6 +76,7 @@
             this.NUnitConsoleRunnerPath = nUnitConsoleRunnerPath;
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
+            this.TestPaths = new List<string>();
         }
 
         protected string NUnitConsoleRunnerPath { get; }
@@ -81,45 +87,27 @@
 
         protected List<string> TestNames { get; }
 
+        protected List<string> TestPaths { get; }
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
             var userSubmissionContent = executionContext.FileContent;
 
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
-            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
-            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
-            File.Delete(submissionFilePath);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent, this.WorkingDirectory);
 
-            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
-                this.WorkingDirectory,
-                CsProjFileSearchPattern,
-                f => new FileInfo(f).Length);
+            var csProjFilePath = this.GetCsProjFilePath();
 
             this.ExtractTestNames(executionContext.Tests);
 
-            // Modify Project file
             var project = new Project(csProjFilePath);
             var compileDirectory = project.DirectoryPath;
-            this.SetupFixturePath = $"{compileDirectory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
+            this.SaveTestFiles(executionContext.Tests, compileDirectory);
+            this.SaveSetupFixture(compileDirectory);
 
             this.CorrectProjectReferences(executionContext.Tests, project);
-
-            // Write Test files and SetupFixture           
-            var index = 0;
-            var testPaths = new List<string>();
-            foreach (var test in executionContext.Tests)
-            {
-                var testName = this.TestNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
-                testPaths.Add(testedCodePath);
-                File.WriteAllText(testedCodePath, test.Input);
-            }
-
-            testPaths.Add(this.SetupFixturePath);
-
-            // Compiling
+            
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -136,7 +124,7 @@
             }
 
             // Delete tests before execution so the user can't access them
-            FileHelpers.DeleteFiles(testPaths.ToArray());
+            FileHelpers.DeleteFiles(this.TestPaths.ToArray());
 
             var executor = new RestrictedProcessExecutor();
             var checker = Checker.CreateChecker(
@@ -144,22 +132,51 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result = this.RunUnitTests(executionContext, executor, checker, result, compilerResult.OutputFile);
+            result = this.RunUnitTests(
+                this.NUnitConsoleRunnerPath,
+                executionContext,
+                executor,
+                checker,
+                result,
+                compilerResult.OutputFile,
+                AdditionalExecutionArguments);
+
             return result;
         }
 
+        protected void SaveSetupFixture(string directory)
+        {
+            this.SetupFixturePath = $"{directory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+            File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+            this.TestPaths.Add(this.SetupFixturePath);
+        }
+
+        protected void SaveTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
+        {       
+            var index = 0;
+            foreach (var test in tests)
+            {
+                var testName = this.TestNames[index++];
+                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
+                this.TestPaths.Add(testedCodePath);
+                File.WriteAllText(testedCodePath, test.Input);
+            }
+        }
+
         protected virtual ExecutionResult RunUnitTests(
+            string consoleRunnerPath,
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string compiledFile)
+            string compiledFile,
+            string additionalExecutionArguments)
         {
             var arguments = new List<string> { $"\"{compiledFile}\"" };
-            arguments.AddRange(AdditionalExecutionArguments.Split(' '));
+            arguments.AddRange(additionalExecutionArguments.Split(' '));
 
             var processExecutionResult = executor.Execute(
-                this.NUnitConsoleRunnerPath,
+                consoleRunnerPath,
                 string.Empty,
                 executionContext.TimeLimit,
                 executionContext.MemoryLimit,
@@ -213,7 +230,6 @@
 
         protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
         {
-            File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
             this.EnsureAssemblyNameIsCorrect(project);
@@ -224,14 +240,12 @@
             }
 
             project.SetProperty("OutputType", "Library");
-            var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
-            if (nUnitPrevReference != null)
-            {
-                project.RemoveItem(nUnitPrevReference);
-            }
 
-            // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            this.AddProjectReferences(project, NUnitReference);
+            this.AddProjectReferences(
+                project,
+                NUnitReference, 
+                EntityFrameworkCoreInMemoryReference, 
+                SystemDataCommonReference);
 
             // Check for VSTT just in case, we don't want Assert conflicts
             var vsTestFrameworkReference = project.Items
@@ -247,6 +261,7 @@
 
         protected void AddProjectReferences(Project project, params string[] references)
         {
+            this.RemoveExistingReferences(project, references);
             var referenceMetaData = new Dictionary<string, string>();
             foreach (var reference in references)
             {
@@ -261,9 +276,9 @@
         {
             foreach (var test in tests)
             {
-                string testName = CSharpPreprocessorHelper.GetClassName(test.Input);
+                var testName = CSharpPreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
-            }           
+            }
         }
 
         protected void EnsureAssemblyNameIsCorrect(Project project)
@@ -279,7 +294,16 @@
             project.SetProperty("AssemblyName", projectName);
         }
 
-        private (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
+        protected virtual void ExtractFilesInWorkingDirectory(byte[] userSubmissionContent, string workingDirectory)
+        {
+            var submissionFilePath = $"{workingDirectory}\\{ZippedSubmissionName}";
+            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
+            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
+            FileHelpers.UnzipFile(submissionFilePath, workingDirectory);
+            File.Delete(submissionFilePath);
+        }
+
+        protected(int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
         {
             var testsSummaryMatcher = new Regex(TestResultsRegex);
             var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
@@ -291,6 +315,24 @@
             var failedTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[3].Value);
             var totalTestsCount = int.Parse(testsSummaryMatches[testsSummaryMatches.Count - 1].Groups[1].Value);
             return (totalTestsCount, failedTestsCount);
+        }
+
+        protected virtual string GetCsProjFilePath() => FileHelpers.FindFileMatchingPattern(
+            this.WorkingDirectory,
+            CsProjFileSearchPattern,
+            f => new FileInfo(f).Length);
+
+        private void RemoveExistingReferences(Project project, string[] references)
+        {
+            foreach (var reference in references)
+            {
+                var referenceName = reference.Substring(0, reference.IndexOf(","));
+                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
+                if (existingReference != null)
+                {
+                    project.RemoveItem(existingReference);
+                }
+            }
         }
     }
 }

@@ -45,7 +45,7 @@
             this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
-        public CompeteController(
+        protected CompeteController(
             IOjsData data,
             UserProfile userProfile)
             : base(data, userProfile)

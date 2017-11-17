@@ -32,20 +32,16 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
+
             var userSubmissionContent = executionContext.FileContent;
 
-            var submissionFilePath = $"{this.WorkingDirectory}\\{ZippedSubmissionName}";
-            File.WriteAllBytes(submissionFilePath, userSubmissionContent);
-            FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);
-            FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
-            File.Delete(submissionFilePath);
+            this.ExtractFilesInWorkingDirectory(userSubmissionContent, this.WorkingDirectory);
 
-            var csProjFilePath = FileHelpers.FindFileMatchingPattern(
-                this.WorkingDirectory,
-                CsProjFileSearchPattern);
+            var csProjFilePath = this.GetCsProjFilePath();
 
             var project = new Project(csProjFilePath);
-            this.SetupFixturePath = $"{project.DirectoryPath}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+
+            this.SaveSetupFixture(project.DirectoryPath);
 
             this.CorrectProjectReferences(project);
             project.Save(csProjFilePath);
@@ -57,16 +53,26 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            result = this.RunUnitTests(executionContext, executor, checker, result, csProjFilePath);
+            result = this.RunUnitTests(
+                this.NUnitConsoleRunnerPath,
+                executionContext,
+                executor,
+                checker,
+                result,
+                csProjFilePath,
+                AdditionalExecutionArguments);
+
             return result;
         }
 
         protected override ExecutionResult RunUnitTests(
+            string consoleRunnerPath,
             ExecutionContext executionContext,
             IExecutor executor,
             IChecker checker,
             ExecutionResult result,
-            string csProjFilePath)
+            string csProjFilePath,
+            string additionalExecutionArguments)
         {
             var projectDirectory = Path.GetDirectoryName(csProjFilePath);
             var testedCodePath = $"{projectDirectory}\\{TestedCode}";
@@ -101,10 +107,10 @@
                 FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
-                arguments.AddRange(AdditionalExecutionArguments.Split(' '));
+                arguments.AddRange(additionalExecutionArguments.Split(' '));
 
                 var processExecutionResult = executor.Execute(
-                    this.NUnitConsoleRunnerPath,
+                    consoleRunnerPath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
@@ -113,10 +119,11 @@
                     false,
                     true);
 
-                var totalTests = 0;
-                var passedTests = 0;
+                this.ExtractTestResult(
+                    processExecutionResult.ReceivedOutput,
+                    out var passedTests,
+                    out var totalTests);
 
-                this.ExtractTestResult(processExecutionResult.ReceivedOutput, out passedTests, out totalTests);
                 var message = "Test Passed!";
 
                 if (totalTests == 0)
@@ -165,7 +172,7 @@
                 throw new ArgumentException($"Compiler not found in: {compilerPath}", nameof(compilerPath));
             }
 
-            ICompiler compiler = Compiler.CreateCompiler(compilerType);
+            var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
             return compilerResult;
         }

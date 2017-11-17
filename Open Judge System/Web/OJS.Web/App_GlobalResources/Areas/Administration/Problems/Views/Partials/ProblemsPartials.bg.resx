@@ -183,7 +183,4 @@
   <data name="Trim_checker_description" xml:space="preserve">
     <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
   </data>
-  <data name="Ретест" xml:space="preserve">
-    <value>Ретест</value>
-  </data>
 </root>

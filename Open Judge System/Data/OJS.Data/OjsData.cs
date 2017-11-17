@@ -22,10 +22,7 @@
         {
         }
 
-        public OjsData(IOjsDbContext context)
-        {
-            this.context = context;
-        }
+        protected OjsData(IOjsDbContext context) => this.context = context;
 
         public IContestsRepository Contests => (ContestsRepository)this.GetRepository<Contest>();
 
@@ -106,7 +103,7 @@
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {
-                var type = typeof(GenericRepository<T>);
+                var type = typeof(EfGenericRepository<T>);
 
                 if (typeof(T).IsAssignableFrom(typeof(Contest)))
                 {

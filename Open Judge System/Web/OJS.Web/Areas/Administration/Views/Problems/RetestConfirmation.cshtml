@@ -1,0 +1,34 @@
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.Problem
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsRetest;
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+
+@model ProblemRetestViewModel
+
+@{
+    ViewBag.Title = Resource.Retest;
+}
+
+<h1 class="text-danger">&nbsp;<span class="glyphicon glyphicon-warning-sign"></span> @ViewBag.Title</h1>
+<p><span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;<strong>@Model.ContestName</strong></p>
+<div class="container ">
+    @using (Html.BeginForm<ProblemsController>(c => c.Retest((ProblemRetestViewModel)null), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationMessage(GlobalConstants.DateTimeError)
+        @Html.HiddenFor(p => p.ContestId)
+
+        <div class="alert">
+            <p>@Html.Raw(string.Format(Resource.Retest_confirmation_message, Model.SubmissionsCount, Model.Name))</p>
+        </div>
+        <div class="editor-label">
+            <div>
+                <input type="submit" class="btn btn-primary pull-left" value="@Resource.Retest" onclick="this.disabled = true; this.form.submit();" />
+            </div>
+            <div class="col-xs-4">
+                <a href=@ViewBag.ReturnUrl class="btn btn-primary">@SharedResource.Cancel</a>
+            </div>
+        </div>
+    }
+</div>

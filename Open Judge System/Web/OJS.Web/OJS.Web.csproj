@@ -110,8 +110,8 @@
     <Reference Include="Hangfire.Dashboard.Authorization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Hangfire.Dashboard.Authorization.2.1.0\lib\net45\Hangfire.Dashboard.Authorization.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Ninject, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Hangfire.Ninject.1.2.0\lib\net45\Hangfire.Ninject.dll</HintPath>
+    <Reference Include="Hangfire.SimpleInjector, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.SimpleInjector.1.3.1\lib\net45\Hangfire.SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.SqlServer, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Hangfire.SqlServer.1.6.15\lib\net45\Hangfire.SqlServer.dll</HintPath>
@@ -178,18 +178,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
       <Private>True</Private>
@@ -209,8 +197,17 @@
     <Reference Include="Owin">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Recaptcha">
-      <HintPath>..\..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.4.0.12\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.Web.4.0.12\lib\net40\SimpleInjector.Integration.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web.Mvc, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.Web.Mvc.4.0.12\lib\net40\SimpleInjector.Integration.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Packaging, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Packaging.4.0.12\lib\net40\SimpleInjector.Packaging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -286,6 +283,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\AccountControllers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountControllers.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\AccountEmails.bg.Designer.cs">
       <DependentUpon>AccountEmails.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -806,6 +813,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsPartials.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.bg.designer.cs">
+      <DependentUpon>ProblemsRetest.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -855,6 +867,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsEdit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.designer.cs">
+      <DependentUpon>ProblemsRetest.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1537,10 +1554,9 @@
     <Compile Include="App_Start\HangfireConfiguration\HangfireAuthenticationFilter.cs" />
     <Compile Include="App_Start\HangfireConfiguration\HangfireBootstrapper.cs" />
     <Compile Include="App_Start\HangfireConfiguration\OjsPreloader.cs" />
-    <Compile Include="App_Start\LoggingModule.cs" />
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Settings.cs" />
+    <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\ViewEngineConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
@@ -1604,6 +1620,7 @@
     <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\ProblemRetestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ShortContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
@@ -1674,6 +1691,13 @@
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
+    <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
+    <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
+    <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
+    <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
     <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
@@ -1718,10 +1742,6 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.css" />
@@ -1736,38 +1756,6 @@
     <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
-    <Content Include="Content\CodeMirror\addon\merge.css" />
-    <Content Include="Content\CodeMirror\addon\merge.css" />
-    <Content Include="Content\CodeMirror\codemirror.css" />
-    <Content Include="Content\CodeMirror\theme\3024-day.css" />
-    <Content Include="Content\CodeMirror\theme\3024-night.css" />
-    <Content Include="Content\CodeMirror\theme\ambiance-mobile.css" />
-    <Content Include="Content\CodeMirror\theme\ambiance.css" />
-    <Content Include="Content\CodeMirror\theme\base16-dark.css" />
-    <Content Include="Content\CodeMirror\theme\base16-light.css" />
-    <Content Include="Content\CodeMirror\theme\blackboard.css" />
-    <Content Include="Content\CodeMirror\theme\cobalt.css" />
-    <Content Include="Content\CodeMirror\theme\eclipse.css" />
-    <Content Include="Content\CodeMirror\theme\elegant.css" />
-    <Content Include="Content\CodeMirror\theme\erlang-dark.css" />
-    <Content Include="Content\CodeMirror\theme\lesser-dark.css" />
-    <Content Include="Content\CodeMirror\theme\mbo.css" />
-    <Content Include="Content\CodeMirror\theme\mdn-like.css" />
-    <Content Include="Content\CodeMirror\theme\midnight.css" />
-    <Content Include="Content\CodeMirror\theme\monokai.css" />
-    <Content Include="Content\CodeMirror\theme\neat.css" />
-    <Content Include="Content\CodeMirror\theme\night.css" />
-    <Content Include="Content\CodeMirror\theme\paraiso-dark.css" />
-    <Content Include="Content\CodeMirror\theme\paraiso-light.css" />
-    <Content Include="Content\CodeMirror\theme\pastel-on-dark.css" />
-    <Content Include="Content\CodeMirror\theme\rubyblue.css" />
-    <Content Include="Content\CodeMirror\theme\solarized.css" />
-    <Content Include="Content\CodeMirror\theme\the-matrix.css" />
-    <Content Include="Content\CodeMirror\theme\tomorrow-night-eighties.css" />
-    <Content Include="Content\CodeMirror\theme\twilight.css" />
-    <Content Include="Content\CodeMirror\theme\vibrant-ink.css" />
-    <Content Include="Content\CodeMirror\theme\xq-dark.css" />
-    <Content Include="Content\CodeMirror\theme\xq-light.css" />
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
@@ -1828,8 +1816,400 @@
     <Content Include="Content\KendoUI\textures\stripe6.png" />
     <Content Include="Content\KendoUI\textures\transparency.png" />
     <Content Include="Content\KendoUI\textures\transtexture.png" />
+    <Content Include="Dependencies\app.bundle.js" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap.css" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Dependencies\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Dependencies\bootstrap\js\bootstrap.js" />
+    <Content Include="Dependencies\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Dependencies\bootstrap\js\npm.js" />
+    <Content Include="Dependencies\codemirror\addon\comment\comment.js" />
+    <Content Include="Dependencies\codemirror\addon\comment\continuecomment.js" />
+    <Content Include="Dependencies\codemirror\addon\dialog\dialog.css" />
+    <Content Include="Dependencies\codemirror\addon\dialog\dialog.js" />
+    <Content Include="Dependencies\codemirror\addon\display\autorefresh.js" />
+    <Content Include="Dependencies\codemirror\addon\display\fullscreen.css" />
+    <Content Include="Dependencies\codemirror\addon\display\fullscreen.js" />
+    <Content Include="Dependencies\codemirror\addon\display\panel.js" />
+    <Content Include="Dependencies\codemirror\addon\display\placeholder.js" />
+    <Content Include="Dependencies\codemirror\addon\display\rulers.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\closebrackets.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\closetag.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\continuelist.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\matchbrackets.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\matchtags.js" />
+    <Content Include="Dependencies\codemirror\addon\edit\trailingspace.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\brace-fold.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\comment-fold.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\foldcode.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\foldgutter.css" />
+    <Content Include="Dependencies\codemirror\addon\fold\foldgutter.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\indent-fold.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\markdown-fold.js" />
+    <Content Include="Dependencies\codemirror\addon\fold\xml-fold.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\anyword-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\css-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\html-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\javascript-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\show-hint.css" />
+    <Content Include="Dependencies\codemirror\addon\hint\show-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\sql-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\hint\xml-hint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\coffeescript-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\css-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\html-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\javascript-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\json-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\lint.css" />
+    <Content Include="Dependencies\codemirror\addon\lint\lint.js" />
+    <Content Include="Dependencies\codemirror\addon\lint\yaml-lint.js" />
+    <Content Include="Dependencies\codemirror\addon\merge\merge.css" />
+    <Content Include="Dependencies\codemirror\addon\merge\merge.js" />
+    <Content Include="Dependencies\codemirror\addon\mode\loadmode.js" />
+    <Content Include="Dependencies\codemirror\addon\mode\multiplex.js" />
+    <Content Include="Dependencies\codemirror\addon\mode\multiplex_test.js" />
+    <Content Include="Dependencies\codemirror\addon\mode\overlay.js" />
+    <Content Include="Dependencies\codemirror\addon\mode\simple.js" />
+    <Content Include="Dependencies\codemirror\addon\runmode\colorize.js" />
+    <Content Include="Dependencies\codemirror\addon\runmode\runmode-standalone.js" />
+    <Content Include="Dependencies\codemirror\addon\runmode\runmode.js" />
+    <Content Include="Dependencies\codemirror\addon\runmode\runmode.node.js" />
+    <Content Include="Dependencies\codemirror\addon\scroll\annotatescrollbar.js" />
+    <Content Include="Dependencies\codemirror\addon\scroll\scrollpastend.js" />
+    <Content Include="Dependencies\codemirror\addon\scroll\simplescrollbars.css" />
+    <Content Include="Dependencies\codemirror\addon\scroll\simplescrollbars.js" />
+    <Content Include="Dependencies\codemirror\addon\search\jump-to-line.js" />
+    <Content Include="Dependencies\codemirror\addon\search\match-highlighter.js" />
+    <Content Include="Dependencies\codemirror\addon\search\matchesonscrollbar.css" />
+    <Content Include="Dependencies\codemirror\addon\search\matchesonscrollbar.js" />
+    <Content Include="Dependencies\codemirror\addon\search\search.js" />
+    <Content Include="Dependencies\codemirror\addon\search\searchcursor.js" />
+    <Content Include="Dependencies\codemirror\addon\selection\active-line.js" />
+    <Content Include="Dependencies\codemirror\addon\selection\mark-selection.js" />
+    <Content Include="Dependencies\codemirror\addon\selection\selection-pointer.js" />
+    <Content Include="Dependencies\codemirror\addon\tern\tern.css" />
+    <Content Include="Dependencies\codemirror\addon\tern\tern.js" />
+    <Content Include="Dependencies\codemirror\addon\tern\worker.js" />
+    <Content Include="Dependencies\codemirror\addon\wrap\hardwrap.js" />
+    <Content Include="Dependencies\codemirror\keymap\emacs.js" />
+    <Content Include="Dependencies\codemirror\keymap\sublime.js" />
+    <Content Include="Dependencies\codemirror\keymap\vim.js" />
+    <Content Include="Dependencies\codemirror\lib\codemirror.css" />
+    <Content Include="Dependencies\codemirror\lib\codemirror.js" />
+    <Content Include="Dependencies\codemirror\mode\apl\apl.js" />
+    <Content Include="Dependencies\codemirror\mode\asciiarmor\asciiarmor.js" />
+    <Content Include="Dependencies\codemirror\mode\asn.1\asn.1.js" />
+    <Content Include="Dependencies\codemirror\mode\asterisk\asterisk.js" />
+    <Content Include="Dependencies\codemirror\mode\brainfuck\brainfuck.js" />
+    <Content Include="Dependencies\codemirror\mode\clike\clike.js" />
+    <Content Include="Dependencies\codemirror\mode\clojure\clojure.js" />
+    <Content Include="Dependencies\codemirror\mode\cmake\cmake.js" />
+    <Content Include="Dependencies\codemirror\mode\cobol\cobol.js" />
+    <Content Include="Dependencies\codemirror\mode\coffeescript\coffeescript.js" />
+    <Content Include="Dependencies\codemirror\mode\commonlisp\commonlisp.js" />
+    <Content Include="Dependencies\codemirror\mode\crystal\crystal.js" />
+    <Content Include="Dependencies\codemirror\mode\css\css.js" />
+    <Content Include="Dependencies\codemirror\mode\cypher\cypher.js" />
+    <Content Include="Dependencies\codemirror\mode\dart\dart.js" />
+    <Content Include="Dependencies\codemirror\mode\diff\diff.js" />
+    <Content Include="Dependencies\codemirror\mode\django\django.js" />
+    <Content Include="Dependencies\codemirror\mode\dockerfile\dockerfile.js" />
+    <Content Include="Dependencies\codemirror\mode\dtd\dtd.js" />
+    <Content Include="Dependencies\codemirror\mode\dylan\dylan.js" />
+    <Content Include="Dependencies\codemirror\mode\d\d.js" />
+    <Content Include="Dependencies\codemirror\mode\ebnf\ebnf.js" />
+    <Content Include="Dependencies\codemirror\mode\ecl\ecl.js" />
+    <Content Include="Dependencies\codemirror\mode\eiffel\eiffel.js" />
+    <Content Include="Dependencies\codemirror\mode\elm\elm.js" />
+    <Content Include="Dependencies\codemirror\mode\erlang\erlang.js" />
+    <Content Include="Dependencies\codemirror\mode\factor\factor.js" />
+    <Content Include="Dependencies\codemirror\mode\fcl\fcl.js" />
+    <Content Include="Dependencies\codemirror\mode\forth\forth.js" />
+    <Content Include="Dependencies\codemirror\mode\fortran\fortran.js" />
+    <Content Include="Dependencies\codemirror\mode\gas\gas.js" />
+    <Content Include="Dependencies\codemirror\mode\gfm\gfm.js" />
+    <Content Include="Dependencies\codemirror\mode\gherkin\gherkin.js" />
+    <Content Include="Dependencies\codemirror\mode\go\go.js" />
+    <Content Include="Dependencies\codemirror\mode\groovy\groovy.js" />
+    <Content Include="Dependencies\codemirror\mode\haml\haml.js" />
+    <Content Include="Dependencies\codemirror\mode\handlebars\handlebars.js" />
+    <Content Include="Dependencies\codemirror\mode\haskell-literate\haskell-literate.js" />
+    <Content Include="Dependencies\codemirror\mode\haskell\haskell.js" />
+    <Content Include="Dependencies\codemirror\mode\haxe\haxe.js" />
+    <Content Include="Dependencies\codemirror\mode\htmlembedded\htmlembedded.js" />
+    <Content Include="Dependencies\codemirror\mode\htmlmixed\htmlmixed.js" />
+    <Content Include="Dependencies\codemirror\mode\http\http.js" />
+    <Content Include="Dependencies\codemirror\mode\idl\idl.js" />
+    <Content Include="Dependencies\codemirror\mode\javascript\javascript.js" />
+    <Content Include="Dependencies\codemirror\mode\jinja2\jinja2.js" />
+    <Content Include="Dependencies\codemirror\mode\jsx\jsx.js" />
+    <Content Include="Dependencies\codemirror\mode\julia\julia.js" />
+    <Content Include="Dependencies\codemirror\mode\livescript\livescript.js" />
+    <Content Include="Dependencies\codemirror\mode\lua\lua.js" />
+    <Content Include="Dependencies\codemirror\mode\markdown\markdown.js" />
+    <Content Include="Dependencies\codemirror\mode\mathematica\mathematica.js" />
+    <Content Include="Dependencies\codemirror\mode\mbox\mbox.js" />
+    <Content Include="Dependencies\codemirror\mode\meta.js" />
+    <Content Include="Dependencies\codemirror\mode\mirc\mirc.js" />
+    <Content Include="Dependencies\codemirror\mode\mllike\mllike.js" />
+    <Content Include="Dependencies\codemirror\mode\modelica\modelica.js" />
+    <Content Include="Dependencies\codemirror\mode\mscgen\mscgen.js" />
+    <Content Include="Dependencies\codemirror\mode\mumps\mumps.js" />
+    <Content Include="Dependencies\codemirror\mode\nginx\nginx.js" />
+    <Content Include="Dependencies\codemirror\mode\nsis\nsis.js" />
+    <Content Include="Dependencies\codemirror\mode\ntriples\ntriples.js" />
+    <Content Include="Dependencies\codemirror\mode\octave\octave.js" />
+    <Content Include="Dependencies\codemirror\mode\oz\oz.js" />
+    <Content Include="Dependencies\codemirror\mode\pascal\pascal.js" />
+    <Content Include="Dependencies\codemirror\mode\pegjs\pegjs.js" />
+    <Content Include="Dependencies\codemirror\mode\perl\perl.js" />
+    <Content Include="Dependencies\codemirror\mode\php\php.js" />
+    <Content Include="Dependencies\codemirror\mode\pig\pig.js" />
+    <Content Include="Dependencies\codemirror\mode\powershell\powershell.js" />
+    <Content Include="Dependencies\codemirror\mode\properties\properties.js" />
+    <Content Include="Dependencies\codemirror\mode\protobuf\protobuf.js" />
+    <Content Include="Dependencies\codemirror\mode\pug\pug.js" />
+    <Content Include="Dependencies\codemirror\mode\puppet\puppet.js" />
+    <Content Include="Dependencies\codemirror\mode\python\python.js" />
+    <Content Include="Dependencies\codemirror\mode\q\q.js" />
+    <Content Include="Dependencies\codemirror\mode\rpm\changes\index.html" />
+    <Content Include="Dependencies\codemirror\mode\rpm\rpm.js" />
+    <Content Include="Dependencies\codemirror\mode\rst\rst.js" />
+    <Content Include="Dependencies\codemirror\mode\ruby\ruby.js" />
+    <Content Include="Dependencies\codemirror\mode\rust\rust.js" />
+    <Content Include="Dependencies\codemirror\mode\r\r.js" />
+    <Content Include="Dependencies\codemirror\mode\sass\sass.js" />
+    <Content Include="Dependencies\codemirror\mode\sas\sas.js" />
+    <Content Include="Dependencies\codemirror\mode\scheme\scheme.js" />
+    <Content Include="Dependencies\codemirror\mode\shell\shell.js" />
+    <Content Include="Dependencies\codemirror\mode\sieve\sieve.js" />
+    <Content Include="Dependencies\codemirror\mode\slim\slim.js" />
+    <Content Include="Dependencies\codemirror\mode\smalltalk\smalltalk.js" />
+    <Content Include="Dependencies\codemirror\mode\smarty\smarty.js" />
+    <Content Include="Dependencies\codemirror\mode\solr\solr.js" />
+    <Content Include="Dependencies\codemirror\mode\soy\soy.js" />
+    <Content Include="Dependencies\codemirror\mode\sparql\sparql.js" />
+    <Content Include="Dependencies\codemirror\mode\spreadsheet\spreadsheet.js" />
+    <Content Include="Dependencies\codemirror\mode\sql\sql.js" />
+    <Content Include="Dependencies\codemirror\mode\stex\stex.js" />
+    <Content Include="Dependencies\codemirror\mode\stylus\stylus.js" />
+    <Content Include="Dependencies\codemirror\mode\swift\swift.js" />
+    <Content Include="Dependencies\codemirror\mode\tcl\tcl.js" />
+    <Content Include="Dependencies\codemirror\mode\textile\textile.js" />
+    <Content Include="Dependencies\codemirror\mode\tiddlywiki\tiddlywiki.css" />
+    <Content Include="Dependencies\codemirror\mode\tiddlywiki\tiddlywiki.js" />
+    <Content Include="Dependencies\codemirror\mode\tiki\tiki.css" />
+    <Content Include="Dependencies\codemirror\mode\tiki\tiki.js" />
+    <Content Include="Dependencies\codemirror\mode\toml\toml.js" />
+    <Content Include="Dependencies\codemirror\mode\tornado\tornado.js" />
+    <Content Include="Dependencies\codemirror\mode\troff\troff.js" />
+    <Content Include="Dependencies\codemirror\mode\ttcn-cfg\ttcn-cfg.js" />
+    <Content Include="Dependencies\codemirror\mode\ttcn\ttcn.js" />
+    <Content Include="Dependencies\codemirror\mode\turtle\turtle.js" />
+    <Content Include="Dependencies\codemirror\mode\twig\twig.js" />
+    <Content Include="Dependencies\codemirror\mode\vbscript\vbscript.js" />
+    <Content Include="Dependencies\codemirror\mode\vb\vb.js" />
+    <Content Include="Dependencies\codemirror\mode\velocity\velocity.js" />
+    <Content Include="Dependencies\codemirror\mode\verilog\verilog.js" />
+    <Content Include="Dependencies\codemirror\mode\vhdl\vhdl.js" />
+    <Content Include="Dependencies\codemirror\mode\vue\vue.js" />
+    <Content Include="Dependencies\codemirror\mode\webidl\webidl.js" />
+    <Content Include="Dependencies\codemirror\mode\xml\xml.js" />
+    <Content Include="Dependencies\codemirror\mode\xquery\xquery.js" />
+    <Content Include="Dependencies\codemirror\mode\yacas\yacas.js" />
+    <Content Include="Dependencies\codemirror\mode\yaml-frontmatter\yaml-frontmatter.js" />
+    <Content Include="Dependencies\codemirror\mode\yaml\yaml.js" />
+    <Content Include="Dependencies\codemirror\mode\z80\z80.js" />
+    <Content Include="Dependencies\codemirror\rollup.config.js" />
+    <Content Include="Dependencies\codemirror\src\codemirror.js" />
+    <Content Include="Dependencies\codemirror\src\display\Display.js" />
+    <Content Include="Dependencies\codemirror\src\display\focus.js" />
+    <Content Include="Dependencies\codemirror\src\display\gutters.js" />
+    <Content Include="Dependencies\codemirror\src\display\highlight_worker.js" />
+    <Content Include="Dependencies\codemirror\src\display\line_numbers.js" />
+    <Content Include="Dependencies\codemirror\src\display\mode_state.js" />
+    <Content Include="Dependencies\codemirror\src\display\operations.js" />
+    <Content Include="Dependencies\codemirror\src\display\scrollbars.js" />
+    <Content Include="Dependencies\codemirror\src\display\scrolling.js" />
+    <Content Include="Dependencies\codemirror\src\display\scroll_events.js" />
+    <Content Include="Dependencies\codemirror\src\display\selection.js" />
+    <Content Include="Dependencies\codemirror\src\display\update_display.js" />
+    <Content Include="Dependencies\codemirror\src\display\update_line.js" />
+    <Content Include="Dependencies\codemirror\src\display\update_lines.js" />
+    <Content Include="Dependencies\codemirror\src\display\view_tracking.js" />
+    <Content Include="Dependencies\codemirror\src\edit\CodeMirror.js" />
+    <Content Include="Dependencies\codemirror\src\edit\commands.js" />
+    <Content Include="Dependencies\codemirror\src\edit\deleteNearSelection.js" />
+    <Content Include="Dependencies\codemirror\src\edit\drop_events.js" />
+    <Content Include="Dependencies\codemirror\src\edit\fromTextArea.js" />
+    <Content Include="Dependencies\codemirror\src\edit\global_events.js" />
+    <Content Include="Dependencies\codemirror\src\edit\key_events.js" />
+    <Content Include="Dependencies\codemirror\src\edit\legacy.js" />
+    <Content Include="Dependencies\codemirror\src\edit\main.js" />
+    <Content Include="Dependencies\codemirror\src\edit\methods.js" />
+    <Content Include="Dependencies\codemirror\src\edit\mouse_events.js" />
+    <Content Include="Dependencies\codemirror\src\edit\options.js" />
+    <Content Include="Dependencies\codemirror\src\edit\utils.js" />
+    <Content Include="Dependencies\codemirror\src\input\ContentEditableInput.js" />
+    <Content Include="Dependencies\codemirror\src\input\indent.js" />
+    <Content Include="Dependencies\codemirror\src\input\input.js" />
+    <Content Include="Dependencies\codemirror\src\input\keymap.js" />
+    <Content Include="Dependencies\codemirror\src\input\keynames.js" />
+    <Content Include="Dependencies\codemirror\src\input\movement.js" />
+    <Content Include="Dependencies\codemirror\src\input\TextareaInput.js" />
+    <Content Include="Dependencies\codemirror\src\line\highlight.js" />
+    <Content Include="Dependencies\codemirror\src\line\line_data.js" />
+    <Content Include="Dependencies\codemirror\src\line\pos.js" />
+    <Content Include="Dependencies\codemirror\src\line\saw_special_spans.js" />
+    <Content Include="Dependencies\codemirror\src\line\spans.js" />
+    <Content Include="Dependencies\codemirror\src\line\utils_line.js" />
+    <Content Include="Dependencies\codemirror\src\measurement\position_measurement.js" />
+    <Content Include="Dependencies\codemirror\src\measurement\widgets.js" />
+    <Content Include="Dependencies\codemirror\src\model\changes.js" />
+    <Content Include="Dependencies\codemirror\src\model\change_measurement.js" />
+    <Content Include="Dependencies\codemirror\src\model\chunk.js" />
+    <Content Include="Dependencies\codemirror\src\model\Doc.js" />
+    <Content Include="Dependencies\codemirror\src\model\document_data.js" />
+    <Content Include="Dependencies\codemirror\src\model\history.js" />
+    <Content Include="Dependencies\codemirror\src\model\line_widget.js" />
+    <Content Include="Dependencies\codemirror\src\model\mark_text.js" />
+    <Content Include="Dependencies\codemirror\src\model\selection.js" />
+    <Content Include="Dependencies\codemirror\src\model\selection_updates.js" />
+    <Content Include="Dependencies\codemirror\src\modes.js" />
+    <Content Include="Dependencies\codemirror\src\util\bidi.js" />
+    <Content Include="Dependencies\codemirror\src\util\browser.js" />
+    <Content Include="Dependencies\codemirror\src\util\dom.js" />
+    <Content Include="Dependencies\codemirror\src\util\event.js" />
+    <Content Include="Dependencies\codemirror\src\util\feature_detection.js" />
+    <Content Include="Dependencies\codemirror\src\util\misc.js" />
+    <Content Include="Dependencies\codemirror\src\util\operation_group.js" />
+    <Content Include="Dependencies\codemirror\src\util\StringStream.js" />
+    <Content Include="Dependencies\codemirror\theme\3024-day.css" />
+    <Content Include="Dependencies\codemirror\theme\3024-night.css" />
+    <Content Include="Dependencies\codemirror\theme\abcdef.css" />
+    <Content Include="Dependencies\codemirror\theme\ambiance-mobile.css" />
+    <Content Include="Dependencies\codemirror\theme\ambiance.css" />
+    <Content Include="Dependencies\codemirror\theme\base16-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\base16-light.css" />
+    <Content Include="Dependencies\codemirror\theme\bespin.css" />
+    <Content Include="Dependencies\codemirror\theme\blackboard.css" />
+    <Content Include="Dependencies\codemirror\theme\cobalt.css" />
+    <Content Include="Dependencies\codemirror\theme\colorforth.css" />
+    <Content Include="Dependencies\codemirror\theme\dracula.css" />
+    <Content Include="Dependencies\codemirror\theme\duotone-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\duotone-light.css" />
+    <Content Include="Dependencies\codemirror\theme\eclipse.css" />
+    <Content Include="Dependencies\codemirror\theme\elegant.css" />
+    <Content Include="Dependencies\codemirror\theme\erlang-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\hopscotch.css" />
+    <Content Include="Dependencies\codemirror\theme\icecoder.css" />
+    <Content Include="Dependencies\codemirror\theme\isotope.css" />
+    <Content Include="Dependencies\codemirror\theme\lesser-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\liquibyte.css" />
+    <Content Include="Dependencies\codemirror\theme\material.css" />
+    <Content Include="Dependencies\codemirror\theme\mbo.css" />
+    <Content Include="Dependencies\codemirror\theme\mdn-like.css" />
+    <Content Include="Dependencies\codemirror\theme\midnight.css" />
+    <Content Include="Dependencies\codemirror\theme\monokai.css" />
+    <Content Include="Dependencies\codemirror\theme\neat.css" />
+    <Content Include="Dependencies\codemirror\theme\neo.css" />
+    <Content Include="Dependencies\codemirror\theme\night.css" />
+    <Content Include="Dependencies\codemirror\theme\panda-syntax.css" />
+    <Content Include="Dependencies\codemirror\theme\paraiso-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\paraiso-light.css" />
+    <Content Include="Dependencies\codemirror\theme\pastel-on-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\railscasts.css" />
+    <Content Include="Dependencies\codemirror\theme\rubyblue.css" />
+    <Content Include="Dependencies\codemirror\theme\seti.css" />
+    <Content Include="Dependencies\codemirror\theme\solarized.css" />
+    <Content Include="Dependencies\codemirror\theme\the-matrix.css" />
+    <Content Include="Dependencies\codemirror\theme\tomorrow-night-bright.css" />
+    <Content Include="Dependencies\codemirror\theme\tomorrow-night-eighties.css" />
+    <Content Include="Dependencies\codemirror\theme\ttcn.css" />
+    <Content Include="Dependencies\codemirror\theme\twilight.css" />
+    <Content Include="Dependencies\codemirror\theme\vibrant-ink.css" />
+    <Content Include="Dependencies\codemirror\theme\xq-dark.css" />
+    <Content Include="Dependencies\codemirror\theme\xq-light.css" />
+    <Content Include="Dependencies\codemirror\theme\yeti.css" />
+    <Content Include="Dependencies\codemirror\theme\zenburn.css" />
+    <Content Include="Dependencies\countdown\countdown.js" />
+    <Content Include="Dependencies\diff_match_patch\lib\diff_match_patch.js" />
+    <Content Include="Dependencies\diff_match_patch\tests\diff_match_patch_test.js" />
+    <Content Include="Dependencies\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.js" />
+    <Content Include="Dependencies\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Dependencies\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <Content Include="Dependencies\jquery-validation\additional-methods.js" />
+    <Content Include="Dependencies\jquery-validation\jquery.validate.js" />
+    <Content Include="Dependencies\jquery-validation\jquery.validate.min.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ar.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_az.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_bg.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_bn_BD.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ca.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_cs.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_da.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_de.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_el.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_es.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_es_AR.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_es_PE.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_et.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_eu.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_fa.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_fi.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_fr.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ge.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_gl.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_he.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_hr.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_hu.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_hy_AM.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_id.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_is.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_it.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ja.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ka.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_kk.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ko.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_lt.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_lv.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_mk.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_my.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_nl.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_no.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_pl.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_pt_BR.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_pt_PT.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ro.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ru.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sd.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_si.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sk.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sl.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sr.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sr_lat.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_sv.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_th.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_tj.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_tr.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_uk.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_ur.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_vi.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_zh.js" />
+    <Content Include="Dependencies\jquery-validation\localization\messages_zh_TW.js" />
+    <Content Include="Dependencies\jquery-validation\localization\methods_de.js" />
+    <Content Include="Dependencies\jquery-validation\localization\methods_es_CL.js" />
+    <Content Include="Dependencies\jquery-validation\localization\methods_fi.js" />
+    <Content Include="Dependencies\jquery-validation\localization\methods_nl.js" />
+    <Content Include="Dependencies\jquery-validation\localization\methods_pt.js" />
+    <Content Include="Dependencies\jquery\core.js" />
+    <Content Include="Dependencies\jquery\jquery.js" />
+    <Content Include="Dependencies\jquery\jquery.min.js" />
+    <Content Include="Dependencies\jquery\jquery.slim.js" />
+    <Content Include="Dependencies\jquery\jquery.slim.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Administration\Views\Web.Config" />
@@ -1848,16 +2228,8 @@
     <Content Include="Scripts\Administration\Resources\resources-edit.js" />
     <Content Include="Scripts\Administration\Tests\tests-details.js" />
     <Content Include="Scripts\Administration\Tests\tests-index.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\CodeMirror\addon\diff_match_patch.js" />
-    <Content Include="Scripts\CodeMirror\addon\merge.js" />
-    <Content Include="Scripts\CodeMirror\codemirror.js" />
-    <Content Include="Scripts\CodeMirror\mode\clike.js" />
-    <Content Include="Scripts\CodeMirror\mode\javascript.js" />
     <Content Include="Scripts\Contests\list-categories-page.js" />
     <Content Include="Scripts\Contests\submission-page.js" />
-    <Content Include="Scripts\Countdown\countdown.min.js" />
     <Content Include="Scripts\global.js" />
     <Content Include="Areas\Administration\Views\ContestCategories\Index.cshtml" />
     <Content Include="Areas\Administration\Views\ContestCategories\Hierarchy.cshtml" />
@@ -1945,32 +2317,32 @@
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
     <Content Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\SubmissionTypeViewModel.cshtml" />
     <Content Include="package.json" />
     <Content Include=".eslintrc" />
     <Content Include="Areas\Administration\Views\Contests\TransferParticipants.cshtml" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap-theme.min.css.map" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Dependencies\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Dependencies\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Dependencies\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Dependencies\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Dependencies\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Dependencies\jquery\jquery.min.map" />
+    <Content Include="Dependencies\jquery\jquery.slim.min.map" />
+    <Content Include="Dependencies\codemirror\AUTHORS" />
+    <Content Include="Dependencies\codemirror\CHANGELOG.md" />
+    <Content Include="Dependencies\codemirror\CONTRIBUTING.md" />
+    <Content Include="Dependencies\codemirror\LICENSE" />
+    <Content Include="Dependencies\codemirror\package.json" />
+    <Content Include="Dependencies\codemirror\README.md" />
+    <Content Include="Dependencies\diff_match_patch\.npmignore" />
+    <Content Include="Dependencies\diff_match_patch\package.json" />
+    <Content Include="Dependencies\diff_match_patch\README.markdown" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
-    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\Helpers\validations.js" />
-    <Content Include="Scripts\jquery-2.2.0.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.bg.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.en-GB.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\kendo.all.js" />
@@ -1993,6 +2365,16 @@
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\ContestQuestionType.cshtml" />
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\AccountControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountControllers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AccessLogs\Views\AccessLogsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessLogsIndex.Designer.cs</LastGenOutput>
@@ -2109,6 +2491,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestTransfer.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestTransfer.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2324,6 +2707,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsPartials.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.Partials</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\EditorTemplates\SubmissionTypeViewModel.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2335,6 +2719,11 @@
       <LastGenOutput>SubmissionTypeViewModel.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views.EditorTemplates</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsRetest.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsCreate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2385,6 +2774,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsEdit.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsRetest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsRetest.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\Views\ProblemsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2747,6 +3142,7 @@
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\News\Selected.cshtml" />
     <Content Include="Views\Shared\_LatestNews.cshtml" />
+    <Content Include="webpack.config.js" />
     <Content Include="Xapp_offline.htm" />
     <Content Include="_ViewStart.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
@@ -2771,6 +3167,7 @@
     <Content Include="Areas\Contests\Views\Tests\_GetInputDataPartial.cshtml" />
     <Content Include="Views\Shared\_SimplePagination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2780,7 +3177,9 @@
     <Folder Include="Views\Temp\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Global.resx">

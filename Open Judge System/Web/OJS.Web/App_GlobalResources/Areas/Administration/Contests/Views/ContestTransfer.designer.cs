@@ -61,15 +61,6 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        public static string Cancel {
-            get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to transfer &lt;strong&gt;{0}&lt;/strong&gt; participants from Contest to Practice for the contest &lt;strong&gt;{1}&lt;/strong&gt; from the category &lt;strong&gt;{2}&lt;/strong&gt;?.
         /// </summary>
         public static string Confirm_transfer_message {

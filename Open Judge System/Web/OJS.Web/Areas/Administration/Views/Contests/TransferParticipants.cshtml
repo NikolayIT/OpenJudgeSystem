@@ -1,4 +1,5 @@
 ﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestTransfer
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
 
 @model OJS.Web.Areas.Administration.ViewModels.Contest.TransferParticipantsViewModel
 
@@ -33,7 +34,7 @@
                     }
                 }
 
-                <a href=@returnUrl class="btn btn-primary">@Resource.Cancel</a>
+                <a href=@returnUrl class="btn btn-primary">@SharedResource.Cancel</a>
             </div>
         </div>
     }

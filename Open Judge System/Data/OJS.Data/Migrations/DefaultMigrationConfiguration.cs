@@ -197,12 +197,10 @@
                 },
                 new SubmissionType
                 {
-                    Name = "C# test runner",
-                    CompilerType = CompilerType.MsBuild,
-                    AdditionalCompilerArguments =
-                        "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",
-                    ExecutionStrategyType =
-                        ExecutionStrategyType.CSharpTestRunner,
+                    Name = ".NET Core Test Runner",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreTestRunner,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
                     AllowBinaryFilesUpload = true,
@@ -410,6 +408,34 @@
                     ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
+                    Name = "PHP Project",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpProjectExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
+                    Name = ".NET Core Project Tests",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
+                    Name = "PHP Project with DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PhpProjectWithDbExecutionStrategy,
+                    IsSelectedByDefault = false,
                     AllowBinaryFilesUpload = true
                 }
             };

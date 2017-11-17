@@ -10,6 +10,7 @@
 
     using OJS.Common;
     using OJS.Services.Business.SubmissionsForProcessing;
+    using OJS.Workers.Common;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -21,6 +22,11 @@
         public LocalWorkerService(
             ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness)
         {
+            logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
+            logger.Info("LocalWorkerService initializing...");
+            this.ResetAllProcessingSubmissions();
+            this.CreateExecutionStrategiesWorkingDirectory();
+
             this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();

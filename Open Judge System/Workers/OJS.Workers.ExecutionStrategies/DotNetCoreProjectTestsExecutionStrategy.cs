@@ -1,106 +1,150 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    public class DotNetCoreProjectTestsExecutionStrategy
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using OJS.Common;
+    using OJS.Common.Extensions;
+    using OJS.Common.Models;
+    using OJS.Workers.Checkers;
+    using OJS.Workers.Executors;
+
+    public class DotNetCoreProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
-        // This code will be used in the next testing strategy. DO NOT DELETE!
+        private new const string AdditionalExecutionArguments = "--noresult";
+        private const string CsProjFileExtention = ".csproj";
+        private const string ProjectPathPlaceholder = "##projectPath##";
+        private const string ProjectReferencesPlaceholder = "##ProjectReferences##";
+        private const string NUnitLiteConsoleAppFolderName = "NUnitLiteConsoleApp";
+        private const string UserSubmissionFolderName = "UserProject";
+        private const string NUnitLiteConsoleAppProgramName = "Program";
+        private const string NUnitLiteConsoleAppProgramTemplate = @"
+            using System;
+            using System.Reflection;
+            using NUnit.Common;
+            using NUnitLite;
 
-        // protected const string GenerateProgramFileNodeName = @"GenerateProgramFile";
-        // protected const string PropertyGroupNodeName = @"PropertyGroup";
-        // protected const string PackageReferenceNodeName = @"PackageReference";
+            public class Program
+            {
+                public static void Main(string[] args)
+                {
+                    var writter = new ExtendedTextWrapper(Console.Out);
+                    new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, writter, Console.In);
+                }
+            }";
 
-        // protected const string ItemGroupNodeXPath = @"ItemGroup";
-        // protected const string GenerateProgramFileXPath = @"PropertyGroup/GenerateProgramFile[.='false' or .='False']";
-        // protected const string PackageReferenceXPathExpressionTemplate =
-        //     @"ItemGroup/PackageReference[@Include='##packageName##']";
+        private readonly string nunitLiteConsoleAppCsProjTemplate = $@"
+            <Project Sdk=""Microsoft.NET.Sdk"">
+                <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp2.0</TargetFramework>
+                </PropertyGroup>
+                <ItemGroup>
+                    <PackageReference Include=""NUnitLite"" Version=""3.8.1"" />
+                    <PackageReference Include=""Microsoft.EntityFrameworkCore.InMemory"" Version=""2.0.0"" />
+                </ItemGroup>
+                <ItemGroup>
+                    {ProjectReferencesPlaceholder}
+                </ItemGroup>
+            </Project>";
 
-        // // TODO: update to newer versions
-        // protected static readonly Dictionary<string, string> RequiredReferencedAndVersions = new Dictionary<string, string>
-        // {
-        //     { "Microsoft.NET.Test.Sdk", "15.5.0-preview-20170727-01"},
-        //     { "NUnit", "3.7.1" },
-        //     { "NUnit3TestAdapter", "3.8" }
-        // };
+        private readonly string projectReferenceTemplate =
+            $@"<ProjectReference Include=""{ProjectPathPlaceholder}"" />";
 
-        // private void PrepareCsProjFile(string csProjFilePath)
-        // {
-        //     XmlDocument document = new XmlDocument();
-        //     document.Load(csProjFilePath);
-           
-        //     this.AddPropertyGroupToCsProj(document, GenerateProgramFileXPath, csProjFilePath);
-           
-        //     foreach (var requiredReferencedAndVersion in RequiredReferencedAndVersions)
-        //     {
-        //         var packageName = requiredReferencedAndVersion.Key;
-        //         var packageVersion = requiredReferencedAndVersion.Value;
-        //         var xpathExpression =
-        //             PackageReferenceXPathExpressionTemplate.Replace("##packageName##", packageName);
-           
-        //         this.AddPackageReferenceToCsProj(
-        //             document,
-        //             xpathExpression,
-        //             csProjFilePath,
-        //             new[] { packageName, packageVersion });
-        //     }
-           
-        // }
-           
-        // private void AddPropertyGroupToCsProj(
-        //     XmlDocument document,
-        //     string xpathExpression,
-        //     string savePath)
-        // {
-        //     XmlNode rootNode = document.DocumentElement;
-        //     if (this.NodeExists(rootNode, xpathExpression))
-        //     {
-        //         return;
-        //     }
-           
-        //     XmlNode generateProgramFileNode = document.CreateNode(XmlNodeType.Element, GenerateProgramFileNodeName, string.Empty);
-        //     XmlNode propertyGroupNode = document.CreateNode(XmlNodeType.Element, PropertyGroupNodeName, string.Empty);
-           
-        //     generateProgramFileNode.InnerText = "false";
-        //     propertyGroupNode.AppendChild(generateProgramFileNode);
-        //     rootNode.AppendChild(propertyGroupNode);
-        //     document.Save(savePath);
-        // }
-           
-        // private void AddPackageReferenceToCsProj(XmlDocument document, string xpathExpression, string savePath, params string[] nodeValues)
-        // {
-        //     XmlNode rootNode = document.DocumentElement;
-        //     if (this.NodeExists(rootNode, xpathExpression))
-        //     {
-        //         return;
-        //     }
-           
-        //     XmlNode packageReference = document.CreateNode(XmlNodeType.Element, PackageReferenceNodeName, string.Empty);
-        //     XmlAttribute includeAttribute = document.CreateAttribute("Include");
-        //     XmlAttribute versionAttribute = document.CreateAttribute("Version");
-        //     includeAttribute.InnerText = nodeValues[0];
-        //     versionAttribute.InnerText = nodeValues[1];
-           
-        //     packageReference.Attributes.Append(includeAttribute);
-        //     packageReference.Attributes.Append(versionAttribute);
-           
-        //     var itemGroupNode = rootNode.SelectSingleNode(ItemGroupNodeXPath);
-        //     itemGroupNode.AppendChild(packageReference);
-        //     document.Save(savePath);
-        // }
-           
-        // private bool NodeExists(XmlNode rootNode, string xpathExpression)
-        // {
-        //     if (rootNode == null)
-        //     {
-        //         throw new ArgumentException("Project file is malformed");
-        //     }
-           
-        //     var targetNode = rootNode.SelectSingleNode(xpathExpression);
-           
-        //     if (targetNode != null)
-        //     {
-        //         return true;
-        //     }
-           
-        //     return false;
-        // }
+        public DotNetCoreProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
+            : base(getCompilerPathFunc)
+        {
+        }
+
+        private string NUnitLiteConsoleAppDirectory =>
+            Path.Combine(this.WorkingDirectory, NUnitLiteConsoleAppFolderName);
+
+        private string UserProjectDirectory =>
+            Path.Combine(this.WorkingDirectory, UserSubmissionFolderName);
+
+        public override ExecutionResult Execute(ExecutionContext executionContext)
+        {
+            Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
+            Directory.CreateDirectory(this.UserProjectDirectory);
+
+            var result = new ExecutionResult();
+
+            var userSubmission = executionContext.FileContent;
+
+            this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
+            this.ExtractTestNames(executionContext.Tests);
+
+            this.SaveTestFiles(executionContext.Tests, this.NUnitLiteConsoleAppDirectory);
+            this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
+
+            var userCsProjPaths = FileHelpers.FindAllFilesMatchingPattern(
+                this.UserProjectDirectory, CsProjFileSearchPattern);
+
+            var nunitLiteConsoleAppCsProjPath = this.CreateNunitLiteConsoleApp(
+                NUnitLiteConsoleAppProgramTemplate,
+                this.nunitLiteConsoleAppCsProjTemplate,
+                this.NUnitLiteConsoleAppDirectory,
+                userCsProjPaths);
+
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+
+            var compilerResult = this.Compile(
+                executionContext.CompilerType,
+                compilerPath,
+                executionContext.AdditionalCompilerArguments,
+                nunitLiteConsoleAppCsProjPath);
+
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+
+            if (!result.IsCompiledSuccessfully)
+            {
+                result.CompilerComment = compilerResult.CompilerComment;
+                return result;
+            }
+
+            // Delete tests before execution so the user can't access them
+            FileHelpers.DeleteFiles(this.TestPaths.ToArray());
+
+            var executor = new RestrictedProcessExecutor();
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            result = this.RunUnitTests(
+                compilerPath,
+                executionContext,
+                executor,
+                checker,
+                result,
+                compilerResult.OutputFile,
+                AdditionalExecutionArguments);
+
+            return result;
+        }
+
+        private string CreateNunitLiteConsoleApp(
+            string nUnitLiteProgramTemplate,
+            string nUnitLiteCsProjTemplate,
+            string directoryPath,
+            IEnumerable<string> userCsProjPaths)
+        {
+            var consoleAppEntryPointPath =
+                $@"{directoryPath}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
+            File.WriteAllText(consoleAppEntryPointPath, nUnitLiteProgramTemplate);
+
+            var references = userCsProjPaths
+                .Select(path => this.projectReferenceTemplate.Replace(ProjectPathPlaceholder, path));
+
+            nUnitLiteCsProjTemplate = nUnitLiteCsProjTemplate
+                .Replace(ProjectReferencesPlaceholder, string.Join(Environment.NewLine, references));
+
+            var consoleAppCsProjPath = $@"{directoryPath}\{NUnitLiteConsoleAppFolderName}{CsProjFileExtention}";
+            File.WriteAllText(consoleAppCsProjPath, nUnitLiteCsProjTemplate);
+
+            return consoleAppCsProjPath;
+        }
     }
 }

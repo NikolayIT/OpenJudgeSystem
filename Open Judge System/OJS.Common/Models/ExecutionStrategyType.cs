@@ -8,8 +8,9 @@
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
         CSharpPerformanceProjectTestsExecutionStrategy = 31,
-        CSharpTestRunner = 10,
+        DotNetCoreTestRunner = 10,
         DotNetCoreProjectExecutionStrategy = 33,
+        DotNetCoreProjectTestsExecutionStrategy = 35,
         CPlusPlusZipFileExecutionStrategy = 26,
         CPlusPlusCompileExecuteAndCheckExecutionStrategy = 29,
         NodeJsPreprocessExecuteAndCheck = 2,
@@ -35,6 +36,8 @@
         MySqlPrepareDatabaseAndRunQueries = 16,
         MySqlRunQueriesAndCheckDatabase = 17,
         MySqlRunSkeletonRunQueriesAndCheckDatabase = 18,
-        RubyExecutionStrategy = 32
+        RubyExecutionStrategy = 32,
+        PhpProjectExecutionStrategy = 34,
+        PhpProjectWithDbExecutionStrategy = 36
     }
 }

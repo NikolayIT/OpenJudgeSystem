@@ -293,8 +293,8 @@
                 case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
                     executionStrategy = new CPlusPlusZipFileExecutionStrategy(GetCompilerPath);
                     break;
-                case ExecutionStrategyType.CSharpTestRunner:
-                    executionStrategy = new CSharpTestRunnerExecutionStrategy(GetCompilerPath);
+                case ExecutionStrategyType.DotNetCoreTestRunner:
+                    executionStrategy = new DotNetCoreTestRunnerExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
                     executionStrategy = new CSharpUnitTestsExecutionStrategy(Settings.NUnitConsoleRunnerPath, GetCompilerPath);
@@ -310,6 +310,9 @@
                     break;
                 case ExecutionStrategyType.DotNetCoreProjectExecutionStrategy:
                     executionStrategy = new DotNetCoreProjectExecutionStrategy(GetCompilerPath);
+                    break;
+                case ExecutionStrategyType.DotNetCoreProjectTestsExecutionStrategy:
+                    executionStrategy = new DotNetCoreProjectTestsExecutionStrategy(GetCompilerPath);
                     break;
                 case ExecutionStrategyType.RubyExecutionStrategy:
                     executionStrategy = new RubyExecutionStrategy(Settings.RubyPath);
@@ -442,6 +445,16 @@
                     break;
                 case ExecutionStrategyType.PythonExecuteAndCheck:
                     executionStrategy = new PythonExecuteAndCheckExecutionStrategy(Settings.PythonExecutablePath);
+                    break;
+                case ExecutionStrategyType.PhpProjectExecutionStrategy:
+                    executionStrategy = new PhpProjectExecutionStrategy(Settings.PhpCliExecutablePath);
+                    break;
+                case ExecutionStrategyType.PhpProjectWithDbExecutionStrategy:
+                    executionStrategy = new PhpProjectWithDbExecutionStrategy(
+                        Settings.PhpCliExecutablePath, 
+                        Settings.MySqlSysDbConnectionString,
+                        Settings.MySqlRestrictedUserId,
+                        Settings.MySqlRestrictedUserPassword);
                     break;
                 case ExecutionStrategyType.PhpCgiExecuteAndCheck:
                     executionStrategy = new PhpCgiExecuteAndCheckExecutionStrategy(Settings.PhpCgiExecutablePath);

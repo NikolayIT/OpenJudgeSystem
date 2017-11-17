@@ -12,7 +12,9 @@
 
         IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions();
 
-        ICollection<int> GetProcessingSubmissionIds();
+        void AddOrUpdate(IEnumerable<int> submissionIds);
+
+        void Remove(int submissionId);
 
         void AddOrUpdateBySubmissionId(int submissionId);
 

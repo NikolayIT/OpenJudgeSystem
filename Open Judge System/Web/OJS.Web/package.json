@@ -3,12 +3,29 @@
   "version": "1.0.0",
   "description": "Open source system for online algorithm competitions.",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "codemirror": "^5.29.0",
+    "countdown": "^2.6.0",
+    "diff_match_patch": "^0.1.1",
+    "jquery": "2.2.4",
+    "jquery-ajax-unobtrusive": "^3.2.4",
+    "jquery-validation": "^1.17.0",
+    "jquery-validation-unobtrusive": "^3.2.6"
+  },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-eslint": "^4.0.0"
+    "gulp-eslint": "^4.0.0",
+    "gulp-config": "0.3.0",
+    "webpack": "^3.5.5",
+    "copy-webpack-plugin": "^4.0.1"
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint \"./Scripts/global.js\" \"./Scripts/Administration/**/*.js\" \"./Scripts/Contests/**/*.js\" \"Scripts/Helpers/**/*.js\"",
+    "test": "",
+    "build": "webpack",
+    "prebuild": "npm run lint"
+  },
   "author": "OJS",
   "license": "GPL-3.0"
 }

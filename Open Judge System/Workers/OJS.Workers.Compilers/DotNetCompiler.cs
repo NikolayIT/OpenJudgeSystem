@@ -1,7 +1,6 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System.IO;
-    using System.Linq;
     using System.Text;
 
     using OJS.Common;
@@ -9,7 +8,7 @@
 
     public class DotNetCompiler : Compiler
     {
-        public override int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds * 2;
+        public override int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds * 3;
         
         public override bool ShouldDeleteSourceFile => false;
 
@@ -27,7 +26,7 @@
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
-            var compilingDir = $"{Path.GetDirectoryName(inputFile)}\\CompileDir";
+            var compilingDir = $"{Path.GetDirectoryName(inputFile)}\\{CompilationDirectoryName}";
             Directory.CreateDirectory(compilingDir);
 
             var arguments = new StringBuilder();
