@@ -7,10 +7,11 @@
 
     using log4net;
 
+    using SimpleInjector.Lifestyles;
+
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Data.Repositories.Base;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
@@ -47,119 +48,122 @@
         public void Start()
         {
             this.logger.Info("SubmissionJob starting...");
+            var container = Bootstrap.Container;
             while (!this.stopping)
             {
-                var data = new OjsData();
-                var submissionsForProccessingData = new SubmissionsForProcessingDataService(
-                    new GenericRepository<SubmissionForProcessing>(data.Context));
-
-                Submission submission = null;
-                SubmissionForProcessing submissionForProcessing = null;
-                int submissionId;
-
-                try
+                using (ThreadScopedLifestyle.BeginScope(container))
                 {
-                    var retrievedSubmissionSuccessfully = false;
-                    lock (this.submissionsForProcessing)
+                    var data = new OjsData();
+                    var submissionsForProccessingData = container.GetInstance<SubmissionsForProcessingDataService>();
+
+                    Submission submission = null;
+                    SubmissionForProcessing submissionForProcessing = null;
+                    int submissionId;
+
+                    try
                     {
-                        if (this.submissionsForProcessing.IsEmpty)
+                        var retrievedSubmissionSuccessfully = false;
+                        lock (this.submissionsForProcessing)
                         {
-                            var submissions = submissionsForProccessingData
-                                .GetUnprocessedSubmissions()
-                                .OrderBy(x => x.Id)
-                                .Select(x => x.SubmissionId)
-                                .ToList();
-
-                            submissions.ForEach(this.submissionsForProcessing.Enqueue);
-                        }
-
-                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);
-
-                        if (retrievedSubmissionSuccessfully)
-                        {
-                            this.logger
-                                .InfoFormat($"Submission №{submissionId} retrieved from data store successfully");
-
-                            submission = data.Submissions.GetById(submissionId);
-
-                            submissionForProcessing = submissionsForProccessingData
-                                .GetBySubmissionId(submissionId);
-
-                            if (submission != null && submissionForProcessing != null && !submission.Processing)
+                            if (this.submissionsForProcessing.IsEmpty)
                             {
-                                submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
+                                var submissions = submissionsForProccessingData
+                                    .GetUnprocessedSubmissions()
+                                    .OrderBy(x => x.Id)
+                                    .Select(x => x.SubmissionId)
+                                    .ToList();
+
+                                submissions.ForEach(this.submissionsForProcessing.Enqueue);
+                            }
+
+                            retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);
+
+                            if (retrievedSubmissionSuccessfully)
+                            {
+                                this.logger
+                                    .InfoFormat($"Submission №{submissionId} retrieved from data store successfully");
+
+                                submission = data.Submissions.GetById(submissionId);
+
+                                submissionForProcessing = submissionsForProccessingData
+                                    .GetBySubmissionId(submissionId);
+
+                                if (submission != null && submissionForProcessing != null && !submission.Processing)
+                                {
+                                    submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
+                                }
                             }
                         }
-                    }
 
-                    if (!retrievedSubmissionSuccessfully || submission == null || submissionForProcessing == null)
+                        if (!retrievedSubmissionSuccessfully || submission == null || submissionForProcessing == null)
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                    catch (Exception exception)
                     {
-                        Thread.Sleep(1000);
-                        continue;
+                        this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
+                        throw;
                     }
-                }
-                catch (Exception exception)
-                {
-                    this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
-                    throw;
-                }
 
-                submission.ProcessingComment = null;
-                try
-                {
-                    data.TestRuns.DeleteBySubmissionId(submission.Id);
-                    this.ProcessSubmission(submission);
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in ProcessSubmission: {exception.Message}";
-                }
+                    submission.ProcessingComment = null;
+                    try
+                    {
+                        data.TestRuns.DeleteBySubmissionId(submission.Id);
+                        this.ProcessSubmission(submission);
+                        data.SaveChanges();
+                    }
+                    catch (Exception exception)
+                    {
+                        this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                        submission.ProcessingComment = $"Exception in ProcessSubmission: {exception.Message}";
+                    }
 
-                try
-                {
-                    this.CalculatePointsForSubmission(submission);
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {exception.Message}";
-                }
+                    try
+                    {
+                        this.CalculatePointsForSubmission(submission);
+                    }
+                    catch (Exception exception)
+                    {
+                        this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                        submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {exception.Message}";
+                    }
 
-                submission.Processed = true;
-                submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
+                    submission.Processed = true;
+                    submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
 
-                try
-                {
-                    data.ParticipantScores.SaveParticipantScore(submission);
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
-                }
+                    try
+                    {
+                        data.ParticipantScores.SaveParticipantScore(submission);
+                    }
+                    catch (Exception exception)
+                    {
+                        this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                        submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
+                    }
 
-                try
-                {
-                    submission.CacheTestRuns();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
-                }
+                    try
+                    {
+                        submission.CacheTestRuns();
+                    }
+                    catch (Exception exception)
+                    {
+                        this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                        submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+                    }
 
-                try
-                {
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
-                }
+                    try
+                    {
+                        data.SaveChanges();
+                    }
+                    catch (Exception exception)
+                    {
+                        this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
+                    }
 
-                this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
+                    this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
+                }
             }
 
             this.logger.Info("SubmissionJob stopped.");

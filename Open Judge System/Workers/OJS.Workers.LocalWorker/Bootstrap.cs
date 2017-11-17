@@ -1,31 +1,39 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
-    using OJS.Data;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Services.Data.SubmissionsForProcessing;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
+    using OJS.Data;
+    using OJS.Data.Repositories.Base;
+    using OJS.Data.Repositories.Contracts;
+
     internal class Bootstrap
     {
+        public static Container Container;
+
         public static void Start(Container container)
         {
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
             container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
+            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
 
             container
                 .Register<
                     ISubmissionsForProcessingDataService,
-                    SubmissionsForProcessingDataService>();
+                    SubmissionsForProcessingDataService>(Lifestyle.Scoped);
 
             container
                 .Register<
                     ISubmissionsForProcessingBusinessService,
-                    SubmissionsForProcessingBusinessService>();
+                    SubmissionsForProcessingBusinessService>(Lifestyle.Scoped);
 
             container.Verify();
+
+            Container = container;
         }
     }
 }
