@@ -6,6 +6,8 @@
 
     public interface IContestsDataService : IService
     {
+        Contest GetById(int contestId);
+
         IQueryable<Contest> GetAll();
 
         bool UserHasAccessToContest(int contestId, string userId, bool isAdmin);

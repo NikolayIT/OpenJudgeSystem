@@ -16,6 +16,8 @@
 
         public IPagedList<ParticipantResultViewModel> Results { get; set; }
 
+        public IEnumerable<ParticipantResultViewModel> SimpleResults { get; set; }
+
         public bool ContestCanBeCompeted { get; set; }
 
         public bool ContestCanBePracticed { get; set; }

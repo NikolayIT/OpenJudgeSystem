@@ -30,19 +30,7 @@
                     p.UserId == userId &&
                     p.IsOfficial == isOfficial);
 
-        public IQueryable<Participant> GetWithUsersAndScoresForContest(int contestId, bool isOfficial) =>
-            this.participnats
-                .All()
-                .Include(par => par.User)
-                .Include(par => par.Contest.Problems.Select(pr => pr.ParticipantScores))
-                .Where(p => p.IsOfficial == isOfficial && p.ContestId == contestId);
-
-        public IQueryable<Participant> GetWithUsersScoresAndSubmissionForContest(int contestId, bool isOfficial) =>
-            this.participnats
-                .All()
-                .Include(par => par.User)
-                .Include(par => par.Contest.Problems.Select(pr => pr.ParticipantScores.Select(sc => sc.Submission)))
-                .Where(p => p.IsOfficial == isOfficial && p.ContestId == contestId);
-
+        public IQueryable<Participant> GetByContestIdQuery(int contestId, bool isOfficial) =>
+            this.participnats.All().Where(p => p.ContestId == contestId && p.IsOfficial == isOfficial);
     }
 }

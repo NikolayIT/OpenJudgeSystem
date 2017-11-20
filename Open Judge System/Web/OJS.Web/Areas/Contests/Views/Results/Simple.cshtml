@@ -2,7 +2,9 @@
 
 @using System.Web.Mvc.Expressions
 @using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Web.Areas.Users.Controllers
+@using X.PagedList
 @using X.PagedList.Mvc
 
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
@@ -10,11 +12,9 @@
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name, ViewBag.IsOfficial ? string.Empty : " (Practice)");
     ViewBag.Subtitle = ViewBag.IsOfficial ? string.Empty : Resource.CachedResults;
-    var resultsOnPage = ViewBag.IsOfficial
-        ? ResultsController.OfficialResultsPageSize
-        : ResultsController.NotOfficialResultsPageSize;
+    var resultsOnPage = ViewBag.ResultsInPage;
     bool isOfficial = ViewBag.IsOfficial;
-    var results = Model.Results;
+    var results = new StaticPagedList<ParticipantResultViewModel>(Model.SimpleResults, ViewBag.Page, resultsOnPage, ViewBag.TotalParticipantsCount);
 }
 
 @section Styles {

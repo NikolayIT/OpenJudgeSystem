@@ -13,8 +13,6 @@
 
         Participant GetWithContest(int contestId, string userId, bool isOfficial);
 
-        IQueryable<Participant> GetWithUsersAndScoresForContest(int contestId, bool isOfficial);
-
-        IQueryable<Participant> GetWithUsersScoresAndSubmissionForContest(int contestId, bool isOfficial);
+        IQueryable<Participant> GetByContestIdQuery(int contestId, bool isOfficial);
     }
 }

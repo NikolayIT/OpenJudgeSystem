@@ -12,6 +12,8 @@
         public ContestsDataService(IEfGenericRepository<Contest> contests) =>
             this.contests = contests;
 
+        public Contest GetById(int contestId) => this.contests.GetById(contestId);
+
         public IQueryable<Contest> GetAll() => this.contests.All();
 
         public Contest GetWithProblems(int contestId)

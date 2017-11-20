@@ -8,10 +8,6 @@
 
         public int MaximumPoints { get; set; }
 
-        public int OrderBy { get; set; }
-
-        public string ProblemName { get; set; }
-
         public BestSubmissionViewModel BestSubmission { get; set; }
     }
 }
