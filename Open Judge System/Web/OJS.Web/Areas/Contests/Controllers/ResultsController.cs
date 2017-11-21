@@ -58,7 +58,7 @@
             }
 
             var results = this.participantScoresData
-                .GetAll()
+                .GetAllQuery()
                 .Where(ps => ps.ProblemId == problem.Id && ps.IsOfficial == official)
                 .Select(ps => new ProblemResultViewModel
                 {

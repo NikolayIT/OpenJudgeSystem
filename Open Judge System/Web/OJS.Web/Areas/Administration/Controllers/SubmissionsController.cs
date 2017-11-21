@@ -237,7 +237,7 @@
 
                             if (submissionIsBestSubmission)
                             {
-                                this.participantScoresBusiness.RecalculateParticipantScore(
+                                this.participantScoresBusiness.RecalculateForParticipantByProblem(
                                     submissionParticipantId,
                                     submissionProblemId);
                             }
@@ -327,7 +327,7 @@
 
                 if (isBestSubmission)
                 {
-                    this.participantScoresBusiness.RecalculateParticipantScore(
+                    this.participantScoresBusiness.RecalculateForParticipantByProblem(
                         submission.ParticipantId.Value,
                         submission.ProblemId.Value);
                 }
@@ -378,7 +378,7 @@
 
                     if (isBestSubmission)
                     {
-                        this.participantScoresBusiness.RecalculateParticipantScore(
+                        this.participantScoresBusiness.RecalculateForParticipantByProblem(
                             dbSubmission.ParticipantId.Value,
                             dbSubmission.ProblemId.Value);
                     }
@@ -491,7 +491,7 @@
 
                     if (submissionIsBestSubmission)
                     {
-                        this.participantScoresBusiness.RecalculateParticipantScore(
+                        this.participantScoresBusiness.RecalculateForParticipantByProblem(
                             submissionParticipantId,
                             submissionProblemId);
                     }
@@ -644,7 +644,7 @@
 
         private bool IsBestSubmission(int problemId, int participantId, int submissionId)
         {
-            var bestScore = this.participantScoresData.Get(participantId, problemId);
+            var bestScore = this.participantScoresData.GetByParticipantIdAndProblemId(participantId, problemId);
 
             return bestScore?.SubmissionId == submissionId;
         }

@@ -22,23 +22,23 @@
             this.participantsData = participantsData;
         }
 
-        public ParticipantScore Get(int participantId, int problemId) =>
+        public ParticipantScore GetByParticipantIdAndProblemId(int participantId, int problemId) =>
             this.participantScores
                 .All()
                 .FirstOrDefault(ps => ps.ParticipantId == participantId &&
                     ps.ProblemId == problemId);
 
-        public ParticipantScore Get(int participantId, int problemId, bool isOfficial) =>
+        public ParticipantScore GetByParticipantIdProblemIdAndIsOfficial(int participantId, int problemId, bool isOfficial) =>
             this.participantScores
                 .All()
                 .FirstOrDefault(ps => ps.ParticipantId == participantId &&
                     ps.ProblemId == problemId &&
                     ps.IsOfficial == isOfficial);
 
-        public IQueryable<ParticipantScore> GetAll()
+        public IQueryable<ParticipantScore> GetAllQuery()
             => this.participantScores.All();
 
-        public void Save(Submission submission, bool resetScore = false)
+        public void SaveBySubmission(Submission submission, bool resetScore = false)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)
             {
@@ -58,7 +58,7 @@
             {
                 using (var transaction = this.participantScores.BeginTransaction())
                 {
-                    var existingScore = this.Get(
+                    var existingScore = this.GetByParticipantIdProblemIdAndIsOfficial(
                         submission.ParticipantId.Value,
                         submission.ProblemId.Value,
                         participant.IsOfficial);
@@ -84,11 +84,11 @@
                 .Where(x => x.ProblemId == problemId)
                 .Delete();
 
-        public void Delete(int participantId, int problemId)
+        public void DeleteForParticipantByProblem(int participantId, int problemId)
         {
             var isOfficial = this.participantsData.IsOfficial(participantId);
 
-            var existingScore = this.Get(participantId, problemId, isOfficial);
+            var existingScore = this.GetByParticipantIdProblemIdAndIsOfficial(participantId, problemId, isOfficial);
 
             if (existingScore != null)
             {

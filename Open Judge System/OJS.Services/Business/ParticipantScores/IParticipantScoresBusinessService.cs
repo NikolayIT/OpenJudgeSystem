@@ -4,6 +4,6 @@
 
     public interface IParticipantScoresBusinessService : IService
     {
-        void RecalculateParticipantScore(int participantId, int problemId);
+        void RecalculateForParticipantByProblem(int participantId, int problemId);
     }
 }

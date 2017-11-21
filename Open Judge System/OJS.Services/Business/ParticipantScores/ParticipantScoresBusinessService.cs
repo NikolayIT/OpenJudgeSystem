@@ -16,17 +16,17 @@
             this.submissionsData = submissionsData;
         }
 
-        public void RecalculateParticipantScore(int participantId, int problemId)
+        public void RecalculateForParticipantByProblem(int participantId, int problemId)
         {
-            var submission = this.submissionsData.GetBestSubmission(participantId, problemId);
+            var submission = this.submissionsData.GetBestForParticipantByProblem(participantId, problemId);
 
             if (submission != null)
             {
-                this.participantScoresData.Save(submission, true);
+                this.participantScoresData.SaveBySubmission(submission, true);
             }
             else
             {
-                this.participantScoresData.Delete(participantId, problemId);
+                this.participantScoresData.DeleteForParticipantByProblem(participantId, problemId);
             }
         }
     }

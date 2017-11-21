@@ -5,6 +5,6 @@
 
     public interface ISubmissionsDataService : IService
     {
-        Submission GetBestSubmission(int participantId, int problemId);
+        Submission GetBestForParticipantByProblem(int participantId, int problemId);
     }
 }

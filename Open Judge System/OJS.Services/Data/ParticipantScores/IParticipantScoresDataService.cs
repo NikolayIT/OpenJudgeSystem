@@ -8,17 +8,17 @@
 
     public interface IParticipantScoresDataService : IService
     {
-        ParticipantScore Get(int participantId, int problemId);
+        ParticipantScore GetByParticipantIdAndProblemId(int participantId, int problemId);
 
-        ParticipantScore Get(int participantId, int problemId, bool isOfficial);
+        ParticipantScore GetByParticipantIdProblemIdAndIsOfficial(int participantId, int problemId, bool isOfficial);
 
-        IQueryable<ParticipantScore> GetAll();
+        IQueryable<ParticipantScore> GetAllQuery();
 
-        void Save(Submission submission, bool resetScore = false);
+        void SaveBySubmission(Submission submission, bool resetScore = false);
 
         void DeleteAllByProblem(int problemId);
 
-        void Delete(int participantId, int problemId);
+        void DeleteForParticipantByProblem(int participantId, int problemId);
 
         void Delete(IEnumerable<ParticipantScore> participantScores);
     }
