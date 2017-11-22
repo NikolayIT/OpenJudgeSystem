@@ -114,14 +114,42 @@
 
             var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
 
-            var cacheKey = this.Request.Url.AbsoluteUri;
-            var totalParticipantsCacheKey = this.Request.Url.AbsolutePath;
+            page = page ?? 1;
 
-            if (page == null || page < 1)
+            var totalParticipantsCount = contest.Participants.Count(p => p.IsOfficial == official);
+
+            var resultsInPage = NotOfficialResultsPageSize;
+            if (official)
             {
-                page = 1;
-                cacheKey += $"?{nameof(page)}={page}";
+                resultsInPage = OfficialResultsPageSize;
             }
+
+            var contestResults = this.GetContestSimpleResults(
+                contest,
+                official,
+                isUserAdminOrLecturerInContest,
+                page: page.Value,
+                resultsInPage: resultsInPage);
+
+            this.ViewBag.IsOfficial = official;
+            this.ViewBag.Page = page.Value;
+            this.ViewBag.ResultsInPage = resultsInPage;
+            this.ViewBag.TotalParticipantsCount = totalParticipantsCount;
+
+            return this.View(contestResults);
+        }
+
+        public ActionResult GetSimpleResults(int id, bool official, bool isUserAdminOrLecturerInContest, int page, int resultsInPage)
+        {
+            var contest = this.contestsData.GetById(id);
+
+            if (contest == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+            }
+
+            var cacheKey = $"{this.Request.Url.AbsolutePath}?{nameof(page)}={page}";
+            var totalParticipantsCacheKey = this.Request.Url.AbsolutePath;
 
             ContestResultsViewModel contestResults = null;
             if (!official && !isUserAdminOrLecturerInContest)
@@ -149,19 +177,13 @@
                 }
             }
 
-            var resultsInPage = NotOfficialResultsPageSize;
-            if (official)
-            {
-                resultsInPage = OfficialResultsPageSize;
-            }
-
             if (contestResults == null)
             {
                 contestResults = this.GetContestSimpleResults(
                     contest,
                     official,
                     isUserAdminOrLecturerInContest,
-                    page: page.Value,
+                    page: page,
                     resultsInPage: resultsInPage);
 
                 if (!official && !isUserAdminOrLecturerInContest)
@@ -177,16 +199,12 @@
                 }
             }
 
-            contestResults.ContestCanBeCompeted = contest.CanBeCompeted;
-            contestResults.ContestCanBePracticed = contest.CanBePracticed;
-            contestResults.UserIsLecturerInContest = isUserLecturerInContest;
-
             this.ViewBag.IsOfficial = official;
-            this.ViewBag.Page = page.Value;
+            this.ViewBag.Page = page;
             this.ViewBag.ResultsInPage = resultsInPage;
             this.ViewBag.TotalParticipantsCount = totalParticipantsCount;
 
-            return this.View(contestResults);
+            return this.PartialView("_SimpleResultsPartial", contestResults);
         }
 
         // TODO: Unit test
@@ -522,6 +540,13 @@
                         .Take(resultsInPage)
                 })
                 .FirstOrDefault();
+
+            if (contestResults != null)
+            {
+                contestResults.ContestCanBeCompeted = contest.CanBeCompeted;
+                contestResults.ContestCanBePracticed = contest.CanBePracticed;
+                contestResults.UserIsLecturerInContest = isUserAdminOrLecturer;
+            }
 
             return contestResults;
         }
