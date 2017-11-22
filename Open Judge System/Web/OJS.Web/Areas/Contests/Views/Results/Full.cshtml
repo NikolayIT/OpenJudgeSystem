@@ -10,8 +10,8 @@
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    var isOfficialStr = ViewBag.IsOfficial ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-    bool isOfficial = ViewBag.IsOfficial;
+    var isOfficialStr = Model.IsOfficialResults ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+    var isOfficial = Model.IsOfficialResults;
     var results = Model.Results;
 }
 
@@ -23,17 +23,17 @@
 
 <h1>@ViewBag.Title</h1>
 <h2>
-    <span>@Html.ActionLink(Resource.Public_results, "Simple", new {id = Model.Id, official = ViewBag.IsOfficial}, new {@class = "btn btn-primary"})</span>
+    <span>@Html.ActionLink(Resource.Public_results, "Simple", new {id = Model.Id, official = isOfficial}, new {@class = "btn btn-primary"})</span>
 </h2>
 
 <br />
 
-<h4>@Ajax.ActionLink(Resource.ShowStatistics, "Stats", new { contestId = Model.Id, official = ViewBag.IsOfficial }, new AjaxOptions { UpdateTargetId = "StatsContainer", InsertionMode = InsertionMode.Replace })</h4>
+<h4>@Ajax.ActionLink(Resource.ShowStatistics, "Stats", new { contestId = Model.Id, official = isOfficial }, new AjaxOptions { UpdateTargetId = "StatsContainer", InsertionMode = InsertionMode.Replace })</h4>
 <div id="StatsContainer"></div>
 
 <br />
 
-@if (ViewBag.IsOfficial)
+@if (isOfficial)
 {
     <h4>@Ajax.ActionLink(Resource.Average_result_by_minutes, "StatsChart", new { contestId = Model.Id }, new AjaxOptions { UpdateTargetId = "StatsChartContainer", InsertionMode = InsertionMode.Replace })</h4>
     <div id="StatsChartContainer"></div>
@@ -71,9 +71,8 @@
         @for (var i = 0; i < results.Count; i++)
         {
             var participant = results[i];
-            var participantResults = participant.ProblemResults.ToArray();
             <tr>
-                <td><strong>@((Model.Results.PageNumber - 1) * Model.Results.PageSize + i + 1).</strong></td>
+                <td><strong>@((results.PageNumber - 1) * results.PageSize + i + 1).</strong></td>
                 <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
                 <td>@participant.ParticipantFullName</td>
                 @foreach (var problemResult in participant.ProblemResults)
@@ -123,7 +122,7 @@ else
 @if (results.PageCount > 1)
 {
     @Html.PagedListPager(
-        Model.Results,
+        results,
         page => Url.Action<ResultsController>(
             c => c.Full(Model.Id, isOfficial, page)))
 }
