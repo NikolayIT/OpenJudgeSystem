@@ -131,6 +131,11 @@
                 page: page.Value,
                 resultsInPage: resultsInPage);
 
+            if (contestResults == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+            }
+
             contestResults.ContestCanBeCompeted = contest.CanBeCompeted;
             contestResults.ContestCanBePracticed = contest.CanBePracticed;
 
@@ -188,6 +193,11 @@
                     page: page,
                     resultsInPage: resultsInPage);
 
+                if (contestResults == null)
+                {
+                    throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+                }
+
                 contestResults.ContestCanBeCompeted = contestCanBeCompeted;
                 contestResults.ContestCanBePracticed = contestCanBePracticed;
 
@@ -216,21 +226,11 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            if (page == null || page < 1)
-            {
-                page = 1;
-            }
+            page = page ?? 1;
 
-            var contest = this.contestsData.GetById(id);
-
-            if (contest == null)
-            {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
-            }
-
-            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(id, official);
             var contestResults = this.GetContestResults(
-                contest.Id,
+                id,
                 totalParticipantsCount,
                 official,
                 isUserAdminOrLecturer: true,
@@ -251,15 +251,24 @@
             int contestId,
             bool official,
             int page,
-            int resultsInPage) =>
-                this.PartialView("_FullPartial", this.GetContestResults(
-                    contestId,
-                    this.GetTotalParticipantsCount(contestId, official),
-                    official,
-                    isUserAdminOrLecturer: true,
-                    isFullResults: true,
-                    page: page,
-                    resultsInPage: resultsInPage));
+            int resultsInPage)
+        {
+            var contestResults = this.GetContestResults(
+                contestId,
+                this.GetTotalParticipantsCount(contestId, official),
+                official,
+                isUserAdminOrLecturer: true,
+                isFullResults: true,
+                page: page,
+                resultsInPage: resultsInPage);
+
+            if (contestResults == null)
+            {
+                throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+            }
+
+            return this.PartialView("_FullPartial", contestResults);
+        }   
 
         [Authorize]
         public ActionResult Export(int id, bool official)
@@ -361,15 +370,13 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contest = this.contestsData.GetById(contestId);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(contestId, official);
+            var contestResults = this.GetContestResults(contestId, totalParticipantsCount, official, true, true);
 
-            if (contest == null)
+            if (contestResults == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
-
-            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
-            var contestResults = this.GetContestResults(contest.Id, totalParticipantsCount, official, true, true);
 
             var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
 
@@ -450,7 +457,6 @@
             int resultsInPage = int.MaxValue)
         {
             var resultsToSkip = (page - 1) * resultsInPage;
-
             ContestResultsViewModel contestResults;
             if (isFullResults)
             {
