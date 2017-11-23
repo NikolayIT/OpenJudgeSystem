@@ -2231,6 +2231,7 @@
     <Content Include="Scripts\Administration\Tests\tests-details.js" />
     <Content Include="Scripts\Administration\Tests\tests-index.js" />
     <Content Include="Scripts\Contests\list-categories-page.js" />
+    <Content Include="Scripts\Contests\results-pagination.js" />
     <Content Include="Scripts\Contests\submission-page.js" />
     <Content Include="Scripts\global.js" />
     <Content Include="Areas\Administration\Views\ContestCategories\Index.cshtml" />

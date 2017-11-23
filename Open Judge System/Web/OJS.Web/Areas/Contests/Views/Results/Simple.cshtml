@@ -11,6 +11,10 @@
     <link href="/Content/Contests/results-page.css" rel="stylesheet" />
 }
 
+@section Scripts {
+    <script src="/Scripts/Contests/results-pagination.js"></script>
+}
+
 <ol class="breadcrumb">
     <li><a href="/">@Resource.Home</a></li>
     <li><a href="@ContestsHelper.GetUrl(Model.Id, Model.Name)">@Model.Name</a></li>
@@ -30,29 +34,3 @@
 </h3>
 
 @Html.Partial("_SimpleResultsPartial", Model)
-
-@section Scripts {
-    <script>
-        $(function() {
-            $(window).on('popstate', function() {
-                location.reload(true);
-            });
-        });
-
-        function OnPageChanged() {
-            var currentPageValue = $('.pagination').first().find('span').first().text();
-
-            var pageRegex = new RegExp(/page=(\d+)/);
-            var currentPageHref = window.location.href;
-            if (!currentPageHref.match(pageRegex)) {
-                currentPageHref = currentPageHref + "?page=1";
-            }
-
-            var newPageQuery = currentPageHref.replace(pageRegex, function (pageQuery, pageNumber) {
-                return pageQuery.replace(pageNumber, currentPageValue);
-            });
-
-            window.history.pushState(null, '', newPageQuery);
-        }
-    </script>
-}

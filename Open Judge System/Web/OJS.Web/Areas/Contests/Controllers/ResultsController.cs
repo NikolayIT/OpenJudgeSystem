@@ -14,7 +14,6 @@
     using X.PagedList;
 
     using OJS.Data;
-    using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -548,18 +547,16 @@
                     .FirstOrDefault();
             }
 
-            if (contestResults == null)
+            if (contestResults != null)
             {
-                return null;
+                contestResults.IsOfficialResults = official;
+                contestResults.UserIsLecturerInContest = isUserAdminOrLecturer;
+                contestResults.Results = new StaticPagedList<ParticipantResultViewModel>(
+                    contestResults.ResultsSubset,
+                    page,
+                    resultsInPage,
+                    totalParticipantsCount);
             }
-
-            contestResults.IsOfficialResults = official;
-            contestResults.UserIsLecturerInContest = isUserAdminOrLecturer;
-            contestResults.Results = new StaticPagedList<ParticipantResultViewModel>(
-                contestResults.ResultsSubset,
-                page,
-                resultsInPage,
-                totalParticipantsCount);
 
             return contestResults;
         }
