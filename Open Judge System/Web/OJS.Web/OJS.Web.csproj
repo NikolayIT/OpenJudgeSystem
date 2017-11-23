@@ -2343,8 +2343,9 @@
     <Content Include="Dependencies\diff_match_patch\.npmignore" />
     <Content Include="Dependencies\diff_match_patch\package.json" />
     <Content Include="Dependencies\diff_match_patch\README.markdown" />
-    <Content Include="Areas\Contests\Views\Results\_SimpleResultsPartial.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\_SimplePartial.cshtml" />
     <Content Include="Areas\Contests\Views\Shared\_LoadingMaskPartial.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\_FullPartial.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

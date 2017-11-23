@@ -1,5 +1,8 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
+@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Contests.Controllers
+
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
@@ -28,9 +31,13 @@
     <br />
     @if (User.IsAdmin())
     {
-        <span>@Html.ActionLink(Resource.Detailed_results, "Full", new { id = Model.Id, official = Model.IsOfficialResults }, new { @class = "btn btn-primary" })</span>
-        <span>@Html.ActionLink(Resource.Export_results, "Results", "ContestsExport", new { area = "Administration", id = Model.Id, compete = Model.IsOfficialResults }, new { @class = "btn btn-primary" })</span>
+        <span>
+            @(Html.ActionLink<ResultsController>(Resource.Detailed_results, c => c.Full(Model.Id, Model.IsOfficialResults, null), null, new {@class = "btn btn-primary"}))
+        </span>
+        <span>
+            @(Html.ActionLink<ContestsExportController>(Resource.Export_results, c => c.Results(Model.Id, Model.IsOfficialResults), null, new {@class = "btn btn-primary"}))
+        </span>
     }
 </h3>
 
-@Html.Partial("_SimpleResultsPartial", Model)
+@Html.Partial("_SimplePartial", Model)

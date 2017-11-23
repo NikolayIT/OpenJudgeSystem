@@ -1,16 +1,15 @@
 ﻿@model ContestResultsViewModel
 
-@using System.Web.Mvc.Expressions
 @using OJS.Web.Areas.Contests.Controllers
 @using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Web.Areas.Users.Controllers
-@using X.PagedList.Mvc
 
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
 
 @{
     const string ResultsContainerId = "simple-results-container";
     const string LoadingMaskContainerId = "simple-results-loading-mask-container";
+    const string OnPageChangedEventHandlerName = "OnPageChanged";
     var isOfficial = Model.IsOfficialResults;
     var results = Model.Results;
 }
@@ -38,7 +37,7 @@
                 HttpMethod = "GET",
                 UpdateTargetId = ResultsContainerId,
                 LoadingElementId = LoadingMaskContainerId,
-                OnSuccess = "OnPageChanged"
+                OnSuccess = OnPageChangedEventHandlerName
             }))
     }
 
@@ -53,7 +52,9 @@
                 @{
                     var problemCounter = 0;
                     var displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
-                    var contestLink = Model.ContestCanBeCompeted ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+                    var contestLink = Model.ContestCanBeCompeted ?
+                        CompeteController.CompeteActionName :
+                        CompeteController.PracticeActionName;
                 }
 
                 @foreach (var problem in Model.Problems)
@@ -158,7 +159,7 @@
                 HttpMethod = "GET",
                 UpdateTargetId = ResultsContainerId,
                 LoadingElementId = LoadingMaskContainerId,
-                OnSuccess = "OnPageChanged"
+                OnSuccess = OnPageChangedEventHandlerName
             }))
     }
 

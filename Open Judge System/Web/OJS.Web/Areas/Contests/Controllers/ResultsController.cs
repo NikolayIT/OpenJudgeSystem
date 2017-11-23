@@ -18,6 +18,7 @@
     using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
     
@@ -136,6 +137,7 @@
             return this.View(contestResults);
         }
 
+        [AjaxOnly]
         public ActionResult SimplePartial(
             int contestId,
             bool official,
@@ -202,7 +204,7 @@
                 }
             }
 
-            return this.PartialView("_SimpleResultsPartial", contestResults);
+            return this.PartialView("_SimplePartial", contestResults);
         }
 
         // TODO: Unit test
@@ -243,6 +245,21 @@
 
             return this.View(contestResults);
         }
+
+        [AjaxOnly]
+        public ActionResult FullPartial(
+            int contestId,
+            bool official,
+            int page,
+            int resultsInPage) =>
+                this.PartialView("_FullPartial", this.GetContestResults(
+                    contestId,
+                    this.GetTotalParticipantsCount(contestId, official),
+                    official,
+                    isUserAdminOrLecturer: true,
+                    isFullResults: true,
+                    page: page,
+                    resultsInPage: resultsInPage));
 
         [Authorize]
         public ActionResult Export(int id, bool official)

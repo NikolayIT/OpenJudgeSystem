@@ -1,0 +1,129 @@
+﻿@model ContestResultsViewModel
+
+@using OJS.Common.Models
+@using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.Areas.Contests.ViewModels.Results
+@using OJS.Web.Areas.Users.Controllers
+
+@using Resource = Resources.Areas.Contests.Views.ResultsFull
+
+@{
+    const string ResultsContainerId = "full-results-container";
+    const string LoadingMaskContainerId = "full-results-loading-mask-container";
+    const string OnPageChangedEventHandlerName = "OnPageChanged";
+    var isOfficialStr = Model.IsOfficialResults ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+    var isOfficial = Model.IsOfficialResults;
+    var results = Model.Results;
+}
+
+<div class="results-container" id="@ResultsContainerId">
+    @if (results.PageCount > 1)
+    {
+        @Html.PagedListPager(
+            results,
+            page => Url.Action<ResultsController>(
+                c => c.FullPartial(
+                    Model.Id,
+                    isOfficial,
+                    page,
+                    results.PageSize)),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = ResultsContainerId,
+                LoadingElementId = LoadingMaskContainerId,
+                OnSuccess = OnPageChangedEventHandlerName
+            }))
+    }
+
+    @if (results.Count > 0)
+    {
+        <script src="/Scripts/Helpers/test-results.js"></script>
+        <table class="table table-striped">
+            <tr>
+                <th>№</th>
+                <th>@Resource.User</th>
+                <th>@Resource.UserFullName</th>
+                @{
+                    var problemNumber = 0;
+                }
+                @foreach (var problem in Model.Problems)
+                {
+                    <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
+                    problemNumber++;
+                }
+
+                <th>@Resource.Total</th>
+            </tr>
+            @for (var i = 0; i < results.Count; i++)
+            {
+                var participant = results[i];
+                <tr>
+                    <td><strong>@((results.PageNumber - 1) * results.PageSize + i + 1).</strong></td>
+                    <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
+                    <td>@participant.ParticipantFullName</td>
+                    @foreach (var problemResult in participant.ProblemResults)
+                    {
+                        <td style="white-space: nowrap">
+                            @if (problemResult.BestSubmission == null)
+                        {
+                                <span>@Resource.No_solution</span>
+                            }
+                            else
+                            {
+                                <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
+                                @problemResult.BestSubmission.SubmissionType
+                                <br />
+                                if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                                {
+                                    @:Compilation failed!
+                            }
+                            foreach (var testRun in problemResult.BestSubmission.TestRuns)
+                            {
+                                var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
+                                switch (testRun.ResultType)
+                                {
+                                    case TestRunResultType.CorrectAnswer:<span style="@style" class="glyphicon glyphicon-ok text-success" title=@Resource.Answer_correct></span>break;
+                                    case TestRunResultType.WrongAnswer:<span style="@style" class="glyphicon glyphicon-remove text-danger" title=@Resource.Answer_incorrect></span>break;
+                                    case TestRunResultType.TimeLimit:<span style="@style" class="glyphicon glyphicon-time text-danger" title=@Resource.Time_limit></span>break;
+                                    case TestRunResultType.MemoryLimit:<span style="@style" class="glyphicon glyphicon-hdd text-danger" title=@Resource.Memory_limit></span>break;
+                                    case TestRunResultType.RunTimeError:<span style="@style" class="glyphicon glyphicon-asterisk text-danger" title=@Resource.Runtime_error></span>break;
+                                }
+                            }
+                        }
+
+                        </td>
+                    }
+
+                    <td>@participant.Total</td>
+                </tr>
+            }
+
+        </table>
+                    }
+                    else
+                    {
+                        <h2>@Resource.NoMoreResults</h2>
+                    }
+
+    @if (results.PageCount > 1)
+    {
+        @Html.PagedListPager(
+            results,
+            page => Url.Action<ResultsController>(
+                c => c.FullPartial(
+                    Model.Id,
+                    isOfficial,
+                    page,
+                    results.PageSize)),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = ResultsContainerId,
+                LoadingElementId = LoadingMaskContainerId,
+                OnSuccess = OnPageChangedEventHandlerName
+            }))
+    }
+    
+    @Html.Partial("_LoadingMaskPartial", LoadingMaskContainerId)
+</div>

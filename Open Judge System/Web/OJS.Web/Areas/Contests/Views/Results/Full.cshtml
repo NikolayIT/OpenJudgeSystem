@@ -1,18 +1,20 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
-@using System.Web.Mvc.Expressions
-@using X.PagedList.Mvc
-@using OJS.Common.Models
 @using OJS.Web.Areas.Contests.Controllers
-@using OJS.Web.Areas.Users.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.ResultsFull
 
+@section Styles {
+    <link href="/Content/Contests/results-page.css" rel="stylesheet" />
+}
+
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    var isOfficialStr = Model.IsOfficialResults ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
     var isOfficial = Model.IsOfficialResults;
-    var results = Model.Results;
+}
+
+@section Scripts {
+    <script src="/Scripts/Contests/results-pagination.js"></script>
 }
 
 <ol class="breadcrumb">
@@ -23,106 +25,46 @@
 
 <h1>@ViewBag.Title</h1>
 <h2>
-    <span>@Html.ActionLink(Resource.Public_results, "Simple", new {id = Model.Id, official = isOfficial}, new {@class = "btn btn-primary"})</span>
+    <span>
+        @(Html.ActionLink<ResultsController>(Resource.Public_results, c => c.Simple(Model.Id, Model.IsOfficialResults, null), null, new {@class = "btn btn-primary"}))
+    </span>
 </h2>
 
 <br />
 
-<h4>@Ajax.ActionLink(Resource.ShowStatistics, "Stats", new { contestId = Model.Id, official = isOfficial }, new AjaxOptions { UpdateTargetId = "StatsContainer", InsertionMode = InsertionMode.Replace })</h4>
+<h4>
+    @(Ajax.ActionLink<ResultsController>(
+        Resource.ShowStatistics,
+        c => c.Stats(Model.Id, Model.IsOfficialResults),
+        null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "StatsContainer",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "stats-container"
+        }))
+</h4>
 <div id="StatsContainer"></div>
+@Html.Partial("_LoadingMaskPartial", "stats-container")
 
 <br />
 
 @if (isOfficial)
 {
-    <h4>@Ajax.ActionLink(Resource.Average_result_by_minutes, "StatsChart", new { contestId = Model.Id }, new AjaxOptions { UpdateTargetId = "StatsChartContainer", InsertionMode = InsertionMode.Replace })</h4>
+    <h4>
+        @(Ajax.ActionLink<ResultsController>(
+            Resource.Average_result_by_minutes,
+            c => c.StatsChart(Model.Id),
+            null,
+            new AjaxOptions
+            {
+                UpdateTargetId = "StatsChartContainer",
+                InsertionMode = InsertionMode.Replace
+            }))
+    </h4>
     <div id="StatsChartContainer"></div>
 }
 
 <br />
 
-@if (results.PageCount > 1)
-{
-    @Html.PagedListPager(
-        Model.Results,
-        page => Url.Action<ResultsController>(
-            c => c.Full(Model.Id, isOfficial, page)))
-}
-
-@if (results.Count > 0)
-{
-    <script src="/Scripts/Helpers/test-results.js"></script>
-    <table class="table table-striped">
-        <tr>
-            <th>№</th>
-            <th>@Resource.User</th>
-            <th>@Resource.UserFullName</th>
-            @{
-                var problemNumber = 0;
-            }
-            @foreach (var problem in Model.Problems)
-            {
-                <th><a href="/Contests/@isOfficialStr/Index/@Model.Id#@problemNumber">@problem.Name</a></th>
-                problemNumber++;
-            }
-
-            <th>@Resource.Total</th>
-        </tr>
-        @for (var i = 0; i < results.Count; i++)
-        {
-            var participant = results[i];
-            <tr>
-                <td><strong>@((results.PageNumber - 1) * results.PageSize + i + 1).</strong></td>
-                <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
-                <td>@participant.ParticipantFullName</td>
-                @foreach (var problemResult in participant.ProblemResults)
-                {
-                    <td style="white-space: nowrap">
-                        @if (problemResult.BestSubmission == null)
-                        {
-                            <span>@Resource.No_solution</span>
-                        }
-                        else
-                        {
-                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
-                            @problemResult.BestSubmission.SubmissionType
-                            <br />
-                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
-                            {
-                                @:Compilation failed!
-                            }
-                            foreach (var testRun in problemResult.BestSubmission.TestRuns)
-                            {
-                                var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
-                                switch (testRun.ResultType)
-                                {
-                                    case TestRunResultType.CorrectAnswer:<span style="@style" class="glyphicon glyphicon-ok text-success" title=@Resource.Answer_correct></span>break;
-                                    case TestRunResultType.WrongAnswer:<span style="@style" class="glyphicon glyphicon-remove text-danger" title=@Resource.Answer_incorrect></span>break;
-                                    case TestRunResultType.TimeLimit:<span style="@style" class="glyphicon glyphicon-time text-danger" title=@Resource.Time_limit></span>break;
-                                    case TestRunResultType.MemoryLimit:<span style="@style" class="glyphicon glyphicon-hdd text-danger" title=@Resource.Memory_limit></span>break;
-                                    case TestRunResultType.RunTimeError:<span style="@style" class="glyphicon glyphicon-asterisk text-danger" title=@Resource.Runtime_error></span>break;
-                                }
-                            }
-                        }
-
-                    </td>
-                }
-
-                <td>@participant.Total</td>
-            </tr>
-        }
-
-    </table>
-}
-else
-{
-    <h2>@Resource.NoMoreResults</h2>
-}
-
-@if (results.PageCount > 1)
-{
-    @Html.PagedListPager(
-        results,
-        page => Url.Action<ResultsController>(
-            c => c.Full(Model.Id, isOfficial, page)))
-}
+@Html.Partial("_FullPartial", Model)
