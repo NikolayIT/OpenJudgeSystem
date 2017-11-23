@@ -7,11 +7,9 @@
 
     public interface IParticipantsDataService : IService
     {
-        IQueryable<Participant> GetAll();
+        IQueryable<Participant> GetAllQuery();
 
-        bool Any(int contestId, string userId, bool isOfficial);
-
-        Participant GetWithContest(int contestId, string userId, bool isOfficial);
+        bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
 
         IQueryable<Participant> GetByContestIdQuery(int contestId, bool isOfficial);
     }

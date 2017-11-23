@@ -13,20 +13,12 @@
         public ParticipantsDataService(IEfGenericRepository<Participant> participnats) =>
             this.participnats = participnats;
 
-        public IQueryable<Participant> GetAll() => this.participnats.All();
+        public IQueryable<Participant> GetAllQuery() => this.participnats.All();
 
-        public bool Any(int contestId, string userId, bool isOfficial) =>
+        public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participnats
                 .All()
                 .Any(p => p.ContestId == contestId &&
-                    p.UserId == userId &&
-                    p.IsOfficial == isOfficial);
-
-        public Participant GetWithContest(int contestId, string userId, bool isOfficial) =>
-            this.participnats
-                .All()
-                .Include(p => p.Contest)
-                .FirstOrDefault(p => p.ContestId == contestId &&
                     p.UserId == userId &&
                     p.IsOfficial == isOfficial);
 

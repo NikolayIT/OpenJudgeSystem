@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Data.Contests
 {
-    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -14,12 +13,7 @@
 
         public Contest GetById(int contestId) => this.contests.GetById(contestId);
 
-        public IQueryable<Contest> GetAll() => this.contests.All();
-
-        public Contest GetWithProblems(int contestId)
-            => this.contests.All().Include(c => c.Problems).FirstOrDefault(c => c.Id == contestId);
-
-        public bool UserHasAccessToContest(int contestId, string userId, bool isAdmin) =>
+        public bool UserHasAccessByIdUserIdAndIsAdmin(int contestId, string userId, bool isAdmin) =>
             isAdmin ||
             this.contests
                 .All()
@@ -28,7 +22,7 @@
                     (c.Lecturers.Any(l => l.LecturerId == userId) ||
                      c.Category.Lecturers.Any(cl => cl.LecturerId == userId)));
 
-        public IQueryable<Contest> GetByIdQuery(int id) =>
-            this.contests.All().Where(c => c.Id == id);
+        public IQueryable<Contest> GetByIdQuery(int contestId) =>
+            this.contests.All().Where(c => c.Id == contestId);
     }
 }

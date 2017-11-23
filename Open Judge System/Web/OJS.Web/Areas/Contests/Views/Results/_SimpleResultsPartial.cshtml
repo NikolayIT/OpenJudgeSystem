@@ -20,7 +20,7 @@
 }
 
 <div class="results-container" id="@ResultsContainerId">
-    @if (results.Count > 1)
+    @if (results.PageCount > 1)
     {
         @Html.PagedListPager(
             results,

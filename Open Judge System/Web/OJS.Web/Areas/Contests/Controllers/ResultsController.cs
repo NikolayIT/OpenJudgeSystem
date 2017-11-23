@@ -54,9 +54,8 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            var participant = this.participantsData.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
-
-            if (participant == null)
+            if (!this.participantsData
+                    .AnyByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official))
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.User_is_not_registered_for_exam);
             }
@@ -102,7 +101,7 @@
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
                 official &&
-                !this.participantsData.Any(id, this.UserProfile.Id, official) &&
+                !this.participantsData.AnyByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official) &&
                 !this.User.IsAdmin())
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
@@ -115,7 +114,7 @@
 
             page = page ?? 1;
 
-            var totalParticipantsCount = contest.Participants.Count(p => p.IsOfficial == official);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
 
             var resultsInPage = NotOfficialResultsPageSize;
             if (official)
@@ -162,9 +161,7 @@
 
             if (totalParticipantsCount == 0)
             {
-                totalParticipantsCount = this.GetTotalParticipantsCount(
-                    this.contestsData.GetById(contestId),
-                    official);
+                totalParticipantsCount = this.GetTotalParticipantsCount(contestId, official);
 
                 if (!official && !isUserAdminOrLecturerInContest)
                 {
@@ -213,7 +210,7 @@
         [Authorize]
         public ActionResult Full(int id, bool official, int? page)
         {
-            if (!this.contestsData.UserHasAccessToContest(id, this.UserProfile.Id, this.User.IsAdmin()))
+            if (!this.contestsData.UserHasAccessByIdUserIdAndIsAdmin(id, this.UserProfile.Id, this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -230,7 +227,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var totalParticipantsCount = this.GetTotalParticipantsCount(contest, official);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
             var contestResults = this.GetContestResults(
                 contest.Id,
                 totalParticipantsCount,
@@ -251,7 +248,7 @@
         [Authorize]
         public ActionResult Export(int id, bool official)
         {
-            if (!this.contestsData.UserHasAccessToContest(id, this.UserProfile.Id, this.User.IsAdmin()))
+            if (!this.contestsData.UserHasAccessByIdUserIdAndIsAdmin(id, this.UserProfile.Id, this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -263,7 +260,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var totalParticipantsCount = this.GetTotalParticipantsCount(contest, official);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
             var contestResults = this.GetContestResults(contest.Id, totalParticipantsCount, official, true, true);
 
             return this.View(contestResults);
@@ -272,7 +269,7 @@
         [Authorize]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
-            if (!this.contestsData.UserHasAccessToContest(id, this.UserProfile.Id, this.User.IsAdmin()))
+            if (!this.contestsData.UserHasAccessByIdUserIdAndIsAdmin(id, this.UserProfile.Id, this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -282,14 +279,16 @@
                     .Select(c => new
                     {
                         c.Id,
-                        ParticipantsCount = (double)c.Participants.Count(p => p.IsOfficial),
+                        ParticipantsCount = (double)c.Participants
+                            .Where(p => p.Scores.Any())
+                            .Count(p => p.IsOfficial),
                         c.StartTime,
                         c.EndTime
                     })
                     .FirstOrDefault();
 
             var submissions = this.participantsData
-                .GetAll()
+                .GetAllQuery()
                 .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                 .SelectMany(participant =>
                     participant.Contest.Problems
@@ -341,7 +340,7 @@
         [Authorize]
         public ActionResult Stats(int contestId, bool official)
         {
-            if (!this.contestsData.UserHasAccessToContest(contestId, this.UserProfile.Id, this.User.IsAdmin()))
+            if (!this.contestsData.UserHasAccessByIdUserIdAndIsAdmin(contestId, this.UserProfile.Id, this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -353,7 +352,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var totalParticipantsCount = this.GetTotalParticipantsCount(contest, official);
+            var totalParticipantsCount = this.GetTotalParticipantsCount(contest.Id, official);
             var contestResults = this.GetContestResults(contest.Id, totalParticipantsCount, official, true, true);
 
             var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
@@ -417,7 +416,7 @@
         [Authorize]
         public ActionResult StatsChart(int contestId)
         {
-            if (!this.contestsData.UserHasAccessToContest(contestId, this.UserProfile.Id, this.User.IsAdmin()))
+            if (!this.contestsData.UserHasAccessByIdUserIdAndIsAdmin(contestId, this.UserProfile.Id, this.User.IsAdmin()))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -452,7 +451,7 @@
                             .Where(pr => !pr.IsDeleted)
                             .Select(ContestProblemListViewModel.FromProblem),
                         ResultsSubset = c.Participants
-                            .Where(p => p.IsOfficial == official)
+                            .Where(p => p.Scores.Any() && p.IsOfficial == official)
                             .Select(par => new ParticipantResultViewModel
                             {
                                 ParticipantUsername = par.User.UserName,
@@ -508,7 +507,7 @@
                             .Where(pr => !pr.IsDeleted)
                             .Select(ContestProblemListViewModel.FromProblem),
                         ResultsSubset = c.Participants
-                            .Where(p => p.IsOfficial == official)
+                            .Where(p => p.Scores.Any() && p.IsOfficial == official)
                             .Select(par => new ParticipantResultViewModel
                             {
                                 ParticipantUsername = par.User.UserName,
@@ -565,7 +564,10 @@
             return contestResults;
         }
 
-        private int GetTotalParticipantsCount(Contest contest, bool isOfficial) =>
-            contest.Participants.Count(p => p.IsOfficial == isOfficial);
+        private int GetTotalParticipantsCount(int contestId, bool isOfficial) =>
+            this.contestsData
+                .GetByIdQuery(contestId)
+                .Select(c => c.Participants.Count(p => p.Scores.Any() && p.IsOfficial == isOfficial))
+                .FirstOrDefault();
     }
 }

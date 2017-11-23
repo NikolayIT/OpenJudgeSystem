@@ -8,12 +8,8 @@
     {
         Contest GetById(int contestId);
 
-        IQueryable<Contest> GetAll();
+        bool UserHasAccessByIdUserIdAndIsAdmin(int contestId, string userId, bool isAdmin);
 
-        bool UserHasAccessToContest(int contestId, string userId, bool isAdmin);
-
-        IQueryable<Contest> GetByIdQuery(int id);
-
-        Contest GetWithProblems(int contestId);
+        IQueryable<Contest> GetByIdQuery(int contestId);
     }
 }
