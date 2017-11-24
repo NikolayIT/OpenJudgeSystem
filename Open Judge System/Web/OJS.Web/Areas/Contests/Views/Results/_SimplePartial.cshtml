@@ -28,8 +28,6 @@
                     Model.Id,
                     isOfficial,
                     Model.UserIsLecturerInContest,
-                    Model.ContestCanBeCompeted,
-                    Model.ContestCanBePracticed,
                     page,
                     results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
@@ -93,31 +91,30 @@
                         <a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a>
                     </td>
                     <td>@participant.ParticipantFullName</td>
-                    @foreach (var participantResult in participant.ProblemResults)
+                    @foreach (var problem in Model.Problems)
                     {
-                        if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                        var problemResult = participant.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
+
+                        if (problemResult != null)
                         {
-                            if (participantResult.BestSubmission == null)
-                            {
-                                <td>0</td>
-                            }
-                            else
+                            if (User.IsAdmin() || Model.UserIsLecturerInContest)
                             {
                                 <td>
-                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(participantResult.BestSubmission.Id)))">@participantResult.BestSubmission.Points</a>
+                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points</a>
                                 </td>
                             }
-                        }
-                        else if (participantResult.ShowResult)
-                        {
-                            if (participantResult.BestSubmission == null)
+                            else if (problemResult.ShowResult)
                             {
-                                <td>0</td>
+                                <td>@problemResult.BestSubmission.Points</td>
                             }
                             else
                             {
-                                <td>@participantResult.BestSubmission.Points</td>
+                                <td>0</td>
                             }
+                        }
+                        else
+                        {
+                            <td>0</td>
                         }
                     }
 
@@ -150,8 +147,6 @@
                     Model.Id,
                     isOfficial,
                     Model.UserIsLecturerInContest,
-                    Model.ContestCanBeCompeted,
-                    Model.ContestCanBePracticed,
                     page,
                     results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions

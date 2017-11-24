@@ -2,7 +2,7 @@
 {
     public class ProblemResultPairViewModel
     {
-        public int Id { get; set; }
+        public int ProblemId { get; set; }
 
         public bool ShowResult { get; set; }
 

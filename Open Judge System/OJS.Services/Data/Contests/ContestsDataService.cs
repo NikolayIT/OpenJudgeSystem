@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Contests
 {
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -12,6 +13,9 @@
             this.contests = contests;
 
         public Contest GetById(int contestId) => this.contests.GetById(contestId);
+
+        public Contest GetByIdWithProblems(int contestId) =>
+            this.contests.All().Include(c => c.Problems).FirstOrDefault(c => c.Id == contestId);
 
         public bool UserHasAccessByIdUserIdAndIsAdmin(int contestId, string userId, bool isAdmin) =>
             isAdmin ||

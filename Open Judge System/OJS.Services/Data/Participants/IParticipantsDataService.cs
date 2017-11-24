@@ -9,6 +9,8 @@
     {
         IQueryable<Participant> GetAllQuery();
 
+        IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficialQuery(int contestId, bool isOfficial);
+
         bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
 
         IQueryable<Participant> GetByContestIdQuery(int contestId, bool isOfficial);

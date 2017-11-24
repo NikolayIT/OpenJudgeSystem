@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using X.PagedList;
 
@@ -14,8 +13,6 @@
         public string Name { get; set; }
         
         public IEnumerable<ContestProblemListViewModel> Problems { get; set; }
-
-        public IEnumerable<ParticipantResultViewModel> ResultsSubset { get; set; }
 
         public IPagedList<ParticipantResultViewModel> Results { get; set; }
 

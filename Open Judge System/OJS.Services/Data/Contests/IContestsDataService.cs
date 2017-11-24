@@ -8,6 +8,8 @@
     {
         Contest GetById(int contestId);
 
+        Contest GetByIdWithProblems(int contestId);
+
         bool UserHasAccessByIdUserIdAndIsAdmin(int contestId, string userId, bool isAdmin);
 
         IQueryable<Contest> GetByIdQuery(int contestId);

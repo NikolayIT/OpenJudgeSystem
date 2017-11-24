@@ -62,22 +62,20 @@
                     <td><strong>@((results.PageNumber - 1) * results.PageSize + i + 1).</strong></td>
                     <th><a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a></th>
                     <td>@participant.ParticipantFullName</td>
-                    @foreach (var problemResult in participant.ProblemResults)
+                    @foreach (var problem in Model.Problems)
                     {
+                        var problemResult = participant.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
                         <td style="white-space: nowrap">
-                            @if (problemResult.BestSubmission == null)
+                        @if (problemResult != null)
                         {
-                                <span>@Resource.No_solution</span>
-                            }
-                            else
+                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
+                            @problemResult.BestSubmission.SubmissionType
+                            <br />
+                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
                             {
-                                <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
-                                @problemResult.BestSubmission.SubmissionType
-                                <br />
-                                if (!problemResult.BestSubmission.IsCompiledSuccessfully)
-                                {
-                                    @:Compilation failed!
+                                @:Compilation failed!
                             }
+
                             foreach (var testRun in problemResult.BestSubmission.TestRuns)
                             {
                                 var style = testRun.IsZeroTest ? "-ms-opacity: 0.3; opacity: 0.3" : string.Empty;
@@ -90,6 +88,10 @@
                                     case TestRunResultType.RunTimeError:<span style="@style" class="glyphicon glyphicon-asterisk text-danger" title=@Resource.Runtime_error></span>break;
                                 }
                             }
+                        }
+                        else
+                        {
+                            <span>@Resource.No_solution</span>
                         }
 
                         </td>
