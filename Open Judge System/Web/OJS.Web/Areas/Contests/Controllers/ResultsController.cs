@@ -460,6 +460,7 @@
                         ParticipantFirstName = par.User.UserSettings.FirstName,
                         ParticipantLastName = par.User.UserSettings.LastName,
                         ProblemResults = par.Scores
+                            .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contestId)
                             .Select(sc => new ProblemResultPairViewModel
                             {
                                 ProblemId = sc.ProblemId,
@@ -483,6 +484,7 @@
                     ParticipantFirstName = par.User.UserSettings.FirstName,
                     ParticipantLastName = par.User.UserSettings.LastName,
                     ProblemResults = par.Scores
+                        .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contestId)
                         .Select(sc => new ProblemResultPairViewModel
                         {
                             ProblemId = sc.ProblemId,

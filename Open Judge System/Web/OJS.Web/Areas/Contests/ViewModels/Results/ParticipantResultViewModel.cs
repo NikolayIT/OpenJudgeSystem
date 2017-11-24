@@ -17,9 +17,9 @@
 
         public int Total => this.ProblemResults
             .Where(pr => pr.ShowResult)
-            .Sum(pr => pr.BestSubmission?.Points ?? 0);
+            .Sum(pr => pr.BestSubmission.Points);
 
         public int AdminTotal => this.ProblemResults
-            .Sum(pr => pr.BestSubmission?.Points ?? 0);
+            .Sum(pr => pr.BestSubmission.Points);
     }
 }
