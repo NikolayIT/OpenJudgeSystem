@@ -53,8 +53,8 @@
             var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
             foreach (var problemId in problemIds)
             {
-                var participantScoresData = new EfGenericRepository<ParticipantScore>(new OjsDbContext());
-                var participantScoreByParticipantAndProblemId = participantScoresData.All()
+                var participantScoresRepository = new EfGenericRepository<ParticipantScore>(new OjsDbContext());
+                var participantScoreByParticipantAndProblemId = participantScoresRepository.All()
                     .Where(ps => ps.ProblemId == problemId)
                     .GroupBy(p => new { p.ProblemId, p.ParticipantId });
 
@@ -75,10 +75,10 @@
                 {
                     foreach (var participantScoreForDeletion in scoresMarkedForDeletion)
                     {
-                        participantScoresData.Delete(participantScoreForDeletion);
+                        participantScoresRepository.Delete(participantScoreForDeletion);
                     }
 
-                    participantScoresData.SaveChanges();
+                    participantScoresRepository.SaveChanges();
                 }
             }
 
