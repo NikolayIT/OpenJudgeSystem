@@ -50,8 +50,8 @@
 
         public ActionResult NormalizeParticipants()
         {
-            var problemsIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToList();
-            foreach (var problemId in problemsIds)
+            var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
+            foreach (var problemId in problemIds)
             {
                 var participantScoresData = new EfGenericRepository<ParticipantScore>(new OjsDbContext());
                 var participantScoreByParticipantAndProblemId = participantScoresData.All()
