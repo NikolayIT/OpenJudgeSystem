@@ -48,7 +48,7 @@
             return null;
         }
 
-        public ActionResult NormalizeParticipants()
+        public ActionResult NormalizeParticipantsWithDuplicatedParticipantScores()
         {
             var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
             foreach (var problemId in problemIds)
