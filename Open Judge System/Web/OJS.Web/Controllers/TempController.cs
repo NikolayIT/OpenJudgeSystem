@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
@@ -55,7 +54,6 @@
             var result = new StringBuilder("<p>Done! Deleted Participant scores:</p><ol>");
 
             var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
-            var watch = Stopwatch.StartNew();
             foreach (var problemId in problemIds)
             {
                 var participantScoresRepository = new EfGenericRepository<ParticipantScore>(new OjsDbContext());
@@ -88,8 +86,6 @@
                     participantScoresRepository.SaveChanges();
                 }
             }
-
-            var elapsed = watch.Elapsed;
 
             return this.Content(result.ToString());
         }
