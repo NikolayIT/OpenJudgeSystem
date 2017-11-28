@@ -1,7 +1,9 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Text;
     using System.Web.Mvc;
 
     using MissingFeatures;
@@ -50,39 +52,46 @@
 
         public ActionResult NormalizeParticipantsWithDuplicatedParticipantScores()
         {
+            var result = new StringBuilder("<p>Done! Deleted Participant scores:</p><ol>");
+
             var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
+            var watch = Stopwatch.StartNew();
             foreach (var problemId in problemIds)
             {
                 var participantScoresRepository = new EfGenericRepository<ParticipantScore>(new OjsDbContext());
-                var participantScoreByParticipantAndProblemId = participantScoresRepository.All()
-                    .Where(ps => ps.ProblemId == problemId)
-                    .GroupBy(p => new { p.ProblemId, p.ParticipantId });
-
                 var scoresMarkedForDeletion = new List<ParticipantScore>();
-                foreach (var participantScore in participantScoreByParticipantAndProblemId)
-                {
-                    if (participantScore.Count() > 1)
+
+                participantScoresRepository
+                    .All()
+                    .Where(ps => ps.ProblemId == problemId)
+                    .GroupBy(p => new { p.ProblemId, p.ParticipantId })
+                    .Where(participantScoreGroup => participantScoreGroup.Count() > 1)
+                    .ForEach(participantScoreGroup =>
                     {
-                        participantScore
+                        participantScoreGroup
                             .OrderByDescending(ps => ps.Points)
                             .ThenByDescending(ps => ps.Id)
                             .Skip(1)
                             .ForEach(ps => scoresMarkedForDeletion.Add(ps));
-                    }
-                }
-
+                    });
+                        
                 if (scoresMarkedForDeletion.Any())
                 {
                     foreach (var participantScoreForDeletion in scoresMarkedForDeletion)
                     {
                         participantScoresRepository.Delete(participantScoreForDeletion);
+                        result.Append($@"<li>ParticipantScore with
+                            ParticipantId: {participantScoreForDeletion.ParticipantId} and
+                            ProblemId: {participantScoreForDeletion.ProblemId}</li>");
                     }
 
                     participantScoresRepository.SaveChanges();
                 }
             }
 
-            return null;
+            var elapsed = watch.Elapsed;
+
+            return this.Content(result.ToString());
         }
     }
 }
