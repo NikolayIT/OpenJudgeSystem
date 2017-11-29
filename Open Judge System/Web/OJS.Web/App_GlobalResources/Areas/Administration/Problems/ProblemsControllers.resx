@@ -156,4 +156,7 @@
   <data name="Select_one_submission_type" xml:space="preserve">
     <value>Choose at least one submission type!</value>
   </data>
+  <data name="Active_contest" xml:space="preserve">
+    <value>The contest is active!</value>
+  </data>
 </root>

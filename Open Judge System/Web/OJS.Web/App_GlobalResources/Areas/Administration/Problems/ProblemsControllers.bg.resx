@@ -156,4 +156,7 @@
   <data name="Select_one_submission_type" xml:space="preserve">
     <value>Изберете поне един вид решение!</value>
   </data>
+  <data name="Active_contest" xml:space="preserve">
+    <value>Състезанието е активно!</value>
+  </data>
 </root>

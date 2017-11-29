@@ -1,78 +1,89 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDelete
-@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.DeleteProblemViewModel
+
+@using OJS.Web.Areas.Administration.Controllers
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDelete
 
 @{
     ViewBag.Title = Resource.Page_title;
 }
 <h2>@ViewBag.Title @Model.Name</h2>
 <div class="container">
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Name)
-    </div>
-    <div class="panel-body news-content editor-field">
-        @Model.Name
-    </div>
-    <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.MaximumPoints)
-    </div>
-    <div class="panel-body news-content editor-field">
-        @Model.MaximumPoints
-    </div>
-    <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.TimeLimit)
-    </div>
-    <div class="panel-body news-content editor-field">
-        @Model.TimeLimit
-    </div>
-    <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.MemoryLimit)
-    </div>
-    <div class="panel-body news-content editor-field">
-        @Model.MemoryLimit
-    </div>
-    <br />
-    @if (Model.SourceCodeSizeLimit != null)
+    @using (Html.BeginForm<ProblemsController>(c => c.ConfirmDelete(Model.Id), FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         <div class="editor-label">
-        @Html.LabelFor(m => m.SourceCodeSizeLimit)
+            @Html.LabelFor(m => m.Name)
         </div>
         <div class="panel-body news-content editor-field">
-            @Model.SourceCodeSizeLimit
+            @Model.Name
         </div>
         <br />
-    }
-    @if (Model.SolutionSkeleton != null)
-    {
         <div class="editor-label">
-            @Html.LabelFor(m => m.SolutionSkeleton)
+            @Html.LabelFor(m => m.MaximumPoints)
         </div>
         <div class="panel-body news-content editor-field">
-            <pre class="monospace-font">
-                @(Model.SolutionSkeletonShort + (Model.SolutionSkeleton.Length > 200 ? "..." : string.Empty))
-            </pre>
+            @Model.MaximumPoints
         </div>
         <br />
-    }
-    @if (Model.Checker != null)
-    {
         <div class="editor-label">
-        @Html.LabelFor(m => m.Checker)
+            @Html.LabelFor(m => m.TimeLimit)
         </div>
         <div class="panel-body news-content editor-field">
-            @Model.Checker
+            @Model.TimeLimit
         </div>
         <br />
+        <div class="editor-label">
+            @Html.LabelFor(m => m.MemoryLimit)
+        </div>
+        <div class="panel-body news-content editor-field">
+            @Model.MemoryLimit
+        </div>
+        <br />
+
+        if (Model.SourceCodeSizeLimit != null)
+        {
+            <div class="editor-label">
+                @Html.LabelFor(m => m.SourceCodeSizeLimit)
+            </div>
+            <div class="panel-body news-content editor-field">
+                @Model.SourceCodeSizeLimit
+            </div>
+            <br />
+        }
+
+        if (Model.SolutionSkeletonShort != null)
+        {
+            <div class="editor-label">
+                @Html.LabelFor(m => m.SolutionSkeletonShort)
+            </div>
+            <div class="panel-body news-content editor-field">
+                <pre class="monospace-font">
+                    @Model.SolutionSkeletonShort
+                </pre>
+            </div>
+            <br />
+        }
+
+        if (Model.Checker != null)
+        {
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Checker)
+            </div>
+            <div class="panel-body news-content editor-field">
+                @Model.Checker
+            </div>
+            <br />
+        }
+        <div class="editor-label">
+            @Html.LabelFor(m => m.OrderBy)
+        </div>
+        <div class="panel-body news-content editor-field">
+            @Model.OrderBy
+        </div>
+        <br />
+
+        <input type="submit" class="btn btn-primary" value="@Resource.Delete" />
+        @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Contest(Model.ContestId), null, new { @class = "btn btn-primary" }))
     }
-    <div class="editor-label">
-        @Html.LabelFor(m => m.OrderBy)
-    </div>
-    <div class="panel-body news-content editor-field">
-        @Model.OrderBy
-    </div>
-    <br />    
-    <a href="/Administration/Problems/ConfirmDelete/@Model.Id" class="btn btn-primary">@Resource.Delete</a>
-    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
 </div>

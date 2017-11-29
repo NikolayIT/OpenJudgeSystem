@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -378,8 +379,8 @@
             }
 
             var selectedProblem = this.Data.Problems.All()
-                .Where(x => x.Id == id)
-                .Select(DetailedProblemViewModel.FromProblem)
+                .Where(p => p.Id == id)
+                .Select(DeleteProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
             if (selectedProblem == null)
@@ -388,18 +389,27 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            return this.View(selectedProblem);
-        }
-
-        public ActionResult ConfirmDelete(int? id)
-        {
-            if (id == null)
+            var contest = this.Data.Contests.GetById(selectedProblem.ContestId);
+            if (contest.CanBeCompeted)
             {
-                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            return this.View(selectedProblem);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDelete(int problemId)
+        {
+            if (!this.CheckIfUserHasProblemPermissions(problemId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+            }
+
+            var problem = this.Data.Problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);
 
             if (problem == null)
             {
@@ -407,15 +417,21 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            this.Data.Resources.Delete(r => r.ProblemId == id);
+            if (problem.Contest.CanBeCompeted)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
+                return this.RedirectToAction(nameof(this.Index));
+            }
 
-            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == id);
+            this.Data.Resources.Delete(r => r.ProblemId == problemId);
 
-            this.Data.Tests.Delete(t => t.ProblemId == id);
+            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == problemId);
 
-            this.Data.Submissions.Delete(s => s.ProblemId == id);
+            this.Data.Tests.Delete(t => t.ProblemId == problemId);
 
-            this.Data.Problems.Delete(id.Value);
+            this.Data.Submissions.Delete(s => s.ProblemId == problemId);
+
+            this.Data.Problems.Delete(problem);
 
             this.Data.SaveChanges();
 
