@@ -87,6 +87,7 @@
                 }
             }
 
+            result.Append("</ol>");
             return this.Content(result.ToString());
         }
     }
