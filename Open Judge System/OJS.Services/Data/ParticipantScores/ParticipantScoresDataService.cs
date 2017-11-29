@@ -35,8 +35,8 @@
                     ps.ProblemId == problemId &&
                     ps.IsOfficial == isOfficial);
 
-        public IQueryable<ParticipantScore> GetAllQuery()
-            => this.participantScores.All();
+        public IQueryable<ParticipantScore> GetAllQuery() =>
+            this.participantScores.All();
 
         public void SaveBySubmission(Submission submission, bool resetScore = false)
         {
@@ -68,8 +68,8 @@
                         this.AddNew(submission, participant.UserName, participant.IsOfficial);
                     }
                     else if (resetScore ||
-                             submission.Points >= existingScore.Points ||
-                             submission.Id == existingScore.SubmissionId)
+                        submission.Points >= existingScore.Points ||
+                        submission.Id == existingScore.SubmissionId)
                     {
                         this.Update(existingScore, submission.Id, submission.Points);
                     }

@@ -15,10 +15,10 @@
         public Submission GetBestForParticipantByProblem(int participantId, int problemId) =>
             this.submissions
                 .All()
-                .Where(s => s.ParticipantId == participantId
-                    && s.ProblemId == problemId
-                    && !s.IsDeleted
-                    && s.Processed)
+                .Where(s => s.ParticipantId == participantId &&
+                    s.ProblemId == problemId &&
+                    !s.IsDeleted &&
+                    s.Processed)
                 .OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();

@@ -35,8 +35,8 @@
         public ContestsController(
             IOjsData data,
             IParticipantScoresDataService participantScoresData)
-            : base(data) =>
-                this.participantScoresData = participantScoresData;
+                : base(data) =>
+                    this.participantScoresData = participantScoresData;
 
         public override IEnumerable GetData()
         {
