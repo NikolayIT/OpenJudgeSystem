@@ -417,7 +417,7 @@
 
                 // find all participant scores for the test's problem
                 var existingScores = this.participantScoresData
-                    .GetAllQuery()
+                    .GetAll()
                     .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
                     .ToList();
 

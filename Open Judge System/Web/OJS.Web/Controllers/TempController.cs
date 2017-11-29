@@ -53,7 +53,7 @@
         {
             var result = new StringBuilder("<p>Done! Deleted Participant scores:</p><ol>");
 
-            var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToArray();
+            var problemIds = this.Data.Problems.AllWithDeleted().Select(pr => pr.Id).ToList();
             foreach (var problemId in problemIds)
             {
                 var participantScoresRepository = new EfGenericRepository<ParticipantScore>(new OjsDbContext());

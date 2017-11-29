@@ -8,6 +8,7 @@
     public class ParticipantsDataService : IParticipantsDataService
     {
         private readonly IEfGenericRepository<Participant> participants;
+
         public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
             this.participants = participants;
 

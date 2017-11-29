@@ -35,7 +35,7 @@
                     ps.ProblemId == problemId &&
                     ps.IsOfficial == isOfficial);
 
-        public IQueryable<ParticipantScore> GetAllQuery() =>
+        public IQueryable<ParticipantScore> GetAll() =>
             this.participantScores.All();
 
         public void SaveBySubmission(Submission submission, bool resetScore = false)
@@ -80,9 +80,7 @@
         }
 
         public void DeleteAllByProblem(int problemId) =>
-            this.participantScores.All()
-                .Where(x => x.ProblemId == problemId)
-                .Delete();
+            this.participantScores.All().Where(x => x.ProblemId == problemId).Delete();
 
         public void DeleteForParticipantByProblem(int participantId, int problemId)
         {

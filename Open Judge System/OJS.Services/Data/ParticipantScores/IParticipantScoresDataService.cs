@@ -12,7 +12,7 @@
 
         ParticipantScore GetByParticipantIdProblemIdAndIsOfficial(int participantId, int problemId, bool isOfficial);
 
-        IQueryable<ParticipantScore> GetAllQuery();
+        IQueryable<ParticipantScore> GetAll();
 
         void SaveBySubmission(Submission submission, bool resetScore = false);
 
