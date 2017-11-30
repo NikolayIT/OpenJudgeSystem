@@ -61,11 +61,11 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The contest is active!.
+        ///   Looks up a localized string similar to The contest is active and problems cannot be deleted!.
         /// </summary>
-        public static string Active_contest {
+        public static string Active_contest_problems_permitted_for_deletion {
             get {
-                return ResourceManager.GetString("Active_contest", resourceCulture);
+                return ResourceManager.GetString("Active_contest_problems_permitted_for_deletion", resourceCulture);
             }
         }
         

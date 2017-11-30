@@ -397,7 +397,7 @@
             var contest = this.Data.Contests.GetById(selectedProblem.ContestId);
             if (contest != null && contest.CanBeCompeted)
             {
-                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(contest.Id));
             }
 
@@ -424,7 +424,7 @@
 
             if (problem.Contest.CanBeCompeted)
             {
-                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(problem.ContestId));
             }
 
@@ -469,7 +469,7 @@
 
             if (contest.CanBeCompeted)
             {
-                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(id.Value));
             }
 
@@ -502,7 +502,7 @@
 
             if (contest.CanBeCompeted)
             {
-                this.TempData.AddDangerMessage(GlobalResource.Active_contest);
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(contest.Id));
             }
 
