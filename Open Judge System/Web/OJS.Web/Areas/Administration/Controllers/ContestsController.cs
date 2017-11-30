@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -29,10 +30,13 @@
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
 
-        public ContestsController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly IParticipantScoresDataService participantScoresData;
+
+        public ContestsController(
+            IOjsData data,
+            IParticipantScoresDataService participantScoresData)
+                : base(data) =>
+                    this.participantScoresData = participantScoresData;
 
         public override IEnumerable GetData()
         {
@@ -397,10 +401,7 @@
                     }
                 }
 
-                foreach (var participantScoreForDeletion in scoresForDeletion)
-                {
-                    this.Data.ParticipantScores.Delete(participantScoreForDeletion);
-                }
+                this.participantScoresData.Delete(scoresForDeletion);
 
                 this.Data.Participants.Delete(officialParticipant);
                 this.Data.SaveChanges();

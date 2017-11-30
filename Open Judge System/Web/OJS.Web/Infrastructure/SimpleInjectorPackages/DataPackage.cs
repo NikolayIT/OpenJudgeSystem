@@ -15,15 +15,8 @@
             container.Register<IOjsData, OjsData>(Lifestyle.Scoped);
             container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
 
-            container.Register(
-                typeof(IRepository<>),
-                typeof(EfGenericRepository<>),
-                Lifestyle.Scoped);
-
-            container.Register(
-                typeof(IEfGenericRepository<>),
-                typeof(EfGenericRepository<>),
-                Lifestyle.Scoped);
+            container.Register(typeof(IRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
+            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
         }
     }
 }

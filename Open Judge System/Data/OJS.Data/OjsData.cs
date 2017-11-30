@@ -64,8 +64,6 @@
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
-        public IParticipantScoresRepository ParticipantScores => (ParticipantScoresRepository)this.GetRepository<ParticipantScore>();
-
         public IDeletableEntityRepository<FeedbackReport> FeedbackReports => 
             this.GetDeletableEntityRepository<FeedbackReport>();
 
@@ -136,11 +134,6 @@
                 if (typeof(T).IsAssignableFrom(typeof(Participant)))
                 {
                     type = typeof(ParticipantsRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(ParticipantScore)))
-                {
-                    type = typeof(ParticipantScoresRepository);
                 }
 
                 if (typeof(T).IsAssignableFrom(typeof(SubmissionForProcessing)))
