@@ -33,19 +33,10 @@
                 .Select(LecturerGridViewModel.ViewModel);
         }
 
-        public override object GetById(object id)
-        {
-            return this.Data.Users.GetById((string)id);
-        }
+        public override object GetById(object id) => this.Data.Users.GetById((string)id);
 
-        public override string GetEntityKeyName()
-        {
-            return this.GetEntityKeyNameByType(typeof(LecturerGridViewModel));
-        }
+        public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(LecturerGridViewModel));
 
-        public ActionResult Index()
-        {
-            return this.View();
-        }
+        public ActionResult Index() => this.View();
     }
 }
