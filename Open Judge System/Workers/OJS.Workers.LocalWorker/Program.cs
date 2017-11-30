@@ -31,9 +31,7 @@ namespace OJS.Workers.LocalWorker
                 {
                     var localWorkerService = container.GetInstance<LocalWorkerService>();
 
-                    // Run the service
-                    var servicesToRun = new ServiceBase[] { localWorkerService };
-                    ServiceBase.Run(servicesToRun);
+                    ServiceBase.Run(localWorkerService);
                 }
             }
             catch (Exception exception)
