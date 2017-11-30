@@ -9,6 +9,8 @@
     using OJS.Data;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
+    using OJS.Services.Data.Participants;
+    using OJS.Services.Data.ParticipantScores;
 
     internal class Bootstrap
     {
@@ -28,6 +30,14 @@
             container.Register<
                 ISubmissionsForProcessingBusinessService,
                 SubmissionsForProcessingBusinessService>(Lifestyle.Scoped);
+
+            container.Register<
+                IParticipantsDataService,
+                ParticipantsDataService>(Lifestyle.Scoped);
+
+            container.Register<
+                IParticipantScoresDataService,
+                ParticipantScoresDataService>(Lifestyle.Scoped);
 
             container.Verify();
 
