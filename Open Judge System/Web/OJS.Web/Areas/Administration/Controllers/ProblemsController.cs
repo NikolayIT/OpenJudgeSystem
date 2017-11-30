@@ -25,6 +25,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -44,13 +45,16 @@
     public class ProblemsController : LecturerBaseController
     {
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IParticipantScoresDataService participantScoresData;
 
         public ProblemsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.participantScoresData = participantScoresData;
         }
 
         public ActionResult Index()
@@ -614,7 +618,7 @@
 
             using (var scope = new TransactionScope())
             {
-                this.Data.ParticipantScores.DeleteParticipantScores(model.Id);
+                this.participantScoresData.DeleteAllByProblem(model.Id);
 
                 this.Data.Context.Submissions
                     .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)

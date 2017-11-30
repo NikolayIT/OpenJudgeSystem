@@ -129,7 +129,7 @@
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
-      <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
+      <Project>{44659A90-F81E-4007-8729-C37F4F650A81}</Project>
       <Name>OJS.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">
