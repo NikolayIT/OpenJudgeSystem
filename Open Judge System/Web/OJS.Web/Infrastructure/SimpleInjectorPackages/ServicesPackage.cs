@@ -1,8 +1,13 @@
 ﻿namespace OJS.Web.Infrastructure.SimpleInjectorPackages
 {
+    using System.Linq;
+
+    using MissingFeatures;
+
     using SimpleInjector;
     using SimpleInjector.Packaging;
 
+    using OJS.Services.Common;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.Tools.AntiCheat;
@@ -13,13 +18,34 @@
     {
         public void RegisterServices(Container container)
         {
-            container.Register<
-                IHangfireBackgroundJobService,
-                HangfireBackgroundJobService>(Lifestyle.Scoped);
+            var serviceAssemblies = new[]
+            {
+                typeof(ISubmissionsForProcessingDataService).Assembly,
+                typeof(IHangfireBackgroundJobService).Assembly
+            };
 
-            container.Register<
-                ISubmissionsForProcessingDataService,
-                SubmissionsForProcessingDataService>(Lifestyle.Scoped);
+            var registrations = serviceAssemblies
+                .SelectMany(a => a.GetExportedTypes())
+                .Where(type =>
+                    typeof(IService).IsAssignableFrom(type) &&
+                    !type.IsAbstract &&
+                    !type.IsGenericTypeDefinition)
+                .Select(type => new
+                {
+                    ServiceTypes = type
+                        .GetInterfaces()
+                        .Where(i =>
+                            i.IsPublic &&
+                            !i.GenericTypeArguments.Any() &&
+                            i != typeof(IService)),
+                    Implementation = type
+                });
+
+            foreach (var registration in registrations)
+            {
+                registration.ServiceTypes.ForEach(
+                    service => container.Register(service, registration.Implementation, Lifestyle.Scoped));
+            }
 
             container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
             container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);

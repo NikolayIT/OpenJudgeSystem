@@ -40,6 +40,7 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,8 +52,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\ParticipantScores\IParticipantScoresBusinessService.cs" />
+    <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
+    <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
+    <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
+    <Compile Include="Data\Participants\IParticipantsDataService.cs" />
+    <Compile Include="Data\Participants\ParticipantsDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
+    <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

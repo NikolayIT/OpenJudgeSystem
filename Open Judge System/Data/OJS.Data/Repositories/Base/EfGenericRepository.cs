@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -15,7 +16,6 @@
     using MissingFeatures;
 
     using OJS.Common.Extensions;
-    using OJS.Data.Contracts;
     using OJS.Data.Repositories.Contracts;
 
     public class EfGenericRepository<T> : IEfGenericRepository<T>
@@ -179,6 +179,12 @@
                             }
                         });
         }
+
+        public DbContextTransaction BeginTransaction() =>
+            this.Context.DbContext.Database.BeginTransaction();
+
+        public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) =>
+            this.Context.DbContext.Database.BeginTransaction(isolationLevel);
 
         private int GetPrimaryKey(DbEntityEntry entry)
         {
