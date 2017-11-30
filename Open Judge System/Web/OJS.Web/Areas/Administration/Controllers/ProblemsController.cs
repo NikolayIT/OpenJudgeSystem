@@ -28,6 +28,7 @@
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -49,17 +50,20 @@
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
 
         public ProblemsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantScoresDataService participantScoresData,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IProblemsDataService problemsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
+            this.problemsData = problemsData;
         }
 
         public ActionResult Index()
@@ -386,9 +390,8 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var selectedProblem = this.Data.Problems
-                .All()
-                .Where(p => p.Id == id)
+            var selectedProblem = this.problemsData
+                .GetByIdQuery(id.Value)
                 .Select(DeleteProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
@@ -417,7 +420,7 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);
+            var problem = this.problemsData.GetWithContestById(problemId);
 
             if (problem == null)
             {
@@ -439,9 +442,9 @@
 
             this.Data.Submissions.Delete(s => s.ProblemId == problemId);
 
-            this.Data.Problems.Delete(problem);
-
             this.Data.SaveChanges();
+
+            this.problemsData.DeleteByProblem(problem);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
             return this.RedirectToAction(c => c.Contest(problem.ContestId));
@@ -495,7 +498,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            var contest = this.Data.Contests.GetById(contestId);
+            var contest = this.contestsData.GetById(contestId);
 
             if (contest == null)
             {
@@ -517,9 +520,9 @@
 
             this.Data.Submissions.Delete(s => s.Problem.ContestId == contestId);
 
-            this.Data.Problems.Delete(p => p.ContestId == contestId);
-
             this.Data.SaveChanges();
+
+            this.problemsData.DeleteAllByContestId(contestId);
 
             this.TempData.AddInfoMessage(GlobalResource.Problems_deleted);
             return this.RedirectToAction(c => c.Contest(contestId));
