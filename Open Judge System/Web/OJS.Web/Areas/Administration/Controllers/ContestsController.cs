@@ -173,6 +173,13 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
+            var contest = this.Data.Contests.GetById(model.Id.Value);
+            if (contest.CanBeCompeted)
+            {
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_deletion;
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
             this.BaseDestroy(model.Id);
             return this.GridOperation(request, model);
         }
