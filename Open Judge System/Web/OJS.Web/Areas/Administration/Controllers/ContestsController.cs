@@ -6,6 +6,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
 
     using Kendo.Mvc.UI;
 
@@ -174,17 +175,23 @@
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToAction(c => c.Index());
             }
 
             var contest = this.Data.Contests.GetById(model.Id.Value);
+            if (contest == null)
+            {
+                this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
+                return this.RedirectToAction(c => c.Index());
+            }
+
             if (contest.CanBeCompeted)
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_deletion;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToAction(c => c.Index());
             }
 
-            this.BaseDestroy(model.Id);
+            this.BaseDestroy(contest.Id);
             return this.GridOperation(request, model);
         }
 
