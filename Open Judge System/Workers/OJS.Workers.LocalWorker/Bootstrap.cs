@@ -21,15 +21,13 @@
             container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
             container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
 
-            container
-                .Register<
-                    ISubmissionsForProcessingDataService,
-                    SubmissionsForProcessingDataService>(Lifestyle.Scoped);
+            container.Register<
+                ISubmissionsForProcessingDataService,
+                SubmissionsForProcessingDataService>(Lifestyle.Scoped);
 
-            container
-                .Register<
-                    ISubmissionsForProcessingBusinessService,
-                    SubmissionsForProcessingBusinessService>(Lifestyle.Scoped);
+            container.Register<
+                ISubmissionsForProcessingBusinessService,
+                SubmissionsForProcessingBusinessService>(Lifestyle.Scoped);
 
             container.Verify();
 
