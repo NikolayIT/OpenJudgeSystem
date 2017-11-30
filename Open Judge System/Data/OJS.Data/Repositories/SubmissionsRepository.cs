@@ -9,7 +9,7 @@
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
 
-    public class SubmissionsRepository : DeletableEntityRepository<Submission>, ISubmissionsRepository
+    public class SubmissionsRepository : EfDeletableEntityRepository<Submission>, ISubmissionsRepository
     {
         public SubmissionsRepository(IOjsDbContext context)
             : base(context)

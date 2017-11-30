@@ -26,6 +26,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -47,15 +48,18 @@
     {
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IContestsDataService contestsData;
 
         public ProblemsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -394,11 +398,10 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            var contest = this.Data.Contests.GetById(selectedProblem.ContestId);
-            if (contest != null && contest.CanBeCompeted)
+            if (this.contestsData.CanBeCompetedByContestId(selectedProblem.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
-                return this.RedirectToAction(c => c.Contest(contest.Id));
+                return this.RedirectToAction(c => c.Contest(selectedProblem.ContestId));
             }
 
             return this.View(selectedProblem);
@@ -459,7 +462,7 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var contest = this.Data.Contests.GetById(id.Value);
+            var contest = this.contestsData.GetById(id.Value);
 
             if (contest == null)
             {

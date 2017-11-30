@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Business\ParticipantScores\IParticipantScoresBusinessService.cs" />
     <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
+    <Compile Include="Data\Contests\ContestsDataService.cs" />
+    <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
     <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
     <Compile Include="Data\Participants\IParticipantsDataService.cs" />

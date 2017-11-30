@@ -152,7 +152,7 @@
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {
-                var type = typeof(DeletableEntityRepository<T>);
+                var type = typeof(EfDeletableEntityRepository<T>);
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
             }
 
