@@ -45,9 +45,6 @@
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
-        public ISubmissionsForProcessingRepository SubmissionsForProcessing => (SubmissionsForProcessingRepository)
-            this.GetRepository<SubmissionForProcessing>();
-
         public IRepository<SubmissionType> SubmissionTypes => this.GetRepository<SubmissionType>();
 
         public IDeletableEntityRepository<SourceCode> SourceCodes => this.GetDeletableEntityRepository<SourceCode>();
@@ -134,11 +131,6 @@
                 if (typeof(T).IsAssignableFrom(typeof(Participant)))
                 {
                     type = typeof(ParticipantsRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(SubmissionForProcessing)))
-                {
-                    type = typeof(SubmissionsForProcessingRepository);
                 }
 
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));

@@ -916,6 +916,22 @@
             }
         }
 
+        private void RetestSubmission(int submissionId)
+        {
+            var submission = new Submission
+            {
+                Id = submissionId,
+                Processed = false,
+                Processing = false
+            };
+            this.Data.Context.Submissions.Attach(submission);
+            var submissionEntry = this.Data.Context.Entry(submission);
+            submissionEntry.Property(pr => pr.Processed).IsModified = true;
+            submissionEntry.Property(pr => pr.Processing).IsModified = true;
+
+            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submissionId);
+        }
+
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
         {
             return this.Data.Problems.All()

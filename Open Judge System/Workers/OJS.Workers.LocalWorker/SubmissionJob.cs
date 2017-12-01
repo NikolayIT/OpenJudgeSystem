@@ -7,12 +7,13 @@
 
     using log4net;
 
+    using SimpleInjector.Lifestyles;
+
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Data.Repositories.Base;
-    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
@@ -27,7 +28,9 @@
 
         private bool stopping;
 
-        public SubmissionJob(string name, ConcurrentQueue<int> submissionsForProcessing)
+        public SubmissionJob(
+            string name,
+            ConcurrentQueue<int> submissionsForProcessing)
         {
             this.Name = name;
 
@@ -46,125 +49,73 @@
         public void Start()
         {
             this.logger.Info("SubmissionJob starting...");
+            var container = Bootstrap.Container;
             while (!this.stopping)
             {
-                var data = new OjsData();
-
-                var participantsData = new ParticipantsDataService(
-                    new EfGenericRepository<Participant>(data.Context));
-                var participantScoresData = new ParticipantScoresDataService(
-                    new EfGenericRepository<ParticipantScore>(data.Context),
-                    participantsData);
-                
-                Submission submission = null;
-                SubmissionForProcessing submissionForProcessing = null;
-                int submissionId;
-
-                try
+                using (ThreadScopedLifestyle.BeginScope(container))
                 {
-                    var retrievedSubmissionSuccessfully = false;
-                    lock (this.submissionsForProcessing)
+                    var data = new OjsData();
+                    var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
+                    var participantScoresData = container.GetInstance<IParticipantScoresDataService>();
+                
+                    Submission submission = null;
+                    SubmissionForProcessing submissionForProcessing = null;
+                    bool retrievedSubmissionSuccessfully;
+                    try
                     {
-                        if (this.submissionsForProcessing.IsEmpty)
+                        lock (this.submissionsForProcessing)
                         {
-                            var submissions = data.SubmissionsForProcessing
-                                .All()
-                                .Where(x => !x.Processed && !x.Processing)
-                                .OrderBy(x => x.Id)
-                                .Select(x => x.SubmissionId)
-                                .ToList();
-
-                            submissions.ForEach(this.submissionsForProcessing.Enqueue);
-                        }
-
-                        retrievedSubmissionSuccessfully = this.submissionsForProcessing.TryDequeue(out submissionId);
-
-                        if (retrievedSubmissionSuccessfully)
-                        {
-                            this.logger.InfoFormat("Submission №{0} retrieved from data store successfully", submissionId);
-
-                            submission = data.Submissions.GetById(submissionId);
-                            submissionForProcessing = data.SubmissionsForProcessing
-                                .All()
-                                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
-
-                            if (submission != null && submissionForProcessing != null && !submission.Processing)
+                            if (this.submissionsForProcessing.IsEmpty)
                             {
-                                submissionForProcessing.Processing = true;
-                                data.SaveChanges();
+                                var submissions = submissionsForProccessingData
+                                    .GetUnprocessedSubmissions()
+                                    .OrderBy(x => x.Id)
+                                    .Select(x => x.SubmissionId)
+                                    .ToList();
+
+                                submissions.ForEach(this.submissionsForProcessing.Enqueue);
+                            }
+
+                            retrievedSubmissionSuccessfully = this.submissionsForProcessing
+                                .TryDequeue(out var submissionId);
+
+                            if (retrievedSubmissionSuccessfully)
+                            {
+                                this.logger
+                                    .InfoFormat($"Submission №{submissionId} retrieved from data store successfully");
+
+                                submission = data.Submissions.GetById(submissionId);
+
+                                submissionForProcessing = submissionsForProccessingData
+                                    .GetBySubmissionId(submissionId);
+
+                                if (submission != null && submissionForProcessing != null && !submission.Processing)
+                                {
+                                    submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
+                                }
                             }
                         }
                     }
+                    catch (Exception exception)
+                    {
+                        this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
+                        throw;
+                    }
 
-                    if (!retrievedSubmissionSuccessfully || submission == null || submissionForProcessing == null)
+                    if (retrievedSubmissionSuccessfully && submission != null && submissionForProcessing != null)
+                    {
+                        this.BeginProcessingSubmission(
+                            submission,
+                            submissionForProcessing,
+                            data,
+                            submissionsForProccessingData,
+                            participantScoresData);
+                    }
+                    else
                     {
                         Thread.Sleep(1000);
-                        continue;
                     }
                 }
-                catch (Exception exception)
-                {
-                    this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
-                    throw;
-                }
-
-                submission.ProcessingComment = null;
-                try
-                {
-                    data.TestRuns.DeleteBySubmissionId(submission.Id);
-                    this.ProcessSubmission(submission);
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in ProcessSubmission: {exception.Message}";
-                }
-
-                try
-                {
-                    this.CalculatePointsForSubmission(submission);
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {exception.Message}";
-                }
-
-                submission.Processed = true;
-                submissionForProcessing.Processed = true;
-                submissionForProcessing.Processing = false;
-
-                try
-                {
-                    participantScoresData.SaveBySubmission(submission);
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
-                }
-
-                try
-                {
-                    submission.CacheTestRuns();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
-                    submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
-                }
-
-                try
-                {
-                    data.SaveChanges();
-                }
-                catch (Exception exception)
-                {
-                    this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
-                }
-
-                this.logger.InfoFormat("Submission №{0} successfully processed", submissionId);
             }
 
             this.logger.Info("SubmissionJob stopped.");
@@ -200,6 +151,71 @@
             }
         }
 
+        private void BeginProcessingSubmission(
+            Submission submission,
+            SubmissionForProcessing submissionForProcessing,
+            IOjsData data,
+            ISubmissionsForProcessingDataService submissionsForProccessingData,
+            IParticipantScoresDataService participantScoresData)
+        {
+            submission.ProcessingComment = null;
+            try
+            {
+                data.TestRuns.DeleteBySubmissionId(submission.Id);
+                this.ProcessSubmission(submission);
+                data.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("ProcessSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                submission.ProcessingComment = $"Exception in ProcessSubmission: {exception.Message}";
+            }
+
+            try
+            {
+                this.CalculatePointsForSubmission(submission);
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {exception.Message}";
+            }
+
+            submission.Processed = true;
+            submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
+
+            try
+            {
+                participantScoresData.SaveBySubmission(submission);
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
+            }
+
+            try
+            {
+                submission.CacheTestRuns();
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", submission.Id, exception);
+                submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+            }
+
+            try
+            {
+                data.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                this.logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", submission.Id, exception);
+            }
+
+            this.logger.InfoFormat("Submission №{0} successfully processed", submission.Id);
+        }
+        
         private void ProcessSubmission(Submission submission)
         {
             // TODO: Check for N+1 queries problem

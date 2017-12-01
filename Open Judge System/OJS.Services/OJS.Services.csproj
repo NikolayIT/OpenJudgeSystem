@@ -41,9 +41,13 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Business\ParticipantScores\IParticipantScoresBusinessService.cs" />
     <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
+    <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Data\Contests\ContestsDataService.cs" />
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
@@ -87,8 +93,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
