@@ -1,10 +1,13 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System;
+    using System.Configuration;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
@@ -28,6 +31,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
+    using HttpClient = System.Net.Http.HttpClient;
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
@@ -110,9 +114,21 @@
             var contest = this.Data.Contests.GetById(id);
             this.ValidateContest(contest, official);
 
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, id))
+            if (official)
             {
-                return this.RedirectToAction("NewContestIp", new { id });
+                var apiKey = Environment.GetEnvironmentVariable(Settings.ApiKey, EnvironmentVariableTarget.User);
+
+                // TODO: check also if ContestType is online
+                if (!this.IsUserAllowedToCompete(this.UserProfile.UserName, id, apiKey))
+                {
+                    this.TempData.AddDangerMessage("You are not allowed to compete in this contest!");
+                    return this.RedirectToAction<HomeController>(c => c.Index());
+                }
+
+                if (!this.ValidateContestIp(this.Request.UserHostAddress, id))
+                {
+                    return this.RedirectToAction("NewContestIp", new { id });
+                }
             }
 
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
@@ -707,6 +723,28 @@
                 .Any(x => x.Id == contestId && (!x.AllowedIps.Any() || x.AllowedIps.Any(y => y.Ip.Value == ip)));
 
             return isValidIp;
+        }
+
+        private bool IsUserAllowedToCompete(string userId, int contestId, string apiKey)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
+                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
+
+                var response = httpClient
+                    .PostAsJsonAsync(Settings.CanUserCompeteInContestUrl, new { userId, contestId, apiKey })
+                    .GetAwaiter()
+                    .GetResult();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var isAllowed = response.Content.ReadAsAsync<bool>();
+                    return isAllowed.Result;
+                }
+
+                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
+            }
         }
     }
 }
