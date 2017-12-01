@@ -20,61 +20,12 @@
         </div>
         <br />
         <div class="editor-label">
-            @Html.LabelFor(m => m.MaximumPoints)
+            @Html.LabelFor(m => m.ContestName)
         </div>
         <div class="panel-body news-content editor-field">
-            @Model.MaximumPoints
+            @Model.ContestName
         </div>
         <br />
-        <div class="editor-label">
-            @Html.LabelFor(m => m.TimeLimit)
-        </div>
-        <div class="panel-body news-content editor-field">
-            @Model.TimeLimit
-        </div>
-        <br />
-        <div class="editor-label">
-            @Html.LabelFor(m => m.MemoryLimit)
-        </div>
-        <div class="panel-body news-content editor-field">
-            @Model.MemoryLimit
-        </div>
-        <br />
-
-        if (Model.SourceCodeSizeLimit != null)
-        {
-            <div class="editor-label">
-                @Html.LabelFor(m => m.SourceCodeSizeLimit)
-            </div>
-            <div class="panel-body news-content editor-field">
-                @Model.SourceCodeSizeLimit
-            </div>
-            <br />
-        }
-
-        if (Model.SolutionSkeletonShort != null)
-        {
-            <div class="editor-label">
-                @Html.LabelFor(m => m.SolutionSkeletonShort)
-            </div>
-            <div class="panel-body news-content editor-field">
-                <pre class="monospace-font">
-                    @Model.SolutionSkeletonShort
-                </pre>
-            </div>
-            <br />
-        }
-
-        if (Model.Checker != null)
-        {
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Checker)
-            </div>
-            <div class="panel-body news-content editor-field">
-                @Model.Checker
-            </div>
-            <br />
-        }
         <div class="editor-label">
             @Html.LabelFor(m => m.OrderBy)
         </div>
