@@ -184,7 +184,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (this.contestsData.CanBeCompetedByContestId(model.Id.Value))
+            if (this.contestsData.CanBeCompetedById(model.Id.Value))
             {
                 this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permitted_for_deletion;
                 return this.RedirectToAction(c => c.Index());

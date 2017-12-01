@@ -1,6 +1,7 @@
 ﻿namespace OJS.Services.Data.Contests
 {
     using System.Linq;
+
     using OJS.Data.Models;
     using OJS.Services.Common;
 
@@ -18,6 +19,6 @@
 
         IQueryable<Contest> GetAllVisible();
 
-        bool CanBeCompetedByContestId(int contestId);
+        bool CanBeCompetedById(int contestId);
     }
 }

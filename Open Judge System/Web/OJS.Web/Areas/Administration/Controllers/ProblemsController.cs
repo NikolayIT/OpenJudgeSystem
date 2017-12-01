@@ -401,7 +401,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (this.contestsData.CanBeCompetedByContestId(selectedProblem.ContestId))
+            if (this.contestsData.CanBeCompetedById(selectedProblem.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(selectedProblem.ContestId));

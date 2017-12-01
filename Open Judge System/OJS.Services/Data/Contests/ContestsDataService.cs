@@ -31,7 +31,7 @@
 
         public IQueryable<Contest> GetAllVisible() => this.contests.All().Where(c => c.IsVisible);
 
-        public bool CanBeCompetedByContestId(int contestId)
+        public bool CanBeCompetedById(int contestId)
         {
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.CanBeCompeted;
