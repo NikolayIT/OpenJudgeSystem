@@ -191,7 +191,7 @@
                 return this.GridOperation(request, model);
             }
 
-            this.BaseDestroy(model.Id);
+            this.contestsData.DeleteById(model.Id.Value);
             return this.GridOperation(request, model);
         }
 

@@ -31,6 +31,12 @@
 
         public IQueryable<Contest> GetAllVisible() => this.contests.All().Where(c => c.IsVisible);
 
+        public void DeleteById(int contestId)
+        {
+            this.contests.Delete(contestId);
+            this.contests.SaveChanges();
+        }
+
         public bool CanBeCompetedById(int contestId)
         {
             var contest = this.contests.GetById(contestId);
