@@ -7,6 +7,9 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
+    using SimpleInjector;
+    using SimpleInjector.Lifestyles;
+
     internal static class Program
     {
         /// <summary>
@@ -20,10 +23,16 @@ namespace OJS.Workers.LocalWorker
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
+                
+                var container = new Container();
+                Bootstrap.Start(container);
 
-                // Run the service
-                var servicesToRun = new ServiceBase[] { new LocalWorkerService() };
-                ServiceBase.Run(servicesToRun);
+                using (ThreadScopedLifestyle.BeginScope(container))
+                {
+                    var localWorkerService = container.GetInstance<LocalWorkerService>();
+
+                    ServiceBase.Run(localWorkerService);
+                }
             }
             catch (Exception exception)
             {
