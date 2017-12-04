@@ -160,6 +160,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The contest cannot be competed at this moment. Please try again later..
+        /// </summary>
+        public static string Online_contest_cannot_be_validated {
+            get {
+                return ResourceManager.GetString("Online_contest_cannot_be_validated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The problem was not found!.
         /// </summary>
         public static string Problem_not_found {
