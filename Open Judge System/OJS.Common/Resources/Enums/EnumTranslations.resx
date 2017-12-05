@@ -129,8 +129,17 @@
   <data name="InvalidSubmissionStatus" xml:space="preserve">
     <value>Invalid</value>
   </data>
+  <data name="Lab" xml:space="preserve">
+    <value>Lab</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>MultiLine TextBox</value>
+  </data>
+  <data name="Online_practical_exam" xml:space="preserve">
+    <value>Online Practical Exam</value>
+  </data>
+  <data name="Onsite_practical_exam" xml:space="preserve">
+    <value>Onsite Practical Exam</value>
   </data>
   <data name="OpenTestDescription" xml:space="preserve">
     <value>Open</value>
