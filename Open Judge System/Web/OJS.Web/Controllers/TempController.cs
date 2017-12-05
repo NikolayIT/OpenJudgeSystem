@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
-
+    using EntityFramework.Extensions;
     using MissingFeatures;
 
     using OJS.Common.Extensions;
@@ -90,5 +90,12 @@
             result.Append("</ol>");
             return this.Content(result.ToString());
         }
+
+        // TODO: Remove this method after updating the entities
+        public void MigrateAllExistingLabsToNewEnumValue() =>
+            this.Data.Contests
+                .AllWithDeleted()
+                .Where(c => c.Type == (ContestType)2)
+                .Update(c => new Contest { Type = ContestType.Lab });
     }
 }
