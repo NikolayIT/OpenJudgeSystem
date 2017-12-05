@@ -19,6 +19,8 @@
 
         IQueryable<Contest> GetAllVisible();
 
+        IQueryable<Contest> GetAllWithDeleted();
+
         void DeleteById(int contestId);
 
         bool CanBeCompetedById(int contestId);
