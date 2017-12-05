@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
@@ -31,12 +32,17 @@
         private const int LabDurationInSeconds = 30 * 60;
 
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IContestsDataService contestsData;
 
         public ContestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData)
-                : base(data) =>
-                    this.participantScoresData = participantScoresData;
+            IParticipantScoresDataService participantScoresData,
+            IContestsDataService contestsData)
+                : base(data)
+        {
+            this.participantScoresData = participantScoresData;
+            this.contestsData = contestsData;
+        }        
 
         public override IEnumerable GetData()
         {
@@ -173,18 +179,26 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+                return this.GridOperation(request, model);
             }
 
-            this.BaseDestroy(model.Id);
+            if (this.contestsData.CanBeCompetedById(model.Id.Value))
+            {
+                this.TempData.AddDangerMessage(Resource.Active_contest_permitted_for_deletion);
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+                return this.GridOperation(request, model);
+            }
+
+            this.contestsData.DeleteById(model.Id.Value);
             return this.GridOperation(request, model);
         }
 
         public ActionResult GetFutureContests([DataSourceRequest]DataSourceRequest request)
         {
-            var futureContests = this.Data.Contests
-                .AllUpcoming()
+            var futureContests = this.contestsData
+                .GetAllUpcoming()
                 .OrderBy(contest => contest.StartTime)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -199,8 +213,8 @@
 
         public ActionResult GetActiveContests([DataSourceRequest]DataSourceRequest request)
         {
-            var activeContests = this.Data.Contests
-                .AllActive()
+            var activeContests = this.contestsData
+                .GetAllActive()
                 .OrderBy(contest => contest.EndTime)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -215,8 +229,8 @@
 
         public ActionResult GetLatestContests([DataSourceRequest]DataSourceRequest request)
         {
-            var latestContests = this.Data.Contests
-                .AllVisible()
+            var latestContests = this.contestsData
+                .GetAllVisible()
                 .OrderByDescending(contest => contest.CreatedOn)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -306,8 +320,8 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var contest = this.Data.Contests
-                .AllInactive()
+            var contest = this.contestsData
+                .GetAllInactive()
                 .Where(c => c.Id == id)
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
@@ -337,7 +351,7 @@
 
             if (categoryContest.CanBeCompeted)
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permitted_for_transfer;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 

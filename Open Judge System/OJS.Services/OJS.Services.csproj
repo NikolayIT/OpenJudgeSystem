@@ -60,10 +60,14 @@
     <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Data\Contests\ContestsDataService.cs" />
+    <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
     <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
     <Compile Include="Data\Participants\IParticipantsDataService.cs" />
     <Compile Include="Data\Participants\ParticipantsDataService.cs" />
+    <Compile Include="Data\Problems\IProblemsDataService.cs" />
+    <Compile Include="Data\Problems\ProblemsDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />

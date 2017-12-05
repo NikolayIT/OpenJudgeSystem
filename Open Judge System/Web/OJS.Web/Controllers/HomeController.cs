@@ -6,14 +6,18 @@
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Home.Index;
 
     public class HomeController : BaseController
     {
-        public HomeController(IOjsData data)
+        private readonly IContestsDataService contestsData;
+
+        public HomeController(IOjsData data, IContestsDataService contestsData)
             : base(data)
         {
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -23,7 +27,7 @@
 
             var indexViewModel = new IndexViewModel
             {
-                ActiveContests = this.Data.Contests.AllActive()
+                ActiveContests = this.contestsData.GetAllActive()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
@@ -36,7 +40,7 @@
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
-            PastContests = this.Data.Contests.AllPast()
+            PastContests = this.contestsData.GetAllPast()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
