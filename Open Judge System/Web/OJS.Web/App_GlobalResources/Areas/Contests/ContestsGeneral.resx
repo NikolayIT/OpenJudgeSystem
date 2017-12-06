@@ -186,7 +186,4 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Online_contest_cannot_be_validated" xml:space="preserve">
-    <value>The contest cannot be competed at this moment. Please try again later.</value>
-  </data>
 </root>

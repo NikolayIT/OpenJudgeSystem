@@ -118,15 +118,15 @@
                 try
                 {
                     // TODO: check also if ContestType is online
-                    if (!this.IsUserAllowedToCompete(this.UserProfile.UserName, id, Settings.ApiKey))
+                    if (!this.IsUserAllowedToCompete(this.UserProfile.Id, id, Settings.ApiKey))
                     {
-                        this.TempData.AddDangerMessage(Resource.ContestsGeneral.Contest_cannot_be_competed);
+                        this.TempData.AddDangerMessage(Resource.ContestsGeneral.User_is_not_registered_for_exam);
                         return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
                     }
                 }
                 catch
                 {
-                    this.TempData.AddDangerMessage(Resource.ContestsGeneral.Online_contest_cannot_be_validated);
+                    this.TempData.AddDangerMessage(Resource.ContestsGeneral.Contest_cannot_be_competed);
                     return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
                 }
 
@@ -737,18 +737,15 @@
                 var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
                 httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
 
+                var requestUri = $"{Settings.CanUserCompeteInContestUrl}?apiKey={apiKey}";
                 var response = httpClient
-                    .PostAsJsonAsync(Settings.CanUserCompeteInContestUrl, new { userId, contestId, apiKey })
+                    .PostAsJsonAsync(requestUri, new { userId, judgeContestId = contestId })
                     .GetAwaiter()
                     .GetResult();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var isAllowed = response.Content.ReadAsAsync<bool>();
-                    return isAllowed.Result;
-                }
+                response.EnsureSuccessStatusCode();
 
-                throw new HttpException();
+                return response.Content.ReadAsAsync<bool>().Result;
             }
         }
     }

@@ -186,7 +186,4 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
-  <data name="Online_contest_cannot_be_validated" xml:space="preserve">
-    <value>Състезанието не е достъпно в момента. Моля опитайте по-късно.</value>
-  </data>
 </root>
