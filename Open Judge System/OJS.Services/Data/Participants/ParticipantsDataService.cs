@@ -7,26 +7,35 @@
 
     public class ParticipantsDataService : IParticipantsDataService
     {
-        private readonly IEfGenericRepository<Participant> participnats;
+        private readonly IEfGenericRepository<Participant> participants;
 
         public ParticipantsDataService(IEfGenericRepository<Participant> participnats) =>
-            this.participnats = participnats;
+            this.participants = participnats;
 
-        public IQueryable<Participant> GetAllQuery() => this.participnats.All();
+        public IQueryable<Participant> GetAll() => this.participants.All();
+
+        public IQueryable<Participant> GetByIdQuery(int participantId) =>
+            this.participants
+                .All()
+                .Where(x => x.Id == participantId);
+
+        public bool IsOfficialById(int participantId) =>
+            this.participants
+                .All()
+                .Where(x => x.Id == participantId)
+                .Select(x => x.IsOfficial)
+                .FirstOrDefault();
 
         public IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficialQuery(int contestId, bool isOfficial) =>
-            this.participnats
+            this.participants
                 .All()
                 .Where(p => p.ContestId == contestId && p.Scores.Any() && p.IsOfficial == isOfficial);
 
         public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
-            this.participnats
+            this.participants
                 .All()
                 .Any(p => p.ContestId == contestId &&
                     p.UserId == userId &&
                     p.IsOfficial == isOfficial);
-
-        public IQueryable<Participant> GetByContestIdQuery(int contestId, bool isOfficial) =>
-            this.participnats.All().Where(p => p.ContestId == contestId && p.IsOfficial == isOfficial);
     }
 }

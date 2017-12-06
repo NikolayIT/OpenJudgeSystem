@@ -11,6 +11,8 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ParticipantScores;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
@@ -31,15 +33,21 @@
 
         private const int MaxContestsToTake = 20;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IParticipantScoresBusinessService participantScoresBusiness;
+        private readonly IParticipantScoresDataService participantScoresData;
 
         private int? contestId;
 
         public SubmissionsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IParticipantScoresBusinessService participantScoresBusiness,
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.participantScoresBusiness = participantScoresBusiness;
+            this.participantScoresData = participantScoresData;
         }
 
         public override IEnumerable GetData()
@@ -123,7 +131,7 @@
                     using (var scope = new TransactionScope())
                     {
                         this.BaseCreate(entity);
-                        this.submissionsForProcessingData.AddOrUpdate(model.Id.Value);
+                        this.submissionsForProcessingData.AddOrUpdateBySubmissionId(model.Id.Value);
 
                         scope.Complete();
                     }
@@ -220,7 +228,7 @@
                             submission.Processed = false;
                             submission.Processing = false;
 
-                            this.submissionsForProcessingData.AddOrUpdate(submission.Id);
+                            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 
                             var submissionIsBestSubmission = this.IsBestSubmission(
                                 submissionProblemId,
@@ -229,8 +237,9 @@
 
                             if (submissionIsBestSubmission)
                             {
-                                this.Data.ParticipantScores
-                                    .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                                this.participantScoresBusiness.RecalculateForParticipantByProblem(
+                                    submissionParticipantId,
+                                    submissionProblemId);
                             }
 
                             this.Data.SaveChanges();
@@ -307,7 +316,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.submissionsForProcessingData.Remove(submission.Id);
+                this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -318,8 +327,9 @@
 
                 if (isBestSubmission)
                 {
-                    this.Data.ParticipantScores
-                        .RecalculateParticipantScore(submission.ParticipantId.Value, submission.ProblemId.Value);
+                    this.participantScoresBusiness.RecalculateForParticipantByProblem(
+                        submission.ParticipantId.Value,
+                        submission.ProblemId.Value);
                 }
 
                 this.Data.SaveChanges();
@@ -343,7 +353,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.submissionsForProcessingData.Remove(submission.Id);
+                    this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -368,10 +378,9 @@
 
                     if (isBestSubmission)
                     {
-                        this.Data.ParticipantScores
-                            .RecalculateParticipantScore(
-                                dbSubmission.ParticipantId.Value,
-                                dbSubmission.ProblemId.Value);
+                        this.participantScoresBusiness.RecalculateForParticipantByProblem(
+                            dbSubmission.ParticipantId.Value,
+                            dbSubmission.ProblemId.Value);
                     }
                 }
 
@@ -473,7 +482,7 @@
                     submission.Processed = false;
                     submission.Processing = false;
 
-                    this.submissionsForProcessingData.AddOrUpdate(submission.Id);
+                    this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
                         submissionProblemId,
@@ -482,8 +491,9 @@
 
                     if (submissionIsBestSubmission)
                     {
-                        this.Data.ParticipantScores
-                            .RecalculateParticipantScore(submissionParticipantId, submissionProblemId);
+                        this.participantScoresBusiness.RecalculateForParticipantByProblem(
+                            submissionParticipantId,
+                            submissionProblemId);
                     }
 
                     this.Data.SaveChanges();
@@ -634,10 +644,7 @@
 
         private bool IsBestSubmission(int problemId, int participantId, int submissionId)
         {
-            var bestScore = this.Data.ParticipantScores
-                .All()
-                .FirstOrDefault(ps => ps.ProblemId == problemId &&
-                                      ps.ParticipantId == participantId);
+            var bestScore = this.participantScoresData.GetByParticipantIdAndProblemId(participantId, problemId);
 
             return bestScore?.SubmissionId == submissionId;
         }

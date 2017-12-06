@@ -17,6 +17,7 @@
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
+    using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Attributes;
@@ -32,15 +33,18 @@
 
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
+        private readonly IParticipantScoresDataService participantScoresData;
 
         public ResultsController(
             IOjsData data,
             IContestsDataService contestsData,
-            IParticipantsDataService participantsData)
+            IParticipantsDataService participantsData,
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.contestsData = contestsData;
             this.participantsData = participantsData;
+            this.participantScoresData = participantScoresData;
         }
 
         /// <summary>
@@ -66,8 +70,8 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Problem_results_not_available);
             }
 
-            var results = this.Data.ParticipantScores
-                .All()
+            var results = this.participantScoresData
+                .GetAll()
                 .Where(ps => ps.ProblemId == problem.Id && ps.IsOfficial == official)
                 .Select(ps => new ProblemResultViewModel
                 {
@@ -277,7 +281,7 @@
                     .FirstOrDefault();
 
             var submissions = this.participantsData
-                .GetAllQuery()
+                .GetAll()
                 .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                 .SelectMany(participant =>
                     participant.Contest.Problems

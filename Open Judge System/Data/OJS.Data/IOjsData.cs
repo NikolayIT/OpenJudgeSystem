@@ -40,13 +40,9 @@
 
         IParticipantsRepository Participants { get; }
 
-        IParticipantScoresRepository ParticipantScores { get; }
-
         IRepository<Setting> Settings { get; }
 
         ISubmissionsRepository Submissions { get; }
-
-        ISubmissionsForProcessingRepository SubmissionsForProcessing { get; }
 
         IRepository<SubmissionType> SubmissionTypes { get; }
 

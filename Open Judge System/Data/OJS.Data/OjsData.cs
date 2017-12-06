@@ -45,9 +45,6 @@
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
 
-        public ISubmissionsForProcessingRepository SubmissionsForProcessing => (SubmissionsForProcessingRepository)
-            this.GetRepository<SubmissionForProcessing>();
-
         public IRepository<SubmissionType> SubmissionTypes => this.GetRepository<SubmissionType>();
 
         public IDeletableEntityRepository<SourceCode> SourceCodes => this.GetDeletableEntityRepository<SourceCode>();
@@ -63,8 +60,6 @@
         public ITestRunsRepository TestRuns => (TestRunsRepository)this.GetRepository<TestRun>();
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
-
-        public IParticipantScoresRepository ParticipantScores => (ParticipantScoresRepository)this.GetRepository<ParticipantScore>();
 
         public IDeletableEntityRepository<FeedbackReport> FeedbackReports => 
             this.GetDeletableEntityRepository<FeedbackReport>();
@@ -136,16 +131,6 @@
                 if (typeof(T).IsAssignableFrom(typeof(Participant)))
                 {
                     type = typeof(ParticipantsRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(ParticipantScore)))
-                {
-                    type = typeof(ParticipantScoresRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(SubmissionForProcessing)))
-                {
-                    type = typeof(SubmissionsForProcessingRepository);
                 }
 
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
