@@ -14,10 +14,12 @@
             problem => new DeleteProblemViewModel
             {
                 Id = problem.Id,
-                ContestId = problem.ContestId,
+
+                // TODO: revise logic for getting ContestId
+                ContestId = problem.ContestId.Value,
                 Name = problem.Name,
                 ContestName = problem.Contest.Name,
-                OrderBy = problem.OrderBy,
+                OrderBy = problem.OrderBy
             };
 
         public int Id { get; set; }
