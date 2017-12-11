@@ -33,6 +33,8 @@
 
         public virtual IDbSet<Problem> Problems { get; set; }
 
+        public virtual IDbSet<ProblemGroup> ProblemGroups { get; set; }
+
         public virtual IDbSet<News> News { get; set; }
 
         public virtual IDbSet<Event> Events { get; set; }
@@ -120,15 +122,15 @@
                         "ContestQuestionAnswers",
                         "ContestQuestions",
                         "Contests",
-                        "ContestCategories",
+                        "ContestCategories"
                     };
 
             foreach (var tableName in tableNames)
             {
-                this.Database.ExecuteSqlCommand(string.Format("DELETE FROM {0}", tableName));
+                this.Database.ExecuteSqlCommand($"DELETE FROM {tableName}");
                 try
                 {
-                    this.Database.ExecuteSqlCommand(string.Format("DBCC CHECKIDENT ('{0}', RESEED, 0)", tableName));
+                    this.Database.ExecuteSqlCommand($"DBCC CHECKIDENT ('{tableName}', RESEED, 0)");
                 }
                 catch
                 {
@@ -140,10 +142,7 @@
         }
 
         public new IDbSet<T> Set<T>()
-            where T : class
-        {
-            return base.Set<T>();
-        }
+            where T : class => base.Set<T>();
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -153,8 +152,12 @@
             modelBuilder.Configurations.Add(new ParticipantAnswersConfiguration());
             modelBuilder.Configurations.Add(new ParticipantScoresConfiguration());
             modelBuilder.Configurations.Add(new UserProfileConfiguration());
+            modelBuilder.Configurations.Add(new ProblemsConfiguration());
 
-            base.OnModelCreating(modelBuilder); // Without this call EntityFramework won't be able to configure the identity model
+            ManyToManyTableNamesConfiguration.Configure(modelBuilder);
+
+            // Without this call EntityFramework won't be able to configure the identity model
+            base.OnModelCreating(modelBuilder);
         }
 
         private void ApplyAuditInfoRules()

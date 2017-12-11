@@ -10,31 +10,18 @@
 
     public class Problem : DeletableEntity, IOrderable
     {
-        private ICollection<Test> tests;
-        private ICollection<ProblemResource> resources;
-        private ICollection<Submission> submissions;
-        private ICollection<Tag> tags;
-        private ICollection<ParticipantScore> participantScores;
-        private ICollection<SubmissionType> submissionTypes;
-
-        public Problem()
-        {
-            this.tests = new HashSet<Test>();
-            this.resources = new HashSet<ProblemResource>();
-            this.submissions = new HashSet<Submission>();
-            this.tags = new HashSet<Tag>();
-            this.participantScores = new HashSet<ParticipantScore>();
-            this.submissionTypes = new HashSet<SubmissionType>();
-        }
-
         [Key]
         public int Id { get; set; }
 
         public int? OldId { get; set; }
 
-        public int ContestId { get; set; }
+        public int? ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
+
+        public int? ProblemGroupId { get; set; }
+
+        public virtual ProblemGroup ProblemGroup { get; set; }
 
         [Required]
         [MaxLength(GlobalConstants.ProblemNameMaxLength)]
@@ -43,21 +30,21 @@
         public short MaximumPoints { get; set; }
 
         /// <summary>
-        /// Time limit for the problem. Measured in milliseconds.
+        /// Gets or sets a Time limit for the problem. Measured in milliseconds.
         /// </summary>
         public int TimeLimit { get; set; }
 
         /// <summary>
-        /// Memory limit for the problem. Measured in bytes.
+        /// Gets or sets a Memory limit for the problem. Measured in bytes.
         /// </summary>
         public int MemoryLimit { get; set; }
 
         /// <summary>
-        /// File size limit (measured in bytes).
+        /// Gets or sets a File size limit (measured in bytes).
         /// </summary>
         public int? SourceCodeSizeLimit { get; set; }
 
-        [ForeignKey("Checker")]
+        [ForeignKey(nameof(Checker))]
         public int? CheckerId { get; set; }
 
         public virtual Checker Checker { get; set; }
@@ -65,12 +52,12 @@
         public int OrderBy { get; set; }
 
         /// <summary>
-        /// Predefined skeleton for the task
+        /// Gets or sets a predefined skeleton for the task
         /// </summary>
         public byte[] SolutionSkeleton { get; set; }
 
         /// <summary>
-        /// Problem specific dependencies that will be compiled and executed with the user code
+        /// Gets or sets Problem specific dependencies that will be compiled and executed with the user code
         /// such as Solution skeletons, mocks or data and text files.
         /// </summary>
         public byte[] AdditionalFiles { get; set; }
@@ -82,40 +69,18 @@
         [DefaultValue(false)]
         public bool ShowDetailedFeedback { get; set; }
 
-        public virtual ICollection<Test> Tests
-        {
-            get { return this.tests; }
-            set { this.tests = value; }
-        }
+        public virtual ICollection<Test> Tests { get; set; } = new HashSet<Test>();
 
-        public virtual ICollection<ProblemResource> Resources
-        {
-            get { return this.resources; }
-            set { this.resources = value; }
-        }
+        public virtual ICollection<ProblemResource> Resources { get; set; } = new HashSet<ProblemResource>();
 
-        public virtual ICollection<Submission> Submissions
-        {
-            get { return this.submissions; }
-            set { this.submissions = value; }
-        }
+        public virtual ICollection<Submission> Submissions { get; set; } = new HashSet<Submission>();
 
-        public virtual ICollection<Tag> Tags
-        {
-            get { return this.tags; }
-            set { this.tags = value; }
-        }
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
 
-        public virtual ICollection<ParticipantScore> ParticipantScores
-        {
-            get { return this.participantScores; }
-            set { this.participantScores = value; }
-        }
+        public virtual ICollection<ParticipantScore> ParticipantScores { get; set; } = new HashSet<ParticipantScore>();
 
-        public virtual ICollection<SubmissionType> SubmissionTypes
-        {
-            get { return this.submissionTypes; }
-            set { this.submissionTypes = value; }
-        }
+        public virtual ICollection<SubmissionType> SubmissionTypes { get; set; } = new HashSet<SubmissionType>();
+
+        public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
     }
 }
