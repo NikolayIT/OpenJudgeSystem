@@ -5,10 +5,12 @@
     using System.Globalization;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
-
+    using System.Web.Mvc.Expressions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
@@ -28,6 +30,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
+    using HttpClient = System.Net.Http.HttpClient;
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
@@ -110,9 +113,27 @@
             var contest = this.Data.Contests.GetById(id);
             this.ValidateContest(contest, official);
 
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, id))
+            if (official)
             {
-                return this.RedirectToAction("NewContestIp", new { id });
+                try
+                {
+                    // TODO: check also if ContestType is online
+                    if (!this.IsUserAllowedToCompete(this.UserProfile.Id, id, Settings.ApiKey))
+                    {
+                        this.TempData.AddDangerMessage(Resource.ContestsGeneral.User_is_not_registered_for_exam);
+                        return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                    }
+                }
+                catch
+                {
+                    this.TempData.AddDangerMessage(Resource.ContestsGeneral.Contest_cannot_be_competed);
+                    return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                }
+
+                if (!this.ValidateContestIp(this.Request.UserHostAddress, id))
+                {
+                    return this.RedirectToAction(c => c.NewContestIp(id));
+                }
             }
 
             var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
@@ -129,7 +150,7 @@
                     // Participant not found, the contest requires password or the contest has questions
                     // to be answered before registration. Redirect to the registration page.
                     // The registration page will take care of all security checks.
-                    return this.RedirectToAction("Register", new { id, official });
+                    return this.RedirectToAction(c => c.Register(id, official));
                 }
             }
 
@@ -707,6 +728,25 @@
                 .Any(x => x.Id == contestId && (!x.AllowedIps.Any() || x.AllowedIps.Any(y => y.Ip.Value == ip)));
 
             return isValidIp;
+        }
+
+        private bool IsUserAllowedToCompete(string userId, int contestId, string apiKey)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
+                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
+
+                var requestUri = $"{Settings.CanUserCompeteInContestUrl}?apiKey={apiKey}";
+                var response = httpClient
+                    .PostAsJsonAsync(requestUri, new { userId, judgeContestId = contestId })
+                    .GetAwaiter()
+                    .GetResult();
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsAsync<bool>().Result;
+            }
         }
     }
 }
