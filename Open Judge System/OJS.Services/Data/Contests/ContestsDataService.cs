@@ -31,6 +31,8 @@
 
         public IQueryable<Contest> GetAllVisible() => this.contests.All().Where(c => c.IsVisible);
 
+        public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
+
         public void DeleteById(int contestId)
         {
             this.contests.Delete(contestId);
