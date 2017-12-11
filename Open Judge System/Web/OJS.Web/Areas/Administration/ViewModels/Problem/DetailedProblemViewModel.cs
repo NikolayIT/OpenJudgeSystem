@@ -44,7 +44,9 @@
                 {
                     Id = problem.Id,
                     Name = problem.Name,
-                    ContestId = problem.ContestId,
+
+                    // TODO: revise logic for getting ContestId
+                    ContestId = problem.ContestId.Value,
                     ContestName = problem.Contest.Name,
                     TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
                     CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),

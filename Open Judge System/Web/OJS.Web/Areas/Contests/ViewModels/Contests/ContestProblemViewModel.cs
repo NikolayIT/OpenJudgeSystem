@@ -20,7 +20,9 @@
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
             this.OrderBy = problem.OrderBy;
-            this.ContestId = problem.ContestId;
+
+            // TODO: revise logic for getting ContestId
+            this.ContestId = problem.ContestId.Value;
             this.ShowResults = problem.ShowResults;
             this.Resources = problem.Resources.AsQueryable()
                                                 .OrderBy(x => x.OrderBy)
@@ -49,7 +51,9 @@
                     Name = problem.Name,
                     OrderBy = problem.OrderBy,
                     ProblemId = problem.Id,
-                    ContestId = problem.ContestId,
+
+                    // TODO: revise logic for getting ContestId
+                    ContestId = problem.ContestId.Value,
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
                     FileSizeLimit = problem.SourceCodeSizeLimit,

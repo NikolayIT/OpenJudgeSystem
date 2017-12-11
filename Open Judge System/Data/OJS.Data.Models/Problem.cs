@@ -15,7 +15,7 @@
 
         public int? OldId { get; set; }
 
-        public int ContestId { get; set; }
+        public int? ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
 

@@ -111,7 +111,8 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        // TODO: revise logic for getting ContestId
+                        this.ValidateParticipant(model.ParticipantId, problem.ContestId.Value);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
@@ -202,7 +203,8 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        // TODO: revise logic for getting ContestId
+                        this.ValidateParticipant(model.ParticipantId, problem.ContestId.Value);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);

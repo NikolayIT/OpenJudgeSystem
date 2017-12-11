@@ -27,7 +27,9 @@
                     ProblemId = sub.ProblemId,
                     ProblemName = sub.Problem.Name,
                     ContestName = sub.Problem.Contest.Name,
-                    ContestId = sub.Problem.ContestId,
+
+                    // TODO: revise logic for getting ContestId
+                    ContestId = sub.Problem.ContestId.Value,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
                     Status = !sub.Processing && sub.Processed

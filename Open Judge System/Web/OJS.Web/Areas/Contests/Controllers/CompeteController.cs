@@ -295,12 +295,14 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            // TODO: revise logic for getting ContestId
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            // TODO: revise logic for getting ContestId
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -366,12 +368,14 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            // TODO: revise logic for getting ContestId
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            // TODO: revise logic for getting ContestId
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -454,12 +458,14 @@
 
             this.ValidateContest(problem.Contest, official);
 
-            if (!this.Data.Participants.Any(problem.ContestId, this.UserProfile.Id, official))
+            // TODO: revise logic for getting ContestId
+            if (!this.Data.Participants.Any(problem.ContestId.Value, this.UserProfile.Id, official))
             {
                 return this.RedirectToAction("Register", new { id = problem.ContestId, official });
             }
 
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
+            // TODO: revise logic for getting ContestId
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -483,7 +489,9 @@
         public ActionResult ReadSubmissionResults([DataSourceRequest]DataSourceRequest request, int id, bool official)
         {
             var problem = this.Data.Problems.GetById(id);
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+
+            // TODO: revise logic for getting ContestId
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
 
             if (participant == null)
             {
@@ -508,7 +516,9 @@
         public ActionResult ReadSubmissionResultsAreCompiled([DataSourceRequest]DataSourceRequest request, int id, bool official)
         {
             var problem = this.Data.Problems.GetById(id);
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+
+            // TODO: revise logic for getting ContestId
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
 
             if (participant == null)
             {
