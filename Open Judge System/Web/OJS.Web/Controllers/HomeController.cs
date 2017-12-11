@@ -40,7 +40,7 @@
                     .OrderBy(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
-            PastContests = this.contestsData.GetAllPast()
+                PastContests = this.contestsData.GetAllPast()
                     .OrderByDescending(x => x.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
