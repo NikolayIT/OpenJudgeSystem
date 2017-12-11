@@ -85,8 +85,6 @@
 
         public int OrderBy { get; set; }
 
-        public short NumberOfProblemGroups { get; set; }
-
         public string Description { get; set; }
 
         public virtual ICollection<LecturerInContest> Lecturers { get; set; } = new HashSet<LecturerInContest>();
@@ -98,6 +96,8 @@
         public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
         public virtual ICollection<ContestIp> AllowedIps { get; set; } = new HashSet<ContestIp>();
+
+        public virtual ICollection<ProblemGroup> ProblemGroups { get; set; } = new HashSet<ProblemGroup>();
 
         [NotMapped]
         public bool CanBeCompeted
