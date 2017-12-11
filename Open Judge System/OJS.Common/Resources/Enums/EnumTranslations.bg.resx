@@ -129,8 +129,17 @@
   <data name="InvalidSubmissionStatus" xml:space="preserve">
     <value>Невалиден</value>
   </data>
+  <data name="Lab" xml:space="preserve">
+    <value>Лаб</value>
+  </data>
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>Многоредов текст</value>
+  </data>
+  <data name="Online_practical_exam" xml:space="preserve">
+    <value>Онлайн практически изпит</value>
+  </data>
+  <data name="Onsite_practical_exam" xml:space="preserve">
+    <value>Практически изпит на място</value>
   </data>
   <data name="OpenTestDescription" xml:space="preserve">
     <value>Отворен</value>

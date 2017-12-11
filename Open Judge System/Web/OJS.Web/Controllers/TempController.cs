@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
-
+    using EntityFramework.Extensions;
     using MissingFeatures;
 
     using OJS.Common.Extensions;
@@ -13,6 +13,7 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
 
@@ -20,11 +21,16 @@
     public class TempController : BaseController
     {
         private readonly IHangfireBackgroundJobService backgroundJobs;
+        private readonly IContestsDataService contestsData;
 
-        public TempController(IOjsData data, IHangfireBackgroundJobService backgroundJobs)
+        public TempController(
+            IOjsData data,
+            IHangfireBackgroundJobService backgroundJobs,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
+            this.contestsData = contestsData;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -90,5 +96,12 @@
             result.Append("</ol>");
             return this.Content(result.ToString());
         }
+
+        // TODO: Remove this method after updating the entities
+        public void MigrateAllExistingLabsToNewEnumValue() =>
+            this.contestsData
+                .GetAllWithDeleted()
+                .Where(c => c.Type == (ContestType)2)
+                .Update(c => new Contest { Type = ContestType.Lab });
     }
 }

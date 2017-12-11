@@ -61,11 +61,20 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is active and cannot be deleted!.
+        /// </summary>
+        public static string Active_contest_permitted_for_deletion {
+            get {
+                return ResourceManager.GetString("Active_contest_permitted_for_deletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contest is active and participants cannot be transferred.
         /// </summary>
-        public static string Active_contest_permited_for_transfer {
+        public static string Active_contest_permitted_for_transfer {
             get {
-                return ResourceManager.GetString("Active_contest_permited_for_transfer", resourceCulture);
+                return ResourceManager.GetString("Active_contest_permitted_for_transfer", resourceCulture);
             }
         }
         

@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -25,7 +26,9 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -46,15 +49,21 @@
     {
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
 
         public ProblemsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IContestsDataService contestsData,
+            IProblemsDataService problemsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
+            this.contestsData = contestsData;
+            this.problemsData = problemsData;
         }
 
         public ActionResult Index()
@@ -372,59 +381,73 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var selectedProblem = this.Data.Problems.All()
-                .Where(x => x.Id == id)
-                .Select(DetailedProblemViewModel.FromProblem)
+            var selectedProblem = this.problemsData
+                .GetByIdQuery(id.Value)
+                .Select(DeleteProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
             if (selectedProblem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
+            }
+
+            if (this.contestsData.CanBeCompetedById(selectedProblem.ContestId))
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
+                return this.RedirectToAction(c => c.Contest(selectedProblem.ContestId));
             }
 
             return this.View(selectedProblem);
         }
 
-        public ActionResult ConfirmDelete(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDelete(int problemId)
         {
-            if (id == null)
+            if (!this.CheckIfUserHasProblemPermissions(problemId))
             {
-                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var problem = this.problemsData.GetWithContestById(problemId);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
             }
 
-            this.Data.Resources.Delete(r => r.ProblemId == id);
+            if (problem.Contest.CanBeCompeted)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
+                return this.RedirectToAction(c => c.Contest(problem.ContestId));
+            }
 
-            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == id);
+            this.Data.Resources.Delete(r => r.ProblemId == problemId);
 
-            this.Data.Tests.Delete(t => t.ProblemId == id);
+            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == problemId);
 
-            this.Data.Submissions.Delete(s => s.ProblemId == id);
+            this.Data.Tests.Delete(t => t.ProblemId == problemId);
 
-            this.Data.Problems.Delete(id.Value);
+            this.Data.Submissions.Delete(s => s.ProblemId == problemId);
 
             this.Data.SaveChanges();
 
+            this.problemsData.DeleteByProblem(problem);
+
             this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
-            return this.RedirectToAction("Contest", new { id = problem.ContestId });
+            return this.RedirectToAction(c => c.Contest(problem.ContestId));
         }
 
         [HttpGet]
@@ -433,57 +456,76 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var contest = this.Data.Contests.All()
-                .Where(x => x.Id == id)
-                .Select(ContestAdministrationViewModel.ViewModel)
-                .FirstOrDefault();
+            var contest = this.contestsData.GetById(id.Value);
 
             if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
             }
 
-            return this.View(contest);
+            if (contest.CanBeCompeted)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
+                return this.RedirectToAction(c => c.Contest(id.Value));
+            }
+
+            var contestModel = new DeleteProblemsFromContestViewModel
+            {
+                Id = contest.Id,
+                Name = contest.Name
+            };
+
+            return this.View(contestModel);
         }
 
-        public ActionResult ConfirmDeleteAll(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteAll(int contestId)
         {
-            if (id == null || !this.Data.Contests.All().Any(x => x.Id == id))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction<ProblemsController>(x => x.Index());
+                return this.RedirectToAction(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value))
+            var contest = this.contestsData.GetById(contestId);
+
+            if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(nameof(this.Index));
+                return this.RedirectToAction(c => c.Index());
             }
 
-            this.Data.Resources.Delete(r => r.Problem.ContestId == id);
+            if (contest.CanBeCompeted)
+            {
+                this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
+                return this.RedirectToAction(c => c.Contest(contest.Id));
+            }
 
-            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ContestId == id);
+            this.Data.Resources.Delete(r => r.Problem.ContestId == contestId);
 
-            this.Data.Tests.Delete(t => t.Problem.ContestId == id);
+            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ContestId == contestId);
 
-            this.Data.Submissions.Delete(s => s.Problem.ContestId == id);
+            this.Data.Tests.Delete(t => t.Problem.ContestId == contestId);
 
-            this.Data.Problems.Delete(p => p.ContestId == id);
+            this.Data.Submissions.Delete(s => s.Problem.ContestId == contestId);
 
             this.Data.SaveChanges();
 
+            this.problemsData.DeleteAllByContestId(contestId);
+
             this.TempData.AddInfoMessage(GlobalResource.Problems_deleted);
-            return this.RedirectToAction("Contest", new { id });
+            return this.RedirectToAction(c => c.Contest(contestId));
         }
 
         public ActionResult Details(int? id)

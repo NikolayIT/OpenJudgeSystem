@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_permited_for_transfer" xml:space="preserve">
+  <data name="Active_contest_permitted_for_deletion" xml:space="preserve">
+    <value>Състезанието е активно и не може да бъде изтрито!</value>
+  </data>
+  <data name="Active_contest_permitted_for_transfer" xml:space="preserve">
     <value>Състезанието е активно и не може да се местят участници</value>
   </data>
   <data name="Contest" xml:space="preserve">
