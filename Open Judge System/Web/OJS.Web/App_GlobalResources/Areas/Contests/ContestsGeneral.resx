@@ -186,4 +186,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Compete" xml:space="preserve">
+    <value>Compete</value>
+  </data>
 </root>

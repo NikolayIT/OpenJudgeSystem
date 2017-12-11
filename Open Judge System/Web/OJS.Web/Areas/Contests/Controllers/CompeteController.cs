@@ -20,6 +20,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
@@ -69,7 +70,7 @@
             }
         }
 
-        /// <param name="official">A flag checking if the contest will be practiced or competed</param>
+        /// <summary>
         /// Validates if a contest is correctly found. If the user wants to practice or compete in the contest
         /// checks if the contest can be practiced or competed.
         /// </summary>
@@ -80,19 +81,15 @@
         {
             if (contest == null ||
                 contest.IsDeleted ||
-                !(contest.IsVisible ||
-                    this.User.IsAdmin() ||
-                    contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
-                    contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id)))
+                !contest.IsVisible ||
+                !this.IsUserAdminOrLecturerInContest(contest))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
             }
 
             if (official &&
                 !contest.CanBeCompeted &&
-                !(this.User.IsAdmin() ||
-                    contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
-                    contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id)))
+                !this.IsUserAdminOrLecturerInContest(contest))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
@@ -108,17 +105,18 @@
         /// Users only.
         /// </summary>
         [Authorize]
-        public ActionResult Index(int id, bool official)
+        public ActionResult Index(int id, bool official, bool? hasConfirmed)
         {
             var contest = this.Data.Contests.GetById(id);
+            var isOnline = contest.Type == ContestType.OnlinePractialExam;
             this.ValidateContest(contest, official);
 
             if (official)
             {
                 try
                 {
-                    // TODO: check also if ContestType is online
-                    if (!this.IsUserAllowedToCompete(this.UserProfile.Id, id, Settings.ApiKey))
+                    if (isOnline &&
+                        !this.IsUserAllowedToCompete(contest, this.UserProfile.Id, Settings.ApiKey))
                     {
                         this.TempData.AddDangerMessage(Resource.ContestsGeneral.User_is_not_registered_for_exam);
                         return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
@@ -140,9 +138,37 @@
 
             if (!participantFound)
             {
+                var shouldShowConfirmation = official &&
+                    isOnline &&
+                    (!hasConfirmed.HasValue ||
+                    hasConfirmed.Value == false) &&
+                    contest.Duration.HasValue;
+
+                if (shouldShowConfirmation)
+                {
+                    return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
+                        {
+                            ContesId = contest.Id,
+                            ContestName = contest.Name,
+                            ContestDuration = contest.Duration.Value
+                        });
+                }
+
                 if (!contest.ShouldShowRegistrationForm(official))
                 {
-                    this.Data.Participants.Add(new Participant(id, this.UserProfile.Id, official));
+                    if (isOnline)
+                    {
+                        this.Data.Participants.Add(new Participant(id, this.UserProfile.Id, official)
+                        {
+                            ContestStartTime = DateTime.Now,
+                            ContestEndTime = DateTime.Now + contest.Duration
+                        });
+                    }
+                    else
+                    {
+                        this.Data.Participants.Add(new Participant(id, this.UserProfile.Id, official));
+                    }
+
                     this.Data.SaveChanges();
                 }
                 else
@@ -153,7 +179,7 @@
                     return this.RedirectToAction(c => c.Register(id, official));
                 }
             }
-
+            
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
@@ -188,6 +214,7 @@
             }
 
             var participant = new Participant(id, this.UserProfile.Id, official);
+
             this.Data.Participants.Add(participant);
             this.Data.SaveChanges();
 
@@ -250,7 +277,20 @@
 
             var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
 
-            var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
+            Participant participant;
+            if (official && contest.Type == ContestType.OnlinePractialExam)
+            {
+                participant = new Participant(registrationData.ContestId, this.UserProfile.Id, true)
+                {
+                    ContestStartTime = DateTime.Now,
+                    ContestEndTime = DateTime.Now + contest.Duration
+                };
+            }
+            else
+            {
+                participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
+            }
+            
             this.Data.Participants.Add(participant);
             var counter = 0;
             foreach (var question in registrationData.Questions)
@@ -740,8 +780,13 @@
             return isValidIp;
         }
 
-        private bool IsUserAllowedToCompete(string userId, int contestId, string apiKey)
+        private bool IsUserAllowedToCompete(Contest contest, string userId, string apiKey)
         {
+            if (this.IsUserAdminOrLecturerInContest(contest))
+            {
+                return true;
+            }
+
             using (var httpClient = new HttpClient())
             {
                 var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
@@ -749,7 +794,7 @@
 
                 var requestUri = $"{Settings.CanUserCompeteInContestUrl}?apiKey={apiKey}";
                 var response = httpClient
-                    .PostAsJsonAsync(requestUri, new { userId, judgeContestId = contestId })
+                    .PostAsJsonAsync(requestUri, new { userId, judgeContestId = contest.Id })
                     .GetAwaiter()
                     .GetResult();
 
@@ -758,5 +803,10 @@
                 return response.Content.ReadAsAsync<bool>().Result;
             }
         }
+
+        private bool IsUserAdminOrLecturerInContest(Contest contest) =>
+            this.User.IsAdmin() ||
+            contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
+            contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id);
     }
 }
