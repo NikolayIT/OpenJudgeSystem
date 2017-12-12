@@ -128,7 +128,7 @@
                     return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
                 }
 
-                if (!this.ValidateContestIp(this.Request.UserHostAddress, id))
+                if (!isOnline && !this.ValidateContestIp(this.Request.UserHostAddress, id))
                 {
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
@@ -156,20 +156,7 @@
 
                 if (!contest.ShouldShowRegistrationForm(official))
                 {
-                    if (isOnline)
-                    {
-                        this.Data.Participants.Add(new Participant(id, this.UserProfile.Id, official)
-                        {
-                            ContestStartTime = DateTime.Now,
-                            ContestEndTime = DateTime.Now + contest.Duration
-                        });
-                    }
-                    else
-                    {
-                        this.Data.Participants.Add(new Participant(id, this.UserProfile.Id, official));
-                    }
-
-                    this.Data.SaveChanges();
+                    this.AddNewParticipantToContest(contest, official);
                 }
                 else
                 {
@@ -213,10 +200,7 @@
                 return this.View(contestRegistrationModel);
             }
 
-            var participant = new Participant(id, this.UserProfile.Id, official);
-
-            this.Data.Participants.Add(participant);
-            this.Data.SaveChanges();
+            this.AddNewParticipantToContest(contest, official);
 
             return this.RedirectToAction(GlobalConstants.Index, new { id, official });
         }
@@ -277,19 +261,7 @@
 
             var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
 
-            Participant participant;
-            if (official && contest.Type == ContestType.OnlinePractialExam)
-            {
-                participant = new Participant(registrationData.ContestId, this.UserProfile.Id, true)
-                {
-                    ContestStartTime = DateTime.Now,
-                    ContestEndTime = DateTime.Now + contest.Duration
-                };
-            }
-            else
-            {
-                participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
-            }
+            var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
             
             this.Data.Participants.Add(participant);
             var counter = 0;
@@ -332,6 +304,12 @@
             if (!this.ModelState.IsValid)
             {
                 return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
+            }
+
+            if (contest.Type == ContestType.OnlinePractialExam)
+            {
+                participant.ContestStartTime = DateTime.Now;
+                participant.ContestEndTime = participant.ContestStartTime + contest.Duration;
             }
 
             this.Data.SaveChanges();
@@ -808,5 +786,25 @@
             this.User.IsAdmin() ||
             contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
             contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id);
+
+        private void AddNewParticipantToContest(Contest contest, bool official)
+        {
+            Participant participant;
+            if (contest.Type == ContestType.OnlinePractialExam)
+            {
+                participant = new Participant(contest.Id, this.UserProfile.Id, official)
+                {
+                    ContestStartTime = DateTime.Now,
+                    ContestEndTime = DateTime.Now + contest.Duration
+                };
+            }
+            else
+            {
+                participant = new Participant(contest.Id, this.UserProfile.Id, official);
+            }
+
+            this.Data.Participants.Add(participant);
+            this.Data.SaveChanges();
+        }
     }
 }
