@@ -20,6 +20,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Participants;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
@@ -40,13 +41,19 @@
         public const string PracticeActionName = "Practice";
 
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IParticipantsBusinessService participantsBusiness;
+        private readonly IParticipantsDataService participantsData;
 
         public CompeteController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IParticipantsBusinessService participantsBusiness,
+            IParticipantsDataService participantsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.participantsBusiness = participantsBusiness;
+            this.participantsData = participantsData;
         }
 
         protected CompeteController(
@@ -84,21 +91,27 @@
                 !contest.IsVisible ||
                 !this.IsUserAdminOrLecturerInContest(contest))
             {
-                throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Contest_not_found);
+                throw new HttpException(
+                    (int)HttpStatusCode.NotFound,
+                    Resource.ContestsGeneral.Contest_not_found);
             }
 
             if (official &&
-                !contest.CanBeCompeted &&
-                !this.IsUserAdminOrLecturerInContest(contest))
+                !this.IsUserAdminOrLecturerInContest(contest) &&
+                !this.participantsBusiness.CanCompeteByContestAndUserId(contest, this.UserProfile.Id))
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_competed);
+                throw new HttpException(
+                    (int)HttpStatusCode.Forbidden,
+                    Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
 
             if (!official && !contest.CanBePracticed)
             {
-                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Contest_cannot_be_practiced);
+                throw new HttpException(
+                    (int)HttpStatusCode.Forbidden,
+                    Resource.ContestsGeneral.Contest_cannot_be_practiced);
             }
-        }
+        } 
 
         /// <summary>
         /// Displays user compete information: tasks, send source form, ranking, submissions, ranking, etc.
@@ -109,64 +122,55 @@
         {
             var contest = this.Data.Contests.GetById(id);
             var isOnline = contest.Type == ContestType.OnlinePractialExam;
-            this.ValidateContest(contest, official);
 
-            if (official)
+            try
             {
-                try
-                {
-                    if (isOnline &&
-                        !this.IsUserAllowedToCompete(contest, this.UserProfile.Id, Settings.ApiKey))
-                    {
-                        this.TempData.AddDangerMessage(Resource.ContestsGeneral.User_is_not_registered_for_exam);
-                        return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
-                    }
-                }
-                catch
-                {
-                    this.TempData.AddDangerMessage(Resource.ContestsGeneral.Contest_cannot_be_competed);
-                    return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
-                }
+                this.ValidateContest(contest, official);
 
-                if (!isOnline && !this.ValidateContestIp(this.Request.UserHostAddress, id))
+                if (official && !isOnline && !this.IsContestIpValid(this.Request.UserHostAddress, id))
                 {
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
+
+                var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
+
+                if (!participantFound)
+                {
+                    var shouldShowConfirmation = official &&
+                        isOnline &&
+                        (!hasConfirmed.HasValue ||
+                        hasConfirmed.Value == false) &&
+                        contest.Duration.HasValue;
+
+                    if (shouldShowConfirmation)
+                    {
+                        return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
+                            {
+                                ContesId = contest.Id,
+                                ContestName = contest.Name,
+                                ContestDuration = contest.Duration.Value
+                            });
+                    }
+
+                    if (!contest.ShouldShowRegistrationForm(official))
+                    {
+                        this.AddNewParticipantToContest(contest, official);  
+                    }
+                    else
+                    {
+                        // Participant not found, the contest requires password or the contest has questions
+                        // to be answered before registration. Redirect to the registration page.
+                        // The registration page will take care of all security checks.
+                        return this.RedirectToAction(c => c.Register(id, official));
+                    }
+                }
             }
-
-            var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
-
-            if (!participantFound)
+            catch (HttpException httpex)
             {
-                var shouldShowConfirmation = official &&
-                    isOnline &&
-                    (!hasConfirmed.HasValue ||
-                    hasConfirmed.Value == false) &&
-                    contest.Duration.HasValue;
-
-                if (shouldShowConfirmation)
-                {
-                    return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
-                        {
-                            ContesId = contest.Id,
-                            ContestName = contest.Name,
-                            ContestDuration = contest.Duration.Value
-                        });
-                }
-
-                if (!contest.ShouldShowRegistrationForm(official))
-                {
-                    this.AddNewParticipantToContest(contest, official);
-                }
-                else
-                {
-                    // Participant not found, the contest requires password or the contest has questions
-                    // to be answered before registration. Redirect to the registration page.
-                    // The registration page will take care of all security checks.
-                    return this.RedirectToAction(c => c.Register(id, official));
-                }
+                this.TempData.AddDangerMessage(httpex.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
-            
+
             var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
@@ -187,20 +191,28 @@
             if (participantFound)
             {
                 // Participant exists. Redirect to index page.
-                return this.RedirectToAction(GlobalConstants.Index, new { id, official });
+                return this.RedirectToAction(GlobalConstants.Index, new {id, official});
             }
 
             var contest = this.Data.Contests.All().Include(x => x.Questions).FirstOrDefault(x => x.Id == id);
 
-            this.ValidateContest(contest, official);
-
-            if (contest.ShouldShowRegistrationForm(official))
+            try
             {
-                var contestRegistrationModel = new ContestRegistrationViewModel(contest, official);
-                return this.View(contestRegistrationModel);
-            }
+                this.ValidateContest(contest, official);
+                
+                if (contest.ShouldShowRegistrationForm(official))
+                {
+                    var contestRegistrationModel = new ContestRegistrationViewModel(contest, official);
+                    return this.View(contestRegistrationModel);
+                }
 
-            this.AddNewParticipantToContest(contest, official);
+                this.AddNewParticipantToContest(contest, official);
+            }
+            catch (HttpException httpex)
+            {
+                this.TempData.AddDangerMessage(httpex.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
 
             return this.RedirectToAction(GlobalConstants.Index, new { id, official });
         }
@@ -224,95 +236,98 @@
             }
 
             var contest = this.Data.Contests.GetById(registrationData.ContestId);
-            this.ValidateContest(contest, official);
-
-            if (official && contest.HasContestPassword)
+            try
             {
-                if (string.IsNullOrEmpty(registrationData.Password))
+                this.ValidateContest(contest, official);
+
+                if (official && contest.HasContestPassword)
                 {
-                    this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+                    if (string.IsNullOrEmpty(registrationData.Password))
+                    {
+                        this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+                    }
+                    else if (contest.ContestPassword != registrationData.Password)
+                    {
+                        this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
+                    }
                 }
-                else if (contest.ContestPassword != registrationData.Password)
+
+                if (!official && contest.HasPracticePassword)
                 {
-                    this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
+                    if (string.IsNullOrEmpty(registrationData.Password))
+                    {
+                        this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+                    }
+                    else if (contest.PracticePassword != registrationData.Password)
+                    {
+                        this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
+                    }
                 }
-            }
 
-            if (!official && contest.HasPracticePassword)
-            {
-                if (string.IsNullOrEmpty(registrationData.Password))
+                var questionsToAnswerCount = official ?
+                    contest.Questions.Count(x => !x.IsDeleted && x.AskOfficialParticipants) :
+                    contest.Questions.Count(x => !x.IsDeleted && x.AskPracticeParticipants);
+
+                if (questionsToAnswerCount != registrationData.Questions.Count())
                 {
-                    this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Empty_Password);
+                    this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
                 }
-                else if (contest.PracticePassword != registrationData.Password)
-                {
-                    this.ModelState.AddModelError("Password", Resource.Views.CompeteRegister.Incorrect_password);
-                }
-            }
 
-            var questionsToAnswerCount = official ?
-                contest.Questions.Count(x => !x.IsDeleted && x.AskOfficialParticipants) :
-                contest.Questions.Count(x => !x.IsDeleted && x.AskPracticeParticipants);
-
-            if (questionsToAnswerCount != registrationData.Questions.Count())
-            {
-                this.ModelState.AddModelError("Questions", Resource.Views.CompeteRegister.Not_all_questions_answered);
-            }
-
-            var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
-
-            var participant = new Participant(registrationData.ContestId, this.UserProfile.Id, official);
+                var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
             
-            this.Data.Participants.Add(participant);
-            var counter = 0;
-            foreach (var question in registrationData.Questions)
-            {
-                var contestQuestion = contestQuestions.FirstOrDefault(x => x.Id == question.QuestionId);
+                var participant = this.AddNewParticipantToContest(contest, official);
 
-                var regularExpression = contestQuestion.RegularExpressionValidation;
-                bool correctlyAnswered = false;
-
-                if (!string.IsNullOrEmpty(regularExpression))
+                var counter = 0;
+                foreach (var question in registrationData.Questions)
                 {
-                    correctlyAnswered = Regex.IsMatch(question.Answer, regularExpression);
-                }
+                    var contestQuestion = contestQuestions.FirstOrDefault(x => x.Id == question.QuestionId);
 
-                if (contestQuestion.Type == ContestQuestionType.DropDown)
-                {
-                    int contestAnswerId;
-                    if (int.TryParse(question.Answer, out contestAnswerId) && contestQuestion.Answers.Where(x => !x.IsDeleted).Any(x => x.Id == contestAnswerId))
+                    var regularExpression = contestQuestion.RegularExpressionValidation;
+                    var correctlyAnswered = false;
+
+                    if (!string.IsNullOrEmpty(regularExpression))
                     {
-                        correctlyAnswered = true;
+                        correctlyAnswered = Regex.IsMatch(question.Answer, regularExpression);
                     }
 
-                    if (!correctlyAnswered)
+                    if (contestQuestion.Type == ContestQuestionType.DropDown)
                     {
-                        this.ModelState.AddModelError(string.Format("Questions[{0}].Answer", counter), Resource.ContestsGeneral.Invalid_selection);
+                        if (int.TryParse(question.Answer, out var contestAnswerId) &&
+                            contestQuestion.Answers.Where(x => !x.IsDeleted).Any(x => x.Id == contestAnswerId))
+                        {
+                            correctlyAnswered = true;
+                        }
+
+                        if (!correctlyAnswered)
+                        {
+                            this.ModelState.AddModelError(
+                                $"Questions[{counter}].Answer",
+                                Resource.ContestsGeneral.Invalid_selection);
+                        }
                     }
+
+                    participant.Answers.Add(
+                        new ParticipantAnswer
+                        {
+                            ContestQuestionId = question.QuestionId,
+                            Answer = question.Answer
+                        });
+
+                    counter++;
                 }
 
-                participant.Answers.Add(
-                    new ParticipantAnswer
-                    {
-                        ContestQuestionId = question.QuestionId,
-                        Answer = question.Answer
-                    });
+                if (!this.ModelState.IsValid)
+                {
+                    return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
+                }
 
-                counter++;
+                this.participantsData.Update(participant);
             }
-
-            if (!this.ModelState.IsValid)
+            catch (HttpException httpex)
             {
-                return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
+                this.TempData.AddDangerMessage(httpex.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
-
-            if (contest.Type == ContestType.OnlinePractialExam)
-            {
-                participant.ContestStartTime = DateTime.Now;
-                participant.ContestEndTime = participant.ContestStartTime + contest.Duration;
-            }
-
-            this.Data.SaveChanges();
 
             return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
         }
@@ -335,7 +350,7 @@
             }
 
             // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -408,7 +423,7 @@
             }
 
             // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -504,7 +519,7 @@
             }
 
             // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId.Value))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -693,7 +708,7 @@
                 return this.RedirectToAction("Register", new { id, official = true });
             }
 
-            if (this.ValidateContestIp(this.Request.UserHostAddress, id))
+            if (this.IsContestIpValid(this.Request.UserHostAddress, id))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official = true });
             }
@@ -716,7 +731,7 @@
                 return this.RedirectToAction("Register", new { id = model.ContestId, official = true });
             }
 
-            if (this.ValidateContestIp(this.Request.UserHostAddress, model.ContestId))
+            if (this.IsContestIpValid(this.Request.UserHostAddress, model.ContestId))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
             }
@@ -749,16 +764,17 @@
             return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
         }
 
-        private bool ValidateContestIp(string ip, int contestId)
-        {
-            var isValidIp = this.Data.Contests
+        private bool IsContestIpValid(string ip, int contestId) =>
+            this.Data.Contests
                 .All()
                 .Any(x => x.Id == contestId && (!x.AllowedIps.Any() || x.AllowedIps.Any(y => y.Ip.Value == ip)));
 
-            return isValidIp;
-        }
+        private bool IsUserAdminOrLecturerInContest(Contest contest) =>
+            this.User.IsAdmin() ||
+            contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
+            contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id);
 
-        private bool IsUserAllowedToCompete(Contest contest, string userId, string apiKey)
+        private bool IsUserEnrolledInExam(Contest contest, string userId, string apiKey)
         {
             if (this.IsUserAdminOrLecturerInContest(contest))
             {
@@ -782,29 +798,33 @@
             }
         }
 
-        private bool IsUserAdminOrLecturerInContest(Contest contest) =>
-            this.User.IsAdmin() ||
-            contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
-            contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id);
-
-        private void AddNewParticipantToContest(Contest contest, bool official)
+        private Participant AddNewParticipantToContest(Contest contest, bool official)
         {
-            Participant participant;
-            if (contest.Type == ContestType.OnlinePractialExam)
+            if (contest.Type == ContestType.OnlinePractialExam && official)
             {
-                participant = new Participant(contest.Id, this.UserProfile.Id, official)
+                try
                 {
-                    ContestStartTime = DateTime.Now,
-                    ContestEndTime = DateTime.Now + contest.Duration
-                };
-            }
-            else
-            {
-                participant = new Participant(contest.Id, this.UserProfile.Id, official);
+                    if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
+                    {
+                        throw new HttpException(
+                            (int)HttpStatusCode.Forbidden,
+                            Resource.ContestsGeneral.User_is_not_registered_for_exam);
+                    }
+                }
+                catch
+                {
+                    throw new HttpException(
+                        (int)HttpStatusCode.NotFound,
+                        Resource.ContestsGeneral.Contest_cannot_be_competed);
+                }
             }
 
-            this.Data.Participants.Add(participant);
-            this.Data.SaveChanges();
+            var participant = this.participantsBusiness.CreateNewByContestUserIdAndIsOfficial(
+                contest,
+                this.UserProfile.Id,
+                official);
+
+            return participant;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Participants
 {
+    using System;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -11,6 +12,24 @@
 
         public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
             this.participants = participants;
+
+        public DateTime? GetOfficialContestEndTimeByUserIdAndContestId(string userId, int contestId) =>
+            this.participants
+                .All()
+                .FirstOrDefault(p => p.UserId == userId && p.ContestId == contestId && p.IsOfficial)?
+                .ContestEndTime;
+
+        public void Add(Participant participant)
+        {
+            this.participants.Add(participant);
+            this.participants.SaveChanges();
+        }
+
+        public void Update(Participant participant)
+        {
+            this.participants.Update(participant);
+            this.participants.SaveChanges();
+        }
 
         public IQueryable<Participant> GetByIdQuery(int participantId) =>
             this.participants
