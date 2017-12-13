@@ -33,8 +33,6 @@
 
         public virtual IDbSet<Problem> Problems { get; set; }
 
-        public virtual IDbSet<ProblemGroup> ProblemGroups { get; set; }
-
         public virtual IDbSet<News> News { get; set; }
 
         public virtual IDbSet<Event> Events { get; set; }
