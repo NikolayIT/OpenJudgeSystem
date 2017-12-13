@@ -121,7 +121,7 @@
     <value>Сигурни ли сте, че искате да започнете състезанието сега?</value>
   </data>
   <data name="Confirm_online_contest_start_message" xml:space="preserve">
-    <value>Стартирайки сега ще имате &lt;strong&gt;{0} часа&lt;strong&gt; за да завършите състезанието &lt;strong&gt;{1}&lt;/strong&gt;.</value>
+    <value>Стартирайки сега ще имате точно &lt;strong&gt;{0}&lt;strong&gt; за да завършите състезанието &lt;strong&gt;{1}&lt;/strong&gt;.</value>
   </data>
   <data name="Empty_Password" xml:space="preserve">
     <value>Паролата не може да бъде празна</value>

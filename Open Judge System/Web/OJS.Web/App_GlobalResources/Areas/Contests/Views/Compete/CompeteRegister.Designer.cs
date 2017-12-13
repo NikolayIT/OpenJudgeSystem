@@ -70,7 +70,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting now you will have &lt;strong&gt;{0} hours&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;..
+        ///   Looks up a localized string similar to Starting now you will have exactly &lt;strong&gt;{0}&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;..
         /// </summary>
         public static string Confirm_online_contest_start_message {
             get {

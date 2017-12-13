@@ -121,7 +121,7 @@
     <value>Are you sure you want to start the contest now?</value>
   </data>
   <data name="Confirm_online_contest_start_message" xml:space="preserve">
-    <value>Starting now you will have &lt;strong&gt;{0} hours&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;.</value>
+    <value>Starting now you will have exactly &lt;strong&gt;{0}&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;.</value>
   </data>
   <data name="Empty_Password" xml:space="preserve">
     <value>Password is empty</value>
