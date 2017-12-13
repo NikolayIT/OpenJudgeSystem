@@ -39,10 +39,10 @@
             this.contests.SaveChanges();
         }
 
-        public bool CanBeCompetedById(int contestId)
+        public bool IsActiveById(int contestId)
         {
             var contest = this.contests.GetById(contestId);
-            return contest != null && contest.CanBeCompeted;
+            return contest != null && contest.IsActive;
         }
     }
 }
