@@ -16,9 +16,7 @@
                 Id = problem.Id,
                 Name = problem.Name,
                 ContestName = problem.Contest.Name,
-
-                // TODO: revise logic for getting ContestId
-                ContestId = problem.ContestId.Value,
+                ContestId = problem.ContestId,
                 SubmissionsCount = problem.Submissions.Count(s => !s.IsDeleted)
             };
 

@@ -14,9 +14,7 @@
             problem => new DeleteProblemViewModel
             {
                 Id = problem.Id,
-
-                // TODO: revise logic for getting ContestId
-                ContestId = problem.ContestId.Value,
+                ContestId = problem.ContestId,
                 Name = problem.Name,
                 ContestName = problem.Contest.Name,
                 OrderBy = problem.OrderBy
