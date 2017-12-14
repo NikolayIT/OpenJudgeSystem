@@ -1,16 +1,13 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
     
-@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;
-    
-@using OJS.Common.Models
+@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;  
 
 @{
-    var callerActionName = this.ViewBag.CallerAction ?? string.Empty;
+    var isEditForm = (this.ViewBag.CallerAction ?? string.Empty) == "Edit";
     var isActiveContest = this.ViewBag.IsActive ?? false;
-    var isOnlineContest = Model.Type == (int) ContestType.OnlinePractialExam;
 
-    var hiddenIfEditingActiveOnlineContestAttribute = callerActionName != "Edit" ||
-        !(isActiveContest && isOnlineContest) ? string.Empty : "hidden";
+    var hiddenIfEditingActiveOnlineContestAttribute = isEditForm && Model.IsOnline && isActiveContest
+        ? "hidden" : string.Empty;
 }
 
 <fieldset>

@@ -18,6 +18,7 @@
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
@@ -131,8 +132,12 @@
 
             this.PrepareViewBagData(nameof(this.Edit));
 
-            // TODO: replace CanBeCompeted with IsActive
-            this.ViewBag.IsActive = this.contestsData.CanBeCompetedById(contest.Id.Value);
+            if (contest.Id.HasValue && contest.IsOnline)
+            {
+                // TODO: replace CanBeCompeted with IsActive
+                this.ViewBag.IsActive = this.contestsData.CanBeCompetedById(contest.Id.Value);
+            }
+
             return this.View(contest);
         }
 
@@ -164,10 +169,10 @@
                 contest = model.GetEntityModel(contest);
 
                 // TODO: replace CanBeCompeted with IsActive
-                if (contest.Type == ContestType.OnlinePractialExam &&
+                if (contest.IsOnline() &&
                     !contest.CanBeCompeted &&
                     (contest.Duration != model.Duration ||
-                     contest.Type != (ContestType)model.Type))
+                     (int)contest.Type != model.Type))
                 {
                     this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
                     this.RedirectToAction<ContestsController>(c => c.Index());

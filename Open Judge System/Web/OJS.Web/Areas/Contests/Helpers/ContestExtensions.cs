@@ -2,6 +2,7 @@
 {
     using System.Linq;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
 
     public static class ContestExtensions
@@ -25,5 +26,7 @@
 
             return showRegistrationForm;
         }
+
+        public static bool IsOnline(this Contest contest) => contest.Type == ContestType.OnlinePractialExam;
     }
 }

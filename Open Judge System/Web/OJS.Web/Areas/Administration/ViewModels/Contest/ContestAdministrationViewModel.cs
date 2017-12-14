@@ -182,6 +182,8 @@
             get { return string.Join(", ", this.allowedIps.Select(x => x.Value)); }
         }
 
+        public bool IsOnline => this.Type == (int)ContestType.OnlinePractialExam;
+
         public override Contest GetEntityModel(Contest model = null)
         {
             model = model ?? new Contest();
