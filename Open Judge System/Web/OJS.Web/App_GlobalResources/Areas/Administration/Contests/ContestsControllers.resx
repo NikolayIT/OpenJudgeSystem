@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_permitted_for_deletion" xml:space="preserve">
+  <data name="Active_contest_cannot_edit_duration_type_problem_groups" xml:space="preserve">
+    <value>Contest is active and the Duration, Type or Problem groups cannot be edited!</value>
+  </data>
+  <data name="Active_contest_forbidden_for_deletion" xml:space="preserve">
     <value>Contest is active and cannot be deleted!</value>
   </data>
-  <data name="Active_contest_permitted_for_transfer" xml:space="preserve">
+  <data name="Active_contest_forbidden_for_transfer" xml:space="preserve">
     <value>Contest is active and participants cannot be transferred</value>
   </data>
   <data name="Contest" xml:space="preserve">

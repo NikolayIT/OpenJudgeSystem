@@ -129,7 +129,10 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData();
+            this.PrepareViewBagData(nameof(this.Edit));
+
+            // TODO: replace CanBeCompeted with IsActive
+            this.ViewBag.IsActive = this.contestsData.CanBeCompetedById(contest.Id.Value);
             return this.View(contest);
         }
 
@@ -160,6 +163,16 @@
 
                 contest = model.GetEntityModel(contest);
 
+                // TODO: replace CanBeCompeted with IsActive
+                if (contest.Type == ContestType.OnlinePractialExam &&
+                    !contest.CanBeCompeted &&
+                    (contest.Duration != model.Duration ||
+                     contest.Type != (ContestType)model.Type))
+                {
+                    this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                    this.RedirectToAction<ContestsController>(c => c.Index());
+                }
+
                 contest.AllowedIps.Clear();
                 this.AddIpsToContest(contest, model.AllowedIps);
 
@@ -186,7 +199,7 @@
 
             if (this.contestsData.CanBeCompetedById(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_permitted_for_deletion);
+                this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
                 this.ModelState.AddModelError(string.Empty, string.Empty);
                 return this.GridOperation(request, model);
             }
@@ -351,7 +364,7 @@
 
             if (categoryContest.CanBeCompeted)
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permitted_for_transfer;
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_forbidden_for_transfer;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -431,10 +444,11 @@
             return this.Redirect(returnUrl);
         }
 
-        private void PrepareViewBagData()
+        private void PrepareViewBagData(string callerActionName = null)
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
             this.ViewBag.SubmissionExportTypes = DropdownViewModel.GetEnumValues<SubmissionExportType>();
+            this.ViewBag.CallerAction = callerActionName;
         }
 
         private bool IsValidContest(ViewModelType model)
