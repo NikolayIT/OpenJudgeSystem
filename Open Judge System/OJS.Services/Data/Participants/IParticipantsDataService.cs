@@ -14,6 +14,8 @@
 
         void Update(Participant participant);
 
+        Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+
         IQueryable<Participant> GetByIdQuery(int participantId);
 
         bool IsOfficial(int participantId);

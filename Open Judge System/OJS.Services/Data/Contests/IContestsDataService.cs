@@ -26,7 +26,5 @@
         bool CanBeCompetedById(int contestId);
 
         bool IsOnlineById(int contestId);
-
-        bool HasValidIpByIdAndIpValue(int contestId, string ip);
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace OJS.Services.Data.Participants
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -30,6 +31,12 @@
             this.participants.Update(participant);
             this.participants.SaveChanges();
         }
+
+        public Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+            this.participants
+                .All()
+                .Include(p => p.Contest)
+                .FirstOrDefault(p => p.ContestId == contestId && p.UserId == userId && p.IsOfficial == isOfficial);
 
         public IQueryable<Participant> GetByIdQuery(int participantId) =>
             this.participants

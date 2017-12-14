@@ -22,7 +22,9 @@
     using OJS.Data.Models;
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
@@ -45,19 +47,25 @@
         private readonly IParticipantsBusinessService participantsBusiness;
         private readonly IParticipantsDataService participantsData;
         private readonly IContestsBusinessService contestsBusiness;
+        private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
 
         public CompeteController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantsBusinessService participantsBusiness,
             IParticipantsDataService participantsData,
-            IContestsBusinessService contestsBusiness)
+            IContestsBusinessService contestsBusiness,
+            IContestsDataService contestsData,
+            IProblemsDataService problemsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantsBusiness = participantsBusiness;
             this.participantsData = participantsData;
             this.contestsBusiness = contestsBusiness;
+            this.contestsData = contestsData;
+            this.problemsData = problemsData;
         }
 
         protected CompeteController(
@@ -124,14 +132,15 @@
         [Authorize]
         public ActionResult Index(int id, bool official, bool? hasConfirmed)
         {
-            var contest = this.Data.Contests.GetById(id);
-            var isOnline = contest.Type == ContestType.OnlinePractialExam;
+            var contest = this.contestsData.GetById(id);
 
             try
             {
                 this.ValidateContest(contest, official);
 
-                if (official && !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
+                if (official &&
+                    !contest.IsOnline &&
+                    !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
                 {
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
@@ -141,7 +150,7 @@
                 if (!participantFound)
                 {
                     var shouldShowConfirmation = official &&
-                        isOnline &&
+                        contest.IsOnline &&
                         (!hasConfirmed.HasValue ||
                         hasConfirmed.Value == false) &&
                         contest.Duration.HasValue;
@@ -239,7 +248,7 @@
                 return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
             }
 
-            var contest = this.Data.Contests.GetById(registrationData.ContestId);
+            var contest = this.contestsData.GetById(registrationData.ContestId);
             try
             {
                 this.ValidateContest(contest, official);
@@ -347,25 +356,28 @@
         [ValidateAntiForgeryToken]
         public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
+            var problem = this.problemsData.GetById(participantSubmission.ProblemId);
             if (problem == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official &&
-                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
-            {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
-            }
-
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData
+                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             this.ValidateContest(participant.Contest, official);
+
+            if (official &&
+                !participant.Contest.IsOnline &&
+                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
+
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
 
             if (!this.ModelState.IsValid)
@@ -419,25 +431,28 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Upload_file);
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == participantSubmission.ProblemId);
+            var problem = this.problemsData.GetById(participantSubmission.ProblemId);
             if (problem == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official &&
-                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
-            {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
-            }
-
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData
+                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             this.ValidateContest(participant.Contest, official);
+
+            if (official &&
+                !participant.Contest.IsOnline &&
+                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
+            {
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+            }
+
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
 
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
@@ -505,7 +520,7 @@
             this.ViewBag.IsOfficial = official;
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
 
-            var problem = this.Data.Problems.GetById(id);
+            var problem = this.problemsData.GetWithContestById(id);
 
             if (problem == null)
             {
@@ -520,6 +535,7 @@
             }
 
             if (official &&
+                !problem.Contest.IsOnline &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
@@ -712,7 +728,7 @@
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official = true });
             }
 
-            var contest = this.Data.Contests.GetById(id);
+            var contest = this.contestsData.GetById(id);
 
             this.ValidateContest(contest, true);
 
@@ -794,7 +810,7 @@
 
         private Participant AddNewParticipantToContest(Contest contest, bool official)
         {
-            if (contest.Type == ContestType.OnlinePractialExam && official)
+            if (contest.IsOnline && official)
             {
                 try
                 {

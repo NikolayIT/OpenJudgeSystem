@@ -16,6 +16,8 @@
         public IQueryable<Problem> GetByIdQuery(int problemId) =>
             this.problems.All().Where(p => p.Id == problemId);
 
+        public Problem GetById(int problemId) => this.problems.GetById(problemId);
+
         public Problem GetWithContestById(int problemId) =>
             this.problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);
 

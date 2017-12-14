@@ -47,11 +47,6 @@
         }
 
         public bool IsOnlineById(int contestId) =>
-            this.contests.GetById(contestId)?.Type == ContestType.OnlinePractialExam;
-
-        public bool HasValidIpByIdAndIpValue(int contestId, string ip) =>
-            this.contests
-                .All()
-                .Any(c => c.Id == contestId && (!c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip)));
+            this.contests.GetById(contestId)?.Type == ContestType.OnlinePractialExam;      
     }
 }
