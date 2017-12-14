@@ -20,6 +20,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -43,17 +44,20 @@
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantsBusinessService participantsBusiness;
         private readonly IParticipantsDataService participantsData;
+        private readonly IContestsBusinessService contestsBusiness;
 
         public CompeteController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantsBusinessService participantsBusiness,
-            IParticipantsDataService participantsData)
+            IParticipantsDataService participantsData,
+            IContestsBusinessService contestsBusiness)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantsBusiness = participantsBusiness;
             this.participantsData = participantsData;
+            this.contestsBusiness = contestsBusiness;
         }
 
         protected CompeteController(
@@ -127,7 +131,7 @@
             {
                 this.ValidateContest(contest, official);
 
-                if (official && !isOnline && !this.IsContestIpValid(this.Request.UserHostAddress, id))
+                if (official && !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
                 {
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
@@ -349,7 +353,8 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId))
+            if (official &&
+                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -420,7 +425,8 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId))
+            if (official &&
+                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -513,7 +519,8 @@
                 return this.RedirectToAction("Register", new { id = problem.ContestId, official });
             }
 
-            if (official && !this.IsContestIpValid(this.Request.UserHostAddress, problem.ContestId))
+            if (official &&
+                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -700,7 +707,7 @@
                 return this.RedirectToAction("Register", new { id, official = true });
             }
 
-            if (this.IsContestIpValid(this.Request.UserHostAddress, id))
+            if (this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official = true });
             }
@@ -723,7 +730,7 @@
                 return this.RedirectToAction("Register", new { id = model.ContestId, official = true });
             }
 
-            if (this.IsContestIpValid(this.Request.UserHostAddress, model.ContestId))
+            if (this.contestsBusiness.IsContestIpValidByIdAndIp(model.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
             }
@@ -755,11 +762,6 @@
 
             return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
         }
-
-        private bool IsContestIpValid(string ip, int contestId) =>
-            this.Data.Contests
-                .All()
-                .Any(x => x.Id == contestId && (!x.AllowedIps.Any() || x.AllowedIps.Any(y => y.Ip.Value == ip)));
 
         private bool IsUserAdminOrLecturerInContest(Contest contest) =>
             this.User.IsAdmin() ||

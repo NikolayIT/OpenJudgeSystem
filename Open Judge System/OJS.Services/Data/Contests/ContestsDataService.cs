@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -44,5 +45,13 @@
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.CanBeCompeted;
         }
+
+        public bool IsOnlineById(int contestId) =>
+            this.contests.GetById(contestId)?.Type == ContestType.OnlinePractialExam;
+
+        public bool HasValidIpByIdAndIpValue(int contestId, string ip) =>
+            this.contests
+                .All()
+                .Any(c => c.Id == contestId && (!c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip)));
     }
 }
