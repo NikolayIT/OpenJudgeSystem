@@ -316,14 +316,12 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            // TODO: revise logic for getting ContestId
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -389,14 +387,12 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            // TODO: revise logic for getting ContestId
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -479,14 +475,12 @@
 
             this.ValidateContest(problem.Contest, official);
 
-            // TODO: revise logic for getting ContestId
-            if (!this.Data.Participants.Any(problem.ContestId.Value, this.UserProfile.Id, official))
+            if (!this.Data.Participants.Any(problem.ContestId, this.UserProfile.Id, official))
             {
                 return this.RedirectToAction("Register", new { id = problem.ContestId, official });
             }
 
-            // TODO: revise logic for getting ContestId
-            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId.Value))
+            if (official && !this.ValidateContestIp(this.Request.UserHostAddress, problem.ContestId))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -511,8 +505,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            // TODO: revise logic for getting ContestId
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {
@@ -538,8 +531,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            // TODO: revise logic for getting ContestId
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId.Value, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {
