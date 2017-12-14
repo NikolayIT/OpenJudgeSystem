@@ -1,0 +1,11 @@
+﻿@model short?
+
+@(Html
+    .Kendo()
+    .NumericTextBoxFor(m => m)
+    .Spinners(true)
+    .Min(0)
+    .Max(short.MaxValue)
+    .Step(1)
+    .Format("#")
+    .HtmlAttributes(new { style = "width: 100%; height: 30px;" }))

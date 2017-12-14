@@ -1,0 +1,6 @@
+﻿@model TimeSpan?
+
+@(Html
+    .Kendo()
+    .TimePickerFor(m => m)
+    .HtmlAttributes(new { style = "width: 100%; height: 30px;" }))

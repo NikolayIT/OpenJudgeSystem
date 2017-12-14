@@ -171,4 +171,10 @@
   <data name="Auto_change_tests" xml:space="preserve">
     <value>Изберете дали тестовете да имат детайлна обратна връзка според типа на съзтезанието (съзтезание/упражнение)</value>
   </data>
+  <data name="Number_of_problem_groups" xml:space="preserve">
+    <value>Въведете броя на групи от задачи за онлайн състезание</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Въведете продължителността на изпита</value>
+  </data>
 </root>
