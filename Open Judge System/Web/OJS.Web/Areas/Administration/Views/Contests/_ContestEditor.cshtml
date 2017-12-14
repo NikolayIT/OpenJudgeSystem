@@ -9,7 +9,7 @@
     var isActiveContest = this.ViewBag.IsActive ?? false;
     var isOnlineContest = Model.Type == (int) ContestType.OnlinePractialExam;
 
-    var hiddenIfActiveOnlineContestClassName = callerActionName != "Edit" ||
+    var hiddenIfEditingActiveOnlineContestAttribute = callerActionName != "Edit" ||
         !(isActiveContest && isOnlineContest) ? string.Empty : "hidden";
 }
 
@@ -30,7 +30,7 @@
         </div>
     </div>
     <br />
-    <div @hiddenIfActiveOnlineContestClassName>
+    <div @hiddenIfEditingActiveOnlineContestAttribute>
         <div class="row ">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -47,7 +47,7 @@
         </div>
         <br />
     </div>
-    <div @hiddenIfActiveOnlineContestClassName>
+    <div @hiddenIfEditingActiveOnlineContestAttribute>
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -158,7 +158,7 @@
         </div>
     </div>
     <br />
-    <div @hiddenIfActiveOnlineContestClassName>
+    <div @hiddenIfEditingActiveOnlineContestAttribute>
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
