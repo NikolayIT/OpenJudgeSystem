@@ -96,6 +96,11 @@
                 return this.View(model);
             }
 
+            if (model.IsOnline && !model.Duration.HasValue)
+            {
+                this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+            }
+
             if (this.ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();

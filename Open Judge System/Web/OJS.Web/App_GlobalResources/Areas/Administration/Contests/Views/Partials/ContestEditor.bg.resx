@@ -175,6 +175,6 @@
     <value>Въведете броя на групи от задачи за онлайн състезание</value>
   </data>
   <data name="Duration" xml:space="preserve">
-    <value>Въведете продължителността на изпита</value>
+    <value>Въведете продължителността на изпита в часове</value>
   </data>
 </root>

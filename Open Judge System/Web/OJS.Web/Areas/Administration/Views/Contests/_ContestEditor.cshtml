@@ -332,11 +332,17 @@
         var type = $("#Type");
         type.change(function (ev) {
             ev.preventDefault();
-            if (type.val() == @((int)ContestType.OnlinePractialExam)) {
+            toggleOnlineOnlyFields(type.val());
+        });
+
+        toggleOnlineOnlyFields(type.val());
+
+        function toggleOnlineOnlyFields(contestType) {
+            if (contestType == @((int)ContestType.OnlinePractialExam)) {
                 $(".@OnlineOnlyContainersClassName").removeClass("hidden");
             } else {
                 $(".@OnlineOnlyContainersClassName").addClass("hidden");
             }
-        });
+        };
     });
 </script>

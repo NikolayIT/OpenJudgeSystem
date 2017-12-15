@@ -125,7 +125,7 @@ namespace Resources.Areas.Administration.Contests.Views.Partials {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the duration of the exam.
+        ///   Looks up a localized string similar to Enter the duration of the exam in hours.
         /// </summary>
         public static string Duration {
             get {

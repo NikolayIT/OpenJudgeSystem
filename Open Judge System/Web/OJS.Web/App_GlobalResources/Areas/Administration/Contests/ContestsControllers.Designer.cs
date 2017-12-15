@@ -232,6 +232,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The field is required for Online Contest.
+        /// </summary>
+        public static string Required_field_for_online {
+            get {
+                return ResourceManager.GetString("Required_field_for_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose at least one submission type!.
         /// </summary>
         public static string Select_one_submission_type {
