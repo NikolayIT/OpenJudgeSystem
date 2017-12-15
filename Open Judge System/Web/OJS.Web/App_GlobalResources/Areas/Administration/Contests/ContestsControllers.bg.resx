@@ -126,6 +126,9 @@
   <data name="Active_contest_forbidden_for_transfer" xml:space="preserve">
     <value>Състезанието е активно и не може да се местят участници</value>
   </data>
+  <data name="Added_time_to_participants_online" xml:space="preserve">
+    <value>Успешно добавихте {0} минути към времената на всички активни участници в състезанието {1}</value>
+  </data>
   <data name="Contest" xml:space="preserve">
     <value>състезание</value>
   </data>
@@ -173,5 +176,8 @@
   </data>
   <data name="Select_one_submission_type" xml:space="preserve">
     <value>Изберете поне един вид решение!</value>
+  </data>
+  <data name="Subtracted_time_from_participants_online" xml:space="preserve">
+    <value>Успешно отнехте {0} минути от времената на всички активни участници в състезанието {1}</value>
   </data>
 </root>

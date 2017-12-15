@@ -14,6 +14,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
@@ -34,15 +35,18 @@
 
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
         public ContestsController(
             IOjsData data,
             IParticipantScoresDataService participantScoresData,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
                 : base(data)
         {
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
+            this.participantsData = participantsData;
         }        
 
         public override IEnumerable GetData()
@@ -308,6 +312,54 @@
             }
 
             return new EmptyResult();
+        }
+
+        [HttpGet]
+        public ActionResult ChangeTime(int contestId)
+        {
+            if (!this.CheckIfUserHasContestPermissions(contestId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var contest = this.contestsData
+                .GetByIdQuery(contestId)
+                .Select(ChangeTimeForParticipantsViewModel.FromContest)
+                .FirstOrDefault();
+
+            if (contest != null)
+            {
+                return this.View(contest);
+            }
+
+            this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeTime(ChangeTimeForParticipantsViewModel model)
+        {
+            if (!this.CheckIfUserHasContestPermissions(model.ContesId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
+            {
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            this.participantsData.ChangeTimeForActiveByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
+
+            this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
+                ? string.Format(Resource.Added_time_to_participants_online, model.TimeInMinutes, model.ContestName)
+                : string.Format(Resource.Subtracted_time_from_participants_online, model.TimeInMinutes, model.ContestName));
+
+            return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
         }
 
         [HttpGet]

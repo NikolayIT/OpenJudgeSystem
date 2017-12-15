@@ -36,6 +36,7 @@
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Command(command => command.Custom("Стартирай Лаб").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Лаб стартиране");
+            columns.Command(command => command.Custom("Промени времето").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Време");
             columns.Command(c => c.Custom("Свали решения").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
             //columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
@@ -98,6 +99,7 @@
         var dataItem = this.dataItem($(ev.currentTarget).closest('tr'));
         $("#ContestCreateId").val(dataItem.Id);
 
+        console.log(dataItem);
         resetFormValues();
 
         var startLabWindow = $('#lab-start-popup').kendoWindow({

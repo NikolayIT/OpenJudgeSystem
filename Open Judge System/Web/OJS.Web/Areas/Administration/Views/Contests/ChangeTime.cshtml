@@ -1,0 +1,82 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ChangeTimeForParticipantsViewModel
+
+@using OJS.Web.Areas.Administration.Controllers
+
+@using Resource = Resources.Areas.Administration.Contests.Views.ChangeTime
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+
+@{
+    ViewBag.Title = Resource.Page_title;
+}
+
+<h1>@ViewBag.Title</h1>
+<h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
+<h3>@Resource.Change_time_legend</h3>
+<div id="create-form" class="container">
+    @using (Html.BeginForm<ContestsController>(c => c.ChangeTime(null), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ContesId)
+        @Html.HiddenFor(m => m.ContestName)
+
+        <div class="bottom-buffer top-buffer">
+            <div class="row">
+                <div class="col-xs-12 bottom-buffer">
+                    <div class="center-block">
+                        <span class="right-buffer glyphicon glyphicon-time"></span>
+                        @Html.LabelFor(m => m.TimeInMinutes, new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="editor-field col-xs-4 text-center">
+                    @Html.EditorFor(m => m.TimeInMinutes, new { type = "number", @class = "pull-left" })
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.TimeInMinutes)
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>
+                <span class="glyphicon glyphicon-arrow-up text-success"></span>
+                @Html.Raw(Resource.Positive_number_legend)
+            </p>
+            <p>
+                <span class="glyphicon glyphicon-arrow-down text-danger"></span>
+                @Html.Raw(Resource.Negative_number_legend)
+            </p>
+        </div>
+        <div class="row top-buffer">
+            <div class="editor-label col-xs-2">
+                <button id="add-time-for-participants-btn" type="submit" class="btn btn-success pull-left top-buffer">@Resource.Add_time</button>
+                <button id="subtract-time-for-participants-btn" type="submit" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</button>
+            </div>
+            <div class="editor-label col-sm-2">
+                @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
+                    SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        ($(function () {
+            $('input').on('input', function(ev) {
+                ev.preventDefault();
+                var value = $(this).val();
+
+                var addButton = $("#add-time-for-participants-btn");
+                var subtractButton = $("#subtract-time-for-participants-btn");
+                var hiddenClass = "hidden";
+
+                if (value > 0) {
+                    addButton.removeClass(hiddenClass);
+                    subtractButton.addClass(hiddenClass);
+                } else if (value < 0) {
+                    addButton.addClass(hiddenClass);
+                    subtractButton.removeClass(hiddenClass);
+                }
+            });
+        }))
+    </script>
+}

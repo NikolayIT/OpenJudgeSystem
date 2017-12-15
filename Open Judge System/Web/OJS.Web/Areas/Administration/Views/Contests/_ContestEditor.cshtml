@@ -4,9 +4,9 @@
 
 @{
     var isEditForm = (this.ViewBag.CallerAction ?? string.Empty) == "Edit";
-    var isActiveContest = this.ViewBag.IsActive ?? false;
+    var isActiveOnlineContest = this.ViewBag.IsActive ?? false;
 
-    var hiddenIfEditingActiveOnlineContestAttribute = isEditForm && Model.IsOnline && isActiveContest
+    var hiddenIfEditingActiveOnlineContestAttribute = isEditForm && Model.IsOnline && isActiveOnlineContest
         ? "hidden" : string.Empty;
 }
 

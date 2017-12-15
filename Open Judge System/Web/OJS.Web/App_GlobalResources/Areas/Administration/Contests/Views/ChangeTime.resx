@@ -117,67 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_cannot_edit_duration_type_problem_groups" xml:space="preserve">
-    <value>Contest is active and the Duration, Type or Problem groups cannot be edited!</value>
+  <data name="Add_time" xml:space="preserve">
+    <value>Add Time</value>
   </data>
-  <data name="Active_contest_forbidden_for_deletion" xml:space="preserve">
-    <value>Contest is active and cannot be deleted!</value>
-  </data>
-  <data name="Active_contest_forbidden_for_transfer" xml:space="preserve">
-    <value>Contest is active and participants cannot be transferred</value>
-  </data>
-  <data name="Added_time_to_participants_online" xml:space="preserve">
-    <value>Successfully Added {0} minutes to the times of all active participants in the contest {1}</value>
+  <data name="Change_time_legend" xml:space="preserve">
+    <value>Changes the times only for the active participants in the online contest. Does not affect the contest Duration, StartTime or EndTime.</value>
   </data>
   <data name="Contest" xml:space="preserve">
-    <value>contest</value>
+    <value>Contest</value>
   </data>
-  <data name="Contest_added" xml:space="preserve">
-    <value>Contest added successfully</value>
+  <data name="Negative_number_legend" xml:space="preserve">
+    <value>&lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time.</value>
   </data>
-  <data name="Contest_edited" xml:space="preserve">
-    <value>Contest edited successfully</value>
+  <data name="Page_title" xml:space="preserve">
+    <value>Change Time for active participants</value>
   </data>
-  <data name="Contest_not_found" xml:space="preserve">
-    <value>Contest not found</value>
+  <data name="Positive_number_legend" xml:space="preserve">
+    <value>&lt;strong&gt;+Positive number Adds&lt;/strong&gt; time.</value>
   </data>
-  <data name="Contest_not_valid" xml:space="preserve">
-    <value>Contest is not valid</value>
+  <data name="Subtract_time" xml:space="preserve">
+    <value>Subtract Time</value>
   </data>
-  <data name="Contest_start_date_before_end" xml:space="preserve">
-    <value>Contest start date must be before the contest end date</value>
+  <data name="Time_in_minutes" xml:space="preserve">
+    <value>Time in minutes</value>
   </data>
-  <data name="No_active_contests" xml:space="preserve">
-    <value>No active contests</value>
-  </data>
-  <data name="No_future_contests" xml:space="preserve">
-    <value>No future contests</value>
-  </data>
-  <data name="No_latest_contests" xml:space="preserve">
-    <value>No latest contests</value>
-  </data>
-  <data name="No_question_by_id" xml:space="preserve">
-    <value>Question could not be found by given Id</value>
-  </data>
-  <data name="Participants_transferred" xml:space="preserve">
-    <value>Participants transferred successfully</value>
-  </data>
-  <data name="Practice" xml:space="preserve">
-    <value>practice</value>
-  </data>
-  <data name="Practice_start_date_before_end" xml:space="preserve">
-    <value>Practice start date must be before the practice end date</value>
-  </data>
-  <data name="Report_excel_format" xml:space="preserve">
-    <value>Ranking for {0} {1}.xls</value>
-  </data>
-  <data name="Report_zip_format" xml:space="preserve">
-    <value>{1} submissions for {0}.zip</value>
-  </data>
-  <data name="Select_one_submission_type" xml:space="preserve">
-    <value>Choose at least one submission type!</value>
-  </data>
-  <data name="Subtracted_time_from_participants_online" xml:space="preserve">
-    <value>Successfully Subtracted {0} minutes from the times of all active participants in the contest {1}</value>
+  <data name="Time_required_error" xml:space="preserve">
+    <value>Time is required, please add a value different from 0</value>
   </data>
 </root>

@@ -88,6 +88,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully Added {0} minutes to the times of all active participants in the contest {1}.
+        /// </summary>
+        public static string Added_time_to_participants_online {
+            get {
+                return ResourceManager.GetString("Added_time_to_participants_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to contest.
         /// </summary>
         public static string Contest {
@@ -228,6 +237,15 @@ namespace Resources.Areas.Administration.Contests {
         public static string Select_one_submission_type {
             get {
                 return ResourceManager.GetString("Select_one_submission_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Subtracted {0} minutes from the times of all active participants in the contest {1}.
+        /// </summary>
+        public static string Subtracted_time_from_participants_online {
+            get {
+                return ResourceManager.GetString("Subtracted_time_from_participants_online", resourceCulture);
             }
         }
     }
