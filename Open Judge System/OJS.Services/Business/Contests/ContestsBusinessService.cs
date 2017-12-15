@@ -2,19 +2,18 @@
 {
     using System.Linq;
 
-    using OJS.Data.Models;
-    using OJS.Data.Repositories.Contracts;
+    using OJS.Services.Data.Contests;
 
     public class ContestsBusinessService : IContestsBusinessService
     {
-        private readonly IEfDeletableEntityRepository<Contest> contests;
+        private readonly IContestsDataService contestsData;
 
-        public ContestsBusinessService(IEfDeletableEntityRepository<Contest> contests) =>
-            this.contests = contests;
+        public ContestsBusinessService(IContestsDataService contestsData) =>
+            this.contestsData = contestsData;
 
         public bool IsContestIpValidByIdAndIp(int contestId, string ip) =>
-            this.contests
-                .All()
-                .Any(c => c.Id == contestId && (!c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip)));
+            this.contestsData
+                .GetByIdQuery(contestId)
+                .Any(c => !c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip));
     }
 }
