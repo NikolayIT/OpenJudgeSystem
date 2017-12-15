@@ -1,8 +1,11 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
     
+@using OJS.Common.Models
 @using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;  
 
 @{
+    const string OnlineOnlyContainersClassName = "online-contest-editor-container";
+
     var isEditForm = (this.ViewBag.CallerAction ?? string.Empty) == "Edit";
     var isActiveOnlineContest = this.ViewBag.IsActive ?? false;
 
@@ -44,7 +47,7 @@
         </div>
         <br />
     </div>
-    <div @hiddenIfEditingActiveOnlineContestAttribute>
+    <div @hiddenIfEditingActiveOnlineContestAttribute class="@OnlineOnlyContainersClassName hidden">
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -155,7 +158,7 @@
         </div>
     </div>
     <br />
-    <div @hiddenIfEditingActiveOnlineContestAttribute>
+    <div @hiddenIfEditingActiveOnlineContestAttribute class="@OnlineOnlyContainersClassName hidden">
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -319,14 +322,21 @@
             value: ips.length ? ips[ips.length - 1] : ''
         };
     }
-</script>
-<script>
-    
+
     $(function () {
         var categoryName ="@Model.CategoryName";
         if (categoryName !== "" && typeof categoryName !== typeof undefined) {
             $("#CategoryId").data("kendoComboBox").text(categoryName);
         }
-        
+
+        var type = $("#Type");
+        type.change(function (ev) {
+            ev.preventDefault();
+            if (type.val() == @((int)ContestType.OnlinePractialExam)) {
+                $(".@OnlineOnlyContainersClassName").removeClass("hidden");
+            } else {
+                $(".@OnlineOnlyContainersClassName").addClass("hidden");
+            }
+        });
     });
 </script>
