@@ -33,6 +33,7 @@
             this.SourceCodeSizeLimit = GlobalConstants.ProblemDefaultSourceLimit;
             this.ShowDetailedFeedback = GlobalConstants.ProblemDefaultShowDetailedFeedback;
             this.SubmissionTypes = new List<SubmissionTypeViewModel>();
+            this.AvailableProblemGroups = new List<SelectListItem>();
         }
 
         [ExcludeFromExcel]
@@ -57,6 +58,7 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
+                    GroupNumber = problem.GroupNumber,
                     SolutionSkeletonData = problem.SolutionSkeleton,
                     HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
@@ -138,6 +140,13 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(0)]
         public int OrderBy { get; set; }
+
+        [ExcludeFromExcel]
+        public IList<SelectListItem> AvailableProblemGroups { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
+        public short? GroupNumber { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]

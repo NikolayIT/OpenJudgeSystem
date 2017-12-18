@@ -174,4 +174,7 @@
   <data name="Solution_skeleton" xml:space="preserve">
     <value>Solution skeleton</value>
   </data>
+  <data name="Group_number" xml:space="preserve">
+    <value>Problem group</value>
+  </data>
 </root>
