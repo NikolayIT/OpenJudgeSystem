@@ -96,9 +96,17 @@
                 return this.View(model);
             }
 
-            if (model.IsOnline && !model.Duration.HasValue)
+            if (model.IsOnline)
             {
-                this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+                if (!model.Duration.HasValue)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+                }
+
+                if (model.NumberOfProblemGroups <= 0)
+                {
+                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                }
             }
 
             if (this.ModelState.IsValid)
@@ -143,8 +151,7 @@
 
             if (contest.Id.HasValue && contest.IsOnline)
             {
-                // TODO: replace CanBeCompeted with IsActive
-                this.ViewBag.IsActive = this.contestsData.CanBeCompetedById(contest.Id.Value);
+                this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
             }
 
             return this.View(contest);
@@ -177,9 +184,8 @@
 
                 contest = model.GetEntityModel(contest);
 
-                // TODO: replace CanBeCompeted with IsActive
                 if (contest.IsOnline() &&
-                    contest.CanBeCompeted &&
+                    contest.IsActive &&
                     (contest.Duration != model.Duration ||
                     contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
                     (int)contest.Type != model.Type))
