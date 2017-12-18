@@ -165,10 +165,10 @@
         [NotMapped]
         public bool IsActive => this.CanBeCompeted ||
             (this.Type == ContestType.OnlinePractialExam &&
-            this.Participants.Any(p =>
-                p.IsOfficial &&
-                p.ContestEndTime.HasValue &&
-                p.ContestEndTime.Value >= DateTime.Now));
+                this.Participants.Any(p =>
+                    p.IsOfficial &&
+                    p.ContestEndTime.HasValue &&
+                    p.ContestEndTime.Value >= DateTime.Now));
 
         [NotMapped]
         public bool ResultsArePubliclyVisible
