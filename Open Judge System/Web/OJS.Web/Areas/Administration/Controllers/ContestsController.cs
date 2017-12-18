@@ -212,7 +212,7 @@
                 return this.GridOperation(request, model);
             }
 
-            if (this.contestsData.CanBeCompetedById(model.Id.Value))
+            if (this.contestsData.IsActiveById(model.Id.Value))
             {
                 this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
                 this.ModelState.AddModelError(string.Empty, string.Empty);

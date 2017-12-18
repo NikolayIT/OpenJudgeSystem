@@ -58,8 +58,7 @@
             contestViewModel.UserIsLecturerInContest =
                 this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
 
-            // TODO: replace CanBeCompeted with IsActive
-            contestViewModel.IsActive = this.contestsData.CanBeCompetedById(contestViewModel.Id);
+            contestViewModel.IsActive = this.contestsData.IsActiveById(contestViewModel.Id);
 
             return this.View(contestViewModel);
         }

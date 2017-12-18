@@ -25,6 +25,6 @@
 
         void DeleteById(int contestId);
 
-        bool CanBeCompetedById(int contestId);
+        bool IsActiveById(int contestId);
     }
 }
