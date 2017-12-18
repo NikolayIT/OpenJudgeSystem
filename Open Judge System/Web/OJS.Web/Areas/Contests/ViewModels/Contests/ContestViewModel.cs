@@ -34,6 +34,7 @@
                         PracticeEndTime = contest.PracticeEndTime,
                         IsDeleted = contest.IsDeleted,
                         IsVisible = contest.IsVisible,
+                        IsOnline = contest.Type == ContestType.OnlinePractialExam,
                         ContestPassword = contest.ContestPassword,
                         PracticePassword = contest.PracticePassword,
                         HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
@@ -84,6 +85,8 @@
         public bool IsDeleted { get; set; }
 
         public bool IsVisible { get; set; }
+
+        public bool IsOnline { get; set; }
 
         public string ContestPassword { private get; set; }
 

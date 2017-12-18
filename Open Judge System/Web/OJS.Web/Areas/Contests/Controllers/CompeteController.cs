@@ -184,7 +184,8 @@
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
-            var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
+            var participant = this.participantsData
+                .GetWithContestByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(participant, official);
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
