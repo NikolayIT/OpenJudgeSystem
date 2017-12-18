@@ -8,7 +8,7 @@
 
     public class ParticipantViewModel
     {
-        public ParticipantViewModel(Participant participant, bool official)
+        public ParticipantViewModel(Participant participant, bool official, bool isAdminOrLecturer)
         {
             this.Contest = ContestViewModel.FromContest.Compile()(participant.Contest);
             this.LastSubmissionTime = participant.Submissions.Any()
@@ -17,7 +17,10 @@
             this.ContestIsCompete = official;
             this.ContestEndTime = participant.ContestEndTime;
 
-            if (official && this.Contest.IsOnline && participant.ContestEndTime >= DateTime.Now)
+            if (!isAdminOrLecturer &&
+                official &&
+                this.Contest.IsOnline &&
+                participant.ContestEndTime >= DateTime.Now)
             {
                 this.Contest.Problems = participant.Problems
                     .AsQueryable()

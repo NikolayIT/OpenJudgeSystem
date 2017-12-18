@@ -186,7 +186,10 @@
 
             var participant = this.participantsData
                 .GetWithContestByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official);
-            var participantViewModel = new ParticipantViewModel(participant, official);
+            var participantViewModel = new ParticipantViewModel(
+                participant,
+                official,
+                this.IsUserAdminOrLecturerInContest(contest));
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
 
