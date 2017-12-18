@@ -2,23 +2,18 @@
 {
     using System;
     using System.Linq;
+
     using OJS.Common.Models;
     using OJS.Data.Models;
-    using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
 
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
         private readonly IParticipantsDataService participantsData;
-        private readonly IContestsDataService contestsData;
 
         public ParticipantsBusinessService(
-            IParticipantsDataService participantsData,
-            IContestsDataService contestsData)
-        {
-            this.participantsData = participantsData;
-            this.contestsData = contestsData;
-        }
+            IParticipantsDataService participantsData) =>
+                this.participantsData = participantsData;
 
         public bool CanCompeteByContestAndUserId(Contest contest, string userId)
         {
@@ -45,14 +40,35 @@
                     ContestStartTime = DateTime.Now,
                     ContestEndTime = DateTime.Now + contest.Duration
                 };
+
+                if (isOfficial)
+                {
+                    this.AssignRandomProblemsToParticipant(participant, contest);
+                }
             }
             else
             {
                 participant = new Participant(contest.Id, userId, isOfficial);
             }
-
+            
             this.participantsData.Add(participant);
             return participant;
+        }
+
+        private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)
+        {
+            var random = new Random();
+
+            var problemGroups = contest.Problems
+                .Where(p => !p.IsDeleted)
+                .GroupBy(p => p.GroupNumber)
+                .Select(problemGroup => problemGroup.ToList());
+
+            foreach (var problemGroup in problemGroups)
+            {
+                var randomProblem = problemGroup[random.Next(0, problemGroup.Count)];
+                participant.Problems.Add(randomProblem);
+            }
         }
     }
 }
