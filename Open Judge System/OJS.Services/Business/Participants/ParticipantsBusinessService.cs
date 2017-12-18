@@ -33,7 +33,7 @@
         public Participant CreateNewByContestUserIdAndIsOfficial(Contest contest, string userId, bool isOfficial)
         {
             Participant participant;
-            if (contest.Type == ContestType.OnlinePractialExam)
+            if (contest.IsOnline)
             {
                 participant = new Participant(contest.Id, userId, isOfficial)
                 {
