@@ -17,8 +17,8 @@
             this.ContestIsCompete = official;
             this.ContestEndTime = participant.ContestEndTime;
 
-            if (!isAdminOrLecturer &&
-                official &&
+            if (official &&
+                !isAdminOrLecturer &&
                 this.Contest.IsOnline &&
                 participant.ContestEndTime >= DateTime.Now)
             {
