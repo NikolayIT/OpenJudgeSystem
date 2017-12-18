@@ -7,6 +7,6 @@
     {
         bool CanCompeteByContestAndUserId(Contest contest, string userId);
 
-        Participant CreateNewByContestUserIdAndIsOfficial(Contest contest, string userId, bool isOfficial);
+        Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(Contest contest, string userId, bool isOfficial, bool isAdmin);
     }
 }

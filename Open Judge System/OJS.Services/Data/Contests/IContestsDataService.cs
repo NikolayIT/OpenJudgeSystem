@@ -26,5 +26,7 @@
         void DeleteById(int contestId);
 
         bool IsActiveById(int contestId);
+
+        bool IsLecturerByContestIdAndUserId(int contestId, string userId);
     }
 }

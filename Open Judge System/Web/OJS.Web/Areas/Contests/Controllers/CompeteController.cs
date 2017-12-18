@@ -100,8 +100,8 @@
         {
             if (contest == null ||
                 contest.IsDeleted ||
-                !contest.IsVisible ||
-                !this.IsUserAdminOrLecturerInContest(contest))
+                !(contest.IsVisible ||
+                    this.IsUserAdminOrLecturerInContest(contest)))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.NotFound,
@@ -810,29 +810,30 @@
 
         private Participant AddNewParticipantToContest(Contest contest, bool official)
         {
-            if (contest.IsOnline && official)
-            {
-                try
-                {
-                    if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
-                    {
-                        throw new HttpException(
-                            (int)HttpStatusCode.Forbidden,
-                            Resource.ContestsGeneral.User_is_not_registered_for_exam);
-                    }
-                }
-                catch
-                {
-                    throw new HttpException(
-                        (int)HttpStatusCode.NotFound,
-                        Resource.ContestsGeneral.Contest_cannot_be_competed);
-                }
-            }
+            //if (contest.IsOnline && official)
+            //{
+            //    try
+            //    {
+            //        if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
+            //        {
+            //            throw new HttpException(
+            //                (int)HttpStatusCode.Forbidden,
+            //                Resource.ContestsGeneral.User_is_not_registered_for_exam);
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        throw new HttpException(
+            //            (int)HttpStatusCode.NotFound,
+            //            Resource.ContestsGeneral.Contest_cannot_be_competed);
+            //    }
+            //}
 
-            var participant = this.participantsBusiness.CreateNewByContestUserIdAndIsOfficial(
+            var participant = this.participantsBusiness.CreateNewByContestUserIdIsOfficialAndIsAdmin(
                 contest,
                 this.UserProfile.Id,
-                official);
+                official,
+                this.User.IsAdmin());
 
             return participant;
         }
