@@ -187,8 +187,8 @@
                 if (contest.IsOnline() &&
                     contest.IsActive &&
                     (contest.Duration != model.Duration ||
-                    contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
-                    (int)contest.Type != model.Type))
+                        contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
+                        (int)contest.Type != model.Type))
                 {
                     this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
                     this.RedirectToAction<ContestsController>(c => c.Index());

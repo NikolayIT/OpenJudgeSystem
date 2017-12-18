@@ -32,8 +32,8 @@
             var activeParticipants = this.participants
                 .All()
                 .Where(p => p.ContestId == contestId &&
-                            p.IsOfficial &&
-                            p.ContestEndTime > DateTime.Now);
+                    p.IsOfficial &&
+                    p.ContestEndTime > DateTime.Now);
 
             foreach (var participant in activeParticipants)
             {
