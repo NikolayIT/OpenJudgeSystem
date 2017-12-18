@@ -37,6 +37,17 @@
             this.contestsData = contestsData;
         }
 
+        public ActionResult TransferUsersFromCoding101Exam6March2016()
+        {
+            var problemIds = new List<int>() {733, 736, 738};
+            var problems = this.Data.Problems.All().Where(pr => problemIds.Contains(pr.Id)).ToList();
+            var participants = this.Data.Participants.All().Where(p => p.ContestId == 169 && p.IsOfficial);
+            var count = participants.Count();
+            participants.ForEach(p => p.Problems = problems);
+            this.Data.SaveChanges();
+            return this.Content($"Done. Updated {count} participants");
+        }
+
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
         {
             string cron = "0 0 * * *";
