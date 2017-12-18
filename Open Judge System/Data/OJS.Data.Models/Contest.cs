@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     using OJS.Common;
     using OJS.Common.Models;
@@ -160,6 +161,14 @@
                 return this.PracticeStartTime <= DateTime.Now && DateTime.Now <= this.PracticeEndTime;
             }
         }
+
+        [NotMapped]
+        public bool IsActive => this.CanBeCompeted ||
+            (this.Type == ContestType.OnlinePractialExam &&
+                this.Participants.Any(p =>
+                    p.IsOfficial &&
+                    p.ContestEndTime.HasValue &&
+                    p.ContestEndTime.Value >= DateTime.Now));
 
         [NotMapped]
         public bool ResultsArePubliclyVisible

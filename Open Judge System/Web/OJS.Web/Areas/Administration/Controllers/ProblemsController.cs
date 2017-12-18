@@ -401,7 +401,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (this.contestsData.CanBeCompetedById(selectedProblem.ContestId))
+            if (this.contestsData.IsActiveById(selectedProblem.ContestId))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(selectedProblem.ContestId));
@@ -473,7 +473,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (contest.CanBeCompeted)
+            if (contest.IsActive)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(id.Value));
@@ -506,7 +506,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (contest.CanBeCompeted)
+            if (contest.IsActive)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
                 return this.RedirectToAction(c => c.Contest(contest.Id));
