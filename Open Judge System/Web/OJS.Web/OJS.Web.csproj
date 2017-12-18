@@ -1769,6 +1769,7 @@
     <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
+    <Content Include="Content\Contests\change-time.css" />
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
@@ -2370,7 +2371,6 @@
     <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\HtmlContent.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Integer.cshtml" />
     <Content Include="Areas\Administration\Views\Checkers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />

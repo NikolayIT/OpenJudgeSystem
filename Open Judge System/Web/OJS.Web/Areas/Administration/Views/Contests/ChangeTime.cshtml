@@ -9,6 +9,10 @@
     ViewBag.Title = Resource.Page_title;
 }
 
+@section Styles {
+    <link href="/Content/Contests/change-time.css" rel="stylesheet" />
+}
+
 <h1>@ViewBag.Title</h1>
 <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
 <h3>@Resource.Change_time_legend</h3>
@@ -28,7 +32,9 @@
                     </div>
                 </div>
                 <div class="editor-field col-xs-4 text-center">
-                    @Html.EditorFor(m => m.TimeInMinutes, new { type = "number", @class = "pull-left" })
+                    <div class="number-input">
+                        @Html.EditorFor(m => m.TimeInMinutes, new {@class = "pull-left"})
+                    </div>
                 </div>
                 <div class="editor-field col-xs-4">
                     @Html.ValidationMessageFor(m => m.TimeInMinutes)

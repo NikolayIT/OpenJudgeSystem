@@ -11,20 +11,17 @@
 
     public class ChangeTimeForParticipantsViewModel
     {
-        private const int DefaultTimeInMinutes = 5;
-
         public static Expression<Func<Contest, ChangeTimeForParticipantsViewModel>> FromContest =>
             contest => new ChangeTimeForParticipantsViewModel
             {
                 ContesId = contest.Id,
-                ContestName = contest.Name,
-                TimeInMinutes = DefaultTimeInMinutes
+                ContestName = contest.Name
             };
 
         [HiddenInput(DisplayValue = false)]
         public int ContesId { get; set; }
 
-        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
 
         [Display(Name = "Time_in_minutes", ResourceType = typeof(Resource))]
