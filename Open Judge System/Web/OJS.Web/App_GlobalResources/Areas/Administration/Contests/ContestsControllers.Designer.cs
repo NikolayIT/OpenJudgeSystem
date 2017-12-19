@@ -88,7 +88,7 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully Added {0} minutes to the times of all active participants in the contest {1}.
+        ///   Looks up a localized string similar to Successfully added {0} minutes to the times of all active participants in the contest {1}.
         /// </summary>
         public static string Added_time_to_participants_online {
             get {
@@ -250,7 +250,7 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully Subtracted {0} minutes from the times of all active participants in the contest {1}.
+        ///   Looks up a localized string similar to Successfully subtracted {0} minutes from the times of all active participants in the contest {1}.
         /// </summary>
         public static string Subtracted_time_from_participants_online {
             get {

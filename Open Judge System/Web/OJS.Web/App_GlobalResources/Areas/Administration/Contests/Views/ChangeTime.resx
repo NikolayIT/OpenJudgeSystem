@@ -121,7 +121,7 @@
     <value>Add Time</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Changes the times only for the active participants in the online contest. Does not affect the contest Duration, StartTime or EndTime.</value>
+    <value>Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>

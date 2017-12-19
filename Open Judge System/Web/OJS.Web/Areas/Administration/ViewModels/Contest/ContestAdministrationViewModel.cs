@@ -35,6 +35,7 @@
                     Id = contest.Id,
                     Name = contest.Name,
                     Type = (int)contest.Type,
+                    NumberOfProblemGroups = contest.NumberOfProblemGroups,
                     StartTime = contest.StartTime,
                     EndTime = contest.EndTime,
                     PracticeStartTime = contest.PracticeStartTime,

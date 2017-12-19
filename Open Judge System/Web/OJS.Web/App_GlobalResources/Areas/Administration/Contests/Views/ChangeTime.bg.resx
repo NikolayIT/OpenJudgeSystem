@@ -121,19 +121,13 @@
     <value>Добави време</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Променя времената само на активните участници в състезанието. Не афектира времето на състезанието (Contest Duration), нито времето в което стартира или приключва (Contest StartTime, EndTime)</value>
+    <value>Променя времената само на активните участници в състезанието. Не афектира времето на състезанието, нито времето в което стартира или приключва.</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Състезание</value>
   </data>
-  <data name="Negative_number_legend" xml:space="preserve">
-    <value>&lt;strong&gt;Негативно число Намалява&lt;strong&gt; от времето</value>
-  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Прехвърляне на участници</value>
-  </data>
-  <data name="Positive_number_legend" xml:space="preserve">
-    <value>&lt;strong&gt;Положително число Добавя&lt;/strong&gt; време</value>
   </data>
   <data name="Subtract_time" xml:space="preserve">
     <value>Отнеми време</value>
