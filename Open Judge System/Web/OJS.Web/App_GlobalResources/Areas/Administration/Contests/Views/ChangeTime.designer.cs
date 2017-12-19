@@ -70,7 +70,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the times only for the active participants in the online contest. Does not affect the contest Duration, StartTime or EndTime..
+        ///   Looks up a localized string similar to Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {

@@ -367,9 +367,13 @@
 
             this.participantsData.ChangeTimeForActiveByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
 
+            var minutesForDisplay = model.TimeInMinutes.ToString();
             this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
-                ? string.Format(Resource.Added_time_to_participants_online, model.TimeInMinutes, model.ContestName)
-                : string.Format(Resource.Subtracted_time_from_participants_online, model.TimeInMinutes, model.ContestName));
+                ? string.Format(Resource.Added_time_to_participants_online, minutesForDisplay, model.ContestName)
+                : string.Format(
+                    Resource.Subtracted_time_from_participants_online,
+                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
+                    model.ContestName));
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
         }
