@@ -29,21 +29,21 @@
         </div>
     </div>
     <br />
-        <div class="row ">
-            <div class="editor-label col-xs-3">
-                <div class="pull-right">
-                    @Html.LabelFor(m => m.Type)
-                </div>
-            </div>
-            <div class="editor-field col-xs-4">
-                @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
-            </div>
-            <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
-                @Html.ValidationMessageFor(m => m.Type)
+    <div class="row ">
+        <div class="editor-label col-xs-3">
+            <div class="pull-right">
+                @Html.LabelFor(m => m.Type)
             </div>
         </div>
-        <br />
+        <div class="editor-field col-xs-4">
+            @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
+        </div>
+        <div class="editor-field col-xs-4">
+            <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
+            @Html.ValidationMessageFor(m => m.Type)
+        </div>
+    </div>
+    <br />
     <div class="@OnlineOnlyContainersClassName hidden">
         <div class="row">
             <div class="editor-label col-xs-3">
