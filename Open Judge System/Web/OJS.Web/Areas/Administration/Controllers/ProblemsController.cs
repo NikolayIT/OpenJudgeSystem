@@ -927,14 +927,18 @@
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
         {
-            var problem = this.Data.Problems.All()
-                .Where(x => x.Id == id)
+            var problemEntity = this.problemsData.GetByIdQuery(id);
+
+            var problem = problemEntity
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
+            var numberOfProblemGroups =
+                problemEntity.FirstOrDefault().Contest.NumberOfProblemGroups;
+
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
-                this.Data.Problems.GetById(id).Contest.NumberOfProblemGroups);
+                numberOfProblemGroups);
 
             return problem;
         }
