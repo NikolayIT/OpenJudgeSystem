@@ -19,7 +19,7 @@
         {
             this.participantsData = participantsData;
             this.contestsData = contestsData;
-        }        
+        }
 
         public bool CanCompeteByContestAndUserId(Contest contest, string userId)
         {
