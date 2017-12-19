@@ -1,7 +1,22 @@
-﻿@model TimeSpan?
+﻿@using System.Dynamic
+
+@model TimeSpan?
+    
+@{
+    dynamic htmlAttributes = new ExpandoObject();
+
+    htmlAttributes.style = "width: 100%; height: 30px;";
+    htmlAttributes.placeholder = "h:mm";
+
+    if (this.ViewData.ContainsKey(WebConstants.IsDisabled) &&
+        (bool)this.ViewData[WebConstants.IsDisabled])
+    {
+        htmlAttributes.disabled = "disabled";
+    }
+}
 
 @(Html
     .Kendo()
     .TimePickerFor(m => m)
     .Format("h:mm")
-    .HtmlAttributes(new { style = "width: 100%; height: 30px;", placeholder = "h:mm" }))
+    .HtmlAttributes(htmlAttributes))

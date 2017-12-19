@@ -145,7 +145,7 @@
                 .Select(ContestAdministrationViewModel.ViewModel)
                 .FirstOrDefault();
 
-            if (contest == null)
+            if (contest?.Id == null)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
@@ -153,10 +153,7 @@
 
             this.PrepareViewBagData(nameof(this.Edit));
 
-            if (contest.Id.HasValue && contest.IsOnline)
-            {
-                this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
-            }
+            this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
 
             return this.View(contest);
         }

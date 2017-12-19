@@ -1,16 +1,15 @@
 ﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
     
 @using OJS.Common.Models
-@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;  
+@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;
 
 @{
     const string OnlineOnlyContainersClassName = "online-contest-editor-container";
 
     var isEditForm = (this.ViewBag.CallerAction ?? string.Empty) == "Edit";
-    var isActiveOnlineContest = this.ViewBag.IsActive ?? false;
+    var isActiveContest = this.ViewBag.IsActive ?? false;
 
-    var hiddenIfEditingActiveOnlineContestAttribute = isEditForm && Model.IsOnline && isActiveOnlineContest
-        ? "hidden" : string.Empty;
+    var isEditFormOfActiveContest = isEditForm && isActiveContest;
 }
 
 <fieldset>
@@ -30,7 +29,6 @@
         </div>
     </div>
     <br />
-    <div @hiddenIfEditingActiveOnlineContestAttribute>
         <div class="row ">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -38,7 +36,7 @@
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.EditorFor(m => m.Type, new { @class = "form-control pull-left full-editor" })
+                @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
@@ -46,8 +44,7 @@
             </div>
         </div>
         <br />
-    </div>
-    <div @hiddenIfEditingActiveOnlineContestAttribute class="@OnlineOnlyContainersClassName hidden">
+    <div class="@OnlineOnlyContainersClassName hidden">
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -55,7 +52,7 @@
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.EditorFor(m => m.NumberOfProblemGroups, new { @class = "form-control pull-left full-editor" })
+                @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
@@ -158,7 +155,7 @@
         </div>
     </div>
     <br />
-    <div @hiddenIfEditingActiveOnlineContestAttribute class="@OnlineOnlyContainersClassName hidden">
+    <div class="@OnlineOnlyContainersClassName hidden">
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
@@ -166,7 +163,7 @@
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.EditorFor(m => m.Duration, new { @class = "form-control pull-left full-editor" })
+                @Html.EditorFor(m => m.Duration, new { IsDisabled = isEditFormOfActiveContest})
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Duration" data-tooltip="true"></span>
