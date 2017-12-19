@@ -5,9 +5,9 @@
 
 @{
     var placeholder = string.Empty;
-    if (this.ViewData.ModelMetadata.AdditionalValues.ContainsKey("placeholder"))
+    if (this.ViewData.ModelMetadata.AdditionalValues.ContainsKey(WebConstants.Placeholder))
     {
-        placeholder = this.ViewData.ModelMetadata.AdditionalValues["placeholder"] as string;
+        placeholder = this.ViewData.ModelMetadata.AdditionalValues[WebConstants.Placeholder] as string;
     }
 
     dynamic htmlAttributes = new ExpandoObject();

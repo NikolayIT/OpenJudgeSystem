@@ -6,7 +6,11 @@
     dynamic htmlAttributes = new ExpandoObject();
 
     htmlAttributes.style = "width: 100%; height: 30px;";
-    htmlAttributes.placeholder = "h:mm";
+
+    if (this.ViewData.ModelMetadata.AdditionalValues.ContainsKey(WebConstants.Placeholder))
+    {
+        htmlAttributes.placeholder = this.ViewData.ModelMetadata.AdditionalValues[WebConstants.Placeholder] as string;
+    }
 
     if (this.ViewData.ContainsKey(WebConstants.IsDisabled) &&
         (bool)this.ViewData[WebConstants.IsDisabled])

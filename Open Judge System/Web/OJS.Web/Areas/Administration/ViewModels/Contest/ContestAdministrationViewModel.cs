@@ -13,7 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
-
+    using OJS.Web.Common;
     using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
 
     public class ContestAdministrationViewModel : AdministrationViewModel<Contest>
@@ -114,6 +114,7 @@
 
         [DatabaseProperty]
         [Display(Name = "Duration", ResourceType = typeof(Resource))]
+        [AdditionalMetadata(WebConstants.Placeholder, "h:mm")]
         [UIHint("TimeSpan")]
         public TimeSpan? Duration { get; set; }
 
