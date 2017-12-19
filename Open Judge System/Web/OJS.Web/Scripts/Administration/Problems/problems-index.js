@@ -108,7 +108,6 @@ function initializeGrid(contestId) {
     }).then(function () {
         $('#status').hide();
         $('#problems-grid').html('');
-        console.log(response);
         $('#problems-grid').kendoGrid({
             dataSource: new kendo.data.DataSource({
                 data: response
