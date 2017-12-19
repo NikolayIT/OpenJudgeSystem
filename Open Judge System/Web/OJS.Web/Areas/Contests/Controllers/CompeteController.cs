@@ -100,8 +100,8 @@
         {
             if (contest == null ||
                 contest.IsDeleted ||
-                !(contest.IsVisible ||
-                    this.IsUserAdminOrLecturerInContest(contest)))
+                (!contest.IsVisible &&
+                    !this.IsUserAdminOrLecturerInContest(contest)))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.NotFound,

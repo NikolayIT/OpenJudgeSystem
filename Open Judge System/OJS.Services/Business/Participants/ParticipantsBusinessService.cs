@@ -62,7 +62,7 @@
             {
                 participant = new Participant(contest.Id, userId, isOfficial);
             }
-            
+
             this.participantsData.Add(participant);
             return participant;
         }
