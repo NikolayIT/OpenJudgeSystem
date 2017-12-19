@@ -148,10 +148,10 @@
                 </div>
                 <div class="col-xs-5">
                     @(Html.Kendo()
-                          .DropDownListFor(m => m.Checker)
-                          .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                          .BindTo(Model.AvailableCheckers)
-                          .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
+                        .DropDownListFor(m => m.Checker)
+                        .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                        .BindTo(Model.AvailableCheckers)
+                        .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
                 </div>
                 <div class="editor-field col-xs-3">
                     <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <br />
-            @if (Model.AvailableProblemGroups.Any())
+            @if (ViewBag.GroupNumberData.Count > 1)
             {
                 <div class="row">
                     <div class="editor-label col-xs-3">
@@ -168,11 +168,7 @@
                         </div>
                     </div>
                     <div class="col-xs-5">
-                        @(Html.Kendo()
-                              .DropDownListFor(m => m.GroupNumber)
-                              .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                              .BindTo(Model.AvailableProblemGroups)
-                              .HtmlAttributes(new { @class = "pull-left full-kendo-editor" }))
+                        @Html.EditorFor(m => m.GroupNumber)
                     </div>
                     <div class="editor-field col-xs-3">
                         <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>

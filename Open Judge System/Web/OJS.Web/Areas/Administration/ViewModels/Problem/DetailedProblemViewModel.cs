@@ -33,7 +33,6 @@
             this.SourceCodeSizeLimit = GlobalConstants.ProblemDefaultSourceLimit;
             this.ShowDetailedFeedback = GlobalConstants.ProblemDefaultShowDetailedFeedback;
             this.SubmissionTypes = new List<SubmissionTypeViewModel>();
-            this.AvailableProblemGroups = new List<SelectListItem>();
         }
 
         [ExcludeFromExcel]
@@ -141,11 +140,9 @@
         [DefaultValue(0)]
         public int OrderBy { get; set; }
 
-        [ExcludeFromExcel]
-        public IList<SelectListItem> AvailableProblemGroups { get; set; }
-
         [DatabaseProperty]
         [Display(Name = "Group_number", ResourceType = typeof(Resource))]
+        [UIHint("DropDownList")]
         public short? GroupNumber { get; set; }
 
         [DatabaseProperty]

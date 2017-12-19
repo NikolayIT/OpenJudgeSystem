@@ -983,15 +983,17 @@
                     Selected = checker.Name.Contains("Trim")
                 });
 
+            var availableProblemGroups = new List<DropdownViewModel>();
             for (var problemGroupNumber = 1; problemGroupNumber <= numberOfProblemGroups; problemGroupNumber++)
             {
-                problem.AvailableProblemGroups.Add(new SelectListItem()
+                availableProblemGroups.Add(new DropdownViewModel()
                 {
-                    Text = problemGroupNumber.ToString(),
-                    Value = problemGroupNumber.ToString(),
-                    Selected = problemGroupNumber == problem.GroupNumber
+                    Id = problemGroupNumber,
+                    Name = problemGroupNumber.ToString()
                 });
             }
+
+            this.ViewBag.GroupNumberData = availableProblemGroups;
         }
 
         private bool IsValidProblem(DetailedProblemViewModel model)
