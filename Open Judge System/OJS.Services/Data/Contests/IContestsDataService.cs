@@ -27,6 +27,6 @@
 
         bool IsActiveById(int contestId);
 
-        bool IsLecturerByContestIdAndUserId(int contestId, string userId);
+        bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId);
     }
 }

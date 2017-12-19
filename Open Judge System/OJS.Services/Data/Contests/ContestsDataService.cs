@@ -48,7 +48,7 @@
             return contest != null && contest.IsActive;
         }
 
-        public bool IsLecturerByContestIdAndUserId(int contestId, string userId) =>
+        public bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId) =>
             this.contests
                 .All()
                 .Where(c => c.Id == contestId)

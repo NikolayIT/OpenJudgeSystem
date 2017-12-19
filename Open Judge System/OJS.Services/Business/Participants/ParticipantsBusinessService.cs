@@ -54,7 +54,7 @@
 
                 if (isOfficial &&
                     !isAdmin &&
-                    !this.contestsData.IsLecturerByContestIdAndUserId(contest.Id, userId))
+                    !this.contestsData.IsUserLecturerInByContestIdAndUserId(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }
