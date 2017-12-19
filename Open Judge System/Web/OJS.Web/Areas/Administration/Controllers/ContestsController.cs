@@ -102,6 +102,10 @@
                 {
                     this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
                 }
+                else if (model.Duration.Value.TotalHours >= 24)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
+                }
 
                 if (model.NumberOfProblemGroups <= 0)
                 {
@@ -170,6 +174,11 @@
             if (!this.IsValidContest(model))
             {
                 return this.View(model);
+            }
+
+            if (model.Duration.HasValue && model.Duration.Value.TotalHours >= 24)
+            {
+                this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
             }
 
             if (this.ModelState.IsValid)

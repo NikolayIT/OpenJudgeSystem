@@ -151,6 +151,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration must be in format &quot;h:mm&quot;.
+        /// </summary>
+        public static string Duration_invalid_format {
+            get {
+                return ResourceManager.GetString("Duration_invalid_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No active contests.
         /// </summary>
         public static string No_active_contests {
