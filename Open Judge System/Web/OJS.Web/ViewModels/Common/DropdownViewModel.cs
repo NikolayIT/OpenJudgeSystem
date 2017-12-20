@@ -61,6 +61,13 @@
             return yearsDropDownList.OrderByDescending(x => x.Id);
         }
 
+        public static IEnumerable<DropdownViewModel> GetFromRange(int start, int end)
+        {
+            return Enumerable
+                .Range(start, end - start)
+                .Select(x => new DropdownViewModel() { Id = x, Name = x.ToString() });
+        }
+
         public static IEnumerable<DropdownViewModel> GetEnumValues<T>() where T : struct, IConvertible
         {
             return Enum
