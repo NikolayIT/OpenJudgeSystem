@@ -100,8 +100,8 @@
         {
             if (contest == null ||
                 contest.IsDeleted ||
-                !contest.IsVisible ||
-                !this.IsUserAdminOrLecturerInContest(contest))
+                (!contest.IsVisible &&
+                    !this.IsUserAdminOrLecturerInContest(contest)))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.NotFound,
@@ -829,10 +829,11 @@
                 }
             }
 
-            var participant = this.participantsBusiness.CreateNewByContestUserIdAndIsOfficial(
+            var participant = this.participantsBusiness.CreateNewByContestUserIdIsOfficialAndIsAdmin(
                 contest,
                 this.UserProfile.Id,
-                official);
+                official,
+                this.User.IsAdmin());
 
             return participant;
         }
