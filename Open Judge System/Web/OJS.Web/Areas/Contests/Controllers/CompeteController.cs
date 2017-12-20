@@ -100,8 +100,8 @@
         {
             if (contest == null ||
                 contest.IsDeleted ||
-                !contest.IsVisible ||
-                !this.IsUserAdminOrLecturerInContest(contest))
+                (!contest.IsVisible &&
+                    !this.IsUserAdminOrLecturerInContest(contest)))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.NotFound,
@@ -138,13 +138,6 @@
             {
                 this.ValidateContest(contest, official);
 
-                if (official &&
-                    !contest.IsOnline &&
-                    !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
-                {
-                    return this.RedirectToAction(c => c.NewContestIp(id));
-                }
-
                 var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
 
                 if (!participantFound)
@@ -158,29 +151,28 @@
                     if (shouldShowConfirmation)
                     {
                         return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
-                            {
-                                ContesId = contest.Id,
-                                ContestName = contest.Name,
-                                ContestDuration = contest.Duration.Value
-                            });
-                    }
-
-                    if (!contest.ShouldShowRegistrationForm(official))
-                    {
-                        this.AddNewParticipantToContest(contest, official);  
-                    }
-                    else
-                    {
-                        // Participant not found, the contest requires password or the contest has questions
-                        // to be answered before registration. Redirect to the registration page.
-                        // The registration page will take care of all security checks.
-                        return this.RedirectToAction(c => c.Register(id, official));
+                        {
+                            ContesId = contest.Id,
+                            ContestName = contest.Name,
+                            ContestDuration = contest.Duration.Value
+                        });
                     }
                 }
+
+                if (official &&
+                    !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
+                {
+                    return this.RedirectToAction(c => c.NewContestIp(id));
+                }
+
+                if (!participantFound)
+                {
+                    return this.RedirectToAction(c => c.Register(id, official));
+                }
             }
-            catch (HttpException httpex)
+            catch (HttpException httpEx)
             {
-                this.TempData.AddDangerMessage(httpex.Message);
+                this.TempData.AddDangerMessage(httpEx.Message);
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
@@ -221,9 +213,9 @@
 
                 this.AddNewParticipantToContest(contest, official);
             }
-            catch (HttpException httpex)
+            catch (HttpException httpEx)
             {
-                this.TempData.AddDangerMessage(httpex.Message);
+                this.TempData.AddDangerMessage(httpEx.Message);
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
@@ -336,9 +328,9 @@
 
                 this.participantsData.Update(participant);
             }
-            catch (HttpException httpex)
+            catch (HttpException httpEx)
             {
-                this.TempData.AddDangerMessage(httpex.Message);
+                this.TempData.AddDangerMessage(httpEx.Message);
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
@@ -372,7 +364,6 @@
             this.ValidateContest(participant.Contest, official);
 
             if (official &&
-                !participant.Contest.IsOnline &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
@@ -447,7 +438,6 @@
             this.ValidateContest(participant.Contest, official);
 
             if (official &&
-                !participant.Contest.IsOnline &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
@@ -535,7 +525,6 @@
             }
 
             if (official &&
-                !problem.Contest.IsOnline &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
@@ -829,10 +818,11 @@
                 }
             }
 
-            var participant = this.participantsBusiness.CreateNewByContestUserIdAndIsOfficial(
+            var participant = this.participantsBusiness.CreateNewByContestUserIdIsOfficialAndIsAdmin(
                 contest,
                 this.UserProfile.Id,
-                official);
+                official,
+                this.User.IsAdmin());
 
             return participant;
         }

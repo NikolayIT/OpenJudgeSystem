@@ -57,6 +57,7 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
+                    GroupNumber = problem.GroupNumber,
                     SolutionSkeletonData = problem.SolutionSkeleton,
                     HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
@@ -138,6 +139,11 @@
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(0)]
         public int OrderBy { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
+        [UIHint("DropDownList")]
+        public short? GroupNumber { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]
