@@ -23,7 +23,7 @@
 
         public bool CanCompeteByContestAndUserId(Contest contest, string userId)
         {
-            if (contest.Type == ContestType.OnlinePractialExam &&
+            if (contest.Type == ContestType.OnlinePracticalExam &&
                 contest.Participants.Any(p => p.UserId == userId && p.IsOfficial))
             {
                 var contestEndTime = this.participantsData.GetOfficialContestEndTimeByUserIdAndContestId(
