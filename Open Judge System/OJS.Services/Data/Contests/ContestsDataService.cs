@@ -55,8 +55,5 @@
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.IsActive;
         }
-
-        public bool IsValidOnlineContest(int contestId) =>
-            this.contests.All().Any(c => c.Id == contestId && c.Type == ContestType.OnlinePractialExam);
     }
 }

@@ -11,6 +11,6 @@
 
         bool IsOfficial(int participantId);
 
-        void ChangeTimeForActiveByContestIdAndMinutes(int contestId, int minutes);
+        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes);
     }
 }

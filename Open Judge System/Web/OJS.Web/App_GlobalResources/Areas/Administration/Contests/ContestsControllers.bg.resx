@@ -148,7 +148,7 @@
     <value>Началната дата на състезанието не може да бъде след крайната дата на състезанието</value>
   </data>
   <data name="Duration_invalid_format" xml:space="preserve">
-    <value>Продължителността трябва да е във формат "h:mm"</value>
+    <value>Продължителността трябва да е във формат "hh:mm"</value>
   </data>
   <data name="No_active_contests" xml:space="preserve">
     <value>Няма активни състезания</value>

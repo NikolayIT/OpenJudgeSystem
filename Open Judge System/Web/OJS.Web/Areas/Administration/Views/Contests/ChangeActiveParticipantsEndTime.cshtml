@@ -17,7 +17,7 @@
 <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
 <h3>@Resource.Change_time_legend</h3>
 <div id="create-form" class="container">
-    @using (Html.BeginForm<ContestsController>(c => c.ChangeTime(null), FormMethod.Post))
+    @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.ContesId)

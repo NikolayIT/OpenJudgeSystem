@@ -2356,7 +2356,7 @@
     <Content Include="Dependencies\diff_match_patch\README.markdown" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
-    <Content Include="Areas\Administration\Views\Contests\ChangeTime.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

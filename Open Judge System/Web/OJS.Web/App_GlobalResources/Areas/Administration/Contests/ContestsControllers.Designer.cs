@@ -151,7 +151,7 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duration must be in format &quot;h:mm&quot;.
+        ///   Looks up a localized string similar to Duration must be in format &quot;hh:mm&quot;.
         /// </summary>
         public static string Duration_invalid_format {
             get {

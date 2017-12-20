@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -25,9 +25,9 @@
                 .Select(x => x.IsOfficial)
                 .FirstOrDefault();
 
-        public void ChangeTimeForActiveByContestIdAndMinutes(int contestId, int minutes)
+        public void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes)
         {
-            var timeSpan = new TimeSpan(0, 0, minutes, 0);
+            var timeSpan = TimeSpan.FromMinutes(minutes);
 
             var activeParticipants = this.participants
                 .All()
