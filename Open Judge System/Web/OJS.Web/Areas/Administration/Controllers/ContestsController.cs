@@ -155,6 +155,7 @@
 
             this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
             this.ViewBag.CallerAction = nameof(this.Edit);
+
             return this.View(contest);
         }
 
