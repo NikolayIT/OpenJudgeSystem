@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-    using OJS.Common.Models;
+
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
