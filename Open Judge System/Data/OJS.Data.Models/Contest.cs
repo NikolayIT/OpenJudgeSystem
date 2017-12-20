@@ -201,6 +201,9 @@
         [NotMapped]
         public bool HasPracticePassword => this.PracticePassword != null;
 
+        [NotMapped]
+        public bool IsOnline => this.Type == ContestType.OnlinePractialExam;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var validationResults = new List<ValidationResult>();
