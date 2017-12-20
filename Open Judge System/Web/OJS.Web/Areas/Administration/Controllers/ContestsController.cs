@@ -151,10 +151,10 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData(nameof(this.Edit));
+            this.PrepareViewBagData();
 
             this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
-
+            this.ViewBag.CallerAction = nameof(this.Edit);
             return this.View(contest);
         }
 
@@ -190,7 +190,7 @@
 
                 contest = model.GetEntityModel(contest);
 
-                if (contest.IsOnline() &&
+                if (contest.IsOnline &&
                     contest.IsActive &&
                     (contest.Duration != model.Duration ||
                         contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
@@ -333,7 +333,7 @@
         }
 
         [HttpGet]
-        public ActionResult ChangeTime(int contestId)
+        public ActionResult ChangeActiveParticipantsEndTime(int contestId)
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
@@ -357,7 +357,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeTime(ChangeTimeForParticipantsViewModel model)
+        public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
         {
             if (!this.CheckIfUserHasContestPermissions(model.ContesId))
             {
@@ -523,11 +523,10 @@
             return this.Redirect(returnUrl);
         }
 
-        private void PrepareViewBagData(string callerActionName = null)
+        private void PrepareViewBagData()
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
             this.ViewBag.SubmissionExportTypes = DropdownViewModel.GetEnumValues<SubmissionExportType>();
-            this.ViewBag.CallerAction = callerActionName;
         }
 
         private bool IsValidContest(ViewModelType model)
