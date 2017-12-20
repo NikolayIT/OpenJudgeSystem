@@ -46,6 +46,13 @@
         {
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.IsActive;
-        }  
+        }
+
+        public bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Where(c => c.Id == contestId)
+                .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
+                    c.Category.Lecturers.Any(l => l.LecturerId == userId));
     }
 }
