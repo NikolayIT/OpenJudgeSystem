@@ -70,6 +70,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change time.
+        /// </summary>
+        public static string Change_time {
+            get {
+                return ResourceManager.GetString("Change_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compete.
         /// </summary>
         public static string Compete {

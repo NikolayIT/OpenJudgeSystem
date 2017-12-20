@@ -108,7 +108,6 @@ function initializeGrid(contestId) {
     }).then(function () {
         $('#status').hide();
         $('#problems-grid').html('');
-
         $('#problems-grid').kendoGrid({
             dataSource: new kendo.data.DataSource({
                 data: response
@@ -127,6 +126,7 @@ function initializeGrid(contestId) {
             columns: [
                 { field: 'Id', title: 'Номер' },
                 { field: 'Name', title: 'Име' },
+                { field: 'GroupNumber', title: 'Група', template: '#= GroupNumber ? GroupNumber : "Няма" #' },
                 { field: 'ContestName', title: 'Състезание' },
                 { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                 {

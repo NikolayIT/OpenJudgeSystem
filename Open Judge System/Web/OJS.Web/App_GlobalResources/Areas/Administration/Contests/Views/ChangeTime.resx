@@ -117,64 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Choose_category" xml:space="preserve">
-    <value>Изберете категория на състезанието</value>
+  <data name="Add_time" xml:space="preserve">
+    <value>Add Time</value>
   </data>
-  <data name="Contest_end" xml:space="preserve">
-    <value>Въведете край на състезанието</value>
+  <data name="Change_time_legend" xml:space="preserve">
+    <value>Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
-  <data name="Contest_order" xml:space="preserve">
-    <value>Въведете подредба на състезанието</value>
+  <data name="Contest" xml:space="preserve">
+    <value>Contest</value>
   </data>
-  <data name="Contest_password" xml:space="preserve">
-    <value>Въведете парола на състезанието</value>
+  <data name="Negative_number_legend" xml:space="preserve">
+    <value>&lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time.</value>
   </data>
-  <data name="Contest_start" xml:space="preserve">
-    <value>Въведете начало на състезанието</value>
+  <data name="Page_title" xml:space="preserve">
+    <value>Change Time for active participants</value>
   </data>
-  <data name="Contest_visibility" xml:space="preserve">
-    <value>Изберете дали състезанието да бъде видимо</value>
+  <data name="Positive_number_legend" xml:space="preserve">
+    <value>&lt;strong&gt;+Positive number Adds&lt;/strong&gt; time.</value>
   </data>
-  <data name="Duration_info" xml:space="preserve">
-    <value>Времетраене</value>
+  <data name="Subtract_time" xml:space="preserve">
+    <value>Subtract Time</value>
   </data>
-  <data name="Enter_description" xml:space="preserve">
-    <value>Въведете описание на състезанието</value>
+  <data name="Time_in_minutes" xml:space="preserve">
+    <value>Time in minutes</value>
   </data>
-  <data name="Enter_title" xml:space="preserve">
-    <value>Въведете заглавие на състезанието</value>
-  </data>
-  <data name="General_info" xml:space="preserve">
-    <value>Основна информация</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>Опции</value>
-  </data>
-  <data name="Passowords_info" xml:space="preserve">
-    <value>Пароли</value>
-  </data>
-  <data name="Practice_end" xml:space="preserve">
-    <value>Въведете край за упражнения</value>
-  </data>
-  <data name="Practice_password" xml:space="preserve">
-    <value>Въведете парола за упражнения</value>
-  </data>
-  <data name="Practice_start" xml:space="preserve">
-    <value>Въведете начало за упражнение</value>
-  </data>
-  <data name="Submissions_limit" xml:space="preserve">
-    <value>Въведете лимит между изпращане на две последователни решения</value>
-  </data>
-  <data name="Submission_types" xml:space="preserve">
-    <value>Видове решения</value>
-  </data>
-  <data name="Auto_change_tests" xml:space="preserve">
-    <value>Изберете дали тестовете да имат детайлна обратна връзка според типа на съзтезанието (съзтезание/упражнение)</value>
-  </data>
-  <data name="Number_of_problem_groups" xml:space="preserve">
-    <value>Въведете броя на групи от задачи за онлайн състезание</value>
-  </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Въведете продължителността на изпита в часове</value>
+  <data name="Time_required_error" xml:space="preserve">
+    <value>Time is required, please add a value different from 0</value>
   </data>
 </root>

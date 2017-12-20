@@ -165,6 +165,24 @@
                 </div>
             </div>
             <br />
+            @if (ViewBag.GroupNumberData.Count > 0)
+            {
+                <div class="row">
+                    <div class="editor-label col-xs-3">
+                        <div class="pull-right">
+                            @Html.LabelFor(m => m.GroupNumber)
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        @Html.EditorFor(m => m.GroupNumber)
+                    </div>
+                    <div class="editor-field col-xs-3">
+                        <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
+                        @Html.ValidationMessageFor(m => m.GroupNumber)
+                    </div>
+                </div>
+                <br />
+            }
             <div class="row">
                 <div class="editor-label col-xs-3">
                     <div class="pull-right">

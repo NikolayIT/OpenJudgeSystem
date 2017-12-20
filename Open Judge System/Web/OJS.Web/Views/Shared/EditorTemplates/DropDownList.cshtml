@@ -1,6 +1,6 @@
 ﻿@using OJS.Web.ViewModels.Common
 
-@model int?
+@model short?
 
 @{
     var placeholder = string.Empty;
@@ -22,6 +22,7 @@
     .BindTo((IEnumerable<DropdownViewModel>)this.ViewData[this.ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "Data"])
     .DataValueField("Id")
     .DataTextField("Name")
+    .Value(Model.ToString())
     .OptionLabel(placeholder)
     .HtmlAttributes(htmlAttributes)
 )

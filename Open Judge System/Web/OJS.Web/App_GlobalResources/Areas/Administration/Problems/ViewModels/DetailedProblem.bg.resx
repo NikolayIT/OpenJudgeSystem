@@ -175,4 +175,7 @@
     <value>Скелет</value>
     <comment>Скелет</comment>
   </data>
+  <data name="Group_number" xml:space="preserve">
+    <value>Група на задачи</value>
+  </data>
 </root>

@@ -1,0 +1,21 @@
+﻿.number-input {
+    text-align: left;
+}
+
+.number-input > input {
+    width: 200px;
+    background-color: #f7f9f9;
+    font-size: 2em;
+    border: 1px solid #96dbf8;
+    border-radius: 5px;
+    margin-left: 0;
+}
+
+.number-input > input:focus {
+    box-shadow: 0 0 1pt 1pt #96dbf8;
+}
+
+.number-input > input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+    height: 50px;
+}

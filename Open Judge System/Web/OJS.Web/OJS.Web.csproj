@@ -583,6 +583,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestCreate.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\ChangeTime.designer.cs">
+      <DependentUpon>ChangeTime.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\ChangeTime.bg.designer.cs">
+      <DependentUpon>ChangeTime.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestTransfer.bg.designer.cs">
       <DependentUpon>ContestTransfer.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1588,6 +1598,7 @@
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
@@ -1759,6 +1770,7 @@
     <Content Include="Content\bootstrap\themes\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\themes\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.min.css" />
+    <Content Include="Content\Contests\change-time.css" />
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
@@ -2275,7 +2287,6 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\SingleLineText.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DateAndTime.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownList.cshtml" />
     <Content Include="Areas\Contests\Views\Submissions\View.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
@@ -2343,6 +2354,9 @@
     <Content Include="Dependencies\diff_match_patch\.npmignore" />
     <Content Include="Dependencies\diff_match_patch\package.json" />
     <Content Include="Dependencies\diff_match_patch\README.markdown" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
@@ -2358,7 +2372,6 @@
     <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\HtmlContent.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Integer.cshtml" />
     <Content Include="Areas\Administration\Views\Checkers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />
@@ -2489,6 +2502,17 @@
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestCreate.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestCreate.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ChangeTime.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeTime.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ChangeTime.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeTime.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestTransfer.resx">
@@ -3463,6 +3487,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestsDetails.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Contests\Views\List\ListIndex.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

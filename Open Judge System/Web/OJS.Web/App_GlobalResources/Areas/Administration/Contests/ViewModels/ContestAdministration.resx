@@ -135,6 +135,9 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
   <data name="End_time" xml:space="preserve">
     <value>End</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="Name_required" xml:space="preserve">
     <value>The name is required!</value>
+  </data>
+  <data name="Number_of_problem_groups" xml:space="preserve">
+    <value>Problem groups count</value>
   </data>
   <data name="Order" xml:space="preserve">
     <value>Order</value>

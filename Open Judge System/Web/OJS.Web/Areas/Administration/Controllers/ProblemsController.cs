@@ -285,13 +285,6 @@
                 .Select(SubmissionTypeViewModel.ViewModel)
                 .ForEach(SubmissionTypeViewModel.ApplySelectedTo(selectedProblem));
 
-            var checkers = this.Data.Checkers
-                .All()
-                .AsQueryable()
-                .Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
-
-            selectedProblem.AvailableCheckers = checkers;
-
             return this.View(selectedProblem);
         }
 
@@ -934,10 +927,20 @@
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
         {
-            return this.Data.Problems.All()
-                .Where(x => x.Id == id)
+            var problemEntity = this.problemsData.GetByIdQuery(id);
+
+            var problem = problemEntity
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
+
+            var numberOfProblemGroups =
+                problemEntity.FirstOrDefault().Contest.NumberOfProblemGroups;
+
+            this.AddCheckersAndProblemGroupsToProblemViewModel(
+                problem,
+                numberOfProblemGroups);
+
+            return problem;
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
@@ -958,6 +961,20 @@
             problem.OrderBy = problemOrder;
             problem.ContestId = contest.Id;
             problem.ContestName = contest.Name;
+            this.AddCheckersAndProblemGroupsToProblemViewModel(problem, contest.NumberOfProblemGroups);
+
+            problem.SubmissionTypes = this.Data.SubmissionTypes
+                .All()
+                .Select(SubmissionTypeViewModel.ViewModel)
+                .ToList();
+
+            return problem;
+        }
+
+        private void AddCheckersAndProblemGroupsToProblemViewModel(
+            DetailedProblemViewModel problem,
+            short numberOfProblemGroups)
+        {
             problem.AvailableCheckers = this.Data.Checkers.All()
                 .Select(checker => new SelectListItem
                 {
@@ -965,9 +982,8 @@
                     Value = checker.Name,
                     Selected = checker.Name.Contains("Trim")
                 });
-            problem.SubmissionTypes = this.Data.SubmissionTypes.All().Select(SubmissionTypeViewModel.ViewModel).ToList();
 
-            return problem;
+            this.ViewBag.GroupNumberData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
         }
 
         private bool IsValidProblem(DetailedProblemViewModel model)
