@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -33,6 +34,7 @@
                 .All()
                 .Where(p => p.ContestId == contestId &&
                     p.IsOfficial &&
+                    p.Contest.Type == ContestType.OnlinePractialExam &&
                     p.ContestEndTime > DateTime.Now);
 
             foreach (var participant in activeParticipants)
