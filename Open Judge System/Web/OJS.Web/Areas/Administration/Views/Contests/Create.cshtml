@@ -1,4 +1,5 @@
-﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestCreate;
+﻿@using OJS.Common.Models
+@using Resource = Resources.Areas.Administration.Contests.Views.ContestCreate;
 @model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
 @{
     ViewBag.Title = Resource.Page_title;
@@ -29,5 +30,17 @@
 <script>
     $(function () {
         $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp' + ',');
+
+        $('#Type').on('change',
+            function() {
+                var selectedContestType = $('#Type').data('kendoDropDownList').text().replace(/\s+/g, '');
+                var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
+
+                if (selectedContestType === '@ContestType.OnlinePracticalExam.ToString()') {
+                    allowedIps.value('');
+                } else if (allowedIps.value() === '') {
+                    allowedIps.value('@GlobalConstants.DefaultPublicIp' + ',');
+                }
+            });
     });
 </script>
