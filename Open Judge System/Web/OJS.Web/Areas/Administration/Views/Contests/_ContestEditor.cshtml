@@ -1,6 +1,17 @@
-﻿@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+    
+@using OJS.Common.Models
 
-@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+@using Resource = Resources.Areas.Administration.Contests.Views.Partials.ContestEditor;
+
+@{
+    const string OnlineOnlyContainersClassName = "online-contest-editor-container";
+
+    var isEditForm = (this.ViewBag.CallerAction ?? string.Empty) == "Edit";
+    var isActiveContest = this.ViewBag.IsActive ?? false;
+
+    var isEditFormOfActiveContest = isEditForm && isActiveContest;
+}
 
 <fieldset>
     <legend>@Resource.General_info</legend>
@@ -19,14 +30,14 @@
         </div>
     </div>
     <br />
-    <div class="row">
+    <div class="row ">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
                 @Html.LabelFor(m => m.Type)
             </div>
         </div>
         <div class="editor-field col-xs-4">
-            @Html.EditorFor(m => m.Type, new { @class = "form-control pull-left full-editor" })
+            @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
         </div>
         <div class="editor-field col-xs-4">
             <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
@@ -34,6 +45,23 @@
         </div>
     </div>
     <br />
+    <div class="@OnlineOnlyContainersClassName hidden">
+        <div class="row">
+            <div class="editor-label col-xs-3">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.NumberOfProblemGroups)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
+                @Html.ValidationMessageFor(m => m.NumberOfProblemGroups)
+            </div>
+        </div>
+        <br />
+    </div>
     <div class="row">
         <div class="editor-label col-xs-3">
             <div class="pull-right">
@@ -128,6 +156,23 @@
         </div>
     </div>
     <br />
+    <div class="@OnlineOnlyContainersClassName hidden">
+        <div class="row">
+            <div class="editor-label col-xs-3">
+                <div class="pull-right">
+                    @Html.LabelFor(m => m.Duration)
+                </div>
+            </div>
+            <div class="editor-field col-xs-4">
+                @Html.EditorFor(m => m.Duration, new { IsDisabled = isEditFormOfActiveContest })
+            </div>
+            <div class="editor-field col-xs-4">
+                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Duration" data-tooltip="true"></span>
+                @Html.ValidationMessageFor(m => m.Duration)
+            </div>
+        </div>
+        <br />
+    </div>
 </fieldset>
 
 <fieldset>
@@ -275,14 +320,27 @@
             value: ips.length ? ips[ips.length - 1] : ''
         };
     }
-</script>
-<script>
-    
+
     $(function () {
         var categoryName ="@Model.CategoryName";
         if (categoryName !== "" && typeof categoryName !== typeof undefined) {
             $("#CategoryId").data("kendoComboBox").text(categoryName);
         }
-        
+
+        var type = $("#Type");
+        type.change(function (ev) {
+            ev.preventDefault();
+            toggleOnlineOnlyFields(type.val());
+        });
+
+        toggleOnlineOnlyFields(type.val());
+
+        function toggleOnlineOnlyFields(contestType) {
+            if (contestType == @((int)ContestType.OnlinePractialExam)) {
+                $(".@OnlineOnlyContainersClassName").removeClass("hidden");
+            } else {
+                $(".@OnlineOnlyContainersClassName").addClass("hidden");
+            }
+        };
     });
 </script>

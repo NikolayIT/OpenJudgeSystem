@@ -9,6 +9,8 @@
     {
         Contest GetById(int contestId);
 
+        IQueryable<Contest> GetByIdQuery(int contestId);
+
         IQueryable<Contest> GetAllActive();
 
         IQueryable<Contest> GetAllInactive();

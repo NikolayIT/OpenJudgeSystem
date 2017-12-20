@@ -180,4 +180,7 @@
   <data name="Transfer" xml:space="preserve">
     <value>Transfer</value>
   </data>
+  <data name="Change_time" xml:space="preserve">
+    <value>Change time</value>
+  </data>
 </root>

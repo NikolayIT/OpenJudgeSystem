@@ -1,5 +1,8 @@
-﻿@using OJS.Common.Extensions;
+﻿@using System.Web.Mvc.Expressions
+@using OJS.Common.Extensions;
 @using OJS.Common.Models;
+@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.InputModels.Contests
 @using OJS.Web.Areas.Contests.ViewModels.Contests
 
 @using Resource = Resources.Areas.Contests.Views.ContestsDetails;
@@ -154,6 +157,11 @@
                 <a href="@Url.Action("TransferParticipants", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
                     @Resource.Transfer
                 </a>
+            }
+
+            if (Model.IsOnline && Model.IsActive)
+            {
+                @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm" }))
             }
         }
     </div>

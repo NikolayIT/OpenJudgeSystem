@@ -10,5 +10,7 @@
         IQueryable<Participant> GetByIdQuery(int participantId);
 
         bool IsOfficial(int participantId);
+
+        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes);
     }
 }

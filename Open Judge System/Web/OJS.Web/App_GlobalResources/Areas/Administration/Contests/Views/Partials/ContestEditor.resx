@@ -171,4 +171,10 @@
   <data name="Auto_change_tests" xml:space="preserve">
     <value>Choose to automatically determine test detailed feedback visibility depending on contest type (practice/compete)</value>
   </data>
+  <data name="Number_of_problem_groups" xml:space="preserve">
+    <value>Enter the count of the problem groups for online contest</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Enter the duration of the exam in hours</value>
+  </data>
 </root>
