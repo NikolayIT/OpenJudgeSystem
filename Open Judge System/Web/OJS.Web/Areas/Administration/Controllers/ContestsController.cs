@@ -371,7 +371,7 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.participantsData.ChangeTimeForActiveByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
+            this.participantsData.ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
 
             var minutesForDisplay = model.TimeInMinutes.ToString();
             this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
