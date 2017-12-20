@@ -96,7 +96,9 @@
                         {
                             if (participantResult.BestSubmission == null)
                             {
-                                if (!participantResult.IsPartOfUserProblems && Model.IsCompete && Model.ContestType == ContestType.OnlinePractialExam)
+                                if (!participantResult.IsPartOfUserProblems &&
+                                    Model.IsCompete &&
+                                    Model.ContestType == ContestType.OnlinePractialExam)
                                 {
                                     <td>-</td>                                
                                 }

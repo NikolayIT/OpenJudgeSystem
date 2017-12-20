@@ -11,7 +11,9 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using Microsoft.Ajax.Utilities;
+
+    using MissingFeatures;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
