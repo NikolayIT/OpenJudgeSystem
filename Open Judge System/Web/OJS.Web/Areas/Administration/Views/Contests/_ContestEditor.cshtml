@@ -38,6 +38,10 @@
         </div>
         <div class="editor-field col-xs-4">
             @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
+            @if (isEditFormOfActiveContest)
+            {
+                @Html.HiddenFor(m => m.Type)
+            }
         </div>
         <div class="editor-field col-xs-4">
             <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
@@ -54,6 +58,10 @@
             </div>
             <div class="editor-field col-xs-4">
                 @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
+                @if (isEditFormOfActiveContest)
+                {
+                    @Html.HiddenFor(m => m.NumberOfProblemGroups)
+                }
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
@@ -165,6 +173,10 @@
             </div>
             <div class="editor-field col-xs-4">
                 @Html.EditorFor(m => m.Duration, new { IsDisabled = isEditFormOfActiveContest })
+                @if (isEditFormOfActiveContest)
+                {
+                    @Html.HiddenFor(m => m.Duration)
+                }
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Duration" data-tooltip="true"></span>
