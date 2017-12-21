@@ -500,7 +500,7 @@
 
             if (contestId.HasValue)
             {
-                // TODO: think of a solution to determin in better way IsActive
+                // TODO: find a better solution for determining whether a Contest is active or not
                 this.ViewBag.IsActive = this.contestsData.IsActiveById(contestId.Value);
             }
         }
