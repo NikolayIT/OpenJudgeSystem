@@ -146,7 +146,8 @@
                         contest.IsOnline &&
                         (!hasConfirmed.HasValue ||
                         hasConfirmed.Value == false) &&
-                        contest.Duration.HasValue;
+                        contest.Duration.HasValue &&
+                        !this.IsUserAdminOrLecturerInContest(contest);
 
                     if (shouldShowConfirmation)
                     {
