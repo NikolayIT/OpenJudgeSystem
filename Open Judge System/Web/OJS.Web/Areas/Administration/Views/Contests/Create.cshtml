@@ -32,19 +32,23 @@
 
 <script>
     $(function () {
-        $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp' + ',');
+        var contestType = $('#Type');
+        var dropdownList = contestType.data('kendoDropDownList');
 
-        $('#Type').on('change',
-            function () {
-                var dropdownList = $('#Type').data('kendoDropDownList');
-                var selectedContestValue = dropdownList.value();
-                var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
+        populateIpsFieldBySelectedContestType(dropdownList.value());
 
-                if (selectedContestValue === '@onlinePracticalExamEnumValue') {
-                    allowedIps.value('');
-                } else if (allowedIps.value() === '') {
-                    allowedIps.value('@GlobalConstants.DefaultPublicIp' + ',');
-                }
-            });
+        contestType.on('change', function() {
+            populateIpsFieldBySelectedContestType(dropdownList.value());
+        });
+
+        function populateIpsFieldBySelectedContestType(selectedTypeValue) {
+            var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
+
+            if (selectedTypeValue === '@onlinePracticalExamEnumValue') {
+                allowedIps.value('');
+            } else {
+                allowedIps.value('@GlobalConstants.DefaultPublicIp' + ',');
+            }
+        }
     });
 </script>
