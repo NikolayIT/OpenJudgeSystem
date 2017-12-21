@@ -1676,6 +1676,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\NewContestIpViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\OnlineContestConfirmViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\BestSubmissionViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestFullResultsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Results\ContestResultsViewModel.cs" />
@@ -2356,6 +2357,7 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
+    <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

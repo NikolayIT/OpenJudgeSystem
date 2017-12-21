@@ -24,14 +24,14 @@
                 .All()
                 .Where(c => c.IsVisible && c.StartTime <= DateTime.Now &&
                     (c.EndTime >= DateTime.Now ||
-                        c.Type == ContestType.OnlinePractialExam &&
+                        c.Type == ContestType.OnlinePracticalExam &&
                         c.Participants.Any(p => p.IsOfficial && p.ContestEndTime >= DateTime.Now)));
 
         public IQueryable<Contest> GetAllInactive() =>
             this.contests
             .All()
             .Where(c => c.StartTime > DateTime.Now ||
-                (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePractialExam) ||
+                (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePracticalExam) ||
                     !c.Participants.Any(p => p.ContestEndTime < DateTime.Now));
 
         public IQueryable<Contest> GetAllUpcoming() =>
@@ -55,5 +55,12 @@
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.IsActive;
         }
+
+        public bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Where(c => c.Id == contestId)
+                .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
+                    c.Category.Lecturers.Any(l => l.LecturerId == userId));
     }
 }

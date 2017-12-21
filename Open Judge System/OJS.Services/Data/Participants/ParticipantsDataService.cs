@@ -1,6 +1,7 @@
 ﻿namespace OJS.Services.Data.Participants
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Common.Models;
@@ -13,6 +14,30 @@
 
         public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
             this.participants = participants;
+
+        public DateTime? GetOfficialContestEndTimeByUserIdAndContestId(string userId, int contestId) =>
+            this.participants
+                .All()
+                .FirstOrDefault(p => p.UserId == userId && p.ContestId == contestId && p.IsOfficial)?
+                .ContestEndTime;
+
+        public void Add(Participant participant)
+        {
+            this.participants.Add(participant);
+            this.participants.SaveChanges();
+        }
+
+        public void Update(Participant participant)
+        {
+            this.participants.Update(participant);
+            this.participants.SaveChanges();
+        }
+
+        public Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+            this.participants
+                .All()
+                .Include(p => p.Contest)
+                .FirstOrDefault(p => p.ContestId == contestId && p.UserId == userId && p.IsOfficial == isOfficial);
 
         public IQueryable<Participant> GetByIdQuery(int participantId) =>
             this.participants
@@ -34,7 +59,7 @@
                 .All()
                 .Where(p => p.ContestId == contestId &&
                     p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePractialExam &&
+                    p.Contest.Type == ContestType.OnlinePracticalExam &&
                     p.ContestEndTime > DateTime.Now);
 
             foreach (var participant in activeParticipants)

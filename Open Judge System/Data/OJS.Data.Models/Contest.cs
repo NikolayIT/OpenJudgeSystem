@@ -164,7 +164,7 @@
 
         [NotMapped]
         public bool IsActive => this.CanBeCompeted ||
-            (this.Type == ContestType.OnlinePractialExam &&
+            (this.Type == ContestType.OnlinePracticalExam &&
                 this.Participants.Any(p =>
                     p.IsOfficial &&
                     p.ContestEndTime.HasValue &&
@@ -202,7 +202,7 @@
         public bool HasPracticePassword => this.PracticePassword != null;
 
         [NotMapped]
-        public bool IsOnline => this.Type == ContestType.OnlinePractialExam;
+        public bool IsOnline => this.Type == ContestType.OnlinePracticalExam;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

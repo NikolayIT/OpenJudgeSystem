@@ -9,6 +9,8 @@
     {
         IQueryable<Problem> GetByIdQuery(int problemId);
 
+        Problem GetById(int problemId);
+
         Problem GetWithContestById(int problemId);
 
         void DeleteByProblem(Problem problem);

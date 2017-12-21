@@ -186,4 +186,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
+  <data name="Compete" xml:space="preserve">
+    <value>Състезание</value>
+  </data>
 </root>
