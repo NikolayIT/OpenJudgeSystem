@@ -103,7 +103,19 @@
                 headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
             }
 
-            headerRow.CreateCell(columnNumber++).SetCellValue("Total");
+            var totalPointsCellTitle = "Total";
+
+            if (contest.IsOnline)
+            {
+                var maxPointsForOnlineContest = contest.Problems
+                    .GroupBy(p => p.GroupNumber)
+                    .Select(gr => gr.First())
+                    .Sum(p => p.MaximumPoints);
+
+                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPointsForOnlineContest})";
+            }
+
+            headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
 
             // All rows
             var rowNumber = 1;
