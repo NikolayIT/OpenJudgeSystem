@@ -1,7 +1,11 @@
-﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestCreate;
-@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+
+@using OJS.Common.Models
+
+@using Resource = Resources.Areas.Administration.Contests.Views.ContestCreate;
 @{
     ViewBag.Title = Resource.Page_title;
+    var onlinePracticalExamEnumValue = (int)ContestType.OnlinePracticalExam;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -29,5 +33,18 @@
 <script>
     $(function () {
         $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp' + ',');
+
+        $('#Type').on('change',
+            function () {
+                var dropdownList = $('#Type').data('kendoDropDownList');
+                var selectedContestValue = dropdownList.value();
+                var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
+
+                if (selectedContestValue === '@onlinePracticalExamEnumValue') {
+                    allowedIps.value('');
+                } else if (allowedIps.value() === '') {
+                    allowedIps.value('@GlobalConstants.DefaultPublicIp' + ',');
+                }
+            });
     });
 </script>

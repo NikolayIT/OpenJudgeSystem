@@ -983,7 +983,10 @@
                     Selected = checker.Name.Contains("Trim")
                 });
 
-            this.ViewBag.GroupNumberData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
+            if (numberOfProblemGroups > 0)
+            {
+                this.ViewBag.GroupNumberData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
+            }
         }
 
         private bool IsValidProblem(DetailedProblemViewModel model)
