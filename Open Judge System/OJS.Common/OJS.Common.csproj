@@ -83,6 +83,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\FileHelpers.cs" />
     <Compile Include="Extensions\PlagiarismDetectorTypeExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Models\CompilerType.cs" />

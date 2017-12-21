@@ -88,6 +88,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compete.
+        /// </summary>
+        public static string Compete {
+            get {
+                return ResourceManager.GetString("Compete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This contest cannot be competed!.
         /// </summary>
         public static string Contest_cannot_be_competed {

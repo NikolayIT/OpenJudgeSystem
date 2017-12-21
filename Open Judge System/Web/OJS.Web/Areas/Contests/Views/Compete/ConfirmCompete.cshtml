@@ -1,0 +1,38 @@
+﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.OnlineContestConfirmViewModel
+
+@using OJS.Common.Extensions
+@using OJS.Web.Areas.Contests.Controllers;
+@using OJS.Web.Controllers;
+
+@using Resource = Resources.Areas.Contests.Views.CompeteRegister;
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+
+<div class="container">
+    <div class="modal-content">
+        <div class="modal-header alert-warning">
+            <h1>
+                @Html.Raw(string.Format(
+                    Resource.Confirm_online_contest_start_message,
+                    Model.ContestDuration.ToReadableString(),
+                    Model.ContestName))
+            </h1>
+        </div>
+        <div class="modal-body">
+            <h2>
+                @Resource.Are_you_sure_start_online_contest
+            </h2>
+                @(Html.ActionLink<CompeteController>(
+                    SharedResource.Compete,
+                    c => c.Index(Model.ContesId, true, null),
+                    new { hasConfirmed = true },
+                    new { @class = "btn btn-success" }))
+            <div class="modal-footer">
+                @(Html.ActionLink<HomeController>(
+                    SharedResource.Cancel,
+                    c => c.Index(),
+                    new { area = string.Empty },
+                    new { @class = "btn btn-default" }))
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,8 @@
     {
         Contest GetById(int contestId);
 
+        IQueryable<Contest> GetByIdQuery(int contestId);
+
         IQueryable<Contest> GetAllActive();
 
         IQueryable<Contest> GetAllInactive();
@@ -24,5 +26,7 @@
         void DeleteById(int contestId);
 
         bool IsActiveById(int contestId);
+
+        bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId);
     }
 }

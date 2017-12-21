@@ -4,14 +4,14 @@
 
 @{
     var placeholder = string.Empty;
-    if (this.ViewData.ModelMetadata.AdditionalValues.ContainsKey("placeholder"))
+    if (this.ViewData.ModelMetadata.AdditionalValues.ContainsKey(WebConstants.Placeholder))
     {
-        placeholder = this.ViewData.ModelMetadata.AdditionalValues["placeholder"] as string;
+        placeholder = this.ViewData.ModelMetadata.AdditionalValues[WebConstants.Placeholder] as string;
     }
 
     var htmlAttributes = new
     {
-        placeholder = placeholder,
+        placeholder,
         style = "width: 100%;",
         data_value_primitive = "true"
     };
@@ -24,5 +24,4 @@
     .DataValueField("Id")
     .DataTextField("Name")
     .OptionLabel(placeholder)
-    .HtmlAttributes(htmlAttributes)
-)
+    .HtmlAttributes(htmlAttributes))

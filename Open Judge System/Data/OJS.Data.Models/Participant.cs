@@ -36,7 +36,6 @@
         [Index]
         public bool IsOfficial { get; set; }
 
-        [Required]
         public virtual Contest Contest { get; set; }
 
         public virtual UserProfile User { get; set; }

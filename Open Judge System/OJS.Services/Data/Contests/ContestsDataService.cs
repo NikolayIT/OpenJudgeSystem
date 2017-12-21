@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -15,13 +16,23 @@
 
         public Contest GetById(int contestId) => this.contests.GetById(contestId);
 
+        public IQueryable<Contest> GetByIdQuery(int contestId) =>
+            this.contests.All().Where(c => c.Id == contestId);
+
         public IQueryable<Contest> GetAllActive() =>
             this.contests
                 .All()
-                .Where(c => c.IsVisible && c.StartTime <= DateTime.Now && DateTime.Now <= c.EndTime);
+                .Where(c => c.IsVisible && c.StartTime <= DateTime.Now &&
+                    (c.EndTime >= DateTime.Now ||
+                        c.Type == ContestType.OnlinePracticalExam &&
+                        c.Participants.Any(p => p.IsOfficial && p.ContestEndTime >= DateTime.Now)));
 
         public IQueryable<Contest> GetAllInactive() =>
-            this.contests.All().Where(c => c.StartTime > DateTime.Now || c.EndTime < DateTime.Now);
+            this.contests
+            .All()
+            .Where(c => c.StartTime > DateTime.Now ||
+                (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePracticalExam) ||
+                    !c.Participants.Any(p => p.ContestEndTime < DateTime.Now));
 
         public IQueryable<Contest> GetAllUpcoming() =>
             this.contests.All().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
@@ -44,5 +55,12 @@
             var contest = this.contests.GetById(contestId);
             return contest != null && contest.IsActive;
         }
+
+        public bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Where(c => c.Id == contestId)
+                .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
+                    c.Category.Lecturers.Any(l => l.LecturerId == userId));
     }
 }

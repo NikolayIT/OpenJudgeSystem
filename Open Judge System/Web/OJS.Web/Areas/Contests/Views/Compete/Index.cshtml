@@ -1,5 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Participants.ParticipantViewModel
 
+@using OJS.Common.Models
+
 @using Resource = Resources.Areas.Contests.Views.CompeteIndex;
 @using ContestResource = Resources.Areas.Contests.Views.ContestsDetails;
 
@@ -121,9 +123,24 @@
 
         @if (contestIsCompete)
         {
-            <text>
-                calculateRemainingTimeOnClient('countdown-timer-container', @Html.Raw(remainingTimeFormat), @Model.Contest.RemainingTimeInMilliseconds.Value);
-            </text>
+            if (Model.Contest.ContestType != ContestType.OnlinePracticalExam)
+            {
+                <text>
+                    calculateRemainingTimeOnClient(
+                        'countdown-timer-container',
+                        @Html.Raw(remainingTimeFormat),
+                        @Model.Contest.RemainingTimeInMilliseconds.Value);
+                </text>
+            }
+            else
+            {
+                <text>
+                    calculateRemainingTimeOnClient(
+                        'countdown-timer-container',
+                        @Html.Raw(remainingTimeFormat),
+                        @Model.RemainingTimeInMilliseconds.Value);
+                </text>
+            }
         }
     </script>
 }

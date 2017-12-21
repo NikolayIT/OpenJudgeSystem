@@ -14,10 +14,12 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
@@ -33,15 +35,18 @@
 
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
         public ContestsController(
             IOjsData data,
             IParticipantScoresDataService participantScoresData,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
                 : base(data)
         {
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
+            this.participantsData = participantsData;
         }        
 
         public override IEnumerable GetData()
@@ -91,6 +96,23 @@
                 return this.View(model);
             }
 
+            if (model.IsOnline)
+            {
+                if (!model.Duration.HasValue)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+                }
+                else if (model.Duration.Value.TotalHours >= 24)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
+                }
+
+                if (model.NumberOfProblemGroups <= 0)
+                {
+                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                }
+            }
+
             if (this.ModelState.IsValid)
             {
                 var contest = model.GetEntityModel();
@@ -123,13 +145,17 @@
                 .Select(ContestAdministrationViewModel.ViewModel)
                 .FirstOrDefault();
 
-            if (contest == null)
+            if (contest?.Id == null)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             this.PrepareViewBagData();
+
+            this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
+            this.ViewBag.CallerAction = nameof(this.Edit);
+
             return this.View(contest);
         }
 
@@ -148,6 +174,11 @@
                 return this.View(model);
             }
 
+            if (model.Duration.HasValue && model.Duration.Value.TotalHours >= 24)
+            {
+                this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
+            }
+
             if (this.ModelState.IsValid)
             {
                 var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
@@ -159,6 +190,16 @@
                 }
 
                 contest = model.GetEntityModel(contest);
+
+                if (contest.IsOnline &&
+                    contest.IsActive &&
+                    (contest.Duration != model.Duration ||
+                        contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
+                        (int)contest.Type != model.Type))
+                {
+                    this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                    this.RedirectToAction<ContestsController>(c => c.Index());
+                }
 
                 contest.AllowedIps.Clear();
                 this.AddIpsToContest(contest, model.AllowedIps);
@@ -186,7 +227,7 @@
 
             if (this.contestsData.IsActiveById(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_permitted_for_deletion);
+                this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
                 this.ModelState.AddModelError(string.Empty, string.Empty);
                 return this.GridOperation(request, model);
             }
@@ -293,6 +334,58 @@
         }
 
         [HttpGet]
+        public ActionResult ChangeActiveParticipantsEndTime(int contestId)
+        {
+            if (!this.CheckIfUserHasContestPermissions(contestId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var contest = this.contestsData
+                .GetByIdQuery(contestId)
+                .Select(ChangeTimeForParticipantsViewModel.FromContest)
+                .FirstOrDefault();
+
+            if (contest != null)
+            {
+                return this.View(contest);
+            }
+
+            this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
+        {
+            if (!this.CheckIfUserHasContestPermissions(model.ContesId))
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
+            {
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            this.participantsData.ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
+
+            var minutesForDisplay = model.TimeInMinutes.ToString();
+            this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
+                ? string.Format(Resource.Added_time_to_participants_online, minutesForDisplay, model.ContestName)
+                : string.Format(
+                    Resource.Subtracted_time_from_participants_online,
+                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
+                    model.ContestName));
+
+            return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
+        }
+
+        [HttpGet]
         public ActionResult ReadIpsContaining(string value)
         {
             var ipEntries = this.Data.Ips.All();
@@ -351,7 +444,7 @@
 
             if (categoryContest.CanBeCompeted)
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permitted_for_transfer;
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_forbidden_for_transfer;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
