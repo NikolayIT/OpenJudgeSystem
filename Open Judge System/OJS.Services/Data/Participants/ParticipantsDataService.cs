@@ -59,7 +59,7 @@
                 .All()
                 .Where(p => p.ContestId == contestId &&
                     p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePractialExam &&
+                    p.Contest.Type == ContestType.OnlinePracticalExam &&
                     p.ContestEndTime > DateTime.Now);
 
             foreach (var participant in activeParticipants)
