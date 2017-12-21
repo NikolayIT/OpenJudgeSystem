@@ -37,10 +37,9 @@
         $('#Type').on('change',
             function () {
                 var dropdownList = $('#Type').data('kendoDropDownList');
-               // var selectedContestTypeName = dropdownList.text().replace(/\s+/g, '');
                 var selectedContestValue = dropdownList.value();
                 var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
-                debugger;
+
                 if (selectedContestValue === '@onlinePracticalExamEnumValue') {
                     allowedIps.value('');
                 } else if (allowedIps.value() === '') {
