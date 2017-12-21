@@ -91,43 +91,23 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            if (!this.IsValidContest(model))
+            this.ValidateContest(model);
+
+            if (!this.ModelState.IsValid)
             {
+                this.PrepareViewBagData();
                 return this.View(model);
             }
 
-            if (model.IsOnline)
-            {
-                if (!model.Duration.HasValue)
-                {
-                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
-                }
-                else if (model.Duration.Value.TotalHours >= 24)
-                {
-                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
-                }
+            var contest = model.GetEntityModel();
 
-                if (model.NumberOfProblemGroups <= 0)
-                {
-                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
-                }
-            }
+            this.AddIpsToContest(contest, model.AllowedIps);
 
-            if (this.ModelState.IsValid)
-            {
-                var contest = model.GetEntityModel();
+            this.Data.Contests.Add(contest);
+            this.Data.SaveChanges();
 
-                this.AddIpsToContest(contest, model.AllowedIps);
-
-                this.Data.Contests.Add(contest);
-                this.Data.SaveChanges();
-
-                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
-            }
-
-            this.PrepareViewBagData();
-            return this.View(model);
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
         }
 
         [HttpGet]
@@ -151,10 +131,7 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData();
-
-            this.ViewBag.IsActive = this.contestsData.IsActiveById(contest.Id.Value);
-            this.ViewBag.CallerAction = nameof(this.Edit);
+            this.PrepareViewBagData(contest.Id);
 
             return this.View(contest);
         }
@@ -169,50 +146,42 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            if (!this.IsValidContest(model))
+            this.ValidateContest(model);
+
+            if (!this.ModelState.IsValid)
             {
+                this.PrepareViewBagData(model.Id);
                 return this.View(model);
             }
 
-            if (model.Duration.HasValue && model.Duration.Value.TotalHours >= 24)
+            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
+
+            if (contest == null)
             {
-                this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
-
-                if (contest == null)
-                {
-                    this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
-                    return this.RedirectToAction<ContestsController>(c => c.Index());
-                }
-
-                contest = model.GetEntityModel(contest);
-
-                if (contest.IsOnline &&
-                    contest.IsActive &&
-                    (contest.Duration != model.Duration ||
-                        contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
-                        (int)contest.Type != model.Type))
-                {
-                    this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
-                    this.RedirectToAction<ContestsController>(c => c.Index());
-                }
-
-                contest.AllowedIps.Clear();
-                this.AddIpsToContest(contest, model.AllowedIps);
-
-                this.Data.Contests.Update(contest);
-                this.Data.SaveChanges();
-
-                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
+                this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData();
-            return this.View(model);
+            contest = model.GetEntityModel(contest);
+
+            if (contest.IsOnline &&
+                contest.IsActive &&
+                (contest.Duration != model.Duration ||
+                 contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
+                 (int)contest.Type != model.Type))
+            {
+                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            contest.AllowedIps.Clear();
+            this.AddIpsToContest(contest, model.AllowedIps);
+
+            this.Data.Contests.Update(contest);
+            this.Data.SaveChanges();
+
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
         }
 
         [HttpPost]
@@ -524,29 +493,46 @@
             return this.Redirect(returnUrl);
         }
 
-        private void PrepareViewBagData()
+        private void PrepareViewBagData(int? contestId = null)
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
             this.ViewBag.SubmissionExportTypes = DropdownViewModel.GetEnumValues<SubmissionExportType>();
+
+            if (contestId.HasValue)
+            {
+                // TODO: think of a solution to determin in better way IsActive
+                this.ViewBag.IsActive = this.contestsData.IsActiveById(contestId.Value);
+            }
         }
 
-        private bool IsValidContest(ViewModelType model)
+        private void ValidateContest(ViewModelType model)
         {
-            bool isValid = true;
-
             if (model.StartTime >= model.EndTime)
             {
                 this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Contest_start_date_before_end);
-                isValid = false;
             }
 
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
                 this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Practice_start_date_before_end);
-                isValid = false;
             }
 
-            return isValid;
+            if (model.IsOnline)
+            {
+                if (!model.Duration.HasValue)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+                }
+                else if (model.Duration.Value.TotalHours >= 24)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
+                }
+
+                if (model.NumberOfProblemGroups <= 0)
+                {
+                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                }
+            }
         }
 
         private void AddIpsToContest(Contest contest, string mergedIps)
