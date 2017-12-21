@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="editor-field col-xs-4">
-            @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
+            @Html.EditorFor(m => m.Type)
             @if (isEditFormOfActiveContest)
             {
                 @Html.HiddenFor(m => m.Type, new { id = $"{nameof(Model.Type)}-hidden" })
@@ -346,6 +346,10 @@
         });
 
         toggleOnlineOnlyFields(type.val());
+
+        if (@isEditFormOfActiveContest.ToString().ToLower()) {
+            type.data("kendoDropDownList").enable(false);
+        }
 
         function toggleOnlineOnlyFields(contestType) {
             if (contestType == @((int)ContestType.OnlinePractialExam)) {
