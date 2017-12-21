@@ -37,7 +37,11 @@
             </div>
         </div>
         <div class="editor-field col-xs-4">
-            @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
+            @Html.EditorFor(m => m.Type)
+            @if (isEditFormOfActiveContest)
+            {
+                @Html.HiddenFor(m => m.Type, new { id = $"{nameof(Model.Type)}-hidden" })
+            }
         </div>
         <div class="editor-field col-xs-4">
             <span class="glyphicon glyphicon-question-sign text-primary" title="Въведете типа на състезанието" data-tooltip="true"></span>
@@ -54,6 +58,10 @@
             </div>
             <div class="editor-field col-xs-4">
                 @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
+                @if (isEditFormOfActiveContest)
+                {
+                    @Html.HiddenFor(m => m.NumberOfProblemGroups, new { id = $"{nameof(Model.NumberOfProblemGroups)}-hidden" })
+                }
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
@@ -165,6 +173,10 @@
             </div>
             <div class="editor-field col-xs-4">
                 @Html.EditorFor(m => m.Duration, new { IsDisabled = isEditFormOfActiveContest })
+                @if (isEditFormOfActiveContest)
+                {
+                    @Html.HiddenFor(m => m.Duration, new { id = $"{nameof(Model.Duration)}-hidden" })
+                }
             </div>
             <div class="editor-field col-xs-4">
                 <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Duration" data-tooltip="true"></span>
@@ -334,6 +346,10 @@
         });
 
         toggleOnlineOnlyFields(type.val());
+
+        if (@isEditFormOfActiveContest.ToString().ToLower()) {
+            type.data("kendoDropDownList").enable(false);
+        }
 
         function toggleOnlineOnlyFields(contestType) {
             if (contestType == @((int)ContestType.OnlinePracticalExam)) {
