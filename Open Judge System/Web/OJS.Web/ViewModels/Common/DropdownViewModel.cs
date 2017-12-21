@@ -64,7 +64,7 @@
         public static IEnumerable<DropdownViewModel> GetFromRange(int start, int end)
         {
             return Enumerable
-                .Range(start, end - start)
+                .Range(start, end)
                 .Select(x => new DropdownViewModel() { Id = x, Name = x.ToString() });
         }
 
