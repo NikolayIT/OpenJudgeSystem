@@ -40,7 +40,7 @@
             @Html.EditorFor(m => m.Type, new { IsDisabled = isEditFormOfActiveContest })
             @if (isEditFormOfActiveContest)
             {
-                @Html.HiddenFor(m => m.Type)
+                @Html.HiddenFor(m => m.Type, new { id = $"{nameof(Model.Type)}-hidden" })
             }
         </div>
         <div class="editor-field col-xs-4">
@@ -60,7 +60,7 @@
                 @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
                 @if (isEditFormOfActiveContest)
                 {
-                    @Html.HiddenFor(m => m.NumberOfProblemGroups)
+                    @Html.HiddenFor(m => m.NumberOfProblemGroups, new { id = $"{nameof(Model.NumberOfProblemGroups)}-hidden" })
                 }
             </div>
             <div class="editor-field col-xs-4">
@@ -175,7 +175,7 @@
                 @Html.EditorFor(m => m.Duration, new { IsDisabled = isEditFormOfActiveContest })
                 @if (isEditFormOfActiveContest)
                 {
-                    @Html.HiddenFor(m => m.Duration)
+                    @Html.HiddenFor(m => m.Duration, new { id = $"{nameof(Model.Duration)}-hidden" })
                 }
             </div>
             <div class="editor-field col-xs-4">
