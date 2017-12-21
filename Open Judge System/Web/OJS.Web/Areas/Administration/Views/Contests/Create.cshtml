@@ -1,8 +1,11 @@
-﻿@using OJS.Common.Models
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+
+@using OJS.Common.Models
+
 @using Resource = Resources.Areas.Administration.Contests.Views.ContestCreate;
-@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
 @{
     ViewBag.Title = Resource.Page_title;
+    var onlinePracticalExamEnumValue = (int) ContestType.OnlinePracticalExam;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -32,11 +35,13 @@
         $('#AllowedIps').data('kendoAutoComplete').value('@GlobalConstants.DefaultPublicIp' + ',');
 
         $('#Type').on('change',
-            function() {
-                var selectedContestType = $('#Type').data('kendoDropDownList').text().replace(/\s+/g, '');
+            function () {
+                var dropdownList = $('#Type').data('kendoDropDownList');
+               // var selectedContestTypeName = dropdownList.text().replace(/\s+/g, '');
+                var selectedContestValue = dropdownList.value();
                 var allowedIps = $('#AllowedIps').data('kendoAutoComplete');
-
-                if (selectedContestType === '@ContestType.OnlinePracticalExam.ToString()') {
+                debugger;
+                if (selectedContestValue === '@onlinePracticalExamEnumValue') {
                     allowedIps.value('');
                 } else if (allowedIps.value() === '') {
                     allowedIps.value('@GlobalConstants.DefaultPublicIp' + ',');
