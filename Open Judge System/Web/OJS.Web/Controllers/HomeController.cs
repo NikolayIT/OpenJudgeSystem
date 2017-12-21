@@ -28,20 +28,21 @@
             var indexViewModel = new IndexViewModel
             {
                 ActiveContests = this.contestsData.GetAllActive()
-                    .OrderByDescending(x => x.StartTime)
+                    .Where(ac => ac.EndTime.HasValue)
+                    .OrderByDescending(ac => ac.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
                 FutureContests = this.Data.Contests.All()
-                    .Where(x => x.StartTime > DateTime.Now &&
-                        (x.IsVisible ||
+                    .Where(fc => fc.StartTime > DateTime.Now &&
+                        (fc.IsVisible ||
                             isAdmin ||
-                            x.Lecturers.Any(l => l.LecturerId == userId) ||
-                            x.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
-                    .OrderBy(x => x.StartTime)
+                            fc.Lecturers.Any(l => l.LecturerId == userId) ||
+                            fc.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
+                    .OrderBy(fc => fc.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
                 PastContests = this.contestsData.GetAllPast()
-                    .OrderByDescending(x => x.StartTime)
+                    .OrderByDescending(pc => pc.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
                     .ToList()
