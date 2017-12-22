@@ -180,6 +180,7 @@
             var participantViewModel = new ParticipantViewModel(participant, official);
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
+            this.ViewBag.IsUserAdminOrLecturer = this.IsUserAdminOrLecturerInContest(contest);
 
             return this.View(participantViewModel);
         }
