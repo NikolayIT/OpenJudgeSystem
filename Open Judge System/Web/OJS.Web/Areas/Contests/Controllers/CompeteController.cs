@@ -811,8 +811,14 @@
                             Resource.ContestsGeneral.User_is_not_registered_for_exam);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    var httpEx = ex as HttpException;
+                    if (httpEx?.GetHttpCode() == (int)HttpStatusCode.Forbidden)
+                    {
+                        throw;
+                    }
+
                     throw new HttpException(
                         (int)HttpStatusCode.NotFound,
                         Resource.ContestsGeneral.Contest_cannot_be_competed);
