@@ -264,8 +264,12 @@
                     c.Contests.Any(cc => !cc.IsDeleted && cc.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
             }
 
+            if (!string.IsNullOrWhiteSpace(contestFilter))
+            {
+                categories = categories.Where(c => c.Name.ToLower().Contains(contestFilter.ToLower()));
+            }
+
             var dropDownData = categories
-                .Where(c => c.Name.ToLower().Contains(contestFilter.ToLower()))
                 .ToList()
                 .Select(cat =>
                     new
