@@ -4,15 +4,21 @@
     using System.Linq;
 
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
 
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
         private readonly IParticipantsDataService participantsData;
+        private readonly IContestsDataService contestsData;
 
         public ParticipantsBusinessService(
-            IParticipantsDataService participantsData) =>
-                this.participantsData = participantsData;
+            IParticipantsDataService participantsData,
+            IContestsDataService contestsData)
+        {
+            this.participantsData = participantsData;
+            this.contestsData = contestsData;
+        }
 
         public bool CanCompeteByContestAndUserId(Contest contest, string userId)
         {
@@ -29,7 +35,11 @@
             return contest.CanBeCompeted;
         }
 
-        public Participant CreateNewByContestUserIdAndIsOfficial(Contest contest, string userId, bool isOfficial)
+        public Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
+            Contest contest,
+            string userId,
+            bool isOfficial,
+            bool isAdmin)
         {
             Participant participant;
             if (contest.IsOnline)
@@ -40,7 +50,9 @@
                     ContestEndTime = DateTime.Now + contest.Duration
                 };
 
-                if (isOfficial)
+                if (isOfficial &&
+                    !isAdmin &&
+                    !this.contestsData.IsUserLecturerInByContestIdAndUserId(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }
@@ -49,7 +61,7 @@
             {
                 participant = new Participant(contest.Id, userId, isOfficial);
             }
-            
+
             this.participantsData.Add(participant);
             return participant;
         }

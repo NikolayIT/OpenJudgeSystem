@@ -34,7 +34,7 @@
                         PracticeEndTime = contest.PracticeEndTime,
                         IsDeleted = contest.IsDeleted,
                         IsVisible = contest.IsVisible,
-                        IsOnline = contest.Type == ContestType.OnlinePractialExam,
+                        IsOnline = contest.Type == ContestType.OnlinePracticalExam,
                         ContestPassword = contest.ContestPassword,
                         PracticePassword = contest.PracticePassword,
                         HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
@@ -60,6 +60,8 @@
 
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string Name { get; set; }
+
+        public int Type { get; set; }
 
         public int? CategoryId { get; set; }
 
@@ -210,5 +212,7 @@
         }
 
         public bool UserIsLecturerInContest { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

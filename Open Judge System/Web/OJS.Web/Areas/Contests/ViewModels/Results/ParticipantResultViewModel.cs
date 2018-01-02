@@ -35,5 +35,7 @@
                 return this.ProblemResults.Sum(x => x.BestSubmission?.Points ?? 0);
             }
         }
+
+        public IEnumerable<int> ParticipantProblemIds { get; set; }
     }
 }

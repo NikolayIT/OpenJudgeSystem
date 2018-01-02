@@ -11,5 +11,7 @@
         public string ProblemName { get; set; }
 
         public int ProblemOrderBy { get; set; }
+
+        public bool IsPartOfUserProblems { get; set; }
     }
 }

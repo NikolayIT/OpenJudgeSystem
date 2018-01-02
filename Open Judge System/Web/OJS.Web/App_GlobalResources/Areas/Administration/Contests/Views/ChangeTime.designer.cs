@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Contests.Views {
+namespace Resources.Areas.Administration.Contests.Views {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Contests.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CompeteIndex {
+    public class ChangeTime {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CompeteIndex() {
+        internal ChangeTime() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Contests.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Contests.Views.Compete.CompeteIndex", typeof(CompeteIndex).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Contests.Views.ChangeTime", typeof(ChangeTime).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,83 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task.
+        ///   Looks up a localized string similar to Add Time.
         /// </summary>
-        public static string Add_task {
+        public static string Add_time {
             get {
-                return ResourceManager.GetString("Add_task", resourceCulture);
+                return ResourceManager.GetString("Add_time", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contest remaining time.
+        ///   Looks up a localized string similar to Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
-        public static string Contest_remaining_time {
+        public static string Change_time_legend {
             get {
-                return ResourceManager.GetString("Contest_remaining_time", resourceCulture);
+                return ResourceManager.GetString("Change_time_legend", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No tasks.
+        ///   Looks up a localized string similar to Contest.
         /// </summary>
-        public static string No_tasks {
+        public static string Contest {
             get {
-                return ResourceManager.GetString("No_tasks", resourceCulture);
+                return ResourceManager.GetString("Contest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are no tasks for this contest, yet.
+        ///   Looks up a localized string similar to &lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time..
         /// </summary>
-        public static string No_tasks_added_yet {
+        public static string Negative_number_legend {
             get {
-                return ResourceManager.GetString("No_tasks_added_yet", resourceCulture);
+                return ResourceManager.GetString("Negative_number_legend", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Practice end time.
+        ///   Looks up a localized string similar to Change Time for active participants.
         /// </summary>
-        public static string Practice_end_time {
+        public static string Page_title {
             get {
-                return ResourceManager.GetString("Practice_end_time", resourceCulture);
+                return ResourceManager.GetString("Page_title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remaining time.
+        ///   Looks up a localized string similar to &lt;strong&gt;+Positive number Adds&lt;/strong&gt; time..
         /// </summary>
-        public static string Remaining_time {
+        public static string Positive_number_legend {
             get {
-                return ResourceManager.GetString("Remaining_time", resourceCulture);
+                return ResourceManager.GetString("Positive_number_legend", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} h, {1} m and {2} s.
+        ///   Looks up a localized string similar to Subtract Time.
         /// </summary>
-        public static string Remaining_time_format {
+        public static string Subtract_time {
             get {
-                return ResourceManager.GetString("Remaining_time_format", resourceCulture);
+                return ResourceManager.GetString("Subtract_time", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Results.
+        ///   Looks up a localized string similar to Time in minutes.
         /// </summary>
-        public static string Results {
+        public static string Time_in_minutes {
             get {
-                return ResourceManager.GetString("Results", resourceCulture);
+                return ResourceManager.GetString("Time_in_minutes", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submit a solution.
+        ///   Looks up a localized string similar to Time is required, please add a value different from 0.
         /// </summary>
-        public static string Submit_solution {
+        public static string Time_required_error {
             get {
-                return ResourceManager.GetString("Submit_solution", resourceCulture);
+                return ResourceManager.GetString("Time_required_error", resourceCulture);
             }
         }
     }

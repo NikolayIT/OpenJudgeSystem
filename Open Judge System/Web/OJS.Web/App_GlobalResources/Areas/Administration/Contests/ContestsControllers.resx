@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_permitted_for_deletion" xml:space="preserve">
+  <data name="Active_contest_cannot_edit_duration_type_problem_groups" xml:space="preserve">
+    <value>Contest is active and the Duration, Type or Problem groups cannot be edited!</value>
+  </data>
+  <data name="Active_contest_forbidden_for_deletion" xml:space="preserve">
     <value>Contest is active and cannot be deleted!</value>
   </data>
-  <data name="Active_contest_permitted_for_transfer" xml:space="preserve">
+  <data name="Active_contest_forbidden_for_transfer" xml:space="preserve">
     <value>Contest is active and participants cannot be transferred</value>
+  </data>
+  <data name="Added_time_to_participants_online" xml:space="preserve">
+    <value>Successfully added {0} minutes to the times of all active participants in the contest {1}</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>contest</value>
@@ -140,6 +146,9 @@
   </data>
   <data name="Contest_start_date_before_end" xml:space="preserve">
     <value>Contest start date must be before the contest end date</value>
+  </data>
+  <data name="Duration_invalid_format" xml:space="preserve">
+    <value>Duration must be in format "hh:mm"</value>
   </data>
   <data name="No_active_contests" xml:space="preserve">
     <value>No active contests</value>
@@ -168,7 +177,13 @@
   <data name="Report_zip_format" xml:space="preserve">
     <value>{1} submissions for {0}.zip</value>
   </data>
+  <data name="Required_field_for_online" xml:space="preserve">
+    <value>The field is required for Online Contest</value>
+  </data>
   <data name="Select_one_submission_type" xml:space="preserve">
     <value>Choose at least one submission type!</value>
+  </data>
+  <data name="Subtracted_time_from_participants_online" xml:space="preserve">
+    <value>Successfully subtracted {0} minutes from the times of all active participants in the contest {1}</value>
   </data>
 </root>

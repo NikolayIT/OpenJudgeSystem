@@ -1,7 +1,10 @@
-﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestEdit
-@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel
+
+@using Resource = Resources.Areas.Administration.Contests.Views.ContestEdit
+
 @{
     ViewBag.Title = Resource.Page_title;
+    this.ViewBag.CallerAction = "Edit";
 }
 
 <h2>@ViewBag.Title @Model.Name</h2>

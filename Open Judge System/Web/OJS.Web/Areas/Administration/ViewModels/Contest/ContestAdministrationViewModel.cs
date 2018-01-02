@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using OJS.Web.Common;
 
     using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
 
@@ -35,10 +36,12 @@
                     Id = contest.Id,
                     Name = contest.Name,
                     Type = (int)contest.Type,
+                    NumberOfProblemGroups = contest.NumberOfProblemGroups,
                     StartTime = contest.StartTime,
                     EndTime = contest.EndTime,
                     PracticeStartTime = contest.PracticeStartTime,
                     PracticeEndTime = contest.PracticeEndTime,
+                    Duration = contest.Duration,
                     IsVisible = contest.IsVisible,
                     CategoryId = contest.CategoryId.Value,
                     CategoryName = contest.Category.Name,
@@ -85,6 +88,12 @@
         public int Type { get; set; }
 
         [DatabaseProperty]
+        [Display(Name = "Number_of_problem_groups", ResourceType = typeof(Resource))]
+        [UIHint("PositiveShortInteger")]
+        [DefaultValue(0)]
+        public short NumberOfProblemGroups { get; set; }
+
+        [DatabaseProperty]
         [Display(Name = "Start_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? StartTime { get; set; }
@@ -103,6 +112,12 @@
         [Display(Name = "Practice_end_time", ResourceType = typeof(Resource))]
         [UIHint("DateAndTime")]
         public DateTime? PracticeEndTime { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Duration", ResourceType = typeof(Resource))]
+        [AdditionalMetadata(WebConstants.Placeholder, "hh:mm")]
+        [UIHint("TimeSpan")]
+        public TimeSpan? Duration { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Contest_password", ResourceType = typeof(Resource))]
@@ -169,6 +184,8 @@
         {
             get { return string.Join(", ", this.allowedIps.Select(x => x.Value)); }
         }
+
+        public bool IsOnline => this.Type == (int)ContestType.OnlinePracticalExam;
 
         public override Contest GetEntityModel(Contest model = null)
         {
