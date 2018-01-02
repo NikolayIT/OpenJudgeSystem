@@ -16,7 +16,7 @@
 <h1>@ViewBag.Title</h1>
 <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
 <h3>@Resource.Change_time_legend</h3>
-<div id="create-form" class="container">
+<div id="change-time-for-active-participants-form" class="container">
     @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
@@ -31,7 +31,7 @@
                         @Html.LabelFor(m => m.TimeInMinutes, new {@class = "text-danger"})
                     </div>
                 </div>
-                <div class="editor-field col-xs-4 text-center">
+                <div class="editor-field col-xs-3 text-center">
                     <div class="number-input">
                         @Html.EditorFor(m => m.TimeInMinutes, new {@class = "pull-left"})
                     </div>
@@ -57,22 +57,27 @@
 @section Scripts{
     <script>
         ($(function () {
-            $('#TimeInMinutes').on('input', function(ev) {
-                ev.preventDefault();
-                var value = $(this).val();
+            var timeInput = $('#TimeInMinutes');
+            changeAddSubractButton(timeInput.val());
 
-                var addButton = $("#add-time-for-participants-btn");
-                var subtractButton = $("#subtract-time-for-participants-btn");
+            timeInput.on('input', function (ev) {
+                ev.preventDefault();
+                changeAddSubractButton(timeInput.val());
+            });
+
+            function changeAddSubractButton(value) {
+                var addButton = $('#add-time-for-participants-btn');
+                var subtractButton = $('#subtract-time-for-participants-btn');
                 var hiddenClass = "hidden";
 
-                if (value > 0) {
+                if (value >= 0) {
                     addButton.removeClass(hiddenClass);
                     subtractButton.addClass(hiddenClass);
                 } else if (value < 0) {
                     addButton.addClass(hiddenClass);
                     subtractButton.removeClass(hiddenClass);
                 }
-            });
+            }
         }))
     </script>
 }
