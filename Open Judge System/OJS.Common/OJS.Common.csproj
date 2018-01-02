@@ -71,6 +71,7 @@
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Attributes\LocalizedDisplayFormatAttribute.cs" />
     <Compile Include="DataAnnotations\DatabasePropertyAttribute.cs" />
+    <Compile Include="Exceptions\UserNotRegisteredForExamException.cs" />
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\CompilerTypeExtensions.cs" />
