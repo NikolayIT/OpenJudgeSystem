@@ -17,6 +17,7 @@
     using MissingFeatures;
 
     using OJS.Common;
+    using OJS.Common.Exceptions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -811,12 +812,15 @@
                 {
                     if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
                     {
-                        throw new HttpException(
-                            (int)HttpStatusCode.Forbidden,
+                        throw new UserNotRegisteredForExamException(
                             Resource.ContestsGeneral.User_is_not_registered_for_exam);
                     }
                 }
-                catch
+                catch (UserNotRegisteredForExamException)
+                {
+                    throw;
+                }
+                catch (Exception)
                 {
                     throw new HttpException(
                         (int)HttpStatusCode.NotFound,
