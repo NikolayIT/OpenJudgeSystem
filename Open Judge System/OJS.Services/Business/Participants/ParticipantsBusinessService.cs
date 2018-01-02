@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
 
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
@@ -23,7 +22,7 @@
 
         public bool CanCompeteByContestAndUserId(Contest contest, string userId)
         {
-            if (contest.Type == ContestType.OnlinePracticalExam &&
+            if (contest.IsOnline &&
                 contest.Participants.Any(p => p.UserId == userId && p.IsOfficial))
             {
                 var contestEndTime = this.participantsData.GetOfficialContestEndTimeByUserIdAndContestId(
