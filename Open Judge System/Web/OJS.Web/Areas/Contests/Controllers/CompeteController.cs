@@ -807,7 +807,8 @@
                 {
                     if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
                     {
-                        throw new UserNotRegisteredForExamException(Resource.ContestsGeneral.User_is_not_registered_for_exam);
+                        throw new UserNotRegisteredForExamException(
+                            Resource.ContestsGeneral.User_is_not_registered_for_exam);
                     }
                 }
                 catch (UserNotRegisteredForExamException)
