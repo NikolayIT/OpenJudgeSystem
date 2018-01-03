@@ -70,15 +70,9 @@
             {
                 ev.ContentLoad("tabStripManager.onContentLoad");
                 ev.Activate("tabStripManager.tabSelected");
-            })
-        )
+            }))
     </div>
 </div>
-
-@{
-    var remainingTimeFormat = string.Format("\"<div id='countdown-timer'>" + Resource.Remaining_time_format + "</div>\"", "<span id='hours-remaining'></span>",
-        "<span id='minutes-remaining'></span>", "<span id='seconds-remaining'></span>");
-}
 
 @section scripts {
     @Scripts.Render("~/bundles/codemirror")
@@ -123,6 +117,12 @@
 
         @if (contestIsCompete)
         {
+            var remainingTimeFormat = string.Format(
+                $"\"<div id='countdown-timer'>{Resource.Remaining_time}: {Resource.Remaining_time_format}</div>\"",
+                "<span id='hours-remaining'></span>",
+                "<span id='minutes-remaining'></span>",
+                "<span id='seconds-remaining'></span>");
+
             if (Model.Contest.ContestType != ContestType.OnlinePracticalExam)
             {
                 <text>
@@ -134,6 +134,20 @@
             }
             else
             {
+                if (this.ViewBag.IsUserAdminOrLecturer ?? false)
+                {
+                    var contestRemainingTimeFormat = remainingTimeFormat.Replace(
+                        Resource.Remaining_time,
+                        Resource.Contest_remaining_time);
+
+                    <text>
+                        calculateRemainingTimeOnClient(
+                            'countdown-timer-container',
+                            @Html.Raw(contestRemainingTimeFormat),
+                            @Model.Contest.RemainingTimeInMilliseconds.Value);
+                    </text>
+                }
+
                 <text>
                     calculateRemainingTimeOnClient(
                         'countdown-timer-container',

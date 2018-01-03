@@ -17,6 +17,7 @@
     using MissingFeatures;
 
     using OJS.Common;
+    using OJS.Common.Exceptions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -177,10 +178,15 @@
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
-            var participant = this.Data.Participants.GetWithContest(id, this.UserProfile.Id, official);
-            var participantViewModel = new ParticipantViewModel(participant, official);
+            var participant = this.participantsData
+                .GetWithContestByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official);
+            var participantViewModel = new ParticipantViewModel(
+                participant,
+                official,
+                this.IsUserAdminOrLecturerInContest(contest));
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
+            this.ViewBag.IsUserAdminOrLecturer = this.IsUserAdminOrLecturerInContest(contest);
 
             return this.View(participantViewModel);
         }
@@ -806,12 +812,15 @@
                 {
                     if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
                     {
-                        throw new HttpException(
-                            (int)HttpStatusCode.Forbidden,
+                        throw new UserNotRegisteredForExamException(
                             Resource.ContestsGeneral.User_is_not_registered_for_exam);
                     }
                 }
-                catch
+                catch (UserNotRegisteredForExamException)
+                {
+                    throw;
+                }
+                catch (Exception)
                 {
                     throw new HttpException(
                         (int)HttpStatusCode.NotFound,
