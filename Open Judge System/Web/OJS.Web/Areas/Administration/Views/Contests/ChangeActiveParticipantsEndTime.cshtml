@@ -40,6 +40,35 @@
                     @Html.ValidationMessageFor(m => m.TimeInMinutes)
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-10">
+                    @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
+                    <p style="display: inline-block" class="left-buffer">Users who started competing <b>before</b> this time will be affected</p>
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
+                </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-10">
+                    @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
+                    <p style="display: inline-block" class="left-buffer">Users who started competing <b>after</b> this time will be affected</p>
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
+                </div>
+            </div>
         </div>
         <div class="row top-buffer">
             <div class="editor-label col-xs-2">

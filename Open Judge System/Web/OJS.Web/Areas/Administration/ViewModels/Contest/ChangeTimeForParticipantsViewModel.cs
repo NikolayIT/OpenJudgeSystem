@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity.SqlServer;
     using System.Linq.Expressions;
     using System.Web.Mvc;
 
@@ -11,11 +12,18 @@
 
     public class ChangeTimeForParticipantsViewModel
     {
+        private const double DefaultBufferTimeInMinutes = 0.5;
+
         public static Expression<Func<Contest, ChangeTimeForParticipantsViewModel>> FromContest =>
             contest => new ChangeTimeForParticipantsViewModel
             {
                 ContesId = contest.Id,
-                ContestName = contest.Name
+                ContestName = contest.Name,
+                ParticipantsCreatedBeforeDateTime = DateTime.Now,
+                ParticipantsCreatedAfterDateTime = SqlFunctions.DateAdd(
+                    "hour", 
+                    (contest.Duration.Value.Hours + DefaultBufferTimeInMinutes) * -1, 
+                    DateTime.Now)
             };
 
         [HiddenInput(DisplayValue = false)]
@@ -27,5 +35,13 @@
         [Display(Name = "Time_in_minutes", ResourceType = typeof(Resource))]
         [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
         public int TimeInMinutes { get; set; }
+
+        [Display(Name = "Participants_created_after", ResourceType = typeof(Resource))]
+        [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
+        public DateTime? ParticipantsCreatedAfterDateTime { get; set; }
+
+        [Display(Name = "Participants_created_before", ResourceType = typeof(Resource))]
+        [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
+        public DateTime? ParticipantsCreatedBeforeDateTime { get; set; }
     }
 }
