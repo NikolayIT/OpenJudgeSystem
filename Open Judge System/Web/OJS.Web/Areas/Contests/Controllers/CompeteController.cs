@@ -40,7 +40,7 @@
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
-    {  
+    {
         public const string CompeteActionName = "Compete";
         public const string PracticeActionName = "Practice";
 
@@ -124,7 +124,7 @@
                     (int)HttpStatusCode.Forbidden,
                     Resource.ContestsGeneral.Contest_cannot_be_practiced);
             }
-        } 
+        }
 
         /// <summary>
         /// Displays user compete information: tasks, send source form, ranking, submissions, ranking, etc.
@@ -203,15 +203,15 @@
             if (participantFound)
             {
                 // Participant exists. Redirect to index page.
-                return this.RedirectToAction(GlobalConstants.Index, new {id, official});
+                return this.RedirectToAction(GlobalConstants.Index, new { id, official });
             }
 
-            var contest = this.Data.Contests.All().Include(x => x.Questions).FirstOrDefault(x => x.Id == id);
+            var contest = this.contestsData.GetById(id);
 
             try
             {
                 this.ValidateContest(contest, official);
-                
+
                 if (contest.ShouldShowRegistrationForm(official))
                 {
                     var contestRegistrationModel = new ContestRegistrationViewModel(contest, official);
@@ -286,7 +286,7 @@
                 }
 
                 var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
-            
+
                 var participant = this.AddNewParticipantToContest(contest, official);
 
                 var counter = 0;
@@ -618,7 +618,7 @@
                         Selected = x.IsSelectedByDefault,
                         x.AllowBinaryFilesUpload,
                         x.AllowedFileExtensions
-                    });  
+                    });
 
             return this.Json(submissionTypesSelectListItems, JsonRequestBehavior.AllowGet);
         }
