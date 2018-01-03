@@ -51,24 +51,16 @@
                 .Select(x => x.IsOfficial)
                 .FirstOrDefault();
 
-        public void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes)
-        {
-            var timeSpan = TimeSpan.FromMinutes(minutes);
-
-            var activeParticipants = this.participants
+        public IQueryable<Participant> GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
+            int contestId, 
+            DateTime after,
+            DateTime before) =>
+            this.participants
                 .All()
-                .Where(p => p.ContestId == contestId &&
+                .Where(p => p.CreatedOn >= after &&
+                    p.CreatedOn <= before &&
+                    p.ContestId == contestId &&
                     p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePracticalExam &&
-                    p.ContestEndTime > DateTime.Now);
-
-            foreach (var participant in activeParticipants)
-            {
-                participant.ContestEndTime = participant.ContestEndTime + timeSpan;
-                this.participants.Update(participant);
-            }
-
-            this.participants.SaveChanges();
-        }
+                    p.Contest.Type == ContestType.OnlinePracticalExam);
     }
 }

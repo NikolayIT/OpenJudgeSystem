@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Business.Participants
 {
+    using System;
     using OJS.Data.Models;
     using OJS.Services.Common;
 
@@ -12,5 +13,11 @@
             string userId,
             bool isOfficial,
             bool isAdmin);
+
+        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(
+            int contestId,
+            int minutes,
+            DateTime after,
+            DateTime before);
     }
 }

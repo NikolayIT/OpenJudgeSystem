@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-
+    using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
@@ -64,6 +64,28 @@
 
             this.participantsData.Add(participant);
             return participant;
+        }
+
+        public void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(
+            int contestId, 
+            int minutes, 
+            DateTime after,
+            DateTime before)
+        {
+            var timeSpan = TimeSpan.FromMinutes(minutes);
+
+            var activeParticipants = this.participantsData
+                .GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
+                    contestId, 
+                    after, 
+                    before)
+                .ToList();
+
+            foreach (var participant in activeParticipants)
+            {
+                participant.ContestEndTime = participant.ContestEndTime + timeSpan;
+                this.participantsData.Update(participant);
+            }
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)
