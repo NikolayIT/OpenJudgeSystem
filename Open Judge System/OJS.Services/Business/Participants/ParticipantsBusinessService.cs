@@ -35,7 +35,7 @@
             return contest.CanBeCompeted;
         }
 
-        public bool CanCompeteByContestIdAndUserId(int contestId, string userId)
+        public bool CanCompeteByContestAndUserId(int contestId, string userId)
         {
             var contest = this.contestsData.GetById(contestId);
             return this.CanCompeteByContestAndUserId(contest, userId);

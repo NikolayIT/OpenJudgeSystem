@@ -7,7 +7,7 @@
     {
         bool CanCompeteByContestAndUserId(Contest contest, string userId);
 
-        bool CanCompeteByContestIdAndUserId(int contestId, string userId);
+        bool CanCompeteByContestAndUserId(int contestId, string userId);
 
         Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
             Contest contest,

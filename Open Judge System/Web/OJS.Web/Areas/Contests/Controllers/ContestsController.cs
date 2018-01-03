@@ -62,7 +62,7 @@
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
 
-            this.ViewBag.UserCanCompete = this.participantsBusiness.CanCompeteByContestIdAndUserId(
+            this.ViewBag.UserCanCompete = this.participantsBusiness.CanCompeteByContestAndUserId(
                 contestViewModel.Id,
                 this.UserProfile?.Id);
 
