@@ -20,12 +20,25 @@
     height: 50px;
 }
 
+#confirm-window-pop-up-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #confirm-window-pop-up {
     padding: 30px;
     background-color: #F7F9F9;
     border: 1px solid #2C3E50;
     border-radius: 10px;
-    width: 50%;
+    width: 45%;
 }
 
 #confirm-window-pop-up h3 {
@@ -34,5 +47,5 @@
 }
 
 #confirm-window-pop-up > div {
-    margin-top: 15px;
+    margin-top: 30px;
 }
