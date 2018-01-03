@@ -88,7 +88,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span&gt;&lt;/span&gt; the times of all active participants?.
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the times of all active participants?.
         /// </summary>
         public static string Confirmation_message_header {
             get {

@@ -127,7 +127,7 @@
     <value>Променя времената само на активните участници в състезанието. Не афектира времето на състезанието, нито времето в което стартира или приключва.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
-    <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span&gt;&lt;/span&gt; времената на всички активни участници?</value>
+    <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; времената на всички активни участници?</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Състезание</value>

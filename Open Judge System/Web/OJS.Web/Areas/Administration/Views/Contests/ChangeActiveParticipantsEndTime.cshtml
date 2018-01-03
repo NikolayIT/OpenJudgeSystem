@@ -85,27 +85,23 @@
                 function () {
                     var confirmPopUp = $('#confirm-window-pop-up');
 
-                    confirmPopUp.show();
-
                     var inputValue = timeInput.val();
                     var action = confirmPopUp.find('#action');
                     var minutes = confirmPopUp.find('#minutes');
-                    var suffix = confirmPopUp.find('h3 span');
+                    var preposition = confirmPopUp.find('#preposition');
                     var headerStrongElements = confirmPopUp.find('h3 strong');
 
                     if (inputValue >= 0) {
                         action.text('@Resource.Add_are_you_sure');
                         headerStrongElements.css('color', "#13987E");
-                        suffix.text('@Resource.To');
+                        preposition.text('@Resource.To');
                     }else {
                         action.text('@Resource.Subtract_are_you_sure');
                         headerStrongElements.css('color', "#DF2E1B");
-                        suffix.text('@Resource.From');
+                        preposition.text('@Resource.From');
                     }
 
                     minutes.text(Math.abs(inputValue));
-
-                    console.log(action);
 
                     confirmPopUp.find('#username-confirmation-input').on('input',
                         function() {
@@ -116,6 +112,8 @@
                                 confirmPopUp.find('button').attr("disabled", true);
                             }
                         });
+
+                    confirmPopUp.show();
 
                     confirmPopUp.find('#cancel-btn-confirm-pop-up').click(
                         function () {

@@ -127,7 +127,7 @@
     <value>Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
-    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span&gt;&lt;/span&gt; the times of all active participants?</value>
+    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the times of all active participants?</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>

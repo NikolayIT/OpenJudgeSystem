@@ -322,7 +322,7 @@
 
             if (contest != null)
             {
-                this.ViewBag.CurrentUsername = this.User.Identity.Name;
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
                 return this.View(contest);
             }
 
