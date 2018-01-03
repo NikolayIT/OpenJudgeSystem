@@ -66,19 +66,19 @@
             return participant;
         }
 
-        public void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(
+        public void ChangeTimeForActiveParticipantInOnlineContestByContestAndMinutes(
             int contestId, 
             int minutes, 
-            DateTime after,
-            DateTime before)
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd)
         {
             var timeSpan = TimeSpan.FromMinutes(minutes);
 
             var activeParticipants = this.participantsData
-                .GetOfficialInOnlineContestByContestStartTimeAfterDateTimeAndBeforeDateTimeAndContest(
+                .GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
                     contestId,
-                    after,
-                    before)
+                    contestStartTimeRangeStart,
+                    contestStartTimeRangeEnd)
                 .ToList();
 
             foreach (var participant in activeParticipants)

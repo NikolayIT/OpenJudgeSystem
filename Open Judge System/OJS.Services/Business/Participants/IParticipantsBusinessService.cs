@@ -15,10 +15,10 @@
             bool isOfficial,
             bool isAdmin);
 
-        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(
+        void ChangeTimeForActiveParticipantInOnlineContestByContestAndMinutes(
             int contestId,
             int minutes,
-            DateTime after,
-            DateTime before);
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd);
     }
 }

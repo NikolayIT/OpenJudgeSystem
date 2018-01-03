@@ -19,20 +19,15 @@
             Expression<Func<Participant, bool>> filterExpression,
             Expression<Func<Participant, Participant>> updateExpression);
 
-        Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+        Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 
         IQueryable<Participant> GetByIdQuery(int participantId);
 
         bool IsOfficial(int participantId);
 
-        IQueryable<Participant> GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
+        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
             int contestId,
-            DateTime after,
-            DateTime before);
-
-        IQueryable<Participant> GetOfficialInOnlineContestByContestStartTimeAfterDateTimeAndBeforeDateTimeAndContest(
-            int contestId,
-            DateTime after,
-            DateTime before);
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd);
     }
 }

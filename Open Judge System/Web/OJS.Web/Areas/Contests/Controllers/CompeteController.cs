@@ -179,7 +179,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(
                 participant,
                 official,
@@ -362,7 +362,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -446,7 +446,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);

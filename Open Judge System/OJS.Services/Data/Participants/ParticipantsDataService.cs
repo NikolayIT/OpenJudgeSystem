@@ -42,7 +42,7 @@
             this.participants.SaveChanges();
         }
 
-        public Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+        public Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participants
                 .All()
                 .Include(p => p.Contest)
@@ -60,28 +60,15 @@
                 .Select(x => x.IsOfficial)
                 .FirstOrDefault();
 
-        public IQueryable<Participant> GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
-            int contestId, 
-            DateTime after,
-            DateTime before) =>
-            this.participants
-                .All()
-                .Where(p => 
-                    p.CreatedOn >= after &&
-                    p.CreatedOn <= before &&
-                    p.ContestId == contestId &&
-                    p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePracticalExam);
-
-        public IQueryable<Participant> GetOfficialInOnlineContestByContestStartTimeAfterDateTimeAndBeforeDateTimeAndContest(
+        public IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
             int contestId,
-            DateTime after,
-            DateTime before) =>
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd) =>
             this.participants
                 .All()
                 .Where(p => 
-                    p.ContestStartTime >= after &&
-                    p.ContestStartTime <= before &&
+                    p.ContestStartTime >= contestStartTimeRangeStart &&
+                    p.ContestStartTime <= contestStartTimeRangeEnd &&
                     p.ContestId == contestId &&
                     p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);
