@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using OJS.Common.Models;
     using OJS.Data.Contracts;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -75,9 +76,9 @@
             var timeSpan = TimeSpan.FromMinutes(minutes);
 
             var activeParticipants = this.participantsData
-                .GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
-                    contestId, 
-                    after, 
+                .GetOfficialInOnlineContestByContestStartTimeAfterDateTimeAndBeforeDateTimeAndContest(
+                    contestId,
+                    after,
                     before)
                 .ToList();
 

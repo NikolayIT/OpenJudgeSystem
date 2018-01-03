@@ -160,6 +160,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Participants created after&quot; must be earlier than &quot;Participants created before&quot;.
+        /// </summary>
+        public static string Participants_created_after_must_be_before_Participants_created_before {
+            get {
+                return ResourceManager.GetString("Participants_created_after_must_be_before_Participants_created_before", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Participants created before.
         /// </summary>
         public static string Participants_created_before {

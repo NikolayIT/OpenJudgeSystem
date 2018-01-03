@@ -150,6 +150,9 @@
   <data name="Participants_created_after" xml:space="preserve">
     <value>Участници създадени след</value>
   </data>
+  <data name="Participants_created_after_must_be_before_Participants_created_before" xml:space="preserve">
+    <value>"Участници създадени след" трябва да е по рано от "Участници създадени преди" </value>
+  </data>
   <data name="Participants_created_before" xml:space="preserve">
     <value>Участници създадени преди</value>
   </data>

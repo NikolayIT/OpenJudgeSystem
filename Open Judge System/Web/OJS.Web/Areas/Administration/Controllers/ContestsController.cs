@@ -25,6 +25,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
+    using ChangeTimeResource = Resources.Areas.Administration.Contests.Views.ChangeTime;
     using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
@@ -341,13 +342,19 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            // TODO: More validation
-            if (!model.ParticipantsCreatedAfterDateTime.HasValue || !model.ParticipantsCreatedBeforeDateTime.HasValue)
+            if (!this.ModelState.IsValid)
             {
-                // TODO: Add appropriate error message
-                // this.TempData.AddDangerMessage(Resource.);
-                return this.RedirectToAction<ContestsController>(
-                    c => c.ChangeActiveParticipantsEndTime(model.ContesId));
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
+            }
+
+            if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
+            {
+                this.ModelState.AddModelError(
+                    nameof(model.ParticipantsCreatedAfterDateTime),
+                    ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
             }
 
             if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
