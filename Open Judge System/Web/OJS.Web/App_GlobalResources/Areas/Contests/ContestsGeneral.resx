@@ -192,4 +192,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Problem_not_assigned_to_user" xml:space="preserve">
+    <value>The problem is not part of your problems for the exam</value>
+  </data>
 </root>

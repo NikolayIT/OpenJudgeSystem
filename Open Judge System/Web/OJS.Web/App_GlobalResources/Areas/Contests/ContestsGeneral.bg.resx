@@ -192,4 +192,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="Problem_not_assigned_to_user" xml:space="preserve">
+    <value>Задачата не е част от вашите задачи за изпита</value>
+  </data>
 </root>

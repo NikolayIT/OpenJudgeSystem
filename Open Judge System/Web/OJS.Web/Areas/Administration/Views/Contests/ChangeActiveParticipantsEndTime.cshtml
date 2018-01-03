@@ -104,10 +104,9 @@
             changeAddSubractButton(timeInput.val());
 
             timeInput.on('input',
-                function (ev) {
-                    ev.preventDefault();
+                function () {
                     changeAddSubractButton(timeInput.val());
-            });
+                });
 
             var addButtonSelector = '#add-time-for-participants-btn';
             var subtractButtonSelector = '#subtract-time-for-participants-btn';
@@ -136,7 +135,7 @@
                         action.text('@Resource.Add_are_you_sure');
                         headerStrongElements.css('color', "#13987E");
                         preposition.text('@Resource.To');
-                    }else {
+                    } else {
                         action.text('@Resource.Subtract_are_you_sure');
                         headerStrongElements.css('color', "#DF2E1B");
                         preposition.text('@Resource.From');
@@ -169,7 +168,7 @@
                             confirmWindow.hide();
                             changeTimeContainer.css('opacity', 1);
                         });
-            });
+                });
 
             function changeAddSubractButton(value) {
                 var addButton = $(addButtonSelector);
