@@ -309,7 +309,7 @@
         }
 
         [HttpGet]
-        public ActionResult ChangeActiveParticipantsEndTime(int contestId)
+        public ActionResult ChangeActiveParticipantsEndTime(int id)
         {
             if (!this.User.IsAdmin())
             {
@@ -318,7 +318,7 @@
             }
 
             var contest = this.contestsData
-                .GetByIdQuery(contestId)
+                .GetByIdQuery(id)
                 .Select(ChangeTimeForParticipantsViewModel.FromContest)
                 .FirstOrDefault();
 

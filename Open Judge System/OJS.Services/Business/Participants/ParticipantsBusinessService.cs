@@ -1,8 +1,9 @@
 ﻿namespace OJS.Services.Business.Participants
 {
     using System;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
-
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
@@ -72,20 +73,18 @@
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd)
         {
-            var timeSpan = TimeSpan.FromMinutes(minutes);
-
-            var activeParticipants = this.participantsData
-                .GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
-                    contestId,
-                    contestStartTimeRangeStart,
-                    contestStartTimeRangeEnd)
-                .ToList();
-
-            foreach (var participant in activeParticipants)
-            {
-                participant.ContestEndTime = participant.ContestEndTime + timeSpan;
-                this.participantsData.Update(participant);
-            }
+            this.participantsData.Update(
+                p =>
+                    p.ContestStartTime >= contestStartTimeRangeStart &&
+                    p.ContestStartTime <= contestStartTimeRangeEnd &&
+                    p.ContestId == contestId &&
+                    p.IsOfficial &&
+                    p.Contest.Type == ContestType.OnlinePracticalExam,
+                p => new Participant() { ContestEndTime = SqlFunctions.DateAdd(
+                    "minute",
+                    minutes,
+                    p.ContestEndTime)
+                });
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)
