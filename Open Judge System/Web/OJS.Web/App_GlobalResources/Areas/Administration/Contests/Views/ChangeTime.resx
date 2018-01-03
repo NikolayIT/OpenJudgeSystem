@@ -124,7 +124,7 @@
     <value>Add Time</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
+    <value>Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
     <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the times of all active participants?</value>
@@ -140,6 +140,12 @@
   </data>
   <data name="Page_title" xml:space="preserve">
     <value>Change Time for active participants</value>
+  </data>
+  <data name="Participants_created_after" xml:space="preserve">
+    <value>Participants created after</value>
+  </data>
+  <data name="Participants_created_before" xml:space="preserve">
+    <value>Participants created before</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>Subtract</value>

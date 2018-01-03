@@ -124,7 +124,7 @@
     <value>Добави време</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Променя времената само на активните участници в състезанието. Не афектира времето на състезанието, нито времето в което стартира или приключва.</value>
+    <value>Променя времената само на участници започнали да се съзтезават преди и след определено време в състезанието. Не афектира времето на състезанието, нито времето в което стартира или приключва.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
     <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; времената на всички активни участници?</value>
@@ -140,6 +140,12 @@
   </data>
   <data name="Page_title" xml:space="preserve">
     <value>Прехвърляне на участници</value>
+  </data>
+  <data name="Participants_created_after" xml:space="preserve">
+    <value>Участници създадени след</value>
+  </data>
+  <data name="Participants_created_before" xml:space="preserve">
+    <value>Участници създадени преди</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>Премахнете</value>

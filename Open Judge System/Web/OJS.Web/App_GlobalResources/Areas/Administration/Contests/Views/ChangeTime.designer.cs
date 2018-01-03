@@ -79,7 +79,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time..
+        ///   Looks up a localized string similar to Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {
@@ -129,6 +129,24 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static string Page_title {
             get {
                 return ResourceManager.GetString("Page_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participants created after.
+        /// </summary>
+        public static string Participants_created_after {
+            get {
+                return ResourceManager.GetString("Participants_created_after", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participants created before.
+        /// </summary>
+        public static string Participants_created_before {
+            get {
+                return ResourceManager.GetString("Participants_created_before", resourceCulture);
             }
         }
         
