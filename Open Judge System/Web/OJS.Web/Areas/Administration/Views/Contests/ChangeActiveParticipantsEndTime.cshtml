@@ -13,56 +13,60 @@
     <link href="/Content/Contests/change-time.css" rel="stylesheet" />
 }
 
-<h1>@ViewBag.Title</h1>
-<h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
-<h3>@Resource.Change_time_legend</h3>
-<div id="change-time-for-active-participants-form" class="container">
-    @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.ContesId)
-        @Html.HiddenFor(m => m.ContestName)
+<div id="change-time-container">
+    <h1>@ViewBag.Title</h1>
+    <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
+    <h3>@Resource.Change_time_legend</h3>
+    <div id="change-time-for-active-participants" class="container">
+        @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ContesId)
+            @Html.HiddenFor(m => m.ContestName)
 
-        <div class="bottom-buffer top-buffer">
-            <div class="row">
-                <div class="col-xs-12 bottom-buffer">
-                    <div class="center-block">
-                        <span class="right-buffer glyphicon glyphicon-time"></span>
-                        @Html.LabelFor(m => m.TimeInMinutes, new {@class = "text-danger"})
+            <div class="bottom-buffer top-buffer">
+                <div class="row">
+                    <div class="col-xs-12 bottom-buffer">
+                        <div class="center-block">
+                            <span class="right-buffer glyphicon glyphicon-time"></span>
+                            @Html.LabelFor(m => m.TimeInMinutes, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="editor-field col-xs-3 text-center">
+                        <div class="number-input">
+                            @Html.EditorFor(m => m.TimeInMinutes, new { @class = "pull-left" })
+                        </div>
+                    </div>
+                    <div class="editor-field col-xs-4">
+                        @Html.ValidationMessageFor(m => m.TimeInMinutes)
                     </div>
                 </div>
-                <div class="editor-field col-xs-3 text-center">
-                    <div class="number-input">
-                        @Html.EditorFor(m => m.TimeInMinutes, new {@class = "pull-left"})
-                    </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="editor-label col-xs-2">
+                    <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
+                    <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
                 </div>
-                <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.TimeInMinutes)
+                <div class="editor-label col-sm-2">
+                    @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
+                          SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
                 </div>
             </div>
-        </div>
-        <div class="row top-buffer">
-            <div class="editor-label col-xs-2">
-                <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
-                <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
-            </div>
-            <div class="editor-label col-sm-2">
-                @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
-                      SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
-            </div>
-        </div>
-        <div id="confirm-window-pop-up" class="row" hidden>
-            <h3>@Html.Raw(Resource.Confirmation_message_header)</h3>
-            <label name="Name">@Resource.Enter_your_username</label>
-            <input id="username-confirmation-input" class="form-control" type="text"/>
-            <br/>
-            <div class="container-fluid row">
-                <button type="submit" class="btn btn-success pull-left top-buffer col-xs-3" disabled="disabled">@SharedResource.Yes</button>
-                <span id="cancel-btn-confirm-pop-up" class="btn btn-primary pull-right top-buffer col-xs-6">@SharedResource.Cancel</span>
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
+<div id="confirm-window-pop-up-container" style="display: none">
+    <div id="confirm-window-pop-up" class="row">
+        <h3>@Html.Raw(Resource.Confirmation_message_header)</h3>
+        <label name="Name">@Resource.Enter_your_username</label>
+        <input id="username-confirmation-input" class="form-control" type="text" />
+        <div class="container-fluid row">
+            <input id="submit-form-button" type="submit" class="btn btn-success pull-left top-buffer col-xs-3" disabled="disabled"value="@SharedResource.Yes"/>
+            <span id="cancel-btn-confirm-pop-up" class="btn btn-primary pull-right top-buffer col-xs-6">@SharedResource.Cancel</span>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts{
     <script>
@@ -82,13 +86,16 @@
             var buttons = [addButtonSelector, subtractButtonSelector];
 
             $(buttons.join()).click(
-                function () {
-                    var confirmPopUp = $('#confirm-window-pop-up');
+                function() {
+                    var changeTimeContainer = $('#change-time-container');
+                    var confirmWindow = $('#confirm-window-pop-up-container');
+                    var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
 
                     var inputValue = timeInput.val();
-                    var action = confirmPopUp.find('#action');
-                    var minutes = confirmPopUp.find('#minutes');
-                    var preposition = confirmPopUp.find('#preposition');
+                    var submitFormButton = $('#submit-form-button');
+                    var action = $('#action');
+                    var minutes = $('#minutes');
+                    var preposition = $('#preposition');
                     var headerStrongElements = confirmPopUp.find('h3 strong');
 
                     if (inputValue >= 0) {
@@ -103,22 +110,29 @@
 
                     minutes.text(Math.abs(inputValue));
 
-                    confirmPopUp.find('#username-confirmation-input').on('input',
-                        function() {
+                    $('#username-confirmation-input').on('input',
+                        function () {
                             var value = $(this).val();
                             if (value === '@this.ViewBag.CurrentUsername') {
-                                confirmPopUp.find('button').attr("disabled", false);
+                                submitFormButton.attr("disabled", false);
                             } else {
-                                confirmPopUp.find('button').attr("disabled", true);
+                                submitFormButton.attr("disabled", true);
                             }
                         });
 
-                    confirmPopUp.show();
+                    confirmWindow.show();
+                    changeTimeContainer.css('opacity', 0.3);
 
-                    confirmPopUp.find('#cancel-btn-confirm-pop-up').click(
+                    submitFormButton.click(
                         function () {
-                            confirmPopUp.hide();
-                    });
+                            $('#change-time-for-active-participants>form').submit();
+                        });
+
+                    $('#cancel-btn-confirm-pop-up').click(
+                        function () {
+                            confirmWindow.hide();
+                            changeTimeContainer.css('opacity', 1);
+                        });
             });
 
             function changeAddSubractButton(value) {
