@@ -1,6 +1,7 @@
 ﻿namespace OJS.Services.Business.Participants
 {
     using System;
+
     using OJS.Data.Models;
     using OJS.Services.Common;
 
