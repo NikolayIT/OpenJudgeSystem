@@ -20,6 +20,9 @@
 
         bool IsOfficial(int participantId);
 
-        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes);
+        IQueryable<Participant> GetOfficialInOnlineContestByCreatedOnAfterDateTimeAndBeforeDateTimeAndContest(
+            int contestId,
+            DateTime after,
+            DateTime before);
     }
 }

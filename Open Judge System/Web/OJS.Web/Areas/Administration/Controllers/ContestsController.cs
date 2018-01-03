@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
@@ -35,18 +36,18 @@
 
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
-        private readonly IParticipantsDataService participantsData;
+        private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
             IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
-            IParticipantsDataService participantsData)
+            IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
-            this.participantsData = participantsData;
+            this.participantsBusiness = participantsBusiness;
         }        
 
         public override IEnumerable GetData()
@@ -340,13 +341,24 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
+            if (!model.ParticipantsCreatedAfterDateTime.HasValue || !model.ParticipantsCreatedBeforeDateTime.HasValue)
+            {
+                // TODO: Add appropriate error message
+                // this.TempData.AddDangerMessage(Resource.);
+                return this.RedirectToAction<ContestsController>(c => c.ChangeActiveParticipantsEndTime(model.ContesId));
+            }
+
             if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
             {
                 this.TempData.AddDangerMessage(Resource.Contest_not_valid);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.participantsData.ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
+            this.participantsBusiness.ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(
+                model.ContesId, 
+                model.TimeInMinutes,
+                model.ParticipantsCreatedAfterDateTime.Value,
+                model.ParticipantsCreatedBeforeDateTime.Value);
 
             var minutesForDisplay = model.TimeInMinutes.ToString();
             this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
