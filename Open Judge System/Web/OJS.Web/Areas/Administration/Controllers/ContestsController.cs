@@ -341,11 +341,13 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
+            // TODO: More validation
             if (!model.ParticipantsCreatedAfterDateTime.HasValue || !model.ParticipantsCreatedBeforeDateTime.HasValue)
             {
                 // TODO: Add appropriate error message
                 // this.TempData.AddDangerMessage(Resource.);
-                return this.RedirectToAction<ContestsController>(c => c.ChangeActiveParticipantsEndTime(model.ContesId));
+                return this.RedirectToAction<ContestsController>(
+                    c => c.ChangeActiveParticipantsEndTime(model.ContesId));
             }
 
             if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))

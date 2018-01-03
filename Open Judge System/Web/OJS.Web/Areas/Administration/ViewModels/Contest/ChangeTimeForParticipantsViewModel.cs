@@ -12,7 +12,7 @@
 
     public class ChangeTimeForParticipantsViewModel
     {
-        private const double DefaultBufferTimeInMinutes = 0.5;
+        private static readonly int DefaultBufferTimeInMinutes = 30;
 
         public static Expression<Func<Contest, ChangeTimeForParticipantsViewModel>> FromContest =>
             contest => new ChangeTimeForParticipantsViewModel
@@ -21,8 +21,8 @@
                 ContestName = contest.Name,
                 ParticipantsCreatedBeforeDateTime = DateTime.Now,
                 ParticipantsCreatedAfterDateTime = SqlFunctions.DateAdd(
-                    "hour", 
-                    (contest.Duration.Value.Hours + DefaultBufferTimeInMinutes) * -1, 
+                    "minute", 
+                    ((contest.Duration.Value.Hours * 60) + DefaultBufferTimeInMinutes) * -1,
                     DateTime.Now)
             };
 

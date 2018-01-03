@@ -61,7 +61,7 @@
                 </div>
                 <div class="editor-field col-xs-10">
                     @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
-                    <p style="display: inline-block" class="left-buffer">Users who started competing <b>before</b> this time will be affected</p>
+                    <p>Users who started competing <b>before</b> this time will be affected (@Resource.Default_participants_created_before_value_explanation)</p>
                 </div>
                 <div class="editor-field col-xs-4">
                     @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
@@ -75,7 +75,7 @@
                 </div>
                 <div class="editor-field col-xs-10">
                     @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
-                    <p style="display: inline-block" class="left-buffer">Users who started competing <b>after</b> this time will be affected</p>
+                    <p>Users who started competing <b>after</b> this time will be affected (@Resource.Default_participants_created_after_value_explanation)</p>
                 </div>
                 <div class="editor-field col-xs-4">
                     @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
@@ -121,10 +121,15 @@
                     var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
 
                     var inputValue = timeInput.val();
+                    var createdBeforeValue = $("#ParticipantsCreatedBeforeDateTime").val();
+                    var createdAfterValue = $("#ParticipantsCreatedAfterDateTime").val();
+
                     var submitFormButton = $('#submit-form-button');
                     var action = $('#action');
                     var minutes = $('#minutes');
                     var preposition = $('#preposition');
+                    var createdBefore = $("#createdBefore");
+                    var createdAfter = $("#createdAfter");
                     var headerStrongElements = confirmPopUp.find('h3 strong');
 
                     if (inputValue >= 0) {
@@ -137,6 +142,8 @@
                         preposition.text('@Resource.From');
                     }
 
+                    createdBefore.text(createdBeforeValue);
+                    createdAfter.text(createdAfterValue);
                     minutes.text(Math.abs(inputValue));
 
                     $('#username-confirmation-input').on('input',

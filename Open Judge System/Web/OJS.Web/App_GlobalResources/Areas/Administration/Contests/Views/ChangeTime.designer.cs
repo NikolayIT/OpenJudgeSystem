@@ -61,7 +61,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
+        ///   Looks up a localized string similar to add.
         /// </summary>
         public static string Add_are_you_sure {
             get {
@@ -88,7 +88,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the times of all active participants?.
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the times of all participants created after &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and before &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
         /// </summary>
         public static string Confirmation_message_header {
             get {
@@ -102,6 +102,24 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static string Contest {
             get {
                 return ResourceManager.GetString("Contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time.
+        /// </summary>
+        public static string Default_participants_created_after_value_explanation {
+            get {
+                return ResourceManager.GetString("Default_participants_created_after_value_explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default value is set to the current time.
+        /// </summary>
+        public static string Default_participants_created_before_value_explanation {
+            get {
+                return ResourceManager.GetString("Default_participants_created_before_value_explanation", resourceCulture);
             }
         }
         
@@ -151,7 +169,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subtract.
+        ///   Looks up a localized string similar to subtract.
         /// </summary>
         public static string Subtract_are_you_sure {
             get {
