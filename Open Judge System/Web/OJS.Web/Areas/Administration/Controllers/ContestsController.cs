@@ -309,7 +309,7 @@
         [HttpGet]
         public ActionResult ChangeActiveParticipantsEndTime(int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId))
+            if (!this.User.IsAdmin())
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
@@ -333,7 +333,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
         {
-            if (!this.CheckIfUserHasContestPermissions(model.ContesId))
+            if (!this.User.IsAdmin())
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
