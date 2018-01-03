@@ -9,6 +9,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Problems;
@@ -21,11 +22,17 @@
     public class ContestsController : BaseController
     {
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
-            IContestsDataService contestsData)
-            : base(data) => this.contestsData = contestsData;
+            IContestsDataService contestsData,
+            IParticipantsBusinessService participantsBusiness)
+            : base(data)
+        {
+            this.contestsData = contestsData;
+            this.participantsBusiness = participantsBusiness;
+        }
 
         public ActionResult Details(int id)
         {
@@ -54,6 +61,10 @@
                 .Where(x => x.ContestId == id)
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
+
+            this.ViewBag.UserCanCompete = this.participantsBusiness.CanCompeteByContestIdAndUserId(
+                contestViewModel.Id,
+                this.UserProfile?.Id);
 
             contestViewModel.UserIsLecturerInContest =
                 this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);

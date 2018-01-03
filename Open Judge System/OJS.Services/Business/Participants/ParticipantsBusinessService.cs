@@ -35,6 +35,12 @@
             return contest.CanBeCompeted;
         }
 
+        public bool CanCompeteByContestIdAndUserId(int contestId, string userId)
+        {
+            var contest = this.contestsData.GetById(contestId);
+            return this.CanCompeteByContestAndUserId(contest, userId);
+        }
+
         public Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
             Contest contest,
             string userId,
