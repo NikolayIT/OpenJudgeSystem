@@ -15,7 +15,7 @@
             bool isOfficial,
             bool isAdmin);
 
-        void ChangeTimeForActiveParticipantInOnlineContestByContestAndMinutes(
+        void ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId,
             int minutes,
             DateTime contestStartTimeRangeStart,

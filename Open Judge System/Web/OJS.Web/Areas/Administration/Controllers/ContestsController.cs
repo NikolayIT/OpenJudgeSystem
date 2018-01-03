@@ -363,7 +363,7 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.participantsBusiness.ChangeTimeForActiveParticipantInOnlineContestByContestAndMinutes(
+            this.participantsBusiness.ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
                 model.ContesId, 
                 model.TimeInMinutes,
                 model.ParticipantsCreatedAfterDateTime.Value,

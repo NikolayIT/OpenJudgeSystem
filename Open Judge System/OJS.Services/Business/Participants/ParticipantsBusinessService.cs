@@ -67,7 +67,7 @@
             return participant;
         }
 
-        public void ChangeTimeForActiveParticipantInOnlineContestByContestAndMinutes(
+        public void ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId, 
             int minutes, 
             DateTime contestStartTimeRangeStart,
