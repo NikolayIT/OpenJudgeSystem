@@ -275,5 +275,14 @@ namespace Resources.Areas.Contests {
                 return ResourceManager.GetString("User_is_not_registered_for_exam", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
     }
 }

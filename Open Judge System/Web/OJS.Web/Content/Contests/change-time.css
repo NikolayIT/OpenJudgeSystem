@@ -19,3 +19,16 @@
     opacity: 1;
     height: 50px;
 }
+
+#confirm-window-pop-up {
+    padding: 30px;
+    background-color: #F7F9F9;
+    border: 1px solid #2C3E50;
+    border-radius: 10px;
+    width: 50%;
+}
+
+#confirm-window-pop-up h3 {
+    margin-bottom: 40px;
+    margin-top: 0;
+}

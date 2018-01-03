@@ -117,22 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_are_you_sure" xml:space="preserve">
+    <value>Добавите</value>
+  </data>
   <data name="Add_time" xml:space="preserve">
     <value>Добави време</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
     <value>Променя времената само на активните участници в състезанието. Не афектира времето на състезанието, нито времето в което стартира или приключва.</value>
   </data>
+  <data name="Confirmation_message_header" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span&gt;&lt;/span&gt; времената на всички активни участници?</value>
+  </data>
   <data name="Contest" xml:space="preserve">
     <value>Състезание</value>
   </data>
+  <data name="Enter_your_username" xml:space="preserve">
+    <value>Въведете вашето потребителско име</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>от</value>
+  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Прехвърляне на участници</value>
+  </data>
+  <data name="Subtract_are_you_sure" xml:space="preserve">
+    <value>Премахнете</value>
   </data>
   <data name="Subtract_time" xml:space="preserve">
     <value>Отнеми време</value>
   </data>
   <data name="Time_in_minutes" xml:space="preserve">
     <value>Време в минути</value>
+  </data>
+  <data name="Time_required_error" xml:space="preserve">
+    <value>Времето е задължително, моля въведете стойност различна от 0</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>към</value>
   </data>
 </root>

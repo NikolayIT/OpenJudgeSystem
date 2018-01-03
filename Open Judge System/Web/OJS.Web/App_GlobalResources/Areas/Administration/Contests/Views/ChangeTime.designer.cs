@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add_are_you_sure {
+            get {
+                return ResourceManager.GetString("Add_are_you_sure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time.
         /// </summary>
         public static string Add_time {
@@ -79,6 +88,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span&gt;&lt;/span&gt; the times of all active participants?.
+        /// </summary>
+        public static string Confirmation_message_header {
+            get {
+                return ResourceManager.GetString("Confirmation_message_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contest.
         /// </summary>
         public static string Contest {
@@ -88,11 +106,20 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time..
+        ///   Looks up a localized string similar to Enter your username.
         /// </summary>
-        public static string Negative_number_legend {
+        public static string Enter_your_username {
             get {
-                return ResourceManager.GetString("Negative_number_legend", resourceCulture);
+                return ResourceManager.GetString("Enter_your_username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -106,11 +133,11 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;+Positive number Adds&lt;/strong&gt; time..
+        ///   Looks up a localized string similar to Subtract.
         /// </summary>
-        public static string Positive_number_legend {
+        public static string Subtract_are_you_sure {
             get {
-                return ResourceManager.GetString("Positive_number_legend", resourceCulture);
+                return ResourceManager.GetString("Subtract_are_you_sure", resourceCulture);
             }
         }
         
@@ -138,6 +165,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static string Time_required_error {
             get {
                 return ResourceManager.GetString("Time_required_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
     }

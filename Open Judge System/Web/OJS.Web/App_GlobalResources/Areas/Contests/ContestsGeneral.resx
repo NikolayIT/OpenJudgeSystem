@@ -189,4 +189,7 @@
   <data name="Compete" xml:space="preserve">
     <value>Compete</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

@@ -43,12 +43,22 @@
         </div>
         <div class="row top-buffer">
             <div class="editor-label col-xs-2">
-                <button id="add-time-for-participants-btn" type="submit" class="btn btn-success pull-left top-buffer">@Resource.Add_time</button>
-                <button id="subtract-time-for-participants-btn" type="submit" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</button>
+                <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
+                <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
             </div>
             <div class="editor-label col-sm-2">
                 @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
-                    SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
+                      SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
+            </div>
+        </div>
+        <div id="confirm-window-pop-up" class="row" hidden>
+            <h3>@Html.Raw(Resource.Confirmation_message_header)</h3>
+            <label name="Name">@Resource.Enter_your_username</label>
+            <input id="username-confirmation-input" class="form-control" type="text"/>
+            <br/>
+            <div class="container-fluid row">
+                <button type="submit" class="btn btn-success pull-left top-buffer col-xs-3" disabled="disabled">@SharedResource.Yes</button>
+                <span id="cancel-btn-confirm-pop-up" class="btn btn-primary pull-right top-buffer col-xs-6">@SharedResource.Cancel</span>
             </div>
         </div>
     }
@@ -60,14 +70,62 @@
             var timeInput = $('#TimeInMinutes');
             changeAddSubractButton(timeInput.val());
 
-            timeInput.on('input', function (ev) {
-                ev.preventDefault();
-                changeAddSubractButton(timeInput.val());
+            timeInput.on('input',
+                function (ev) {
+                    ev.preventDefault();
+                    changeAddSubractButton(timeInput.val());
+            });
+
+            var addButtonSelector = '#add-time-for-participants-btn';
+            var subtractButtonSelector = '#subtract-time-for-participants-btn';
+
+            var buttons = [addButtonSelector, subtractButtonSelector];
+
+            $(buttons.join()).click(
+                function () {
+                    var confirmPopUp = $('#confirm-window-pop-up');
+
+                    confirmPopUp.show();
+
+                    var inputValue = timeInput.val();
+                    var action = confirmPopUp.find('#action');
+                    var minutes = confirmPopUp.find('#minutes');
+                    var suffix = confirmPopUp.find('h3 span');
+                    var headerStrongElements = confirmPopUp.find('h3 strong');
+
+                    if (inputValue >= 0) {
+                        action.text('@Resource.Add_are_you_sure');
+                        headerStrongElements.css('color', "#13987E");
+                        suffix.text('@Resource.To');
+                    }else {
+                        action.text('@Resource.Subtract_are_you_sure');
+                        headerStrongElements.css('color', "#DF2E1B");
+                        suffix.text('@Resource.From');
+                    }
+
+                    minutes.text(Math.abs(inputValue));
+
+                    console.log(action);
+
+                    confirmPopUp.find('#username-confirmation-input').on('input',
+                        function() {
+                            var value = $(this).val();
+                            if (value === '@this.ViewBag.CurrentUsername') {
+                                confirmPopUp.find('button').attr("disabled", false);
+                            } else {
+                                confirmPopUp.find('button').attr("disabled", true);
+                            }
+                        });
+
+                    confirmPopUp.find('#cancel-btn-confirm-pop-up').click(
+                        function () {
+                            confirmPopUp.hide();
+                    });
             });
 
             function changeAddSubractButton(value) {
-                var addButton = $('#add-time-for-participants-btn');
-                var subtractButton = $('#subtract-time-for-participants-btn');
+                var addButton = $(addButtonSelector);
+                var subtractButton = $(subtractButtonSelector);
                 var hiddenClass = "hidden";
 
                 if (value >= 0) {
