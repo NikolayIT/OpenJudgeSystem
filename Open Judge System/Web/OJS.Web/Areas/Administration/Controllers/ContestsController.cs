@@ -364,12 +364,15 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var notUpdatedUsers = 
-                this.participantsBusiness.UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
-                    model.ContesId, 
-                    model.TimeInMinutes,
-                    model.ParticipantsCreatedAfterDateTime.Value,
-                    model.ParticipantsCreatedBeforeDateTime.Value);
+            var notUpdatedUsersUsernames = 
+                this.participantsBusiness
+                    .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                        model.ContesId, 
+                        model.TimeInMinutes,
+                        model.ParticipantsCreatedAfterDateTime.Value,
+                        model.ParticipantsCreatedBeforeDateTime.Value)
+                    .Select(u => u.User.UserName)
+                    .ToList();
         
             var minutesForDisplay = model.TimeInMinutes.ToString();
 
@@ -383,11 +386,11 @@
                     model.ContestName);
             sb.AppendLine(successMessage);
 
-            if (notUpdatedUsers.Any())
+            if (notUpdatedUsersUsernames.Any())
             {
                 var warningMessage = string.Format(
                     Resource.Failed_to_update_participants_duration,
-                    string.Join(", ", notUpdatedUsers.Select(u => u.User.UserName)));
+                    string.Join(", ", notUpdatedUsersUsernames));
               sb.AppendLine(warningMessage);
             }
 
