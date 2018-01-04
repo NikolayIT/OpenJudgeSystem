@@ -160,6 +160,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;br /&gt;WARNING: The following users&apos; contest duration was not updated because their contest duration would have been reduced below the base contest duration: {0}.
+        /// </summary>
+        public static string Failed_to_update_participants_duration {
+            get {
+                return ResourceManager.GetString("Failed_to_update_participants_duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No active contests.
         /// </summary>
         public static string No_active_contests {

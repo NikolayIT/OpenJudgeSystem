@@ -16,7 +16,7 @@
         void Update(Participant participant);
 
         void Update(
-            Expression<Func<Participant, bool>> filterExpression,
+            IQueryable<Participant> participantsQuery,
             Expression<Func<Participant, Participant>> updateExpression);
 
         Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);

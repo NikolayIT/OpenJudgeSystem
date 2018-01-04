@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Text;
     using System.Web.Mvc;
 
     using Kendo.Mvc.UI;
@@ -363,19 +364,34 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.participantsBusiness.ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
-                model.ContesId, 
-                model.TimeInMinutes,
-                model.ParticipantsCreatedAfterDateTime.Value,
-                model.ParticipantsCreatedBeforeDateTime.Value);
-
+            var notUpdatedUsers = 
+                this.participantsBusiness.UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                    model.ContesId, 
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value);
+        
             var minutesForDisplay = model.TimeInMinutes.ToString();
-            this.TempData.AddInfoMessage(model.TimeInMinutes >= 0
+
+            var sb = new StringBuilder();
+
+            var successMessage = model.TimeInMinutes >= 0
                 ? string.Format(Resource.Added_time_to_participants_online, minutesForDisplay, model.ContestName)
                 : string.Format(
                     Resource.Subtracted_time_from_participants_online,
                     minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    model.ContestName));
+                    model.ContestName);
+            sb.AppendLine(successMessage);
+
+            if (notUpdatedUsers.Any())
+            {
+                var warningMessage = string.Format(
+                    Resource.Failed_to_update_participants_duration,
+                    string.Join(", ", notUpdatedUsers.Select(u => u.User.UserName)));
+              sb.AppendLine(warningMessage);
+            }
+
+            this.TempData.AddInfoMessage(sb.ToString());
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
         }
