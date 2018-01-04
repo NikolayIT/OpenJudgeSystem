@@ -10,29 +10,34 @@
 <div class="container">
     <div class="modal-content">
         <div class="modal-header alert-warning">
-            <h1>
+            <h4>
                 @Html.Raw(string.Format(
                     Resource.Confirm_online_contest_start_message,
                     Model.ContestDuration.Hours,
-                    Model.ContestName,
-                    Model.ProblemGroupsCount))
-            </h1>
+                    Model.ContestName))
+            </h4>
         </div>
         <div class="modal-body">
-            <h2>
-                @Resource.Are_you_sure_start_online_contest
-            </h2>
-                @(Html.ActionLink<CompeteController>(
+            <p>
+                @Html.Raw(string.Format(
+                    Resource.Confirm_online_contest_information,
                     SharedResource.Compete,
-                    c => c.Index(Model.ContesId, true, null),
-                    new { hasConfirmed = true },
-                    new { @class = "btn btn-success" }))
-            <div class="modal-footer">
+                    Model.ProblemGroupsCount))
+            </p>
+            <h4>
+                @Resource.Are_you_sure_start_online_contest
+            </h4>          
+            <div class="modal-footer centered-content">
+                @(Html.ActionLink<CompeteController>(
+                      SharedResource.Compete,
+                      c => c.Index(Model.ContesId, true, null),
+                      new {hasConfirmed = true},
+                      new {@class = "btn btn-success"}))
                 @(Html.ActionLink<HomeController>(
-                    SharedResource.Cancel,
-                    c => c.Index(),
-                    new { area = string.Empty },
-                    new { @class = "btn btn-default" }))
+                      SharedResource.Cancel,
+                      c => c.Index(),
+                      new {area = string.Empty},
+                      new {@class = "btn btn-default"}))
             </div>
         </div>
     </div>

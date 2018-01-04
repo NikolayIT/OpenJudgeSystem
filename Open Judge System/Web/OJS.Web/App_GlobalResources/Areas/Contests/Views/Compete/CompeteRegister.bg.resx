@@ -120,10 +120,13 @@
   <data name="Are_you_sure_start_online_contest" xml:space="preserve">
     <value>Сигурни ли сте, че искате да започнете?</value>
   </data>
+  <data name="Confirm_online_contest_information" xml:space="preserve">
+    <value>Времето Ви започва да тече с натискането на бутона "{0}" .&lt;br /&gt;&lt;br /&gt;
+При възникнали проблеми (изключване на компютър, изход от страницата/системата, спиране на интернет връзката), &lt;strong&gt;загубеното време няма да бъде възтановено&lt;/strong&gt;. Когато времето ви приключи, Вие &lt;strong&gt;няма&lt;/strong&gt; да можете да участвате в това състезание отново.&lt;br /&gt;&lt;br /&gt;
+При натискане на бутона "{0}" ще Ви бъдат генерирани &lt;strong&gt;{1} задачи, по една от всеки тип, на произволен принцип&lt;strong&gt;.</value>
+  </data>
   <data name="Confirm_online_contest_start_message" xml:space="preserve">
-    <value>Стартирайки сега  &lt;strong&gt;ще имате {0} часа&lt;/strong&gt; за да завършите състезанието &lt;strong&gt;{1}&lt;/strong&gt;. &lt;br /&gt;Времето Ви започва да тече с натискането на бутона "Състезавай се" .&lt;br /&gt;
-При възникнали проблеми (изключване на компютър, изход от страницата/системата, спиране на интернет връзката), &lt;strong&gt;загубеното време няма да бъде възобновено&lt;/strong&gt;. Когато то приключи Вие &lt;strong&gt;няма&lt;/strong&gt; да можете да участвате в това състезание отново.&lt;br /&gt;
-При натискане на бутона compete ще Ви бъдат генерирани &lt;strong&gt;{2} задачи от всеки тип на произволен принцип&lt;strong&gt;.</value>
+    <value>Стартирайки сега  &lt;strong&gt;ще имате {0} часа&lt;/strong&gt;, за да завършите състезанието &lt;strong&gt;{1}&lt;/strong&gt;.</value>
   </data>
   <data name="Empty_Password" xml:space="preserve">
     <value>Паролата не може да бъде празна</value>
