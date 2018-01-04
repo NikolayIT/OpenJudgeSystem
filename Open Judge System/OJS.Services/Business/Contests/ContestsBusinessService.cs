@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Business.Contests
 {
+    using System;
     using System.Linq;
 
     using OJS.Services.Data.Contests;
@@ -15,5 +16,30 @@
             this.contestsData
                 .GetByIdQuery(contestId)
                 .Any(c => !c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip));
+
+        public bool CanUserCompeteByContestUserAndIsAdminOrLecturer(int contestId, string userId, bool isAdminOrLecturer)
+        {
+            var contest = this.contestsData.GetById(contestId);
+
+            if (contest.CanBeCompeted)
+            {
+                return true;
+            }
+
+            if (isAdminOrLecturer && (contest.IsActive || contest.StartTime >= DateTime.Now))
+            {
+                return true;
+            }
+
+            if (contest.IsOnline)
+            {
+                return contest.Participants.Any(p =>
+                    p.UserId == userId &&
+                    p.IsOfficial &&
+                    p.ContestEndTime > DateTime.Now);
+            }
+
+            return false;
+        }
     }
 }

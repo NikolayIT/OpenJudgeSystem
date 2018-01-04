@@ -1,17 +1,15 @@
-﻿@using System.Web.Mvc.Expressions
+﻿@model ContestViewModel
+
+@using System.Web.Mvc.Expressions
 @using OJS.Common.Extensions;
 @using OJS.Common.Models;
 @using OJS.Web.Areas.Administration.Controllers
-@using OJS.Web.Areas.Administration.InputModels.Contests
 @using OJS.Web.Areas.Contests.ViewModels.Contests
 
 @using Resource = Resources.Areas.Contests.Views.ContestsDetails;
 
-@model ContestViewModel
-
 @{
     ViewBag.Title = Model.Name;
-    var userHasAdminRights = User.IsAdmin() || Model.UserIsLecturerInContest;
 }
 
 <ol class="breadcrumb">
@@ -25,13 +23,13 @@
 <div class="row">
     <div class="col-md-8">
         <h3>@Resource.Contest_details</h3>
-        @if ((Model.CanBeCompeted || userHasAdminRights) && Model.EndTime != null)
+        @if ((Model.CanBeCompeted || Model.UserIsAdminOrLecturerInContest) && Model.EndTime != null)
         {
             <h5>
                 @Resource.Competition_active_until: @Model.EndTime.Value.ToString("HH:mm d.M.yyy")
             </h5>
         }
-        @if ((Model.CanBePracticed || userHasAdminRights) && Model.PracticeEndTime != null)
+        @if ((Model.CanBePracticed || Model.UserIsAdminOrLecturerInContest) && Model.PracticeEndTime != null)
         {
             <h5>@Resource.Practice_active_until: @Model.PracticeEndTime.Value.ToString("HH:mm d.M.yyy")</h5>
         }
@@ -69,7 +67,9 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
-        @if ((Model.CanBePracticed && !Model.HasPracticePassword) || (Model.CanBeCompeted && !Model.HasContestPassword) || userHasAdminRights)
+        @if ((Model.CanBePracticed && !Model.HasPracticePassword) ||
+            (Model.CanBeCompeted && !Model.HasContestPassword) ||
+            Model.UserIsAdminOrLecturerInContest)
         {
             foreach (var problem in Model.Problems)
             {
@@ -111,17 +111,16 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        @if (Model.IsActive || userHasAdminRights)
+        @if (Model.IsActive || Model.UserIsAdminOrLecturerInContest)
         {
-            var userCanCompete = this.ViewBag.UserCanCompete ?? false;
             if (Model.CanBeCompeted ||
-                (userHasAdminRights && Model.StartTime > DateTime.Now) ||
-                userCanCompete)
+                (Model.UserIsAdminOrLecturerInContest && (Model.IsActive || Model.StartTime > DateTime.Now) ||
+                Model.UserCanCompete))
             {
                 @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
             }
 
-            if (Model.OfficialParticipants > 0 && userHasAdminRights)
+            if (Model.OfficialParticipants > 0 && Model.UserIsAdminOrLecturerInContest)
             {
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Simple/@Model.Id">@Resource.Contest_results</a>
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Compete/Results/Full/@Model.Id">@Resource.Contest_full_results</a>
@@ -136,7 +135,7 @@
         {
             @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary bottom-buffer-sm" })
 
-            if (userHasAdminRights)
+            if (Model.UserIsAdminOrLecturerInContest)
             {
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Simple/@Model.Id">@Resource.Practice_results</a>
                 <a class="btn btn-sm btn-primary bottom-buffer-sm" href="/Contests/Practice/Results/Full/@Model.Id">@Resource.Practice_full_results</a>
@@ -147,7 +146,7 @@
             }
         }
 
-        @if (userHasAdminRights)
+        @if (Model.UserIsAdminOrLecturerInContest)
         {
             <a href="@Url.Action("Edit", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
                 @Resource.Edit
@@ -162,7 +161,7 @@
                 </a>
             }
 
-            if (Model.IsOnline && Model.IsActive)
+            if (User.IsAdmin() && Model.IsOnline && Model.IsActive)
             {
                 @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm" }))
             }

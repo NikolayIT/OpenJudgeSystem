@@ -115,7 +115,7 @@
             };
         })();
 
-        @if (contestIsCompete)
+        @if (contestIsCompete || Model.RemainingTimeInMilliseconds > 0)
         {
             var remainingTimeFormat = string.Format(
                 $"\"<div id='countdown-timer'>{Resource.Remaining_time}: {Resource.Remaining_time_format}</div>\"",

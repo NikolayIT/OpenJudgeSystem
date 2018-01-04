@@ -5,5 +5,7 @@
     public interface IContestsBusinessService : IService
     {
         bool IsContestIpValidByIdAndIp(int contestId, string ip);
+
+        bool CanUserCompeteByContestUserAndIsAdminOrLecturer(int contestId, string userId, bool isAdminOrLecturer);
     }
 }

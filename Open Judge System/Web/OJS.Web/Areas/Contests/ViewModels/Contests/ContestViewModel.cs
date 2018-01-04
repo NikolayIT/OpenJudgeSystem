@@ -211,7 +211,9 @@
             }
         }
 
-        public bool UserIsLecturerInContest { get; set; }
+        public bool UserIsAdminOrLecturerInContest { get; set; }
+
+        public bool UserCanCompete { get; set; }
 
         public bool IsActive { get; set; }
     }

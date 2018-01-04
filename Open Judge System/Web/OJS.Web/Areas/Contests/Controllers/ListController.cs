@@ -6,9 +6,8 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using MissingFeatures;
-
     using OJS.Data;
+    using OJS.Services.Business.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Controllers;
@@ -17,9 +16,12 @@
 
     public class ListController : BaseController
     {
-        public ListController(IOjsData data)
+        private readonly IContestsBusinessService contestsBusiness;
+
+        public ListController(IOjsData data, IContestsBusinessService contestsBusiness)
             : base(data)
         {
+            this.contestsBusiness = contestsBusiness;
         }
 
         public ActionResult Index()
@@ -89,9 +91,17 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Category_not_found);
             }
 
-            contestCategory.Contests
-                .ForEach(c => c.UserIsLecturerInContest = this.UserProfile != null &&
-                    this.CheckIfUserHasContestPermissions(c.Id));
+            foreach (var contest in contestCategory.Contests)
+            {
+                contest.UserIsAdminOrLecturerInContest = this.UserProfile != null &&
+                    this.CheckIfUserHasContestPermissions(contest.Id);
+
+                contest.UserCanCompete = this.UserProfile != null &&
+                    this.contestsBusiness.CanUserCompeteByContestUserAndIsAdminOrLecturer(
+                        contest.Id,
+                        this.UserProfile.Id,
+                        contest.UserIsAdminOrLecturerInContest);
+            }
 
             contestCategory.IsUserLecturerInContestCategory =
                 this.UserProfile != null &&
