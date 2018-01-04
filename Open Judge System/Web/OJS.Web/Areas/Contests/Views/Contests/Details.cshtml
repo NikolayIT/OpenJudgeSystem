@@ -67,45 +67,49 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
-        @if (((Model.CanBePracticed && !Model.HasPracticePassword) ||
-            (Model.CanBeCompeted && !Model.HasContestPassword) &&
-            (!Model.IsActive && !Model.IsOnline)) ||
-            Model.UserIsAdminOrLecturerInContest)
-        {
-            foreach (var problem in Model.Problems)
+        @{
+            var canShowProblemsInPractice = !Model.HasPracticePassword;
+            var canShowProblemsInCompete = !Model.HasContestPassword && !Model.IsActive && !Model.IsOnline;
+
+            if ((Model.CanBePracticed && canShowProblemsInPractice) ||
+                (Model.CanBeCompeted && canShowProblemsInCompete) ||
+                Model.UserIsAdminOrLecturerInContest)
             {
-                <h4>@problem.Name</h4>
-                foreach (var resource in problem.Resources)
+                foreach (var problem in Model.Problems)
                 {
-                    var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
-                                        Url.Action("DownloadResource", new { controller = "Practice", id = resource.ResourceId }) : resource.Link;
-                    <p>
-                        @if (resource.ProblemType == ProblemResourceType.ProblemDescription)
-                        {
-                            <span class="glyphicon glyphicon-list-alt resource-glyph"></span>
-                        }
-                        else if (resource.ProblemType == ProblemResourceType.AuthorsSolution)
-                        {
-                            <span class="glyphicon glyphicon-thumbs-up resource-glyph"></span>
-                        }
-                        else if (resource.ProblemType == ProblemResourceType.Link)
-                        {
-                            <span class="glyphicon glyphicon-link resource-glyph"></span>
-                        }
-                        else
-                        {
-                            <span class="glyphicon  glyphicon-question-sign"></span>
-                        }
-                        <a href="@resourceLink" target="_blank" class="resource-link">@resource.Name</a>
-                    </p>
+                    <h4>@problem.Name</h4>
+                    foreach (var resource in problem.Resources)
+                    {
+                        var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
+                            Url.Action("DownloadResource", new { controller = "Practice", id = resource.ResourceId }) : resource.Link;
+                        <p>
+                            @if (resource.ProblemType == ProblemResourceType.ProblemDescription)
+                            {
+                                <span class="glyphicon glyphicon-list-alt resource-glyph"></span>
+                            }
+                            else if (resource.ProblemType == ProblemResourceType.AuthorsSolution)
+                            {
+                                <span class="glyphicon glyphicon-thumbs-up resource-glyph"></span>
+                            }
+                            else if (resource.ProblemType == ProblemResourceType.Link)
+                            {
+                                <span class="glyphicon glyphicon-link resource-glyph"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon  glyphicon-question-sign"></span>
+                            }
+                            <a href="@resourceLink" target="_blank" class="resource-link">@resource.Name</a>
+                        </p>
+                    }
                 }
             }
-        }
-        else
-        {
-            <text>
-                <p>@Resource.Problems_are_not_public</p>
-            </text>
+            else
+            {
+                <text>
+                    <p>@Resource.Problems_are_not_public</p>
+                </text>
+            }
         }
     </div>
 </div>
@@ -166,11 +170,6 @@
             {
                 @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm" }))
             }
-        }
-        
-        @if (User.IsAdmin() && Model.IsOnline && Model.IsActive)
-        {
-            @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new { @class = "btn btn-sm btn-default bottom-buffer-sm" }))
         }
     </div>
 </div>
