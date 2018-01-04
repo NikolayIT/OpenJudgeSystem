@@ -13,8 +13,9 @@
             <h1>
                 @Html.Raw(string.Format(
                     Resource.Confirm_online_contest_start_message,
-                    Model.ContestDuration.ToReadableString(),
-                    Model.ContestName))
+                    Model.ContestDuration.Hours,
+                    Model.ContestName,
+                    "kur"))
             </h1>
         </div>
         <div class="modal-body">

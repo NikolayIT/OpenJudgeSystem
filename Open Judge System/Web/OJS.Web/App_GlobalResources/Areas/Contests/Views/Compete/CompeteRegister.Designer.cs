@@ -70,7 +70,9 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting now you will have exactly &lt;strong&gt;{0}&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;..
+        ///   Looks up a localized string similar to Starting now &lt;strong&gt;you will have {0} hours&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;.&lt;br /&gt;Your time will starting counting down when you press the &quot;Compete&quot; button.&lt;br /&gt;
+        ///In the case of unexpected problems (turning off your computer, exiting the page/system, internet connection failure), &lt;strong&gt;the time lost will not be restored&lt;/strong&gt;. When your time runs out you &lt;strong&gt;will not&lt;/strong&gt; be able to compete in this competition again.&lt;br /&gt;
+        ///When you click the compete button &lt;strong&gt;{2} r [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Confirm_online_contest_start_message {
             get {

@@ -121,7 +121,9 @@
     <value>Are you sure you want to start the contest now?</value>
   </data>
   <data name="Confirm_online_contest_start_message" xml:space="preserve">
-    <value>Starting now you will have exactly &lt;strong&gt;{0}&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;.</value>
+    <value>Starting now &lt;strong&gt;you will have {0} hours&lt;/strong&gt; to complete the contest &lt;strong&gt;{1}&lt;/strong&gt;.&lt;br /&gt;Your time will starting counting down when you press the "Compete" button.&lt;br /&gt;
+In the case of unexpected problems (turning off your computer, exiting the page/system, internet connection failure), &lt;strong&gt;the time lost will not be restored&lt;/strong&gt;. When your time runs out you &lt;strong&gt;will not&lt;/strong&gt; be able to compete in this competition again.&lt;br /&gt;
+When you click the compete button &lt;strong&gt;{2} random problems will generated&lt;/strong&gt; for you.</value>
   </data>
   <data name="Empty_Password" xml:space="preserve">
     <value>Password is empty</value>
