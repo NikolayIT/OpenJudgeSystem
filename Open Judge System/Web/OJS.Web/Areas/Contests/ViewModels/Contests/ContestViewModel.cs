@@ -215,6 +215,8 @@
 
         public bool UserCanCompete { get; set; }
 
+        public bool UserIsParticipant { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

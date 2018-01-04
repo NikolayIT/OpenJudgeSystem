@@ -70,5 +70,10 @@
                 .Where(c => c.Id == contestId)
                 .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
                     c.Category.Lecturers.Any(l => l.LecturerId == userId));
+
+        public bool IsUserParticipantInByContestAndUserId(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Any(c => c.Id == contestId && c.Participants.Any(p => p.UserId == userId));
     }
 }

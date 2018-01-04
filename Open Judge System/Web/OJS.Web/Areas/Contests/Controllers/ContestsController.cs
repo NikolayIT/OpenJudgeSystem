@@ -71,6 +71,9 @@
                     this.UserProfile.Id,
                     this.User.IsAdmin());
 
+            contestViewModel.UserIsParticipant = this.UserProfile != null &&
+                this.contestsData.IsUserParticipantInByContestAndUserId(contestViewModel.Id, this.UserProfile.Id);
+
             contestViewModel.IsActive = this.contestsData.IsActiveById(contestViewModel.Id);
 
             return this.View(contestViewModel);

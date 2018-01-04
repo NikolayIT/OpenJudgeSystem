@@ -8,6 +8,7 @@
 
     using OJS.Data;
     using OJS.Services.Business.Contests;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Extensions;
@@ -18,11 +19,16 @@
     public class ListController : BaseController
     {
         private readonly IContestsBusinessService contestsBusiness;
+        private readonly IContestsDataService contestsData;
 
-        public ListController(IOjsData data, IContestsBusinessService contestsBusiness)
+        public ListController(
+            IOjsData data,
+            IContestsBusinessService contestsBusiness,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.contestsBusiness = contestsBusiness;
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -102,6 +108,9 @@
                         contest.Id,
                         this.UserProfile.Id,
                         this.User.IsAdmin());
+
+                contest.UserIsParticipant = this.UserProfile != null &&
+                    this.contestsData.IsUserParticipantInByContestAndUserId(contest.Id, this.UserProfile.Id);
             }
 
             contestCategory.IsUserLecturerInContestCategory =
