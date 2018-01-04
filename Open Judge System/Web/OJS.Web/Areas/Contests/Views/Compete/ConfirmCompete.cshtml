@@ -10,23 +10,29 @@
 <div class="container">
     <div class="modal-content">
         <div class="modal-header alert-warning">
-            <h1>
+            <h4>
                 @Html.Raw(string.Format(
                     Resource.Confirm_online_contest_start_message,
-                    Model.ContestDuration.ToReadableString(),
+                    Model.ContestDuration.Hours,
                     Model.ContestName))
-            </h1>
+            </h4>
         </div>
         <div class="modal-body">
-            <h2>
+            <p>
+                @Html.Raw(string.Format(
+                    Resource.Confirm_online_contest_information,
+                    SharedResource.Compete,
+                    Model.ProblemGroupsCount))
+            </p>
+            <h4>
                 @Resource.Are_you_sure_start_online_contest
-            </h2>
+            </h4>
+            <div class="modal-footer centered-content">
                 @(Html.ActionLink<CompeteController>(
                     SharedResource.Compete,
                     c => c.Index(Model.ContesId, true, null),
                     new { hasConfirmed = true },
                     new { @class = "btn btn-success" }))
-            <div class="modal-footer">
                 @(Html.ActionLink<HomeController>(
                     SharedResource.Cancel,
                     c => c.Index(),

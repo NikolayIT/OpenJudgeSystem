@@ -9,5 +9,7 @@
         public string ContestName { get; set; }
 
         public TimeSpan ContestDuration { get; set; }
+
+        public short ProblemGroupsCount { get; set; }
     }
 }

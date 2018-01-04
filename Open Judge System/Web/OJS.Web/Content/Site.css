@@ -359,3 +359,7 @@ pre {
 .inline-form {
     display: inline;
 }
+
+.centered-content {
+    text-align: center
+}
