@@ -28,12 +28,19 @@
             var isUserAdminOrLecturerInContest = isAdmin || this.contestsData
                 .IsUserLecturerInByContestIdAndUserId(contestId, userId);
 
-            if (contest.CanBeCompeted)
+            if (contest.IsOnline && !isUserAdminOrLecturerInContest)
             {
-                return true;
+                var participant = contest.Participants.FirstOrDefault(p => p.UserId == userId && p.IsOfficial);
+
+                if (participant == null)
+                {
+                    return contest.CanBeCompeted;
+                }
+
+                return participant.ContestEndTime >= DateTime.Now;
             }
 
-            if (isUserAdminOrLecturerInContest && allowToAdminAlways)
+            if (contest.CanBeCompeted || (isUserAdminOrLecturerInContest && allowToAdminAlways))
             {
                 return true;
             }
@@ -41,14 +48,6 @@
             if (isUserAdminOrLecturerInContest && (contest.IsActive || contest.StartTime >= DateTime.Now))
             {
                 return true;
-            }
-
-            if (contest.IsOnline)
-            {
-                return contest.Participants.Any(p =>
-                    p.UserId == userId &&
-                    p.IsOfficial &&
-                    p.ContestEndTime >= DateTime.Now);
             }
 
             return false;
