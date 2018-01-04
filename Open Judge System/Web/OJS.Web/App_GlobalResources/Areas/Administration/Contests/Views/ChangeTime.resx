@@ -124,19 +124,19 @@
     <value>Add Time</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
+    <value>Changes the contest duration only for participants who started competing in a specified time interval in this contest. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
-    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the times of all participants created after &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and before &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
+    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and  &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>
   </data>
   <data name="Default_participants_created_after_value_explanation" xml:space="preserve">
-    <value>The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time</value>
+    <value>Users who started competing &lt;strong&gt;after&lt;/strong&gt; this time will be affected (The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time)</value>
   </data>
   <data name="Default_participants_created_before_value_explanation" xml:space="preserve">
-    <value>The default value is set to the current time</value>
+    <value>Users who started competing &lt;strong&gt;before&lt;/strong&gt; this time will be affected (The default value is set to the current time)</value>
   </data>
   <data name="Enter_your_username" xml:space="preserve">
     <value>Enter your username</value>
@@ -145,7 +145,7 @@
     <value>from</value>
   </data>
   <data name="Page_title" xml:space="preserve">
-    <value>Change Time for active participants</value>
+    <value>Change contest duration for participants</value>
   </data>
   <data name="Participants_created_after" xml:space="preserve">
     <value>Participants created after</value>
