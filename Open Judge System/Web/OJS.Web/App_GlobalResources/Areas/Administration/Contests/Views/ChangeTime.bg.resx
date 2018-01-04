@@ -124,19 +124,19 @@
     <value>Добави време</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Променя продължителността на състезанието само за участници започнали да участват в състезанието в определения интервал от време. Не афектира времето на състезанието, нито времето в което то стартира или приключва.</value>
+    <value>Променя продължителността на състезанието само за участници, започнали да участват в състезанието в определения интервал от време. Не афектира времето на състезанието, нито времето, в което то стартира или приключва.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
-    <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; продължителността на съзтезанието на всички участници създадени в интервала между&lt;strong id="createdAfter"&gt;&lt;/strong&gt; и &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
+    <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; продължителността на съзтезанието на всички участници, създадени в интервала между &lt;strong id="createdAfter"&gt;&lt;/strong&gt; и &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Състезание</value>
   </data>
   <data name="Default_participants_created_after_value_explanation" xml:space="preserve">
-    <value>Потребители които са започнали да участват &lt;strong&gt;след&lt;/strong&gt; този час ще бъдат афектирани (Дифолтната стойност се определя от часа в момента минус продължителността  на съзтезанието за участниците минус допълнителни 30 минути)</value>
+    <value>Потребители, които са започнали да участват &lt;strong&gt;след&lt;/strong&gt; този час, ще бъдат афектирани (Стойността по подразбиране е определена по следната формула: = [ча́са в момента] - [продължителността  на съзтезанието за участниците] - [допълнителни 30 минути])</value>
   </data>
   <data name="Default_participants_created_before_value_explanation" xml:space="preserve">
-    <value>Потребители които са започнали да участват &lt;strong&gt;преди&lt;/strong&gt; този час ще бъдат афектирани (Дифолтната стойност се определя от часа в момента)</value>
+    <value>Потребители, които са започнали да участват &lt;strong&gt;преди&lt;/strong&gt; този час, ще бъдат афектирани (Стойността по подразбиране е определена от [ча́са в момента])</value>
   </data>
   <data name="Enter_your_username" xml:space="preserve">
     <value>Въведете вашето потребителско име</value>
@@ -148,13 +148,16 @@
     <value>Промяна на продължителността на съзтезанието за участници</value>
   </data>
   <data name="Participants_created_after" xml:space="preserve">
-    <value>Участници създадени след</value>
+    <value>Създадени след</value>
   </data>
   <data name="Participants_created_after_must_be_before_Participants_created_before" xml:space="preserve">
     <value>"Участници създадени след" трябва да е по рано от "Участници създадени преди" </value>
   </data>
   <data name="Participants_created_before" xml:space="preserve">
-    <value>Участници създадени преди</value>
+    <value>Създадени преди</value>
+  </data>
+  <data name="Participants_created_in_time_interval_information" xml:space="preserve">
+    <value>&lt;strong&gt;Промени продължителността на състезанието за участници, създадени в следния интервал&lt;/strong&gt;:</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>премахнете</value>
@@ -162,8 +165,8 @@
   <data name="Subtract_time" xml:space="preserve">
     <value>Отнеми време</value>
   </data>
-  <data name="Time_in_minutes" xml:space="preserve">
-    <value>Време в минути</value>
+  <data name="Time_in_minutes_information" xml:space="preserve">
+    <value>Промени продължителността с (в минути):</value>
   </data>
   <data name="Time_required_error" xml:space="preserve">
     <value>Времето е задължително, моля въведете стойност различна от 0</value>

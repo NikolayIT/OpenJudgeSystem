@@ -133,10 +133,10 @@
     <value>Contest</value>
   </data>
   <data name="Default_participants_created_after_value_explanation" xml:space="preserve">
-    <value>Users who started competing &lt;strong&gt;after&lt;/strong&gt; this time will be affected (The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time)</value>
+    <value>Users who started competing &lt;strong&gt;after&lt;/strong&gt; this time will be affected (The default value is calculated by the following formula: [the current time] - [the participant full contest duration] - [thirty minutes as buffer time])</value>
   </data>
   <data name="Default_participants_created_before_value_explanation" xml:space="preserve">
-    <value>Users who started competing &lt;strong&gt;before&lt;/strong&gt; this time will be affected (The default value is set to the current time)</value>
+    <value>Users who started competing &lt;strong&gt;before&lt;/strong&gt; this time will be affected (The default value is set to the [current time])</value>
   </data>
   <data name="Enter_your_username" xml:space="preserve">
     <value>Enter your username</value>
@@ -148,13 +148,16 @@
     <value>Change contest duration for participants</value>
   </data>
   <data name="Participants_created_after" xml:space="preserve">
-    <value>Participants created after</value>
+    <value>Created after</value>
   </data>
   <data name="Participants_created_after_must_be_before_Participants_created_before" xml:space="preserve">
     <value>"Participants created after" must be earlier than "Participants created before"</value>
   </data>
   <data name="Participants_created_before" xml:space="preserve">
-    <value>Participants created before</value>
+    <value>Created before</value>
+  </data>
+  <data name="Participants_created_in_time_interval_information" xml:space="preserve">
+    <value>&lt;strong&gt;Change the contest duration for participants created in the following interval&lt;/strong&gt;:</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>subtract</value>
@@ -162,8 +165,8 @@
   <data name="Subtract_time" xml:space="preserve">
     <value>Subtract Time</value>
   </data>
-  <data name="Time_in_minutes" xml:space="preserve">
-    <value>Time in minutes</value>
+  <data name="Time_in_minutes_information" xml:space="preserve">
+    <value>Change duration with (in minutes):</value>
   </data>
   <data name="Time_required_error" xml:space="preserve">
     <value>Time is required, please add a value different from 0</value>
