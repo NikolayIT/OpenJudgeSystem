@@ -27,8 +27,8 @@
 
             var indexViewModel = new IndexViewModel
             {
-                ActiveContests = this.contestsData.GetAllActive()
-                    .Where(ac => ac.EndTime.HasValue)
+                ActiveContests = this.contestsData
+                    .GetAllCompetable()
                     .OrderByDescending(ac => ac.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),

@@ -13,6 +13,8 @@
 
         IQueryable<Contest> GetAllActive();
 
+        IQueryable<Contest> GetAllCompetable();
+
         IQueryable<Contest> GetAllInactive();
 
         IQueryable<Contest> GetAllUpcoming();

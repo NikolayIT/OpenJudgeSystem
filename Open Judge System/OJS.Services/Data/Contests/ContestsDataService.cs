@@ -27,6 +27,14 @@
                         c.Type == ContestType.OnlinePracticalExam &&
                         c.Participants.Any(p => p.IsOfficial && p.ContestEndTime >= DateTime.Now)));
 
+        public IQueryable<Contest> GetAllCompetable() =>
+            this.contests
+                .All()
+                .Where(c => c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    c.EndTime.HasValue &&
+                    c.EndTime >= DateTime.Now);
+
         public IQueryable<Contest> GetAllInactive() =>
             this.contests
             .All()
