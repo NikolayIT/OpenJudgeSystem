@@ -24,12 +24,12 @@
             @Html.HiddenFor(m => m.ContesId)
             @Html.HiddenFor(m => m.ContestName)
 
-            <div class="bottom-buffer top-buffer">
+            <div class="top-buffer">
                 <div class="row">
                     <div class="col-xs-12 bottom-buffer">
                         <div class="center-block">
                             <span class="right-buffer glyphicon glyphicon-time"></span>
-                            @Html.LabelFor(m => m.TimeInMinutes, new { @class = "text-danger" })
+                            @Html.LabelFor(m => m.TimeInMinutes)
                         </div>
                     </div>
                     <div class="editor-field col-xs-3 text-center">
@@ -41,6 +41,43 @@
                         @Html.ValidationMessageFor(m => m.TimeInMinutes)
                     </div>
                 </div>
+            </div>              
+            <div>
+                <div class="row">
+                    <div class="col-xs-12 bottom-buffer">
+                        <div>
+                            <h5>@Html.Raw(Resource.Participants_created_in_time_interval_information)</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-10">
+                    @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
+                    <p>@Html.Raw(Resource.Default_participants_created_after_value_explanation)</p>
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-10">
+                    @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
+                    <p>@Html.Raw(Resource.Default_participants_created_before_value_explanation)</p>
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
+                </div>
             </div>
             <div class="row top-buffer">
                 <div class="editor-label col-xs-2">
@@ -50,35 +87,6 @@
                 <div class="editor-label col-sm-2">
                     @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
                           SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="center-block">
-                        @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
-                    </div>
-                </div>
-                <div class="editor-field col-xs-10">
-                    @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
-                    <p>Users who started competing <b>before</b> this time will be affected (@Resource.Default_participants_created_before_value_explanation)</p>
-                </div>
-                <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
-                </div>
-            </div>
-            <div class="row top-buffer">
-                <div class="col-xs-12">
-                    <div class="center-block">
-                        @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
-                    </div>
-                </div>
-                <div class="editor-field col-xs-10">
-                    @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
-                    <p>Users who started competing <b>after</b> this time will be affected (@Resource.Default_participants_created_after_value_explanation)</p>
-                </div>
-                <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
                 </div>
             </div>
         }

@@ -32,7 +32,7 @@
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
 
-        [Display(Name = "Time_in_minutes", ResourceType = typeof(Resource))]
+        [Display(Name = "Time_in_minutes_information", ResourceType = typeof(Resource))]
         [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
         public int TimeInMinutes { get; set; }
 

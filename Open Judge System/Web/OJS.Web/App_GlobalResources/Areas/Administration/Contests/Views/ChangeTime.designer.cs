@@ -79,7 +79,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time..
+        ///   Looks up a localized string similar to Changes the contest duration only for participants who started competing in a specified time interval in this contest. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {
@@ -88,7 +88,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the times of all participants created after &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and before &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and  &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
         /// </summary>
         public static string Confirmation_message_header {
             get {
@@ -106,7 +106,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time.
+        ///   Looks up a localized string similar to Users who started competing &lt;strong&gt;after&lt;/strong&gt; this time will be affected (The default value is calculated by the following formula: [the current time] - [the participant full contest duration] - [thirty minutes as buffer time]).
         /// </summary>
         public static string Default_participants_created_after_value_explanation {
             get {
@@ -115,7 +115,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The default value is set to the current time.
+        ///   Looks up a localized string similar to Users who started competing &lt;strong&gt;before&lt;/strong&gt; this time will be affected (The default value is set to the [current time]).
         /// </summary>
         public static string Default_participants_created_before_value_explanation {
             get {
@@ -142,7 +142,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Time for active participants.
+        ///   Looks up a localized string similar to Change contest duration for participants.
         /// </summary>
         public static string Page_title {
             get {
@@ -151,7 +151,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Participants created after.
+        ///   Looks up a localized string similar to Created after.
         /// </summary>
         public static string Participants_created_after {
             get {
@@ -169,11 +169,20 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Participants created before.
+        ///   Looks up a localized string similar to Created before.
         /// </summary>
         public static string Participants_created_before {
             get {
                 return ResourceManager.GetString("Participants_created_before", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;strong&gt;Change the contest duration for participants created in the following interval&lt;/strong&gt;:.
+        /// </summary>
+        public static string Participants_created_in_time_interval_information {
+            get {
+                return ResourceManager.GetString("Participants_created_in_time_interval_information", resourceCulture);
             }
         }
         
@@ -196,11 +205,11 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time in minutes.
+        ///   Looks up a localized string similar to Change duration with (in minutes):.
         /// </summary>
-        public static string Time_in_minutes {
+        public static string Time_in_minutes_information {
             get {
-                return ResourceManager.GetString("Time_in_minutes", resourceCulture);
+                return ResourceManager.GetString("Time_in_minutes_information", resourceCulture);
             }
         }
         
