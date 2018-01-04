@@ -13,7 +13,7 @@
                     <td>
                         <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
                     </td>
-                    @if (contest.CanBePracticed && contest.UserCanCompete && contest.OfficialParticipants > 0)
+                    @if (contest.CanBePracticed && (contest.CanBeCompeted || contest.UserCanCompete) && contest.OfficialParticipants > 0)
                     {
                         <td colspan="2">
                             @Html.RouteLink(
