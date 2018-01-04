@@ -117,23 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_are_you_sure" xml:space="preserve">
+    <value>add</value>
+  </data>
   <data name="Add_time" xml:space="preserve">
     <value>Add Time</value>
   </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
+    <value>Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time.</value>
+  </data>
+  <data name="Confirmation_message_header" xml:space="preserve">
+    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the times of all participants created after &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and before &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>
   </data>
-  <data name="Negative_number_legend" xml:space="preserve">
-    <value>&lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time.</value>
+  <data name="Default_participants_created_after_value_explanation" xml:space="preserve">
+    <value>The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time</value>
+  </data>
+  <data name="Default_participants_created_before_value_explanation" xml:space="preserve">
+    <value>The default value is set to the current time</value>
+  </data>
+  <data name="Enter_your_username" xml:space="preserve">
+    <value>Enter your username</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>from</value>
   </data>
   <data name="Page_title" xml:space="preserve">
     <value>Change Time for active participants</value>
   </data>
-  <data name="Positive_number_legend" xml:space="preserve">
-    <value>&lt;strong&gt;+Positive number Adds&lt;/strong&gt; time.</value>
+  <data name="Participants_created_after" xml:space="preserve">
+    <value>Participants created after</value>
+  </data>
+  <data name="Participants_created_after_must_be_before_Participants_created_before" xml:space="preserve">
+    <value>"Participants created after" must be earlier than "Participants created before"</value>
+  </data>
+  <data name="Participants_created_before" xml:space="preserve">
+    <value>Participants created before</value>
+  </data>
+  <data name="Subtract_are_you_sure" xml:space="preserve">
+    <value>subtract</value>
   </data>
   <data name="Subtract_time" xml:space="preserve">
     <value>Subtract Time</value>
@@ -143,5 +167,8 @@
   </data>
   <data name="Time_required_error" xml:space="preserve">
     <value>Time is required, please add a value different from 0</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
   </data>
 </root>

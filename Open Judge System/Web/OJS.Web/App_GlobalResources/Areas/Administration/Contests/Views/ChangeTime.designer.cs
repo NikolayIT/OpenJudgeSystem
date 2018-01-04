@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add.
+        /// </summary>
+        public static string Add_are_you_sure {
+            get {
+                return ResourceManager.GetString("Add_are_you_sure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time.
         /// </summary>
         public static string Add_time {
@@ -70,11 +79,20 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the times only for the active participants in the online contest. Does not affect the total duration of the contest nor its start or end time..
+        ///   Looks up a localized string similar to Changes the times only for participants who started competing before and after specified time in the online contest. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {
                 return ResourceManager.GetString("Change_time_legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the times of all participants created after &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and before &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
+        /// </summary>
+        public static string Confirmation_message_header {
+            get {
+                return ResourceManager.GetString("Confirmation_message_header", resourceCulture);
             }
         }
         
@@ -88,11 +106,38 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;-Negative number Subtracts&lt;/strong&gt; time..
+        ///   Looks up a localized string similar to The default value is set to the current time minus the participant full contest duration minus another thirty minutes as buffer time.
         /// </summary>
-        public static string Negative_number_legend {
+        public static string Default_participants_created_after_value_explanation {
             get {
-                return ResourceManager.GetString("Negative_number_legend", resourceCulture);
+                return ResourceManager.GetString("Default_participants_created_after_value_explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default value is set to the current time.
+        /// </summary>
+        public static string Default_participants_created_before_value_explanation {
+            get {
+                return ResourceManager.GetString("Default_participants_created_before_value_explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your username.
+        /// </summary>
+        public static string Enter_your_username {
+            get {
+                return ResourceManager.GetString("Enter_your_username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -106,11 +151,38 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;+Positive number Adds&lt;/strong&gt; time..
+        ///   Looks up a localized string similar to Participants created after.
         /// </summary>
-        public static string Positive_number_legend {
+        public static string Participants_created_after {
             get {
-                return ResourceManager.GetString("Positive_number_legend", resourceCulture);
+                return ResourceManager.GetString("Participants_created_after", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Participants created after&quot; must be earlier than &quot;Participants created before&quot;.
+        /// </summary>
+        public static string Participants_created_after_must_be_before_Participants_created_before {
+            get {
+                return ResourceManager.GetString("Participants_created_after_must_be_before_Participants_created_before", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participants created before.
+        /// </summary>
+        public static string Participants_created_before {
+            get {
+                return ResourceManager.GetString("Participants_created_before", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to subtract.
+        /// </summary>
+        public static string Subtract_are_you_sure {
+            get {
+                return ResourceManager.GetString("Subtract_are_you_sure", resourceCulture);
             }
         }
         
@@ -138,6 +210,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static string Time_required_error {
             get {
                 return ResourceManager.GetString("Time_required_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
     }

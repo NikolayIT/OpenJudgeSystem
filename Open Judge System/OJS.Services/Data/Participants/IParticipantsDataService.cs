@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using OJS.Data.Models;
     using OJS.Services.Common;
@@ -14,12 +15,19 @@
 
         void Update(Participant participant);
 
-        Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+        void Update(
+            Expression<Func<Participant, bool>> filterExpression,
+            Expression<Func<Participant, Participant>> updateExpression);
+
+        Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 
         IQueryable<Participant> GetByIdQuery(int participantId);
 
         bool IsOfficial(int participantId);
 
-        void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes);
+        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+            int contestId,
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd);
     }
 }
