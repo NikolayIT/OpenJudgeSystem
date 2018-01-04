@@ -29,15 +29,15 @@
             </h4>
             <div class="modal-footer centered-content">
                 @(Html.ActionLink<CompeteController>(
-                      SharedResource.Compete,
-                      c => c.Index(Model.ContesId, true, null),
-                      new { hasConfirmed = true },
-                      new { @class = "btn btn-success" }))
+                    SharedResource.Compete,
+                    c => c.Index(Model.ContesId, true, null),
+                    new { hasConfirmed = true },
+                    new { @class = "btn btn-success" }))
                 @(Html.ActionLink<HomeController>(
-                      SharedResource.Cancel,
-                      c => c.Index(),
-                      new { area = string.Empty },
-                      new { @class = "btn btn-default" }))
+                    SharedResource.Cancel,
+                    c => c.Index(),
+                    new { area = string.Empty },
+                    new { @class = "btn btn-default" }))
             </div>
         </div>
     </div>
