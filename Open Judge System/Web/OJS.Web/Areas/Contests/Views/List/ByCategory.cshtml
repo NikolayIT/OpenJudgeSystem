@@ -68,7 +68,7 @@
                     else
                     {
                         <td class="paricipate-compete-buttons">
-                            @if (contest.UserCanCompete && !contest.CanBePracticed)
+                            @if ((contest.CanBeCompeted || contest.UserCanCompete) && !contest.CanBePracticed)
                             {
                                 @Html.RouteLink(
                                     Resource.Compete,
