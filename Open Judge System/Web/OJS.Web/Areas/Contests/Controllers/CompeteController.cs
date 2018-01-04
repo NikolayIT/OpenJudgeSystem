@@ -156,7 +156,9 @@
                         {
                             ContesId = contest.Id,
                             ContestName = contest.Name,
-                            ContestDuration = contest.Duration.Value
+                            ContestDuration = contest.Duration.Value,
+                            ProblemGroupsCount = contest.NumberOfProblemGroups
+
                         });
                     }
                 }
