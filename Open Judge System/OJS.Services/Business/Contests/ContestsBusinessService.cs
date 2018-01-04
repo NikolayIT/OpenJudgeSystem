@@ -12,12 +12,12 @@
         public ContestsBusinessService(IContestsDataService contestsData) =>
             this.contestsData = contestsData;
 
-        public bool IsContestIpValidByIdAndIp(int contestId, string ip) =>
+        public bool IsContestIpValidByContestAndIp(int contestId, string ip) =>
             this.contestsData
                 .GetByIdQuery(contestId)
                 .Any(c => !c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip));
 
-        public bool CanUserCompeteByContestUserAndIsAdmin(
+        public bool CanUserCompeteByContestByUserAndIsAdmin(
             int contestId,
             string userId,
             bool isAdmin,
@@ -26,7 +26,7 @@
             var contest = this.contestsData.GetById(contestId);
 
             var isUserAdminOrLecturerInContest = isAdmin || this.contestsData
-                .IsUserLecturerInByContestIdAndUserId(contestId, userId);
+                .IsUserLecturerInByContestAndUser(contestId, userId);
 
             if (contest.IsOnline && !isUserAdminOrLecturerInContest)
             {

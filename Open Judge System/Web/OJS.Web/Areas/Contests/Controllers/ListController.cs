@@ -104,13 +104,13 @@
                     this.CheckIfUserHasContestPermissions(contest.Id);
 
                 contest.UserCanCompete = this.UserProfile != null &&
-                    this.contestsBusiness.CanUserCompeteByContestUserAndIsAdmin(
+                    this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
                         contest.Id,
                         this.UserProfile.Id,
                         this.User.IsAdmin());
 
                 contest.UserIsParticipant = this.UserProfile != null &&
-                    this.contestsData.IsUserParticipantInByContestAndUserId(contest.Id, this.UserProfile.Id);
+                    this.contestsData.IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile.Id);
             }
 
             contestCategory.IsUserLecturerInContestCategory =

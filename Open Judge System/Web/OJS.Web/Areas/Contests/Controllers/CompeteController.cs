@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -110,7 +111,7 @@
             }
 
             if (official &&
-                !this.contestsBusiness.CanUserCompeteByContestUserAndIsAdmin(
+                !this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
                     contest.Id,
                     this.UserProfile.Id,
                     this.User.IsAdmin(),
@@ -165,7 +166,7 @@
                 }
 
                 if (official &&
-                    !this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
+                    !this.contestsBusiness.IsContestIpValidByContestAndIp(id, this.Request.UserHostAddress))
                 {
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
@@ -290,9 +291,8 @@
 
                 var contestQuestions = contest.Questions.Where(x => !x.IsDeleted).ToList();
 
-                var participant = this.AddNewParticipantToContest(contest, official);
-
                 var counter = 0;
+                var answers = new List<ParticipantAnswer>();
                 foreach (var question in registrationData.Questions)
                 {
                     var contestQuestion = contestQuestions.FirstOrDefault(x => x.Id == question.QuestionId);
@@ -321,7 +321,7 @@
                         }
                     }
 
-                    participant.Answers.Add(
+                    answers.Add(
                         new ParticipantAnswer
                         {
                             ContestQuestionId = question.QuestionId,
@@ -334,6 +334,12 @@
                 if (!this.ModelState.IsValid)
                 {
                     return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
+                }
+
+                var participant = this.AddNewParticipantToContest(contest, official);
+                foreach (var participantAnswer in answers)
+                {
+                    participant.Answers.Add(participantAnswer);
                 }
 
                 this.participantsData.Update(participant);
@@ -383,7 +389,7 @@
             }
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -467,7 +473,7 @@
             }
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -554,7 +560,7 @@
             }
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
@@ -741,7 +747,7 @@
                 return this.RedirectToAction("Register", new { id, official = true });
             }
 
-            if (this.contestsBusiness.IsContestIpValidByIdAndIp(id, this.Request.UserHostAddress))
+            if (this.contestsBusiness.IsContestIpValidByContestAndIp(id, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official = true });
             }
@@ -764,7 +770,7 @@
                 return this.RedirectToAction("Register", new { id = model.ContestId, official = true });
             }
 
-            if (this.contestsBusiness.IsContestIpValidByIdAndIp(model.ContestId, this.Request.UserHostAddress))
+            if (this.contestsBusiness.IsContestIpValidByContestAndIp(model.ContestId, this.Request.UserHostAddress))
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
             }
@@ -850,7 +856,7 @@
                 }
             }
 
-            var participant = this.participantsBusiness.CreateNewByContestUserIdIsOfficialAndIsAdmin(
+            var participant = this.participantsBusiness.CreateNewByContestByUserByIsOfficialAndIsAdmin(
                 contest,
                 this.UserProfile.Id,
                 official,

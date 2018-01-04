@@ -21,7 +21,7 @@
             this.contestsData = contestsData;
         }
 
-        public Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
+        public Participant CreateNewByContestByUserByIsOfficialAndIsAdmin(
             Contest contest,
             string userId,
             bool isOfficial,
@@ -38,7 +38,7 @@
 
                 if (isOfficial &&
                     !isAdmin &&
-                    !this.contestsData.IsUserLecturerInByContestIdAndUserId(contest.Id, userId))
+                    !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }

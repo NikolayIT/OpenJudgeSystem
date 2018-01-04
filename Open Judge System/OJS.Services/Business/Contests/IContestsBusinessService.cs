@@ -4,7 +4,7 @@
 
     public interface IContestsBusinessService : IService
     {
-        bool IsContestIpValidByIdAndIp(int contestId, string ip);
+        bool IsContestIpValidByContestAndIp(int contestId, string ip);
 
         /// <summary>
         /// Determines if a user can compete in a contest, depending of his role and the contest type
@@ -13,7 +13,7 @@
         /// <param name="userId">The id of the user</param>
         /// <param name="isAdmin">Is the user administrator in the system</param>
         /// <param name="allowToAdminAlways">If true, and the user is admin he will always be able to compete</param>
-        bool CanUserCompeteByContestUserAndIsAdmin(
+        bool CanUserCompeteByContestByUserAndIsAdmin(
             int contestId,
             string userId,
             bool isAdmin,

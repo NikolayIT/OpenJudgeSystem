@@ -66,13 +66,13 @@
                 this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
 
             contestViewModel.UserCanCompete = this.UserProfile != null &&
-                this.contestsBusiness.CanUserCompeteByContestUserAndIsAdmin(
+                this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
                     contestViewModel.Id,
                     this.UserProfile.Id,
                     this.User.IsAdmin());
 
             contestViewModel.UserIsParticipant = this.UserProfile != null &&
-                this.contestsData.IsUserParticipantInByContestAndUserId(contestViewModel.Id, this.UserProfile.Id);
+                this.contestsData.IsUserParticipantInByContestAndUser(contestViewModel.Id, this.UserProfile.Id);
 
             contestViewModel.IsActive = this.contestsData.IsActiveById(contestViewModel.Id);
 
