@@ -110,10 +110,11 @@
             }
 
             if (official &&
-                !this.contestsBusiness.CanUserCompeteByContestUserAndIsAdminOrLecturer(
-                    contest,
+                !this.contestsBusiness.CanUserCompeteByContestUserAndIsAdmin(
+                    contest.Id,
                     this.UserProfile.Id,
-                    this.IsUserAdminOrLecturerInContest(contest)))
+                    this.User.IsAdmin(),
+                    allowToAdminAlways: true))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.Forbidden,
@@ -827,27 +828,27 @@
 
         private Participant AddNewParticipantToContest(Contest contest, bool official)
         {
-            if (contest.IsOnline && official)
-            {
-                try
-                {
-                    if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
-                    {
-                        throw new UserNotRegisteredForExamException(
-                            Resource.ContestsGeneral.User_is_not_registered_for_exam);
-                    }
-                }
-                catch (UserNotRegisteredForExamException)
-                {
-                    throw;
-                }
-                catch (Exception)
-                {
-                    throw new HttpException(
-                        (int)HttpStatusCode.NotFound,
-                        Resource.ContestsGeneral.Contest_cannot_be_competed);
-                }
-            }
+            //if (contest.IsOnline && official)
+            //{
+            //    try
+            //    {
+            //        if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
+            //        {
+            //            throw new UserNotRegisteredForExamException(
+            //                Resource.ContestsGeneral.User_is_not_registered_for_exam);
+            //        }
+            //    }
+            //    catch (UserNotRegisteredForExamException)
+            //    {
+            //        throw;
+            //    }
+            //    catch (Exception)
+            //    {
+            //        throw new HttpException(
+            //            (int)HttpStatusCode.NotFound,
+            //            Resource.ContestsGeneral.Contest_cannot_be_competed);
+            //    }
+            //}
 
             var participant = this.participantsBusiness.CreateNewByContestUserIdIsOfficialAndIsAdmin(
                 contest,

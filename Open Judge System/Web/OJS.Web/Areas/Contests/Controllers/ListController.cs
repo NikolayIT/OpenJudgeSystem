@@ -10,6 +10,7 @@
     using OJS.Services.Business.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
@@ -97,10 +98,10 @@
                     this.CheckIfUserHasContestPermissions(contest.Id);
 
                 contest.UserCanCompete = this.UserProfile != null &&
-                    this.contestsBusiness.CanUserCompeteByContestUserAndIsAdminOrLecturer(
+                    this.contestsBusiness.CanUserCompeteByContestUserAndIsAdmin(
                         contest.Id,
                         this.UserProfile.Id,
-                        contest.UserIsAdminOrLecturerInContest);
+                        this.User.IsAdmin());
             }
 
             contestCategory.IsUserLecturerInContestCategory =
