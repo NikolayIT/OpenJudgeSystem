@@ -110,8 +110,10 @@
             }
 
             if (official &&
-                !this.IsUserAdminOrLecturerInContest(contest) &&
-                !this.participantsBusiness.CanCompeteByContestAndUserId(contest, this.UserProfile.Id))
+                !this.contestsBusiness.CanUserCompeteByContestUserAndIsAdminOrLecturer(
+                    contest,
+                    this.UserProfile.Id,
+                    this.IsUserAdminOrLecturerInContest(contest)))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.Forbidden,
@@ -179,7 +181,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(
                 participant,
                 official,
@@ -362,13 +364,22 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            this.ValidateContest(participant.Contest, official);
+            try
+            {
+                this.ValidateContest(participant.Contest, official);
+                this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
+            }
+            catch (HttpException httpEx)
+            {
+                this.TempData.AddDangerMessage(httpEx.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
@@ -408,9 +419,10 @@
                 ParticipantId = participant.Id,
                 IpAddress = this.Request.UserHostAddress,
                 IsPublic = ((participant.IsOfficial && contest.ContestPassword == null) ||
-                            (!participant.IsOfficial && contest.PracticePassword == null))
-                           && contest.IsVisible && !contest.IsDeleted
-                           && problem.ShowResults
+                                (!participant.IsOfficial && contest.PracticePassword == null)) &&
+                            contest.IsVisible &&
+                            !contest.IsDeleted &&
+                            problem.ShowResults
             };
 
             this.Data.Submissions.Add(newSubmission);
@@ -436,13 +448,22 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            this.ValidateContest(participant.Contest, official);
+            try
+            {
+                this.ValidateContest(participant.Contest, official);
+                this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
+            }
+            catch (HttpException httpEx)
+            {
+                this.TempData.AddDangerMessage(httpEx.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByIdAndIp(problem.ContestId, this.Request.UserHostAddress))
@@ -835,6 +856,19 @@
                 this.User.IsAdmin());
 
             return participant;
+        }
+
+        private void ValidateProblemForParticipant(Participant participant, Contest contest, int problemId)
+        {
+            if (contest.IsOnline &&
+                contest.IsActive &&
+                !this.IsUserAdminOrLecturerInContest(contest) &&
+                participant.Problems.All(p => p.Id != problemId))
+            {
+                throw new HttpException(
+                    (int)HttpStatusCode.Forbidden,
+                    Resource.ContestsGeneral.Problem_not_assigned_to_user);
+            }
         }
     }
 }

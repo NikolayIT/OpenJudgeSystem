@@ -13,6 +13,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
@@ -24,6 +25,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
+    using ChangeTimeResource = Resources.Areas.Administration.Contests.Views.ChangeTime;
     using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
@@ -35,18 +37,18 @@
 
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
-        private readonly IParticipantsDataService participantsData;
+        private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
             IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
-            IParticipantsDataService participantsData)
+            IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
-            this.participantsData = participantsData;
+            this.participantsBusiness = participantsBusiness;
         }        
 
         public override IEnumerable GetData()
@@ -307,21 +309,22 @@
         }
 
         [HttpGet]
-        public ActionResult ChangeActiveParticipantsEndTime(int contestId)
+        public ActionResult ChangeActiveParticipantsEndTime(int id)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId))
+            if (!this.User.IsAdmin())
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             var contest = this.contestsData
-                .GetByIdQuery(contestId)
+                .GetByIdQuery(id)
                 .Select(ChangeTimeForParticipantsViewModel.FromContest)
                 .FirstOrDefault();
 
             if (contest != null)
             {
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
                 return this.View(contest);
             }
 
@@ -333,10 +336,25 @@
         [ValidateAntiForgeryToken]
         public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
         {
-            if (!this.CheckIfUserHasContestPermissions(model.ContesId))
+            if (!this.User.IsAdmin())
             {
                 this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
+            }
+
+            if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
+            {
+                this.ModelState.AddModelError(
+                    nameof(model.ParticipantsCreatedAfterDateTime),
+                    ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
             }
 
             if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
@@ -345,7 +363,11 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.participantsData.ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(model.ContesId, model.TimeInMinutes);
+            this.participantsBusiness.ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                model.ContesId, 
+                model.TimeInMinutes,
+                model.ParticipantsCreatedAfterDateTime.Value,
+                model.ParticipantsCreatedBeforeDateTime.Value);
 
             var minutesForDisplay = model.TimeInMinutes.ToString();
             this.TempData.AddInfoMessage(model.TimeInMinutes >= 0

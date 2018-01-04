@@ -67,8 +67,9 @@
     </div>
     <div class="col-md-4 col-sm-12" style="margin: 0 auto;">
         <h3>@Resource.Problems</h3>
-        @if ((Model.CanBePracticed && !Model.HasPracticePassword) ||
-            (Model.CanBeCompeted && !Model.HasContestPassword) ||
+        @if (((Model.CanBePracticed && !Model.HasPracticePassword) ||
+            (Model.CanBeCompeted && !Model.HasContestPassword) &&
+            (!Model.IsActive && !Model.IsOnline)) ||
             Model.UserIsAdminOrLecturerInContest)
         {
             foreach (var problem in Model.Problems)
@@ -165,6 +166,11 @@
             {
                 @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm" }))
             }
+        }
+        
+        @if (User.IsAdmin() && Model.IsOnline && Model.IsActive)
+        {
+            @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new { @class = "btn btn-sm btn-default bottom-buffer-sm" }))
         }
     </div>
 </div>

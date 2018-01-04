@@ -1,8 +1,9 @@
 ﻿namespace OJS.Services.Business.Participants
 {
     using System;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
-
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
@@ -18,27 +19,6 @@
         {
             this.participantsData = participantsData;
             this.contestsData = contestsData;
-        }
-
-        public bool CanCompeteByContestAndUserId(Contest contest, string userId)
-        {
-            if (contest.IsOnline &&
-                contest.Participants.Any(p => p.UserId == userId && p.IsOfficial))
-            {
-                var contestEndTime = this.participantsData.GetOfficialContestEndTimeByUserIdAndContestId(
-                    userId,
-                    contest.Id);
-
-                return contestEndTime.HasValue && contestEndTime >= DateTime.Now;
-            }
-
-            return contest.CanBeCompeted;
-        }
-
-        public bool CanCompeteByContestAndUserId(int contestId, string userId)
-        {
-            var contest = this.contestsData.GetById(contestId);
-            return this.CanCompeteByContestAndUserId(contest, userId);
         }
 
         public Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
@@ -70,6 +50,26 @@
 
             this.participantsData.Add(participant);
             return participant;
+        }
+
+        public void ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+            int contestId, 
+            int minutes, 
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd)
+        {
+            this.participantsData.Update(
+                p =>
+                    p.ContestStartTime >= contestStartTimeRangeStart &&
+                    p.ContestStartTime <= contestStartTimeRangeEnd &&
+                    p.ContestId == contestId &&
+                    p.IsOfficial &&
+                    p.Contest.Type == ContestType.OnlinePracticalExam,
+                p => new Participant() { ContestEndTime = SqlFunctions.DateAdd(
+                    "minute",
+                    minutes,
+                    p.ContestEndTime)
+                });
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)

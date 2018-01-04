@@ -3,6 +3,7 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using OJS.Common.Models;
     using OJS.Data.Models;
@@ -33,7 +34,15 @@
             this.participants.SaveChanges();
         }
 
-        public Participant GetWithContestByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+        public void Update(
+            Expression<Func<Participant, bool>> filterExpression,
+            Expression<Func<Participant, Participant>> updateExpression)
+        {
+            this.participants.Update(filterExpression, updateExpression);
+            this.participants.SaveChanges();
+        }
+
+        public Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participants
                 .All()
                 .Include(p => p.Contest)
@@ -51,24 +60,17 @@
                 .Select(x => x.IsOfficial)
                 .FirstOrDefault();
 
-        public void ChangeTimeForActiveInOnlineContestByContestIdAndMinutes(int contestId, int minutes)
-        {
-            var timeSpan = TimeSpan.FromMinutes(minutes);
-
-            var activeParticipants = this.participants
+        public IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+            int contestId,
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd) =>
+            this.participants
                 .All()
-                .Where(p => p.ContestId == contestId &&
+                .Where(p => 
+                    p.ContestStartTime >= contestStartTimeRangeStart &&
+                    p.ContestStartTime <= contestStartTimeRangeEnd &&
+                    p.ContestId == contestId &&
                     p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePracticalExam &&
-                    p.ContestEndTime > DateTime.Now);
-
-            foreach (var participant in activeParticipants)
-            {
-                participant.ContestEndTime = participant.ContestEndTime + timeSpan;
-                this.participants.Update(participant);
-            }
-
-            this.participants.SaveChanges();
-        }
+                    p.Contest.Type == ContestType.OnlinePracticalExam);
     }
 }

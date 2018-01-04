@@ -169,6 +169,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The problem is not part of your problems for the exam.
+        /// </summary>
+        public static string Problem_not_assigned_to_user {
+            get {
+                return ResourceManager.GetString("Problem_not_assigned_to_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The problem was not found!.
         /// </summary>
         public static string Problem_not_found {
@@ -273,6 +282,15 @@ namespace Resources.Areas.Contests {
         public static string User_is_not_registered_for_exam {
             get {
                 return ResourceManager.GetString("User_is_not_registered_for_exam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }
