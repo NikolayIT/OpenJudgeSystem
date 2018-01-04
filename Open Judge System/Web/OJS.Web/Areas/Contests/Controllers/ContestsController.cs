@@ -66,10 +66,6 @@
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
 
-            this.ViewBag.UserCanCompete = this.participantsBusiness.CanCompeteByContestAndUserId(
-                contestViewModel.Id,
-                this.UserProfile?.Id);
-
             contestViewModel.UserIsAdminOrLecturerInContest =
                 this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
 

@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-
+    using OJS.Data.Models;
     using OJS.Services.Data.Contests;
 
     public class ContestsBusinessService : IContestsBusinessService
@@ -17,10 +17,8 @@
                 .GetByIdQuery(contestId)
                 .Any(c => !c.AllowedIps.Any() || c.AllowedIps.Any(ai => ai.Ip.Value == ip));
 
-        public bool CanUserCompeteByContestUserAndIsAdminOrLecturer(int contestId, string userId, bool isAdminOrLecturer)
+        public bool CanUserCompeteByContestUserAndIsAdminOrLecturer(Contest contest, string userId, bool isAdminOrLecturer)
         {
-            var contest = this.contestsData.GetById(contestId);
-
             if (contest.CanBeCompeted)
             {
                 return true;
@@ -40,6 +38,12 @@
             }
 
             return false;
+        }
+
+        public bool CanUserCompeteByContestUserAndIsAdminOrLecturer(int contestId, string userId, bool isAdminOrLecturer)
+        {
+            var contest = this.contestsData.GetById(contestId);
+            return this.CanUserCompeteByContestUserAndIsAdminOrLecturer(contest, userId, isAdminOrLecturer);
         }
     }
 }
