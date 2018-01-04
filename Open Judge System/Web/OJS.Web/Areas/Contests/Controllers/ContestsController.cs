@@ -10,7 +10,6 @@
 
     using OJS.Data;
     using OJS.Services.Business.Contests;
-    using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Problems;
@@ -24,18 +23,15 @@
     {
         private readonly IContestsDataService contestsData;
         private readonly IContestsBusinessService contestsBusiness;
-        private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
             IContestsDataService contestsData,
-            IContestsBusinessService contestsBusiness,
-            IParticipantsBusinessService participantsBusiness)
+            IContestsBusinessService contestsBusiness)
             : base(data)
         {
             this.contestsData = contestsData;
             this.contestsBusiness = contestsBusiness;
-            this.participantsBusiness = participantsBusiness;
         }
 
         public ActionResult Details(int id)
