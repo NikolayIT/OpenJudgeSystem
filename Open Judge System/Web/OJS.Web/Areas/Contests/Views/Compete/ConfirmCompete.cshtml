@@ -26,18 +26,18 @@
             </p>
             <h4>
                 @Resource.Are_you_sure_start_online_contest
-            </h4>          
+            </h4>
             <div class="modal-footer centered-content">
                 @(Html.ActionLink<CompeteController>(
                       SharedResource.Compete,
                       c => c.Index(Model.ContesId, true, null),
-                      new {hasConfirmed = true},
-                      new {@class = "btn btn-success"}))
+                      new { hasConfirmed = true },
+                      new { @class = "btn btn-success" }))
                 @(Html.ActionLink<HomeController>(
                       SharedResource.Cancel,
                       c => c.Index(),
-                      new {area = string.Empty},
-                      new {@class = "btn btn-default"}))
+                      new { area = string.Empty },
+                      new { @class = "btn btn-default" }))
             </div>
         </div>
     </div>
