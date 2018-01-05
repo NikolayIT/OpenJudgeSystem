@@ -83,10 +83,10 @@
                     contestStartTimeRangeEnd);
 
             this.participantsData.Update(
-                participantsInTimeRange
-                .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) >=
+                participantsInTimeRange.Where(p =>
+                    SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) >=
                     SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime)),
-                p => new Participant()
+                p => new Participant
                 {
                     ContestEndTime = SqlFunctions.DateAdd(
                     "minute",
