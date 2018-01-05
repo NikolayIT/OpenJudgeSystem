@@ -27,6 +27,14 @@
                         c.Type == ContestType.OnlinePracticalExam &&
                         c.Participants.Any(p => p.IsOfficial && p.ContestEndTime >= DateTime.Now)));
 
+        public IQueryable<Contest> GetAllCompetable() =>
+            this.contests
+                .All()
+                .Where(c => c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    c.EndTime.HasValue &&
+                    c.EndTime >= DateTime.Now);
+
         public IQueryable<Contest> GetAllInactive() =>
             this.contests
             .All()
@@ -56,11 +64,16 @@
             return contest != null && contest.IsActive;
         }
 
-        public bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId) =>
+        public bool IsUserLecturerInByContestAndUser(int contestId, string userId) =>
             this.contests
                 .All()
                 .Where(c => c.Id == contestId)
                 .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
                     c.Category.Lecturers.Any(l => l.LecturerId == userId));
+
+        public bool IsUserParticipantInByContestAndUser(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Any(c => c.Id == contestId && c.Participants.Any(p => p.UserId == userId));
     }
 }

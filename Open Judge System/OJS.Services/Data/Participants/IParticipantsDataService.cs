@@ -9,8 +9,6 @@
 
     public interface IParticipantsDataService : IService
     {
-        DateTime? GetOfficialContestEndTimeByUserIdAndContestId(string userId, int contestId);
-
         void Add(Participant participant);
 
         void Update(Participant participant);

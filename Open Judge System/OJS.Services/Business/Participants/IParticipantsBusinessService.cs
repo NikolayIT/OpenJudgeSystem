@@ -7,9 +7,7 @@
 
     public interface IParticipantsBusinessService : IService
     {
-        bool CanCompeteByContestAndUserId(Contest contest, string userId);
-
-        Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
+        Participant CreateNewByContestByUserByIsOfficialAndIsAdmin(
             Contest contest,
             string userId,
             bool isOfficial,

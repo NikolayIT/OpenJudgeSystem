@@ -13,6 +13,8 @@
 
         IQueryable<Contest> GetAllActive();
 
+        IQueryable<Contest> GetAllCompetable();
+
         IQueryable<Contest> GetAllInactive();
 
         IQueryable<Contest> GetAllUpcoming();
@@ -27,6 +29,8 @@
 
         bool IsActiveById(int contestId);
 
-        bool IsUserLecturerInByContestIdAndUserId(int contestId, string userId);
+        bool IsUserLecturerInByContestAndUser(int contestId, string userId);
+
+        bool IsUserParticipantInByContestAndUser(int contestId, string userId);
     }
 }

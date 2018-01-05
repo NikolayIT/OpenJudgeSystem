@@ -16,12 +16,6 @@
         public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
             this.participants = participants;
 
-        public DateTime? GetOfficialContestEndTimeByUserIdAndContestId(string userId, int contestId) =>
-            this.participants
-                .All()
-                .FirstOrDefault(p => p.UserId == userId && p.ContestId == contestId && p.IsOfficial)?
-                .ContestEndTime;
-
         public void Add(Participant participant)
         {
             this.participants.Add(participant);

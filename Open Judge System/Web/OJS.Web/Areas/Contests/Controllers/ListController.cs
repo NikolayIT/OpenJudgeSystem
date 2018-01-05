@@ -6,20 +6,29 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using MissingFeatures;
-
     using OJS.Data;
+    using OJS.Services.Business.Contests;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class ListController : BaseController
     {
-        public ListController(IOjsData data)
+        private readonly IContestsBusinessService contestsBusiness;
+        private readonly IContestsDataService contestsData;
+
+        public ListController(
+            IOjsData data,
+            IContestsBusinessService contestsBusiness,
+            IContestsDataService contestsData)
             : base(data)
         {
+            this.contestsBusiness = contestsBusiness;
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -89,9 +98,20 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Category_not_found);
             }
 
-            contestCategory.Contests
-                .ForEach(c => c.UserIsLecturerInContest = this.UserProfile != null &&
-                    this.CheckIfUserHasContestPermissions(c.Id));
+            foreach (var contest in contestCategory.Contests)
+            {
+                contest.UserIsAdminOrLecturerInContest = this.UserProfile != null &&
+                    this.CheckIfUserHasContestPermissions(contest.Id);
+
+                contest.UserCanCompete = this.UserProfile != null &&
+                    this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
+                        contest.Id,
+                        this.UserProfile.Id,
+                        this.User.IsAdmin());
+
+                contest.UserIsParticipant = this.UserProfile != null &&
+                    this.contestsData.IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile.Id);
+            }
 
             contestCategory.IsUserLecturerInContestCategory =
                 this.UserProfile != null &&

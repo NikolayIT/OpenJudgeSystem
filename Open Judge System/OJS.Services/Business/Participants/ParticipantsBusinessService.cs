@@ -21,22 +21,7 @@
             this.contestsData = contestsData;
         }
 
-        public bool CanCompeteByContestAndUserId(Contest contest, string userId)
-        {
-            if (contest.IsOnline &&
-                contest.Participants.Any(p => p.UserId == userId && p.IsOfficial))
-            {
-                var contestEndTime = this.participantsData.GetOfficialContestEndTimeByUserIdAndContestId(
-                    userId,
-                    contest.Id);
-
-                return contestEndTime.HasValue && contestEndTime >= DateTime.Now;
-            }
-
-            return contest.CanBeCompeted;
-        }
-
-        public Participant CreateNewByContestUserIdIsOfficialAndIsAdmin(
+        public Participant CreateNewByContestByUserByIsOfficialAndIsAdmin(
             Contest contest,
             string userId,
             bool isOfficial,
@@ -53,7 +38,7 @@
 
                 if (isOfficial &&
                     !isAdmin &&
-                    !this.contestsData.IsUserLecturerInByContestIdAndUserId(contest.Id, userId))
+                    !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }
