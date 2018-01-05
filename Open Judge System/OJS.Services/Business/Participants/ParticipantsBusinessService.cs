@@ -52,24 +52,38 @@
             return participant;
         }
 
-        public void ExtendContestEndTimeForAllActiveParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
-            int contestId, 
-            int minutes, 
+        public IQueryable<Participant> UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+            int contestId,
+            int minutes,
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd)
         {
+            var contest = this.contestsData.GetById(contestId);
+            var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
+
+            var participantsInTimeRange =
+                this.participantsData.GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+                    contestId,
+                    contestStartTimeRangeStart,
+                    contestStartTimeRangeEnd);
+
             this.participantsData.Update(
-                p =>
-                    p.ContestStartTime >= contestStartTimeRangeStart &&
-                    p.ContestStartTime <= contestStartTimeRangeEnd &&
-                    p.ContestId == contestId &&
-                    p.IsOfficial &&
-                    p.Contest.Type == ContestType.OnlinePracticalExam,
-                p => new Participant() { ContestEndTime = SqlFunctions.DateAdd(
+                participantsInTimeRange
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) >=
+                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime)),
+                p => new Participant
+                {
+                    ContestEndTime = SqlFunctions.DateAdd(
                     "minute",
                     minutes,
                     p.ContestEndTime)
                 });
+
+            var participantsInvalidForUpdate = participantsInTimeRange
+                .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) <
+                    SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime));
+
+            return participantsInvalidForUpdate;
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)

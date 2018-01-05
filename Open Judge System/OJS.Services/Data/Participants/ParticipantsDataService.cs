@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using EntityFramework.Extensions;
+
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -29,12 +31,10 @@
         }
 
         public void Update(
-            Expression<Func<Participant, bool>> filterExpression,
-            Expression<Func<Participant, Participant>> updateExpression)
-        {
-            this.participants.Update(filterExpression, updateExpression);
-            this.participants.SaveChanges();
-        }
+            IQueryable<Participant> participantsQuery,
+            Expression<Func<Participant, Participant>> updateExpression) =>
+            participantsQuery.Update(updateExpression);
+
 
         public Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participants
@@ -60,7 +60,7 @@
             DateTime contestStartTimeRangeEnd) =>
             this.participants
                 .All()
-                .Where(p => 
+                .Where(p =>
                     p.ContestStartTime >= contestStartTimeRangeStart &&
                     p.ContestStartTime <= contestStartTimeRangeEnd &&
                     p.ContestId == contestId &&
