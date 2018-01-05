@@ -19,8 +19,7 @@
 
             if (official &&
                 !isAdminOrLecturer &&
-                this.Contest.IsOnline &&
-                (this.Contest.CanBeCompeted || participant.ContestEndTime >= DateTime.Now))
+                this.Contest.IsOnline)
             {
                 this.Contest.Problems = participant.Problems
                     .AsQueryable()
@@ -42,7 +41,7 @@
         {
             get
             {
-                if (this.ContestEndTime.HasValue)
+                if (this.Contest.IsOnline && this.ContestIsCompete && this.ContestEndTime.HasValue)
                 {
                     return (this.ContestEndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
