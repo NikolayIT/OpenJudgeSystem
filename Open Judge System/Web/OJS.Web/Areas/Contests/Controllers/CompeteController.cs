@@ -379,16 +379,9 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            try
-            {
-                this.ValidateContest(participant.Contest, official);
-                this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
-            }
-            catch (HttpException httpEx)
-            {
-                this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
-            }
+            this.ValidateContest(participant.Contest, official);
+
+            this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
@@ -463,16 +456,9 @@
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            try
-            {
-                this.ValidateContest(participant.Contest, official);
-                this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
-            }
-            catch (HttpException httpEx)
-            {
-                this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
-            }
+            this.ValidateContest(participant.Contest, official);
+
+            this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
