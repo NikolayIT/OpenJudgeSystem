@@ -42,7 +42,7 @@
         {
             get
             {
-                if (this.ContestEndTime.HasValue)
+                if (this.Contest.IsOnline && this.ContestIsCompete && this.ContestEndTime.HasValue)
                 {
                     return (this.ContestEndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
