@@ -19,8 +19,7 @@
 
             if (official &&
                 !isAdminOrLecturer &&
-                this.Contest.IsOnline &&
-                (this.Contest.CanBeCompeted || participant.ContestEndTime >= DateTime.Now))
+                this.Contest.IsOnline)
             {
                 this.Contest.Problems = participant.Problems
                     .AsQueryable()
