@@ -52,7 +52,7 @@
             return participant;
         }
 
-        public IQueryable<Participant> UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+        public void UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId,
             int minutes,
             DateTime contestStartTimeRangeStart,
@@ -78,10 +78,25 @@
                     minutes,
                     p.ContestEndTime)
                 });
+        }
 
-            var participantsInvalidForUpdate = participantsInTimeRange
-                .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) <
-                    SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime));
+        public IQueryable<Participant> GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
+            int contestId,
+            int minutes,
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd)
+        {
+            var contest = this.contestsData.GetById(contestId);
+            var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
+
+            var participantsInvalidForUpdate =
+                this.participantsData
+                    .GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+                        contestId,
+                        contestStartTimeRangeStart,
+                        contestStartTimeRangeEnd)
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) <
+                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime));            
 
             return participantsInvalidForUpdate;
         }

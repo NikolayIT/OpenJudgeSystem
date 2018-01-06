@@ -364,16 +364,22 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var notUpdatedUsersUsernames = 
-                this.participantsBusiness
-                    .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
-                        model.ContesId, 
-                        model.TimeInMinutes,
-                        model.ParticipantsCreatedAfterDateTime.Value,
-                        model.ParticipantsCreatedBeforeDateTime.Value)
-                    .Select(u => u.User.UserName)
-                    .ToList();
-        
+            var notUpdatedUsersUsernames = this.participantsBusiness
+                .GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
+                    model.ContesId,
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value)
+                .Select(u => u.User.UserName)
+                .ToList();
+
+            this.participantsBusiness
+                .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                    model.ContesId,
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value);
+
             var minutesForDisplay = model.TimeInMinutes.ToString();
 
             var sb = new StringBuilder();
