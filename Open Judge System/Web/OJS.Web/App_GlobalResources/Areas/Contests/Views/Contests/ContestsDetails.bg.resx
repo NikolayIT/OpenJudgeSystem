@@ -180,4 +180,7 @@
   <data name="Transfer" xml:space="preserve">
     <value>Прехвърляне</value>
   </data>
+  <data name="Change_time" xml:space="preserve">
+    <value>Промени времето</value>
+  </data>
 </root>

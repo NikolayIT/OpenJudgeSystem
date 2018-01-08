@@ -61,11 +61,38 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is active and the Duration, Type or Problem groups cannot be edited!.
+        /// </summary>
+        public static string Active_contest_cannot_edit_duration_type_problem_groups {
+            get {
+                return ResourceManager.GetString("Active_contest_cannot_edit_duration_type_problem_groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contest is active and cannot be deleted!.
+        /// </summary>
+        public static string Active_contest_forbidden_for_deletion {
+            get {
+                return ResourceManager.GetString("Active_contest_forbidden_for_deletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contest is active and participants cannot be transferred.
         /// </summary>
-        public static string Active_contest_permited_for_transfer {
+        public static string Active_contest_forbidden_for_transfer {
             get {
-                return ResourceManager.GetString("Active_contest_permited_for_transfer", resourceCulture);
+                return ResourceManager.GetString("Active_contest_forbidden_for_transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully added {0} minutes to the times of all active participants in the contest {1}.
+        /// </summary>
+        public static string Added_time_to_participants_online {
+            get {
+                return ResourceManager.GetString("Added_time_to_participants_online", resourceCulture);
             }
         }
         
@@ -120,6 +147,24 @@ namespace Resources.Areas.Administration.Contests {
         public static string Contest_start_date_before_end {
             get {
                 return ResourceManager.GetString("Contest_start_date_before_end", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration must be in format &quot;hh:mm&quot;.
+        /// </summary>
+        public static string Duration_invalid_format {
+            get {
+                return ResourceManager.GetString("Duration_invalid_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;br /&gt;WARNING: The following users&apos; contest duration was not updated because their contest duration would have been reduced below the base contest duration: {0}.
+        /// </summary>
+        public static string Failed_to_update_participants_duration {
+            get {
+                return ResourceManager.GetString("Failed_to_update_participants_duration", resourceCulture);
             }
         }
         
@@ -205,11 +250,29 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The field is required for Online Contest.
+        /// </summary>
+        public static string Required_field_for_online {
+            get {
+                return ResourceManager.GetString("Required_field_for_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose at least one submission type!.
         /// </summary>
         public static string Select_one_submission_type {
             get {
                 return ResourceManager.GetString("Select_one_submission_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully subtracted {0} minutes from the times of all active participants in the contest {1}.
+        /// </summary>
+        public static string Subtracted_time_from_participants_online {
+            get {
+                return ResourceManager.GetString("Subtracted_time_from_participants_online", resourceCulture);
             }
         }
     }

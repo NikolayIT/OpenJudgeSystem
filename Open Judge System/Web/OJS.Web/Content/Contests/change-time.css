@@ -1,0 +1,51 @@
+﻿.number-input {
+    text-align: left;
+}
+
+.number-input > input {
+    width: 100%;
+    background-color: #f7f9f9;
+    font-size: 2em;
+    border: 1px solid #96dbf8;
+    border-radius: 5px;
+    margin-left: 0;
+}
+
+.number-input > input:focus {
+    box-shadow: 0 0 1pt 1pt #96dbf8;
+}
+
+.number-input > input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+    height: 50px;
+}
+
+#confirm-window-pop-up-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#confirm-window-pop-up {
+    padding: 30px;
+    background-color: #F7F9F9;
+    border: 1px solid #2C3E50;
+    border-radius: 10px;
+    width: 45%;
+}
+
+#confirm-window-pop-up h3 {
+    margin-bottom: 40px;
+    margin-top: 0;
+}
+
+#confirm-window-pop-up > div {
+    margin-top: 30px;
+}

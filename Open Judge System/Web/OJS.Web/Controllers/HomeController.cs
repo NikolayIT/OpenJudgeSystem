@@ -6,14 +6,18 @@
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Home.Index;
 
     public class HomeController : BaseController
     {
-        public HomeController(IOjsData data)
+        private readonly IContestsDataService contestsData;
+
+        public HomeController(IOjsData data, IContestsDataService contestsData)
             : base(data)
         {
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -23,21 +27,22 @@
 
             var indexViewModel = new IndexViewModel
             {
-                ActiveContests = this.Data.Contests.AllActive()
-                    .OrderByDescending(x => x.StartTime)
+                ActiveContests = this.contestsData
+                    .GetAllCompetable()
+                    .OrderByDescending(ac => ac.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
                 FutureContests = this.Data.Contests.All()
-                    .Where(x => x.StartTime > DateTime.Now &&
-                        (x.IsVisible ||
+                    .Where(fc => fc.StartTime > DateTime.Now &&
+                        (fc.IsVisible ||
                             isAdmin ||
-                            x.Lecturers.Any(l => l.LecturerId == userId) ||
-                            x.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
-                    .OrderBy(x => x.StartTime)
+                            fc.Lecturers.Any(l => l.LecturerId == userId) ||
+                            fc.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
+                    .OrderBy(fc => fc.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
-            PastContests = this.Data.Contests.AllPast()
-                    .OrderByDescending(x => x.StartTime)
+                PastContests = this.contestsData.GetAllPast()
+                    .OrderByDescending(pc => pc.StartTime)
                     .Select(HomeContestViewModel.FromContest)
                     .Take(5)
                     .ToList()

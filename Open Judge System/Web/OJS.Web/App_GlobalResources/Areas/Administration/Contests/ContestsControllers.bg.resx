@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_permited_for_transfer" xml:space="preserve">
+  <data name="Active_contest_cannot_edit_duration_type_problem_groups" xml:space="preserve">
+    <value>Състезанието е активно и продължителността, типа и групите от проблеми не могат да се променят!</value>
+  </data>
+  <data name="Active_contest_forbidden_for_deletion" xml:space="preserve">
+    <value>Състезанието е активно и не може да бъде изтрито!</value>
+  </data>
+  <data name="Active_contest_forbidden_for_transfer" xml:space="preserve">
     <value>Състезанието е активно и не може да се местят участници</value>
+  </data>
+  <data name="Added_time_to_participants_online" xml:space="preserve">
+    <value>Успешно добавихте {0} минути към времената на всички активни участници в състезанието {1}</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>състезание</value>
@@ -137,6 +146,12 @@
   </data>
   <data name="Contest_start_date_before_end" xml:space="preserve">
     <value>Началната дата на състезанието не може да бъде след крайната дата на състезанието</value>
+  </data>
+  <data name="Duration_invalid_format" xml:space="preserve">
+    <value>Продължителността трябва да е във формат "hh:mm"</value>
+  </data>
+  <data name="Failed_to_update_participants_duration" xml:space="preserve">
+    <value>&lt;br /&gt;ВНИМАНИЕ: Продължителността на състезанието на следните потребители не беше обновена, защото продължителността им би паднала под базовата продължителност на състезанието: {0}</value>
   </data>
   <data name="No_active_contests" xml:space="preserve">
     <value>Няма активни състезания</value>
@@ -165,7 +180,13 @@
   <data name="Report_zip_format" xml:space="preserve">
     <value>{1} решения за {0}.zip</value>
   </data>
+  <data name="Required_field_for_online" xml:space="preserve">
+    <value>Полето е задължително за Онлайн състезание</value>
+  </data>
   <data name="Select_one_submission_type" xml:space="preserve">
     <value>Изберете поне един вид решение!</value>
+  </data>
+  <data name="Subtracted_time_from_participants_online" xml:space="preserve">
+    <value>Успешно отнехте {0} минути от времената на всички активни участници в състезанието {1}</value>
   </data>
 </root>

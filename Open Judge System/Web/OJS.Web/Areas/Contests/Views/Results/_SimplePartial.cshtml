@@ -1,5 +1,6 @@
 ﻿@model ContestResultsViewModel
 
+@using OJS.Common.Models
 @using OJS.Web.Areas.Contests.Controllers
 @using OJS.Web.Areas.Contests.ViewModels.Results
 @using OJS.Web.Areas.Users.Controllers
@@ -10,7 +11,7 @@
     const string ResultsContainerId = "simple-results-container";
     const string LoadingMaskContainerId = "simple-results-loading-mask-container";
     const string OnPageChangedEventHandlerName = "OnPageChanged";
-    var isOfficial = Model.IsOfficialResults;
+    var isOfficial = Model.IsCompete;
     var results = Model.Results;
 }
 
@@ -114,7 +115,16 @@
                         }
                         else
                         {
-                            <td>0</td>
+                            if (!participant.ParticipantProblemIds.Contains(problem.Id) &&
+                                Model.IsCompete &&
+                                Model.ContestType == ContestType.OnlinePracticalExam)
+                            {
+                                <td>-</td>
+                            }                   
+                            else
+                            {
+                                <td>0</td>
+                            }
                         }
                     }
 

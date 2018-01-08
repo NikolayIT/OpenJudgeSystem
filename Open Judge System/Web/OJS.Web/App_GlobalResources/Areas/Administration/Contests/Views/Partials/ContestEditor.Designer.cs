@@ -125,6 +125,15 @@ namespace Resources.Areas.Administration.Contests.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the duration of the exam in hours.
+        /// </summary>
+        public static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration information.
         /// </summary>
         public static string Duration_info {
@@ -157,6 +166,15 @@ namespace Resources.Areas.Administration.Contests.Views.Partials {
         public static string General_info {
             get {
                 return ResourceManager.GetString("General_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the count of the problem groups for online contest.
+        /// </summary>
+        public static string Number_of_problem_groups {
+            get {
+                return ResourceManager.GetString("Number_of_problem_groups", resourceCulture);
             }
         }
         

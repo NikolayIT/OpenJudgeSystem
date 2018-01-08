@@ -9,5 +9,7 @@
         public int MaximumPoints { get; set; }
 
         public BestSubmissionViewModel BestSubmission { get; set; }
+
+        public bool IsPartOfUserProblems { get; set; }
     }
 }

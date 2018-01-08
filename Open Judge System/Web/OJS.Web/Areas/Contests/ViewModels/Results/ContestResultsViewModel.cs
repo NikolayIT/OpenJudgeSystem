@@ -1,10 +1,11 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
     using System.Collections.Generic;
+    using OJS.Common.Models;
+   
+    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     using X.PagedList;
-
-    using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     public class ContestResultsViewModel
     {
@@ -22,6 +23,8 @@
 
         public bool UserIsLecturerInContest { get; set; }
 
-        public bool IsOfficialResults { get; set; }
+        public ContestType ContestType { get; set; }
+
+        public bool IsCompete { get; set; }
     }
 }

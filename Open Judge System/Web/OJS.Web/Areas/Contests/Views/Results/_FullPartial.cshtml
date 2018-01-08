@@ -11,8 +11,8 @@
     const string ResultsContainerId = "full-results-container";
     const string LoadingMaskContainerId = "full-results-loading-mask-container";
     const string OnPageChangedEventHandlerName = "OnPageChanged";
-    var isOfficialStr = Model.IsOfficialResults ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-    var isOfficial = Model.IsOfficialResults;
+    var isOfficialStr = Model.IsCompete ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+    var isOfficial = Model.IsCompete;
     var results = Model.Results;
 }
 

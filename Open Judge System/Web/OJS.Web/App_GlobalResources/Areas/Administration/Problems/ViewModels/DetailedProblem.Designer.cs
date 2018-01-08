@@ -89,6 +89,15 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem group.
+        /// </summary>
+        public static string Group_number {
+            get {
+                return ResourceManager.GetString("Group_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max points.
         /// </summary>
         public static string Max_points {

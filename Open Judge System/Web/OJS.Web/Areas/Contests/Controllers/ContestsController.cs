@@ -9,6 +9,8 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Services.Business.Contests;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Problems;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
@@ -19,9 +21,17 @@
 
     public class ContestsController : BaseController
     {
-        public ContestsController(IOjsData data)
+        private readonly IContestsDataService contestsData;
+        private readonly IContestsBusinessService contestsBusiness;
+
+        public ContestsController(
+            IOjsData data,
+            IContestsDataService contestsData,
+            IContestsBusinessService contestsBusiness)
             : base(data)
         {
+            this.contestsData = contestsData;
+            this.contestsBusiness = contestsBusiness;
         }
 
         public ActionResult Details(int id)
@@ -52,8 +62,19 @@
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
 
-            contestViewModel.UserIsLecturerInContest =
+            contestViewModel.UserIsAdminOrLecturerInContest =
                 this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
+
+            contestViewModel.UserCanCompete = this.UserProfile != null &&
+                this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
+                    contestViewModel.Id,
+                    this.UserProfile.Id,
+                    this.User.IsAdmin());
+
+            contestViewModel.UserIsParticipant = this.UserProfile != null &&
+                this.contestsData.IsUserParticipantInByContestAndUser(contestViewModel.Id, this.UserProfile.Id);
+
+            contestViewModel.IsActive = this.contestsData.IsActiveById(contestViewModel.Id);
 
             return this.View(contestViewModel);
         }

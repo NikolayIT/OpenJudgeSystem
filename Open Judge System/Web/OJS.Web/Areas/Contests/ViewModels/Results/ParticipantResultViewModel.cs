@@ -21,5 +21,7 @@
 
         public int AdminTotal => this.ProblemResults
             .Sum(pr => pr.BestSubmission.Points);
+
+        public IEnumerable<int> ParticipantProblemIds { get; set; }
     }
 }

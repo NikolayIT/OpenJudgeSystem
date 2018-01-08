@@ -120,6 +120,9 @@
   <data name="Add_task" xml:space="preserve">
     <value>Add task</value>
   </data>
+  <data name="Contest_remaining_time" xml:space="preserve">
+    <value>Contest remaining time</value>
+  </data>
   <data name="No_tasks" xml:space="preserve">
     <value>No tasks</value>
   </data>
@@ -129,8 +132,11 @@
   <data name="Practice_end_time" xml:space="preserve">
     <value>Practice end time</value>
   </data>
+  <data name="Remaining_time" xml:space="preserve">
+    <value>Remaining time</value>
+  </data>
   <data name="Remaining_time_format" xml:space="preserve">
-    <value>Remaining time {0} h, {1} m and {2} s</value>
+    <value>{0} h, {1} m and {2} s</value>
   </data>
   <data name="Results" xml:space="preserve">
     <value>Results</value>

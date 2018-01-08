@@ -10,7 +10,7 @@
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
-    var isOfficial = Model.IsOfficialResults;
+    var isOfficial = Model.IsCompete;
 }
 
 @section Scripts {
@@ -26,7 +26,7 @@
 <h1>@ViewBag.Title</h1>
 <h2>
     <span>
-        @(Html.ActionLink<ResultsController>(Resource.Public_results, c => c.Simple(Model.Id, Model.IsOfficialResults, null), null, new {@class = "btn btn-primary"}))
+        @(Html.ActionLink<ResultsController>(Resource.Public_results, c => c.Simple(Model.Id, Model.IsCompete, null), null, new {@class = "btn btn-primary"}))
     </span>
 </h2>
 
@@ -35,7 +35,7 @@
 <h4>
     @(Ajax.ActionLink<ResultsController>(
         Resource.ShowStatistics,
-        c => c.Stats(Model.Id, Model.IsOfficialResults),
+        c => c.Stats(Model.Id, Model.IsCompete),
         null,
         new AjaxOptions
         {

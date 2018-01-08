@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Text;
     using System.Web.Mvc;
 
     using Kendo.Mvc.UI;
@@ -13,14 +14,19 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Participants;
+    using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
+    using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
+    using ChangeTimeResource = Resources.Areas.Administration.Contests.Views.ChangeTime;
     using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
@@ -31,12 +37,20 @@
         private const int LabDurationInSeconds = 30 * 60;
 
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IContestsDataService contestsData;
+        private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData)
-                : base(data) =>
-                    this.participantScoresData = participantScoresData;
+            IParticipantScoresDataService participantScoresData,
+            IContestsDataService contestsData,
+            IParticipantsBusinessService participantsBusiness)
+                : base(data)
+        {
+            this.participantScoresData = participantScoresData;
+            this.contestsData = contestsData;
+            this.participantsBusiness = participantsBusiness;
+        }        
 
         public override IEnumerable GetData()
         {
@@ -80,26 +94,23 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            if (!this.IsValidContest(model))
+            this.ValidateContest(model);
+
+            if (!this.ModelState.IsValid)
             {
+                this.PrepareViewBagData();
                 return this.View(model);
             }
 
-            if (this.ModelState.IsValid)
-            {
-                var contest = model.GetEntityModel();
+            var contest = model.GetEntityModel();
 
-                this.AddIpsToContest(contest, model.AllowedIps);
+            this.AddIpsToContest(contest, model.AllowedIps);
 
-                this.Data.Contests.Add(contest);
-                this.Data.SaveChanges();
+            this.Data.Contests.Add(contest);
+            this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
-            }
-
-            this.PrepareViewBagData();
-            return this.View(model);
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
         }
 
         [HttpGet]
@@ -117,13 +128,14 @@
                 .Select(ContestAdministrationViewModel.ViewModel)
                 .FirstOrDefault();
 
-            if (contest == null)
+            if (contest?.Id == null)
             {
                 this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData();
+            this.PrepareViewBagData(contest.Id);
+
             return this.View(contest);
         }
 
@@ -137,35 +149,42 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            if (!this.IsValidContest(model))
+            this.ValidateContest(model);
+
+            if (!this.ModelState.IsValid)
             {
+                this.PrepareViewBagData(model.Id);
                 return this.View(model);
             }
 
-            if (this.ModelState.IsValid)
+            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
+
+            if (contest == null)
             {
-                var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
-
-                if (contest == null)
-                {
-                    this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
-                    return this.RedirectToAction<ContestsController>(c => c.Index());
-                }
-
-                contest = model.GetEntityModel(contest);
-
-                contest.AllowedIps.Clear();
-                this.AddIpsToContest(contest, model.AllowedIps);
-
-                this.Data.Contests.Update(contest);
-                this.Data.SaveChanges();
-
-                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
+                this.TempData.Add(GlobalConstants.DangerMessage, Resource.Contest_not_found);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.PrepareViewBagData();
-            return this.View(model);
+            contest = model.GetEntityModel(contest);
+
+            if (contest.IsOnline &&
+                contest.IsActive &&
+                (contest.Duration != model.Duration ||
+                 contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
+                 (int)contest.Type != model.Type))
+            {
+                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            contest.AllowedIps.Clear();
+            this.AddIpsToContest(contest, model.AllowedIps);
+
+            this.Data.Contests.Update(contest);
+            this.Data.SaveChanges();
+
+            this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
         }
 
         [HttpPost]
@@ -173,18 +192,26 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+                return this.GridOperation(request, model);
             }
 
-            this.BaseDestroy(model.Id);
+            if (this.contestsData.IsActiveById(model.Id.Value))
+            {
+                this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+                return this.GridOperation(request, model);
+            }
+
+            this.contestsData.DeleteById(model.Id.Value);
             return this.GridOperation(request, model);
         }
 
         public ActionResult GetFutureContests([DataSourceRequest]DataSourceRequest request)
         {
-            var futureContests = this.Data.Contests
-                .AllUpcoming()
+            var futureContests = this.contestsData
+                .GetAllUpcoming()
                 .OrderBy(contest => contest.StartTime)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -199,8 +226,8 @@
 
         public ActionResult GetActiveContests([DataSourceRequest]DataSourceRequest request)
         {
-            var activeContests = this.Data.Contests
-                .AllActive()
+            var activeContests = this.contestsData
+                .GetAllActive()
                 .OrderBy(contest => contest.EndTime)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -215,8 +242,8 @@
 
         public ActionResult GetLatestContests([DataSourceRequest]DataSourceRequest request)
         {
-            var latestContests = this.Data.Contests
-                .AllVisible()
+            var latestContests = this.contestsData
+                .GetAllVisible()
                 .OrderByDescending(contest => contest.CreatedOn)
                 .Take(3)
                 .Select(ShortViewModelType.FromContest);
@@ -240,8 +267,12 @@
                     c.Contests.Any(cc => !cc.IsDeleted && cc.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
             }
 
+            if (!string.IsNullOrWhiteSpace(contestFilter))
+            {
+                categories = categories.Where(c => c.Name.ToLower().Contains(contestFilter.ToLower()));
+            }
+
             var dropDownData = categories
-                .Where(c => c.Name.ToLower().Contains(contestFilter.ToLower()))
                 .ToList()
                 .Select(cat =>
                     new
@@ -279,6 +310,102 @@
         }
 
         [HttpGet]
+        public ActionResult ChangeActiveParticipantsEndTime(int id)
+        {
+            if (!this.User.IsAdmin())
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var contest = this.contestsData
+                .GetByIdQuery(id)
+                .Select(ChangeTimeForParticipantsViewModel.FromContest)
+                .FirstOrDefault();
+
+            if (contest != null)
+            {
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(contest);
+            }
+
+            this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+            return this.RedirectToAction<ContestsController>(c => c.Index());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
+        {
+            if (!this.User.IsAdmin())
+            {
+                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
+            }
+
+            if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
+            {
+                this.ModelState.AddModelError(
+                    nameof(model.ParticipantsCreatedAfterDateTime),
+                    ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
+                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                return this.View(model);
+            }
+
+            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
+            {
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var notUpdatedUsersUsernames = this.participantsBusiness
+                .GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
+                    model.ContesId,
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value)
+                .Select(u => u.User.UserName)
+                .ToList();
+
+            this.participantsBusiness
+                .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                    model.ContesId,
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value);
+
+            var minutesForDisplay = model.TimeInMinutes.ToString();
+
+            var sb = new StringBuilder();
+
+            var successMessage = model.TimeInMinutes >= 0
+                ? string.Format(Resource.Added_time_to_participants_online, minutesForDisplay, model.ContestName)
+                : string.Format(
+                    Resource.Subtracted_time_from_participants_online,
+                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
+                    model.ContestName);
+            sb.AppendLine(successMessage);
+
+            if (notUpdatedUsersUsernames.Any())
+            {
+                var warningMessage = string.Format(
+                    Resource.Failed_to_update_participants_duration,
+                    string.Join(", ", notUpdatedUsersUsernames));
+              sb.AppendLine(warningMessage);
+            }
+
+            this.TempData.AddInfoMessage(sb.ToString());
+
+            return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
+        }
+
+        [HttpGet]
         public ActionResult ReadIpsContaining(string value)
         {
             var ipEntries = this.Data.Ips.All();
@@ -306,8 +433,8 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            var contest = this.Data.Contests
-                .AllInactive()
+            var contest = this.contestsData
+                .GetAllInactive()
                 .Where(c => c.Id == id)
                 .Select(TransferParticipantsViewModel.FromContest)
                 .FirstOrDefault();
@@ -337,7 +464,7 @@
 
             if (categoryContest.CanBeCompeted)
             {
-                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_permited_for_transfer;
+                this.TempData[GlobalConstants.DangerMessage] = Resource.Active_contest_forbidden_for_transfer;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -417,29 +544,46 @@
             return this.Redirect(returnUrl);
         }
 
-        private void PrepareViewBagData()
+        private void PrepareViewBagData(int? contestId = null)
         {
             this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ContestType>();
             this.ViewBag.SubmissionExportTypes = DropdownViewModel.GetEnumValues<SubmissionExportType>();
+
+            if (contestId.HasValue)
+            {
+                // TODO: find a better solution for determining whether a Contest is active or not
+                this.ViewBag.IsActive = this.contestsData.IsActiveById(contestId.Value);
+            }
         }
 
-        private bool IsValidContest(ViewModelType model)
+        private void ValidateContest(ViewModelType model)
         {
-            bool isValid = true;
-
             if (model.StartTime >= model.EndTime)
             {
                 this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Contest_start_date_before_end);
-                isValid = false;
             }
 
             if (model.PracticeStartTime >= model.PracticeEndTime)
             {
                 this.ModelState.AddModelError(GlobalConstants.DateTimeError, Resource.Practice_start_date_before_end);
-                isValid = false;
             }
 
-            return isValid;
+            if (model.IsOnline)
+            {
+                if (!model.Duration.HasValue)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Required_field_for_online);
+                }
+                else if (model.Duration.Value.TotalHours >= 24)
+                {
+                    this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
+                }
+
+                if (model.NumberOfProblemGroups <= 0)
+                {
+                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                }
+            }
         }
 
         private void AddIpsToContest(Contest contest, string mergedIps)

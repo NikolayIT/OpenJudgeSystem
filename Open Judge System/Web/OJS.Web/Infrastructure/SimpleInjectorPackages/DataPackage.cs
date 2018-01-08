@@ -17,6 +17,10 @@
 
             container.Register(typeof(IRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
             container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
+            container.Register(
+                typeof(IEfDeletableEntityRepository<>),
+                typeof(EfDeletableEntityRepository<>),
+                Lifestyle.Scoped);
         }
     }
 }

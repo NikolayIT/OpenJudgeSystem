@@ -3,8 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Transactions;
     using System.Web.Mvc;
-
+    using EntityFramework.Extensions;
     using MissingFeatures;
 
     using OJS.Common.Extensions;
@@ -13,6 +14,7 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
 
@@ -20,11 +22,19 @@
     public class TempController : BaseController
     {
         private readonly IHangfireBackgroundJobService backgroundJobs;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IContestsDataService contestsData;
 
-        public TempController(IOjsData data, IHangfireBackgroundJobService backgroundJobs)
+        public TempController(
+            IOjsData data,
+            IHangfireBackgroundJobService backgroundJobs,
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
+            this.submissionsForProcessingData = submissionsForProcessingData;
+            this.contestsData = contestsData;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -89,6 +99,45 @@
 
             result.Append("</ol>");
             return this.Content(result.ToString());
+        }
+
+        // TODO: Remove this method after updating the entities
+        public void MigrateAllExistingLabsToNewEnumValue() =>
+            this.contestsData
+                .GetAllWithDeleted()
+                .Where(c => c.Type == (ContestType)2)
+                .Update(c => new Contest { Type = ContestType.Lab });
+
+        public ActionResult RetestCompileTimeoutSubmissionsFromCSharpDbAdvancedExam10December2017()
+        {
+            var problemIds = new List<int>() {5477, 5478, 5479, 5480 };
+            var submissionIds = this.Data.Context.Submissions
+                .Where(s =>
+                    !s.IsDeleted &&
+                    s.IsCompiledSuccessfully == false &&
+                    s.Participant.IsOfficial == true &&
+                    s.ProblemId.HasValue &&
+                    problemIds.Contains(s.ProblemId.Value))
+                .Select(s => s.Id)
+                .ToList();
+
+            using (var scope = new TransactionScope())
+            {
+                this.Data.Context.Submissions
+                    .Where(s =>
+                        !s.IsDeleted &&
+                        s.IsCompiledSuccessfully == false &&
+                        s.Participant.IsOfficial == true &&
+                        s.ProblemId.HasValue &&
+                        problemIds.Contains(s.ProblemId.Value))
+                    .Update(x => new Submission { Processed = false });
+
+                this.submissionsForProcessingData.AddOrUpdate(submissionIds);
+
+                scope.Complete();
+            }
+
+            return this.Content($"Successfully enqueued {submissionIds.Count()} submissions for retesting.");
         }
     }
 }

@@ -23,6 +23,8 @@
             container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
             container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
 
+            container.Register<LocalWorkerService>(Lifestyle.Scoped);
+
             container.Register<
                 ISubmissionsForProcessingDataService,
                 SubmissionsForProcessingDataService>(Lifestyle.Scoped);
