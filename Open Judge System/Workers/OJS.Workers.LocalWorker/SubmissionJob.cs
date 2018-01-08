@@ -7,8 +7,6 @@
 
     using log4net;
 
-    using SimpleInjector.Lifestyles;
-
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -17,6 +15,8 @@
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
+
+    using SimpleInjector.Lifestyles;
 
     using ExecutionContext = OJS.Workers.ExecutionStrategies.ExecutionContext;
 

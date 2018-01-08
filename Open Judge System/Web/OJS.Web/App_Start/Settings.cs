@@ -5,6 +5,8 @@
 
     public static class Settings
     {
+        public static string ApiKey => GetSetting("ApiKey");
+
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
 
         public static string DotNetDisassemblerPath => GetSetting("DotNetDisassemblerPath");
@@ -16,6 +18,8 @@
         public static string SvnBaseUrl => GetSetting("SvnBaseUrl");
 
         public static string GetExternalUserUrl => GetSetting("GetExternalUserUrl");
+
+        public static string CanUserCompeteInContestUrl => GetSetting("CanUserCompeteInContestUrl");
 
         public static string LearningSystemSvnDownloadBaseUrl => GetSetting("LearningSystemSvnDownloadBaseUrl");
 

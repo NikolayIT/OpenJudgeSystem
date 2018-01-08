@@ -1,13 +1,18 @@
 ﻿namespace OJS.Common.Models
 {
-    using System.ComponentModel;
+    using OJS.Common.Attributes;
+
+    using Resource = Resources.Enums.EnumTranslations;
 
     public enum ContestType
     {
-        [Description("Практически изпит")]
-        PractialExam = 1,
+        [LocalizedDescription("Onsite_practical_exam", typeof(Resource))]
+        OnsitePracticalExam = 1,
 
-        [Description("Лаб")]
-        Lab = 2
+        [LocalizedDescription("Online_practical_exam", typeof(Resource))]
+        OnlinePracticalExam = 2,
+
+        [LocalizedDescription("Lab", typeof(Resource))]
+        Lab = 3
     }
 }

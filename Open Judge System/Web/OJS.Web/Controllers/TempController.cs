@@ -14,6 +14,7 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
 
@@ -22,15 +23,18 @@
     {
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IContestsDataService contestsData;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.contestsData = contestsData;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -96,6 +100,13 @@
             result.Append("</ol>");
             return this.Content(result.ToString());
         }
+
+        // TODO: Remove this method after updating the entities
+        public void MigrateAllExistingLabsToNewEnumValue() =>
+            this.contestsData
+                .GetAllWithDeleted()
+                .Where(c => c.Type == (ContestType)2)
+                .Update(c => new Contest { Type = ContestType.Lab });
 
         public ActionResult RetestCompileTimeoutSubmissionsFromCSharpDbAdvancedExam10December2017()
         {

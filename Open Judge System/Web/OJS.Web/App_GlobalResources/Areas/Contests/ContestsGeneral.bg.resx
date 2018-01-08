@@ -186,4 +186,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
+  <data name="Compete" xml:space="preserve">
+    <value>Състезавай се</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Problem_not_assigned_to_user" xml:space="preserve">
+    <value>Задачата не е част от вашите задачи за изпита</value>
+  </data>
 </root>

@@ -92,18 +92,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\ParticipantAnswersConfiguration.cs" />
+    <Compile Include="Configurations\ManyToManyTableNamesConfiguration.cs" />
     <Compile Include="Configurations\ParticipantScoresConfiguration.cs" />
+    <Compile Include="Configurations\ProblemsConfiguration.cs" />
     <Compile Include="Configurations\TestRunConfiguration.cs" />
     <Compile Include="Configurations\UserProfileConfiguration.cs" />
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
     <Compile Include="Repositories\ContestsRepository.cs" />
-    <Compile Include="Repositories\Base\DeletableEntityRepository.cs" />
+    <Compile Include="Repositories\Base\EfDeletableEntityRepository.cs" />
     <Compile Include="Repositories\Base\EfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\IContestsRepository.cs" />
     <Compile Include="IOjsData.cs" />
     <Compile Include="IOjsDbContext.cs" />
+    <Compile Include="Repositories\Contracts\IEfDeletableEntityRepository.cs" />
     <Compile Include="Repositories\Contracts\IEfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsRepository.cs" />
     <Compile Include="Repositories\Contracts\ITestRepository.cs" />

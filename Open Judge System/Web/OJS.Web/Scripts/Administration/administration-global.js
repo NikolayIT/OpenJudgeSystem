@@ -11,7 +11,11 @@ function validateModelStateErrors(args) {
 
             $.each(args.errors, function (propertyName) {
                 var renderedTemplate = validationTemplate({ field: propertyName, errors: this.errors });
-                grid.editable.element.find('#errors').append(renderedTemplate);
+                if (grid.editable) {
+                    grid.editable.element.find('#errors').append(renderedTemplate);
+                } else {
+                    window.location.reload();
+                }
             });
 
             $('.k-grid-update').click(function (ev) {
@@ -21,4 +25,3 @@ function validateModelStateErrors(args) {
         });
     }
 }
-

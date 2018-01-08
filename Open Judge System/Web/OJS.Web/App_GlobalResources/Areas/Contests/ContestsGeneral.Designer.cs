@@ -88,6 +88,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compete.
+        /// </summary>
+        public static string Compete {
+            get {
+                return ResourceManager.GetString("Compete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This contest cannot be competed!.
         /// </summary>
         public static string Contest_cannot_be_competed {
@@ -156,6 +165,15 @@ namespace Resources.Areas.Contests {
         public static string Main_categories {
             get {
                 return ResourceManager.GetString("Main_categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The problem is not part of your problems for the exam.
+        /// </summary>
+        public static string Problem_not_assigned_to_user {
+            get {
+                return ResourceManager.GetString("Problem_not_assigned_to_user", resourceCulture);
             }
         }
         
@@ -264,6 +282,15 @@ namespace Resources.Areas.Contests {
         public static string User_is_not_registered_for_exam {
             get {
                 return ResourceManager.GetString("User_is_not_registered_for_exam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

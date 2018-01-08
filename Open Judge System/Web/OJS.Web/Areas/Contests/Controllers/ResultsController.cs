@@ -12,6 +12,8 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using MissingFeatures;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
@@ -133,6 +135,8 @@
                     .Skip((page.Value - 1) * resultsInPage)
                     .Take(resultsInPage)
                     .ToArray();
+
+                contestResults.Results.ForEach(x => x.ProblemResults.ForEach(w => w.IsPartOfUserProblems = x.ParticipantProblemIds.Contains(w.Id)));
 
                 // add page info to View Model
                 contestResults.CurrentPage = page.Value;
@@ -370,6 +374,8 @@
             {
                 Id = contest.Id,
                 Name = contest.Name,
+                ContestType = contest.Type,
+                IsCompete = official,
                 ContestCanBeCompeted = contest.CanBeCompeted,
                 ContestCanBePracticed = contest.CanBePracticed,
                 Problems = contest.Problems
@@ -386,6 +392,7 @@
                         ParticipantUsername = participant.User.UserName,
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
+                        ParticipantProblemIds = participant.Problems.Select(p => p.Id),
                         ProblemResults = participant.Contest.Problems
                             .Where(x => !x.IsDeleted)
                             .Select(problem => new ProblemResultPairViewModel

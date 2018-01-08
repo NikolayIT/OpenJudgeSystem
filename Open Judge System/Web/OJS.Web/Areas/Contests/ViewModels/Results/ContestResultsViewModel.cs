@@ -1,7 +1,7 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
     using System.Collections.Generic;
-
+    using OJS.Common.Models;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     public class ContestResultsViewModel
@@ -21,5 +21,9 @@
         public bool ContestCanBePracticed { get; set; }
 
         public bool UserIsLecturerInContest { get; set; }
+
+        public ContestType ContestType { get; set; }
+
+        public bool IsCompete { get; set; }
     }
 }

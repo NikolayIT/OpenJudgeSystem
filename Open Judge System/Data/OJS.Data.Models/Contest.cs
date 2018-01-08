@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     using OJS.Common;
     using OJS.Common.Models;
@@ -12,21 +12,6 @@
 
     public class Contest : DeletableEntity, IValidatableObject, IOrderable
     {
-        private ICollection<ContestQuestion> questions;
-        private ICollection<Problem> problems;
-        private ICollection<Participant> participants;
-        private ICollection<LecturerInContest> lecturers;
-        private ICollection<ContestIp> allowedIps;
-
-        public Contest()
-        {
-            this.questions = new HashSet<ContestQuestion>();
-            this.problems = new HashSet<Problem>();
-            this.participants = new HashSet<Participant>();
-            this.lecturers = new HashSet<LecturerInContest>();
-            this.allowedIps = new HashSet<ContestIp>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -47,6 +32,15 @@
         public virtual ContestCategory Category { get; set; }
 
         public ContestType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration of online contest in which a participant can compete
+        /// </summary>
+        /// <remarks>
+        /// If duration is null the actual duration is the difference between 
+        /// start and end time of the contest
+        /// </remarks>
+        public TimeSpan? Duration { get; set; }
 
         /// <remarks>
         /// If StartTime is null the contest cannot be competed.
@@ -88,43 +82,23 @@
         /// </remarks>
         public DateTime? PracticeEndTime { get; set; }
 
-        [DefaultValue(0)]
         public int LimitBetweenSubmissions { get; set; }
 
-        [DefaultValue(0)]
         public int OrderBy { get; set; }
+
+        public short NumberOfProblemGroups { get; set; }
 
         public string Description { get; set; }
 
-        public virtual ICollection<LecturerInContest> Lecturers
-        {
-            get { return this.lecturers; }
-            set { this.lecturers = value; }
-        }
+        public virtual ICollection<LecturerInContest> Lecturers { get; set; } = new HashSet<LecturerInContest>();
 
-        public virtual ICollection<ContestQuestion> Questions
-        {
-            get { return this.questions; }
-            set { this.questions = value; }
-        }
+        public virtual ICollection<ContestQuestion> Questions { get; set; } = new HashSet<ContestQuestion>();
 
-        public virtual ICollection<Problem> Problems
-        {
-            get { return this.problems; }
-            set { this.problems = value; }
-        }
+        public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
 
-        public virtual ICollection<Participant> Participants
-        {
-            get { return this.participants; }
-            set { this.participants = value; }
-        }
+        public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
-        public virtual ICollection<ContestIp> AllowedIps
-        {
-            get { return this.allowedIps; }
-            set { this.allowedIps = value; }
-        }
+        public virtual ICollection<ContestIp> AllowedIps { get; set; } = new HashSet<ContestIp>();
 
         [NotMapped]
         public bool CanBeCompeted
@@ -189,6 +163,14 @@
         }
 
         [NotMapped]
+        public bool IsActive => this.CanBeCompeted ||
+            (this.Type == ContestType.OnlinePracticalExam &&
+                this.Participants.Any(p =>
+                    p.IsOfficial &&
+                    p.ContestEndTime.HasValue &&
+                    p.ContestEndTime.Value >= DateTime.Now));
+
+        [NotMapped]
         public bool ResultsArePubliclyVisible
         {
             get
@@ -219,6 +201,9 @@
         [NotMapped]
         public bool HasPracticePassword => this.PracticePassword != null;
 
+        [NotMapped]
+        public bool IsOnline => this.Type == ContestType.OnlinePracticalExam;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var validationResults = new List<ValidationResult>();
@@ -238,9 +223,6 @@
             return validationResults;
         }
 
-        public override string ToString()
-        {
-            return $"#{this.Id} {this.Name}";
-        }
+        public override string ToString() => $"#{this.Id} {this.Name}";
     }
 }

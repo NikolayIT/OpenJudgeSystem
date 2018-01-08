@@ -1,5 +1,6 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
+@using OJS.Common.Models
 @using OJS.Web.Areas.Contests.Controllers
 @using OJS.Web.ViewModels.Shared
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
@@ -95,7 +96,16 @@
                         {
                             if (participantResult.BestSubmission == null)
                             {
-                                <td>0</td>
+                                if (!participantResult.IsPartOfUserProblems &&
+                                    Model.IsCompete &&
+                                    Model.ContestType == ContestType.OnlinePracticalExam)
+                                {
+                                    <td>-</td>
+                                }
+                                else
+                                {
+                                    <td>0</td>
+                                }
                             }
                             else
                             {
@@ -106,7 +116,16 @@
                         {
                             if (participantResult.BestSubmission == null)
                             {
-                                <td>0</td>
+                                if (!participantResult.IsPartOfUserProblems &&
+                                    Model.IsCompete &&
+                                    Model.ContestType == ContestType.OnlinePracticalExam)
+                                {
+                                    <td>-</td>
+                                }
+                                else
+                                {
+                                    <td>0</td>
+                                }
                             }
                             else
                             {

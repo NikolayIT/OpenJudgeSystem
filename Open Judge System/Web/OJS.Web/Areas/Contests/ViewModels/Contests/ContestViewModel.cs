@@ -7,6 +7,7 @@
     using System.Linq.Expressions;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
 
@@ -33,18 +34,21 @@
                         PracticeEndTime = contest.PracticeEndTime,
                         IsDeleted = contest.IsDeleted,
                         IsVisible = contest.IsVisible,
+                        IsOnline = contest.Type == ContestType.OnlinePracticalExam,
                         ContestPassword = contest.ContestPassword,
                         PracticePassword = contest.PracticePassword,
                         HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
                         HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
+                        ContestType = contest.Type,
                         OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
                         PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
                         ProblemsCount = contest.Problems.Count(x => !x.IsDeleted),
-                        Problems = contest.Problems.AsQueryable()
-                                                                    .Where(x => !x.IsDeleted)
-                                                                    .OrderBy(x => x.OrderBy)
-                                                                    .ThenBy(x => x.Name)
-                                                                    .Select(ContestProblemViewModel.FromProblem),
+                        Problems = contest.Problems
+                            .AsQueryable()
+                            .Where(x => !x.IsDeleted)
+                            .OrderBy(x => x.OrderBy)
+                            .ThenBy(x => x.Name)
+                            .Select(ContestProblemViewModel.FromProblem),
                         LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                         Description = contest.Description,
                         AllowedSubmissionTypes = contest.Problems.AsQueryable().SelectMany(p => p.SubmissionTypes).GroupBy(st => st.Id).Select(g => g.FirstOrDefault()).Select(SubmissionTypeViewModel.FromSubmissionType),
@@ -57,13 +61,15 @@
         [Display(Name = "Name", ResourceType = typeof(Resource))]
         public string Name { get; set; }
 
+        public int Type { get; set; }
+
         public int? CategoryId { get; set; }
 
         public string CategoryName
         {
-            get { return this.contestName.ToUrl(); }
+            get => this.contestName.ToUrl();
 
-            set { this.contestName = value; }
+            set => this.contestName = value;
         }
 
         public string Description { get; set; }
@@ -82,6 +88,8 @@
 
         public bool IsVisible { get; set; }
 
+        public bool IsOnline { get; set; }
+
         public string ContestPassword { private get; set; }
 
         public string PracticePassword { private get; set; }
@@ -95,6 +103,8 @@
         public int PracticeParticipants { get; set; }
 
         public int ProblemsCount { get; set; }
+
+        public ContestType ContestType { get; set; }
 
         public IEnumerable<SubmissionTypeViewModel> AllowedSubmissionTypes { get; set; }
 
@@ -201,6 +211,12 @@
             }
         }
 
-        public bool UserIsLecturerInContest { get; set; }
+        public bool UserIsAdminOrLecturerInContest { get; set; }
+
+        public bool UserCanCompete { get; set; }
+
+        public bool UserIsParticipant { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
