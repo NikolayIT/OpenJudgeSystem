@@ -5,7 +5,7 @@
 
     using OJS.Data.Contracts;
 
-    public class ProblemGroup : IOrderable
+    public class ProblemGroup : DeletableEntity, IOrderable
     {
         [Key]
         public int Id { get; set; }
