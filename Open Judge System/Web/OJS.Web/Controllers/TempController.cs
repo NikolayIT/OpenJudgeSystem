@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -141,7 +142,7 @@
             return this.Content($"Successfully enqueued {submissionIds.Count()} submissions for retesting.");
         }
 
-        public ActionResult MigrateProblemsFromContestsToOneProblemGroup()
+        public ActionResult MigrateProblemsToIndividualGroups()
         {
             var contests = this.Data.Contests
                 .AllWithDeleted()
@@ -150,20 +151,25 @@
                 .ToList();
 
             var output = new StringBuilder();
-            output.Append($"Done! {contests.Count} contests affected: <ol>");
+            output.Append($"Done! contests affected: {contests.Count} <ol>");
 
             foreach (var contest in contests)
             {
-                var problemGroup = new ProblemGroup
+                foreach (var problem in contest.Problems)
                 {
-                    Contest = contest,
-                    Problems = contest.Problems
-                };
+                    var problemGroup = new ProblemGroup
+                    {
+                        OrderBy = problem.OrderBy,
+                        CreatedOn = DateTime.Now
+                    };
 
-                contest.ProblemGroups.Add(problemGroup);
+                    problemGroup.Problems.Add(problem);
+
+                    contest.ProblemGroups.Add(problemGroup);
+                }
 
                 output.Append($"<li>For Contest with <strong>ID:{contest.Id}</strong>: " +
-                    $"Added one Problem Group with <strong>{contest.Problems.Count}</strong> problems</li>");
+                    $"Added <strong>{contest.Problems.Count}</strong> Problem Groups</li>");
             }
 
             this.Data.SaveChanges();
@@ -172,7 +178,7 @@
             return this.Content(output.ToString());
         }
 
-        public ActionResult MigrateProblemsFromContestsToMoreThanOneProblemGroups()
+        public ActionResult MigrateProblemsToSharedGroups()
         {
             var contests = this.Data.Contests
                 .AllWithDeleted()
@@ -181,7 +187,7 @@
                 .ToList();
 
             var output = new StringBuilder();
-            output.Append($"Done! {contests.Count} contests affected: <ol>");
+            output.Append($"Done! contests affected: {contests.Count} <ol>");
 
             foreach (var contest in contests)
             {
@@ -191,14 +197,12 @@
                     var groupNumber = i + 1;
                     var problems = contest.Problems.Where(p => p.GroupNumber == groupNumber).ToList();
 
-                    var problemGroup = new ProblemGroup
+                    contest.ProblemGroups.Add(new ProblemGroup
                     {
-                        Contest = contest,
                         Problems = problems,
-                        OrderBy = i
-                    };
-
-                    contest.ProblemGroups.Add(problemGroup);
+                        OrderBy = i,
+                        CreatedOn = DateTime.Now
+                    });
 
                     output.Append($"<li>Group with <strong>{problems.Count}</strong> problems</li>");
                 }
