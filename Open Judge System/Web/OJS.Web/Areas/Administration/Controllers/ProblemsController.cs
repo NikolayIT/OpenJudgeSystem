@@ -28,6 +28,7 @@
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -51,19 +52,22 @@
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
         private readonly IProblemsDataService problemsData;
+        private readonly IProblemGroupsDataService problemGroupsData;
 
         public ProblemsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
-            IProblemsDataService problemsData)
+            IProblemsDataService problemsData,
+            IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
             this.problemsData = problemsData;
+            this.problemGroupsData = problemGroupsData;
         }
 
         public ActionResult Index()
@@ -249,6 +253,26 @@
                         });
                     return this.View(problem);
                 }
+            }
+
+            var problemGroupOrderBy = problem.GroupNumber.HasValue && problem.GroupNumber >= 1
+                ? problem.GroupNumber - 1
+                : null;
+
+            var exitingProblemGroupId = this.problemGroupsData
+                .GetIdByContestAndOrderBy(contest.Id, problemGroupOrderBy);
+
+            if (exitingProblemGroupId == null)
+            {
+                newProblem.ProblemGroup = new ProblemGroup
+                {
+                    ContestId = contest.Id,
+                    OrderBy = contest.ProblemGroups.Count
+                };
+            }
+            else
+            {
+                newProblem.ProblemGroupId = exitingProblemGroupId;
             }
 
             this.Data.Problems.Add(newProblem);
