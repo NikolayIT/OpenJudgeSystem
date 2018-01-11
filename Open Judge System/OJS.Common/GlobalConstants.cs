@@ -106,6 +106,10 @@
         public const int ContestQuestionAnswerMaxLength = 100;
         public const int ContestQuestionAnswerMinLength = 1;
 
+        // ExamGroup Constants
+        public const int TrainingLabNameMaxLength = 200;
+        public const int TrainingLabNameMinLength = 3;
+
         // Administration
         public const int CheckerNameMaxLength = 100;
         public const int CheckerNameMinLength = 1;

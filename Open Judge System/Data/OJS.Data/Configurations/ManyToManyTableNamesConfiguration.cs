@@ -7,6 +7,7 @@
     public static class ManyToManyTableNamesConfiguration
     {
         private const string ProblemsForParticipantsTableName = "ProblemsForParticipants";
+        private const string UsersInExamGroupsTableName = "UsersInExamGroups";
 
         public static void Configure(DbModelBuilder modelBuilder)
         {
@@ -22,6 +23,15 @@
                 .Map(pp =>
                 {
                     pp.ToTable(ProblemsForParticipantsTableName);
+                });
+
+            modelBuilder
+                .Entity<ExamGroup>()
+                .HasMany(eg => eg.Users)
+                .WithMany(u => u.ExamGroups)
+                .Map(m =>
+                {
+                    m.ToTable(UsersInExamGroupsTableName);
                 });
         }
     }
