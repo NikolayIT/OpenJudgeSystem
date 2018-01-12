@@ -6,6 +6,10 @@
     {
         public int Id { get; set; }
 
+        public string ExamNameBg { get; set; }
+
+        public string ExamNameEn { get; set; }
+
         public string ExamGroupTrainingLabNameBg { get; set; }
 
         public string ExamGroupTrainingLabNameEn { get; set; }

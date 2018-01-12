@@ -15,13 +15,23 @@
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
+        [MinLength(GlobalConstants.ExamNameMinLength)]
+        [MaxLength(GlobalConstants.ExamNameMaxLength)]
+        public string ExamNameBg { get; set; }
+
+        [Required]
+        [MinLength(GlobalConstants.ExamNameMinLength)]
+        [MaxLength(GlobalConstants.ExamNameMaxLength)]
+        public string ExamNameEn { get; set; }
+
+        [Required]
         [MinLength(GlobalConstants.TrainingLabNameMinLength)]
+        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
         public string TrainingLabNameBg { get; set; }
 
         [Required]
-        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
         [MinLength(GlobalConstants.TrainingLabNameMinLength)]
+        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
         public string TrainingLabNameEn { get; set; }
 
         public DateTime? StartDate { get; set; }
