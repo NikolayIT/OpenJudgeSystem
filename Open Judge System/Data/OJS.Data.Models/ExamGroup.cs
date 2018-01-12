@@ -1,42 +1,30 @@
 ﻿namespace OJS.Data.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Common;
-    using OJS.Data.Contracts;
 
-    public class ExamGroup : DeletableEntity
+    public class ExamGroup
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(GlobalConstants.ExamNameMinLength)]
-        [MaxLength(GlobalConstants.ExamNameMaxLength)]
-        public string ExamNameBg { get; set; }
+        [Index]
+        public int? ExternalExamGroupId { get; set; }
+
+        public string AppTenant { get; set; }
 
         [Required]
-        [MinLength(GlobalConstants.ExamNameMinLength)]
-        [MaxLength(GlobalConstants.ExamNameMaxLength)]
-        public string ExamNameEn { get; set; }
+        [MinLength(GlobalConstants.ExamGroupNameMinLength)]
+        [MaxLength(GlobalConstants.ExamGroupNameMaxLength)]
+        public string NameBg { get; set; }
 
         [Required]
-        [MinLength(GlobalConstants.TrainingLabNameMinLength)]
-        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
-        public string TrainingLabNameBg { get; set; }
-
-        [Required]
-        [MinLength(GlobalConstants.TrainingLabNameMinLength)]
-        [MaxLength(GlobalConstants.TrainingLabNameMaxLength)]
-        public string TrainingLabNameEn { get; set; }
-
-        public DateTime? StartDate { get; set; }
-
-        public DateTime? EndTate { get; set; }
+        [MinLength(GlobalConstants.ExamGroupNameMinLength)]
+        [MaxLength(GlobalConstants.ExamGroupNameMaxLength)]
+        public string NameEn { get; set; }
 
         public int? ContestId { get; set; }
 
