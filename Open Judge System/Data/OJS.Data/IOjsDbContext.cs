@@ -12,6 +12,8 @@
 
         IDbSet<Contest> Contests { get; }
 
+        IDbSet<ExamGroup> ExamGroups { get; }
+
         IDbSet<Problem> Problems { get; }
 
         IDbSet<News> News { get; }

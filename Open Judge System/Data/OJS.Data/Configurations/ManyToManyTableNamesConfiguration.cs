@@ -26,11 +26,13 @@
                 });
 
             modelBuilder
-                .Entity<ExamGroup>()
-                .HasMany(eg => eg.Users)
-                .WithMany(u => u.ExamGroups)
+                .Entity<UserProfile>()
+                .HasMany(u => u.ExamGroups)
+                .WithMany(eg => eg.Users)
                 .Map(m =>
                 {
+                    m.MapLeftKey("UserId");
+                    m.MapRightKey("ExamGroupId");
                     m.ToTable(UsersInExamGroupsTableName);
                 });
         }
