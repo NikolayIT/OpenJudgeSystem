@@ -24,9 +24,9 @@
             this.examGroups.SaveChanges();
         }
 
-        public ExamGroup GetByExternalIdAndAppTenant(int? externalId, string appTenant) =>
+        public ExamGroup GetByExternalIdAndAppId(int? externalId, string appId) =>
             this.examGroups
-            .All()
-            .FirstOrDefault(eg => eg.ExternalExamGroupId == externalId && eg.AppTenant == appTenant);
+                .All()
+                .FirstOrDefault(eg => eg.ExternalExamGroupId == externalId && eg.ExternalAppId == appId);
     }
 }

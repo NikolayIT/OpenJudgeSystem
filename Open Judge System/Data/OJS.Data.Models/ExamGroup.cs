@@ -11,10 +11,9 @@
         [Key]
         public int Id { get; set; }
 
-        [Index]
         public int? ExternalExamGroupId { get; set; }
 
-        public string AppTenant { get; set; }
+        public string ExternalAppId { get; set; }
 
         [Required]
         [MinLength(GlobalConstants.ExamGroupNameMinLength)]

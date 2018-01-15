@@ -9,6 +9,6 @@
 
         void Update(ExamGroup examGroup);
 
-        ExamGroup GetByExternalIdAndAppTenant(int? externalId, string appTenant);
+        ExamGroup GetByExternalIdAndAppId(int? externalId, string appId);
     }
 }

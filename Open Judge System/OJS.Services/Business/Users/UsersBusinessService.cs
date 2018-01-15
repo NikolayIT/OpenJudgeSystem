@@ -1,20 +1,13 @@
 ﻿namespace OJS.Services.Business.Users
 {
-    using System;
-
-    using OJS.Services.Data.Users;
+    using OJS.Data.Models;
 
     public class UsersBusinessService : IUsersBusinessService
     {
-        private readonly IUsersDataService usersData;
-
-        public UsersBusinessService(IUsersDataService usersData) =>
-            this.usersData = usersData;
-
-        public void AddToExamGroupByIdAndExternalExamGroup(string userId, int? externalExamGroupId)
+        public UserProfile RegisterById(string userId)
         {
-            //TODO: 
-            throw new NotImplementedException();
+            // TODO:
+            return null;
         }
     }
 }
