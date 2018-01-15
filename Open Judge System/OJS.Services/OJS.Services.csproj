@@ -51,6 +51,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,14 +62,14 @@
   <ItemGroup>
     <Compile Include="Business\Contests\ContestsBusinessService.cs" />
     <Compile Include="Business\Contests\IContestsBusinessService.cs" />
+    <Compile Include="Business\ExamGroups\ExamGroupsBusinessService.cs" />
+    <Compile Include="Business\ExamGroups\IExamGroupsBusinessService.cs" />
     <Compile Include="Business\ParticipantScores\IParticipantScoresBusinessService.cs" />
     <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
     <Compile Include="Business\Participants\IParticipantsBusinessService.cs" />
     <Compile Include="Business\Participants\ParticipantsBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
-    <Compile Include="Business\Users\IUsersBusinessService.cs" />
-    <Compile Include="Business\Users\UsersBusinessService.cs" />
     <Compile Include="Data\Contests\ContestsDataService.cs" />
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />

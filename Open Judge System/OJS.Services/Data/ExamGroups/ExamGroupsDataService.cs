@@ -24,6 +24,8 @@
             this.examGroups.SaveChanges();
         }
 
+        public ExamGroup GetById(int id) => this.examGroups.GetById(id);
+
         public ExamGroup GetByExternalIdAndAppId(int? externalId, string appId) =>
             this.examGroups
                 .All()

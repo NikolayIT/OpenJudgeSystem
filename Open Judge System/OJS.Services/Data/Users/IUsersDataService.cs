@@ -1,10 +1,12 @@
 ﻿namespace OJS.Services.Data.Users
 {
+    using System.Threading.Tasks;
+
     using OJS.Data.Models;
     using OJS.Services.Common;
 
     public interface IUsersDataService : IService
     {
-        UserProfile GetByUserIdIncludingDeleted(string userId);
+        Task<UserProfile> GetByIdIncludingDeletedAsync(string userId);
     }
 }

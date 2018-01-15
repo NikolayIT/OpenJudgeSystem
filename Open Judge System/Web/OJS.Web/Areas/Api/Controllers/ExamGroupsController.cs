@@ -1,30 +1,33 @@
 ﻿namespace OJS.Web.Areas.Api.Controllers
 {
     using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Mvc;
 
+    using OJS.Common;
     using OJS.Data.Models;
-    using OJS.Services.Business.Users;
+    using OJS.Services.Business.ExamGroups;
+    using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.ExamGroups;
-    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Api.Models;
+    using OJS.Web.ViewModels.Account;
 
     public class ExamGroupsController : Controller
     {
         private const string GeneralDateTimeShortFormat = "g";
 
-        private readonly IUsersBusinessService usersBusiness;
         private readonly IExamGroupsDataService examGroupsData;
-        private readonly IUsersDataService usersData;
+        private readonly IHangfireBackgroundJobService backgroundJobs;
 
         public ExamGroupsController(
-            IUsersBusinessService usersBusiness,
             IExamGroupsDataService examGroupsData,
-            IUsersDataService usersData)
+            IHangfireBackgroundJobService backgroundJobs)
         {
-            this.usersBusiness = usersBusiness;
             this.examGroupsData = examGroupsData;
-            this.usersData = usersData;
+            this.backgroundJobs = backgroundJobs;
         }
 
         public ActionResult AddUsersToExamGroup(UsersExamGroupModel model)
@@ -57,19 +60,6 @@
 
             examGroup.NameBg = nameBg;
             examGroup.NameEn = nameEn;
-            
-            foreach (var userId in model.UserIds)
-            {
-                var user = this.usersData.GetByUserIdIncludingDeleted(userId)
-                    ?? this.usersBusiness.RegisterById(userId);
-
-                if (user.IsDeleted)
-                {
-                    user.IsDeleted = false;
-                }
-
-                examGroup.Users.Add(user);
-            }
 
             if (examGroupExists)
             {
@@ -78,7 +68,12 @@
             else
             {
                 this.examGroupsData.Add(examGroup);
-            }  
+            }
+
+            var examGroupId = this.examGroupsData.GetByExternalIdAndAppId(sulsExamGroup.Id, model.AppId).Id;
+
+            this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                x => x.AddUsersByIdAndUserIds(examGroupId, model.UserIds));
 
             return this.Json(true);
         }
@@ -105,6 +100,24 @@
                 !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamGroupTrainingLabNameEn);           
 
             return hasUsers && hasExamGroupId && hasAppId && hasRequiredNames;
+        }
+
+        private async Task<ExternalUserViewModel> GetExternalUserInfoByIdAsync(string userId)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
+                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
+
+                var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userId });
+                if (response.IsSuccessStatusCode)
+                {
+                    var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
+                    return externalUser;
+                }
+
+                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
+            }
         }
     }
 }
