@@ -67,6 +67,7 @@
             return false;
         }
 
+        // TODO: Extract different logic blocks in separate services
         public ServiceResult TransferParticipantsToPracticeById(int contestId)
         {
             var contest = this.contestsData.GetById(contestId);
