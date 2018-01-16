@@ -18,5 +18,7 @@
             string userId,
             bool isAdmin,
             bool allowToAdminAlways = false);
+
+        ServiceResult TransferParticipantsToPracticeById(int contestId);
     }
 }
