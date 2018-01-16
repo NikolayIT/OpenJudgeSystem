@@ -7,5 +7,7 @@
     public interface IExamGroupsBusinessService : IService
     {
         void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
+
+        void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
     }
 }

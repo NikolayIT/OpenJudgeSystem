@@ -29,6 +29,6 @@
 
         public virtual Contest Contest { get; set; }
 
-        public ICollection<UserProfile> Users { get; set; } = new HashSet<UserProfile>();
+        public virtual ICollection<UserProfile> Users { get; set; } = new HashSet<UserProfile>();
     }
 }

@@ -31,23 +31,23 @@
                 return this.Json(false);
             }
 
-            var sulsExamGroup = model.ExamGroupInfoModel;
+            var externalExamGroup = model.ExamGroupInfoModel;
 
-            var startTime = sulsExamGroup.StartTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
-            var endTime = sulsExamGroup.EndTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
+            var startTime = externalExamGroup.StartTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
+            var endTime = externalExamGroup.EndTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
 
-            var nameBg = $"{sulsExamGroup.ExamNameBg} - {sulsExamGroup.ExamGroupTrainingLabNameBg} | {startTime} - {endTime}";
-            var nameEn = $"{sulsExamGroup.ExamNameEn} - {sulsExamGroup.ExamGroupTrainingLabNameEn} | {startTime} - {endTime}";
+            var nameBg = $"{externalExamGroup.ExamNameBg} - {externalExamGroup.ExamGroupTrainingLabNameBg} | {startTime} - {endTime}";
+            var nameEn = $"{externalExamGroup.ExamNameEn} - {externalExamGroup.ExamGroupTrainingLabNameEn} | {startTime} - {endTime}";
 
             var examGroupExists = true;
-            var examGroup = this.examGroupsData.GetByExternalIdAndAppId(sulsExamGroup.Id, model.AppId);
+            var examGroup = this.examGroupsData.GetByExternalIdAndAppId(externalExamGroup.Id, model.AppId);
 
             if (examGroup == null)
             {
                 examGroupExists = false;
                 examGroup = new ExamGroup
                 {
-                    ExternalExamGroupId = sulsExamGroup.Id,
+                    ExternalExamGroupId = externalExamGroup.Id,
                     ExternalAppId = model.AppId
                 };
             }
@@ -64,10 +64,14 @@
                 this.examGroupsData.Add(examGroup);
             }
 
-            var examGroupId = this.examGroupsData.GetByExternalIdAndAppId(sulsExamGroup.Id, model.AppId).Id;
+            var examGroupId = this.examGroupsData
+                .GetByExternalIdAndAppId(externalExamGroup.Id, model.AppId)?.Id;
 
-            this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                x => x.AddUsersByIdAndUserIds(examGroupId, model.UserIds));
+            if (examGroupId.HasValue)
+            {
+                this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                    x => x.AddUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+            }
 
             return this.Json(true);
         }
@@ -79,7 +83,15 @@
                 return this.Json(false);
             }
 
-            // TODO: add logc for removing users from exam group
+            var examGroupId = this.examGroupsData
+                .GetByExternalIdAndAppId(model.ExamGroupInfoModel.Id, model.AppId)?.Id;
+
+            if (examGroupId.HasValue)
+            {
+                this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                    x => x.RemoveUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+            }
+
             return this.Json(true);
         }
 

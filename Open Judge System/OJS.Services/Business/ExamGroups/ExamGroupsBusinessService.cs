@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web;
 
     using OJS.Common;
@@ -12,6 +13,9 @@
 
     public class ExamGroupsBusinessService : IExamGroupsBusinessService
     {
+        // TODO: Add to Resource
+        private const string ExamGroupCannotBeNullMessage = "Exam group cannot be null";
+
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
         private readonly IHttpRequesterService httpRequester;
@@ -32,7 +36,7 @@
 
             if (examGroup == null)
             {
-                throw new ArgumentNullException(nameof(examGroup), "Exam group cannot be null");
+                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
             }
 
             foreach (var userId in userIds)
@@ -64,6 +68,20 @@
 
                 examGroup.Users.Add(user);
             }
+
+            this.examGroupsData.Update(examGroup);
+        }
+
+        public void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
+        {
+            var examGroup = this.examGroupsData.GetById(id);
+
+            if (examGroup == null)
+            {
+                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
+            }
+
+            examGroup.Users = examGroup.Users.Where(u => !userIds.Contains(u.Id)).ToList();
 
             this.examGroupsData.Update(examGroup);
         }
