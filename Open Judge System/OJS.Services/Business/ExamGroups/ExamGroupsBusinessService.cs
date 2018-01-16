@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Web;
 
     using OJS.Common;
@@ -27,7 +26,7 @@
             this.httpRequester = httpRequester;
         }
 
-        public async Task AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
+        public void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
         {
             var examGroup = this.examGroupsData.GetById(id);
 
@@ -38,44 +37,35 @@
 
             foreach (var userId in userIds)
             {
-                var user = await this.usersData.GetByIdIncludingDeletedAsync(userId);
+                var user = this.usersData.GetByIdIncludingDeleted(userId);
 
                 if (user == null)
                 {
-                    ExternalUserViewModel externalUser;
-
                     // TODO: inject strings
-                    var response = await this.httpRequester.GetAsync<ExternalUserViewModel>(
-                        userId,
+                    var response = this.httpRequester.Get<ExternalUserViewModel>(
+                        new { userId },
                         string.Format(UrlConstants.GetUserInfoById, "https://localhost:44308"),
                         "apiKey");
 
-                    if (response.IsSuccess)
+                    if (response.IsSuccess && response.Data != null)
                     {
-                        externalUser = response.Data;
+                        user = response.Data.Entity;
                     }
                     else
                     {
                         throw new HttpException(response.ErrorMessage);
                     }
-
-                    if (externalUser != null)
-                    {
-                        user = externalUser.Entity;
-                    }
                 }
-                else
+
+                if (user.IsDeleted)
                 {
-                    if (user.IsDeleted)
-                    {
-                        user.IsDeleted = false;
-                    }
+                    user.IsDeleted = false;
                 }
 
                 examGroup.Users.Add(user);
-
-                this.examGroupsData.Update(examGroup);
             }
+
+            this.examGroupsData.Update(examGroup);
         }
     }
 }

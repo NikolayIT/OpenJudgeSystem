@@ -11,21 +11,72 @@
 
     public class HttpRequesterService : IHttpRequesterService
     {
-        public async Task<ExternalDataRetrievalResult<TData>> GetAsync<TData>(object requestData, string url, string apiKey)
+        // TODO: Add to resource
+        private const string InvalidUrlMessage = "Невалиден URL.";
+        private const string InvalidApiKeyMessage = "Невалиден API ключ.";
+        private const string ErrorInConnectingToTheRemoteServerMessage = "Грешка при връзката с отдалечения сървър.";
+
+        public ExternalDataRetrievalResult<TData> Get<TData>(object requestData, string url, string apiKey)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                // TODO: Add to resource
-                throw new ArgumentException("Невалиден URL.", nameof(url));
+                throw new ArgumentException(InvalidUrlMessage, nameof(url));
             }
 
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                // TODO: Add to resource
-                throw new ArgumentException("Невалиден API ключ.", nameof(apiKey));
+                throw new ArgumentException(InvalidApiKeyMessage, nameof(apiKey));
             }
 
-            return await InternalGetAsync<TData>(requestData, url, apiKey);
+            return InternalGet<TData>(requestData, url, apiKey);
+        }
+       
+        public Task<ExternalDataRetrievalResult<TData>> GetAsync<TData>(object requestData, string url, string apiKey)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+
+                throw new ArgumentException(InvalidUrlMessage, nameof(url));
+            }
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                throw new ArgumentException(InvalidApiKeyMessage, nameof(apiKey));
+            }
+
+            return InternalGetAsync<TData>(requestData, url, apiKey);
+        }
+
+        private static ExternalDataRetrievalResult<TData> InternalGet<TData>(
+            object requestData,
+            string url,
+            string apiKey)
+        {
+            var externalDataResult = new ExternalDataRetrievalResult<TData>();
+
+            var queryStringSeparator = GetQueryStringSeparator(url);
+            var requestUrl = $"{url}{queryStringSeparator}apiKey={apiKey}";
+
+            using (var httpClient = new HttpClient())
+            {
+                // Using POST because of chance of enormous request data
+                var response = httpClient.PostAsJsonAsync(requestUrl, requestData).GetAwaiter().GetResult();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var responseContentStream = response.Content.ReadAsStreamAsync().Result)
+                    {
+                        externalDataResult.Data = DeserializeJson<TData>(responseContentStream);
+                    }
+                }
+                else
+                {
+                    externalDataResult.ErrorMessage = response.Content.ReadAsStringAsync().Result
+                        ?? ErrorInConnectingToTheRemoteServerMessage;
+                }
+            }
+
+            return externalDataResult;
         }
 
         private static async Task<ExternalDataRetrievalResult<TData>> InternalGetAsync<TData>(
@@ -54,9 +105,8 @@
                 }
                 else
                 {
-                    // TODO: Add to resource
                     externalDataResult.ErrorMessage = await response.Content.ReadAsStringAsync()
-                        ?? "Грешка при връзката с отдалечения сървър.";
+                        ?? ErrorInConnectingToTheRemoteServerMessage;
                 }
             }
 

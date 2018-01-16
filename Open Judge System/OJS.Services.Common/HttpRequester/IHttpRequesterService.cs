@@ -6,6 +6,11 @@
 
     public interface IHttpRequesterService : IService
     {
+        ExternalDataRetrievalResult<TData> Get<TData>(
+            object requestData,
+            string url,
+            string apiKey);
+
         Task<ExternalDataRetrievalResult<TData>> GetAsync<TData>(
             object requestData,
             string url,

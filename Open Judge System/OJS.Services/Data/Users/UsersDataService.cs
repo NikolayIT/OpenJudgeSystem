@@ -1,8 +1,6 @@
 ﻿namespace OJS.Services.Data.Users
 {
-    using System.Data.Entity;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -14,8 +12,8 @@
         public UsersDataService(IEfDeletableEntityRepository<UserProfile> users) =>
             this.users = users;
 
-        public async Task<UserProfile> GetByIdIncludingDeletedAsync(string userId) =>
-            await this.users.AllWithDeleted().FirstOrDefaultAsync(u => u.Id == userId);
+        public UserProfile GetByIdIncludingDeleted(string userId) =>
+            this.users.AllWithDeleted().FirstOrDefault(u => u.Id == userId);
 
         public UserProfile GetById(string id) =>
             this.users.All().FirstOrDefault(u => u.Id == id);

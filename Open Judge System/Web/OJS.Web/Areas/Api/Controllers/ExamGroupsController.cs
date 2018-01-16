@@ -1,19 +1,13 @@
 ﻿namespace OJS.Web.Areas.Api.Controllers
 {
     using System.Linq;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Common;
     using OJS.Data.Models;
     using OJS.Services.Business.ExamGroups;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.ExamGroups;
     using OJS.Web.Areas.Api.Models;
-    using OJS.Web.ViewModels.Account;
 
     public class ExamGroupsController : Controller
     {
@@ -100,24 +94,6 @@
                 !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamGroupTrainingLabNameEn);           
 
             return hasUsers && hasExamGroupId && hasAppId && hasRequiredNames;
-        }
-
-        private async Task<ExternalUserViewModel> GetExternalUserInfoByIdAsync(string userId)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
-                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
-
-                var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userId });
-                if (response.IsSuccessStatusCode)
-                {
-                    var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
-                    return externalUser;
-                }
-
-                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
-            }
         }
     }
 }
