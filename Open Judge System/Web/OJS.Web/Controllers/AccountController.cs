@@ -1,8 +1,5 @@
 ﻿namespace OJS.Web.Controllers
 {
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -14,16 +11,21 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Common.HttpRequester;
     using OJS.Web.Common;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Account;
 
     [Authorize]
     public class AccountController : BaseController
     {
-        public AccountController(IOjsData data)
-            : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext)))
-        {
-        }
+        private readonly IHttpRequesterService httpRequester;
+
+        public AccountController(
+            IOjsData data,
+            IHttpRequesterService httpRequester)
+            : this(data, new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext))) =>
+                this.httpRequester = httpRequester;
 
         protected AccountController(IOjsData data, UserManager<UserProfile> userManager)
             : base(data) => this.UserManager = userManager;
@@ -44,36 +46,45 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                ExternalUserViewModel externalUser;
-                try
-                {
-                    externalUser = await this.GetExternalUser(model.UserName);
-                }
-                catch (Exception)
-                {
-                    this.TempData[GlobalConstants.InfoMessage] = Resources.Account.AccountControllers.Inactive_login_system;
-                    return this.RedirectToAction("Index", "Home", new { area = string.Empty });
-                }
-
-                if (externalUser != null)
-                {
-                    var userEntity = externalUser.Entity;
-                    this.AddOrUpdateUser(userEntity);
-
-                    var user = await this.UserManager.FindAsync(model.UserName, model.Password);
-                    if (user != null)
-                    {
-                        await this.SignInAsync(userEntity, model.RememberMe);
-                        return this.RedirectToLocal(returnUrl);
-                    }
-                }
-
-                this.ModelState.AddModelError(string.Empty, Resources.Account.AccountViewModels.Invalid_username_or_password);
+                return this.View(model);
             }
 
-            // If we got this far, something failed, redisplay form
+            ExternalUserViewModel externalUser;
+
+            var result = await this.httpRequester.GetAsync<ExternalUserViewModel>(
+                new { model.UserName },
+                string.Format(UrlConstants.GetUserInfoByUsername, Settings.SulsPlatformBaseUrl),
+                Settings.ApiKey);
+
+            if (result.IsSuccess)
+            {
+                externalUser = result.Data;
+            }
+            else
+            {
+                this.TempData.AddInfoMessage(Resources.Account.AccountControllers.Inactive_login_system);
+                return this.RedirectToHome();
+            }
+
+            if (externalUser != null)
+            {
+                var userEntity = externalUser.Entity;
+                this.AddOrUpdateUser(userEntity);
+
+                var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+                if (user != null)
+                {
+                    await this.SignInAsync(userEntity, model.RememberMe);
+                    return this.RedirectToLocal(returnUrl);
+                }
+            }
+
+            this.ModelState.AddModelError(
+                string.Empty,
+                Resources.Account.AccountViewModels.Invalid_username_or_password);
+
             return this.View(model);
         }
 
@@ -191,24 +202,6 @@
             }
 
             this.Data.SaveChanges();
-        }
-
-        private async Task<ExternalUserViewModel> GetExternalUser(string userName)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
-                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
-
-                var response = await httpClient.PostAsJsonAsync(Settings.GetExternalUserUrl, new { userName });
-                if (response.IsSuccessStatusCode)
-                {
-                    var externalUser = await response.Content.ReadAsAsync<ExternalUserViewModel>();
-                    return externalUser;
-                }
-
-                throw new HttpException((int)response.StatusCode, "An error has occurred while connecting to the external system.");
-            }
         }
 
         private async Task SignInAsync(UserProfile user, bool isPersistent)
