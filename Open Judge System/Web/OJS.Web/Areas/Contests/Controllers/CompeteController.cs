@@ -6,19 +6,17 @@
     using System.Globalization;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
+
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
     using MissingFeatures;
 
     using OJS.Common;
-    using OJS.Common.Exceptions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -37,7 +35,6 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
-    using HttpClient = System.Net.Http.HttpClient;
     using Resource = Resources.Areas.Contests;
 
     public class CompeteController : BaseController
@@ -229,7 +226,7 @@
             catch (HttpException httpEx)
             {
                 this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             return this.RedirectToAction(GlobalConstants.Index, new { id, official });
@@ -349,7 +346,7 @@
             catch (HttpException httpEx)
             {
                 this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
@@ -796,52 +793,16 @@
             contest.Lecturers.Any(c => c.LecturerId == this.UserProfile?.Id) ||
             contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile?.Id);
 
-        private bool IsUserEnrolledInExam(Contest contest, string userId, string apiKey)
-        {
-            if (this.IsUserAdminOrLecturerInContest(contest))
-            {
-                return true;
-            }
-
-            using (var httpClient = new HttpClient())
-            {
-                var jsonMediaType = new MediaTypeWithQualityHeaderValue(GlobalConstants.JsonMimeType);
-                httpClient.DefaultRequestHeaders.Accept.Add(jsonMediaType);
-
-                var requestUri = $"{Settings.CanUserCompeteInContestUrl}?apiKey={apiKey}";
-                var response = httpClient
-                    .PostAsJsonAsync(requestUri, new { userId, judgeContestId = contest.Id })
-                    .GetAwaiter()
-                    .GetResult();
-
-                response.EnsureSuccessStatusCode();
-
-                return response.Content.ReadAsAsync<bool>().Result;
-            }
-        }
-
         private Participant AddNewParticipantToContest(Contest contest, bool official)
         {
-            if (contest.IsOnline && official)
+            if (contest.IsOnline &&
+                official &&
+                !this.IsUserAdminOrLecturerInContest(contest) &&
+                !this.contestsData.IsUserInExamGroupByContestAndUser(contest.Id, this.UserProfile.Id))
             {
-                try
-                {
-                    if (!this.IsUserEnrolledInExam(contest, this.UserProfile.Id, Settings.ApiKey))
-                    {
-                        throw new UserNotRegisteredForExamException(
-                            Resource.ContestsGeneral.User_is_not_registered_for_exam);
-                    }
-                }
-                catch (UserNotRegisteredForExamException)
-                {
-                    throw;
-                }
-                catch (Exception)
-                {
-                    throw new HttpException(
-                        (int)HttpStatusCode.NotFound,
-                        Resource.ContestsGeneral.Contest_cannot_be_competed);
-                }
+                throw new HttpException(
+                    (int)HttpStatusCode.Forbidden,
+                    Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
             var participant = this.participantsBusiness.CreateNewByContestByUserByIsOfficialAndIsAdmin(
