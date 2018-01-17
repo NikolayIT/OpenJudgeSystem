@@ -35,7 +35,6 @@
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-
                 throw new ArgumentException(InvalidUrlMessage, nameof(url));
             }
 
@@ -59,20 +58,27 @@
 
             using (var httpClient = new HttpClient())
             {
-                // Using POST because of chance of enormous request data
-                var response = httpClient.PostAsJsonAsync(requestUrl, requestData).GetAwaiter().GetResult();
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    using (var responseContentStream = response.Content.ReadAsStreamAsync().Result)
+                    // Using POST because of chance of enormous request data
+                    var response = httpClient.PostAsJsonAsync(requestUrl, requestData).GetAwaiter().GetResult();
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        externalDataResult.Data = DeserializeJson<TData>(responseContentStream);
+                        using (var responseContentStream = response.Content.ReadAsStreamAsync().Result)
+                        {
+                            externalDataResult.Data = DeserializeJson<TData>(responseContentStream);
+                        }
+                    }
+                    else
+                    {
+                        externalDataResult.ErrorMessage = response.Content.ReadAsStringAsync().Result
+                            ?? ErrorInConnectingToTheRemoteServerMessage;
                     }
                 }
-                else
+                catch(Exception ex)
                 {
-                    externalDataResult.ErrorMessage = response.Content.ReadAsStringAsync().Result
-                        ?? ErrorInConnectingToTheRemoteServerMessage;
+                    externalDataResult.ErrorMessage = ex.InnerException?.Message?? ex.Message;
                 }
             }
 
@@ -91,22 +97,29 @@
 
             using (var httpClient = new HttpClient())
             {
-                // Using POST because of chance of enormous request data
-                var response = await httpClient
-                    .PostAsJsonAsync(requestUrl, requestData)
-                    .ConfigureAwait(continueOnCapturedContext: false);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    using (var responseContentStream = await response.Content.ReadAsStreamAsync())
+                    // Using POST because of chance of enormous request data
+                    var response = await httpClient
+                        .PostAsJsonAsync(requestUrl, requestData)
+                        .ConfigureAwait(continueOnCapturedContext: false);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        externalDataResult.Data = DeserializeJson<TData>(responseContentStream);
+                        using (var responseContentStream = await response.Content.ReadAsStreamAsync())
+                        {
+                            externalDataResult.Data = DeserializeJson<TData>(responseContentStream);
+                        }
+                    }
+                    else
+                    {
+                        externalDataResult.ErrorMessage = await response.Content.ReadAsStringAsync()
+                            ?? ErrorInConnectingToTheRemoteServerMessage;
                     }
                 }
-                else
+                catch(Exception ex)
                 {
-                    externalDataResult.ErrorMessage = await response.Content.ReadAsStringAsync()
-                        ?? ErrorInConnectingToTheRemoteServerMessage;
+                    externalDataResult.ErrorMessage = ex.InnerException?.Message?? ex.Message;
                 }
             }
 
