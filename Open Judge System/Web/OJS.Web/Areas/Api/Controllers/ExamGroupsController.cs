@@ -47,9 +47,8 @@
             }
 
             var startTime = externalExamGroup.StartTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
-            var endTime = externalExamGroup.EndTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
 
-            examGroup.Name = $"{externalExamGroup.ExamName} - {externalExamGroup.ExamGroupTrainingLabName} | {startTime} - {endTime}";
+            examGroup.Name = $"{externalExamGroup.ExamName} - {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
 
             if (examGroupExists)
             {
