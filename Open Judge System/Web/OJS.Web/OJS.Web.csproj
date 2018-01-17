@@ -1715,7 +1715,6 @@
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
-    <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />

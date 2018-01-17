@@ -12,6 +12,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Common.HttpRequester;
+    using OJS.Services.Common.HttpRequester.Models.Users;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Account;
@@ -51,9 +52,9 @@
                 return this.View(model);
             }
 
-            ExternalUserViewModel externalUser;
+            ExternalUserInfoModel externalUser;
 
-            var result = await this.httpRequester.GetAsync<ExternalUserViewModel>(
+            var result = await this.httpRequester.GetAsync<ExternalUserInfoModel>(
                 new { model.UserName },
                 string.Format(UrlConstants.GetUserInfoByUsername, Settings.SulsPlatformBaseUrl),
                 Settings.ApiKey);

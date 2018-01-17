@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using OJS.Common;
 
@@ -18,12 +17,7 @@
         [Required]
         [MinLength(GlobalConstants.ExamGroupNameMinLength)]
         [MaxLength(GlobalConstants.ExamGroupNameMaxLength)]
-        public string NameBg { get; set; }
-
-        [Required]
-        [MinLength(GlobalConstants.ExamGroupNameMinLength)]
-        [MaxLength(GlobalConstants.ExamGroupNameMaxLength)]
-        public string NameEn { get; set; }
+        public string Name { get; set; }
 
         public int? ContestId { get; set; }
 

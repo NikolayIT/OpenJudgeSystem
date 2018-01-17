@@ -51,8 +51,7 @@
 
                 if (user == null)
                 {
-                    // TODO: inject strings
-                    var response = this.httpRequester.Get<ExternalUserViewModel>(
+                    var response = this.httpRequester.Get<ExternalUserInfoModel>(
                         new { userId },
                         string.Format(UrlConstants.GetUserInfoById, this.sulsPlatformBaseUrl),
                         this.apiKey);

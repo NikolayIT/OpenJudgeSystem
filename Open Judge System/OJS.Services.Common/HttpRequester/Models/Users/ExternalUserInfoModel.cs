@@ -4,7 +4,7 @@
 
     using OJS.Data.Models;
 
-    public class ExternalUserViewModel
+    public class ExternalUserInfoModel
     {
         public string Id { get; set; }
 
