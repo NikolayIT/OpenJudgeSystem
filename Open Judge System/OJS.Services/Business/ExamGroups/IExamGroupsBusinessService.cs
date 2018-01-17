@@ -2,9 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using OJS.Services.Common;
-
-    public interface IExamGroupsBusinessService : IService
+    public interface IExamGroupsBusinessService
     {
         void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
 

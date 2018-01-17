@@ -4,19 +4,45 @@
 
     using MissingFeatures;
 
-    using SimpleInjector;
-    using SimpleInjector.Packaging;
-
+    using OJS.Services.Business.ExamGroups;
     using OJS.Services.Common;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Common.HttpRequester;
+    using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Services.Data.Users;
     using OJS.Workers.Tools.AntiCheat;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Similarity;
 
+    using SimpleInjector;
+    using SimpleInjector.Packaging;
+
     public class ServicesPackage : IPackage
     {
         public void RegisterServices(Container container)
+        {
+            this.RegisterCustomTypes(container);
+
+            this.RegisterNonGenericTypes(container);
+        }
+
+        private void RegisterCustomTypes(Container container)
+        {
+            container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
+            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);
+
+            container.Register<IExamGroupsBusinessService>(
+                () => new ExamGroupsBusinessService(
+                    container.GetInstance<IExamGroupsDataService>(),
+                    container.GetInstance<IUsersDataService>(),
+                    container.GetInstance<IHttpRequesterService>(),
+                    Settings.SulsPlatformBaseUrl,
+                    Settings.ApiKey),
+                Lifestyle.Scoped);
+        }
+
+        private void RegisterNonGenericTypes(Container container)
         {
             var serviceAssemblies = new[]
             {
@@ -46,9 +72,6 @@
                 registration.ServiceTypes.ForEach(
                     service => container.Register(service, registration.Implementation, Lifestyle.Scoped));
             }
-
-            container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
-            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);
         }
     }
 }

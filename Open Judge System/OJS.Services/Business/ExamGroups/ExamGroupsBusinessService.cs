@@ -19,15 +19,21 @@
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
         private readonly IHttpRequesterService httpRequester;
+        private readonly string sulsPlatformBaseUrl;
+        private readonly string apiKey;
 
         public ExamGroupsBusinessService(
             IExamGroupsDataService examGroupsData,
             IUsersDataService usersData,
-            IHttpRequesterService httpRequester)
+            IHttpRequesterService httpRequester,
+            string sulsPlatformBaseUrl,
+            string apiKey)
         {
             this.examGroupsData = examGroupsData;
             this.usersData = usersData;
             this.httpRequester = httpRequester;
+            this.sulsPlatformBaseUrl = sulsPlatformBaseUrl;
+            this.apiKey = apiKey;
         }
 
         public void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
@@ -48,8 +54,8 @@
                     // TODO: inject strings
                     var response = this.httpRequester.Get<ExternalUserViewModel>(
                         new { userId },
-                        string.Format(UrlConstants.GetUserInfoById, "https://localhost:44308"),
-                        "apiKey");
+                        string.Format(UrlConstants.GetUserInfoById, this.sulsPlatformBaseUrl),
+                        this.apiKey);
 
                     if (response.IsSuccess && response.Data != null)
                     {
