@@ -19,6 +19,10 @@
 
         public virtual Contest Contest { get; set; }
 
+        public int? ProblemGroupId { get; set; }
+
+        public virtual ProblemGroup ProblemGroup { get; set; }
+
         [Required]
         [MaxLength(GlobalConstants.ProblemNameMaxLength)]
         public string Name { get; set; }
