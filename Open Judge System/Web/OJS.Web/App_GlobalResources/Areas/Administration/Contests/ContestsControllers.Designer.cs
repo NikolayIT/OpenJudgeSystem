@@ -232,6 +232,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem groups count cannot be more than {0}.
+        /// </summary>
+        public static string Problem_groups_count_limit {
+            get {
+                return ResourceManager.GetString("Problem_groups_count_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ranking for {0} {1}.xls.
         /// </summary>
         public static string Report_excel_format {

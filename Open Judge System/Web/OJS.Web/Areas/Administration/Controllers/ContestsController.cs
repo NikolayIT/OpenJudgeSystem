@@ -35,6 +35,7 @@
     {
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
+        private const int ProblemGroupsCountLimit = 40;
 
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
@@ -104,6 +105,14 @@
 
             var contest = model.GetEntityModel();
 
+            for (var i = 0; i < model.ProblemGroupsCount; i++)
+            {
+                contest.ProblemGroups.Add(new ProblemGroup
+                {
+                    OrderBy = i
+                });
+            }
+
             this.AddIpsToContest(contest, model.AllowedIps);
 
             this.Data.Contests.Add(contest);
@@ -170,7 +179,7 @@
             if (contest.IsOnline &&
                 contest.IsActive &&
                 (contest.Duration != model.Duration ||
-                 contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
+                 contest.NumberOfProblemGroups != model.ProblemGroupsCount ||
                  (int)contest.Type != model.Type))
             {
                 this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
@@ -579,9 +588,15 @@
                     this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
                 }
 
-                if (model.NumberOfProblemGroups <= 0)
+                if (model.ProblemGroupsCount <= 0)
                 {
-                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                    this.ModelState.AddModelError(nameof(model.ProblemGroupsCount), Resource.Required_field_for_online);
+                }
+                else if (model.ProblemGroupsCount > ProblemGroupsCountLimit)
+                {
+                    this.ModelState.AddModelError(
+                        nameof(model.ProblemGroupsCount),
+                        string.Format(Resource.Problem_groups_count_limit, ProblemGroupsCountLimit));
                 }
             }
         }
