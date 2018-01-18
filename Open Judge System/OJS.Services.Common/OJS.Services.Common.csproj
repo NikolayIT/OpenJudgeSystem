@@ -55,6 +55,7 @@
     <Compile Include="BackgroundJobs\HangfireBackgroundJobService.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
