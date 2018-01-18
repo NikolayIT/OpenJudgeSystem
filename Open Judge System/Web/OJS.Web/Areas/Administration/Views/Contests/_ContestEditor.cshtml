@@ -356,29 +356,27 @@
         }
 
         function toggleOnlineOnlyFields(contestType) {
-            var problemGroupsInputHidden = $('#ProblemGroupsCount-hidden');
-            var problemGroupsInput = $('#ProblemGroupsCount')
-                .parent()
-                .children(':first-child');
-            var isOnlineContest = contestType == @((int)ContestType.OnlinePracticalExam);
-
+            var problemGroupsCountHidden = $('#ProblemGroupsCount-hidden');
+            var problemGroupsCount = $('#ProblemGroupsCount');
+            var problemGroupsCountInput = problemGroupsCount.parent().children(':first-child');
             var onlineContestFields = $(".@OnlineOnlyContainersClassName");
 
-            if (isOnlineContest) {
-                var isEditForm = @isEditForm.ToString().ToLower();
-                var hasZeroProblemGroups = @Model.ProblemGroupsCount === 0;
-
-                if (isEditForm && hasZeroProblemGroups) {
+            if (contestType == @((int)ContestType.OnlinePracticalExam)) {
+                if (@Model.ProblemGroupsCount === 0) {
                     var defaultProblemGroupsCount = @GlobalConstants.DefaultProblemGroupsCountForOnlineContest;
-                    problemGroupsInputHidden.val(defaultProblemGroupsCount);
-                    problemGroupsInput.val(defaultProblemGroupsCount);
+                    problemGroupsCountHidden.val(defaultProblemGroupsCount);
+                    problemGroupsCount.val(defaultProblemGroupsCount);
+                    problemGroupsCountInput.val(defaultProblemGroupsCount);
                 }
 
-                onlineContestFields.removeClass("hidden");
+                onlineContestFields.removeClass('hidden');
             } else {
-                onlineContestFields.addClass("hidden");
-                problemGroupsInputHidden.val(@Model.ProblemGroupsCount);
-                problemGroupsInput.val(@Model.ProblemGroupsCount);
+                onlineContestFields.addClass('hidden');
+
+                var problemGroupsCountValue = @Model.ProblemGroupsCount;
+                problemGroupsCountHidden.val(problemGroupsCountValue);
+                problemGroupsCount.val(problemGroupsCountValue);
+                problemGroupsCountInput.val(problemGroupsCountValue);
             }
         };
     });
