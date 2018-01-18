@@ -105,13 +105,7 @@
 
             var contest = model.GetEntityModel();
 
-            for (var i = 0; i < model.ProblemGroupsCount; i++)
-            {
-                contest.ProblemGroups.Add(new ProblemGroup
-                {
-                    OrderBy = i
-                });
-            }
+            this.AddProblemGroupsToContest(contest, model.ProblemGroupsCount);
 
             this.AddIpsToContest(contest, model.AllowedIps);
 
@@ -179,11 +173,20 @@
             if (contest.IsOnline &&
                 contest.IsActive &&
                 (contest.Duration != model.Duration ||
-                 contest.NumberOfProblemGroups != model.ProblemGroupsCount ||
-                 (int)contest.Type != model.Type))
+                    (int)contest.Type != model.Type))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type);
                 this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (contest.IsOnline && contest.ProblemGroups.Count == 0)
+            {
+                this.AddProblemGroupsToContest(contest, model.ProblemGroupsCount);
+            }
+
+            if (!contest.IsOnline && contest.Duration != null)
+            {
+                contest.Duration = null;
             }
 
             contest.AllowedIps.Clear();
@@ -617,6 +620,17 @@
 
                     contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = true });
                 }
+            }
+        }
+
+        private void AddProblemGroupsToContest(Contest contest, int problemGroupsCount)
+        {
+            for (var i = 0; i < problemGroupsCount; i++)
+            {
+                contest.ProblemGroups.Add(new ProblemGroup
+                {
+                    OrderBy = i
+                });
             }
         }
     }

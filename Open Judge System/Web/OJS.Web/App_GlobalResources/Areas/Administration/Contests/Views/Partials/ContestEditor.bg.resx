@@ -177,4 +177,7 @@
   <data name="Duration" xml:space="preserve">
     <value>Въведете продължителността на изпита в часове</value>
   </data>
+  <data name="Problem_groups_edit_from_administration" xml:space="preserve">
+    <value>Може да променяте броя на групите от Администрацията за Групи Проблеми</value>
+  </data>
 </root>

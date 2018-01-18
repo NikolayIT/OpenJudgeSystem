@@ -61,11 +61,11 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contest is active and the Duration, Type or Problem groups cannot be edited!.
+        ///   Looks up a localized string similar to Contest is active and Duration and Type cannot be edited!.
         /// </summary>
-        public static string Active_contest_cannot_edit_duration_type_problem_groups {
+        public static string Active_contest_cannot_edit_duration_type {
             get {
-                return ResourceManager.GetString("Active_contest_cannot_edit_duration_type_problem_groups", resourceCulture);
+                return ResourceManager.GetString("Active_contest_cannot_edit_duration_type", resourceCulture);
             }
         }
         

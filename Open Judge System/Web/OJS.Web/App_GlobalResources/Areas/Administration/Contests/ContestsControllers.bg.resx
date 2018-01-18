@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_cannot_edit_duration_type_problem_groups" xml:space="preserve">
-    <value>Състезанието е активно и продължителността, типа и групите от проблеми не могат да се променят!</value>
+  <data name="Active_contest_cannot_edit_duration_type" xml:space="preserve">
+    <value>Състезанието е активно и продължителността и типа не могат да се променят!</value>
   </data>
   <data name="Active_contest_forbidden_for_deletion" xml:space="preserve">
     <value>Състезанието е активно и не може да бъде изтрито!</value>
