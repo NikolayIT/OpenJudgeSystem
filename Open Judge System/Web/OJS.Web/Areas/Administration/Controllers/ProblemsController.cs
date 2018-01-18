@@ -255,9 +255,9 @@
                 }
             }
 
-            var problemGroupOrderBy = problem.GroupNumber.HasValue && problem.GroupNumber >= 1
-                ? problem.GroupNumber - 1
-                : null;
+            var problemGroupOrderBy = problem.ProblemGroupOrderBy >= 1
+                ? problem.ProblemGroupOrderBy - 1
+                : 0;
 
             var exitingProblemGroupId = this.problemGroupsData
                 .GetIdByContestAndOrderBy(contest.Id, problemGroupOrderBy);
@@ -957,12 +957,12 @@
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
-            var numberOfProblemGroups =
-                problemEntity.FirstOrDefault().Contest.NumberOfProblemGroups;
+            var contest = problemEntity.FirstOrDefault().ProblemGroup.Contest;
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
-                numberOfProblemGroups);
+                contest.ProblemGroups.Count,
+                contest.IsOnline);
 
             return problem;
         }
@@ -985,7 +985,11 @@
             problem.OrderBy = problemOrder;
             problem.ContestId = contest.Id;
             problem.ContestName = contest.Name;
-            this.AddCheckersAndProblemGroupsToProblemViewModel(problem, contest.NumberOfProblemGroups);
+
+            this.AddCheckersAndProblemGroupsToProblemViewModel(
+                problem,
+                contest.ProblemGroups.Count,
+                contest.IsOnline);
 
             problem.SubmissionTypes = this.Data.SubmissionTypes
                 .All()
@@ -997,7 +1001,8 @@
 
         private void AddCheckersAndProblemGroupsToProblemViewModel(
             DetailedProblemViewModel problem,
-            short numberOfProblemGroups)
+            int numberOfProblemGroups,
+            bool isOnlineContest)
         {
             problem.AvailableCheckers = this.Data.Checkers.All()
                 .Select(checker => new SelectListItem
@@ -1007,9 +1012,9 @@
                     Selected = checker.Name.Contains("Trim")
                 });
 
-            if (numberOfProblemGroups > 0)
+            if (isOnlineContest && numberOfProblemGroups > 0)
             {
-                this.ViewBag.GroupNumberData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
+                this.ViewBag.ProblemGroupOrderByData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
             }
         }
 
