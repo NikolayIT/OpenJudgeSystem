@@ -107,10 +107,9 @@
 
             if (contest.IsOnline)
             {
-                var maxPointsForOnlineContest = contest.Problems
-                    .GroupBy(p => p.GroupNumber)
-                    .Select(gr => gr.First())
-                    .Sum(p => p.MaximumPoints);
+                var maxPointsForOnlineContest = contest.ProblemGroups
+                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                    .Sum(pg => pg.Problems.First().MaximumPoints);
 
                 totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPointsForOnlineContest})";
             }

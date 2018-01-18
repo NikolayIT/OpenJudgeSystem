@@ -57,7 +57,7 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
-                    GroupNumber = problem.GroupNumber,
+                    GroupNumber = (short?)(problem.ProblemGroup.OrderBy + 1),
                     SolutionSkeletonData = problem.SolutionSkeleton,
                     HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
