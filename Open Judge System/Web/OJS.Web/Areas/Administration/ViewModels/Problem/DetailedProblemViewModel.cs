@@ -143,7 +143,7 @@
         [DatabaseProperty]
         [Display(Name = "Group_number", ResourceType = typeof(Resource))]
         [UIHint("DropDownList")]
-        public int ProblemGroupOrderBy { get; set; }
+        public int? ProblemGroupOrderBy { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]

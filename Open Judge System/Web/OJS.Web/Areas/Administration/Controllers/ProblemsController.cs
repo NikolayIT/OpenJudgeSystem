@@ -255,14 +255,9 @@
                 }
             }
 
-            var problemGroupOrderBy = problem.ProblemGroupOrderBy >= 1
-                ? problem.ProblemGroupOrderBy - 1
-                : 0;
+            var existingProblemGroupId = this.GetProblemGroupId(contest.Id, problem.ProblemGroupOrderBy);
 
-            var exitingProblemGroupId = this.problemGroupsData
-                .GetIdByContestAndOrderBy(contest.Id, problemGroupOrderBy);
-
-            if (exitingProblemGroupId == null)
+            if (existingProblemGroupId == null)
             {
                 newProblem.ProblemGroup = new ProblemGroup
                 {
@@ -272,7 +267,7 @@
             }
             else
             {
-                newProblem.ProblemGroupId = exitingProblemGroupId;
+                newProblem.ProblemGroupId = existingProblemGroupId;
             }
 
             this.Data.Problems.Add(newProblem);
@@ -366,6 +361,10 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+            existingProblem.ProblemGroupId = this.GetProblemGroupId(
+                existingProblem.Contest.Id,
+                problem.ProblemGroupOrderBy)
+                    ?? existingProblem.ProblemGroupId;
 
             if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
@@ -1029,6 +1028,16 @@
             }
 
             return isValid;
+        }
+
+        private int? GetProblemGroupId(int contestId, int? problemGroupOrderBy)
+        {
+            problemGroupOrderBy = problemGroupOrderBy >= 1
+                ? problemGroupOrderBy - 1
+                : null;
+
+            return this.problemGroupsData
+                .GetIdByContestAndOrderBy(contestId, problemGroupOrderBy);
         }
     }
 }
