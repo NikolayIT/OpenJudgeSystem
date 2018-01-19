@@ -7,5 +7,7 @@
         void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
 
         void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
+
+        void AddExternalUserByIdAndUser(int id, string userId);
     }
 }
