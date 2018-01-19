@@ -1,20 +1,33 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System.Collections;
+    using System.Linq;
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Services.Data.ExamGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.ViewModels.ExamGroups;
 
-    public class ExamGroupsController : LecturerBaseController
+    public class ExamGroupsController : LecturerBaseGridController
     {
-        public ExamGroupsController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly IExamGroupsDataService examGroupsData;
 
-        public ActionResult Index()
+        public ExamGroupsController(
+            IOjsData data,
+            IExamGroupsDataService examGroupsData)
+            : base(data) => this.examGroupsData = examGroupsData;
+
+        public ActionResult Index() => this.View();
+
+        public override IEnumerable GetData() =>
+            this.examGroupsData
+            .All()
+            .Select(ExamGroupAdministrationViewModel.FromExamGroup);
+
+        public override object GetById(object id)
         {
-            return this.View();
+            throw new System.NotImplementedException();
         }
     }
 }

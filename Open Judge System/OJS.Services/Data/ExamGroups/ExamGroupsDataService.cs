@@ -37,5 +37,7 @@
                 .Where(eg => eg.ExternalExamGroupId == externalId && eg.ExternalAppId == appId)
                 .Select(eg => eg.Id)
                 .FirstOrDefault();
+
+        public IQueryable<ExamGroup> All() => this.examGroups.All();
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.ExamGroups
 {
+    using System.Linq;
     using OJS.Data.Models;
     using OJS.Services.Common;
 
@@ -14,5 +15,7 @@
         ExamGroup GetByExternalIdAndAppId(int? externalId, string appId);
 
         int? GetIdByExternalIdAndAppId(int? externalId, string appId);
+
+        IQueryable<ExamGroup> All();
     }
 }
