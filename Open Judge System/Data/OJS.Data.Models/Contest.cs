@@ -96,6 +96,8 @@
 
         public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
 
+        public virtual ICollection<ProblemGroup> ProblemGroups { get; set; } = new HashSet<ProblemGroup>();
+
         public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
         public virtual ICollection<ContestIp> AllowedIps { get; set; } = new HashSet<ContestIp>();

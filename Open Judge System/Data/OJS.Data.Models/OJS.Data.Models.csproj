@@ -77,6 +77,7 @@
     <Compile Include="LecturerInContest.cs" />
     <Compile Include="LecturerInContestCategory.cs" />
     <Compile Include="ParticipantScore.cs" />
+    <Compile Include="ProblemGroup.cs" />
     <Compile Include="ProblemResource.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SourceCode.cs" />
