@@ -37,6 +37,7 @@
                     container.GetInstance<IExamGroupsDataService>(),
                     container.GetInstance<IUsersDataService>(),
                     container.GetInstance<IHttpRequesterService>(),
+                    container.GetInstance<IHangfireBackgroundJobService>(),
                     Settings.SulsPlatformBaseUrl,
                     Settings.ApiKey),
                 Lifestyle.Scoped);
