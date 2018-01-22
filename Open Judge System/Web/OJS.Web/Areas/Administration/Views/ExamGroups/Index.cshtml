@@ -3,6 +3,7 @@
 
 @{
     const string ExamGroupsControllerName = "ExamGroups";
+    const string UsersInExamGroupControllerName = "UsersInExamGroups";
 
     ViewBag.Title = Resource.Page_title;
 }
@@ -32,12 +33,35 @@
               editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
           })
           .ColumnMenu()
+          .ClientDetailTemplateId("enrolled-users-template")
           .Pageable(x => x.Refresh(true))
+          .Sortable(x => x.Enabled(true).AllowUnsort(false))
+          .Filterable(x => x.Enabled(true))
           .DataSource(datasource => datasource
               .Ajax()
               .ServerOperation(true)
               .Model(model => model.Id(x => x.Id))
               .Read(read => read.Action("Read", "ExamGroups"))
               .Events(ev => ev.Error("validateModelStateErrors")))
-          )
+    )
 </div>
+
+<script type="text/x-kendo-template" id="enrolled-users-template">
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Users.ViewModels.UserProfileViewModel>()
+        .Name("EnrolledUsersGrid_#=Id#")
+          .Columns(columns =>
+          {
+              columns.Bound(m => m.Id).Hidden();
+              columns.Bound(m => m.Username);
+              columns.Bound(m => m.FirstName);
+              columns.Bound(m => m.LastName);
+              columns.Bound(m => m.Email);
+          })
+          .DataSource(data => data.Ajax()
+              .ServerOperation(true)
+              .Model(model => model.Id(m => m.Id))
+              .Read(read => read.Action("UsersInExamGroup", UsersInExamGroupControllerName, new { id = "#=Id#" })))
+          .ToClientTemplate()
+    )
+</script>

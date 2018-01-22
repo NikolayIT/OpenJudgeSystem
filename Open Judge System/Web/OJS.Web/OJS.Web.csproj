@@ -1628,6 +1628,7 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionTypesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Administration\Controllers\UsersInExamGroupsController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
@@ -1652,6 +1653,7 @@
     <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\TransferParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ExamGroups\ExamGroupAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ExamGroups\UserInExamGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContestCategories\LecturerInContestCategoryShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Lecturers\LecturerGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
