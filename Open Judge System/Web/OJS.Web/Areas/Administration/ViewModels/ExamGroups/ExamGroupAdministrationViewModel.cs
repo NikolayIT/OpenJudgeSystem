@@ -36,8 +36,8 @@
             ErrorMessageResourceName = "Name_required",
             ErrorMessageResourceType = typeof(SharedResource))]
         [StringLength(
-            GlobalConstants.ExamGroupNameMinLength,
-            MinimumLength = GlobalConstants.ExamGroupNameMaxLength,
+            GlobalConstants.ExamGroupNameMaxLength,
+            MinimumLength = GlobalConstants.ExamGroupNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(SharedResource))]
         [UIHint("SingleLineText")]

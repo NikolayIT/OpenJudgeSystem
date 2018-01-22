@@ -693,6 +693,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.designer.cs">
+      <DependentUpon>ExamGroupsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.designer.cs">
+      <DependentUpon>ExamGroupsIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Feedback\ViewModels\FeedbackReport.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2565,6 +2575,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestIndex.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestIndex.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2640,6 +2651,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExamGroupAdministration.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Feedback\Views\FeedbackIndexAdmin.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

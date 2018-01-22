@@ -1,26 +1,43 @@
-﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+﻿@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
-    ViewBag.Title = "Index";
+    const string ExamGroupsControllerName = "ExamGroups";
+
+    ViewBag.Title = Resource.Page_title;
 }
 
-<h2>Index</h2>
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>
-    ()
-    .Name("DataGrid")
-    .Columns(columns =>
-    {
-        columns.Bound(m => m.Id);
-        columns.Bound(m => m.Name);
-        columns.Bound(m => m.ExternalExamGroupId);
-        columns.Bound(m => m.ExternalAppId);
-    })
-    .Pageable(x => x.Refresh(true))
-    .DataSource(datasource => datasource
-          .Ajax()
-          .ServerOperation(true)
-          .Model(model => model.Id(x => x.Id))
-          .Read(read => read.Action("Read", "ExamGroups"))
-          .Events(ev => ev.Error("validateModelStateErrors")))
-    )
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>
+          ()
+          .Name("DataGrid")
+          .Columns(columns =>
+          {
+              columns.Bound(m => m.Id);
+              columns.Bound(m => m.Name);
+              columns.Bound(m => m.ExternalExamGroupId);
+              columns.Bound(m => m.ExternalAppId);
+          })
+          .ToolBar(toolbar =>
+          {
+              toolbar.Custom().Text(GeneralResource.Create).Action("Create", ExamGroupsControllerName);
+              toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+          })
+          .Editable(editable =>
+          {
+              editable.Mode(GridEditMode.PopUp);
+              editable.Window(w => w.Title(ViewBag.Title));
+              editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+          })
+          .ColumnMenu()
+          .Pageable(x => x.Refresh(true))
+          .DataSource(datasource => datasource
+              .Ajax()
+              .ServerOperation(true)
+              .Model(model => model.Id(x => x.Id))
+              .Read(read => read.Action("Read", "ExamGroups"))
+              .Events(ev => ev.Error("validateModelStateErrors")))
+          )
+</div>
