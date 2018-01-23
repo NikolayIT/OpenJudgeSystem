@@ -683,6 +683,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestEditor.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.bg.designer.cs">
+      <DependentUpon>ExamGroupsController.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.designer.cs">
+      <DependentUpon>ExamGroupsController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.designer.cs">
       <DependentUpon>ExamGroupAdministration.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2645,6 +2655,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestEditor.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsController.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsController.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

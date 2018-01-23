@@ -19,7 +19,7 @@
 
         IQueryable<ExamGroup> All();
 
-        IQueryable<UserProfile> GetUsersById(int id);
+        IQueryable<UserProfile> GetUsersByIdQuery(int id);
 
         IQueryable<ExamGroup> GetByIdQuery(int id);
 

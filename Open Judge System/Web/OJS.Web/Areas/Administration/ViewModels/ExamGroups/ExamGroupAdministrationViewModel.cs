@@ -10,6 +10,7 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
     using Resource = Resources.Areas.Administration.ExamGroups.ViewModels.ExamGroupAdministration;
     using SharedResource = Resources.Areas.Administration.Shared.EditorTemplatesGeneral;
 

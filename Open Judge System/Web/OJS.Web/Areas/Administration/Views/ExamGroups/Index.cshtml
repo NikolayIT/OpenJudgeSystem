@@ -45,15 +45,18 @@
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
         .Filterable(x => x.Enabled(true))
         .Resizable(x => x.Columns(true))
-        .DataSource(datasource => datasource
-            .Ajax()
-            .ServerOperation(true)
-            .Model(model => model.Id(x => x.Id))
-            .Read(read => read.Action("Read", "ExamGroups"))
-            .Create(read => read.Action("Create", "ExamGroups"))
-            .Update(update => update.Action("Update", ControllerName))
-            .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-            .Events(ev => ev.Error("validateModelStateErrors"))))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => { model.Id(x => x.Id); })
+                .Read(read => read.Action("Read", "ExamGroups"))
+                .Create(read => read.Action("Create", "ExamGroups"))
+                .Update(update => update.Action("Update", ControllerName))
+                .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                .Events(ev => ev.Error("validateModelStateErrors"));
+        }))
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
@@ -75,20 +78,22 @@
         })
         .Editable(editable =>
         {
-            editable.Mode(GridEditMode.InCell);
+            editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(Resource.Remove_user_prompt);
             editable.TemplateName("AddUserToExamGroup");
-            editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
         })
         .ColumnMenu()
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
-        .DataSource(data => data
-            .Ajax()
-            .ServerOperation(true)
-            .Model(model => model.Id(m => m.UserId))
-            .Sort(sort => sort.Add(field => field.Username))
-            .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
-            .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
-            .Destroy(destroy => destroy.Action("DeleteUserFromExamGroup", ControllerName, new { id = "#= Id #" })))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => { model.Id(m => m.UserId); })
+                .Sort(sort => sort.Add(field => field.Username))
+                .Read(read => read.Action("UsersInExamGroup", ControllerName, new {id = "#= Id #"}))
+                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new {id = "#= Id #"}))
+                .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new {id = "#= Id #"}));
+        })
         .ToClientTemplate())
 </script>

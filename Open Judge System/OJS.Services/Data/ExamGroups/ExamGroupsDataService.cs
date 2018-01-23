@@ -40,7 +40,7 @@
 
         public IQueryable<ExamGroup> All() => this.examGroups.All();
 
-        public IQueryable<UserProfile> GetUsersById(int id) =>
+        public IQueryable<UserProfile> GetUsersByIdQuery(int id) =>
             this.examGroups.All().Where(eg => eg.Id == id).SelectMany(eg => eg.Users);
 
         public IQueryable<ExamGroup> GetByIdQuery(int id) =>

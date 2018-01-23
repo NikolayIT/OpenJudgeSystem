@@ -13,8 +13,10 @@
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Common.Extensions;
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel;
+    using Resource = Resources.Areas.Administration.ExamGroups.ExamGroupsController;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel;
 
     public class ExamGroupsController : LecturerBaseGridController
@@ -39,7 +41,7 @@
             .All()
             .Select(ViewModelType.FromExamGroup);
 
-        public override object GetById(object id) => this.examGroupsData.GetById((int)id);
+        public override object GetById(object id) => this.GetByIdAsNoTracking((int)id);
 
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
@@ -53,10 +55,7 @@
         {
             if (model.Id.HasValue)
             {
-                var entity = this.examGroupsData
-                    .GetByIdQuery(model.Id.Value)
-                    .AsNoTracking()
-                    .FirstOrDefault();
+                var entity = this.GetByIdAsNoTracking(model.Id.Value);
 
                 var examGroup = model.GetEntityModel(entity);
 
@@ -67,10 +66,24 @@
         }
 
         [HttpPost]
+        public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        {
+            if (model.Id.HasValue && this.examGroupsData.GetUsersByIdQuery(model.Id.Value).Any())
+            {
+                this.TempData.AddDangerMessage(Resource.Cannot_delete_group_with_users);
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+                return this.GridOperation(request, model);
+            }
+
+            this.BaseDestroy(model.Id);
+            return this.GridOperation(request, model);
+        }
+
+        [HttpPost]
         public JsonResult UsersInExamGroup([DataSourceRequest]DataSourceRequest request, int id)
         {
             var users = this.examGroupsData
-                .GetUsersById(id)
+                .GetUsersByIdQuery(id)
                 .Select(DetailModelType.FromUserProfile);
 
             return this.Json(users.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
@@ -111,6 +124,31 @@
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetAvailableUsersForExamGroup(string text)
+        {
+            var users = this.usersData.GetAll();
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                users = users.Where(u => u.UserName.ToLower().Contains(text.ToLower()));
+            }
+
+            var result = users
+                .ToList()
+                .Select(pr => new SelectListItem
+                {
+                    Text = pr.UserName,
+                    Value = pr.Id
+                });
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));
+
+        private ExamGroup GetByIdAsNoTracking(int id) => this.examGroupsData
+            .GetByIdQuery(id)
+            .AsNoTracking()
+            .FirstOrDefault();
     }
 }
