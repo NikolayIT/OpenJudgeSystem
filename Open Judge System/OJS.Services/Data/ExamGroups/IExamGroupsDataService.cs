@@ -21,6 +21,8 @@
 
         IQueryable<UserProfile> GetUsersById(int id);
 
+        IQueryable<ExamGroup> GetByIdQuery(int id);
+
         void RemoveUserByIdAndUser(int id, string userId);
     }
 }

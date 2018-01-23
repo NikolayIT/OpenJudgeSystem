@@ -80,7 +80,7 @@ namespace Resources.Areas.Administration.ExamGroups.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External exam group Id.
+        ///   Looks up a localized string similar to External Id.
         /// </summary>
         public static string External_id {
             get {

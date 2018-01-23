@@ -9,11 +9,11 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
-
+    using OJS.Web.Areas.Administration.ViewModels.Common;
     using Resource = Resources.Areas.Administration.ExamGroups.ViewModels.ExamGroupAdministration;
     using SharedResource = Resources.Areas.Administration.Shared.EditorTemplatesGeneral;
 
-    public class ExamGroupAdministrationViewModel
+    public class ExamGroupAdministrationViewModel : AdministrationViewModel<ExamGroup>
     {
         public static Expression<Func<ExamGroup, ExamGroupAdministrationViewModel>> FromExamGroup =>
             eg => new ExamGroupAdministrationViewModel
@@ -42,15 +42,17 @@
             MinimumLength = GlobalConstants.ExamGroupNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(SharedResource))]
-        [UIHint("SingleLineText")]
+        [UIHint("MultiLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "External_id", ResourceType = typeof(Resource))]
+        [UIHint("NonEditable")]
         public int? ExternalExamGroupId { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Extenral_app_id", ResourceType = typeof(Resource))]
+        [UIHint("NonEditable")]
         public string ExternalAppId { get; set; }
 
         [DatabaseProperty]

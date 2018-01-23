@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -8,6 +9,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Data.Models;
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -39,7 +41,30 @@
 
         public override object GetById(object id) => this.examGroupsData.GetById((int)id);
 
-        public ActionResult Create() => this.View();
+        [HttpPost]
+        public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        {
+            this.BaseCreate(model.GetEntityModel());
+            return this.GridOperation(request, model);
+        }
+
+        [HttpPost]
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
+        {
+            if (model.Id.HasValue)
+            {
+                var entity = this.examGroupsData
+                    .GetByIdQuery(model.Id.Value)
+                    .AsNoTracking()
+                    .FirstOrDefault();
+
+                var examGroup = model.GetEntityModel(entity);
+
+                this.BaseUpdate(examGroup);
+            }
+
+            return this.GridOperation(request, model);
+        }
 
         [HttpPost]
         public JsonResult UsersInExamGroup([DataSourceRequest]DataSourceRequest request, int id)
@@ -85,5 +110,7 @@
 
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+
+        public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));
     }
 }

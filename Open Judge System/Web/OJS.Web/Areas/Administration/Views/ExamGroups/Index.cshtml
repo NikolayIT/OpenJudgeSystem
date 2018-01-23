@@ -25,11 +25,12 @@
             columns.Bound(m => m.ContestName);
             columns.Bound(m => m.ExternalExamGroupId);
             columns.Bound(m => m.ExternalAppId);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
+            toolbar.Create().Text(GeneralResource.Create);
             toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
         })
         .Editable(editable =>
@@ -49,9 +50,10 @@
             .ServerOperation(true)
             .Model(model => model.Id(x => x.Id))
             .Read(read => read.Action("Read", "ExamGroups"))
+            .Create(read => read.Action("Create", "ExamGroups"))
+            .Update(update => update.Action("Update", ControllerName))
             .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-            .Events(ev => ev.Error("validateModelStateErrors")))
-    )
+            .Events(ev => ev.Error("validateModelStateErrors"))))
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
@@ -84,9 +86,9 @@
             .Ajax()
             .ServerOperation(true)
             .Model(model => model.Id(m => m.UserId))
+            .Sort(sort => sort.Add(field => field.Username))
             .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
             .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
             .Destroy(destroy => destroy.Action("DeleteUserFromExamGroup", ControllerName, new { id = "#= Id #" })))
-        .ToClientTemplate()
-    )
+        .ToClientTemplate())
 </script>

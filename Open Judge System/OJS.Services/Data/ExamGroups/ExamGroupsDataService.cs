@@ -43,6 +43,9 @@
         public IQueryable<UserProfile> GetUsersById(int id) =>
             this.examGroups.All().Where(eg => eg.Id == id).SelectMany(eg => eg.Users);
 
+        public IQueryable<ExamGroup> GetByIdQuery(int id) =>
+            this.examGroups.All().Where(eg => eg.Id == id);
+
         public void RemoveUserByIdAndUser(int id, string userId)
         {
             var examGroup = this.GetById(id);
