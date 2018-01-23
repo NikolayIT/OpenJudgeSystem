@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.ExamGroups.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest.
+        /// </summary>
+        public static string Contest_name {
+            get {
+                return ResourceManager.GetString("Contest_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External system.
         /// </summary>
         public static string Extenral_app_id {

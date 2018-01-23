@@ -1792,6 +1792,7 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\administration\administration-styles.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.css" />
@@ -2395,6 +2396,7 @@
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\ExamGroups\Create.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

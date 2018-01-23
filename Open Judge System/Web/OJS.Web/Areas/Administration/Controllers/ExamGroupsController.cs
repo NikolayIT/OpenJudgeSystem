@@ -29,5 +29,10 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public ActionResult Create()
+        {
+            return this.View();
+        }
     }
 }

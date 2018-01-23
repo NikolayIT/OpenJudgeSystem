@@ -21,7 +21,9 @@
                 Id = eg.Id,
                 Name = eg.Name,
                 ExternalExamGroupId = eg.ExternalExamGroupId,
-                ExternalAppId = eg.ExternalAppId
+                ExternalAppId = eg.ExternalAppId,
+                ContestId = eg.ContestId,
+                ContestName = eg.Contest.Name
             };
 
         [DatabaseProperty]
@@ -50,5 +52,11 @@
         [DatabaseProperty]
         [Display(Name = "Extenral_app_id", ResourceType = typeof(Resource))]
         public string ExternalAppId { get; set; }
+
+        [DatabaseProperty]
+        public int? ContestId { get; set; }
+
+        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        public string ContestName { get; set; }
     }
 }

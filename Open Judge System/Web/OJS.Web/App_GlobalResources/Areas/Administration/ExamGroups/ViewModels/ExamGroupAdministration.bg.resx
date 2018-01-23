@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Contest_name" xml:space="preserve">
+    <value>Състезание</value>
+  </data>
   <data name="Extenral_app_id" xml:space="preserve">
     <value>Външна система</value>
   </data>
