@@ -9,6 +9,7 @@
     using OJS.Data;
     using OJS.Services.Data.ExamGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.ViewModels.ExamGroups;
 
     public class UsersInExamGroupsController : LecturerBaseGridController
     {
@@ -25,12 +26,14 @@
         {
             this.examGroupId = id;
             var users = this.GetData();
-
+      
             return this.Json(users.ToDataSourceResult(request));
         }
 
         public override IEnumerable GetData() =>
-            this.examGroupsData.GetUsersById(this.examGroupId);
+            this.examGroupsData
+            .GetUsersById(this.examGroupId)
+            .Select(UserInExamGroupViewModel.FromUserProfile);
 
         public override object GetById(object id)
         {

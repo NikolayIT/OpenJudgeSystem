@@ -37,6 +37,7 @@
           .Pageable(x => x.Refresh(true))
           .Sortable(x => x.Enabled(true).AllowUnsort(false))
           .Filterable(x => x.Enabled(true))
+          .Resizable(x => x.Columns(true))
           .DataSource(datasource => datasource
               .Ajax()
               .ServerOperation(true)
@@ -48,7 +49,7 @@
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
     @(Html.Kendo()
-        .Grid<OJS.Web.Areas.Users.ViewModels.UserProfileViewModel>()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel>()
         .Name("EnrolledUsersGrid_#=Id#")
           .Columns(columns =>
           {
@@ -58,6 +59,9 @@
               columns.Bound(m => m.LastName);
               columns.Bound(m => m.Email);
           })
+          .ColumnMenu()
+          .Pageable(x => x.Refresh(true))
+          .Sortable(x => x.Enabled(true).AllowUnsort(false))
           .DataSource(data => data.Ajax()
               .ServerOperation(true)
               .Model(model => model.Id(m => m.Id))

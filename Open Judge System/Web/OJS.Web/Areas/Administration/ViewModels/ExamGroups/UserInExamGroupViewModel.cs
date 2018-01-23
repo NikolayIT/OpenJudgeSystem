@@ -16,19 +16,19 @@
             user => new UserInExamGroupViewModel
             {
                 Id = user.Id,
-                UserName = user.UserName,
+                Username = user.UserName,
                 Email = user.Email,
                 FirstName = user.UserSettings.FirstName,
                 LastName = user.UserSettings.LastName
             };
 
-        [Display(Name = "№")]
+        [Display(Name = "ID")]
         [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
 
         [Display(Name = "UserName", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [UIHint("SingleLineText")]
