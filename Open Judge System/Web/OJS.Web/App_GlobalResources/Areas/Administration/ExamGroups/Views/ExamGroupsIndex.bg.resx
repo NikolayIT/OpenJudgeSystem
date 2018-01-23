@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_user" xml:space="preserve">
+    <value>Добави потребител</value>
+  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Групи за изпити</value>
+  </data>
+  <data name="Remove_user" xml:space="preserve">
+    <value>Премахни от групата</value>
+  </data>
+  <data name="Remove_user_prompt" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да премахнте този потребител от групата за изпит?</value>
   </data>
 </root>

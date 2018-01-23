@@ -62,11 +62,38 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add user.
+        /// </summary>
+        public static string Add_user {
+            get {
+                return ResourceManager.GetString("Add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exam groups.
         /// </summary>
         public static string Page_title {
             get {
                 return ResourceManager.GetString("Page_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from the group.
+        /// </summary>
+        public static string Remove_user {
+            get {
+                return ResourceManager.GetString("Remove_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this user from the еxam group?.
+        /// </summary>
+        public static string Remove_user_prompt {
+            get {
+                return ResourceManager.GetString("Remove_user_prompt", resourceCulture);
             }
         }
     }

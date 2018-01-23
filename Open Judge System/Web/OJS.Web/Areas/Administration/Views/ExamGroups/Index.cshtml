@@ -9,70 +9,82 @@
 }
 
 @section Styles{
-    @Styles.Render("~/Content/css/administration/administration-styles.css");
+    @Styles.Render("~/Content/css/administration/administration-styles.css")
 }
 
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>
-                  ()
-                  .Name("DataGrid")
-                  .Columns(columns =>
-                  {
-                      columns.Bound(m => m.Id);
-                      columns.Bound(m => m.Name);
-                      columns.Bound(m => m.ContestId).Hidden();
-                      columns.Bound(m => m.ContestName);
-                      columns.Bound(m => m.ExternalExamGroupId);
-                      columns.Bound(m => m.ExternalAppId);
-                  })
-                  .ToolBar(toolbar =>
-                  {
-                      toolbar.Custom().Text(GeneralResource.Create).Action("Create", ExamGroupsControllerName);
-                      toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
-                  })
-                  .Editable(editable =>
-                  {
-                      editable.Mode(GridEditMode.PopUp);
-                      editable.Window(w => w.Title(ViewBag.Title));
-                      editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-                  })
-                  .ColumnMenu()
-                  .ClientDetailTemplateId("enrolled-users-template")
-                  .Pageable(x => x.Refresh(true))
-                  .Sortable(x => x.Enabled(true).AllowUnsort(false))
-                  .Filterable(x => x.Enabled(true))
-                  .Resizable(x => x.Columns(true))
-                  .DataSource(datasource => datasource
-                      .Ajax()
-                      .ServerOperation(true)
-                      .Model(model => model.Id(x => x.Id))
-                      .Read(read => read.Action("Read", "ExamGroups"))
-                      .Create(create => create.Action("Create", ExamGroupsControllerName))
-                      .Events(ev => ev.Error("validateModelStateErrors")))
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
+        .Name("DataGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id);
+            columns.Bound(m => m.Name);
+            columns.Bound(m => m.ContestId).Hidden();
+            columns.Bound(m => m.ContestName);
+            columns.Bound(m => m.ExternalExamGroupId);
+            columns.Bound(m => m.ExternalAppId);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ExamGroupsControllerName);
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.PopUp);
+            editable.Window(w => w.Title(ViewBag.Title));
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
+        .ColumnMenu()
+        .ClientDetailTemplateId("enrolled-users-template")
+        .Pageable(x => x.Refresh(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
+        .Resizable(x => x.Columns(true))
+        .DataSource(datasource => datasource
+            .Ajax()
+            .ServerOperation(true)
+            .Model(model => model.Id(x => x.Id))
+            .Read(read => read.Action("Read", "ExamGroups"))
+            .Destroy(destroy => destroy.Action("Destroy", ExamGroupsControllerName))
+            .Events(ev => ev.Error("validateModelStateErrors")))
     )
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
     @(Html.Kendo()
-                .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel>()
-                .Name("EnrolledUsersGrid_#=Id#")
-                  .Columns(columns =>
-                  {
-                      columns.Bound(m => m.Id).Hidden();
-                      columns.Bound(m => m.Username);
-                      columns.Bound(m => m.FirstName);
-                      columns.Bound(m => m.LastName);
-                      columns.Bound(m => m.Email);
-                  })
-                  .ColumnMenu()
-                  .Pageable(x => x.Refresh(true))
-                  .Sortable(x => x.Enabled(true).AllowUnsort(false))
-                  .DataSource(data => data.Ajax()
-                      .ServerOperation(true)
-                      .Model(model => model.Id(m => m.Id))
-                      .Read(read => read.Action("UsersInExamGroup", UsersInExamGroupControllerName, new { id = "#=Id#" })))
-                  .ToClientTemplate()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel>()
+        .Name("EnrolledUsersGrid_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id).Hidden();
+            columns.Bound(m => m.Username);
+            columns.Bound(m => m.FirstName);
+            columns.Bound(m => m.LastName);
+            columns.Bound(m => m.Email);
+            columns.Command(command => command.Destroy().Text(Resource.Remove_user)).Width(210);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Text(Resource.Add_user).Action("Create", UsersInExamGroupControllerName);
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.InCell);
+            editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
+        })
+        .ColumnMenu()
+        .Pageable(x => x.Refresh(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .DataSource(data => data.Ajax()
+            .ServerOperation(true)
+            .Model(model => model.Id(m => m.Id))
+            .Read(read => read.Action("UsersInExamGroup", UsersInExamGroupControllerName, new { id = "#=Id#" }))
+            .Destroy(destroy => destroy.Action("Destroy", UsersInExamGroupControllerName)))
+        .ToClientTemplate()
     )
 </script>
