@@ -2,8 +2,7 @@
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
-    const string ExamGroupsControllerName = "ExamGroups";
-    const string UsersInExamGroupControllerName = "UsersInExamGroups";
+    const string ControllerName = "ExamGroups";
 
     ViewBag.Title = Resource.Page_title;
 }
@@ -30,7 +29,7 @@
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ExamGroupsControllerName);
+            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
             toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
         })
         .Editable(editable =>
@@ -50,7 +49,7 @@
             .ServerOperation(true)
             .Model(model => model.Id(x => x.Id))
             .Read(read => read.Action("Read", "ExamGroups"))
-            .Destroy(destroy => destroy.Action("Destroy", ExamGroupsControllerName))
+            .Destroy(destroy => destroy.Action("Destroy", ControllerName))
             .Events(ev => ev.Error("validateModelStateErrors")))
     )
 </div>
@@ -61,7 +60,7 @@
         .Name("EnrolledUsersGrid_#=Id#")
         .Columns(columns =>
         {
-            columns.Bound(m => m.Id).Hidden();
+            columns.Bound(m => m.UserId).Hidden();
             columns.Bound(m => m.Username);
             columns.Bound(m => m.FirstName);
             columns.Bound(m => m.LastName);
@@ -70,21 +69,24 @@
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(Resource.Add_user).Action("Create", UsersInExamGroupControllerName);
+            toolbar.Create().Text(Resource.Add_user);
         })
         .Editable(editable =>
         {
             editable.Mode(GridEditMode.InCell);
+            editable.TemplateName("AddUserToExamGroup");
             editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
         })
         .ColumnMenu()
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
-        .DataSource(data => data.Ajax()
+        .DataSource(data => data
+            .Ajax()
             .ServerOperation(true)
-            .Model(model => model.Id(m => m.Id))
-            .Read(read => read.Action("UsersInExamGroup", UsersInExamGroupControllerName, new { id = "#=Id#" }))
-            .Destroy(destroy => destroy.Action("Destroy", UsersInExamGroupControllerName)))
+            .Model(model => model.Id(m => m.UserId))
+            .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
+            .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
+            .Destroy(destroy => destroy.Action("DeleteUserFromExamGroup", ControllerName, new { id = "#= Id #" })))
         .ToClientTemplate()
     )
 </script>

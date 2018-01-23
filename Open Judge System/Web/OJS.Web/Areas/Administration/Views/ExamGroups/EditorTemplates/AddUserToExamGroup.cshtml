@@ -1,0 +1,22 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel
+
+@using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex;
+
+@(Html.Kendo()
+      .ComboBoxFor(m => m.Username)
+      .Name("UserId")
+      .DataTextField("Text")
+      .DataValueField("Value")
+      .Filter(FilterType.Contains)
+      .MinLength(1)
+      .Placeholder(Resource.Choose_user)
+      .DataSource(data =>
+      {
+          data.ServerFiltering(true)
+              .Read(read =>
+              {
+                  read.Action("AvailableUsersForRole", "Roles")
+                      .Data(@<text> function () { return { text: $('\\#UserId').data("kendoComboBox").input.val() };} </text>);
+              });
+      })
+      .HtmlAttributes(new { style = "width: 100%;" }))

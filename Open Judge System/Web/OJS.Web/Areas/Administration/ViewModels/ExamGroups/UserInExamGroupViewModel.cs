@@ -15,7 +15,7 @@
         public static Expression<Func<UserProfile, UserInExamGroupViewModel>> FromUserProfile =>
             user => new UserInExamGroupViewModel
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
                 FirstName = user.UserSettings.FirstName,
@@ -24,7 +24,7 @@
 
         [Display(Name = "ID")]
         [HiddenInput(DisplayValue = false)]
-        public string Id { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "UserName", ResourceType = typeof(Resource))]
         [UIHint("NonEditable")]

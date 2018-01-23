@@ -42,5 +42,16 @@
 
         public IQueryable<UserProfile> GetUsersById(int id) =>
             this.examGroups.All().Where(eg => eg.Id == id).SelectMany(eg => eg.Users);
+
+        public void RemoveUserByIdAndUser(int id, string userId)
+        {
+            var examGroup = this.GetById(id);
+            var user = examGroup.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                examGroup.Users.Remove(user);
+                this.examGroups.SaveChanges();
+            }
+        }
     }
 }

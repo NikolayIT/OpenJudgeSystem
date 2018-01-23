@@ -20,5 +20,7 @@
         IQueryable<ExamGroup> All();
 
         IQueryable<UserProfile> GetUsersById(int id);
+
+        void RemoveUserByIdAndUser(int id, string userId);
     }
 }

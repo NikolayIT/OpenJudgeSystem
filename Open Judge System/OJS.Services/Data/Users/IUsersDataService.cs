@@ -6,5 +6,7 @@
     public interface IUsersDataService : IService
     {
         UserProfile GetByIdIncludingDeleted(string userId);
+
+        UserProfile GetById(string userId);
     }
 }

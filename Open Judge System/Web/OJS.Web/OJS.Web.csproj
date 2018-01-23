@@ -1628,7 +1628,6 @@
     <Compile Include="Areas\Administration\Controllers\SubmissionTypesController.cs" />
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Administration\Controllers\UsersInExamGroupsController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
@@ -2397,6 +2396,7 @@
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\AddUserToExamGroup.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
