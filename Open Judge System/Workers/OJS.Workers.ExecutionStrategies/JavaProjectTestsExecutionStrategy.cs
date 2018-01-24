@@ -144,7 +144,7 @@ class Classes{{
                     return result;
                 }
 
-                var preprocessExecutor = new StandardProcessExecutor();
+                var preprocessExecutor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
                 var preprocessArguments = new List<string>();
                 preprocessArguments.Add(this.ClassPath);
