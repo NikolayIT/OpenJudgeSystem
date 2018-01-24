@@ -23,14 +23,14 @@
                 case ExecutionStrategyType.CPlusPlusCompileExecuteAndCheckExecutionStrategy:
                     executionStrategy = new CPlusPlusCompileExecuteAndCheckExecutionStrategy(
                         GetCompilerPath,
-                        Settings.GccBaseTimeUsedInMilliseconds,
-                        Settings.GccBaseMemoryUsedInBytes);
+                        Settings.GPlusPlusBaseTimeUsedInMilliseconds,
+                        Settings.GPlusPlusBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.CPlusPlusZipFileExecutionStrategy:
                     executionStrategy = new CPlusPlusZipFileExecutionStrategy(
                         GetCompilerPath,
-                        Settings.GccBaseTimeUsedInMilliseconds,
-                        Settings.GccBaseMemoryUsedInBytes);
+                        Settings.GPlusPlusBaseTimeUsedInMilliseconds,
+                        Settings.GPlusPlusBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.DotNetCoreTestRunner:
                     executionStrategy = new DotNetCoreTestRunnerExecutionStrategy(
