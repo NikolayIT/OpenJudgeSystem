@@ -59,6 +59,7 @@
     <Compile Include="Communication\Job.cs" />
     <Compile Include="Communication\JobResult.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\ProcessExecutionResultExtensions.cs" />
     <Compile Include="Helpers\CSharpPreprocessorHelper.cs" />
     <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
     <Compile Include="ProcessExecutionResult.cs" />

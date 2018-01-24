@@ -12,16 +12,29 @@
 
     using OJS.Common;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
 
     // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
     {
         private static ILog logger;
 
-        public StandardProcessExecutor()
-        {
+        private readonly int baseTimeUsed;
+        private readonly int baseMemoryUsed;
+
+        public StandardProcessExecutor() =>
             logger = LogManager.GetLogger(typeof(StandardProcessExecutor));
-            //// logger.Info("Initialized.");
+
+        /// <summary>
+        /// Initializes a new instance of the StandardProcessExecutor class with base time and memory used
+        /// </summary>
+        /// <param name="baseTimeUsed">The base time in milliseconds added to the time limit when executing</param>
+        /// <param name="baseMemoryUsed">The base memory in bytes added to the memory limit when executing</param>
+        public StandardProcessExecutor(int baseTimeUsed, int baseMemoryUsed)
+            : this()
+        {
+            this.baseTimeUsed = baseTimeUsed;
+            this.baseMemoryUsed = baseMemoryUsed;
         }
 
         public ProcessExecutionResult Execute(
@@ -35,6 +48,9 @@
             bool useSystemEncoding = false,
             double timeoutMultiplier = 1.5)
         {
+            timeLimit = timeLimit + this.baseTimeUsed;
+            memoryLimit = memoryLimit + this.baseMemoryUsed;
+
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             if (workingDirectory == null)
             {
@@ -201,6 +217,9 @@
             {
                 result.Type = ProcessExecutionResultType.MemoryLimit;
             }
+
+            result.OffsetMemoryUsed(this.baseMemoryUsed);
+            result.OffsetTimeWorked(this.baseTimeUsed);
 
             return result;
         }

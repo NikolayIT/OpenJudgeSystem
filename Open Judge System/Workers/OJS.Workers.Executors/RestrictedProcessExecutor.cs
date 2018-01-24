@@ -13,6 +13,7 @@ namespace OJS.Workers.Executors
 
     using OJS.Common;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
     using OJS.Workers.Executors.Process;
 
     public class RestrictedProcessExecutor : IExecutor
@@ -197,22 +198,8 @@ namespace OJS.Workers.Executors
                 result.Type = ProcessExecutionResultType.MemoryLimit;
             }
 
-            result.MemoryUsed = Math.Max(result.MemoryUsed - this.baseMemoryUsed, this.baseMemoryUsed);
-
-            // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
-            // otherwise display TotalProcessorTime, so people have an acurate idea of the time their program used
-            if (result.ProcessWasKilled)
-            {
-                result.TimeWorked = result.TimeWorked.TotalMilliseconds > this.baseTimeUsed
-                    ? result.TimeWorked - TimeSpan.FromMilliseconds(this.baseTimeUsed)
-                    : result.TimeWorked;
-            }
-            else
-            {
-                result.TimeWorked = result.TotalProcessorTime.TotalMilliseconds > this.baseTimeUsed
-                    ? result.TotalProcessorTime - TimeSpan.FromMilliseconds(this.baseTimeUsed)
-                    : result.TotalProcessorTime;
-            }
+            result.OffsetMemoryUsed(this.baseMemoryUsed);
+            result.OffsetTimeWorked(this.baseTimeUsed);
 
             return result;
         }
