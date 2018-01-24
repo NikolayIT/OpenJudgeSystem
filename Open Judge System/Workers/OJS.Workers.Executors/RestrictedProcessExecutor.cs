@@ -20,11 +20,22 @@ namespace OJS.Workers.Executors
         private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
         private const int TimeBeforeClosingOutputStreams = 300;
         private static ILog logger;
+        private readonly int baseTimeUsed;
+        private readonly int baseMemoryUsed;
 
-        public RestrictedProcessExecutor()
-        {
+        public RestrictedProcessExecutor() =>
             logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
-            //// logger.Info("Initialized.");
+
+        /// <summary>
+        /// Initializes a new instance of the RestrictedProcessExecutor class with base time and memory used
+        /// </summary>
+        /// <param name="baseTimeUsed">The base time in milliseconds added to the time limit when executing</param>
+        /// <param name="baseMemoryUsed">The base memory in bytes added to the memory limit when executing</param>
+        public RestrictedProcessExecutor(int baseTimeUsed, int baseMemoryUsed)
+        {
+            this.baseTimeUsed = baseTimeUsed;
+            this.baseMemoryUsed = baseMemoryUsed;
+            logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
         }
 
         public ProcessExecutionResult Execute(
@@ -38,6 +49,9 @@ namespace OJS.Workers.Executors
             bool useSystemEncoding = false,
             double timeoutMultiplier = 1.5)
         {
+            timeLimit = timeLimit + this.baseTimeUsed;
+            memoryLimit = memoryLimit + this.baseMemoryUsed;
+
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             if (workingDirectory == null)
             {
@@ -179,6 +193,23 @@ namespace OJS.Workers.Executors
             if (result.MemoryUsed > memoryLimit)
             {
                 result.Type = ProcessExecutionResultType.MemoryLimit;
+            }
+
+            result.MemoryUsed = Math.Max(result.MemoryUsed - this.baseMemoryUsed, this.baseMemoryUsed);
+
+            // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
+            // otherwise display TotalProcessorTime, so people have an acurate idea of the time their program used
+            if (result.ProcessWasKilled)
+            {
+                result.TimeWorked = result.TimeWorked.TotalMilliseconds > this.baseTimeUsed
+                    ? result.TimeWorked - TimeSpan.FromMilliseconds(this.baseTimeUsed)
+                    : result.TimeWorked;
+            }
+            else
+            {
+                result.TimeWorked = result.TotalProcessorTime.TotalMilliseconds > this.baseTimeUsed
+                    ? result.TotalProcessorTime - TimeSpan.FromMilliseconds(this.baseTimeUsed)
+                    : result.TotalProcessorTime;
             }
 
             return result;
