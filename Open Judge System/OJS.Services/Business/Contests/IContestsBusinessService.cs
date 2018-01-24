@@ -20,5 +20,7 @@
             bool allowToAdminAlways = false);
 
         ServiceResult TransferParticipantsToPracticeById(int contestId);
+
+        void DeleteById(int id);
     }
 }

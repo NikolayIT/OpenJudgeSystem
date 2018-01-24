@@ -61,11 +61,11 @@ namespace Resources.Areas.Administration.ExamGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot delete exam group which has users..
+        ///   Looks up a localized string similar to You cannot delete exam group which has contest attached to it..
         /// </summary>
-        public static string Cannot_delete_group_with_users {
+        public static string Cannot_delete_group_with_contest {
             get {
-                return ResourceManager.GetString("Cannot_delete_group_with_users", resourceCulture);
+                return ResourceManager.GetString("Cannot_delete_group_with_contest", resourceCulture);
             }
         }
     }

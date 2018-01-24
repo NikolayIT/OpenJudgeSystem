@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cannot_delete_group_with_users" xml:space="preserve">
-    <value>You cannot delete exam group which has users.</value>
+  <data name="Cannot_delete_group_with_contest" xml:space="preserve">
+    <value>You cannot delete exam group which has contest attached to it.</value>
   </data>
 </root>

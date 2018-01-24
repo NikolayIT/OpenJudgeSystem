@@ -37,20 +37,17 @@
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
 
-        private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
-            this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
@@ -208,7 +205,7 @@
                 return this.GridOperation(request, model);
             }
 
-            this.contestsData.DeleteById(model.Id.Value);
+            this.contestsBusiness.DeleteById(model.Id.Value);
             return this.GridOperation(request, model);
         }
 

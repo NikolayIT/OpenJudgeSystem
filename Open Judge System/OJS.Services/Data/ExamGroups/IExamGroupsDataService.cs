@@ -24,5 +24,7 @@
         IQueryable<ExamGroup> GetByIdQuery(int id);
 
         void RemoveUserByIdAndUser(int id, string userId);
+
+        void RemoveReferencesFromContestByContest(int contestId);
     }
 }

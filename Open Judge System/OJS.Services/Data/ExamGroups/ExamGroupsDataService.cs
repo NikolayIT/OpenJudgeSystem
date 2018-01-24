@@ -56,5 +56,13 @@
                 this.examGroups.SaveChanges();
             }
         }
+
+        public void RemoveReferencesFromContestByContest(int contestId) =>
+            this.examGroups.Update(
+                eg => eg.ContestId == contestId,
+                examGroup => new ExamGroup
+                {
+                    ContestId = null
+                });
     }
 }

@@ -68,9 +68,13 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (model.Id.HasValue && this.examGroupsData.GetUsersByIdQuery(model.Id.Value).Any())
+            var hasContest = this.examGroupsData
+                .GetByIdQuery(model.Id.Value)
+                .Any(eg => eg.Contest != null && !eg.Contest.IsDeleted);
+
+            if (hasContest)
             {
-                this.TempData.AddDangerMessage(Resource.Cannot_delete_group_with_users);
+                this.TempData.AddDangerMessage(Resource.Cannot_delete_group_with_contest);
                 this.ModelState.AddModelError(string.Empty, string.Empty);
                 return this.GridOperation(request, model);
             }

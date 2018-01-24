@@ -7,6 +7,7 @@
     using OJS.Data.Models;
     using OJS.Services.Common;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
 
@@ -15,15 +16,18 @@
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IExamGroupsDataService examGroupsData;
 
         public ContestsBusinessService(
             IContestsDataService contestsData,
             IParticipantsDataService participantsData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IExamGroupsDataService examGroupsData)
         {
             this.contestsData = contestsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
+            this.examGroupsData = examGroupsData;
         }
 
         public bool IsContestIpValidByContestAndIp(int contestId, string ip) =>
@@ -149,6 +153,12 @@
             this.participantsData.Delete(participantsForDeletion);
 
             return ServiceResult.Success;
+        }
+
+        public void DeleteById(int id)
+        {
+            this.examGroupsData.RemoveReferencesFromContestByContest(id);
+            this.contestsData.DeleteById(id);
         }
     }
 }
