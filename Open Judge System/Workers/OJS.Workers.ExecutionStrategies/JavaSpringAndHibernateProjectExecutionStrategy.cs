@@ -38,11 +38,16 @@
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
             string javaLibrariesPath,
-            string mavenPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
-        {
-            this.MavenPath = mavenPath;
-        }
+            string mavenPath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(
+                javaExecutablePath,
+                getCompilerPathFunc,
+                javaLibrariesPath,
+                baseTimeUsed,
+                baseMemoryUsed) =>
+                    this.MavenPath = mavenPath;
 
         // Property contains Dictionary<GroupId, Tuple<ArtifactId, Version>>
         public Dictionary<string, Tuple<string, string>> Dependencies =>
@@ -157,7 +162,7 @@
 
             string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -DskipTests" };
 
-            var mavenExecutor = new StandardProcessExecutor();
+            var mavenExecutor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             var packageExecutionResult = mavenExecutor.Execute(
               this.MavenPath,
@@ -182,7 +187,7 @@
                 return result;
             }
 
-            var restrictedExe = new RestrictedProcessExecutor();
+            var restrictedExe = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             var arguments = new List<string>();
             arguments.Add(this.ClassPath);

@@ -112,7 +112,7 @@
 
         public static int GccBaseTimeUsedInMilliseconds => GetSettingOrDefault("GccBaseTimeUsedInMilliseconds", 0);
 
-        public static int GccMemoryUsedInBytes => GetSettingOrDefault("GccMemoryUsedInBytes", 0);
+        public static int GccBaseMemoryUsedInBytes => GetSettingOrDefault("GccBaseMemoryUsedInBytes", 0);
 
         public static int PhpCgiBaseTimeUsedInMilliseconds => GetSettingOrDefault("PhpCgiBaseTimeUsedInMilliseconds", 0);
 

@@ -17,11 +17,16 @@
         public JavaProjectTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibrariesPath)
-            : base(javaExecutablePath, getCompilerPathFunc, javaLibrariesPath)
-        {
-            this.UserClassNames = new List<string>();
-        }
+            string javaLibrariesPath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(
+                javaExecutablePath,
+                getCompilerPathFunc,
+                javaLibrariesPath,
+                baseTimeUsed,
+                baseMemoryUsed) =>
+                    this.UserClassNames = new List<string>();
 
         protected List<string> UserClassNames { get; }
 
@@ -111,7 +116,7 @@ class Classes{{
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var combinedArguments = executionContext.AdditionalCompilerArguments + this.ClassPath;
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

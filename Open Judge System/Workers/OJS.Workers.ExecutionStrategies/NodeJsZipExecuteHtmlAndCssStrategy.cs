@@ -171,7 +171,7 @@ describe('TestDOMScope', function() {{
                 this.ProgramEntryPath);
 
             var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,

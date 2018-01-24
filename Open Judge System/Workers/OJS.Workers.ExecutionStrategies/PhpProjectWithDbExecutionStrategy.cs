@@ -20,8 +20,10 @@
             string phpCliExecutablePath,
             string sysDbConnectionString,
             string restrictedUserId,
-            string restrictedUserPassword)
-            : base(phpCliExecutablePath)
+            string restrictedUserPassword,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(phpCliExecutablePath, baseTimeUsed, baseMemoryUsed)
         {
             this.MySqlHelperStrategy = new MySqlPrepareDatabaseAndRunQueriesExecutionStrategy(
                 sysDbConnectionString,
@@ -66,7 +68,7 @@
 
             result.TestResults = new List<TestResult>();
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             foreach (var test in executionContext.Tests)
             {
                 var dbConnection = this.MySqlHelperStrategy.GetOpenConnection(databaseName);
