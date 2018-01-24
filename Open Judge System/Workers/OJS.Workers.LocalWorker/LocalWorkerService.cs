@@ -28,11 +28,8 @@
             this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
-            var submissionsForProcessing = new ConcurrentQueue<int>();
 
-            this.CreateExecutionStrategiesWorkingDirectory();
-            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
-            this.SpawnJobsAndThreads(this.jobs, this.threads, submissionsForProcessing);
+            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<int>());
 
             logger.Info("LocalWorkerService initialized.");
         }
@@ -41,7 +38,11 @@
         {
             logger.Info("LocalWorkerService starting...");
 
+            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
+
             this.StartThreads(this.threads);
+
+            this.CreateExecutionStrategiesWorkingDirectory();
 
             logger.Info("LocalWorkerService started.");
         }

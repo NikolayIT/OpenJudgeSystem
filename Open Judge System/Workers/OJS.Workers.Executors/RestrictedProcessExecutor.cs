@@ -19,7 +19,9 @@ namespace OJS.Workers.Executors
     {
         private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
         private const int TimeBeforeClosingOutputStreams = 300;
+
         private static ILog logger;
+
         private readonly int baseTimeUsed;
         private readonly int baseMemoryUsed;
 
@@ -32,10 +34,10 @@ namespace OJS.Workers.Executors
         /// <param name="baseTimeUsed">The base time in milliseconds added to the time limit when executing</param>
         /// <param name="baseMemoryUsed">The base memory in bytes added to the memory limit when executing</param>
         public RestrictedProcessExecutor(int baseTimeUsed, int baseMemoryUsed)
+            : this()
         {
             this.baseTimeUsed = baseTimeUsed;
             this.baseMemoryUsed = baseMemoryUsed;
-            logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
         }
 
         public ProcessExecutionResult Execute(
