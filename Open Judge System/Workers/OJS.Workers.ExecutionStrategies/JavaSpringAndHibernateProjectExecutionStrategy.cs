@@ -162,7 +162,7 @@
 
             string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -DskipTests" };
 
-            var mavenExecutor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+            var mavenExecutor = new StandardProcessExecutor();
 
             var packageExecutionResult = mavenExecutor.Execute(
               this.MavenPath,
