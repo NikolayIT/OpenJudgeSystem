@@ -1662,7 +1662,6 @@
     <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\TransferParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ExamGroups\ExamGroupAdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ExamGroups\UserInExamGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContestCategories\LecturerInContestCategoryShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Lecturers\LecturerGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
@@ -1680,7 +1679,6 @@
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ShortContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Roles\UserInRoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Setting\SettingAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeViewModel.cs" />
@@ -1689,6 +1687,7 @@
     <Compile Include="Areas\Administration\ViewModels\TestRun\TestRunViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Test\TestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\User\UserProfileSimpleAdministrationViewModel.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Api\Controllers\ApiController.cs" />
     <Compile Include="Areas\Api\Controllers\ExamGroupsController.cs" />

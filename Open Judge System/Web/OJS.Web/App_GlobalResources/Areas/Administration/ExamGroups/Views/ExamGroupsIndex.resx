@@ -123,9 +123,6 @@
   <data name="Page_title" xml:space="preserve">
     <value>Exam groups</value>
   </data>
-  <data name="Remove_user" xml:space="preserve">
-    <value>Remove from the group</value>
-  </data>
   <data name="Remove_user_prompt" xml:space="preserve">
     <value>Are you sure you want to remove this user from the еxam group?</value>
   </data>

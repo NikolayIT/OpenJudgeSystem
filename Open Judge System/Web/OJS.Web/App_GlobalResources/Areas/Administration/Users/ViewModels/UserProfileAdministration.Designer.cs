@@ -242,6 +242,15 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not entered.
+        /// </summary>
+        public static string Not_entered {
+            get {
+                return ResourceManager.GetString("Not_entered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No information.
         /// </summary>
         public static string Null_display_text {
@@ -256,6 +265,15 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username is required!.
+        /// </summary>
+        public static string Username_required {
+            get {
+                return ResourceManager.GetString("Username_required", resourceCulture);
             }
         }
     }

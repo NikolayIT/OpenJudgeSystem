@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels.ExamGroups
+﻿namespace OJS.Web.Areas.Administration.ViewModels.User
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -6,28 +6,32 @@
     using System.Web.Mvc;
 
     using OJS.Common.Attributes;
+    using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
     using Resource = Resources.Areas.Administration.Users.ViewModels.UserProfileAdministration;
 
-    public class UserInExamGroupViewModel
+    public class UserProfileSimpleAdministrationViewModel
     {
-        public static Expression<Func<UserProfile, UserInExamGroupViewModel>> FromUserProfile =>
-            user => new UserInExamGroupViewModel
+        [ExcludeFromExcel]
+        public static Expression<Func<UserProfile, UserProfileSimpleAdministrationViewModel>> FromUserProfile =>
+            user => new UserProfileSimpleAdministrationViewModel
             {
                 UserId = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
-                FirstName = user.UserSettings.FirstName,
-                LastName = user.UserSettings.LastName
+                FirstName = user.UserSettings.FirstName ?? Resource.Not_entered,
+                LastName = user.UserSettings.LastName ?? Resource.Not_entered
             };
 
-        [Display(Name = "ID")]
+        [Display(Name = "№")]
         [HiddenInput(DisplayValue = false)]
         public string UserId { get; set; }
 
         [Display(Name = "UserName", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [Required(
+            ErrorMessageResourceName = "Username_required",
+            ErrorMessageResourceType = typeof(Resource))]
         public string Username { get; set; }
 
         [DataType(DataType.EmailAddress)]

@@ -177,10 +177,16 @@
   <data name="Mail_required" xml:space="preserve">
     <value>Email is required!</value>
   </data>
+  <data name="Not_entered" xml:space="preserve">
+    <value>Not entered</value>
+  </data>
   <data name="Null_display_text" xml:space="preserve">
     <value>No information</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Username</value>
+  </data>
+  <data name="Username_required" xml:space="preserve">
+    <value>Username is required!</value>
   </data>
 </root>

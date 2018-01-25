@@ -153,4 +153,7 @@
   <data name="Modified_on" xml:space="preserve">
     <value>Modified on</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

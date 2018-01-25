@@ -1,7 +1,7 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel
+﻿@model OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel
 @using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex;
 @(Html.Kendo()
-    .ComboBoxFor(m => m.UserName)
+    .ComboBoxFor(m => m.Username)
     .Name("UserId")
     .DataTextField("Text")
     .DataValueField("Value")

@@ -167,5 +167,14 @@ namespace Resources.Areas.Administration {
                 return ResourceManager.GetString("Modified_on", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
     }
 }

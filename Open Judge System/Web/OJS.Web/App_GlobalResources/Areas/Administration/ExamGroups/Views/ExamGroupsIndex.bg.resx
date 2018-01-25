@@ -123,9 +123,6 @@
   <data name="Page_title" xml:space="preserve">
     <value>Групи за изпити</value>
   </data>
-  <data name="Remove_user" xml:space="preserve">
-    <value>Премахни от групата</value>
-  </data>
   <data name="Remove_user_prompt" xml:space="preserve">
     <value>Сигурни ли сте, че искате да премахнте този потребител от групата за изпит?</value>
   </data>

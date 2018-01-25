@@ -16,7 +16,7 @@
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Extensions;
 
-    using DetailModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel;
+    using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
     using Resource = Resources.Areas.Administration.ExamGroups.ExamGroupsController;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel;
 

@@ -51,7 +51,11 @@
             data
                 .Ajax()
                 .ServerOperation(true)
-                .Model(model => { model.Id(x => x.Id); })
+                .Model(model =>
+                {
+                    model.Id(x => x.Id);
+                })
+                .Sort(sort => sort.Add(field => field.Id).Descending())
                 .Create(read => read.Action("Create", "ExamGroups"))
                 .Read(read => read.Action("Read", "ExamGroups"))
                 .Update(update => update.Action("Update", ControllerName))
@@ -63,7 +67,7 @@
 <script type="text/x-kendo-template" id="enrolled-users-template">
     @(Html
         .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel>()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
         .Name("EnrolledUsersGrid_#=Id#")
         .Columns(columns =>
         {
@@ -72,7 +76,7 @@
             columns.Bound(m => m.FirstName);
             columns.Bound(m => m.LastName);
             columns.Bound(m => m.Email);
-            columns.Command(command => command.Destroy().Text(Resource.Remove_user)).Width(210);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Remove);
         })
         .ToolBar(toolbar =>
         {

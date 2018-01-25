@@ -153,4 +153,7 @@
   <data name="Modified_on" xml:space="preserve">
     <value>Дата на промяна</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Премахни</value>
+  </data>
 </root>

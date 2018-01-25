@@ -80,15 +80,6 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove from the group.
-        /// </summary>
-        public static string Remove_user {
-            get {
-                return ResourceManager.GetString("Remove_user", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this user from the еxam group?.
         /// </summary>
         public static string Remove_user_prompt {

@@ -177,10 +177,16 @@
   <data name="Mail_required" xml:space="preserve">
     <value>Email-а е задължителен</value>
   </data>
+  <data name="Not_entered" xml:space="preserve">
+    <value>Няма</value>
+  </data>
   <data name="Null_display_text" xml:space="preserve">
     <value>Няма информация</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Потребителско име</value>
+  </data>
+  <data name="Username_required" xml:space="preserve">
+    <value>Потребителското име е задължително!</value>
   </data>
 </root>
