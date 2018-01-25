@@ -38,11 +38,11 @@
         {
             logger.Info("LocalWorkerService starting...");
 
+            this.CreateExecutionStrategiesWorkingDirectory();
+
             this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
 
             this.StartThreads(this.threads);
-
-            this.CreateExecutionStrategiesWorkingDirectory();
 
             logger.Info("LocalWorkerService started.");
         }
