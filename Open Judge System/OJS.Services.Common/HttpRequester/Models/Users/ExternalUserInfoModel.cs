@@ -1,10 +1,10 @@
-﻿namespace OJS.Web.ViewModels.Account
+﻿namespace OJS.Services.Common.HttpRequester.Models.Users
 {
     using System;
 
     using OJS.Data.Models;
 
-    public class ExternalUserViewModel
+    public class ExternalUserInfoModel
     {
         public string Id { get; set; }
 

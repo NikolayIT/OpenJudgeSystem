@@ -75,5 +75,11 @@
             this.contests
                 .All()
                 .Any(c => c.Id == contestId && c.Participants.Any(p => p.UserId == userId));
+
+        public bool IsUserInExamGroupByContestAndUser(int contestId, string userId) =>
+            this.contests
+                .All()
+                .Any(c => c.Id == contestId &&
+                    c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
     }
 }

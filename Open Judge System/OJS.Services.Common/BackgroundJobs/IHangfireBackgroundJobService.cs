@@ -5,8 +5,10 @@
 
     public interface IHangfireBackgroundJobService : IService
     {
-       void AddOrUpdateRecurringJob(object recurringJobId, Expression<Action> methodCall, string cronExpression);
+        object AddFireAndForgetJob<T>(Expression<Action<T>> methodCall);
 
-       void AddOrUpdateRecurringJob<T>(object recurringJobId, Expression<Action<T>> methodCall, string cronExpression);
+        void AddOrUpdateRecurringJob(object recurringJobId, Expression<Action> methodCall, string cronExpression);
+
+        void AddOrUpdateRecurringJob<T>(object recurringJobId, Expression<Action<T>> methodCall, string cronExpression);
     }
 }

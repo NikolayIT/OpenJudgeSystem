@@ -1648,9 +1648,12 @@
     <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Api\Controllers\ApiController.cs" />
+    <Compile Include="Areas\Api\Controllers\ExamGroupsController.cs" />
     <Compile Include="Areas\Api\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Api\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Api\Models\ErrorMessageViewModel.cs" />
+    <Compile Include="Areas\Api\Models\ExamGroupInfoModel.cs" />
+    <Compile Include="Areas\Api\Models\UsersExamGroupModel.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
     <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -1712,7 +1715,6 @@
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
-    <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />

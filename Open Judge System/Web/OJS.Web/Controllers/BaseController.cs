@@ -5,6 +5,7 @@
     using System.Linq.Expressions;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
@@ -36,6 +37,11 @@
             }
 
             return this.RedirectToAction(method.Method.Name);
+        }
+
+        protected ActionResult RedirectToHome()
+        {
+            return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)

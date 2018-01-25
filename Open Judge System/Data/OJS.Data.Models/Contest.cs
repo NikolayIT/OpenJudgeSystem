@@ -102,6 +102,8 @@
 
         public virtual ICollection<ContestIp> AllowedIps { get; set; } = new HashSet<ContestIp>();
 
+        public virtual ICollection<ExamGroup> ExamGroups { get; set; } = new HashSet<ExamGroup>();
+
         [NotMapped]
         public bool CanBeCompeted
         {
