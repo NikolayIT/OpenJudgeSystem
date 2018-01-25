@@ -28,6 +28,7 @@
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -51,19 +52,22 @@
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
         private readonly IProblemsDataService problemsData;
+        private readonly IProblemGroupsDataService problemGroupsData;
 
         public ProblemsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
-            IProblemsDataService problemsData)
+            IProblemsDataService problemsData,
+            IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
             this.problemsData = problemsData;
+            this.problemGroupsData = problemGroupsData;
         }
 
         public ActionResult Index()
@@ -251,6 +255,21 @@
                 }
             }
 
+            var existingProblemGroupId = this.GetProblemGroupId(contest.Id, problem.ProblemGroupOrderBy);
+
+            if (existingProblemGroupId == null)
+            {
+                newProblem.ProblemGroup = new ProblemGroup
+                {
+                    ContestId = contest.Id,
+                    OrderBy = contest.ProblemGroups.Count
+                };
+            }
+            else
+            {
+                newProblem.ProblemGroupId = existingProblemGroupId;
+            }
+
             this.Data.Problems.Add(newProblem);
             this.Data.SaveChanges();
 
@@ -342,6 +361,10 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+            existingProblem.ProblemGroupId = this.GetProblemGroupId(
+                existingProblem.Contest.Id,
+                problem.ProblemGroupOrderBy)
+                    ?? existingProblem.ProblemGroupId;
 
             if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
@@ -933,12 +956,12 @@
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
-            var numberOfProblemGroups =
-                problemEntity.FirstOrDefault().Contest.NumberOfProblemGroups;
+            var contest = problemEntity.FirstOrDefault().ProblemGroup.Contest;
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
-                numberOfProblemGroups);
+                contest.ProblemGroups.Count,
+                contest.IsOnline);
 
             return problem;
         }
@@ -961,7 +984,11 @@
             problem.OrderBy = problemOrder;
             problem.ContestId = contest.Id;
             problem.ContestName = contest.Name;
-            this.AddCheckersAndProblemGroupsToProblemViewModel(problem, contest.NumberOfProblemGroups);
+
+            this.AddCheckersAndProblemGroupsToProblemViewModel(
+                problem,
+                contest.ProblemGroups.Count,
+                contest.IsOnline);
 
             problem.SubmissionTypes = this.Data.SubmissionTypes
                 .All()
@@ -973,7 +1000,8 @@
 
         private void AddCheckersAndProblemGroupsToProblemViewModel(
             DetailedProblemViewModel problem,
-            short numberOfProblemGroups)
+            int numberOfProblemGroups,
+            bool isOnlineContest)
         {
             problem.AvailableCheckers = this.Data.Checkers.All()
                 .Select(checker => new SelectListItem
@@ -983,9 +1011,9 @@
                     Selected = checker.Name.Contains("Trim")
                 });
 
-            if (numberOfProblemGroups > 0)
+            if (isOnlineContest && numberOfProblemGroups > 0)
             {
-                this.ViewBag.GroupNumberData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
+                this.ViewBag.ProblemGroupOrderByData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
             }
         }
 
@@ -1000,6 +1028,16 @@
             }
 
             return isValid;
+        }
+
+        private int? GetProblemGroupId(int contestId, int? problemGroupOrderBy)
+        {
+            problemGroupOrderBy = problemGroupOrderBy >= 1
+                ? problemGroupOrderBy - 1
+                : null;
+
+            return this.problemGroupsData
+                .GetIdByContestAndOrderBy(contestId, problemGroupOrderBy);
         }
     }
 }
