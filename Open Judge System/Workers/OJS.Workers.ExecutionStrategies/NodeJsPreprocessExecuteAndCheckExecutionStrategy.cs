@@ -223,8 +223,8 @@ process.stdin.on('end', function() {
             var processExecutionResult = executor.Execute(
                 this.NodeJsExecutablePath,
                 input,
-                executionContext.TimeLimit + this.BaseTimeUsed,
-                executionContext.MemoryLimit + this.BaseMemoryUsed,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
                 additionalArguments);
 
             return processExecutionResult;
