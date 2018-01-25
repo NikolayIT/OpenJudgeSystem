@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
@@ -109,11 +110,10 @@
             int id,
             string userId)
         {
-            var user = this.usersData.GetById(userId);
             var examGroup = this.examGroupsData.GetById(id);
+            var user = this.usersData.GetById(userId);
 
             examGroup.Users.Add(user);
-
             this.examGroupsData.Update(examGroup);
 
             var result = new DetailModelType
@@ -130,20 +130,22 @@
 
         public ActionResult GetAvailableUsersForExamGroup(string text)
         {
-            var users = this.usersData.GetAll();
+            var result = new List<SelectListItem>();
 
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrWhiteSpace(text))
             {
-                users = users.Where(u => u.UserName.ToLower().Contains(text.ToLower()));
-            }
+                var users = this.usersData
+                     .GetAll()
+                     .Where(u => u.UserName.ToLower().Contains(text.ToLower()));
 
-            var result = users
-                .ToList()
-                .Select(pr => new SelectListItem
-                {
-                    Text = pr.UserName,
-                    Value = pr.Id
-                });
+                result = users
+                    .Select(pr => new SelectListItem
+                    {
+                        Text = pr.UserName,
+                        Value = pr.Id
+                    })
+                    .ToList();
+            }
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }

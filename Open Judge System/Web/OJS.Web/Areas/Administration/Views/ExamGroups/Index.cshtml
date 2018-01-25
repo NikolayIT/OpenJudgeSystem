@@ -14,7 +14,8 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html.Kendo()
+    @(Html
+        .Kendo()
         .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
@@ -51,8 +52,8 @@
                 .Ajax()
                 .ServerOperation(true)
                 .Model(model => { model.Id(x => x.Id); })
-                .Read(read => read.Action("Read", "ExamGroups"))
                 .Create(read => read.Action("Create", "ExamGroups"))
+                .Read(read => read.Action("Read", "ExamGroups"))
                 .Update(update => update.Action("Update", ControllerName))
                 .Destroy(destroy => destroy.Action("Destroy", ControllerName))
                 .Events(ev => ev.Error("validateModelStateErrors"));
@@ -60,7 +61,8 @@
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
-    @(Html.Kendo()
+    @(Html
+        .Kendo()
         .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.UserInExamGroupViewModel>()
         .Name("EnrolledUsersGrid_#=Id#")
         .Columns(columns =>
@@ -78,22 +80,28 @@
         })
         .Editable(editable =>
         {
-            editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(Resource.Remove_user_prompt);
+            editable.Mode(GridEditMode.PopUp);
+            editable.Window(w => w.Title(Resource.Add_user));
             editable.TemplateName("AddUserToExamGroup");
+            editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
         })
         .ColumnMenu()
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
         .DataSource(data =>
         {
             data
                 .Ajax()
                 .ServerOperation(true)
-                .Model(model => { model.Id(m => m.UserId); })
+                .Model(model =>
+                {
+                    model.Id(m => m.UserId);
+                })
                 .Sort(sort => sort.Add(field => field.Username))
-                .Read(read => read.Action("UsersInExamGroup", ControllerName, new {id = "#= Id #"}))
-                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new {id = "#= Id #"}))
-                .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new {id = "#= Id #"}));
+                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
+                .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
+                .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }));
         })
         .ToClientTemplate())
 </script>
