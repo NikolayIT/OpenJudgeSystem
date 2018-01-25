@@ -12,7 +12,6 @@
 
     using OJS.Common;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.Extensions;
 
     // TODO: Implement memory constraints
     public class StandardProcessExecutor : IExecutor
@@ -218,8 +217,7 @@
                 result.Type = ProcessExecutionResultType.MemoryLimit;
             }
 
-            result.OffsetMemoryUsed(this.baseMemoryUsed);
-            result.OffsetTimeWorked(this.baseTimeUsed);
+            result.ApplyTimeAndMemoryOffset(this.baseTimeUsed, this.baseMemoryUsed);
 
             return result;
         }

@@ -13,7 +13,6 @@ namespace OJS.Workers.Executors
 
     using OJS.Common;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.Extensions;
     using OJS.Workers.Executors.Process;
 
     public class RestrictedProcessExecutor : IExecutor
@@ -198,8 +197,7 @@ namespace OJS.Workers.Executors
                 result.Type = ProcessExecutionResultType.MemoryLimit;
             }
 
-            result.OffsetMemoryUsed(this.baseMemoryUsed);
-            result.OffsetTimeWorked(this.baseTimeUsed);
+            result.ApplyTimeAndMemoryOffset(this.baseTimeUsed, this.baseMemoryUsed);
 
             return result;
         }
