@@ -60,16 +60,6 @@
 
         protected string UnderscoreModulePath { get; }
 
-        /// <remarks>
-        /// Measured in milliseconds.
-        /// </remarks>
-        protected int BaseTimeUsed { get; set; }
-
-        /// <remarks>
-        /// Measured in bytes.
-        /// </remarks>
-        protected int BaseMemoryUsed { get; set; }
-
         protected virtual string JsCodeRequiredModules => $@"
 var EOL = require('os').EOL,
 _ = require('{this.UnderscoreModulePath}')";
