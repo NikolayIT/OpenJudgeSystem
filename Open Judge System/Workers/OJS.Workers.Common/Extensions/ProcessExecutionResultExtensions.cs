@@ -7,7 +7,7 @@
         public static void OffsetTimeWorked(this ProcessExecutionResult result, int baseTimeUsed)
         {
             // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
-            // otherwise display TotalProcessorTime, so people have an acurate idea of the time their program used
+            // otherwise display TotalProcessorTime, so that the final result is as close as possible to the actual worker time
             if (result.ProcessWasKilled)
             {
                 result.TimeWorked = result.TimeWorked.TotalMilliseconds > baseTimeUsed
