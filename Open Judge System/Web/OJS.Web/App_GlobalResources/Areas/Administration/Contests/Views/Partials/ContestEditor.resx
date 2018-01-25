@@ -177,4 +177,7 @@
   <data name="Duration" xml:space="preserve">
     <value>Enter the duration of the exam in hours</value>
   </data>
+  <data name="Problem_groups_edit_from_administration" xml:space="preserve">
+    <value>You can manage problem groups count from the Problem Groups Administration</value>
+  </data>
 </root>
