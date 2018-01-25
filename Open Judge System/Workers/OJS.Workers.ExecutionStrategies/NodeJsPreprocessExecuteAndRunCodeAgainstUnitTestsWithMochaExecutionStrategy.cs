@@ -175,7 +175,13 @@ describe('Test {i} ', function(){{
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
             var testCount = 0;
-            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments);
+
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
             var numberOfUserTests = mochaResult.UsersTestCount;
             var correctSolutionTestPasses = mochaResult.InitialPassingTests;

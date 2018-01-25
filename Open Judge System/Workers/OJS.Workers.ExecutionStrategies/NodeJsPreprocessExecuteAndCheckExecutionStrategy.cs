@@ -205,29 +205,18 @@ process.stdin.on('end', function() {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
+                var processExecutionResult = executor.Execute(
+                    this.NodeJsExecutablePath,
+                    test.Input,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    arguments);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
             }
 
             return testResults;
-        }
-
-        protected virtual ProcessExecutionResult ExecuteNodeJsProcess(
-            ExecutionContext executionContext,
-            IExecutor executor,
-            string input,
-            IEnumerable<string> additionalArguments)
-        {
-            var processExecutionResult = executor.Execute(
-                this.NodeJsExecutablePath,
-                input,
-                executionContext.TimeLimit,
-                executionContext.MemoryLimit,
-                additionalArguments);
-
-            return processExecutionResult;
         }
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)

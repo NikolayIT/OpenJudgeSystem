@@ -145,7 +145,14 @@ it('Test{testsCount++}', function(done) {{
             arguments.Add(this.MochaModulePath);
             arguments.Add(codeSavePath);
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
-            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments);
+
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
             var currentTest = 0;
             foreach (var test in executionContext.Tests)

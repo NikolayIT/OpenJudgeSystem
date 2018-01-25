@@ -132,7 +132,13 @@ describe('TestScope', function() {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
+                var processExecutionResult = executor.Execute(
+                    this.NodeJsExecutablePath,
+                    test.Input,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    arguments);
+
                 var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
 
                 var message = "yes";
