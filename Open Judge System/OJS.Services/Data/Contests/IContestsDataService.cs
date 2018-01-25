@@ -32,5 +32,7 @@
         bool IsUserLecturerInByContestAndUser(int contestId, string userId);
 
         bool IsUserParticipantInByContestAndUser(int contestId, string userId);
+
+        bool IsUserInExamGroupByContestAndUser(int contestId, string userId);
     }
 }
