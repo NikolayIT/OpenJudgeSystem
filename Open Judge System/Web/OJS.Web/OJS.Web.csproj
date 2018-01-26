@@ -663,6 +663,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShortContestAdministration.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.bg.designer.cs">
+      <DependentUpon>ContestDropDown.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -672,6 +677,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CategoryDropDown.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestDropDown.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2635,6 +2645,10 @@
       <LastGenOutput>ShortContestAdministration.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.bg.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ContestDropDown.bg.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CategoryDropDown.Designer.cs</LastGenOutput>
@@ -2643,6 +2657,11 @@
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CategoryDropDown.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestDropDown.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.resx">

@@ -1,10 +1,12 @@
-﻿@model string
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.ContestDropDown
+
+@model string
 
 @(Html
     .Kendo()
     .ComboBoxFor(m => m)
     .Filter(FilterType.Contains)
-    .Placeholder("Select contest")
+    .Placeholder(Resource.Select_contest)
     .DataTextField("Text")
     .DataValueField("Value")
     .DataSource(data =>
