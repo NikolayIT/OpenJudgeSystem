@@ -1,17 +1,18 @@
 ﻿@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.ContestDropDown
 
-@model string
+@model int?
 
 @(Html
     .Kendo()
     .ComboBoxFor(m => m)
-    .Filter(FilterType.Contains)
-    .Placeholder(Resource.Select_contest)
     .DataTextField("Text")
     .DataValueField("Value")
+    .Filter(FilterType.Contains)
+    .Placeholder(Resource.Select_contest)
     .DataSource(data =>
     {
-        data.ServerFiltering(true)
+        data
+            .ServerFiltering(true)
             .Read(read => read.Action("GetContests", "ExamGroups").Data("filterContests"));
     })
     .HtmlAttributes(new { style = "width:100%" }))

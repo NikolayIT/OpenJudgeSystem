@@ -23,6 +23,7 @@
             columns.Bound(m => m.Id);
             columns.Bound(m => m.Name);
             columns.Bound(m => m.ContestName);
+            columns.Bound(m => m.ContestId).Hidden();
             columns.Bound(m => m.ExternalExamGroupId);
             columns.Bound(m => m.ExternalAppId);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
@@ -36,11 +37,7 @@
         .Editable(editable =>
         {
             editable.Mode(GridEditMode.PopUp);
-            editable.Window(w =>
-            {
-                w.Title(ViewBag.Title);
-                w.Width(750);
-            });
+            editable.Window(w =>w.Title(Resource.Page_title).Width(750));
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
@@ -75,7 +72,6 @@
           .Name("EnrolledUsersGrid_#=Id#")
           .Columns(columns =>
           {
-              columns.Bound(m => m.UserId).Hidden();
               columns.Bound(m => m.Username);
               columns.Bound(m => m.FirstName);
               columns.Bound(m => m.LastName);
@@ -93,7 +89,6 @@
               editable.TemplateName("AddUserToExamGroup");
               editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
           })
-          .ColumnMenu()
           .Pageable(x => x.Refresh(true))
           .Sortable(x => x.Enabled(true).AllowUnsort(false))
           .Filterable(x => x.Enabled(true))
@@ -114,16 +109,16 @@
           .ToClientTemplate())
 </script>
 
-<script>
-    function filterUsers() {
-        return {
-            userFilter: $('#UserId').data("kendoComboBox").input.val()
-        }
-    }
-
+<script type="text/javascript">
     function filterContests() {
         return {
             contestFilter: $('#ContestId').data("kendoComboBox").input.val()
+        }
+    }
+
+    function filterUsers() {
+        return {
+            userFilter: $('#UserId').data("kendoComboBox").input.val()
         }
     }
 
@@ -136,16 +131,20 @@
         nameInput.css('width', '530px');
         contestInput.css('width', '500px');
         contestsList.css("width", "520px");
+        buttons.css('width', '732px');
 
-        buttons.css({
-            width: '732px',
-            'text-align': 'center'
+        var disabledFields = $('input:disabled').parent('.editor-field');
+
+        $.each(disabledFields, function (i, field) {
+            $(field).hide();
+            $(field).prev().hide();
         });
 
-        $.each($('input:disabled').parent('.editor-field'),
-            function (i, val) {
-                $(val).hide();
-                $(val).prev().hide();
-            });
+        var contestNameInput = $('#ContestName').parent();
+        var contestNameLabel = contestNameInput.prev();
+        contestNameInput.hide();
+        contestNameLabel.hide();
+
+        //$("#ContestId").data("kendoComboBox").text("22");
     }
 </script>

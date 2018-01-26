@@ -120,6 +120,9 @@
   <data name="Contest_name" xml:space="preserve">
     <value>Състезание</value>
   </data>
+  <data name="Contest_required" xml:space="preserve">
+    <value>Състезанието е задължително</value>
+  </data>
   <data name="Extenral_app_id" xml:space="preserve">
     <value>Външна система</value>
   </data>

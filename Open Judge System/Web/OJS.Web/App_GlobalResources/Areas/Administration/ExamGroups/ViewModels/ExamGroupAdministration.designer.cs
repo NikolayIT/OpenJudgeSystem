@@ -71,6 +71,15 @@ namespace Resources.Areas.Administration.ExamGroups.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest is required.
+        /// </summary>
+        public static string Contest_required {
+            get {
+                return ResourceManager.GetString("Contest_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External system.
         /// </summary>
         public static string Extenral_app_id {
