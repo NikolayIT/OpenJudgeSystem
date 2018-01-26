@@ -133,7 +133,7 @@
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAvailableUsersForExamGroup(string userFilter)
+        public ActionResult GetAvailableUsers(string userFilter)
         {
             var result = new List<SelectListItem>();
 
@@ -155,7 +155,7 @@
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetContests(string contestFilter)
+        public ActionResult GetAvailableContests(string contestFilter)
         {
             var contests = this.contestsData.GetAll();
 

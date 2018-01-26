@@ -17,7 +17,7 @@
             .ServerFiltering(true)
             .Read(read =>
             {
-                read.Action("GetAvailableUsersForExamGroup", "ExamGroups").Data("filterUsers");
+                read.Action("GetAvailableUsers", "ExamGroups").Data("filterUsers");
             });
     })
     .HtmlAttributes(new { style = "width: 100%;" }))

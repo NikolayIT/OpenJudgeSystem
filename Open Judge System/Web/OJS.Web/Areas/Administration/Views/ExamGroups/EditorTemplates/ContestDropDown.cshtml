@@ -13,6 +13,6 @@
     {
         data
             .ServerFiltering(true)
-            .Read(read => read.Action("GetContests", "ExamGroups").Data("filterContests"));
+            .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("filterContests"));
     })
     .HtmlAttributes(new { style = "width:100%" }))
