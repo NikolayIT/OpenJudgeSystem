@@ -2405,6 +2405,7 @@
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\AddUserToExamGroup.cshtml" />
+    <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

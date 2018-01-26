@@ -17,8 +17,7 @@
             .ServerFiltering(true)
             .Read(read =>
             {
-                read.Action("GetAvailableUsersForExamGroup", "ExamGroups")
-                    .Data(@<text> function () { return { text: $('\\#UserId').data("kendoComboBox").input.val() };} </text>);
+                read.Action("GetAvailableUsersForExamGroup", "ExamGroups").Data("filterUsers");
             });
     })
     .HtmlAttributes(new { style = "width: 100%;" }))

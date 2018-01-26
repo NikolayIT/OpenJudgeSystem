@@ -11,6 +11,8 @@
 
         IQueryable<Contest> GetByIdQuery(int contestId);
 
+        IQueryable<Contest> GetAll();
+
         IQueryable<Contest> GetAllActive();
 
         IQueryable<Contest> GetAllCompetable();

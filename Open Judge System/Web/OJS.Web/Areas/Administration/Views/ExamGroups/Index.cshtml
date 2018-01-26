@@ -22,7 +22,6 @@
         {
             columns.Bound(m => m.Id);
             columns.Bound(m => m.Name);
-            columns.Bound(m => m.ContestId).Hidden();
             columns.Bound(m => m.ContestName);
             columns.Bound(m => m.ExternalExamGroupId);
             columns.Bound(m => m.ExternalAppId);
@@ -37,7 +36,11 @@
         .Editable(editable =>
         {
             editable.Mode(GridEditMode.PopUp);
-            editable.Window(w => w.Title(ViewBag.Title));
+            editable.Window(w =>
+            {
+                w.Title(ViewBag.Title);
+                w.Width(750);
+            });
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
@@ -61,51 +64,88 @@
                 .Update(update => update.Action("Update", ControllerName))
                 .Destroy(destroy => destroy.Action("Destroy", ControllerName))
                 .Events(ev => ev.Error("validateModelStateErrors"));
-        }))
+        })
+        .Events(ev => ev.Edit("onEdit")))
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
     @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
-        .Name("EnrolledUsersGrid_#=Id#")
-        .Columns(columns =>
-        {
-            columns.Bound(m => m.UserId).Hidden();
-            columns.Bound(m => m.Username);
-            columns.Bound(m => m.FirstName);
-            columns.Bound(m => m.LastName);
-            columns.Bound(m => m.Email);
-            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Remove);
-        })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Create().Text(Resource.Add_user);
-        })
-        .Editable(editable =>
-        {
-            editable.Mode(GridEditMode.PopUp);
-            editable.Window(w => w.Title(Resource.Add_user));
-            editable.TemplateName("AddUserToExamGroup");
-            editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
-        })
-        .ColumnMenu()
-        .Pageable(x => x.Refresh(true))
-        .Sortable(x => x.Enabled(true).AllowUnsort(false))
-        .Filterable(x => x.Enabled(true))
-        .DataSource(data =>
-        {
-            data
-                .Ajax()
-                .ServerOperation(true)
-                .Model(model =>
-                {
-                    model.Id(m => m.UserId);
-                })
-                .Sort(sort => sort.Add(field => field.Username))
-                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
-                .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
-                .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }));
-        })
-        .ToClientTemplate())
+          .Kendo()
+          .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
+          .Name("EnrolledUsersGrid_#=Id#")
+          .Columns(columns =>
+          {
+              columns.Bound(m => m.UserId).Hidden();
+              columns.Bound(m => m.Username);
+              columns.Bound(m => m.FirstName);
+              columns.Bound(m => m.LastName);
+              columns.Bound(m => m.Email);
+              columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Remove);
+          })
+          .ToolBar(toolbar =>
+          {
+              toolbar.Create().Text(Resource.Add_user);
+          })
+          .Editable(editable =>
+          {
+              editable.Mode(GridEditMode.PopUp);
+              editable.Window(w => w.Title(Resource.Add_user));
+              editable.TemplateName("AddUserToExamGroup");
+              editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
+          })
+          .ColumnMenu()
+          .Pageable(x => x.Refresh(true))
+          .Sortable(x => x.Enabled(true).AllowUnsort(false))
+          .Filterable(x => x.Enabled(true))
+          .DataSource(data =>
+          {
+              data
+                  .Ajax()
+                  .ServerOperation(true)
+                  .Model(model =>
+                  {
+                      model.Id(m => m.UserId);
+                  })
+                  .Sort(sort => sort.Add(field => field.Username))
+                  .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
+                  .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
+                  .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }));
+          })
+          .ToClientTemplate())
+</script>
+
+<script>
+    function filterUsers() {
+        return {
+            userFilter: $('#UserId').data("kendoComboBox").input.val()
+        }
+    }
+
+    function filterContests() {
+        return {
+            contestFilter: $('#ContestId').data("kendoComboBox").input.val()
+        }
+    }
+
+    function onEdit() {
+        var nameInput = $('#Name');
+        var contestInput = $(".k-widget.k-window [name=ContestId_input]").parent();
+        var contestsList = $('#ContestId-list');
+        var buttons = $('.k-widget.k-window .k-edit-buttons');
+
+        nameInput.css('width', '530px');
+        contestInput.css('width', '500px');
+        contestsList.css("width", "520px");
+
+        buttons.css({
+            width: '732px',
+            'text-align': 'center'
+        });
+
+        $.each($('input:disabled').parent('.editor-field'),
+            function (i, val) {
+                $(val).hide();
+                $(val).prev().hide();
+            });
+    }
 </script>

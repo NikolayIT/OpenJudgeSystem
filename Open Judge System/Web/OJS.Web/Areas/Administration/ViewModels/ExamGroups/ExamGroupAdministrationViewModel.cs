@@ -23,7 +23,6 @@
                 Name = eg.Name,
                 ExternalExamGroupId = eg.ExternalExamGroupId,
                 ExternalAppId = eg.ExternalAppId,
-                ContestId = eg.ContestId,
                 ContestName = eg.Contest.Name
             };
 
@@ -43,7 +42,7 @@
             MinimumLength = GlobalConstants.ExamGroupNameMinLength,
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(SharedResource))]
-        [UIHint("MultiLineText")]
+        [UIHint("SingleLineText")]
         public string Name { get; set; }
 
         [DatabaseProperty]
@@ -57,9 +56,12 @@
         public string ExternalAppId { get; set; }
 
         [DatabaseProperty]
+        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        [UIHint("ContestDropDown")]
         public int? ContestId { get; set; }
 
         [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        [UIHint("NonEditable")]
         public string ContestName { get; set; }
     }
 }

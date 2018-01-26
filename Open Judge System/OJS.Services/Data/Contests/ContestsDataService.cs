@@ -19,6 +19,8 @@
         public IQueryable<Contest> GetByIdQuery(int contestId) =>
             this.contests.All().Where(c => c.Id == contestId);
 
+        public IQueryable<Contest> GetAll() => this.contests.All();
+
         public IQueryable<Contest> GetAllActive() =>
             this.contests
                 .All()

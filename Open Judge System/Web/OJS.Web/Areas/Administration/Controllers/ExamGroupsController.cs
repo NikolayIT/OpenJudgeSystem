@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -11,6 +12,7 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
@@ -24,15 +26,18 @@
     {
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
+        private readonly IContestsDataService contestsData;
 
         public ExamGroupsController(
             IOjsData data,
             IExamGroupsDataService examGroupsData,
-            IUsersDataService usersData)
+            IUsersDataService usersData,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.examGroupsData = examGroupsData;
             this.usersData = usersData;
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index() => this.View();
@@ -128,24 +133,52 @@
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAvailableUsersForExamGroup(string text)
+        public ActionResult GetAvailableUsersForExamGroup(string userFilter)
         {
             var result = new List<SelectListItem>();
 
-            if (!string.IsNullOrWhiteSpace(text))
+            if (!string.IsNullOrWhiteSpace(userFilter))
             {
                 var users = this.usersData
                      .GetAll()
-                     .Where(u => u.UserName.ToLower().Contains(text.ToLower()));
+                     .Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()));
 
                 result = users
-                    .Select(pr => new SelectListItem
+                    .Select(u => new SelectListItem
                     {
-                        Text = pr.UserName,
-                        Value = pr.Id
+                        Text = u.UserName,
+                        Value = u.Id
                     })
                     .ToList();
             }
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetContests(string contestFilter)
+        {
+            var contests = this.contestsData.GetAll();
+
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
+            {
+                contests = contests
+                    .Where(c => c.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                                c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
+            }
+
+            if (!string.IsNullOrWhiteSpace(contestFilter))
+            {
+                contests = contests.Where(c => c.Name.Contains(contestFilter));
+            }
+
+            var result = contests
+                .ToList()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(CultureInfo.InvariantCulture)
+                })
+                .OrderByDescending(c => int.Parse(c.Value));
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
