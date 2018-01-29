@@ -23,8 +23,7 @@
                 Name = eg.Name,
                 ExternalExamGroupId = eg.ExternalExamGroupId,
                 ExternalAppId = eg.ExternalAppId,
-                ContestId = eg.ContestId,
-                ContestName = eg.Contest.Name
+                ContestId = eg.ContestId
             };
 
         [DatabaseProperty]
@@ -57,14 +56,11 @@
         public string ExternalAppId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
         [Required(
             ErrorMessageResourceName = "Contest_required",
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("ContestDropDown")]
         public int? ContestId { get; set; }
-
-        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
-        public string ContestName { get; set; }
     }
 }

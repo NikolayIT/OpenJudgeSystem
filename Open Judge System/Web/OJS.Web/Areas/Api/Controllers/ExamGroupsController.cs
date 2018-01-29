@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Api.Controllers
 {
-    using System;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -12,9 +11,6 @@
 
     public class ExamGroupsController : Controller
     {
-        private const string GeneralDateTimeShortFormat = "g";
-        private const int SeparatorUnicode = 187;
-
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IHangfireBackgroundJobService backgroundJobs;
 
@@ -48,10 +44,9 @@
                 };
             }
 
-            var startTime = externalExamGroup.StartTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
+            var startTime = externalExamGroup.StartTime?.ToString("g") ?? string.Empty;
 
-            examGroup.Name = $"{externalExamGroup.ExamName} {Convert.ToChar(SeparatorUnicode)} " +
-                             $"{externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
+            examGroup.Name = $"{externalExamGroup.ExamName} => {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
 
             if (examGroupExists)
             {

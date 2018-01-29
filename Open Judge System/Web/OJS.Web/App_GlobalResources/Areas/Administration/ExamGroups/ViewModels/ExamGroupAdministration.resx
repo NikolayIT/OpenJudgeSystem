@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Contest_name" xml:space="preserve">
+  <data name="Contest" xml:space="preserve">
     <value>Contest</value>
   </data>
   <data name="Contest_required" xml:space="preserve">

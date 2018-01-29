@@ -193,15 +193,13 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                this.ModelState.AddModelError(string.Empty, string.Empty);
+                this.ModelState.AddModelError(string.Empty, GlobalConstants.NoPrivilegesMessage);
                 return this.GridOperation(request, model);
             }
 
             if (this.contestsData.IsActiveById(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
-                this.ModelState.AddModelError(string.Empty, string.Empty);
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_forbidden_for_deletion);
                 return this.GridOperation(request, model);
             }
 

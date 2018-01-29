@@ -9,15 +9,13 @@
     .DataTextField("Text")
     .DataValueField("Value")
     .Filter(FilterType.Contains)
-    .MinLength(1)
+    .MinLength(2)
     .Placeholder(Resource.Choose_user)
     .DataSource(data =>
     {
         data
             .ServerFiltering(true)
-            .Read(read =>
-            {
-                read.Action("GetAvailableUsers", "ExamGroups").Data("filterUsers");
-            });
+            .Read(read => read.Action("GetAvailableUsers", "ExamGroups").Data("filterUsers"));
     })
+    .AutoBind(false)
     .HtmlAttributes(new { style = "width: 100%;" }))

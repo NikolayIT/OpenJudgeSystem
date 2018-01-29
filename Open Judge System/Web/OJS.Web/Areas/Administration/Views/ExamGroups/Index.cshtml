@@ -1,4 +1,6 @@
-﻿@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
+﻿@using System.Collections
+
+@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
@@ -20,10 +22,9 @@
         .Name("DataGrid")
         .Columns(columns =>
         {
-            columns.Bound(m => m.Id);
+            columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.Name);
-            columns.Bound(m => m.ContestName);
-            columns.Bound(m => m.ContestId).Hidden();
+            columns.ForeignKey(m => m.ContestId, (IEnumerable)ViewBag.ContestIdData, "Id", "Name");
             columns.Bound(m => m.ExternalExamGroupId);
             columns.Bound(m => m.ExternalAppId);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
@@ -37,12 +38,12 @@
         .Editable(editable =>
         {
             editable.Mode(GridEditMode.PopUp);
-            editable.Window(w =>w.Title(Resource.Page_title).Width(750));
+            editable.Window(w =>w.Title(Resource.Page_title).Width(700));
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
         .ClientDetailTemplateId("enrolled-users-template")
-        .Pageable(x => x.Refresh(true))
+        .Pageable(x => x.Refresh(true).PageSizes(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
         .Filterable(x => x.Enabled(true))
         .Resizable(x => x.Columns(true))
@@ -97,10 +98,7 @@
               data
                   .Ajax()
                   .ServerOperation(true)
-                  .Model(model =>
-                  {
-                      model.Id(m => m.UserId);
-                  })
+                  .Model(model => model.Id(m => m.UserId))
                   .Sort(sort => sort.Add(field => field.Username))
                   .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
                   .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
@@ -123,15 +121,9 @@
     }
 
     function onEdit() {
-        var nameInput = $('#Name');
-        var contestInput = $(".k-widget.k-window [name=ContestId_input]").parent();
-        var contestsList = $('#ContestId-list');
-        var buttons = $('.k-widget.k-window .k-edit-buttons');
-
-        nameInput.css('width', '530px');
-        contestInput.css('width', '500px');
-        contestsList.css("width", "520px");
-        buttons.css('width', '732px');
+        $('.k-edit-form-container').css('width', '100%');
+        $('.editor-label').css('width', '10%');
+        $('.editor-field').css('width', '80%');
 
         var disabledFields = $('input:disabled').parent('.editor-field');
 
@@ -139,10 +131,5 @@
             $(field).hide();
             $(field).prev().hide();
         });
-
-        var contestNameInput = $('#ContestName').parent();
-        var contestNameLabel = contestNameInput.prev();
-        contestNameInput.hide();
-        contestNameLabel.hide();
     }
 </script>

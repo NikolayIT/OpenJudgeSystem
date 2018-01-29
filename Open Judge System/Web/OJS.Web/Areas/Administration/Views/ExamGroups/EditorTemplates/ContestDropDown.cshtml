@@ -5,9 +5,10 @@
 @(Html
     .Kendo()
     .ComboBoxFor(m => m)
-    .DataTextField("Text")
-    .DataValueField("Value")
+    .DataValueField("Id")
+    .DataTextField("Name")
     .Filter(FilterType.Contains)
+    .MinLength(2)
     .Placeholder(Resource.Select_contest)
     .DataSource(data =>
     {
@@ -15,4 +16,5 @@
             .ServerFiltering(true)
             .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("filterContests"));
     })
-    .HtmlAttributes(new { style = "width:100%" }))
+    .AutoBind(false)
+    .HtmlAttributes(new { style = "width:100%", data_value_primitive = "true" }))
