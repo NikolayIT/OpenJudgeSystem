@@ -7,7 +7,7 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -55,8 +55,18 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (this.contestsData.GetAll().Any(c => c.Id == model.ContestId))
+            var contestId = model.ContestId.HasValue
+                ? this.contestsData.GetByIdQuery(model.ContestId.Value).Select(c => c.Id).FirstOrDefault()
+                : default(int);
+
+            if (contestId != default(int))
             {
+                if (!this.UserHasContestRights(contestId))
+                {
+                    this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
+                    return this.GridOperation(request, model);
+                }
+
                 this.BaseCreate(model.GetEntityModel());
             }
             else
@@ -75,6 +85,23 @@
                 var entity = this.GetByIdAsNoTracking(model.Id.Value);
 
                 var examGroup = model.GetEntityModel(entity);
+
+                if (examGroup.ContestId.HasValue)
+                {
+                    if (!this.contestsData
+                        .GetAll()
+                        .Any(c => c.Id == examGroup.ContestId.Value))
+                    {
+                        this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
+                        return this.GridOperation(request, model);
+                    }
+
+                    if (!this.UserHasContestRights(examGroup.ContestId.Value))
+                    {
+                        this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
+                        return this.GridOperation(request, model);
+                    }
+                }
 
                 this.BaseUpdate(examGroup);
             }
@@ -203,5 +230,9 @@
             this.ViewBag.ContestIdData = this.contestsData
                 .GetAll()
                 .Select(DropdownViewModel.FromContest);
+
+        private bool UserHasContestRights(int contestId) =>
+            this.User.IsAdmin() ||
+            this.contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id);
     }
 }

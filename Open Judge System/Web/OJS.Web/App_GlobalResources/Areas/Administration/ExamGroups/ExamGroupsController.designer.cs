@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.ExamGroups {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have privileges to attach this contest to an exam group.
+        /// </summary>
+        public static string Cannot_attach_contest {
+            get {
+                return ResourceManager.GetString("Cannot_attach_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot delete exam group which has active contest attached to it..
         /// </summary>
         public static string Cannot_delete_group_with_active_contest {
