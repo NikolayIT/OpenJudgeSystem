@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cannot_delete_group_with_contest" xml:space="preserve">
-    <value>Не може да изтриете група за изпит, която е прикачена към състезание.</value>
+  <data name="Cannot_delete_group_with_active_contest" xml:space="preserve">
+    <value>Не може да изтриете група за изпит, която е прикачена към активно състезание.</value>
   </data>
 </root>

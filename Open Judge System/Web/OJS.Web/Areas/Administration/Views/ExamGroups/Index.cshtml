@@ -25,7 +25,7 @@
             columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.Name);
             columns.ForeignKey(m => m.ContestId, (IEnumerable)ViewBag.ContestIdData, "Id", "Name");
-            columns.Bound(m => m.ExternalExamGroupId);
+            columns.Bound(m => m.ExternalExamGroupId).Hidden();
             columns.Bound(m => m.ExternalAppId);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
