@@ -17,7 +17,7 @@
 
         int? GetIdByExternalIdAndAppId(int? externalId, string appId);
 
-        IQueryable<ExamGroup> All();
+        IQueryable<ExamGroup> GetAll();
 
         IQueryable<UserProfile> GetUsersByIdQuery(int id);
 

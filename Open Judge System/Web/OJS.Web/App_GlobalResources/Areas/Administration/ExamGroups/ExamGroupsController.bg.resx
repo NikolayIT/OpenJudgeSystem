@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cannot_add_users" xml:space="preserve">
+    <value>Не може да добавяте потребители в група за изпит, която не е прикачена към състезание.</value>
+  </data>
   <data name="Cannot_attach_contest" xml:space="preserve">
     <value>Нямате привилегии да прикачите това състезание към група за изпит</value>
   </data>
   <data name="Cannot_delete_group_with_active_contest" xml:space="preserve">
     <value>Не може да изтриете група за изпит, която е прикачена към активно състезание.</value>
+  </data>
+  <data name="Cannot_remove_users" xml:space="preserve">
+    <value>Не може да премахвате потребители от група за изпит, която не е прикачена към състезание.</value>
   </data>
 </root>

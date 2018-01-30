@@ -61,7 +61,16 @@ namespace Resources.Areas.Administration.ExamGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have privileges to attach this contest to an exam group.
+        ///   Looks up a localized string similar to You cannot add users to exam group that is not attached to a contest..
+        /// </summary>
+        public static string Cannot_add_users {
+            get {
+                return ResourceManager.GetString("Cannot_add_users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have privileges to attach this contest to an exam group!.
         /// </summary>
         public static string Cannot_attach_contest {
             get {
@@ -75,6 +84,15 @@ namespace Resources.Areas.Administration.ExamGroups {
         public static string Cannot_delete_group_with_active_contest {
             get {
                 return ResourceManager.GetString("Cannot_delete_group_with_active_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot remove users from exam group that is not attached to a contest..
+        /// </summary>
+        public static string Cannot_remove_users {
+            get {
+                return ResourceManager.GetString("Cannot_remove_users", resourceCulture);
             }
         }
     }

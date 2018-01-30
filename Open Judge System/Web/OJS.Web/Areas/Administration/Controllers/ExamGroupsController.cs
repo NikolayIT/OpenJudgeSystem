@@ -25,6 +25,7 @@
     public class ExamGroupsController : LecturerBaseGridController
     {
         private const int DefaultUsersTakeCount = 20;
+        private const int DefaultContestsToTake = 15;
 
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
@@ -48,8 +49,19 @@
             return this.View();
         }
 
-        public override IEnumerable GetData() =>
-            this.examGroupsData.All().Select(ViewModelType.FromExamGroup);
+        public override IEnumerable GetData()
+        {
+            var examGroups = this.examGroupsData.GetAll();
+
+            if (this.User.IsLecturer())
+            {
+                examGroups = examGroups.Where(eg => eg.Contest == null ||
+                    (eg.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                        eg.Contest.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
+            }
+
+            return examGroups.Select(ViewModelType.FromExamGroup);
+        }
 
         public override object GetById(object id) => this.GetByIdAsNoTracking((int)id);
 
@@ -150,6 +162,23 @@
             DetailModelType model,
             int id)
         {
+            var contestId = this.examGroupsData
+                .GetByIdQuery(id)
+                .Select(eg => eg.ContestId)
+                .FirstOrDefault();
+
+            if (!contestId.HasValue)
+            {
+               this.ModelState.AddModelError(string.Empty, Resource.Cannot_remove_users);
+                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+            }
+
+            if (!this.UserHasContestRights(contestId.Value))
+            {
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+            }
+
             this.examGroupsData.RemoveUserByIdAndUser(id, model.UserId);
             return this.GridOperation(request, model);
         }
@@ -162,6 +191,18 @@
         {
             var examGroup = this.examGroupsData.GetById(id);
             var user = this.usersData.GetById(userId);
+
+            if (examGroup.ContestId == null)
+            {
+                this.TempData.AddDangerMessage(Resource.Cannot_add_users);
+                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+            }
+
+            if (!this.UserHasContestRights(examGroup.ContestId.Value))
+            {
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+            }
 
             examGroup.Users.Add(user);
             this.examGroupsData.Update(examGroup);
@@ -203,15 +244,28 @@
 
         public JsonResult GetAvailableContests(string contestFilter)
         {
-            var contests = this.contestsData.GetAll();
+            var contests = this.contestsData
+                .GetAll()
+                .OrderByDescending(c => c.CreatedOn);
+
+            if (!this.User.IsAdmin() && this.User.IsLecturer())
+            {
+                contests = contests
+                    .Where(c =>
+                        c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                        c.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id))
+                    .OrderByDescending(c => c.CreatedOn);
+            }
 
             if (!string.IsNullOrWhiteSpace(contestFilter))
             {
-                contests = contests.Where(c => c.Name.Contains(contestFilter));
+                contests = contests
+                    .Where(c => c.Name.Contains(contestFilter))
+                    .Take(DefaultContestsToTake)
+                    .OrderByDescending(c => c.CreatedOn);
             }
 
             var result = contests
-                .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new
                 {
                     c.Name,

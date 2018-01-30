@@ -1,6 +1,4 @@
-﻿@using System.Collections
-
-@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
+﻿@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
@@ -24,7 +22,7 @@
         {
             columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.Name);
-            columns.ForeignKey(m => m.ContestId, (IEnumerable)ViewBag.ContestIdData, "Id", "Name");
+            columns.Bound(m => m.ContestName);
             columns.Bound(m => m.ExternalExamGroupId).Hidden();
             columns.Bound(m => m.ExternalAppId);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
@@ -63,7 +61,11 @@
                 .Destroy(destroy => destroy.Action("Destroy", ControllerName))
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
-        .Events(ev => ev.Edit("onEdit")))
+        .Events(ev =>
+        {
+            ev.Edit("onEdit");
+            ev.DetailExpand("onDetailExpand");
+        }))
 </div>
 
 <script type="text/x-kendo-template" id="enrolled-users-template">
@@ -104,6 +106,7 @@
                   .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
                   .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }));
           })
+          .Events(ev => ev.DataBound("onDetailDataBound"))
           .ToClientTemplate())
 </script>
 
@@ -130,6 +133,46 @@
         $.each(disabledFields, function (i, field) {
             $(field).hide();
             $(field).prev().hide();
+        });
+
+        $('#ContestId').change(function () {
+            $('#ContestName').val($('#ContestId_option_selected').text()).change();
+        });
+    }
+
+    function onDetailExpand(e) {
+        var contestName = $(e.masterRow).find('td:nth-child(4)').text();
+        if (contestName === '') {
+            var toolbarButtons = $(e.detailRow).find('.k-button');
+            disabableKendoButtons(toolbarButtons);
+
+            var message = $('#cannot-manipulate-users');
+            if (message.text() !== '') {
+                message.show();
+            } else {
+                toolbarButtons.last().after('<span id="cannot-manipulate-users">' +
+                    '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
+            }
+        }
+    }
+
+    function onDetailDataBound() {
+        var detailsGrid = $('#' + this.element.attr("id"));
+        var contestName = detailsGrid.parents('tr').first().prev('.k-master-row').find('td:nth-child(4)').text();
+        if (contestName === '') {
+            var deleteButtons = $('#' + this.element.attr("id")).find('.k-button.k-grid-delete');
+            disabableKendoButtons(deleteButtons);
+        }
+    }
+
+    function disabableKendoButtons(buttons) {
+        buttons.kendoButton({
+            enable: false
+        });
+
+        buttons.css({
+            'pointer-events': 'none',
+            cursor: 'default'
         });
     }
 </script>

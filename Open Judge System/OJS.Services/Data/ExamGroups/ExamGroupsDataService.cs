@@ -38,7 +38,7 @@
                 .Select(eg => eg.Id)
                 .FirstOrDefault();
 
-        public IQueryable<ExamGroup> All() => this.examGroups.All();
+        public IQueryable<ExamGroup> GetAll() => this.examGroups.All();
 
         public IQueryable<UserProfile> GetUsersByIdQuery(int id) =>
             this.examGroups.All().Where(eg => eg.Id == id).SelectMany(eg => eg.Users);

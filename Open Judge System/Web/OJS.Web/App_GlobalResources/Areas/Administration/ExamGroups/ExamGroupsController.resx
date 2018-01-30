@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cannot_add_users" xml:space="preserve">
+    <value>You cannot add users to exam group that is not attached to a contest.</value>
+  </data>
   <data name="Cannot_attach_contest" xml:space="preserve">
-    <value>You don't have privileges to attach this contest to an exam group</value>
+    <value>You don't have privileges to attach this contest to an exam group!</value>
   </data>
   <data name="Cannot_delete_group_with_active_contest" xml:space="preserve">
     <value>You cannot delete exam group which has active contest attached to it.</value>
+  </data>
+  <data name="Cannot_remove_users" xml:space="preserve">
+    <value>You cannot remove users from exam group that is not attached to a contest.</value>
   </data>
 </root>

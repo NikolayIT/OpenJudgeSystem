@@ -120,6 +120,9 @@
   <data name="Add_user" xml:space="preserve">
     <value>Добави потребител</value>
   </data>
+  <data name="Cannot_manipulate_users" xml:space="preserve">
+    <value>Не може да добавяте или премахвате потребители от група, която няма състезание</value>
+  </data>
   <data name="Page_title" xml:space="preserve">
     <value>Групи за изпити</value>
   </data>

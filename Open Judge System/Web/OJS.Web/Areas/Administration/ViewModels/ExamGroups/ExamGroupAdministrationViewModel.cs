@@ -23,7 +23,8 @@
                 Name = eg.Name,
                 ExternalExamGroupId = eg.ExternalExamGroupId,
                 ExternalAppId = eg.ExternalAppId,
-                ContestId = eg.ContestId
+                ContestId = eg.ContestId,
+                ContestName = eg.Contest.Name
             };
 
         [DatabaseProperty]
@@ -62,5 +63,9 @@
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("ContestDropDown")]
         public int? ContestId { get; set; }
+
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [UIHint("NonEditable")]
+        public string ContestName { get; set; }
     }
 }

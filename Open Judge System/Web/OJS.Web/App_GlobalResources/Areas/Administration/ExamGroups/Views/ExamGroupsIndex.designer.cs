@@ -71,6 +71,15 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot add ot remove users from exam group that is not attached to a contest.
+        /// </summary>
+        public static string Cannot_manipulate_users {
+            get {
+                return ResourceManager.GetString("Cannot_manipulate_users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exam groups.
         /// </summary>
         public static string Page_title {
