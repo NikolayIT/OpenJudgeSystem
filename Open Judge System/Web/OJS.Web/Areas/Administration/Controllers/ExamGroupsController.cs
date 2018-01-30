@@ -7,7 +7,7 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using OJS.Common;
+
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -18,6 +18,7 @@
     using OJS.Web.ViewModels.Common;
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.ExamGroups.ExamGroupsController;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel;
 
@@ -80,31 +81,33 @@
         [HttpPost]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (model.Id.HasValue)
+            if (!model.Id.HasValue)
             {
-                var entity = this.GetByIdAsNoTracking(model.Id.Value);
+                return this.GridOperation(request, model);
+            }
 
-                var examGroup = model.GetEntityModel(entity);
+            var entity = this.GetByIdAsNoTracking(model.Id.Value);
 
-                if (examGroup.ContestId.HasValue)
+            var examGroup = model.GetEntityModel(entity);
+
+            if (examGroup.ContestId.HasValue)
+            {
+                if (!this.contestsData
+                    .GetAll()
+                    .Any(c => c.Id == examGroup.ContestId.Value))
                 {
-                    if (!this.contestsData
-                        .GetAll()
-                        .Any(c => c.Id == examGroup.ContestId.Value))
-                    {
-                        this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
-                        return this.GridOperation(request, model);
-                    }
-
-                    if (!this.UserHasContestRights(examGroup.ContestId.Value))
-                    {
-                        this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
-                        return this.GridOperation(request, model);
-                    }
+                    this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
+                    return this.GridOperation(request, model);
                 }
 
-                this.BaseUpdate(examGroup);
+                if (!this.UserHasContestRights(examGroup.ContestId.Value))
+                {
+                    this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
+                    return this.GridOperation(request, model);
+                }
             }
+
+            this.BaseUpdate(examGroup);
 
             return this.GridOperation(request, model);
         }
@@ -112,11 +115,19 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (model.ContestId != null &&
-                this.contestsData.IsActiveById(model.ContestId.Value))
+            if (model.ContestId != null)
             {
-                this.ModelState.AddModelError(string.Empty, Resource.Cannot_delete_group_with_active_contest);
-                return this.GridOperation(request, model);
+                if (!this.UserHasContestRights(model.ContestId.Value))
+                {
+                    this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
+                    return this.GridOperation(request, model);
+                }
+
+                if (this.contestsData.IsActiveById(model.ContestId.Value))
+                {
+                    this.ModelState.AddModelError(string.Empty, Resource.Cannot_delete_group_with_active_contest);
+                    return this.GridOperation(request, model);
+                }
             }
 
             this.BaseDestroy(model.Id);
@@ -193,13 +204,6 @@
         public JsonResult GetAvailableContests(string contestFilter)
         {
             var contests = this.contestsData.GetAll();
-
-            if (!this.User.IsAdmin() && this.User.IsLecturer())
-            {
-                contests = contests.Where(c =>
-                    c.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                    c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id));
-            }
 
             if (!string.IsNullOrWhiteSpace(contestFilter))
             {

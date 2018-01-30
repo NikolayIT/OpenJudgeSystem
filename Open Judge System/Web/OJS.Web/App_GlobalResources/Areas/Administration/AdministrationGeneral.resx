@@ -153,6 +153,9 @@
   <data name="Modified_on" xml:space="preserve">
     <value>Modified on</value>
   </data>
+  <data name="No_privileges_message" xml:space="preserve">
+    <value>You don't have privileges for this action!</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>

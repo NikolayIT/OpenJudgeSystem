@@ -169,6 +169,15 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have privileges for this action!.
+        /// </summary>
+        public static string No_privileges_message {
+            get {
+                return ResourceManager.GetString("No_privileges_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string Remove {
