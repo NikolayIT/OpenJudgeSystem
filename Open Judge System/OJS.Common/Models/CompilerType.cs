@@ -4,6 +4,7 @@
     {
         None = 0,
         CSharp = 1,
+        CSharpDotNetCore = 10,
         MsBuild = 2,
         CPlusPlusGcc = 3,
         Java = 4,

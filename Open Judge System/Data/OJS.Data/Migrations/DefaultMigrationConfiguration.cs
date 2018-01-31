@@ -138,6 +138,18 @@
                 },
                 new SubmissionType
                 {
+                    Name = "C# code (.NET Core)",
+                    CompilerType = CompilerType.CSharp,
+                    AdditionalCompilerArguments =
+                        "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
+                    ExecutionStrategyType =
+                        ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
                     Name = "C++ code",
                     CompilerType = CompilerType.CPlusPlusGcc,
                     AdditionalCompilerArguments =

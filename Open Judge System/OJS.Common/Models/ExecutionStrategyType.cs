@@ -8,6 +8,7 @@
         CSharpProjectTestsExecutionStrategy = 24,
         CSharpAspProjectTestsExecutionStrategy = 28,
         CSharpPerformanceProjectTestsExecutionStrategy = 31,
+        DotNetCoreCompileExecuteAndCheck = 37,
         DotNetCoreTestRunner = 10,
         DotNetCoreProjectExecutionStrategy = 33,
         DotNetCoreProjectTestsExecutionStrategy = 35,

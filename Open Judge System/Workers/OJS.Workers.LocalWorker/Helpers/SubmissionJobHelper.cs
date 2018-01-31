@@ -32,6 +32,12 @@
                         Settings.GPlusPlusBaseTimeUsedInMilliseconds,
                         Settings.GPlusPlusBaseMemoryUsedInBytes);
                     break;
+                case ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck:
+                    executionStrategy = new DotNetCoreCompileExecuteAndCheckExecutionStrategy(
+                        GetCompilerPath,
+                        Settings.DotNetCscBaseTimeUsedInMilliseconds,
+                        Settings.DotNetCscBaseMemoryUsedInBytes);
+                    break;
                 case ExecutionStrategyType.DotNetCoreTestRunner:
                     executionStrategy = new DotNetCoreTestRunnerExecutionStrategy(
                         GetCompilerPath,
@@ -313,6 +319,8 @@
                     return null;
                 case CompilerType.CSharp:
                     return Settings.CSharpCompilerPath;
+                case CompilerType.CSharpDotNetCore:
+                    return Settings.CSharpDotNetCoreCompilerPath;
                 case CompilerType.MsBuild:
                 case CompilerType.MsBuildLibrary:
                     return Settings.MsBuildExecutablePath;

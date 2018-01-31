@@ -9,16 +9,15 @@
     {
         private static readonly ILog Logger;
 
-        static Settings()
-        {
-            Logger = LogManager.GetLogger("Settings");
-        }
+        static Settings() => Logger = LogManager.GetLogger("Settings");
 
         public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
 
         public static string MavenPath => GetSetting("MavenPath");
 
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
+
+        public static string CSharpDotNetCoreCompilerPath => GetSetting("CSharpDotNetCoreCompilerPath");
 
         public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
@@ -101,6 +100,10 @@
         public static int MsBuildBaseTimeUsedInMilliseconds => GetSettingOrDefault("MsBuildBaseTimeUsedInMilliseconds", 0);
 
         public static int MsBuildBaseMemoryUsedInBytes => GetSettingOrDefault("MsBuildBaseMemoryUsedInBytes", 0);
+
+        public static int DotNetCscBaseTimeUsedInMilliseconds => GetSettingOrDefault("DotNetCscBaseTimeUsedInMilliseconds", 0);
+
+        public static int DotNetCscBaseMemoryUsedInBytes => GetSettingOrDefault("DotNetCscBaseMemoryUsedInBytes", 0);
 
         public static int DotNetCliBaseTimeUsedInMilliseconds => GetSettingOrDefault("DotNetCliBaseTimeUsedInMilliseconds", 0);
 
