@@ -15,7 +15,6 @@
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Extensions;
-    using OJS.Web.ViewModels.Common;
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
@@ -43,11 +42,7 @@
             this.contestsData = contestsData;
         }
 
-        public ActionResult Index()
-        {
-            this.PrepareViewBagData();
-            return this.View();
-        }
+        public ActionResult Index() => this.View();
 
         public override IEnumerable GetData()
         {
@@ -283,11 +278,6 @@
                 .GetByIdQuery(id)
                 .AsNoTracking()
                 .FirstOrDefault();
-
-        private void PrepareViewBagData() =>
-            this.ViewBag.ContestIdData = this.contestsData
-                .GetAll()
-                .Select(DropdownViewModel.FromContest);
 
         private bool UserHasContestRights(int contestId) =>
             this.User.IsAdmin() ||
