@@ -6,7 +6,6 @@
     using System.Text;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
@@ -19,7 +18,12 @@
         protected const string SandboxExecutorClassName = "_$SandboxExecutor";
         protected const string JavaCompiledFileExtension = ".class";
 
-        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
+        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
+            string javaExecutablePath,
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(javaExecutablePath))
             {
@@ -191,7 +195,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             var timeMeasurementFilePath = $"{this.WorkingDirectory}\\{TimeMeasurementFileName}";
 
             // Create an executor and a checker
-            var executor = new StandardProcessExecutor();
+            var executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
             // Process the submission and check each test

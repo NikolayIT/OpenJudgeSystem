@@ -10,8 +10,11 @@
     {
         protected new const string AdditionalExecutionArguments = "--no-build --no-restore";
 
-        public DotNetCoreProjectExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
-            : base(getCompilerPathFunc)
+        public DotNetCoreProjectExecutionStrategy(
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
         }
 
@@ -41,7 +44,7 @@
                 return result;
             }
            
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

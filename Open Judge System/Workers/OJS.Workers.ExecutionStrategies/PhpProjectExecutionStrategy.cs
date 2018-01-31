@@ -17,7 +17,11 @@
         private const string SuperGlobalsTemplateName = "_Superglobals.php";
         private const string SuperGlobalsRequireStatementTemplate = "<?php require_once '##templateName##'; ?>";
 
-        public PhpProjectExecutionStrategy(string phpCliExecutablePath)
+        public PhpProjectExecutionStrategy(
+            string phpCliExecutablePath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(phpCliExecutablePath))
             {
@@ -61,7 +65,7 @@
 
             result.TestResults = new List<TestResult>();
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             foreach (var test in executionContext.Tests)
             {
                 File.WriteAllText(this.SuperGlobalsTemplatePath, test.Input);
