@@ -194,14 +194,14 @@
 
             if (examGroup.ContestId == null)
             {
-                this.TempData.AddDangerMessage(Resource.Cannot_add_users);
-                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+                this.ModelState.AddModelError(string.Empty, Resource.Cannot_add_users);
+                return this.GridOperation(request, null);
             }
 
             if (!this.UserHasContestRights(examGroup.ContestId.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ExamGroupsController>(c => c.Index());
+                this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
+                return this.GridOperation(request, null);
             }
 
             examGroup.Users.Add(user);

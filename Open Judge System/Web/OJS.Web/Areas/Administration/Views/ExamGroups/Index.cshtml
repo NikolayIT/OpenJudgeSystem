@@ -50,10 +50,7 @@
             data
                 .Ajax()
                 .ServerOperation(true)
-                .Model(model =>
-                {
-                    model.Id(x => x.Id);
-                })
+                .Model(model => model.Id(x => x.Id))
                 .Sort(sort => sort.Add(field => field.Id).Descending())
                 .Create(read => read.Action("Create", "ExamGroups"))
                 .Read(read => read.Action("Read", "ExamGroups"))
@@ -104,7 +101,8 @@
                   .Sort(sort => sort.Add(field => field.Username))
                   .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
                   .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
-                  .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }));
+                  .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }))
+                  .Events(ev => ev.Error("validateModelStateErrors"));
           })
           .Events(ev => ev.DataBound("onDetailDataBound"))
           .ToClientTemplate())
@@ -146,11 +144,11 @@
             var toolbarButtons = $(e.detailRow).find('.k-button');
             disabableKendoButtons(toolbarButtons);
 
-            var message = $('#cannot-manipulate-users');
-            if (message.text() !== '') {
+            var message = $('#cannot-add-remove-users');
+            if (message.length) {
                 message.show();
             } else {
-                toolbarButtons.last().after('<span id="cannot-manipulate-users">' +
+                toolbarButtons.last().after('<span id="cannot-add-remove-users">' +
                     '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
             }
         }
