@@ -319,8 +319,6 @@
                     return null;
                 case CompilerType.CSharp:
                     return Settings.CSharpCompilerPath;
-                case CompilerType.CSharpDotNetCore:
-                    return Settings.CSharpDotNetCoreCompilerPath;
                 case CompilerType.MsBuild:
                 case CompilerType.MsBuildLibrary:
                     return Settings.MsBuildExecutablePath;
@@ -332,6 +330,7 @@
                 case CompilerType.JavaInPlaceCompiler:
                     return Settings.JavaCompilerPath;
                 case CompilerType.DotNetCompiler:
+                case CompilerType.CSharpDotNetCore:
                     return Settings.DotNetCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));

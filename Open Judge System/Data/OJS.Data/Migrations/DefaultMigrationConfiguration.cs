@@ -140,8 +140,7 @@
                 {
                     Name = "C# code (.NET Core)",
                     CompilerType = CompilerType.CSharp,
-                    AdditionalCompilerArguments =
-                        "/optimize+ /nologo /reference:System.Numerics.dll /reference:PowerCollections.dll",
+                    AdditionalCompilerArguments = "-nologo",
                     ExecutionStrategyType =
                         ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck,
                     IsSelectedByDefault = false,
