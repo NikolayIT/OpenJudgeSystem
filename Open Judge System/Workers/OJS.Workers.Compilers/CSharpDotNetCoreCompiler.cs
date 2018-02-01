@@ -1,47 +1,36 @@
 ﻿namespace OJS.Workers.Compilers
 {
+    using System.IO;
+    using System.Linq;
     using System.Text;
 
     public class CSharpDotNetCoreCompiler : Compiler
     {
-        private const string DotNetCoreFileExtension = ".dll";
         private const string CSharpDotNetCoreCompilerPath = @"C:\Program Files\dotnet\sdk\2.1.4\Roslyn\bincore\csc.dll";
         private const string SharedAssembliesFolderPath = @"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\2.0.0";
 
-        public override string GetOutputFileName(string inputFileName) =>
-            inputFileName + DotNetCoreFileExtension;
+        public override string GetOutputFileName(string inputFileName) => inputFileName + ".dll";
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
-            var referenceLibrarieNames = new[]
-            {
-                "System",
-                "System.Console",
-                "System.Private.CoreLib",
-                "System.Runtime",
-                "System.Linq"
-            };
-
             var arguments = new StringBuilder();
 
-            // Use dotnet.exe to run csc.dll
-            arguments.Append($"\"{CSharpDotNetCoreCompilerPath}\"");
-            arguments.Append(' ');
+            // Use dotnet.exe to run the dotnet csc.dll
+            arguments.Append($"\"{CSharpDotNetCoreCompilerPath}\" ");
 
-            // References
-            foreach (var fileName in referenceLibrarieNames)
+            // Give it all System references, since it does not do that implicitly like the old csc.exe
+            var references = Directory.GetFiles(SharedAssembliesFolderPath).Where(f => f.Contains("System"));
+
+            foreach (var reference in references)
             {
-                arguments.Append($"-r:\"{SharedAssembliesFolderPath}\\{fileName}{DotNetCoreFileExtension}\"");
-                arguments.Append(' ');
+                arguments.Append($"-r:\"{reference}\" ");
             }
 
             // Output file argument
-            arguments.Append($"/out:\"{outputFile}\"");
-            arguments.Append(' ');
+            arguments.Append($"/out:\"{outputFile}\" ");
 
             // Input file argument
-            arguments.Append($"\"{inputFile}\"");
-            arguments.Append(' ');
+            arguments.Append($"\"{inputFile}\" ");
 
             arguments.Append(additionalArguments);
 
