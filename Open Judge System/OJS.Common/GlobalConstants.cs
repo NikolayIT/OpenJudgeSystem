@@ -134,9 +134,6 @@
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
 
-        // Authorization error messages
-        public const string NoPrivilegesMessage = "Нямате привилегиите за това действие";
-
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
         public static readonly string CSharpFileExtension = $".{CompilerType.CSharp.GetFileExtension()}";

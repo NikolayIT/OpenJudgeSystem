@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -42,6 +41,7 @@
     using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
 
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
     using TransactionScope = System.Transactions.TransactionScope;
 
@@ -75,7 +75,7 @@
         {
             if (id == null || !this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -88,7 +88,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -119,7 +119,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -141,7 +141,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -269,7 +269,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -294,7 +294,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -379,7 +379,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -409,7 +409,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(problemId))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -454,7 +454,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -542,7 +542,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -566,7 +566,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
@@ -609,7 +609,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
@@ -633,7 +633,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
@@ -673,7 +673,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -702,7 +702,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -714,7 +714,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
@@ -773,7 +773,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(contestIdNumber))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.Json("No premissions");
             }
 
@@ -791,7 +791,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 throw new UnauthorizedAccessException("No premissions");
             }
 
@@ -819,7 +819,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                return this.Json(GlobalConstants.NoPrivilegesMessage);
+                return this.Json(GeneralResource.No_privileges_message);
             }
 
             var solutionSkeleton = this.Data.Problems
