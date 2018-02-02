@@ -157,7 +157,7 @@
 
         public void DeleteById(int id)
         {
-            this.examGroupsData.RemoveReferencesFromContestByContest(id);
+            this.examGroupsData.RemoveContestByContest(id);
             this.contestsData.DeleteById(id);
         }
     }

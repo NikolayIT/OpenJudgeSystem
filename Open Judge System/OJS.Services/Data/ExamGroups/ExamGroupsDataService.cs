@@ -38,10 +38,18 @@
                 .Select(eg => eg.Id)
                 .FirstOrDefault();
 
+        public int? GetContestIdById(int id) =>
+            this.GetByIdQuery(id).Select(eg => eg.ContestId).FirstOrDefault();
+
         public IQueryable<ExamGroup> GetAll() => this.examGroups.All();
 
+        public IQueryable<ExamGroup> GetAllByLecturer(string lecturerId) =>
+            this.GetAll().Where(eg => eg.Contest == null ||
+                (eg.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                eg.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId)));
+
         public IQueryable<UserProfile> GetUsersByIdQuery(int id) =>
-            this.examGroups.All().Where(eg => eg.Id == id).SelectMany(eg => eg.Users);
+            this.GetByIdQuery(id).SelectMany(eg => eg.Users);
 
         public IQueryable<ExamGroup> GetByIdQuery(int id) =>
             this.examGroups.All().Where(eg => eg.Id == id);
@@ -49,7 +57,7 @@
         public void RemoveUserByIdAndUser(int id, string userId)
         {
             var examGroup = this.GetById(id);
-            var user = examGroup.Users.FirstOrDefault(u => u.Id == userId);
+            var user = examGroup?.Users.FirstOrDefault(u => u.Id == userId);
             if (user != null)
             {
                 examGroup.Users.Remove(user);
@@ -57,7 +65,7 @@
             }
         }
 
-        public void RemoveReferencesFromContestByContest(int contestId) =>
+        public void RemoveContestByContest(int contestId) =>
             this.examGroups.Update(
                 eg => eg.ContestId == contestId,
                 examGroup => new ExamGroup

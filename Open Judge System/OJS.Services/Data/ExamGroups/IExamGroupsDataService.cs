@@ -17,7 +17,11 @@
 
         int? GetIdByExternalIdAndAppId(int? externalId, string appId);
 
+        int? GetContestIdById(int id);
+
         IQueryable<ExamGroup> GetAll();
+
+        IQueryable<ExamGroup> GetAllByLecturer(string lecturerId);
 
         IQueryable<UserProfile> GetUsersByIdQuery(int id);
 
@@ -25,6 +29,6 @@
 
         void RemoveUserByIdAndUser(int id, string userId);
 
-        void RemoveReferencesFromContestByContest(int contestId);
+        void RemoveContestByContest(int contestId);
     }
 }
