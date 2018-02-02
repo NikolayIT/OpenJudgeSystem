@@ -2416,6 +2416,7 @@
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\AddUserToExamGroup.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
