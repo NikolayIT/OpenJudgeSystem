@@ -17,8 +17,6 @@
 
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
 
-        public static string CSharpDotNetCoreCompilerPath => GetSetting("CSharpDotNetCoreCompilerPath");
-
         public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
         public static string NUnitConsoleRunnerPath => GetSetting("NUnitConsoleRunnerPath");
