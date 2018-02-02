@@ -3,6 +3,7 @@
 
 @{
     const string ControllerName = "ExamGroups";
+    const string ContestColumnIdSuffix = "_ContestName";
 
     ViewBag.Title = Resource.Page_title;
 }
@@ -22,7 +23,7 @@
         {
             columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.Name);
-            columns.Bound(m => m.ContestName);
+            columns.Bound(m => m.ContestName).HtmlAttributes(new { id = "#= Id #" + ContestColumnIdSuffix });
             columns.Bound(m => m.ExternalExamGroupId).Hidden();
             columns.Bound(m => m.ExternalAppId);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
@@ -40,7 +41,6 @@
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
-        .ClientDetailTemplateId("enrolled-users-template")
         .Pageable(x => x.Refresh(true).PageSizes(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
         .Filterable(x => x.Enabled(true))
@@ -62,51 +62,12 @@
         {
             ev.Edit("onEdit");
             ev.DetailExpand("onDetailExpand");
-        }))
+        })
+        .ClientDetailTemplateId("_UsersInExamGroupGridTemplate")
+    )
+    
+    @Html.Partial("_UsersInExamGroupGridTemplate")
 </div>
-
-<script type="text/x-kendo-template" id="enrolled-users-template">
-    @(Html
-          .Kendo()
-          .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
-          .Name("EnrolledUsersGrid_#=Id#")
-          .Columns(columns =>
-          {
-              columns.Bound(m => m.Username);
-              columns.Bound(m => m.FirstName);
-              columns.Bound(m => m.LastName);
-              columns.Bound(m => m.Email);
-              columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Remove);
-          })
-          .ToolBar(toolbar =>
-          {
-              toolbar.Create().Text(Resource.Add_user);
-          })
-          .Editable(editable =>
-          {
-              editable.Mode(GridEditMode.PopUp);
-              editable.Window(w => w.Title(Resource.Add_user));
-              editable.TemplateName("AddUserToExamGroup");
-              editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
-          })
-          .Pageable(x => x.Refresh(true))
-          .Sortable(x => x.Enabled(true).AllowUnsort(false))
-          .Filterable(x => x.Enabled(true))
-          .DataSource(data =>
-          {
-              data
-                  .Ajax()
-                  .ServerOperation(true)
-                  .Model(model => model.Id(m => m.UserId))
-                  .Sort(sort => sort.Add(field => field.Username))
-                  .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
-                  .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
-                  .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }))
-                  .Events(ev => ev.Error("validateModelStateErrors"));
-          })
-          .Events(ev => ev.DataBound("onDetailDataBound"))
-          .ToClientTemplate())
-</script>
 
 <script type="text/javascript">
     function filterContests() {
@@ -139,16 +100,23 @@
     }
 
     function onDetailExpand(e) {
-        var contestName = $(e.masterRow).find('td:nth-child(4)').text();
-        if (contestName === '') {
-            var toolbarButtons = $(e.detailRow).find('.k-button');
-            disabableKendoButtons(toolbarButtons);
+        var contestName = $(e.masterRow[0].cells)
+            .filter(function(i, cell) {
+                var cellId = $(cell).attr("id");
+                return typeof cellId != typeof undefined && cellId.indexOf("@ContestColumnIdSuffix") >= 0;
+            })
+            .first()
+            .text();
 
-            var message = $('#cannot-add-remove-users');
+        if (contestName === '') {
+            var addButton = $(e.detailRow).find('.k-grid-add').last();
+            disabableKendoButtons(addButton);
+
+            var message = $(e.detailRow).find('.cannot-add-remove-users');
             if (message.length) {
                 message.show();
             } else {
-                toolbarButtons.last().after('<span id="cannot-add-remove-users">' +
+                addButton.after('<span class="cannot-add-remove-users">' +
                     '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
             }
         }
@@ -156,8 +124,8 @@
 
     function onDetailDataBound() {
         var detailsGrid = $('#' + this.element.attr("id"));
-        var contestName = detailsGrid.parents('tr').first().prev('.k-master-row').find('td:nth-child(4)').text();
-        if (contestName === '') {
+        var isAddButtonDisabled = detailsGrid.find('.k-grid-add.k-state-disabled').length >= 1;
+        if (isAddButtonDisabled) {
             var deleteButtons = $('#' + this.element.attr("id")).find('.k-button.k-grid-delete');
             disabableKendoButtons(deleteButtons);
         }
