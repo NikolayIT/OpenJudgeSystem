@@ -50,9 +50,7 @@
 
             if (this.User.IsLecturer())
             {
-                examGroups = examGroups.Where(eg => eg.Contest == null ||
-                    (eg.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                        eg.Contest.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id)));
+                examGroups = this.examGroupsData.GetAllByLecturer(this.UserProfile.Id);
             }
 
             return examGroups.Select(ViewModelType.FromExamGroup);
@@ -63,25 +61,27 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            var contestId = model.ContestId.HasValue
-                ? this.contestsData.GetByIdQuery(model.ContestId.Value).Select(c => c.Id).FirstOrDefault()
-                : default(int);
-
-            if (contestId != default(int))
-            {
-                if (!this.UserHasContestRights(contestId))
-                {
-                    this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
-                    return this.GridOperation(request, model);
-                }
-
-                this.BaseCreate(model.GetEntityModel());
-            }
-            else
+            if (!model.ContestId.HasValue)
             {
                 this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
+                return this.GridOperation(request, model);
             }
-            
+
+            var contestId = this.contestsData.GetIdById(model.ContestId.Value);
+
+            if (contestId == default(int))
+            {
+                this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
+                return this.GridOperation(request, model);
+            }
+
+            if (!this.UserHasContestRights(contestId))
+            {
+                this.ModelState.AddModelError(nameof(model.ContestId), Resource.Cannot_attach_contest);
+                return this.GridOperation(request, model);
+            }
+
+            this.BaseCreate(model.GetEntityModel());
             return this.GridOperation(request, model);
         }
 
@@ -93,15 +93,11 @@
                 return this.GridOperation(request, model);
             }
 
-            var entity = this.GetByIdAsNoTracking(model.Id.Value);
-
-            var examGroup = model.GetEntityModel(entity);
+            var examGroup = model.GetEntityModel(this.GetByIdAsNoTracking(model.Id.Value));
 
             if (examGroup.ContestId.HasValue)
             {
-                if (!this.contestsData
-                    .GetAll()
-                    .Any(c => c.Id == examGroup.ContestId.Value))
+                if (!this.contestsData.ExistsById(examGroup.ContestId.Value))
                 {
                     this.ModelState.AddModelError(nameof(model.ContestId), string.Empty);
                     return this.GridOperation(request, model);
@@ -157,14 +153,11 @@
             DetailModelType model,
             int id)
         {
-            var contestId = this.examGroupsData
-                .GetByIdQuery(id)
-                .Select(eg => eg.ContestId)
-                .FirstOrDefault();
+            var contestId = this.examGroupsData.GetContestIdById(id);
 
             if (!contestId.HasValue)
             {
-               this.ModelState.AddModelError(string.Empty, Resource.Cannot_remove_users);
+                this.ModelState.AddModelError(string.Empty, Resource.Cannot_remove_users);
                 return this.RedirectToAction<ExamGroupsController>(c => c.Index());
             }
 
@@ -245,10 +238,8 @@
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
-                contests = contests
-                    .Where(c =>
-                        c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                        c.Category.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id))
+                contests = this.contestsData
+                    .GetAllByLecturer(this.UserProfile.Id)
                     .OrderByDescending(c => c.CreatedOn);
             }
 
