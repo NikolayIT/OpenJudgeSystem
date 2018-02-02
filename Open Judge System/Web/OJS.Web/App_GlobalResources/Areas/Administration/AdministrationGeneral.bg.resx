@@ -154,7 +154,7 @@
     <value>Дата на промяна</value>
   </data>
   <data name="No_privileges_message" xml:space="preserve">
-    <value>Нямате привилегиите за това действие!</value>
+    <value>Нямате привилегии за това действие!</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Премахни</value>

@@ -242,11 +242,11 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not entered.
+        ///   Looks up a localized string similar to Missing.
         /// </summary>
-        public static string Not_entered {
+        public static string Missing {
             get {
-                return ResourceManager.GetString("Not_entered", resourceCulture);
+                return ResourceManager.GetString("Missing", resourceCulture);
             }
         }
         

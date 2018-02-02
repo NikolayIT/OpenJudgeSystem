@@ -20,8 +20,8 @@
                 UserId = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
-                FirstName = user.UserSettings.FirstName ?? Resource.Not_entered,
-                LastName = user.UserSettings.LastName ?? Resource.Not_entered
+                FirstName = user.UserSettings.FirstName ?? Resource.Missing,
+                LastName = user.UserSettings.LastName ?? Resource.Missing
             };
 
         [Display(Name = "№")]

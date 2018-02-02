@@ -121,7 +121,7 @@
     <value>Add user</value>
   </data>
   <data name="Cannot_manipulate_users" xml:space="preserve">
-    <value>You cannot add ot remove users from exam group that is not attached to a contest</value>
+    <value>You cannot add ot remove users from exam group that does not have a contest</value>
   </data>
   <data name="Page_title" xml:space="preserve">
     <value>Exam groups</value>
