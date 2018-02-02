@@ -70,6 +70,8 @@
 
         public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
 
+        public const int DefaultProblemGroupsCountForOnlineContest = 2;
+
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
         public const string ZipFileExtension = ".zip";

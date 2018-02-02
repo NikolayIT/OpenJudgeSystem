@@ -33,6 +33,7 @@
     {
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
+        private const int ProblemGroupsCountLimit = 40;
 
         private readonly IContestsDataService contestsData;
         private readonly IContestsBusinessService contestsBusiness;
@@ -102,6 +103,8 @@
 
             var contest = model.GetEntityModel();
 
+            this.AddProblemGroupsToContest(contest, model.ProblemGroupsCount);
+
             this.AddIpsToContest(contest, model.AllowedIps);
 
             this.Data.Contests.Add(contest);
@@ -168,11 +171,20 @@
             if (contest.IsOnline &&
                 contest.IsActive &&
                 (contest.Duration != model.Duration ||
-                 contest.NumberOfProblemGroups != model.NumberOfProblemGroups ||
-                 (int)contest.Type != model.Type))
+                    (int)contest.Type != model.Type))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type_problem_groups);
+                this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type);
                 this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            if (contest.IsOnline && contest.ProblemGroups.Count == 0)
+            {
+                this.AddProblemGroupsToContest(contest, model.ProblemGroupsCount);
+            }
+
+            if (!contest.IsOnline && contest.Duration != null)
+            {
+                contest.Duration = null;
             }
 
             contest.AllowedIps.Clear();
@@ -509,9 +521,15 @@
                     this.ModelState.AddModelError(nameof(model.Duration), Resource.Duration_invalid_format);
                 }
 
-                if (model.NumberOfProblemGroups <= 0)
+                if (model.ProblemGroupsCount <= 0)
                 {
-                    this.ModelState.AddModelError(nameof(model.NumberOfProblemGroups), Resource.Required_field_for_online);
+                    this.ModelState.AddModelError(nameof(model.ProblemGroupsCount), Resource.Required_field_for_online);
+                }
+                else if (model.ProblemGroupsCount > ProblemGroupsCountLimit)
+                {
+                    this.ModelState.AddModelError(
+                        nameof(model.ProblemGroupsCount),
+                        string.Format(Resource.Problem_groups_count_limit, ProblemGroupsCountLimit));
                 }
             }
         }
@@ -532,6 +550,17 @@
 
                     contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = true });
                 }
+            }
+        }
+
+        private void AddProblemGroupsToContest(Contest contest, int problemGroupsCount)
+        {
+            for (var i = 0; i < problemGroupsCount; i++)
+            {
+                contest.ProblemGroups.Add(new ProblemGroup
+                {
+                    OrderBy = i
+                });
             }
         }
     }

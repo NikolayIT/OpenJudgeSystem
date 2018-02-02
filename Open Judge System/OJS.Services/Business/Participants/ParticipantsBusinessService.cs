@@ -105,14 +105,10 @@
         {
             var random = new Random();
 
-            var problemGroups = contest.Problems
-                .Where(p => !p.IsDeleted)
-                .GroupBy(p => p.GroupNumber)
-                .Select(problemGroup => problemGroup.ToList());
-
-            foreach (var problemGroup in problemGroups)
+            foreach (var problemGroup in contest.ProblemGroups)
             {
-                var randomProblem = problemGroup[random.Next(0, problemGroup.Count)];
+                var problemsInGroup = problemGroup.Problems.ToList();
+                var randomProblem = problemsInGroup[random.Next(0, problemsInGroup.Count)];
                 participant.Problems.Add(randomProblem);
             }
         }

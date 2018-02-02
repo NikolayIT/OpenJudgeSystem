@@ -53,19 +53,23 @@
         <div class="row">
             <div class="editor-label col-xs-3">
                 <div class="pull-right">
-                    @Html.LabelFor(m => m.NumberOfProblemGroups)
+                    @Html.LabelFor(m => m.ProblemGroupsCount)
                 </div>
             </div>
             <div class="editor-field col-xs-4">
-                @Html.EditorFor(m => m.NumberOfProblemGroups, new { IsDisabled = isEditFormOfActiveContest })
-                @if (isEditFormOfActiveContest)
-                {
-                    @Html.HiddenFor(m => m.NumberOfProblemGroups, new { id = $"{nameof(Model.NumberOfProblemGroups)}-hidden" })
-                }
+                @Html.EditorFor(m => m.ProblemGroupsCount, new { IsDisabled = isEditForm })
             </div>
             <div class="editor-field col-xs-4">
-                <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
-                @Html.ValidationMessageFor(m => m.NumberOfProblemGroups)
+                @if (isEditForm)
+                {
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Problem_groups_edit_from_administration" data-tooltip="true"></span>
+                    @Html.HiddenFor(m => m.ProblemGroupsCount, new { id = $"{nameof(Model.ProblemGroupsCount)}-hidden" })
+                }
+                else
+                {
+                    <span class="glyphicon glyphicon-question-sign text-primary" title="@Resource.Number_of_problem_groups" data-tooltip="true"></span>
+                    @Html.ValidationMessageFor(m => m.ProblemGroupsCount)
+                }
             </div>
         </div>
         <br />
@@ -352,10 +356,27 @@
         }
 
         function toggleOnlineOnlyFields(contestType) {
+            var problemGroupsCountHidden = $('#ProblemGroupsCount-hidden');
+            var problemGroupsCount = $('#ProblemGroupsCount');
+            var problemGroupsCountInput = problemGroupsCount.parent().children(':first-child');
+            var onlineContestFields = $(".@OnlineOnlyContainersClassName");
+
             if (contestType == @((int)ContestType.OnlinePracticalExam)) {
-                $(".@OnlineOnlyContainersClassName").removeClass("hidden");
+                if (@Model.ProblemGroupsCount === 0) {
+                    var defaultProblemGroupsCount = @GlobalConstants.DefaultProblemGroupsCountForOnlineContest;
+                    problemGroupsCountHidden.val(defaultProblemGroupsCount);
+                    problemGroupsCount.val(defaultProblemGroupsCount);
+                    problemGroupsCountInput.val(defaultProblemGroupsCount);
+                }
+
+                onlineContestFields.removeClass('hidden');
             } else {
-                $(".@OnlineOnlyContainersClassName").addClass("hidden");
+                onlineContestFields.addClass('hidden');
+
+                var problemGroupsCountValue = @Model.ProblemGroupsCount;
+                problemGroupsCountHidden.val(problemGroupsCountValue);
+                problemGroupsCount.val(problemGroupsCountValue);
+                problemGroupsCountInput.val(problemGroupsCountValue);
             }
         };
     });
