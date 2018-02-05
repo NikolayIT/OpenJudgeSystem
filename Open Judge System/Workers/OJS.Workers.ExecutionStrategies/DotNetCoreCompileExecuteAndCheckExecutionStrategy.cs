@@ -6,7 +6,6 @@
 
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
-    using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
     public class DotNetCoreCompileExecuteAndCheckExecutionStrategy : CompileExecuteAndCheckExecutionStrategy
@@ -39,6 +38,8 @@
             {
                 return result;
             }
+
+            this.CreateRuntimeConfigJsonFile(this.WorkingDirectory, RuntimeConfigJsonTemplate);
 
             // Execute and check each test
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
@@ -77,24 +78,14 @@
             return result;
         }
 
-        protected override CompileResult Compile(
-            CompilerType compilerType,
-            string compilerPath,
-            string compilerArguments,
-            string submissionFilePath)
-        {
-            this.CreateRuntimeConfigJsonFile(this.WorkingDirectory, RuntimeConfigJsonTemplate);
-            return base.Compile(compilerType, compilerPath, compilerArguments, submissionFilePath);
-        }
-
         private void CreateRuntimeConfigJsonFile(string directory, string text)
         {
-            var userSubmissionFileName = Directory
+            var compiledFileName = Directory
                 .GetFiles(directory)
-                .Select(Path.GetFileName)
+                .Select(Path.GetFileNameWithoutExtension)
                 .First();
 
-            var jsonFileName = $"{userSubmissionFileName}.runtimeconfig.json";
+            var jsonFileName = $"{compiledFileName}.runtimeconfig.json";
 
             var jsonFilePath = Path.Combine(directory, jsonFileName);
 
