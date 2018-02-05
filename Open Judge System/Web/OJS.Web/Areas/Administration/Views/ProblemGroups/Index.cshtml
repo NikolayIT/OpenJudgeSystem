@@ -7,6 +7,84 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
     
+    <div class="row bottom-buffer">
+        <div class="col-md-6">
+            <div>
+                <div>
+                    <label for="categories">Search by category</label>
+                </div>
+                @(Html
+                    .Kendo()
+                    .DropDownList()
+                    .Name("categories")
+                    .OptionLabel("Choose category")
+                    .HtmlAttributes(new {@class = "test-file-dropdown"})
+                    .DataTextField("Name")
+                    .DataValueField("Id")
+                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("GetCascadeCategories", "Problems");
+                        });
+                    })
+                )
+            </div>
+            
+            <div>
+                <div>
+                    <label for="contests">Contest</label>
+                </div>
+                @(Html
+                    .Kendo()
+                    .DropDownList()
+                    .Name("contests")
+                    .OptionLabel("Choose contest")
+                    .HtmlAttributes(new { @class = "test-file-dropdown" })
+                    .DataTextField("Name")
+                    .DataValueField("Id")
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("GetCascadeContests", "Problems").Data("filterContests");
+                        })
+                            .ServerFiltering(true);
+                    })
+                    .Enable(false)
+                    .AutoBind(false)
+                    .CascadeFrom("categories")
+                    .Events(e => e.Change("onContestSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+                )
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div>
+                <label for="search">Search by contest</label>
+            </div>
+
+            @(Html
+                .Kendo()
+                .AutoComplete()
+                .Name("search")
+                .Placeholder("Enter contest")
+                .HtmlAttributes(new {@class = "test-file-dropdown"})
+                .DataTextField("Name")
+                .Filter(FilterType.Contains)
+                .MinLength(3)
+                .DataSource(source =>
+                {
+                    source
+                        .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("searchContest"))
+                        .ServerFiltering(true);
+                })
+                .Events(e => e.Select("onSearchSelect"))
+            )
+        </div>
+    </div>
+
     @(Html
         .Kendo()
         .Grid<OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel>()
@@ -14,8 +92,9 @@
         .Columns(columns =>
         {
             columns.Bound(m => m.Id).Hidden();
-            columns.Bound(m => m.ContestName);
             columns.Bound(m => m.OrderBy);
+            columns.Bound(m => m.ContestName);
+            columns.Bound(m => m.ContestId).Hidden();
         })
         .ColumnMenu()
         .Filterable(filter => filter.Enabled(true))
@@ -55,4 +134,36 @@
         })
         .ToClientTemplate()
     )
+</script>  
+
+<script type="text/javascript">
+    function searchContest() {
+        return {
+            contestFilter: $('#search').val()
+        }
+    }
+
+    function filterContests() {
+        return {
+            categories: $('#categories').val()
+        };
+    }
+
+    function onSearchSelect(e) {
+        var contestId = this.dataItem(e.item.index()).Id;
+        filterByContest(contestId);
+    }
+
+    function onContestSelect() {
+        var contestId = $('#contests').val();
+        filterByContest(contestId);
+    }
+
+    function filterByContest(contestId) {
+        $("#DataGrid").data("kendoGrid").dataSource.filter({
+            "field": "ContestId",
+            "operator": "eq",
+            "value": contestId
+        });
+    }
 </script>
