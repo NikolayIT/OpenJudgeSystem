@@ -1589,6 +1589,7 @@
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ProblemGroupsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\RolesController.cs" />
@@ -1627,6 +1628,7 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -2360,6 +2362,7 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
+    <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

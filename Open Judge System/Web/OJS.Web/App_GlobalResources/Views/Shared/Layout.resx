@@ -201,4 +201,7 @@
   <data name="SubmissionTypes" xml:space="preserve">
     <value>Submission types</value>
   </data>
+  <data name="Problem_groups" xml:space="preserve">
+    <value>Problem groups</value>
+  </data>
 </root>

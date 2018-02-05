@@ -89,6 +89,7 @@
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Problems</li>
                                     <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new { area = "Administration" }, null)</li>
+                                    <li>@Html.ActionLink(Resource.Problem_groups, GlobalConstants.Index, "ProblemGroups", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Tests, GlobalConstants.Index, "Tests", new { area = "Administration" }, null)</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Users</li>
@@ -121,6 +122,8 @@
                                     <li class="dropdown-header">@Resource.Contests</li>
                                     <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
                                     <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
+                                    <li class="dropdown-header">@Resource.Problems</li>
+                                    <li>@Html.ActionLink(Resource.Problem_groups, GlobalConstants.Index, "ProblemGroups", new { area = "Administration" }, null)</li>
                                 </ul>
                             }
                         </li>

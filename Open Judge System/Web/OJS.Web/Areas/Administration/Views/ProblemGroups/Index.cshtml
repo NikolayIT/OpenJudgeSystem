@@ -1,0 +1,58 @@
+﻿@{
+    const string ControllerName = "ProblemGroups";
+
+    ViewBag.Title = "Index";
+}
+
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
+    
+    @(Html
+        .Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel>()
+        .Name("DataGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id).Hidden();
+            columns.Bound(m => m.ContestName);
+            columns.Bound(m => m.OrderBy);
+        })
+        .ColumnMenu()
+        .Filterable(filter => filter.Enabled(true))
+        .Pageable(pageable => pageable.Enabled(true).PageSizes(true))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(x => x.Id))
+                .Read(read => read.Action("Read", ControllerName));
+        })
+        .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate")
+    )
+</div>
+
+<script type="text/x-kendo-template" id="_ProblemsInProblemGroupGridTemplate">
+    @(Html
+        .Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel>()
+        .Name("ProblemsInProblemGroup_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id);
+            columns.Bound(m => m.Name);
+        })
+        .ColumnMenu()
+        .Filterable(filter => filter.Enabled(true))
+        .Pageable(pageable => pageable.Enabled(true).PageSizes(true))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(x => x.Id))
+                .Read(read => read.Action("ProblemsInProblemGroup", ControllerName, new {id = "#= Id #"}));
+        })
+        .ToClientTemplate()
+    )
+</script>
