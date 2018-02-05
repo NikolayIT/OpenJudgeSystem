@@ -57,11 +57,11 @@
 </script>
 
 <script type="text/x-kendo-template" id="users-in-role">
-    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
         .Name("DetailGrid_#=Name#")
         .Columns(columns =>
         {
-            columns.Bound(m => m.UserName);
+            columns.Bound(m => m.Username);
             columns.Bound(m => m.FirstName);
             columns.Bound(m => m.LastName);
             columns.Bound(m => m.Email);
@@ -89,7 +89,7 @@
             {
                 model.Id(m => m.UserId);
             })
-            .Sort(sort => sort.Add(field => field.UserName))
+            .Sort(sort => sort.Add(field => field.Username))
             .Create(create => create.Action("AddUserToRole", ControllerName, new { id = "#= RoleId #" }))
             .Read(read => read.Action("UsersInRole", ControllerName, new { id = "#= RoleId #" }))
             .Destroy(destroy => destroy.Action("DeleteUserFromRole", ControllerName, new { id = "#= RoleId #" }));

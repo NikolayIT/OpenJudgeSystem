@@ -201,4 +201,7 @@
   <data name="SubmissionTypes" xml:space="preserve">
     <value>Submission types</value>
   </data>
+  <data name="Exam_groups" xml:space="preserve">
+    <value>Exam groups</value>
+  </data>
 </root>

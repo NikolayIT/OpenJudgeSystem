@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -17,17 +16,15 @@
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
-    using OJS.Services.Data.Participants;
-    using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
-    using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
     using ChangeTimeResource = Resources.Areas.Administration.Contests.Views.ChangeTime;
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.Contests.ContestsControllers;
     using ShortViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ShortContestAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel;
@@ -38,20 +35,17 @@
         private const int LabDurationInSeconds = 30 * 60;
         private const int ProblemGroupsCountLimit = 40;
 
-        private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
-            this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
@@ -95,7 +89,7 @@
         {
             if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -125,7 +119,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -152,7 +146,7 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -208,19 +202,17 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
-                this.ModelState.AddModelError(string.Empty, string.Empty);
+                this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
                 return this.GridOperation(request, model);
             }
 
             if (this.contestsData.IsActiveById(model.Id.Value))
             {
-                this.TempData.AddDangerMessage(Resource.Active_contest_forbidden_for_deletion);
-                this.ModelState.AddModelError(string.Empty, string.Empty);
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_forbidden_for_deletion);
                 return this.GridOperation(request, model);
             }
 
-            this.contestsData.DeleteById(model.Id.Value);
+            this.contestsBusiness.DeleteById(model.Id.Value);
             return this.GridOperation(request, model);
         }
 
@@ -308,7 +300,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(inputModel.ContestCreateId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -330,7 +322,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -355,7 +347,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -445,7 +437,7 @@
 
             if (!this.User.IsAdmin())
             {
-                this.TempData[GlobalConstants.DangerMessage] = GlobalConstants.NoPrivilegesMessage;
+                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
@@ -472,7 +464,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GlobalConstants.NoPrivilegesMessage);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 

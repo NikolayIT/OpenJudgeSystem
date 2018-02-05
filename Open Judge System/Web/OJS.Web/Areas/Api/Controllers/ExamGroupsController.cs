@@ -11,8 +11,6 @@
 
     public class ExamGroupsController : Controller
     {
-        private const string GeneralDateTimeShortFormat = "g";
-
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IHangfireBackgroundJobService backgroundJobs;
 
@@ -46,9 +44,9 @@
                 };
             }
 
-            var startTime = externalExamGroup.StartTime?.ToString(GeneralDateTimeShortFormat) ?? string.Empty;
+            var startTime = externalExamGroup.StartTime?.ToString("g") ?? string.Empty;
 
-            examGroup.Name = $"{externalExamGroup.ExamName} - {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
+            examGroup.Name = $"{externalExamGroup.ExamName} => {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
 
             if (examGroupExists)
             {

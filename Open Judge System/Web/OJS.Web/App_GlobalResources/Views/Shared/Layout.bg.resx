@@ -201,4 +201,7 @@
   <data name="SubmissionTypes" xml:space="preserve">
     <value>Типове решения</value>
   </data>
+  <data name="Exam_groups" xml:space="preserve">
+    <value>Групи за изпити</value>
+  </data>
 </root>

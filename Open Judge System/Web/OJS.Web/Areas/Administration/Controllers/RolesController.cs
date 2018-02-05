@@ -14,10 +14,9 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.ViewModels.Roles;
 
     using DatabaseModelType = Microsoft.AspNet.Identity.EntityFramework.IdentityRole;
-    using DetailModelType = OJS.Web.Areas.Administration.ViewModels.Roles.UserInRoleAdministrationViewModel;
+    using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Roles.RoleAdministrationViewModel;
 
     public class RolesController : AdministrationBaseGridController
@@ -82,7 +81,7 @@
             var users = this.Data.Users
                 .All()
                 .Where(u => u.Roles.Any(r => r.RoleId == id))
-                .Select(DetailModelType.ViewModel);
+                .Select(DetailModelType.FromUserProfile);
 
             return this.Json(users.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -116,10 +115,10 @@
             user.Roles.Add(new IdentityUserRole { RoleId = role.Id, UserId = userId });
             this.Data.SaveChanges();
 
-            var result = new UserInRoleAdministrationViewModel
+            var result = new DetailModelType
             {
                 UserId = user.Id,
-                UserName = user.UserName,
+                Username = user.UserName,
                 FirstName = user.UserSettings.FirstName,
                 LastName = user.UserSettings.LastName,
                 Email = user.Email
