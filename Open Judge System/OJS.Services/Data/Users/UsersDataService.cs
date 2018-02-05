@@ -17,5 +17,7 @@
 
         public UserProfile GetById(string id) =>
             this.users.All().FirstOrDefault(u => u.Id == id);
+
+        public IQueryable<UserProfile> GetAll() => this.users.All();
     }
 }

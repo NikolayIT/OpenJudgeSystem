@@ -141,6 +141,9 @@
   <data name="Delete_prompt" xml:space="preserve">
     <value>Наистина ли искате да изтриете елемента?</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
   <data name="Export_to_excel" xml:space="preserve">
     <value>Експортиране в Ексел</value>
   </data>
@@ -149,5 +152,11 @@
   </data>
   <data name="Modified_on" xml:space="preserve">
     <value>Дата на промяна</value>
+  </data>
+  <data name="No_privileges_message" xml:space="preserve">
+    <value>Нямате привилегии за това действие!</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Премахни</value>
   </data>
 </root>

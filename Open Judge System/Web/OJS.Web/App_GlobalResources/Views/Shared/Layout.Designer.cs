@@ -142,6 +142,15 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exam groups.
+        /// </summary>
+        public static string Exam_groups {
+            get {
+                return ResourceManager.GetString("Exam_groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback {

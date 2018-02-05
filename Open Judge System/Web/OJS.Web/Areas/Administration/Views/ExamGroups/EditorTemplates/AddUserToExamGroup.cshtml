@@ -1,0 +1,21 @@
+﻿@model OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel
+
+@using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex
+
+@(Html
+    .Kendo()
+    .ComboBoxFor(m => m.Username)
+    .Name("UserId")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Filter(FilterType.Contains)
+    .MinLength(2)
+    .Placeholder(Resource.Choose_user)
+    .DataSource(data =>
+    {
+        data
+            .ServerFiltering(true)
+            .Read(read => read.Action("GetAvailableUsers", "ExamGroups").Data("filterUsers"));
+    })
+    .AutoBind(false)
+    .HtmlAttributes(new { style = "width: 100%;" }))
