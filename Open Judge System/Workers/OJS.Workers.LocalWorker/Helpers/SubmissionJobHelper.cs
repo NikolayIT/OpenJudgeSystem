@@ -32,6 +32,14 @@
                         Settings.GPlusPlusBaseTimeUsedInMilliseconds,
                         Settings.GPlusPlusBaseMemoryUsedInBytes);
                     break;
+                case ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck:
+                    executionStrategy = new DotNetCoreCompileExecuteAndCheckExecutionStrategy(
+                        GetCompilerPath,
+                        Settings.CSharpDotNetCoreCompilerPath,
+                        Settings.DotNetCoreSharedAssembliesPath,
+                        Settings.DotNetCscBaseTimeUsedInMilliseconds,
+                        Settings.DotNetCscBaseMemoryUsedInBytes);
+                    break;
                 case ExecutionStrategyType.DotNetCoreTestRunner:
                     executionStrategy = new DotNetCoreTestRunnerExecutionStrategy(
                         GetCompilerPath,
@@ -324,6 +332,7 @@
                 case CompilerType.JavaInPlaceCompiler:
                     return Settings.JavaCompilerPath;
                 case CompilerType.DotNetCompiler:
+                case CompilerType.CSharpDotNetCore:
                     return Settings.DotNetCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));

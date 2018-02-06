@@ -32,6 +32,8 @@
                     return null;
                 case CompilerType.CSharp:
                     return new CSharpCompiler();
+                case CompilerType.CSharpDotNetCore:
+                    return new CSharpDotNetCoreCompiler();
                 case CompilerType.CPlusPlusGcc:
                     return new CPlusPlusCompiler();
                 case CompilerType.MsBuild:

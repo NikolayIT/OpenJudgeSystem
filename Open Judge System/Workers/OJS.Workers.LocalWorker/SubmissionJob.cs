@@ -212,15 +212,15 @@
                 TaskSkeleton = submission.Problem.SolutionSkeleton,
                 Tests = submission.Problem.Tests
                     .AsQueryable()
-                    .Select(x =>
-                            new TestContext
-                            {
-                                Id = x.Id,
-                                Input = x.InputDataAsString,
-                                Output = x.OutputDataAsString,
-                                IsTrialTest = x.IsTrialTest,
-                                OrderBy = x.OrderBy
-                            }).ToList(),
+                    .Select(t => new TestContext
+                    {
+                        Id = t.Id,
+                        Input = t.InputDataAsString,
+                        Output = t.OutputDataAsString,
+                        IsTrialTest = t.IsTrialTest,
+                        OrderBy = t.OrderBy
+                    })
+                    .ToList()
             };
 
             ExecutionResult executionResult;
