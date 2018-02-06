@@ -4,7 +4,6 @@
     {
         None = 0,
         CSharp = 1,
-        CSharpDotNetCore = 10,
         MsBuild = 2,
         CPlusPlusGcc = 3,
         Java = 4,
@@ -12,6 +11,7 @@
         MsBuildLibrary = 6,
         CPlusPlusZip = 7,
         JavaInPlaceCompiler = 8,
-        DotNetCompiler = 9
+        DotNetCompiler = 9,
+        CSharpDotNetCore = 10
     }
 }
