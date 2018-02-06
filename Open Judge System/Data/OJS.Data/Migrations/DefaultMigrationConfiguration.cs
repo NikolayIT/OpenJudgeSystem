@@ -139,7 +139,7 @@
                 new SubmissionType
                 {
                     Name = "C# code (.NET Core)",
-                    CompilerType = CompilerType.CSharp,
+                    CompilerType = CompilerType.CSharpDotNetCore,
                     AdditionalCompilerArguments = "-nologo",
                     ExecutionStrategyType =
                         ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck,
