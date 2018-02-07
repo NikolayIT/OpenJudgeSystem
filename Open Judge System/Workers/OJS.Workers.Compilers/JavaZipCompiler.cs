@@ -14,6 +14,11 @@
         private const string MainClassFileName = "Main.class";
         private const string MainClassFilePathSuffix = "\\" + MainClassFileName;
 
+        public JavaZipCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
+
         public override bool ShouldDeleteSourceFile => false;
 
         public override string GetOutputFileName(string inputFileName) => new FileInfo(inputFileName).DirectoryName;

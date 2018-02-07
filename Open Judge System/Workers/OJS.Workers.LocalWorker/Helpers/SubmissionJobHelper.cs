@@ -36,8 +36,6 @@
                 case ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck:
                     executionStrategy = new DotNetCoreCompileExecuteAndCheckExecutionStrategy(
                         GetCompilerPath,
-                        Settings.CSharpDotNetCoreCompilerPath,
-                        Settings.DotNetCoreSharedAssembliesPath,
                         Settings.DotNetCscBaseTimeUsedInMilliseconds,
                         Settings.DotNetCscBaseMemoryUsedInBytes);
                     break;

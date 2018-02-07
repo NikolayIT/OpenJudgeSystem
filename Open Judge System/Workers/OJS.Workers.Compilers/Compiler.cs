@@ -18,9 +18,13 @@
     {
         protected const string CompilationDirectoryName = "CompilationDir";
 
+        protected Compiler(int processExitTimeOutMultiplier) =>
+            this.MaxProcessExitTimeOutInMilliseconds =
+                GlobalConstants.DefaultProcessExitTimeOutMilliseconds * processExitTimeOutMultiplier;
+
         public virtual bool ShouldDeleteSourceFile => true;
 
-        public virtual int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
+        public virtual int MaxProcessExitTimeOutInMilliseconds { get; }
 
         protected string CompilationDirectory { get; set; }
 
@@ -31,25 +35,28 @@
                 case CompilerType.None:
                     return null;
                 case CompilerType.CSharp:
-                    return new CSharpCompiler();
+                    return new CSharpCompiler(Settings.CSharpCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.CSharpDotNetCore:
-                    return new CSharpDotNetCoreCompiler();
+                    return new CSharpDotNetCoreCompiler(
+                        Settings.CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier,
+                        Settings.CSharpDotNetCoreCompilerPath,
+                        Settings.DotNetCoreSharedAssembliesPath);
                 case CompilerType.CPlusPlusGcc:
-                    return new CPlusPlusCompiler();
+                    return new CPlusPlusCompiler(Settings.CPlusPlusCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.MsBuild:
-                    return new MsBuildCompiler();
+                    return new MsBuildCompiler(Settings.MsBuildCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.Java:
-                    return new JavaCompiler();
+                    return new JavaCompiler(Settings.JavaCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.JavaZip:
-                    return new JavaZipCompiler();
+                    return new JavaZipCompiler(Settings.JavaZipCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.JavaInPlaceCompiler:
-                    return new JavaInPlaceFolderCompiler();
+                    return new JavaInPlaceFolderCompiler(Settings.JavaInPlaceCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.MsBuildLibrary:
-                    return new MsBuildLibraryCompiler();
+                    return new MsBuildLibraryCompiler(Settings.MsBuildLibraryCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.CPlusPlusZip:
-                    return new CPlusPlusZipCompiler();
+                    return new CPlusPlusZipCompiler(Settings.CPlusPlusZipCompilerProcessExitTimeOutMultiplier);
                     case CompilerType.DotNetCompiler: 
-                    return new DotNetCompiler();
+                    return new DotNetCompiler(Settings.DotNetCompilerProcessExitTimeOutMultiplier);
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }
@@ -106,7 +113,7 @@
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             // Execute compiler
-            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutMillisecond);
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutInMilliseconds);
 
             if (this.ShouldDeleteSourceFile)
             {
@@ -169,7 +176,7 @@
 
         protected static CompilerOutput ExecuteCompiler(
             ProcessStartInfo compilerProcessStartInfo,
-            int processExitTimeOutMillisecond = GlobalConstants.DefaultProcessExitTimeOutMilliseconds)
+            int processExitTimeOutMillisecond)
         {
             var outputBuilder = new StringBuilder();
             var errorOutputBuilder = new StringBuilder();
