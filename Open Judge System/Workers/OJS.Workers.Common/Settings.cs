@@ -137,25 +137,25 @@
         public static int PythonBaseMemoryUsedInBytes => GetSettingOrDefault("PythonBaseMemoryUsedInBytes", 0);
 
         // Compiler exit time out multipliers
-        public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 0);
+        public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int CPlusPlusZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusZipCompilerProcessExitTimeOutMultiplier", 0);
+        public static int CPlusPlusZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusZipCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int CSharpCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpCompilerProcessExitTimeOutMultiplier", 0);
+        public static int CSharpCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier", 0);
+        public static int CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int DotNetCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("DotNetCompilerProcessExitTimeOutMultiplier", 0);
+        public static int DotNetCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("DotNetCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int JavaCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaCompilerProcessExitTimeOutMultiplier", 0);
+        public static int JavaCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int JavaInPlaceCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaInPlaceCompilerProcessExitTimeOutMultiplier", 0);
+        public static int JavaInPlaceCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaInPlaceCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int JavaZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaZipCompilerProcessExitTimeOutMultiplier", 0);
+        public static int JavaZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaZipCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int MsBuildCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildCompilerProcessExitTimeOutMultiplier", 0);
+        public static int MsBuildCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildCompilerProcessExitTimeOutMultiplier", 1);
 
-        public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 0);
+        public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 1);
 
         private static string GetSetting(string settingName)
         {
