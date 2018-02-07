@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿namespace OJS.Workers.Common
 {
     using System;
     using System.Configuration;
