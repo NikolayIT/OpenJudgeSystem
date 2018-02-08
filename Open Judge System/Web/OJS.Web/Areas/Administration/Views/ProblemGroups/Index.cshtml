@@ -1,7 +1,10 @@
-﻿@{
+﻿@using Resource = Resources.Areas.Administration.ProblemGroups.Views.ProblemGroupsIndex;
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+@{
     const string ControllerName = "ProblemGroups";
 
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resource.Page_title;
 }
 
 <div class="administration-container">
@@ -64,24 +67,25 @@
             <div>
                 <label for="search">Search by contest</label>
             </div>
-
+            
             @(Html
                 .Kendo()
-                .AutoComplete()
+                .ComboBox()
                 .Name("search")
-                .Placeholder("Enter contest")
-                .HtmlAttributes(new {@class = "test-file-dropdown"})
+                .DataValueField("Id")
                 .DataTextField("Name")
                 .Filter(FilterType.Contains)
-                .MinLength(3)
-                .DataSource(source =>
+                .MinLength(2)
+                .Placeholder("Select contest")
+                .DataSource(data =>
                 {
-                    source
-                        .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("searchContest"))
-                        .ServerFiltering(true);
+                    data
+                        .ServerFiltering(true)
+                        .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("searchContest"));
                 })
-                .Events(e => e.Select("onSearchSelect"))
-            )
+                .AutoBind(false)
+                .Events(ev => ev.Select("onSearchSelect"))
+                .HtmlAttributes(new { style = "width:100%" }))
         </div>
     </div>
 
@@ -91,22 +95,39 @@
         .Name("DataGrid")
         .Columns(columns =>
         {
-            columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.OrderBy);
             columns.Bound(m => m.ContestName);
-            columns.Bound(m => m.ContestId).Hidden();
+            columns.Bound(m => m.CategoryName);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create().Text(GeneralResource.Add);
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.PopUp);
+            editable.Window(w =>w.Title(Resource.Page_title).Width(500));
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
         .Filterable(filter => filter.Enabled(true))
-        .Pageable(pageable => pageable.Enabled(true).PageSizes(true))
+        .Pageable(pageable => pageable.Refresh(true).PageSizes(true))
         .DataSource(data =>
         {
             data
                 .Ajax()
                 .ServerOperation(true)
                 .Model(model => model.Id(x => x.Id))
-                .Read(read => read.Action("Read", ControllerName));
+                .Create(create => create.Action("Create", ControllerName, new { contId = 20 }))
+                .Read(read => read.Action("Read", ControllerName))
+                .Update(update => update.Action("Update", ControllerName))
+                .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                .Events(ev => ev.Error("validateModelStateErrors"));
         })
+        .Events(ev => ev.Edit("fillContestData"))
         .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate")
     )
 </div>
@@ -137,9 +158,13 @@
 </script>  
 
 <script type="text/javascript">
+    $(function() {
+        $("#DataGrid").hide();
+    });
+
     function searchContest() {
         return {
-            contestFilter: $('#search').val()
+            contestFilter: $('#search').data("kendoComboBox").input.val()
         }
     }
 
@@ -150,20 +175,52 @@
     }
 
     function onSearchSelect(e) {
+        clearDropDowns();
         var contestId = this.dataItem(e.item.index()).Id;
         filterByContest(contestId);
     }
 
     function onContestSelect() {
+        clearSearch();
         var contestId = $('#contests').val();
         filterByContest(contestId);
     }
 
+    function fillContestData() {
+        $('.k-edit-form-container').css('width', '100%');
+        $('.editor-label').css('width', '10%');
+        $('.editor-field').css('width', '80%');
+
+        var searchComboBox = $("#search").data("kendoComboBox");
+        var contestsDropDown = $("#contests").data("kendoDropDownList");
+
+        var contestId = searchComboBox.value() || contestsDropDown.value();
+        var contestName = searchComboBox.text() || contestsDropDown.text();
+
+        $('#ContestId').val(contestId).change();
+        $('#ContestName').val(contestName).change();
+    }
+
     function filterByContest(contestId) {
-        $("#DataGrid").data("kendoGrid").dataSource.filter({
+        var grid = $("#DataGrid");
+
+        grid.data("kendoGrid").dataSource.filter({
             "field": "ContestId",
             "operator": "eq",
             "value": contestId
         });
+
+        setTimeout(function() {
+            grid.show();
+        }, 150);
+    }
+
+    function clearSearch() {
+        $('#search').data('kendoComboBox').value(null);
+    }
+
+    function clearDropDowns() {
+        $("#categories").data('kendoDropDownList').value(null);
+        $("#contests").data('kendoDropDownList').value(null);
     }
 </script>

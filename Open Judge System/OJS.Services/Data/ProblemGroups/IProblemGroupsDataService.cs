@@ -9,6 +9,8 @@
     {
         IQueryable<ProblemGroup> GetAll();
 
+        IQueryable<ProblemGroup> GetByIdQuery(int id);
+
         int? GetIdByContestAndOrderBy(int contestId, int? orderBy);
 
         IQueryable<Problem> GetProblemsById(int id);

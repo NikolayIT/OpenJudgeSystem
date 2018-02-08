@@ -13,6 +13,8 @@
             this.problemGroups = problemGroups;
 
         public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
+        public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
+            this.GetAll().Where(pg => pg.Id == id);
 
         public int? GetIdByContestAndOrderBy(int contestId, int? orderBy) =>
             this.problemGroups
@@ -20,8 +22,7 @@
                 .FirstOrDefault(pg => pg.ContestId == contestId && pg.OrderBy == orderBy)?.Id;
 
         public IQueryable<Problem> GetProblemsById(int id) =>
-            this.GetAll()
-                .Where(pg => pg.Id == id)
+            this.GetByIdQuery(id)
                 .SelectMany(eg => eg.Problems)
                 .Where(p => !p.IsDeleted);
     }

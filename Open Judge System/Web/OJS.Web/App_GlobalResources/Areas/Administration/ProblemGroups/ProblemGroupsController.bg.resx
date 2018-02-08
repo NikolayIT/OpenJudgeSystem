@@ -117,49 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
+  <data name="Cannot_add_users" xml:space="preserve">
+    <value>Не може да добавяте потребители в група за изпит, която не е прикачена към състезание.</value>
   </data>
-  <data name="Back_to_navigation" xml:space="preserve">
-    <value>Back to navigation</value>
+  <data name="Cannot_attach_contest" xml:space="preserve">
+    <value>Нямате привилегии да прикачите това състезание към група за изпит</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="Cannot_delete_group_with_active_contest" xml:space="preserve">
+    <value>Не може да изтриете група за изпит, която е прикачена към активно състезание.</value>
   </data>
-  <data name="Change" xml:space="preserve">
-    <value>Change</value>
-  </data>
-  <data name="Choose_file" xml:space="preserve">
-    <value>Choose File</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="Created_on" xml:space="preserve">
-    <value>Created on</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Delete_prompt" xml:space="preserve">
-    <value>Do you want to delete this item?</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="Export_to_excel" xml:space="preserve">
-    <value>Export To Excel</value>
-  </data>
-  <data name="Group_by_message" xml:space="preserve">
-    <value>Drag and drop here the title of the column you wish to group by</value>
-  </data>
-  <data name="Modified_on" xml:space="preserve">
-    <value>Modified on</value>
-  </data>
-  <data name="No_privileges_message" xml:space="preserve">
-    <value>You don't have privileges for this action!</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
+  <data name="Cannot_remove_users" xml:space="preserve">
+    <value>Не може да премахвате потребители от група за изпит, която не е прикачена към състезание.</value>
   </data>
 </root>

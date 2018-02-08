@@ -813,6 +813,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.designer.cs">
+      <DependentUpon>ProblemGroupsController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.designer.cs">
+      <DependentUpon>ProblemGroupsController.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2798,6 +2818,28 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsController.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsController.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
