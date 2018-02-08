@@ -1645,8 +1645,11 @@
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\KendoRemoteDataBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\KendoRemoteDataController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersKendoRemoteDataController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionsController.cs" />
@@ -2440,6 +2443,8 @@
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchPartial.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

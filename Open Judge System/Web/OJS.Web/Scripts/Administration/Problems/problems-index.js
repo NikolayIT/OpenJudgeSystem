@@ -1,14 +1,4 @@
-﻿
-/* exported onAdditionalData */
-function onAdditionalData() {
-    'use strict';
-
-    return {
-        text: $('#search').val()
-    };
-}
-
-/* exported onSearchSelect */
+﻿/* exported onSearchSelect */
 function onSearchSelect(e) {
     'use strict';
 
@@ -21,15 +11,6 @@ function onContestSelect() {
     'use strict';
 
     initializeGrid(parseInt($('#contests').val()));
-}
-
-/* exported filterContests */
-function filterContests() {
-    'use strict';
-
-    return {
-        categories: $('#categories').val()
-    };
 }
 
 function populateDropDowns(contestIdAsString) {

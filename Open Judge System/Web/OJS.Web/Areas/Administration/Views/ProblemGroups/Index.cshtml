@@ -1,4 +1,4 @@
-﻿@using Resource = Resources.Areas.Administration.ProblemGroups.Views.ProblemGroupsIndex;
+﻿@using Resource = Resources.Areas.Administration.ProblemGroups.Views.ProblemGroupsIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
@@ -12,80 +12,11 @@
     
     <div class="row bottom-buffer">
         <div class="col-md-6">
-            <div>
-                <div>
-                    <label for="categories">Search by category</label>
-                </div>
-                @(Html
-                    .Kendo()
-                    .DropDownList()
-                    .Name("categories")
-                    .OptionLabel("Choose category")
-                    .HtmlAttributes(new {@class = "test-file-dropdown"})
-                    .DataTextField("Name")
-                    .DataValueField("Id")
-                    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                    .DataSource(source =>
-                    {
-                        source.Read(read =>
-                        {
-                            read.Action("GetCascadeCategories", "Problems");
-                        });
-                    })
-                )
-            </div>
-            
-            <div>
-                <div>
-                    <label for="contests">Contest</label>
-                </div>
-                @(Html
-                    .Kendo()
-                    .DropDownList()
-                    .Name("contests")
-                    .OptionLabel("Choose contest")
-                    .HtmlAttributes(new { @class = "test-file-dropdown" })
-                    .DataTextField("Name")
-                    .DataValueField("Id")
-                    .DataSource(source =>
-                    {
-                        source.Read(read =>
-                        {
-                            read.Action("GetCascadeContests", "Problems").Data("filterContests");
-                        })
-                            .ServerFiltering(true);
-                    })
-                    .Enable(false)
-                    .AutoBind(false)
-                    .CascadeFrom("categories")
-                    .Events(e => e.Change("onContestSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                )
-            </div>
+            @(Html.Partial("_ContestSearchCascadeFromCategoryPartial"))
         </div>
 
         <div class="col-md-6">
-            <div>
-                <label for="search">Search by contest</label>
-            </div>
-            
-            @(Html
-                .Kendo()
-                .ComboBox()
-                .Name("search")
-                .DataValueField("Id")
-                .DataTextField("Name")
-                .Filter(FilterType.Contains)
-                .MinLength(2)
-                .Placeholder("Select contest")
-                .DataSource(data =>
-                {
-                    data
-                        .ServerFiltering(true)
-                        .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("searchContest"));
-                })
-                .AutoBind(false)
-                .Events(ev => ev.Select("onSearchSelect"))
-                .HtmlAttributes(new { style = "width:100%" }))
+            @(Html.Partial("_ContestSearchPartial"))
         </div>
     </div>
 
@@ -161,18 +92,6 @@
     $(function() {
         $("#DataGrid").hide();
     });
-
-    function searchContest() {
-        return {
-            contestFilter: $('#search').data("kendoComboBox").input.val()
-        }
-    }
-
-    function filterContests() {
-        return {
-            categories: $('#categories').val()
-        };
-    }
 
     function onSearchSelect(e) {
         clearDropDowns();

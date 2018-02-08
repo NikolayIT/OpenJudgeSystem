@@ -23,9 +23,6 @@
 
     public class ExamGroupsController : LecturerBaseGridController
     {
-        private const int DefaultUsersTakeCount = 20;
-        private const int DefaultContestsToTake = 15;
-
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
         private readonly IContestsDataService contestsData;
@@ -205,61 +202,6 @@
             };
 
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetAvailableUsers(string userFilter)
-        {
-            var users = this.usersData.GetAll().Take(DefaultUsersTakeCount);
-
-            if (!string.IsNullOrWhiteSpace(userFilter))
-            {
-                users = this.usersData
-                    .GetAll()
-                    .Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()))
-                    .Take(DefaultUsersTakeCount);
-            }
-
-            var result = users
-                .Select(u => new SelectListItem
-                {
-                    Text = u.UserName,
-                    Value = u.Id
-                })
-                .ToList();
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetAvailableContests(string contestFilter)
-        {
-            var contests = this.contestsData
-                .GetAll()
-                .OrderByDescending(c => c.CreatedOn);
-
-            if (!this.User.IsAdmin() && this.User.IsLecturer())
-            {
-                contests = this.contestsData
-                    .GetAllByLecturer(this.UserProfile.Id)
-                    .OrderByDescending(c => c.CreatedOn);
-            }
-
-            if (!string.IsNullOrWhiteSpace(contestFilter))
-            {
-                contests = contests
-                    .Where(c => c.Name.Contains(contestFilter))
-                    .Take(DefaultContestsToTake)
-                    .OrderByDescending(c => c.CreatedOn);
-            }
-
-            var result = contests
-                .Select(c => new
-                {
-                    c.Name,
-                    c.Id
-                })
-                .ToList();
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));

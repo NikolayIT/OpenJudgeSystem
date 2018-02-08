@@ -1,6 +1,8 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsIndex;
+﻿@model ProblemViewModel
+
 @using OJS.Web.Areas.Administration.ViewModels.Problem
-@model ProblemViewModel
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsIndex
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -18,102 +20,35 @@
         {
             <input id="problemId" name="problemId" type="hidden" value="@ViewBag.ProblemId" />
         }
-        <div>
-            <label for="search">@Resource.Search_by_contest</label>
-        </div>
-        <div>
-            @(@Html.Kendo().AutoComplete()
-                .Name("search")
-                .Placeholder(Resource.Enter_contest)
-                .HtmlAttributes(new { @class = "test-file-dropdown" })
-                .DataTextField("Name")
-                .Filter("contains")
-                .MinLength(3)
-                .DataSource(source =>
-                {
-                    source
-                        .Read(read =>
-                        {
-                            read.Action("GetSearchedContests", "Problems")
-                                .Data("onAdditionalData");
-                        });
-                }
-                )
-                .Events(e =>
-                {
-                    e.Select("onSearchSelect");
-                }))
-        </div>
-        <div>
-            <div>
-                <label for="categories">@Resource.Category</label>
-            </div>
-            <div>
-                @(Html.Kendo().DropDownList()
-                .Name("categories")
-                .OptionLabel(Resource.Choose_category)
-                .HtmlAttributes(new { @class = "test-file-dropdown" })
-                .DataTextField("Name")
-                .DataValueField("Id")
-                .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
-                .DataSource(source =>
-                {
-                    source.Read(read =>
-                    {
-                        read.Action("GetCascadeCategories", "Problems");
-                    });
-                }))
-            </div>
-        </div>
-        <div>
-            <label for="contests">@Resource.Contest</label>
-        </div>
-        <div>
-            @(Html.Kendo().DropDownList()
-                .Name("contests")
-                .OptionLabel(Resource.Choose_contest)
-                .HtmlAttributes(new { @class = "test-file-dropdown" })
-                .DataTextField("Name")
-                .DataValueField("Id")
-                .DataSource(source =>
-                {
-                    source.Read(read =>
-                    {
-                        read.Action("GetCascadeContests", "Problems")
-                            .Data("filterContests");
-                    })
-                    .ServerFiltering(true);
-                })
-                .Enable(false)
-                .AutoBind(false)
-                .CascadeFrom("categories")
-                .Events(e => e.Change("onContestSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
-            </div>
+
+        @(Html.Partial("_ContestSearchPartial"))
+
+        @(Html.Partial("_ContestSearchCascadeFromCategoryPartial"))
     </div>
     <div class="col-md-6">
         <div>
             <strong>@Resource.Qucik_access_contest</strong>
         </div>
         @(Html.Kendo()
-        .TabStrip()
-        .Name("latest-courses")
-        .Items(tabstrip =>
-        {
-            tabstrip.Add()
-                .Text(Resource.Future)
-                .Selected(true)
-                .LoadContentFrom("GetFutureContests", "Contests");
+              .TabStrip()
+              .Name("latest-courses")
+              .Items(tabstrip =>
+              {
+                  tabstrip.Add()
+                      .Text(Resource.Future)
+                      .Selected(true)
+                      .LoadContentFrom("GetFutureContests", "Contests");
 
-            tabstrip.Add()
-                .Text(Resource.Active)
-                .LoadContentFrom("GetActiveContests", "Contests");
+                  tabstrip.Add()
+                      .Text(Resource.Active)
+                      .LoadContentFrom("GetActiveContests", "Contests");
 
-            tabstrip.Add()
-                .Text(Resource.Latest)
-                .LoadContentFrom("GetLatestContests", "Contests");
-        })
-        .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
-        .HtmlAttributes(new { @class = "col-md-12" }))
+                  tabstrip.Add()
+                      .Text(Resource.Latest)
+                      .LoadContentFrom("GetLatestContests", "Contests");
+              })
+              .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
+              .HtmlAttributes(new { @class = "col-md-12" }))
     </div>
 </div>
 
@@ -124,5 +59,5 @@
 </div>
 
 @section scripts{
-    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>      
+    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>
 }

@@ -757,38 +757,6 @@
         }
 
         [HttpGet]
-        public JsonResult GetCascadeCategories()
-        {
-            var result = this.Data.ContestCategories.All().Select(x => new { x.Id, x.Name });
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetCascadeContests(string categories)
-        {
-            var contests = this.Data.Contests.All();
-
-            int categoryId;
-
-            if (int.TryParse(categories, out categoryId))
-            {
-                contests = contests.Where(x => x.CategoryId == categoryId);
-            }
-
-            var result = contests.Select(x => new { x.Id, x.Name });
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetSearchedContests()
-        {
-            var result = this.Data.Contests.All().Select(x => new { x.Id, x.Name });
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
         public JsonResult GetContestInformation(string id)
         {
             // TODO: Add validation for Id
