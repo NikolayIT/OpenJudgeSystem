@@ -31,31 +31,26 @@
         [AjaxOnly]
         public JsonResult GetAvailableContestsContaining(string contestFilter)
         {
-            var contests = this.contestsData
-                .GetAll()
-                .OrderByDescending(c => c.CreatedOn);
+            var contests = this.contestsData.GetAllVisible();
 
             if (this.UserIsNotAdminButLecturer)
             {
-                contests = this.contestsData
-                    .GetAllByLecturer(this.UserProfile.Id)
-                    .OrderByDescending(c => c.CreatedOn);
+                contests = this.contestsData.GetAllVisibleByLecturer(this.UserProfile.Id);
             }
 
             if (!string.IsNullOrWhiteSpace(contestFilter))
             {
-                contests = contests
-                    .Where(c => c.Name.Contains(contestFilter))
-                    .Take(DefaultItemsToTake)
-                    .OrderByDescending(c => c.CreatedOn);
+                contests = contests.Where(c => c.Name.Contains(contestFilter));
             }
 
             var result = contests
+                .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new DropdownViewModel
                 {
                     Name = c.Name,
                     Id = c.Id
-                });
+                })
+                .Take(DefaultItemsToTake);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -63,14 +58,15 @@
         [AjaxOnly]
         public JsonResult GetAvailableCategories()
         {
-            var categories = this.contestCategoriesData.GetAll();
+            var categories = this.contestCategoriesData.GetAllVisible();
 
             if (this.UserIsNotAdminButLecturer)
             {
-                categories = this.contestCategoriesData.GetByLecturer(this.UserProfile.Id);
+                categories = this.contestCategoriesData.GetAllVisibleByLecturer(this.UserProfile.Id);
             }
 
             var result = categories
+                .OrderBy(cc => cc.Name)
                 .Select(cc => new DropdownViewModel
                 {
                     Name = cc.Name,
@@ -83,18 +79,20 @@
         [AjaxOnly]
         public JsonResult GetCascadeContestsFromCategory(int categoryId)
         {
-            var contests = this.contestsData.GetByCategory(categoryId);
+            var contests = this.contestsData.GetAllVisibleByCategory(categoryId);
 
             if (this.UserIsNotAdminButLecturer)
             {
-                contests = this.contestsData.GetAllByCategoryAndLecturer(categoryId, this.UserProfile.Id);
+                contests = this.contestsData.GetAllVisibleByCategoryAndLecturer(categoryId, this.UserProfile.Id);
             }
 
-            var result = contests.Select(c => new DropdownViewModel
-            {
-                Name = c.Name,
-                Id = c.Id
-            });
+            var result = contests
+                .OrderBy(c => c.Name)
+                .Select(c => new DropdownViewModel
+                {
+                    Name = c.Name,
+                    Id = c.Id
+                });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }

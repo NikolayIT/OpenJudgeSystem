@@ -12,10 +12,11 @@
         public CategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
-        public IQueryable<ContestCategory> GetAll() => this.contestCategories.All();
+        public IQueryable<ContestCategory> GetAllVisible() =>
+            this.contestCategories.All().Where(cc => cc.IsVisible);
 
-        public IQueryable<ContestCategory> GetByLecturer(string lecturerId) =>
-            this.GetAll().Where(cc =>
+        public IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId) =>
+            this.GetAllVisible().Where(cc =>
                 cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                 cc.Contests.Any(c => c.Lecturers.Any(l => l.LecturerId == lecturerId)));
     }

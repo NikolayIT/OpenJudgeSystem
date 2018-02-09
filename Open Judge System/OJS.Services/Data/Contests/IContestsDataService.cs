@@ -11,8 +11,6 @@
 
         IQueryable<Contest> GetByIdQuery(int id);
 
-        IQueryable<Contest> GetByCategory(int categoryId);
-
         IQueryable<Contest> GetAll();
 
         IQueryable<Contest> GetAllActive();
@@ -27,11 +25,13 @@
 
         IQueryable<Contest> GetAllVisible();
 
+        IQueryable<Contest> GetAllVisibleByCategory(int categoryId);
+
+        IQueryable<Contest> GetAllVisibleByLecturer(string lecturerId);
+
+        IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId);
+
         IQueryable<Contest> GetAllWithDeleted();
-
-        IQueryable<Contest> GetAllByLecturer(string lecturerId);
-
-        IQueryable<Contest> GetAllByCategoryAndLecturer(int categoryId,string lecturerId);
 
         int GetIdById(int id);
 
