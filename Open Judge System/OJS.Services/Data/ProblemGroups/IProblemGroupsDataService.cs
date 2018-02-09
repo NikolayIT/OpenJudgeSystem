@@ -7,12 +7,16 @@
 
     public interface IProblemGroupsDataService : IService
     {
-        IQueryable<ProblemGroup> GetAll();
+        ProblemGroup GetById(int id);
 
         IQueryable<ProblemGroup> GetByIdQuery(int id);
+
+        IQueryable<ProblemGroup> GetAll();
 
         int? GetIdByContestAndOrderBy(int contestId, int? orderBy);
 
         IQueryable<Problem> GetProblemsById(int id);
+
+        void Delete(ProblemGroup problemGroup);
     }
 }

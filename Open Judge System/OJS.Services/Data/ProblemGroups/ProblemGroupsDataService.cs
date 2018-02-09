@@ -12,9 +12,12 @@
         public ProblemGroupsDataService(IEfGenericRepository<ProblemGroup> problemGroups) =>
             this.problemGroups = problemGroups;
 
-        public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
+        public ProblemGroup GetById(int id) => this.problemGroups.GetById(id);
+
         public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
             this.GetAll().Where(pg => pg.Id == id);
+
+        public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
 
         public int? GetIdByContestAndOrderBy(int contestId, int? orderBy) =>
             this.problemGroups
@@ -25,5 +28,7 @@
             this.GetByIdQuery(id)
                 .SelectMany(eg => eg.Problems)
                 .Where(p => !p.IsDeleted);
+
+        public void Delete(ProblemGroup problemGroup) => this.problemGroups.Delete(problemGroup);
     }
 }

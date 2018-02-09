@@ -62,38 +62,20 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot add users to exam group that is not attached to a contest..
+        ///   Looks up a localized string similar to The selected contest does not exist.
         /// </summary>
-        public static string Cannot_add_users {
+        public static string Contest_does_not_exist {
             get {
-                return ResourceManager.GetString("Cannot_add_users", resourceCulture);
+                return ResourceManager.GetString("Contest_does_not_exist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have privileges to attach this contest to an exam group!.
+        ///   Looks up a localized string similar to Contest is required.
         /// </summary>
-        public static string Cannot_attach_contest {
+        public static string Contest_required {
             get {
-                return ResourceManager.GetString("Cannot_attach_contest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot delete exam group which has active contest attached to it..
-        /// </summary>
-        public static string Cannot_delete_group_with_active_contest {
-            get {
-                return ResourceManager.GetString("Cannot_delete_group_with_active_contest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot remove users from exam group that is not attached to a contest..
-        /// </summary>
-        public static string Cannot_remove_users {
-            get {
-                return ResourceManager.GetString("Cannot_remove_users", resourceCulture);
+                return ResourceManager.GetString("Contest_required", resourceCulture);
             }
         }
     }

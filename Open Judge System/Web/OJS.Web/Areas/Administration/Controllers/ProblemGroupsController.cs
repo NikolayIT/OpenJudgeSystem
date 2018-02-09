@@ -10,23 +10,32 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ProblemGroups;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
 
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.ProblemGroups.ProblemGroupsController;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel;
 
     public class ProblemGroupsController : LecturerBaseGridController
     {
         private readonly IProblemGroupsDataService problemGroupsData;
+        private readonly IProblemGroupsBusinessService problemGroupsBusiness;
+        private readonly IContestsDataService contestsData;
 
         public ProblemGroupsController(
             IOjsData data,
-            IProblemGroupsDataService problemGroupsData)
+            IProblemGroupsDataService problemGroupsData,
+            IProblemGroupsBusinessService problemGroupsBusiness,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.problemGroupsData = problemGroupsData;
+            this.problemGroupsBusiness = problemGroupsBusiness;
+            this.contestsData = contestsData;
         }
 
         public override IEnumerable GetData() =>
@@ -43,6 +52,11 @@
             [DataSourceRequest] DataSourceRequest request,
             ViewModelType model)
         {
+            if (!this.IsModelAndContestValid(model))
+            {
+                return this.GridOperation(request, model);
+            }
+
             this.BaseCreate(model.GetEntityModel());
             return this.GridOperation(request, model);
         }
@@ -50,9 +64,32 @@
         [HttpPost]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
+            if (!this.IsModelAndContestValid(model))
+            {
+                return this.GridOperation(request, model);
+            }
+
             var problemGroup = model.GetEntityModel(this.GetByIdAsNoTracking(model.Id));
 
             this.BaseUpdate(problemGroup);
+            return this.GridOperation(request, model);
+        }
+
+        [HttpPost]
+        public ActionResult Destroy([DataSourceRequest] DataSourceRequest request, ViewModelType model)
+        {
+            if (!this.IsModelAndContestValid(model))
+            {
+                return this.GridOperation(request, model);
+            }
+
+            var result = this.problemGroupsBusiness.DeleteById(model.Id);
+
+            if (result.IsError)
+            {
+                this.ModelState.AddModelError(string.Empty, result.Error);
+            }
+
             return this.GridOperation(request, model);
         }
 
@@ -64,6 +101,26 @@
                 .Select(DetailViewModelType.FromProblem);
 
             return this.Json(problems.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        private bool IsModelAndContestValid(ViewModelType model)
+        {
+            if (string.IsNullOrWhiteSpace(model.ContestName))
+            {
+                this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_required);
+            }
+
+            if (!this.contestsData.ExistsById(model.ContestId))
+            {
+                this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_does_not_exist);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
+            }
+
+            return this.ModelState.IsValid;
         }
 
         private ProblemGroup GetByIdAsNoTracking(int id) =>

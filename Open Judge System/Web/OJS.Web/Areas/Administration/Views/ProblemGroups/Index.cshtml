@@ -50,7 +50,8 @@
             data
                 .Ajax()
                 .ServerOperation(true)
-                .Model(model => model.Id(x => x.Id))
+                .Model(model => model.Id(m => m.Id))
+                .Sort(sort => sort.Add(field => field.OrderBy))
                 .Create(create => create.Action("Create", ControllerName))
                 .Read(read => read.Action("Read", ControllerName))
                 .Update(update => update.Action("Update", ControllerName))
