@@ -16,10 +16,9 @@
         .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
         .DataSource(source =>
         {
-            source.Read(read =>
-            {
-                read.Action("GetAvailableCategories", "LecturersKendoRemoteData");
-            });
+            source
+                .Read(read => read.Action("GetAvailableCategories", "LecturersKendoRemoteData"))
+                .ServerFiltering(true);
         }))
 
     <div>
@@ -37,10 +36,8 @@
         .DataSource(source =>
         {
             source.Read(read =>
-            {
                 read.Action("GetCascadeContestsFromCategory", "LecturersKendoRemoteData")
-                    .Data("setCategoryId");
-            })
+                    .Data("setCategoryId"))
                 .ServerFiltering(true);
         })
         .Enable(false)

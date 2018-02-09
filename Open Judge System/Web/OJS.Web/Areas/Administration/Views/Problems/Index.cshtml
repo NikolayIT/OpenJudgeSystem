@@ -30,34 +30,34 @@
             <strong>@Resource.Qucik_access_contest</strong>
         </div>
         @(Html.Kendo()
-              .TabStrip()
-              .Name("latest-courses")
-              .Items(tabstrip =>
-              {
-                  tabstrip.Add()
-                      .Text(Resource.Future)
-                      .Selected(true)
-                      .LoadContentFrom("GetFutureContests", "Contests");
+            .TabStrip()
+            .Name("latest-courses")
+            .Items(tabstrip =>
+            {
+                tabstrip.Add()
+                    .Text(Resource.Future)
+                    .Selected(true)
+                    .LoadContentFrom("GetFutureContests", "Contests");
 
-                  tabstrip.Add()
-                      .Text(Resource.Active)
-                      .LoadContentFrom("GetActiveContests", "Contests");
+                tabstrip.Add()
+                    .Text(Resource.Active)
+                    .LoadContentFrom("GetActiveContests", "Contests");
 
-                  tabstrip.Add()
-                      .Text(Resource.Latest)
-                      .LoadContentFrom("GetLatestContests", "Contests");
-              })
-              .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
-              .HtmlAttributes(new { @class = "col-md-12" }))
+                tabstrip.Add()
+                    .Text(Resource.Latest)
+                    .LoadContentFrom("GetLatestContests", "Contests");
+            })
+            .Events(ev => ev.ContentLoad("hideTheadFromGrid"))
+            .HtmlAttributes(new { @class = "col-md-12" }))
     </div>
 </div>
 
 <br />
 <div class="jumbotron text-center text-white" id="status">@Resource.Problems_loading</div>
 <div id="problems-grid">
-
+    
 </div>
 
 @section scripts{
-    <script src="~/Scripts/Administration/Problems/problems-index.js"></script>
+    @Scripts.Render("~/bundles/problems-index");
 }

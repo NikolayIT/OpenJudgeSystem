@@ -2315,7 +2315,9 @@
     <Content Include="gulpfile.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\administration-global.js" />
+    <Content Include="Scripts\Administration\Contests\contest-search.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
+    <Content Include="Scripts\Administration\ProblemGroups\problem-groups-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
     <Content Include="Scripts\Administration\Problems\problems-index.js" />
@@ -2445,6 +2447,7 @@
     <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestSearchPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ProblemsInProblemGroupGridTemplate.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

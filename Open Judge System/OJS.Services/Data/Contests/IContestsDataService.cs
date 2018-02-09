@@ -31,6 +31,8 @@
 
         IQueryable<Contest> GetAllByLecturer(string lecturerId);
 
+        IQueryable<Contest> GetAllByCategoryAndLecturer(int categoryId,string lecturerId);
+
         int GetIdById(int id);
 
         void DeleteById(int id);

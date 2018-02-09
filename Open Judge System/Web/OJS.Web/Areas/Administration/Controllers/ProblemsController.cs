@@ -757,27 +757,6 @@
         }
 
         [HttpGet]
-        public JsonResult GetContestInformation(string id)
-        {
-            // TODO: Add validation for Id
-            var contestIdNumber = int.Parse(id);
-
-            if (!this.CheckIfUserHasContestPermissions(contestIdNumber))
-            {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.Json("No premissions");
-            }
-
-            var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == contestIdNumber);
-
-            var contestId = contestIdNumber;
-            var categoryId = contest.CategoryId;
-
-            var result = new { contest = contestId, category = categoryId };
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
         public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int contestId)
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))

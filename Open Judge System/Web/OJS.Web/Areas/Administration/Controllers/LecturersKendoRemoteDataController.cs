@@ -85,6 +85,11 @@
         {
             var contests = this.contestsData.GetByCategory(categoryId);
 
+            if (this.UserIsNotAdminButLecturer)
+            {
+                contests = this.contestsData.GetAllByCategoryAndLecturer(categoryId, this.UserProfile.Id);
+            }
+
             var result = contests.Select(c => new DropdownViewModel
             {
                 Name = c.Name,

@@ -4,77 +4,15 @@ function onSearchSelect(e) {
 
     var contestId = this.dataItem(e.item.index()).Id;
     populateDropDowns(contestId);
+    initializeGrid(contestId);
 }
 
 /* exported onContestSelect */
 function onContestSelect() {
     'use strict';
 
-    initializeGrid(parseInt($('#contests').val()));
-}
-
-function populateDropDowns(contestIdAsString) {
-    'use strict';
-
-    var response;
-
-    $.get('/Administration/Problems/GetContestInformation/' + contestIdAsString, function (data) {
-        response = data;
-
-        var categoryId = response.category;
-        var contestId = response.contest;
-
-        var categories = $('#categories').data('kendoDropDownList');
-        var contests = $('#contests').data('kendoDropDownList');
-
-        var categoriesData = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: '/Administration/Problems/GetCascadeCategories',
-                    dataType: 'json'
-                }
-            }
-        });
-
-        var contestsData = new kendo.data.DataSource({
-            transport: {
-                read: {
-                    url: '/Administration/Problems/GetCascadeContests/' + categoryId.toString(),
-                    dataType: 'json'
-                }
-            }
-        });
-
-        /* eslint max-nested-callbacks: 0 */
-        // TODO: Refactor using promises or async/await
-        categoriesData.fetch(function () {
-            categories.dataSource.data(categoriesData);
-            categories.setDataSource(categoriesData);
-            categories.refresh();
-
-            contestsData.fetch(function () {
-                contests.dataSource.data(contestsData);
-                contests.refresh();
-
-                categories.select(function (dataItem) {
-                    return dataItem.Id === categoryId;
-                });
-
-                // TODO: Improve by using success callback or promises, not setTimeout - Cascade event on widgets might work too
-
-                window.setTimeout(function () {
-
-                    contests.select(function (dataItem) {
-                        return dataItem.Id === contestId;
-                    });
-
-                }, 500);
-
-            });
-        });
-
-        initializeGrid(contestId);
-    });
+    var contestId = $('#contests').val();
+    initializeGrid(contestId);
 }
 
 function initializeGrid(contestId) {
@@ -208,9 +146,9 @@ function hideTheadFromGrid() {
     $('#future-grid thead').hide();
 
     $('[data-clickable="grid-click"]').click(function () {
-        var id = $(this).data('id');
-
-        populateDropDowns(id);
+        var contestId = $(this).data('id');
+        populateDropDowns(contestId);
+        initializeGrid(contestId);
     });
 }
 
@@ -219,7 +157,9 @@ $(document).ready(function () {
 
     $('#status').hide();
 
-    if ($('#contestId').val()) {
-        populateDropDowns($('#contestId').val());
+    var contestId = $('#contestId').val();
+    if (contestId) {
+        populateDropDowns(contestId);
+        initializeGrid(contestId);
     }
 });

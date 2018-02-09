@@ -52,94 +52,18 @@
                 .Ajax()
                 .ServerOperation(true)
                 .Model(model => model.Id(x => x.Id))
-                .Create(create => create.Action("Create", ControllerName, new { contId = 20 }))
+                .Create(create => create.Action("Create", ControllerName))
                 .Read(read => read.Action("Read", ControllerName))
                 .Update(update => update.Action("Update", ControllerName))
                 .Destroy(destroy => destroy.Action("Destroy", ControllerName))
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
         .Events(ev => ev.Edit("fillContestData"))
-        .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate")
-    )
+        .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))
+    
+    @(Html.Partial("_ProblemsInProblemGroupGridTemplate"))
 </div>
 
-<script type="text/x-kendo-template" id="_ProblemsInProblemGroupGridTemplate">
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel>()
-        .Name("ProblemsInProblemGroup_#=Id#")
-        .Columns(columns =>
-        {
-            columns.Bound(m => m.Id);
-            columns.Bound(m => m.Name);
-        })
-        .ColumnMenu()
-        .Filterable(filter => filter.Enabled(true))
-        .Pageable(pageable => pageable.Enabled(true).PageSizes(true))
-        .DataSource(data =>
-        {
-            data
-                .Ajax()
-                .ServerOperation(true)
-                .Model(model => model.Id(x => x.Id))
-                .Read(read => read.Action("ProblemsInProblemGroup", ControllerName, new {id = "#= Id #"}));
-        })
-        .ToClientTemplate()
-    )
-</script>  
-
-<script type="text/javascript">
-    $(function() {
-        $("#DataGrid").hide();
-    });
-
-    function onSearchSelect(e) {
-        clearDropDowns();
-        var contestId = this.dataItem(e.item.index()).Id;
-        filterByContest(contestId);
-    }
-
-    function onContestSelect() {
-        clearSearch();
-        var contestId = $('#contests').val();
-        filterByContest(contestId);
-    }
-
-    function fillContestData() {
-        $('.k-edit-form-container').css('width', '100%');
-        $('.editor-label').css('width', '10%');
-        $('.editor-field').css('width', '80%');
-
-        var searchComboBox = $("#search").data("kendoComboBox");
-        var contestsDropDown = $("#contests").data("kendoDropDownList");
-
-        var contestId = searchComboBox.value() || contestsDropDown.value();
-        var contestName = searchComboBox.text() || contestsDropDown.text();
-
-        $('#ContestId').val(contestId).change();
-        $('#ContestName').val(contestName).change();
-    }
-
-    function filterByContest(contestId) {
-        var grid = $("#DataGrid");
-
-        grid.data("kendoGrid").dataSource.filter({
-            "field": "ContestId",
-            "operator": "eq",
-            "value": contestId
-        });
-
-        setTimeout(function() {
-            grid.show();
-        }, 150);
-    }
-
-    function clearSearch() {
-        $('#search').data('kendoComboBox').value(null);
-    }
-
-    function clearDropDowns() {
-        $("#categories").data('kendoDropDownList').value(null);
-        $("#contests").data('kendoDropDownList').value(null);
-    }
-</script>
+@section scripts{
+    @Scripts.Render("~/bundles/problem-groups-index")
+}

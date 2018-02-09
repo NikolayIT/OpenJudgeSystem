@@ -59,6 +59,9 @@
                 c.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                 c.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
+        public IQueryable<Contest> GetAllByCategoryAndLecturer(int categoryId, string lecturerId) =>
+            this.GetAllByLecturer(lecturerId).Where(c => c.CategoryId == categoryId);
+
         public int GetIdById(int id) =>
             this.GetAll()
                 .Where(c => c.Id == id)
@@ -80,21 +83,14 @@
         public bool ExistsById(int id) => this.GetAll().Any(c => c.Id == id);
 
         public bool IsUserLecturerInByContestAndUser(int id, string userId) =>
-            this.contests
-                .All()
-                .Where(c => c.Id == id)
-                .Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
-                    c.Category.Lecturers.Any(l => l.LecturerId == userId));
+            this.GetByIdQuery(id).Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
+                c.Category.Lecturers.Any(l => l.LecturerId == userId));
 
         public bool IsUserParticipantInByContestAndUser(int id, string userId) =>
-            this.contests
-                .All()
-                .Any(c => c.Id == id && c.Participants.Any(p => p.UserId == userId));
+            this.GetAll().Any(c => c.Id == id && c.Participants.Any(p => p.UserId == userId));
 
         public bool IsUserInExamGroupByContestAndUser(int id, string userId) =>
-            this.contests
-                .All()
-                .Any(c => c.Id == id &&
-                    c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
+            this.GetAll().Any(c => c.Id == id &&
+                c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
     }
 }
