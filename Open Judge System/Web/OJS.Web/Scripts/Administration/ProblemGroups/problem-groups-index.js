@@ -1,5 +1,12 @@
 ﻿$(function () {
-    $("#DataGrid").hide();
+    var contestId = $("#search").data("kendoComboBox").value() ||
+        $("#contests").data("kendoDropDownList").value();
+
+    if (contestId) {
+        filterByContest(contestId);
+    } else {
+        $("#DataGrid").hide();
+    }
 });
 
 function onSearchSelect(e) {
@@ -40,5 +47,5 @@ function filterByContest(contestId) {
 
     setTimeout(function () {
         grid.show();
-    }, 150);
+    }, 200);
 }

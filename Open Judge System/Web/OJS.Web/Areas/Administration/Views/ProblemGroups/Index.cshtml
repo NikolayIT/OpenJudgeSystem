@@ -1,5 +1,6 @@
 ﻿@using Resource = Resources.Areas.Administration.ProblemGroups.Views.ProblemGroupsIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+@using ViewModelResource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem
 
 @{
     const string ControllerName = "ProblemGroups";
@@ -27,7 +28,7 @@
         .Columns(columns =>
         {
             columns.Bound(m => m.OrderBy);
-            columns.Bound(m => m.ContestName);
+            columns.Template(@<text></text>).ClientTemplate("<a href='/Contests/#= ContestId #'>#= ContestName #</a>").Title(ViewModelResource.Contest);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
         })
