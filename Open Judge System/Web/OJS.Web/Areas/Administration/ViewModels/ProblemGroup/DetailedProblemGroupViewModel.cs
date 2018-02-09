@@ -9,7 +9,6 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
-    using ContestResource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
     using ProblemResource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
 
     public class DetailedProblemGroupViewModel : AdministrationViewModel<ProblemGroup>
@@ -20,8 +19,7 @@
                 Id = problemGroup.Id,
                 OrderBy = problemGroup.OrderBy,
                 ContestId = problemGroup.ContestId,
-                ContestName = problemGroup.Contest.Name,
-                CategoryName = problemGroup.Contest.Category.Name
+                ContestName = problemGroup.Contest.Name
             };
 
         [DatabaseProperty]
@@ -43,9 +41,5 @@
         [Display(Name = "Contest", ResourceType = typeof(ProblemResource))]
         [UIHint("NonEditable")]
         public string ContestName { get; set; }
-
-        [Display(Name = "Category", ResourceType = typeof(ContestResource))]
-        [HiddenInput(DisplayValue = false)]
-        public string CategoryName { get; set; }
     }
 }

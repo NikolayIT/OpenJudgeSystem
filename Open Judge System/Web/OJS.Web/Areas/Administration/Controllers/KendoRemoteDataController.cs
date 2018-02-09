@@ -8,10 +8,6 @@
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
-    using OJS.Web.Common.Extensions;
-    using OJS.Web.ViewModels.Common;
-
-    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
 
     public class KendoRemoteDataController : KendoRemoteDataBaseController
     {
@@ -56,12 +52,6 @@
         public JsonResult GetContestInformation(int id)
         {
             var contestId = id;
-
-            if (!this.CheckIfUserHasContestPermissions(contestId))
-            {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.Json("No permissions");
-            }
 
             var contest = this.contestsData.GetById(contestId);
 
