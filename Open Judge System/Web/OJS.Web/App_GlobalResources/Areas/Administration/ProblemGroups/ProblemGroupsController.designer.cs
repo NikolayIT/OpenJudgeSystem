@@ -78,5 +78,14 @@ namespace Resources.Areas.Administration.ProblemGroups {
                 return ResourceManager.GetString("Contest_required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem group with the same order already exists in this contest.
+        /// </summary>
+        public static string Problem_group_same_order_exists {
+            get {
+                return ResourceManager.GetString("Problem_group_same_order_exists", resourceCulture);
+            }
+        }
     }
 }

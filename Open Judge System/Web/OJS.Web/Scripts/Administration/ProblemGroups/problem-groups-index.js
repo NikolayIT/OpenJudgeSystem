@@ -1,15 +1,16 @@
-﻿$(function () {
-    var contestId = $("#search").data("kendoComboBox").value() ||
-        $("#contests").data("kendoDropDownList").value() ||
-        $('#contestId-input').val();
+﻿var rowNumber = 0;
 
-    if (contestId) {
-        populateDropDowns(contestId);
-        filterByContest(contestId);
+function renderNumber(data) {
+    if (data._events.change.length <= 1) {
+        return ++rowNumber;
     } else {
-        $("#DataGrid").hide();
+        return $('#' + data.Id).text();
     }
-});
+}
+
+function onDataBound() {
+    rowNumber = 0;
+}
 
 function onSearchSelect(e) {
     var contestId = this.dataItem(e.item.index()).Id;
@@ -21,6 +22,12 @@ function onContestSelect() {
     var contestId = $('#contests').val();
     $('#search').data('kendoComboBox').value(null);
     filterByContest(contestId);
+}
+
+function onDataBinding(e) {
+    var page = e.sender.dataSource.page();
+    var pageSize = e.sender.dataSource.pageSize();
+    rowNumber = (page - 1) * pageSize;
 }
 
 function fillContestData() {
@@ -51,3 +58,16 @@ function filterByContest(contestId) {
         grid.show();
     }, 200);
 }
+
+$(function () {
+    var contestId = $("#search").data("kendoComboBox").value() ||
+        $("#contests").data("kendoDropDownList").value() ||
+        $('#contestId-input').val();
+
+    if (contestId) {
+        populateDropDowns(contestId);
+        filterByContest(contestId);
+    } else {
+        $("#DataGrid").hide();
+    }
+});

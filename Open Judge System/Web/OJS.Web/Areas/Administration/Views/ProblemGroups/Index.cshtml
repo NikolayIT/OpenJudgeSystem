@@ -32,8 +32,9 @@
         .Name("DataGrid")
         .Columns(columns =>
         {
-            columns.Bound(m => m.OrderBy);
+            columns.Template(@<text></text>).Title(Resource.Number).ClientTemplate("#= renderNumber(data) #").HtmlAttributes(new { id = "#= Id #" });
             columns.Template(@<text></text>).ClientTemplate("<a href='/Contests/#= ContestId #'>#= ContestName #</a>").Title(ViewModelResource.Contest);
+            columns.Bound(m => m.OrderBy);
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
         })
@@ -48,9 +49,8 @@
             editable.Window(w =>w.Title(Resource.Page_title).Width(500));
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
-        .ColumnMenu()
-        .Filterable(filter => filter.Enabled(true))
         .Pageable(pageable => pageable.Refresh(true).PageSizes(true))
+        .Resizable(resizable => resizable.Columns(true))
         .DataSource(data =>
         {
             data
@@ -64,7 +64,12 @@
                 .Destroy(destroy => destroy.Action("Destroy", ControllerName))
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
-        .Events(ev => ev.Edit("fillContestData"))
+        .Events(ev =>
+        {
+            ev.Edit("fillContestData");
+            ev.DataBound("onDataBound");
+            ev.DataBinding("onDataBinding");
+        })
         .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))
     
     @(Html.Partial("_ProblemsInProblemGroupGridTemplate"))

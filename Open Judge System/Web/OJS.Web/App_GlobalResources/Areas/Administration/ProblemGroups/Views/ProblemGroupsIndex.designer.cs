@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.ProblemGroups.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem groups.
         /// </summary>
         public static string Page_title {

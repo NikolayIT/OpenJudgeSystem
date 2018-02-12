@@ -1,4 +1,6 @@
-﻿<script type="text/x-kendo-template" id="_ProblemsInProblemGroupGridTemplate">
+﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+<script type="text/x-kendo-template" id="_ProblemsInProblemGroupGridTemplate">
     @(Html
         .Kendo()
         .Grid<OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel>()
@@ -7,6 +9,15 @@
         {
             columns.Bound(m => m.Id);
             columns.Bound(m => m.Name);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Custom().Action("Create", "Problems", new { id = "#= Id #" }).Text(GeneralResource.Add);
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.PopUp);
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
         .Filterable(filter => filter.Enabled(true))

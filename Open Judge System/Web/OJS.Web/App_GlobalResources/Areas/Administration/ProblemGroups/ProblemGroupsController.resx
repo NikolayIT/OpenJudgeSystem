@@ -123,4 +123,7 @@
   <data name="Contest_required" xml:space="preserve">
     <value>Contest is required</value>
   </data>
+  <data name="Problem_group_same_order_exists" xml:space="preserve">
+    <value>Problem group with the same order already exists in this contest</value>
+  </data>
 </root>

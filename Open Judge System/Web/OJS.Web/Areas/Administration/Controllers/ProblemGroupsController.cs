@@ -71,6 +71,12 @@
                 return this.GridOperation(request, model);
             }
 
+            if (this.problemGroupsData.ExistsByContestAndOrderBy(model.ContestId, model.OrderBy))
+            {
+                this.ModelState.AddModelError(nameof(model.OrderBy), Resource.Problem_group_same_order_exists);
+                return this.GridOperation(request, model);
+            }
+
             var problemGroup = model.GetEntityModel(this.GetByIdAsNoTracking(model.Id));
 
             this.BaseUpdate(problemGroup);
@@ -100,7 +106,9 @@
             if (id != null && !this.CheckIfUserHasContestPermissions(id.Value))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index(), new { area = "Administration" });
+                return this.RedirectToAction<ContestsController>(
+                    c => c.Index(),
+                    new { area = GlobalConstants.AdministrationAreaName });
             }
 
             this.ViewBag.ContestId = id;

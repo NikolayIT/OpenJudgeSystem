@@ -7,9 +7,9 @@
 
     public class ProblemGroupsDataService : IProblemGroupsDataService
     {
-        private readonly IEfGenericRepository<ProblemGroup> problemGroups;
+        private readonly IEfDeletableEntityRepository<ProblemGroup> problemGroups;
 
-        public ProblemGroupsDataService(IEfGenericRepository<ProblemGroup> problemGroups) =>
+        public ProblemGroupsDataService(IEfDeletableEntityRepository<ProblemGroup> problemGroups) =>
             this.problemGroups = problemGroups;
 
         public ProblemGroup GetById(int id) => this.problemGroups.GetById(id);
@@ -30,5 +30,8 @@
                 .Where(p => !p.IsDeleted);
 
         public void Delete(ProblemGroup problemGroup) => this.problemGroups.Delete(problemGroup);
+
+        public bool ExistsByContestAndOrderBy(int contestId, int orderBy) =>
+            this.GetAll().Any(pg => pg.ContestId == contestId && pg.OrderBy == orderBy);
     }
 }
