@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿namespace OJS.Workers.Common
 {
     using System;
     using System.Configuration;
@@ -95,6 +95,7 @@
 
         public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
+        // Base time/memory used by processes
         public static int NodeJsBaseTimeUsedInMilliseconds => GetSettingOrDefault("NodeJsBaseTimeUsedInMilliseconds", 0);
 
         public static int NodeJsBaseMemoryUsedInBytes => GetSettingOrDefault("NodeJsBaseMemoryUsedInBytes", 0);
@@ -134,6 +135,27 @@
         public static int PythonBaseTimeUsedInMilliseconds => GetSettingOrDefault("PythonBaseTimeUsedInMilliseconds", 0);
 
         public static int PythonBaseMemoryUsedInBytes => GetSettingOrDefault("PythonBaseMemoryUsedInBytes", 0);
+
+        // Compiler exit time out multipliers
+        public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int CPlusPlusZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusZipCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int CSharpCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int DotNetCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("DotNetCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int JavaCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int JavaInPlaceCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaInPlaceCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int JavaZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("JavaZipCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int MsBuildCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 1);
 
         private static string GetSetting(string settingName)
         {

@@ -13,6 +13,11 @@
         private const string CPlusPlusClassFileExtension = ".cpp";
         private const string CClassFileExtension = ".c";
 
+        public CPlusPlusZipCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
+
         public override string RenameInputFile(string inputFile)
         {
             if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))

@@ -12,6 +12,11 @@
 
         private static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
 
+        public JavaCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
+
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)
         {
             var arguments = new StringBuilder();

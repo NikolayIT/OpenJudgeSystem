@@ -1,15 +1,20 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Text;
+
     using OJS.Common.Extensions;
     using OJS.Workers.Common;
 
     public class JavaInPlaceFolderCompiler : Compiler
     {
         private const string JavaSourceFilesSearchPattern = "*.java";
+
+        public JavaInPlaceFolderCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
 
         public override string BuildCompilerArguments(string inputFolder, string outputDirectory, string additionalArguments)
         {
@@ -73,7 +78,7 @@
 
             // Prepare process start information
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
-            var compilerOutput = ExecuteCompiler(processStartInfo);
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutInMilliseconds);
 
             outputDirectory = this.ChangeOutputFileAfterCompilation(outputDirectory);
             if (!compilerOutput.IsSuccessful)

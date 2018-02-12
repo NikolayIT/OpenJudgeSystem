@@ -3,6 +3,7 @@
     using System;
 
     using OJS.Common.Models;
+    using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
@@ -35,8 +36,6 @@
                 case ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck:
                     executionStrategy = new DotNetCoreCompileExecuteAndCheckExecutionStrategy(
                         GetCompilerPath,
-                        Settings.CSharpDotNetCoreCompilerPath,
-                        Settings.DotNetCoreSharedAssembliesPath,
                         Settings.DotNetCscBaseTimeUsedInMilliseconds,
                         Settings.DotNetCscBaseMemoryUsedInBytes);
                     break;

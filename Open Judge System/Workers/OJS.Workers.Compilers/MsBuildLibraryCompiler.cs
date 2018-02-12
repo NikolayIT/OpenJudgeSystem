@@ -1,7 +1,6 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -12,7 +11,10 @@
 
     public class MsBuildLibraryCompiler : Compiler
     {
-        private const int MsBuildLibraryProcessExitTimeOutMillisecond = 10000;
+        public MsBuildLibraryCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
 
         protected string InputFile { get; private set; }
 
@@ -92,7 +94,7 @@
 
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
-            var compilerOutput = ExecuteCompiler(processStartInfo, MsBuildLibraryProcessExitTimeOutMillisecond);
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutInMilliseconds);
  
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
