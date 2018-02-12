@@ -4,16 +4,18 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ProblemGroups;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Common.Extensions;
 
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
@@ -91,6 +93,19 @@
             }
 
             return this.GridOperation(request, model);
+        }
+
+        public ActionResult Contest(int? id)
+        {
+            if (id != null && !this.CheckIfUserHasContestPermissions(id.Value))
+            {
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction<ContestsController>(c => c.Index(), new { area = "Administration" });
+            }
+
+            this.ViewBag.ContestId = id;
+
+            return this.View(GlobalConstants.Index);
         }
 
         [HttpPost]

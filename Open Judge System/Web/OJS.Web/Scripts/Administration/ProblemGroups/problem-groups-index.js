@@ -1,8 +1,10 @@
 ﻿$(function () {
     var contestId = $("#search").data("kendoComboBox").value() ||
-        $("#contests").data("kendoDropDownList").value();
+        $("#contests").data("kendoDropDownList").value() ||
+        $('#contestId-input').val();
 
     if (contestId) {
+        populateDropDowns(contestId);
         filterByContest(contestId);
     } else {
         $("#DataGrid").hide();

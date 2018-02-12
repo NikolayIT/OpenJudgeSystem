@@ -1,10 +1,11 @@
 ﻿@model ContestViewModel
 
-@using System.Web.Mvc.Expressions
+@using System.Web.Mvc.Expressions;
+
 @using OJS.Common.Extensions;
 @using OJS.Common.Models;
-@using OJS.Web.Areas.Administration.Controllers
-@using OJS.Web.Areas.Contests.ViewModels.Contests
+@using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.Areas.Contests.ViewModels.Contests;
 
 @using Resource = Resources.Areas.Contests.Views.ContestsDetails;
 
@@ -159,22 +160,40 @@
 
         @if (Model.UserIsAdminOrLecturerInContest)
         {
-            <a href="@Url.Action("Edit", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
-                @Resource.Edit
-            </a>
-            <a href="@Url.Action("Contest", "Problems", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
-                @Resource.Problems
-            </a>
+            @(Html.ActionLink<ContestsController>(
+                  Resource.Edit,
+                  c => c.Edit(Model.Id),
+                  new { area = GlobalConstants.AdministrationAreaName },
+                  new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+
+            @(Html.ActionLink<ProblemsController>(
+                  Resource.Problems,
+                  c => c.Contest(Model.Id),
+                  new { area = GlobalConstants.AdministrationAreaName },
+                  new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+
+            @(Html.ActionLink<OJS.Web.Areas.Administration.Controllers.ProblemGroupsController>(
+                Resource.Problem_groups,
+                c => c.Contest(Model.Id),
+                new { area = GlobalConstants.AdministrationAreaName },
+                new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+
             if (!Model.CanBeCompeted && Model.OfficialParticipants > 0)
             {
-                <a href="@Url.Action("TransferParticipants", "Contests", new { area = "Administration", id = Model.Id })" class="btn btn-sm btn-primary bottom-buffer-sm">
-                    @Resource.Transfer
-                </a>
+                @(Html.ActionLink<ContestsController>(
+                    Resource.Transfer,
+                    c => c.TransferParticipants(Model.Id, null),
+                    new { area = GlobalConstants.AdministrationAreaName },
+                    new { @class = "btn btn-sm btn-primary bottom-buffer-sm" }))
             }
 
             if (User.IsAdmin() && Model.IsOnline && Model.IsActive)
             {
-                @(Html.ActionLink<ContestsController>(Resource.Change_time, c => c.ChangeActiveParticipantsEndTime(Model.Id), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm" }))
+                @(Html.ActionLink<ContestsController>(
+                    Resource.Change_time,
+                    c => c.ChangeActiveParticipantsEndTime(Model.Id),
+                    new { area = GlobalConstants.AdministrationAreaName },
+                    new { @class = "btn btn-sm btn-default bottom-buffer-sm" }))
             }
         }
     </div>

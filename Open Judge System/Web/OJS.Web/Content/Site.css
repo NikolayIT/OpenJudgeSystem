@@ -83,6 +83,14 @@ input[type="checkbox"].input-validation-error {
     margin-right: 10px;
 }
 
+.left-buffer-sm {
+    margin-left: 5px;
+}
+
+.right-buffer-sm {
+    margin-right: 5px;
+}
+
 .bottom-buffer-sm {
     margin-bottom: 5px;
 }

@@ -11,6 +11,11 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
     
+    @if (ViewBag.ContestId != null)
+    {
+        <input id="contestId-input" type="hidden" value="@ViewBag.ContestId" />
+    }
+    
     <div class="row bottom-buffer">
         <div class="col-md-6">
             @(Html.Partial("_ContestSearchCascadeFromCategoryPartial"))
