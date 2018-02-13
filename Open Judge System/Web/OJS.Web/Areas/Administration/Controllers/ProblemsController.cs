@@ -355,7 +355,6 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
-            existingProblem.ProblemGroupId = problem.ProblemGroupId;
 
             if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
@@ -1004,23 +1003,10 @@
 
             if (isOnlineContest && numberOfProblemGroups > 0)
             {
-                var problemGroupIdData = this.problemGroupsData
+                this.ViewBag.ProblemGroupIdData = this.problemGroupsData
                     .GetAllByContest(problem.ContestId)
                     .OrderBy(pg => pg.OrderBy)
-                    .Select(pg => new DropdownViewModel
-                    {
-                        Id = pg.Id
-                    })
-                    .ToList();
-
-                var number = 1;
-
-                foreach (var item in problemGroupIdData)
-                {
-                    item.Name = (number++).ToString();
-                }
-
-                this.ViewBag.ProblemGroupIdData = problemGroupIdData;
+                    .Select(DropdownViewModel.FromProblemGroup);
             }
         }
 
