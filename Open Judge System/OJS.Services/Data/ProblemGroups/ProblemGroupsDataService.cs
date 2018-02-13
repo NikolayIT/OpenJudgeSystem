@@ -30,8 +30,5 @@
                 .Where(p => !p.IsDeleted);
 
         public void Delete(ProblemGroup problemGroup) => this.problemGroups.Delete(problemGroup);
-
-        public bool ExistsByContestAndOrderBy(int contestId, int orderBy) =>
-            this.GetAll().Any(pg => pg.ContestId == contestId && pg.OrderBy == orderBy);
     }
 }

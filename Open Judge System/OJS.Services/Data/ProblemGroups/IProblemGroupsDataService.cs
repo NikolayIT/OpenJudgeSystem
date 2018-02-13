@@ -18,7 +18,5 @@
         IQueryable<Problem> GetProblemsById(int id);
 
         void Delete(ProblemGroup problemGroup);
-
-        bool ExistsByContestAndOrderBy(int contestId, int orderBy);
     }
 }

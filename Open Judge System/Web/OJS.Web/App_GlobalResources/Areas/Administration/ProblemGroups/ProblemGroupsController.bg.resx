@@ -123,7 +123,4 @@
   <data name="Contest_required" xml:space="preserve">
     <value>Състезанието е задължително</value>
   </data>
-  <data name="Problem_group_same_order_exists" xml:space="preserve">
-    <value>Група задачи със същата подредба вече съществува в това състезание</value>
-  </data>
 </root>

@@ -8,6 +8,7 @@
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
@@ -47,6 +48,8 @@
 
         public override object GetById(object id) => this.GetByIdAsNoTracking((int)id);
 
+        public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ProblemGroup));
+
         public ActionResult Index() => this.View();
 
         [HttpPost]
@@ -68,12 +71,6 @@
         {
             if (!this.IsModelAndContestValid(model))
             {
-                return this.GridOperation(request, model);
-            }
-
-            if (this.problemGroupsData.ExistsByContestAndOrderBy(model.ContestId, model.OrderBy))
-            {
-                this.ModelState.AddModelError(nameof(model.OrderBy), Resource.Problem_group_same_order_exists);
                 return this.GridOperation(request, model);
             }
 

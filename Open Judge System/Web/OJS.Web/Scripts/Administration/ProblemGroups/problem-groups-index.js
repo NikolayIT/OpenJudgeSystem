@@ -1,18 +1,4 @@
-﻿var rowNumber = 0;
-
-function renderNumber(data) {
-    if (data._events.change.length <= 1) {
-        return ++rowNumber;
-    } else {
-        return $('#' + data.Id).text();
-    }
-}
-
-function onDataBound() {
-    rowNumber = 0;
-}
-
-function onSearchSelect(e) {
+﻿function onSearchSelect(e) {
     var contestId = this.dataItem(e.item.index()).Id;
     populateDropDowns(contestId);
     filterByContest(contestId);
@@ -24,13 +10,7 @@ function onContestSelect() {
     filterByContest(contestId);
 }
 
-function onDataBinding(e) {
-    var page = e.sender.dataSource.page();
-    var pageSize = e.sender.dataSource.pageSize();
-    rowNumber = (page - 1) * pageSize;
-}
-
-function fillContestData() {
+function onEdit(e) {
     $('.k-edit-form-container').css('width', '100%');
     $('.editor-label').css('width', '10%');
     $('.editor-field').css('width', '80%');
@@ -43,6 +23,27 @@ function fillContestData() {
 
     $('#ContestId').val(contestId).change();
     $('#ContestName').val(contestName).change();
+
+
+    //If id is missing (the action is Create), populate OrderBy field with the next value
+    if (!e.model.id) {
+        autoFillNextOrderBy();
+    };
+
+    function autoFillNextOrderBy() {
+        var lastOrderBy = parseInt($('#DataGrid').find('tbody tr:last [data-order]').text());
+        var newOrderBy = lastOrderBy + 1;
+
+        var orderByInput = $('#OrderBy');
+        var orderByKendoNumericTextBox = orderByInput.data('kendoNumericTextBox');
+
+        orderByKendoNumericTextBox._text.val(newOrderBy);
+        orderByKendoNumericTextBox.element.val(newOrderBy);
+
+        setTimeout(function () {
+            orderByInput.prev().trigger('focus');
+        }, 180);
+    }
 }
 
 function filterByContest(contestId) {

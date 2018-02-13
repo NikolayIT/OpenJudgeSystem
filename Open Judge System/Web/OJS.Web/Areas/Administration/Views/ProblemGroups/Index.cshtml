@@ -25,53 +25,49 @@
             @(Html.Partial("_ContestSearchPartial"))
         </div>
     </div>
-
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel>()
-        .Name("DataGrid")
-        .Columns(columns =>
-        {
-            columns.Template(@<text></text>).Title(Resource.Number).ClientTemplate("#= renderNumber(data) #").HtmlAttributes(new { id = "#= Id #" });
-            columns.Template(@<text></text>).ClientTemplate("<a href='/Contests/#= ContestId #'>#= ContestName #</a>").Title(ViewModelResource.Contest);
-            columns.Bound(m => m.OrderBy);
-            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
-            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
-        })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Create().Text(GeneralResource.Add);
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
-        })
-        .Editable(editable =>
-        {
-            editable.Mode(GridEditMode.PopUp);
-            editable.Window(w =>w.Title(Resource.Page_title).Width(500));
-            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-        })
-        .Pageable(pageable => pageable.Refresh(true).PageSizes(true))
-        .Resizable(resizable => resizable.Columns(true))
-        .DataSource(data =>
-        {
-            data
-                .Ajax()
-                .ServerOperation(true)
-                .Model(model => model.Id(m => m.Id))
-                .Sort(sort => sort.Add(field => field.OrderBy))
-                .Create(create => create.Action("Create", ControllerName))
-                .Read(read => read.Action("Read", ControllerName))
-                .Update(update => update.Action("Update", ControllerName))
-                .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-                .Events(ev => ev.Error("validateModelStateErrors"));
-        })
-        .Events(ev =>
-        {
-            ev.Edit("fillContestData");
-            ev.DataBound("onDataBound");
-            ev.DataBinding("onDataBinding");
-        })
-        .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))
     
+    <div class="top-buffer-lg">
+        @(Html
+            .Kendo()
+            .Grid<OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel>()
+            .Name("DataGrid")
+            .Columns(columns =>
+            {
+                columns.Bound(m => m.OrderBy).HtmlAttributes(new { data_order = "#= OrderBy #" });
+                columns.Template(@<text></text>).ClientTemplate("<a href='/Contests/#= ContestId #'>#= ContestName #</a>").Title(ViewModelResource.Contest);
+                columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
+                columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+            })
+            .ToolBar(toolbar =>
+            {
+                toolbar.Create().Text(GeneralResource.Add);
+                toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+            })
+            .Editable(editable =>
+            {
+                editable.Mode(GridEditMode.PopUp);
+                editable.Window(w =>w.Title(Resource.Page_title).Width(500));
+                editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+            })
+            .Pageable(pageable => pageable.Refresh(true).PageSizes(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .DataSource(data =>
+            {
+                data
+                    .Ajax()
+                    .ServerOperation(true)
+                    .Model(model => model.Id(m => m.Id))
+                    .Sort(sort => sort.Add(field => field.OrderBy))
+                    .Create(create => create.Action("Create", ControllerName))
+                    .Read(read => read.Action("Read", ControllerName))
+                    .Update(update => update.Action("Update", ControllerName))
+                    .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                    .Events(ev => ev.Error("validateModelStateErrors"));
+            })
+            .Events(ev => ev.Edit("onEdit"))
+            .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))
+    </div>
+
     @(Html.Partial("_ProblemsInProblemGroupGridTemplate"))
 </div>
 
