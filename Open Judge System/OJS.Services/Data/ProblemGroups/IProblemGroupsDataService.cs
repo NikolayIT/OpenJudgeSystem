@@ -1,9 +1,12 @@
 ﻿namespace OJS.Services.Data.ProblemGroups
 {
+    using System.Linq;
+
+    using OJS.Data.Models;
     using OJS.Services.Common;
 
     public interface IProblemGroupsDataService : IService
     {
-        int? GetIdByContestAndOrderBy(int contestId, int? orderBy);
+        IQueryable<ProblemGroup> GetAllByContest(int contestId);
     }
 }

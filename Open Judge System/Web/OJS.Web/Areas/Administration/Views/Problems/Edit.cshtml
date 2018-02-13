@@ -165,20 +165,20 @@
                 </div>
             </div>
             <br />
-            @if (ViewBag.ProblemGroupOrderByData != null)
+            @if (ViewBag.ProblemGroupIdData != null)
             {
                 <div class="row">
                     <div class="editor-label col-xs-3">
                         <div class="pull-right">
-                            @Html.LabelFor(m => m.ProblemGroupOrderBy)
+                            @Html.LabelFor(m => m.ProblemGroupId)
                         </div>
                     </div>
                     <div class="col-xs-5">
-                        @Html.EditorFor(m => m.ProblemGroupOrderBy)
+                        @Html.EditorFor(m => m.ProblemGroupId)
                     </div>
                     <div class="editor-field col-xs-3">
                         <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
-                        @Html.ValidationMessageFor(m => m.ProblemGroupOrderBy)
+                        @Html.ValidationMessageFor(m => m.ProblemGroupId)
                     </div>
                 </div>
                 <br />

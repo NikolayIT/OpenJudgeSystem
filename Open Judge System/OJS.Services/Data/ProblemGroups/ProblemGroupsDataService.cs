@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Data.ProblemGroups
 {
-    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -8,14 +7,12 @@
 
     public class ProblemGroupsDataService : IProblemGroupsDataService
     {
-        private readonly IEfGenericRepository<ProblemGroup> problemGroups;
+        private readonly IEfDeletableEntityRepository<ProblemGroup> problemGroups;
 
-        public ProblemGroupsDataService(IEfGenericRepository<ProblemGroup> problemGroups) =>
+        public ProblemGroupsDataService(IEfDeletableEntityRepository<ProblemGroup> problemGroups) =>
             this.problemGroups = problemGroups;
 
-        public int? GetIdByContestAndOrderBy(int contestId, int? orderBy) =>
-            this.problemGroups
-                .All()
-                .FirstOrDefault(pg => pg.ContestId == contestId && pg.OrderBy == orderBy)?.Id;
+        public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
+            this.problemGroups.All().Where(pg => pg.ContestId == contestId);
     }
 }
