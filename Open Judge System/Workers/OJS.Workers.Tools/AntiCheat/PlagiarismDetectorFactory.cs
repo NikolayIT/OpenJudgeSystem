@@ -3,6 +3,7 @@
     using System;
 
     using OJS.Common.Models;
+    using OJS.Workers.Common;
     using OJS.Workers.Compilers;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Disassemblers;
@@ -20,13 +21,13 @@
             {
                 case PlagiarismDetectorType.CSharpCompileDisassemble:
                     return new CSharpCompileDisassemblePlagiarismDetector(
-                        new CSharpCompiler(),
+                        new CSharpCompiler(Settings.CSharpCompilerProcessExitTimeOutMultiplier),
                         context.CompilerPath,
                         new DotNetDisassembler(context.DisassemblerPath),
                         context.SimilarityFinder);
                 case PlagiarismDetectorType.JavaCompileDisassemble:
                     return new JavaCompileDisassemblePlagiarismDetector(
-                        new JavaCompiler(),
+                        new JavaCompiler(Settings.JavaCompilerProcessExitTimeOutMultiplier),
                         context.CompilerPath,
                         new JavaDisassembler(context.DisassemblerPath),
                         context.SimilarityFinder);

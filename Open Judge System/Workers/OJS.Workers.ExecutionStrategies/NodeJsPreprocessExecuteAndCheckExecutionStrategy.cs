@@ -26,6 +26,7 @@
             string underscoreModulePath,
             int baseTimeUsed,
             int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(nodeJsExecutablePath))
             {
@@ -53,23 +54,11 @@
 
             this.NodeJsExecutablePath = nodeJsExecutablePath;
             this.UnderscoreModulePath = FileHelpers.ProcessModulePath(underscoreModulePath);
-            this.BaseTimeUsed = baseTimeUsed;
-            this.BaseMemoryUsed = baseMemoryUsed;
         }
 
         protected string NodeJsExecutablePath { get; }
 
         protected string UnderscoreModulePath { get; }
-
-        /// <remarks>
-        /// Measured in milliseconds.
-        /// </remarks>
-        protected int BaseTimeUsed { get; set; }
-
-        /// <remarks>
-        /// Measured in bytes.
-        /// </remarks>
-        protected int BaseMemoryUsed { get; set; }
 
         protected virtual string JsCodeRequiredModules => $@"
 var EOL = require('os').EOL,
@@ -194,7 +183,7 @@ process.stdin.on('end', function() {
             var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
 
             // Process the submission and check each test
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,
@@ -216,46 +205,18 @@ process.stdin.on('end', function() {
 
             foreach (var test in executionContext.Tests)
             {
-                var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, test.Input, arguments);
+                var processExecutionResult = executor.Execute(
+                    this.NodeJsExecutablePath,
+                    test.Input,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    arguments);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 testResults.Add(testResult);
             }
 
             return testResults;
-        }
-
-        protected virtual ProcessExecutionResult ExecuteNodeJsProcess(
-            ExecutionContext executionContext,
-            IExecutor executor,
-            string input,
-            IEnumerable<string> additionalArguments)
-        {
-            var processExecutionResult = executor.Execute(
-                this.NodeJsExecutablePath,
-                input,
-                executionContext.TimeLimit + this.BaseTimeUsed,
-                executionContext.MemoryLimit + this.BaseMemoryUsed,
-                additionalArguments);
-
-            processExecutionResult.MemoryUsed = Math.Max(processExecutionResult.MemoryUsed - this.BaseMemoryUsed, this.BaseMemoryUsed);
-
-            // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
-            // otherwise display TotalProcessorTime, so people have an acurate idea of the time their program used
-            if (processExecutionResult.ProcessWasKilled)
-            {
-                processExecutionResult.TimeWorked = processExecutionResult.TimeWorked.TotalMilliseconds > this.BaseTimeUsed
-                    ? processExecutionResult.TimeWorked - TimeSpan.FromMilliseconds(this.BaseTimeUsed)
-                    : processExecutionResult.TimeWorked;
-            }
-            else
-            {
-                processExecutionResult.TimeWorked = processExecutionResult.TotalProcessorTime.TotalMilliseconds > this.BaseTimeUsed
-                    ? processExecutionResult.TotalProcessorTime - TimeSpan.FromMilliseconds(this.BaseTimeUsed)
-                    : processExecutionResult.TotalProcessorTime;
-            }
-
-            return processExecutionResult;
         }
 
         protected virtual string PreprocessJsSubmission(string template, ExecutionContext context)

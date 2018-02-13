@@ -1,6 +1,7 @@
 ﻿namespace OJS.Services.Data.Participants
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -16,6 +17,8 @@
         void Update(
             IQueryable<Participant> participantsQuery,
             Expression<Func<Participant, Participant>> updateExpression);
+
+        void Delete(IEnumerable<Participant> participants);
 
         Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 

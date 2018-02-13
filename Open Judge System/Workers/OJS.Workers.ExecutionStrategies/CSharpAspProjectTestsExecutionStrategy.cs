@@ -21,8 +21,10 @@
 
         public CSharpAspProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
-            Func<CompilerType, string> getCompilerPathFunc)
-            : base(nUnitConsoleRunnerPath, getCompilerPathFunc)
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(nUnitConsoleRunnerPath, getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
         }
 

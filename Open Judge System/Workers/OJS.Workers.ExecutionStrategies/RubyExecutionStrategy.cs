@@ -4,15 +4,13 @@
 
     using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
-    using OJS.Workers.Common;
     using OJS.Workers.Executors;
 
     public class RubyExecutionStrategy : ExecutionStrategy
     {
-        public RubyExecutionStrategy(string rubyPath)
-        {
-            this.RubyPath = rubyPath;
-        }
+        public RubyExecutionStrategy(string rubyPath, int baseTimeUsed, int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed) =>
+                this.RubyPath = rubyPath;
 
         public string RubyPath { get; set; }
 
@@ -26,7 +24,7 @@
 
             var arguments = new[] { submissionFilePath };
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

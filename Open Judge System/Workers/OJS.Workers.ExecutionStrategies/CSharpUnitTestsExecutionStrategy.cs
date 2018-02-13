@@ -22,10 +22,10 @@
 
         public CSharpUnitTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
-            Func<CompilerType, string> getCompilerPathFunc)
-            : base(
-                  nUnitConsoleRunnerPath,
-                  getCompilerPathFunc)
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(nUnitConsoleRunnerPath, getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
         }
 
@@ -47,7 +47,7 @@
             project.Save(csProjFilePath);
             project.ProjectCollection.UnloadAllProjects();
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

@@ -1,7 +1,6 @@
 ﻿namespace OJS.Workers.Compilers
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -15,8 +14,11 @@
         private const string VisualBasicProjectFileExtension = ".vbproj";
         private const string AllFilesSearchPattern = "*.*";
         private const string SolutionFilesSearchPattern = "*.sln";
-        private const string NuGetExecutablePath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\nuget.exe"; // TODO: move to settings
-        private const int NuGetRestoreProcessExitTimeOutMilliseconds = 2 * GlobalConstants.DefaultProcessExitTimeOutMilliseconds;
+
+        public MsBuildCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
 
         public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
 
@@ -60,34 +62,6 @@
             arguments.Append(additionalArguments);
 
             return arguments.ToString().Trim();
-        }
-
-        private static void RestoreNugetPackages(string solution)
-        {
-            var solutionFileInfo = new FileInfo(solution);
-
-            var processStartInfo = new ProcessStartInfo
-            {
-                WindowStyle = ProcessWindowStyle.Hidden,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = solutionFileInfo.DirectoryName,
-                FileName = NuGetExecutablePath,
-                Arguments = $"restore \"{solutionFileInfo.Name}\""
-            };
-
-            using (var process = Process.Start(processStartInfo))
-            {
-                if (process != null)
-                {
-                    var exited = process.WaitForExit(NuGetRestoreProcessExitTimeOutMilliseconds);
-                    if (!exited)
-                    {
-                        process.Kill();
-                    }
-                }
-            }
         }
 
         private string FindSolutionOrProjectFile()

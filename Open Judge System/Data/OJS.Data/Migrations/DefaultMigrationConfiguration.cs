@@ -138,6 +138,17 @@
                 },
                 new SubmissionType
                 {
+                    Name = "C# code (.NET Core)",
+                    CompilerType = CompilerType.CSharpDotNetCore,
+                    AdditionalCompilerArguments = "-nologo",
+                    ExecutionStrategyType =
+                        ExecutionStrategyType.DotNetCoreCompileExecuteAndCheck,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = null,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
                     Name = "C++ code",
                     CompilerType = CompilerType.CPlusPlusGcc,
                     AdditionalCompilerArguments =

@@ -55,7 +55,11 @@
         // Extracts error/failure messages and the class which threw it       
         protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
 
-        public CSharpProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
+        public CSharpProjectTestsExecutionStrategy(
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+                : base(baseTimeUsed, baseMemoryUsed)
         {
             this.GetCompilerPathFunc = getCompilerPathFunc;
             this.TestNames = new List<string>();
@@ -64,7 +68,10 @@
 
         public CSharpProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
-            Func<CompilerType, string> getCompilerPathFunc)
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(nUnitConsoleRunnerPath))
             {
@@ -126,7 +133,7 @@
             // Delete tests before execution so the user can't access them
             FileHelpers.DeleteFiles(this.TestPaths.ToArray());
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

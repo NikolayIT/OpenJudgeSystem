@@ -19,10 +19,12 @@
 
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
-        public CPlusPlusZipFileExecutionStrategy(Func<CompilerType, string> getCompilerPath)
-        {
-            this.getCompilerPathFunc = getCompilerPath;
-        }
+        public CPlusPlusZipFileExecutionStrategy(
+            Func<CompilerType, string> getCompilerPath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed) =>
+                this.getCompilerPathFunc = getCompilerPath;
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -54,7 +56,7 @@
 
             result.IsCompiledSuccessfully = true;
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

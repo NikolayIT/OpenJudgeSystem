@@ -34,5 +34,25 @@
         public bool ProcessWasKilled { get; set; }
 
         public TimeSpan TotalProcessorTime => this.PrivilegedProcessorTime + this.UserProcessorTime;
+
+        public void ApplyTimeAndMemoryOffset(int baseTimeUsed, int baseMemoryUsed)
+        {
+            this.MemoryUsed = Math.Max(this.MemoryUsed - baseMemoryUsed, baseMemoryUsed);
+
+            // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
+            // otherwise display TotalProcessorTime, so that the final result is as close as possible to the actual worker time
+            if (this.ProcessWasKilled)
+            {
+                this.TimeWorked = this.TimeWorked.TotalMilliseconds > baseTimeUsed
+                    ? this.TimeWorked - TimeSpan.FromMilliseconds(baseTimeUsed)
+                    : this.TimeWorked;
+            }
+            else
+            {
+                this.TimeWorked = this.TotalProcessorTime.TotalMilliseconds > baseTimeUsed
+                    ? this.TotalProcessorTime - TimeSpan.FromMilliseconds(baseTimeUsed)
+                    : this.TotalProcessorTime;
+            }
+        }  
     }
 }

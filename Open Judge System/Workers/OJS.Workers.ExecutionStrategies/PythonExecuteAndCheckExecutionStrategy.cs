@@ -15,7 +15,11 @@
 
         private readonly string pythonExecutablePath;
 
-        public PythonExecuteAndCheckExecutionStrategy(string pythonExecutablePath)
+        public PythonExecuteAndCheckExecutionStrategy(
+            string pythonExecutablePath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(pythonExecutablePath))
             {
@@ -35,7 +39,7 @@
             var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, executionContext.Code);
 
             // Process the submission and check each test
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
             result.TestResults = new List<TestResult>();
