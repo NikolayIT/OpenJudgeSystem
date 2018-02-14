@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SubmissionJobHelper.cs" />
     <Compile Include="IJob.cs" />
     <Compile Include="LocalWorkerService.cs">
       <SubType>Component</SubType>
@@ -89,7 +90,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="Bootstrap.cs" />
     <Compile Include="SubmissionJob.cs" />
   </ItemGroup>

@@ -53,8 +53,11 @@
         private readonly string projectReferenceTemplate =
             $@"<ProjectReference Include=""{ProjectPathPlaceholder}"" />";
 
-        public DotNetCoreProjectTestsExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
-            : base(getCompilerPathFunc)
+        public DotNetCoreProjectTestsExecutionStrategy(
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
         }
 
@@ -107,7 +110,7 @@
             // Delete tests before execution so the user can't access them
             FileHelpers.DeleteFiles(this.TestPaths.ToArray());
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

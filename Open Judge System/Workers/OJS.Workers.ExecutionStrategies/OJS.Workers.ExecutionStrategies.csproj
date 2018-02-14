@@ -90,6 +90,7 @@
     <Compile Include="CSharpAspProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpPerformanceProjectTestsExecutionStrategy.cs" />
     <Compile Include="CSharpProjectTestsExecutionStrategy.cs" />
+    <Compile Include="DotNetCoreCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="DotNetCoreTestRunnerExecutionStrategy.cs" />
     <Compile Include="CSharpUnitTestsExecutionStrategy.cs" />
     <Compile Include="DoNothingExecutionStrategy.cs" />

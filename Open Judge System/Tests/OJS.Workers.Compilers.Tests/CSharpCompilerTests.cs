@@ -3,6 +3,7 @@
     using NUnit.Framework;
 
     using OJS.Common.Extensions;
+    using OJS.Workers.Common;
 
     [TestFixture]
     public class CSharpCompilerTests
@@ -21,7 +22,7 @@ class Program
     }
 }";
 
-            var compiler = new CSharpCompiler();
+            var compiler = new CSharpCompiler(Settings.CSharpCompilerProcessExitTimeOutMultiplier);
             var result = compiler.Compile(CSharpCompilerPath, FileHelpers.SaveStringToTempFile(Source), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");

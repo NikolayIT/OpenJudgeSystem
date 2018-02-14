@@ -11,6 +11,7 @@
         MsBuildLibrary = 6,
         CPlusPlusZip = 7,
         JavaInPlaceCompiler = 8,
-        DotNetCompiler = 9
+        DotNetCompiler = 9,
+        CSharpDotNetCore = 10
     }
 }

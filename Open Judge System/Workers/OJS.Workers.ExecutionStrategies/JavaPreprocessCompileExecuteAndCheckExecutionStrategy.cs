@@ -6,7 +6,6 @@
     using System.Text;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
@@ -19,7 +18,12 @@
         protected const string SandboxExecutorClassName = "_$SandboxExecutor";
         protected const string JavaCompiledFileExtension = ".class";
 
-        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(string javaExecutablePath, Func<CompilerType, string> getCompilerPathFunc)
+        public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
+            string javaExecutablePath,
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(javaExecutablePath))
             {
@@ -191,7 +195,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             var timeMeasurementFilePath = $"{this.WorkingDirectory}\\{TimeMeasurementFileName}";
 
             // Create an executor and a checker
-            var executor = new StandardProcessExecutor();
+            var executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(executionContext.CheckerAssemblyName, executionContext.CheckerTypeName, executionContext.CheckerParameter);
 
             // Process the submission and check each test
@@ -207,7 +211,11 @@ class _$SandboxSecurityManager extends SecurityManager {
                     false,
                     true);
 
-                UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
+                UpdateExecutionTime(
+                    timeMeasurementFilePath,
+                    processExecutionResult,
+                    executionContext.TimeLimit,
+                    this.BaseTimeUsed);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
@@ -216,15 +224,23 @@ class _$SandboxSecurityManager extends SecurityManager {
             return result;
         }
 
-        protected static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
+        protected static void UpdateExecutionTime(
+            string timeMeasurementFilePath,
+            ProcessExecutionResult processExecutionResult,
+            int timeLimit,
+            int baseTimeUsedInMilliseconds)
         {
             if (File.Exists(timeMeasurementFilePath))
             {
-                long timeInNanoseconds;
                 var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
-                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
+                if (long.TryParse(timeMeasurementFileContent, out var timeInNanoseconds))
                 {
-                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+                    var totalTimeUsed = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+                    var baseTimeUsed = TimeSpan.FromMilliseconds(baseTimeUsedInMilliseconds);
+
+                    processExecutionResult.TimeWorked = totalTimeUsed > baseTimeUsed
+                        ? totalTimeUsed - baseTimeUsed
+                        : totalTimeUsed;
 
                     if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
                         processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
