@@ -211,7 +211,11 @@ class _$SandboxSecurityManager extends SecurityManager {
                     false,
                     true);
 
-                UpdateExecutionTime(timeMeasurementFilePath, processExecutionResult, executionContext.TimeLimit);
+                UpdateExecutionTime(
+                    timeMeasurementFilePath,
+                    processExecutionResult,
+                    executionContext.TimeLimit,
+                    this.BaseTimeUsed);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
@@ -220,15 +224,23 @@ class _$SandboxSecurityManager extends SecurityManager {
             return result;
         }
 
-        protected static void UpdateExecutionTime(string timeMeasurementFilePath, ProcessExecutionResult processExecutionResult, int timeLimit)
+        protected static void UpdateExecutionTime(
+            string timeMeasurementFilePath,
+            ProcessExecutionResult processExecutionResult,
+            int timeLimit,
+            int baseTimeUsedInMilliseconds)
         {
             if (File.Exists(timeMeasurementFilePath))
             {
-                long timeInNanoseconds;
                 var timeMeasurementFileContent = File.ReadAllText(timeMeasurementFilePath);
-                if (long.TryParse(timeMeasurementFileContent, out timeInNanoseconds))
+                if (long.TryParse(timeMeasurementFileContent, out var timeInNanoseconds))
                 {
-                    processExecutionResult.TimeWorked = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+                    var totalTimeUsed = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
+                    var baseTimeUsed = TimeSpan.FromMilliseconds(baseTimeUsedInMilliseconds);
+
+                    processExecutionResult.TimeWorked = totalTimeUsed > baseTimeUsed
+                        ? totalTimeUsed - baseTimeUsed
+                        : totalTimeUsed;
 
                     if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&
                         processExecutionResult.TimeWorked.TotalMilliseconds <= timeLimit)
