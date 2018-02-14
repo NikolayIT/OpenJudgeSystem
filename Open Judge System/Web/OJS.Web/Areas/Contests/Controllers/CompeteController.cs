@@ -370,7 +370,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -381,9 +381,9 @@
             this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
             {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+                return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
@@ -447,7 +447,7 @@
             }
 
             var participant = this.participantsData
-                .GetWithContestByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official);
+                .GetWithContestByContestByUserAndIsOfficial(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
@@ -458,9 +458,9 @@
             this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId);
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
             {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+                return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
             ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
@@ -515,7 +515,7 @@
             this.submissionsForProcessingData.AddOrUpdateBySubmissionId(newSubmission.Id);
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.ContestsGeneral.Solution_uploaded);
-            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ContestId, returnProblem ?? 0, official ? CompeteActionName : PracticeActionName));
+            return this.Redirect(string.Format("/Contests/{2}/Index/{0}#{1}", problem.ProblemGroup.ContestId, returnProblem ?? 0, official ? CompeteActionName : PracticeActionName));
         }
 
         /// <summary>
@@ -537,17 +537,17 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            this.ValidateContest(problem.Contest, official);
+            this.ValidateContest(problem.ProblemGroup.Contest, official);
 
-            if (!this.Data.Participants.Any(problem.ContestId, this.UserProfile.Id, official))
+            if (!this.Data.Participants.Any(problem.ProblemGroup.ContestId, this.UserProfile.Id, official))
             {
-                return this.RedirectToAction("Register", new { id = problem.ContestId, official });
+                return this.RedirectToAction("Register", new { id = problem.ProblemGroup.ContestId, official });
             }
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
             {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
+                return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
             var problemViewModel = new ContestProblemViewModel(problem)
@@ -570,7 +570,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {
@@ -596,7 +596,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {
@@ -656,7 +656,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            var contest = problemWithResource.Contest;
+            var contest = problemWithResource.ProblemGroup.Contest;
             bool userCanDownloadResource = false;
 
             if (this.UserProfile == null)

@@ -259,7 +259,7 @@
             if (resource == null)
             {
                 this.TempData.AddDangerMessage(Resource.Resource_not_found);
-                return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
+                return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ProblemGroup.ContestId);
             }
 
             if (problem != null && !this.CheckIfUserHasProblemPermissions(problem.Id))

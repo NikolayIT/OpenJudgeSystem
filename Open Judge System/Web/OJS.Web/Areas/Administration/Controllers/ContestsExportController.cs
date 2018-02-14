@@ -342,7 +342,7 @@
         {
             var problems = this.Data.Problems
                 .All()
-                .Where(p => p.ContestId == contestId)
+                .Where(p => p.ProblemGroup.ContestId == contestId)
                 .OrderBy(x => x.OrderBy)
                 .ThenBy(x => x.Name)
                 .Select(ProblemModel.Model)

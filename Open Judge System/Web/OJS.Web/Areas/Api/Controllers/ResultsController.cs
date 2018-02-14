@@ -180,10 +180,9 @@
                 return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
             }
 
-            var contestMaxPoints = this.data
-                .Problems
+            var contestMaxPoints = this.data.Problems
                 .All()
-                .Where(p => !p.IsDeleted && p.ContestId == contestId)
+                .Where(p => !p.IsDeleted && p.ProblemGroup.ContestId == contestId)
                 .Select(p => (double)p.MaximumPoints)
                 .DefaultIfEmpty(1)
                 .Sum();
@@ -196,7 +195,7 @@
                     participant.UserId,
                     ResultsInPercentages = participant
                         .Scores
-                        .Where(s => !s.Problem.IsDeleted && s.Problem.ContestId == contestId.Value)
+                        .Where(s => !s.Problem.IsDeleted && s.Problem.ProblemGroup.ContestId == contestId.Value)
                         .Select(p => p.Points)
                         .DefaultIfEmpty(0)
                         .Sum() / contestMaxPoints * 100
@@ -243,7 +242,7 @@
                             .FirstOrDefault())
                         .Sum(),
                     ExamTimeInMinutes = participant.Submissions
-                        .Where(x => x.Problem.ContestId == contestId.Value && !x.IsDeleted)
+                        .Where(x => x.Problem.ProblemGroup.ContestId == contestId.Value && !x.IsDeleted)
                         .OrderByDescending(x => x.CreatedOn)
                         .Select(x => DbFunctions.DiffMinutes(participant.Contest.StartTime, x.CreatedOn))
                         .FirstOrDefault()

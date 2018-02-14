@@ -122,8 +122,8 @@
                 .All()
                 .Any(x =>
                     x.Id == problemId &&
-                    (x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                    x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+                    (x.ProblemGroup.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                    x.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
 
         protected bool CheckIfUserHasContestCategoryPermissions(int categoryId) =>
             this.User.IsAdmin() ||

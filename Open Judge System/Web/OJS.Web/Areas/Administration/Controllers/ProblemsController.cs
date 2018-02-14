@@ -106,7 +106,7 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            this.ViewBag.ContestId = problem.ContestId;
+            this.ViewBag.ContestId = problem.ProblemGroup.ContestId;
             this.ViewBag.ProblemId = problem.Id;
 
             return this.View(nameof(this.Index));
@@ -362,7 +362,7 @@
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
             existingProblem.ProblemGroupId = this.GetProblemGroupId(
-                existingProblem.Contest.Id,
+                existingProblem.ProblemGroup.Contest.Id,
                 problem.ProblemGroupOrderBy)
                     ?? existingProblem.ProblemGroupId;
 
@@ -388,7 +388,7 @@
             this.Data.SaveChanges();
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
-            return this.RedirectToAction("Contest", new { id = existingProblem.ContestId });
+            return this.RedirectToAction("Contest", new { id = existingProblem.ProblemGroup.ContestId });
         }
 
         [HttpGet]
@@ -444,10 +444,10 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (problem.Contest.CanBeCompeted)
+            if (problem.ProblemGroup.Contest.CanBeCompeted)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Active_contest_problems_permitted_for_deletion);
-                return this.RedirectToAction(c => c.Contest(problem.ContestId));
+                return this.RedirectToAction(c => c.Contest(problem.ProblemGroup.ContestId));
             }
 
             this.Data.Resources.Delete(r => r.ProblemId == problemId);
@@ -463,7 +463,7 @@
             this.problemsData.DeleteByProblem(problem);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
-            return this.RedirectToAction(c => c.Contest(problem.ContestId));
+            return this.RedirectToAction(c => c.Contest(problem.ProblemGroup.ContestId));
         }
 
         [HttpGet]
@@ -528,13 +528,13 @@
                 return this.RedirectToAction(c => c.Contest(contest.Id));
             }
 
-            this.Data.Resources.Delete(r => r.Problem.ContestId == contestId);
+            this.Data.Resources.Delete(r => r.Problem.ProblemGroup.ContestId == contestId);
 
-            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ContestId == contestId);
+            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ProblemGroup.ContestId == contestId);
 
-            this.Data.Tests.Delete(t => t.Problem.ContestId == contestId);
+            this.Data.Tests.Delete(t => t.Problem.ProblemGroup.ContestId == contestId);
 
-            this.Data.Submissions.Delete(s => s.Problem.ContestId == contestId);
+            this.Data.Submissions.Delete(s => s.Problem.ProblemGroup.ContestId == contestId);
 
             this.Data.SaveChanges();
 
@@ -688,7 +688,7 @@
             }
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
-            return this.RedirectToAction("Contest", new { id = problem.ContestId });
+            return this.RedirectToAction("Contest", new { id = problem.ProblemGroup.ContestId });
         }
 
         [HttpGet]
@@ -862,7 +862,7 @@
             }
 
             var result = this.Data.Problems.All()
-                .Where(x => x.ContestId == id)
+                .Where(x => x.ProblemGroup.ContestId == id)
                 .OrderBy(x => x.OrderBy)
                 .Select(DetailedProblemViewModel.FromProblem);
 
@@ -971,7 +971,7 @@
             var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
             var lastProblem = this.Data.Problems
                 .All()
-                .Where(x => x.ContestId == contest.Id)
+                .Where(x => x.ProblemGroup.ContestId == contest.Id)
                 .OrderByDescending(x => x.OrderBy)
                 .FirstOrDefault();
 

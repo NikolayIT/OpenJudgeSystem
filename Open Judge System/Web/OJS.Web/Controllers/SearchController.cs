@@ -26,12 +26,14 @@
 
             if (searchResult.IsSearchTermValid)
             {
-                var problemSearchResults = this.Data.Problems.All().Include(x => x.Contest)
-                                        .Where(x => !x.IsDeleted && x.Name.Contains(searchResult.SearchTerm))
-                                        .ToList()
-                                        .AsQueryable()
-                                        .Where(x => x.Contest.CanBeCompeted || x.Contest.CanBePracticed)
-                                        .Select(SearchResultViewModel.FromProblem);
+                var problemSearchResults = this.Data.Problems
+                    .All()
+                    .Include(p => p.ProblemGroup.Contest)
+                    .Where(p => !p.IsDeleted && p.Name.Contains(searchResult.SearchTerm))
+                    .ToList()
+                    .AsQueryable()
+                    .Where(p => p.ProblemGroup.Contest.CanBeCompeted || p.ProblemGroup.Contest.CanBePracticed)
+                    .Select(SearchResultViewModel.FromProblem);
 
                 searchResult.SearchResults.Add(SearchResultType.Problem, problemSearchResults);
 

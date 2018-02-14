@@ -17,7 +17,7 @@
                 {
                     Id = problem.Id,
                     Name = problem.Name,
-                    ContestName = problem.Contest.Name
+                    ContestName = problem.ProblemGroup.Contest.Name
                 };
             }
         }

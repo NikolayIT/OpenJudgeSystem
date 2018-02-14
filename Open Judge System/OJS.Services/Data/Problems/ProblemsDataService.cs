@@ -19,7 +19,7 @@
         public Problem GetById(int problemId) => this.problems.GetById(problemId);
 
         public Problem GetWithContestById(int problemId) =>
-            this.problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);
+            this.problems.All().Include(p => p.ProblemGroup.Contest).FirstOrDefault(p => p.Id == problemId);
 
         public void DeleteByProblem(Problem problem)
         {
@@ -27,6 +27,6 @@
             this.problems.SaveChanges();
         }
 
-        public void DeleteAllByContestId(int contestId) => this.problems.Delete(p => p.ContestId == contestId);
+        public void DeleteAllByContestId(int contestId) => this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
     }
 }

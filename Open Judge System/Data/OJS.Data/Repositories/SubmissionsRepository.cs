@@ -19,10 +19,10 @@
         public IQueryable<Submission> AllPublic() => 
             this.All()
                 .Where(s => s.IsPublic ??
-                    (((s.Participant.IsOfficial && s.Problem.Contest.ContestPassword == null) ||
-                        (!s.Participant.IsOfficial && s.Problem.Contest.PracticePassword == null)) &&
-                    s.Problem.Contest.IsVisible &&
-                    !s.Problem.Contest.IsDeleted &&
+                    (((s.Participant.IsOfficial && s.Problem.ProblemGroup.Contest.ContestPassword == null) ||
+                        (!s.Participant.IsOfficial && s.Problem.ProblemGroup.Contest.PracticePassword == null)) &&
+                    s.Problem.ProblemGroup.Contest.IsVisible &&
+                    !s.Problem.ProblemGroup.Contest.IsDeleted &&
                     s.Problem.ShowResults));
 
         public IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId)

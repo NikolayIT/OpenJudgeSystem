@@ -47,7 +47,7 @@
         {
             var problem = this.Data.Problems.GetById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ContestId, this.UserProfile.Id, official);
+            var participant = this.Data.Participants.GetWithContest(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
 
             if (participant == null)
             {

@@ -462,7 +462,7 @@
             var problem = this.Data.Problems
                 .All()
                 .Where(pr => pr.Id == id)
-                .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.Contest.Name })
+                .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.ProblemGroup.Contest.Name })
                 .FirstOrDefault();
 
             if (problem == null)
@@ -639,7 +639,7 @@
         {
             var problems = this.Data.Problems
                 .All()
-                .Where(pr => pr.ContestId == id)
+                .Where(pr => pr.ProblemGroup.ContestId == id)
                 .Select(pr => new { pr.Id, pr.Name });
 
             return this.Json(problems, JsonRequestBehavior.AllowGet);
@@ -661,9 +661,9 @@
 
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
-            var contestId = problem.ContestId;
+            var contestId = problem.ProblemGroup.ContestId;
 
-            var categoryId = problem.Contest.CategoryId;
+            var categoryId = problem.ProblemGroup.Contest.CategoryId;
 
             var result = new { Contest = contestId, Category = categoryId };
 
