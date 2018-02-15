@@ -11,8 +11,6 @@
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
 
-    using EntityFramework.Extensions;
-
     using Ionic.Zip;
 
     using Kendo.Mvc.Extensions;
@@ -25,8 +23,8 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.Problems;
     using OJS.Services.Data.Contests;
-    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -44,30 +42,29 @@
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
-    using TransactionScope = System.Transactions.TransactionScope;
 
     public class ProblemsController : LecturerBaseController
-    {
-        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
-        private readonly IParticipantScoresDataService participantScoresData;
+    { 
         private readonly IContestsDataService contestsData;
         private readonly IProblemsDataService problemsData;
         private readonly IProblemGroupsDataService problemGroupsData;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IProblemsBusinessService problemsBusiness;
 
         public ProblemsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
             IProblemsDataService problemsData,
-            IProblemGroupsDataService problemGroupsData)
+            IProblemGroupsDataService problemGroupsData,
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IProblemsBusinessService problemsBusiness)
             : base(data)
         {
-            this.submissionsForProcessingData = submissionsForProcessingData;
-            this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
             this.problemsData = problemsData;
             this.problemGroupsData = problemGroupsData;
+            this.submissionsForProcessingData = submissionsForProcessingData;
+            this.problemsBusiness = problemsBusiness;
         }
 
         public ActionResult Index()
@@ -96,9 +93,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var problem = this.Data.Problems
-                .All()
-                .FirstOrDefault(pr => pr.Id == id);
+            var problem = this.problemsData.GetWithProblemGroupById(id.Value);
 
             if (problem == null)
             {
@@ -660,35 +655,16 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems.GetById(model.Id);
-
-            if (problem == null)
+            if (!this.problemsData.ExistsById(model.Id))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var submissionIds = problem
-                .Submissions
-                .Where(s => !s.IsDeleted)
-                .Select(s => s.Id)
-                .AsEnumerable();
-
-            using (var scope = new TransactionScope())
-            {
-                this.participantScoresData.DeleteAllByProblem(model.Id);
-
-                this.Data.Context.Submissions
-                    .Where(s => !s.IsDeleted && s.ProblemId == problem.Id)
-                    .Update(x => new Submission { Processed = false });
-
-                this.submissionsForProcessingData.AddOrUpdate(submissionIds);
-
-                scope.Complete();
-            }
+            this.problemsBusiness.RetestById(model.Id);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
-            return this.RedirectToAction("Contest", new { id = problem.ProblemGroup.ContestId });
+            return this.RedirectToAction("Contest", new { id = this.problemsData.GetContestIdById(model.Id) });
         }
 
         [HttpGet]
@@ -930,22 +906,6 @@
             {
                 this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
-        }
-
-        private void RetestSubmission(int submissionId)
-        {
-            var submission = new Submission
-            {
-                Id = submissionId,
-                Processed = false,
-                Processing = false
-            };
-            this.Data.Context.Submissions.Attach(submission);
-            var submissionEntry = this.Data.Context.Entry(submission);
-            submissionEntry.Property(pr => pr.Processed).IsModified = true;
-            submissionEntry.Property(pr => pr.Processing).IsModified = true;
-
-            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submissionId);
         }
 
         private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)

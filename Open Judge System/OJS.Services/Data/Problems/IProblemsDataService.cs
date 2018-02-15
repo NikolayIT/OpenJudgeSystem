@@ -13,6 +13,10 @@
 
         Problem GetWithContestById(int id);
 
+        int? GetContestIdById(int id);
+
+        bool ExistsById(int id);
+
         void DeleteByProblem(Problem problem);
 
         void DeleteAllByContestId(int contestId);
