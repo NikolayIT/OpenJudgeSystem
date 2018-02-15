@@ -42,8 +42,9 @@
                         ContestType = contest.Type,
                         OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
                         PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
-                        ProblemsCount = contest.Problems.Count(x => !x.IsDeleted),
-                        Problems = contest.Problems
+                        ProblemsCount = contest.ProblemGroups.SelectMany(pg => pg.Problems).Count(p => !p.IsDeleted),
+                        Problems = contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .AsQueryable()
                             .Where(x => !x.IsDeleted)
                             .OrderBy(x => x.OrderBy)
@@ -51,7 +52,13 @@
                             .Select(ContestProblemViewModel.FromProblem),
                         LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                         Description = contest.Description,
-                        AllowedSubmissionTypes = contest.Problems.AsQueryable().SelectMany(p => p.SubmissionTypes).GroupBy(st => st.Id).Select(g => g.FirstOrDefault()).Select(SubmissionTypeViewModel.FromSubmissionType),
+                        AllowedSubmissionTypes = contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
+                            .AsQueryable()
+                            .SelectMany(p => p.SubmissionTypes)
+                            .GroupBy(st => st.Id)
+                            .Select(g => g.FirstOrDefault())
+                            .Select(SubmissionTypeViewModel.FromSubmissionType)
                     };
             }
         }

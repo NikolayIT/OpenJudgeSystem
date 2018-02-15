@@ -16,8 +16,13 @@
 
     public class ResultsController : ApiController
     {
-        private readonly IOjsData data;
+        private const string ErrorMessage = "ERROR";
+        private const string InvalidArgumentsMessage = "Invalid arguments";
+        private const string InvalidApiKeyMessage = "Invalid API key";
+        private const string NoParticipantsFoundErrorMessage = ErrorMessage + ": No participants found";
+        private const string MoreThanOneParticipantFoundErrorMessage = ErrorMessage + ": More than one participants found";
 
+        private readonly IOjsData data;
         private readonly UserManager<UserProfile> userManager;
 
         public ResultsController(IOjsData data)
@@ -26,23 +31,16 @@
             this.userManager = new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext));
         }
 
-        // TODO: Extract method from these two methods since 90% of their code is the same
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
         {
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(answer) || !contestId.HasValue)
             {
-                return this.Content("ERROR: Invalid arguments");
+                return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
             }
 
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            var isValidApiKey = this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
-
-            if (!isValidApiKey)
+            if (!this.IsApiKeyValid(apiKey, contestId.Value))
             {
-                return this.Content("ERROR: Invalid API key");
+                return this.Content($"{ErrorMessage}: {InvalidApiKeyMessage}");
             }
 
             var participants = this.data.Participants
@@ -52,21 +50,15 @@
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
-                return this.Content("ERROR: No participants found");
+                return this.Content(NoParticipantsFoundErrorMessage);
             }
 
             if (participants.Count() > 1)
             {
-                return this.Content("ERROR: More than one participants found");
+                return this.Content(MoreThanOneParticipantFoundErrorMessage);
             }
 
-            var points =
-                participant.Contest.Problems.Select(
-                    problem =>
-                    problem.Submissions.Where(z => z.ParticipantId == participant.Id)
-                        .OrderByDescending(z => z.Points)
-                        .Select(z => z.Points)
-                        .FirstOrDefault()).Sum();
+            var points = this.GetParticipantPoints(participant);
 
             return this.Content(points.ToString(CultureInfo.InvariantCulture));
         }
@@ -75,18 +67,12 @@
         {
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(email) || !contestId.HasValue)
             {
-                return this.Content("ERROR: Invalid arguments");
+                return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
             }
 
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            var isValidApiKey = this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
-
-            if (!isValidApiKey)
+            if (!this.IsApiKeyValid(apiKey, contestId.Value))
             {
-                return this.Content("ERROR: Invalid API key");
+                return this.Content($"{ErrorMessage}: {InvalidApiKeyMessage}");
             }
 
             var participants = this.data.Participants.All().Where(
@@ -95,21 +81,15 @@
             var participant = participants.FirstOrDefault();
             if (participant == null)
             {
-                return this.Content("ERROR: No participants found");
+                return this.Content(NoParticipantsFoundErrorMessage);
             }
 
             if (participants.Count() > 1)
             {
-                return this.Content("ERROR: More than one participants found");
+                return this.Content(MoreThanOneParticipantFoundErrorMessage);
             }
 
-            var points =
-                participant.Contest.Problems.Select(
-                    problem =>
-                    problem.Submissions.Where(z => z.ParticipantId == participant.Id)
-                        .OrderByDescending(z => z.Points)
-                        .Select(z => z.Points)
-                        .FirstOrDefault()).Sum();
+            var points = this.GetParticipantPoints(participant);
 
             return this.Content(points.ToString(CultureInfo.InvariantCulture));
         }
@@ -118,18 +98,12 @@
         {
             if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
             {
-                return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            var isValidApiKey = this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
-
-            if (!isValidApiKey)
+            if (!this.IsApiKeyValid(apiKey, contestId.Value))
             {
-                return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var participants = this.data.Participants
@@ -140,7 +114,8 @@
                     participant.User.UserName,
                     participant.User.Email,
                     Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
-                    Points = participant.Contest.Problems
+                    Points = participant.Contest.ProblemGroups
+                        .SelectMany(pg => pg.Problems)
                         .Where(problem => !problem.IsDeleted)
                         .Select(problem => problem.Submissions
                             .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
@@ -166,18 +141,12 @@
         {
             if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
             {
-                return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            var isValidApiKey = this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
-
-            if (!isValidApiKey)
+            if (!this.IsApiKeyValid(apiKey, contestId.Value))
             {
-                return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var contestMaxPoints = this.data.Problems
@@ -211,18 +180,12 @@
         {
             if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
             {
-                return this.Json(new ErrorMessageViewModel("Invalid arguments"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            var isValidApiKey = this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId.Value)));
-
-            if (!isValidApiKey)
+            if (!this.IsApiKeyValid(apiKey, contestId.Value))
             {
-                return this.Json(new ErrorMessageViewModel("Invalid API key"), JsonRequestBehavior.AllowGet);
+                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var participants = this.data.Participants
@@ -233,7 +196,8 @@
                     participant.User.UserName,
                     participant.User.Email,
                     Answer = participant.Answers.Select(answer => answer.Answer).FirstOrDefault(),
-                    Points = participant.Contest.Problems
+                    Points = participant.Contest.ProblemGroups
+                        .SelectMany(pg => pg.Problems)
                         .Where(problem => !problem.IsDeleted)
                         .Select(problem => problem.Submissions
                             .Where(z => z.ParticipantId == participant.Id && !z.IsDeleted)
@@ -253,5 +217,24 @@
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
         }
+
+        private bool IsApiKeyValid(string apiKey, int contestId)
+        {
+            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
+            return this.data.Users
+                .All()
+                .Any(x => x.Id == apiKey &&
+                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId)));
+        }
+
+        private int GetParticipantPoints(Participant participant) =>
+            participant.Contest.ProblemGroups
+                .SelectMany(pg => pg.Problems)
+                .Select(problem => problem.Submissions
+                    .Where(z => z.ParticipantId == participant.Id)
+                    .OrderByDescending(z => z.Points)
+                    .Select(z => z.Points)
+                    .FirstOrDefault())
+                .Sum();
     }
 }

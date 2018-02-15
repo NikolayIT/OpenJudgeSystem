@@ -150,9 +150,10 @@
 
             var contests = this.Data.Contests
                 .All()
-                .Where(c => c.IsVisible &&
-                            c.Problems.Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
-                .OrderBy(x => x.OrderBy)
+                .Where(c => c.IsVisible && c.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
+                .OrderBy(c => c.OrderBy)
                 .Select(ContestViewModel.FromContest);
 
             this.ViewBag.SubmissionType = submissionType.Name;

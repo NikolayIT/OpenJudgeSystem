@@ -158,8 +158,7 @@
                             ContesId = contest.Id,
                             ContestName = contest.Name,
                             ContestDuration = contest.Duration.Value,
-                            ProblemGroupsCount = contest.NumberOfProblemGroups
-
+                            ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
                         });
                     }
                 }

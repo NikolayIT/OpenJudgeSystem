@@ -31,7 +31,7 @@
                 this.Context.Contests
                     .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
                         c.Lecturers.Any(l => l.LecturerId == lecturerId))
-                    .SelectMany(c => c.Problems.Select(p => p.Id)));
+                    .SelectMany(c => c.ProblemGroups.SelectMany(pg => pg.Problems).Select(p => p.Id)));
 
             var submissions =
                 this.All()

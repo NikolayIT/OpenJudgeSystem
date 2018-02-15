@@ -10,6 +10,6 @@
 
         public TimeSpan ContestDuration { get; set; }
 
-        public short ProblemGroupsCount { get; set; }
+        public int ProblemGroupsCount { get; set; }
     }
 }

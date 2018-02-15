@@ -84,7 +84,10 @@
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
         {
-            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
+            var contest = this.Data.Contests
+                .All()
+                .Include(c => c.ProblemGroups.Select(pg => pg.Problems))
+                .FirstOrDefault(c => c.Id == id);
 
             if (contest == null)
             {
@@ -169,7 +172,10 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
+            var contest = this.Data.Contests
+                .All()
+                .Include(c => c.ProblemGroups.Select(pg => pg.Problems))
+                .FirstOrDefault(c => c.Id == id);
 
             if (contest == null)
             {
@@ -208,7 +214,10 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == id);
+            var contest = this.Data.Contests
+                .All()
+                .Include(c => c.ProblemGroups.Select(pg => pg.Problems))
+                .FirstOrDefault(c => c.Id == id);
 
             if (contest == null)
             {
@@ -245,7 +254,8 @@
             var submissions = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                     .SelectMany(participant =>
-                        participant.Contest.Problems
+                        participant.Contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .Where(pr => !pr.IsDeleted)
                             .SelectMany(pr => pr.Submissions
                                 .Where(subm => !subm.IsDeleted && subm.ParticipantId == participant.Id)
@@ -299,7 +309,10 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
             
-            var contest = this.Data.Contests.All().Include(x => x.Problems).FirstOrDefault(x => x.Id == contestId);
+            var contest = this.Data.Contests
+                .All()
+                .Include(c => c.ProblemGroups.Select(pg => pg.Problems))
+                .FirstOrDefault(c => c.Id == contestId);
 
             if (contest == null)
             {
@@ -308,7 +321,11 @@
 
             var contestResults = this.GetContestFullResults(contest, official);
 
-            var maxResult = this.Data.Contests.All().FirstOrDefault(c => c.Id == contestResults.Id).Problems.Sum(p => p.MaximumPoints);
+            var maxResult = this.Data.Contests
+                .All()
+                .FirstOrDefault(c => c.Id == contestResults.Id)
+                .ProblemGroups
+                .SelectMany(pg => pg.Problems).Sum(p => p.MaximumPoints);
             var participantsCount = contestResults.Results.Count();
             var statsModel = new ContestStatsViewModel();
             statsModel.MinResultsCount = contestResults.Results.Count(r => r.Total == 0);
@@ -378,7 +395,8 @@
                 IsCompete = official,
                 ContestCanBeCompeted = contest.CanBeCompeted,
                 ContestCanBePracticed = contest.CanBePracticed,
-                Problems = contest.Problems
+                Problems = contest.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
                     .AsQueryable()
                     .Where(x => !x.IsDeleted)
                     .Select(ContestProblemViewModel.FromProblem)
@@ -393,7 +411,8 @@
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
                         ParticipantProblemIds = participant.Problems.Select(p => p.Id),
-                        ProblemResults = participant.Contest.Problems
+                        ProblemResults = participant.Contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .Where(x => !x.IsDeleted)
                             .Select(problem => new ProblemResultPairViewModel
                             {
@@ -441,7 +460,8 @@
             {
                 Id = contest.Id,
                 Name = contest.Name,
-                Problems = contest.Problems
+                Problems = contest.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
                     .AsQueryable()
                     .Where(pr => !pr.IsDeleted)
                     .Select(ContestProblemViewModel.FromProblem)
@@ -455,7 +475,8 @@
                         ParticipantUsername = participant.User.UserName,
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
-                        ProblemResults = participant.Contest.Problems
+                        ProblemResults = participant.Contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .Where(x => !x.IsDeleted)
                             .Select(problem => new ProblemFullResultViewModel
                             {
