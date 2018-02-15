@@ -22,5 +22,10 @@
                 .OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();
+
+        public IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId) =>
+            this.submissions
+                .All()
+                .Where(s => s.ProblemId == problemId && s.ParticipantId == participantId);
     }
 }

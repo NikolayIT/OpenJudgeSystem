@@ -25,6 +25,7 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.Problems;
+    using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
@@ -42,29 +43,32 @@
         public const string CompeteActionName = "Compete";
         public const string PracticeActionName = "Practice";
 
-        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantsBusinessService participantsBusiness;
-        private readonly IParticipantsDataService participantsData;
         private readonly IContestsBusinessService contestsBusiness;
+        private readonly IParticipantsDataService participantsData;
         private readonly IContestsDataService contestsData;
         private readonly IProblemsDataService problemsData;
+        private readonly ISubmissionsDataService submissionsData;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
         public CompeteController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantsBusinessService participantsBusiness,
-            IParticipantsDataService participantsData,
             IContestsBusinessService contestsBusiness,
+            IParticipantsDataService participantsData,
             IContestsDataService contestsData,
-            IProblemsDataService problemsData)
+            IProblemsDataService problemsData,
+            ISubmissionsDataService submissionsData,
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
             : base(data)
         {
-            this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantsBusiness = participantsBusiness;
-            this.participantsData = participantsData;
             this.contestsBusiness = contestsBusiness;
+            this.participantsData = participantsData;
             this.contestsData = contestsData;
             this.problemsData = problemsData;
+            this.submissionsData = submissionsData;
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
         protected CompeteController(
@@ -362,7 +366,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Submit(SubmissionModel participantSubmission, bool official)
         {
-            var problem = this.problemsData.GetById(participantSubmission.ProblemId);
+            var problem = this.problemsData.GetWithProblemGroupById(participantSubmission.ProblemId);
             if (problem == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
@@ -439,7 +443,7 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Upload_file);
             }
 
-            var problem = this.problemsData.GetById(participantSubmission.ProblemId);
+            var problem = this.problemsData.GetWithProblemGroupById(participantSubmission.ProblemId);
             if (problem == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.Problem_not_found);
@@ -567,9 +571,12 @@
         [Authorize]
         public ActionResult ReadSubmissionResults([DataSourceRequest]DataSourceRequest request, int id, bool official)
         {
-            var problem = this.Data.Problems.GetById(id);
+            var problem = this.problemsData.GetWithProblemGroupById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData.GetWithContestByContestByUserAndIsOfficial(
+                problem.ProblemGroup.ContestId,
+                this.UserProfile.Id,
+                official);
 
             if (participant == null)
             {
@@ -581,11 +588,9 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.ContestsGeneral.Problem_results_not_available);
             }
 
-            var userSubmissions = this.Data.Submissions.All()
-                                                       .Where(x =>
-                                                               x.ProblemId == id &&
-                                                               x.ParticipantId == participant.Id)
-                                                       .Select(SubmissionResultViewModel.FromSubmission);
+            var userSubmissions = this.submissionsData
+                .GetAllByProblemAndParticipant(id, participant.Id)
+                .Select(SubmissionResultViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }
@@ -593,20 +598,21 @@
         [Authorize]
         public ActionResult ReadSubmissionResultsAreCompiled([DataSourceRequest]DataSourceRequest request, int id, bool official)
         {
-            var problem = this.Data.Problems.GetById(id);
+            var problem = this.problemsData.GetWithProblemGroupById(id);
 
-            var participant = this.Data.Participants.GetWithContest(problem.ProblemGroup.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData.GetWithContestByContestByUserAndIsOfficial(
+                problem.ProblemGroup.ContestId,
+                this.UserProfile.Id,
+                official);
 
             if (participant == null)
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.ContestsGeneral.User_is_not_registered_for_exam);
             }
 
-            var userSubmissions = this.Data.Submissions.All()
-                                                       .Where(x =>
-                                                               x.ProblemId == id &&
-                                                               x.ParticipantId == participant.Id)
-                                                       .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
+            var userSubmissions = this.submissionsData
+                .GetAllByProblemAndParticipant(id, participant.Id)
+                .Select(SubmissionResultIsCompiledViewModel.FromSubmission);
 
             return this.Json(userSubmissions.ToDataSourceResult(request));
         }
