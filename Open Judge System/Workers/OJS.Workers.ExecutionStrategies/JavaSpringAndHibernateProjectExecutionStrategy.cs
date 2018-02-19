@@ -32,7 +32,7 @@
         private static readonly string JUnitFailedTestPattern =
             $@"There was (?:\d+) failure:{Environment.NewLine}1\) (\w+)\((.+)\){Environment.NewLine}(.+)";
 
-        private static readonly string MavenBuildErrorPattern = $@"\[ERROR\](?:\s)*((?:.*){Environment.NewLine})*(?=\[INFO\]\s\d)";
+        private static readonly string MavenBuildErrorPattern = @"\[ERROR\](?:\s)*((?:.*)\n|\r|(\r\n))*(?=\[INFO\]\s\d)";
 
         public JavaSpringAndHibernateProjectExecutionStrategy(
             string javaExecutablePath,
@@ -158,9 +158,9 @@
 
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
 
-            string pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
+            var pomXmlPath = FileHelpers.FindFileMatchingPattern(this.WorkingDirectory, PomXmlFileNameAndExtension);
 
-            string[] mavenArgs = new[] { $"-f {pomXmlPath} clean package -DskipTests" };
+            var mavenArgs = new[] { $"-f {pomXmlPath} clean package -DskipTests" };
 
             var mavenExecutor = new StandardProcessExecutor();
 
@@ -172,29 +172,29 @@
               mavenArgs,
               this.WorkingDirectory);
 
-            File.AppendAllText("D:\\OjsFiles\\Logs\\MavenBuildOutput.txt", packageExecutionResult.ReceivedOutput + "\n");
-
-            Regex mavenBuildOutput = new Regex(MavenBuildOutputPattern);
-            Regex mavenBuildErrors = new Regex(MavenBuildErrorPattern);
-
-            Match compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
-            Match errorMatch = mavenBuildErrors.Match(packageExecutionResult.ReceivedOutput);
+            var mavenBuildOutput = new Regex(MavenBuildOutputPattern);
+            var compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
+            
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
-            result.CompilerComment = $"{errorMatch.Groups[0]}";
 
             if (!result.IsCompiledSuccessfully)
             {
+                var mavenBuildErrors = new Regex(MavenBuildErrorPattern);
+                var errorMatch = mavenBuildErrors.Match(packageExecutionResult.ReceivedOutput);
+                result.CompilerComment = $"{errorMatch.Groups[0]}";
                 return result;
             }
 
-            var restrictedExe = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
-            var arguments = new List<string>();
-            arguments.Add(this.ClassPath);
-            arguments.Add(AdditionalExecutionArguments);
-            arguments.Add(JUnitRunnerConsolePath);
+            var arguments = new List<string>
+            {
+                this.ClassPath,
+                AdditionalExecutionArguments,
+                JUnitRunnerConsolePath
+            };
 
-            Regex testErrorMatcher = new Regex(JUnitFailedTestPattern);
+            var testErrorMatcher = new Regex(JUnitFailedTestPattern);
             var checker = Checker.CreateChecker(
               executionContext.CheckerAssemblyName,
               executionContext.CheckerTypeName,
@@ -206,7 +206,7 @@
                 var testFile = this.TestNames[testIndex++];
                 arguments.Add(testFile);
 
-                var processExecutionResult = restrictedExe.Execute(
+                var processExecutionResult = executor.Execute(
                 this.JavaExecutablePath,
                 string.Empty,
                 executionContext.TimeLimit,
@@ -224,7 +224,7 @@
                     throw new FileLoadException("Tests could not be loaded, project structure is incorrect");
                 }
 
-                string message = this.EvaluateJUnitOutput(processExecutionResult.ReceivedOutput, testErrorMatcher);
+                var message = this.EvaluateJUnitOutput(processExecutionResult.ReceivedOutput, testErrorMatcher);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
@@ -237,15 +237,15 @@
 
         protected string EvaluateJUnitOutput(string testOutput, Regex testErrorMatcher)
         {
-            string message = "Test Passed!";
-            MatchCollection errorMatches = testErrorMatcher.Matches(testOutput);
+            var message = "Test Passed!";
+            var errorMatches = testErrorMatcher.Matches(testOutput);
 
             if (errorMatches.Count > 0)
             {
-                Match lastMatch = errorMatches[errorMatches.Count - 1];
-                string errorMethod = lastMatch.Groups[1].Value;
-                string className = lastMatch.Groups[2].Value;
-                string errorReason = lastMatch.Groups[3].Value;
+                var lastMatch = errorMatches[errorMatches.Count - 1];
+                var errorMethod = lastMatch.Groups[1].Value;
+                var className = lastMatch.Groups[2].Value;
+                var errorReason = lastMatch.Groups[3].Value;
                 message = $"Failed test fixture: {errorReason} in CLASS: {className} at METHOD: {errorMethod}";
             }
 
@@ -274,20 +274,19 @@
             this.PackageName = this.MainClassFileName
                 .Substring(0, this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal));
 
-            string normalizedPath = this.PackageName.Replace(".", "/");
+            var normalizedPath = this.PackageName.Replace(".", "/");
 
             this.ProjectRootDirectoryInSubmissionZip = $"{IntelliJProjectTemplatePattern}/{normalizedPath}/";
             this.ProjectTestDirectoryInSubmissionZip = $"{IntelliJTestProjectTemplatePattern}/{normalizedPath}/";
 
-            this.MainClassFileName = this.MainClassFileName
-                                         .Substring(this.MainClassFileName
-                                                    .LastIndexOf(".", StringComparison.Ordinal) + 1)
-                                                    + GlobalConstants.JavaSourceFileExtension;
+            this.MainClassFileName = this.MainClassFileName.Substring(
+                this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal) + 1)
+                + GlobalConstants.JavaSourceFileExtension;
         }
 
         protected void OverwriteApplicationProperties(string submissionZipFilePath)
         {
-            string fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
+            var fakeApplicationPropertiesPath = $"{this.WorkingDirectory}\\{ApplicationPropertiesFileName}";
             File.WriteAllText(fakeApplicationPropertiesPath, @"spring.jpa.hibernate.ddl-auto=create-drop
             spring.jpa.database=HSQL
             #spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.HSQLDialect
@@ -300,7 +299,7 @@
 
             var pathsInZip = FileHelpers.GetFilePathsFromZip(submissionZipFilePath);
 
-            string resourceDirectory = Path.GetDirectoryName(pathsInZip.FirstOrDefault(f => f.EndsWith(ApplicationPropertiesFileName)));
+            var resourceDirectory = Path.GetDirectoryName(pathsInZip.FirstOrDefault(f => f.EndsWith(ApplicationPropertiesFileName)));
 
             if (string.IsNullOrEmpty(resourceDirectory))
             {
@@ -314,26 +313,25 @@
 
         protected void RemovePropertySourceAnnotationsFromMainClass(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
+            var extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
-            string mainClassFilePath = FileHelpers.ExtractFileFromZip(
+            var mainClassFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
                 this.MainClassFileName,
             extractionDirectory);
 
-            string mainClassContent = File.ReadAllText(mainClassFilePath);
+            var mainClassContent = File.ReadAllText(mainClassFilePath);
 
-            Regex propertySourceMatcher = new Regex(PropertySourcePattern);
+            var propertySourceMatcher = new Regex(PropertySourcePattern);
             while (propertySourceMatcher.IsMatch(mainClassContent))
             {
                 mainClassContent = Regex.Replace(mainClassContent, PropertySourcePattern, string.Empty);
             }
 
             File.WriteAllText(mainClassFilePath, mainClassContent);
-            string pomXmlFolderPathInZip = Path
-                .GetDirectoryName(FileHelpers
-                                 .GetFilePathsFromZip(submissionFilePath)
-                                 .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
+            var pomXmlFolderPathInZip = Path.GetDirectoryName(FileHelpers
+                .GetFilePathsFromZip(submissionFilePath)
+                .FirstOrDefault(f => f.EndsWith(this.MainClassFileName)));
 
             FileHelpers.AddFilesToZipArchive(submissionFilePath, pomXmlFolderPathInZip, mainClassFilePath);
             DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
@@ -364,25 +362,25 @@
 
         protected override void ExtractUserClassNames(string submissionFilePath)
         {
-            this.UserClassNames.AddRange(
-                FileHelpers.GetFilePathsFromZip(submissionFilePath)
-                    .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
-                     .Select(x => x.Contains(IntelliJProjectTemplatePattern)
-                                ? x.Substring(x.LastIndexOf(
-                                    IntelliJProjectTemplatePattern,
-                                    StringComparison.Ordinal)
-                                    + IntelliJProjectTemplatePattern.Length
-                                    + 1)
-                                : x)
-                    .Select(x => x.Contains(".") ? x.Substring(0, x.LastIndexOf(".", StringComparison.Ordinal)) : x)
-                    .Select(x => x.Replace("/", ".")));
+            this.UserClassNames.AddRange(FileHelpers
+                .GetFilePathsFromZip(submissionFilePath)
+                .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
+                    .Select(x => x.Contains(IntelliJProjectTemplatePattern)
+                    ? x.Substring(x.LastIndexOf(
+                        IntelliJProjectTemplatePattern,
+                        StringComparison.Ordinal)
+                        + IntelliJProjectTemplatePattern.Length
+                        + 1)
+                    : x)
+                .Select(x => x.Contains(".") ? x.Substring(0, x.LastIndexOf(".", StringComparison.Ordinal)) : x)
+                .Select(x => x.Replace("/", ".")));
         }
 
         protected void PreparePomXml(string submissionFilePath)
         {
-            string extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
+            var extractionDirectory = DirectoryHelpers.CreateTempDirectoryForExecutionStrategy();
 
-            string pomXmlFilePath = FileHelpers.ExtractFileFromZip(
+            var pomXmlFilePath = FileHelpers.ExtractFileFromZip(
                 submissionFilePath,
                 PomXmlFileNameAndExtension,
             extractionDirectory);
@@ -394,10 +392,9 @@
 
             this.AddBuildSettings(pomXmlFilePath);
             this.AddDependencies(pomXmlFilePath);
-            string mainClassFolderPathInZip = Path
-                .GetDirectoryName(FileHelpers
-                                 .GetFilePathsFromZip(submissionFilePath)
-                                 .FirstOrDefault(f => f.EndsWith(PomXmlFileNameAndExtension)));
+            var mainClassFolderPathInZip = Path.GetDirectoryName(FileHelpers
+                .GetFilePathsFromZip(submissionFilePath)
+                .FirstOrDefault(f => f.EndsWith(PomXmlFileNameAndExtension)));
 
             FileHelpers.AddFilesToZipArchive(submissionFilePath, mainClassFolderPathInZip, pomXmlFilePath);
             DirectoryHelpers.SafeDeleteDirectory(extractionDirectory, true);
@@ -405,8 +402,8 @@
 
         private void AddBuildSettings(string pomXmlFilePath)
         {
-            string pomXmlContent = File.ReadAllText(pomXmlFilePath);
-            Regex buildSettingsRegex = new Regex(PomXmlBuildSettingsPattern);
+            var pomXmlContent = File.ReadAllText(pomXmlFilePath);
+            var buildSettingsRegex = new Regex(PomXmlBuildSettingsPattern);
             if (buildSettingsRegex.IsMatch(pomXmlContent))
             {
                 pomXmlContent = Regex.Replace(pomXmlContent, PomXmlBuildSettingsPattern, this.PomXmlBuildSettings);
@@ -417,10 +414,10 @@
 
         private void AddDependencies(string pomXmlFilePath)
         {
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.Load(pomXmlFilePath);
 
-            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
+            var namespaceManager = new XmlNamespaceManager(doc.NameTable);
             namespaceManager.AddNamespace("pomns", PomXmlNamespace);
 
             XmlNode rootNode = doc.DocumentElement;
@@ -429,15 +426,15 @@
                 throw new XmlException("Root element not specified in pom.xml");
             }
 
-            XmlNode dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath, namespaceManager);
+            var dependenciesNode = rootNode.SelectSingleNode(DependenciesNodeXPath, namespaceManager);
             if (dependenciesNode == null)
             {
                 throw new XmlException("No dependencies specified in pom.xml");
             }
 
-            foreach (KeyValuePair<string, Tuple<string, string>> groupIdArtifactId in this.Dependencies)
+            foreach (var groupIdArtifactId in this.Dependencies)
             {
-                XmlNode dependencyNode = rootNode
+                var dependencyNode = rootNode
                     .SelectSingleNode(
                      DependencyNodeXPathTemplate
                     .Replace("##", groupIdArtifactId.Key).Replace("!!", groupIdArtifactId.Value.Item1), namespaceManager);
@@ -446,14 +443,14 @@
                 {
                     dependencyNode = doc.CreateNode(XmlNodeType.Element, "dependency", PomXmlNamespace);
 
-                    XmlNode groupId = doc.CreateNode(XmlNodeType.Element, "groupId", PomXmlNamespace);
+                    var groupId = doc.CreateNode(XmlNodeType.Element, "groupId", PomXmlNamespace);
                     groupId.InnerText = groupIdArtifactId.Key;
-                    XmlNode artifactId = doc.CreateNode(XmlNodeType.Element, "artifactId", PomXmlNamespace);
+                    var artifactId = doc.CreateNode(XmlNodeType.Element, "artifactId", PomXmlNamespace);
                     artifactId.InnerText = groupIdArtifactId.Value.Item1;
 
                     if (groupIdArtifactId.Value.Item2 != null)
                     {
-                        XmlNode versionNumber = doc.CreateNode(XmlNodeType.Element, "version", PomXmlNamespace);
+                        var versionNumber = doc.CreateNode(XmlNodeType.Element, "version", PomXmlNamespace);
                         versionNumber.InnerText = groupIdArtifactId.Value.Item2;
                         dependencyNode.AppendChild(versionNumber);
                     }
@@ -469,22 +466,22 @@
 
         private string ExtractEntryPointFromPomXml(string submissionFilePath)
         {
-            string pomXmlPath = FileHelpers.ExtractFileFromZip(submissionFilePath, "pom.xml", this.WorkingDirectory);
+            var pomXmlPath = FileHelpers.ExtractFileFromZip(submissionFilePath, "pom.xml", this.WorkingDirectory);
 
             if (string.IsNullOrEmpty(pomXmlPath))
             {
                 throw new ArgumentException($"{nameof(pomXmlPath)} was not found in submission!");
             }
 
-            XmlDocument pomXml = new XmlDocument();
+            var pomXml = new XmlDocument();
             pomXml.Load(pomXmlPath);
 
-            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(pomXml.NameTable);
+            var namespaceManager = new XmlNamespaceManager(pomXml.NameTable);
             namespaceManager.AddNamespace("pomns", PomXmlNamespace);
 
             XmlNode rootNode = pomXml.DocumentElement;
 
-            XmlNode packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
+            var packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
 
             if (packageName == null)
             {
