@@ -114,7 +114,7 @@
         }
 
         [HttpPost]
-        public JsonResult ProblemsInProblemGroup([DataSourceRequest]DataSourceRequest request, int id)
+        public JsonResult GetProblemsInProblemGroup([DataSourceRequest]DataSourceRequest request, int id)
         {
             var problems = this.problemGroupsData
                 .GetProblemsById(id)

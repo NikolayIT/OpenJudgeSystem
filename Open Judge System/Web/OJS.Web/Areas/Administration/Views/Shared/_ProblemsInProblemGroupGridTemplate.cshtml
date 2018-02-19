@@ -17,7 +17,7 @@
                 .Ajax()
                 .ServerOperation(true)
                 .Model(model => model.Id(x => x.Id))
-                .Read(read => read.Action("ProblemsInProblemGroup", "ProblemGroups", new {id = "#= Id #"}));
+                .Read(read => read.Action("GetProblemsInProblemGroup", "ProblemGroups", new {id = "#= Id #"}));
         })
         .ToClientTemplate())
 </script>
