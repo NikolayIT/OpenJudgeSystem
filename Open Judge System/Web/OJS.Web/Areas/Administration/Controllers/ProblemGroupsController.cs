@@ -23,6 +23,8 @@
     using Resource = Resources.Areas.Administration.ProblemGroups.ProblemGroupsController;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel;
 
+    [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
+    [RoutePrefix("ProblemGroups")]
     public class ProblemGroupsController : LecturerBaseGridController
     {
         private readonly IProblemGroupsDataService problemGroupsData;
@@ -98,9 +100,10 @@
             return this.GridOperation(request, model);
         }
 
-        public ActionResult Contest(int? id)
+        [Route("Contest/{contestId}")]
+        public ActionResult AddFilterByContest(int contestId)
         {
-            if (id != null && !this.CheckIfUserHasContestPermissions(id.Value))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ContestsController>(
@@ -108,7 +111,7 @@
                     new { area = GlobalConstants.AdministrationAreaName });
             }
 
-            this.ViewBag.ContestId = id;
+            this.ViewBag.ContestId = contestId;
 
             return this.View(GlobalConstants.Index);
         }
