@@ -54,6 +54,22 @@
 
         public ActionResult Index() => this.View();
 
+        [Route("Contest/{contestId:int}")]
+        public ActionResult Index(int contestId)
+        {
+            if (!this.CheckIfUserHasContestPermissions(contestId))
+            {
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction<ContestsController>(
+                    c => c.Index(),
+                    new { area = GlobalConstants.AdministrationAreaName });
+            }
+
+            this.ViewBag.ContestId = contestId;
+
+            return this.View();
+        }
+
         [HttpPost]
         public ActionResult Create(
             [DataSourceRequest] DataSourceRequest request,
@@ -98,22 +114,6 @@
             }
 
             return this.GridOperation(request, model);
-        }
-
-        [Route("Contest/{contestId}")]
-        public ActionResult AddFilterByContest(int contestId)
-        {
-            if (!this.CheckIfUserHasContestPermissions(contestId))
-            {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(
-                    c => c.Index(),
-                    new { area = GlobalConstants.AdministrationAreaName });
-            }
-
-            this.ViewBag.ContestId = contestId;
-
-            return this.View(GlobalConstants.Index);
         }
 
         [HttpPost]

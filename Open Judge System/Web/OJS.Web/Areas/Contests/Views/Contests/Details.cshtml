@@ -168,13 +168,13 @@
 
             @(Html.ActionLink<ProblemsController>(
                   Resource.Problems,
-                  c => c.Contest(Model.Id),
+                  c => c.Index(Model.Id),
                   new { area = GlobalConstants.AdministrationAreaName },
                   new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
 
             @(Html.ActionLink<OJS.Web.Areas.Administration.Controllers.ProblemGroupsController>(
                 Resource.Problem_groups,
-                c => c.AddFilterByContest(Model.Id),
+                c => c.Index(Model.Id),
                 new { area = GlobalConstants.AdministrationAreaName },
                 new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
 

@@ -35,6 +35,6 @@
         <br />
 
         <input type="submit" class="btn btn-primary" value="@Resource.Delete" />
-        @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Contest(Model.ContestId), null, new { @class = "btn btn-primary" }))
+        @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Index(Model.ContestId), null, new { @class = "btn btn-primary" }))
     }
 </div>

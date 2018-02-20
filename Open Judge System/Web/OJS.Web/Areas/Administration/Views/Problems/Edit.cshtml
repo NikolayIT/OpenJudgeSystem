@@ -1,5 +1,6 @@
-﻿@using System.Web.Mvc.Expressions
-@using OJS.Web.Areas.Administration.Controllers
+﻿@using System.Web.Mvc.Expressions;
+@using OJS.Web.Areas.Administration.Controllers;
+
 @using Resource = Resources.Areas.Administration.Problems.Views.ProblemsEdit;
 @using SharedResource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
 
@@ -276,7 +277,7 @@
                 <button type="submit" class="btn btn-primary pull-right">@Resource.Edit</button>
             </div>
             <div class="editor-label col-xs-3">
-                <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
+                @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Index(Model.ContestId), null, new { @class = "btn btn-primary" }))
             </div>
         </div>
     }

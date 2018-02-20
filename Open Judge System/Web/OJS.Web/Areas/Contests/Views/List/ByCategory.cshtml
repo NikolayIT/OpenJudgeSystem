@@ -145,7 +145,7 @@
                             <a href=@Url.Action("Edit", "Contests", new {area = "Administration", id = contest.Id})>
                                 <span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span>
                             </a>
-                            <a href=@Url.Action("Contest", "Problems", new {area = "Administration", id = contest.Id})>
+                            <a href=@Url.Action("Index", "Problems", new {area = "Administration", id = contest.Id})>
                                 <span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span>
                             </a>
                             @if (contest.OfficialParticipants > 0 && !contest.CanBeCompeted)
