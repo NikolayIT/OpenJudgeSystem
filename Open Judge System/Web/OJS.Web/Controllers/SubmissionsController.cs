@@ -101,7 +101,7 @@
 
             if (contestId.HasValue)
             {
-                data = data.Where(s => s.Problem.ContestId == contestId.Value);
+                data = data.Where(s => s.Problem.ProblemGroup.ContestId == contestId.Value);
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);

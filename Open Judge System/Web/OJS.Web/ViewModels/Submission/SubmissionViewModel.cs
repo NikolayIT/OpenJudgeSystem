@@ -21,7 +21,7 @@
                     ProblemId = submission.ProblemId,
                     ProblemName = submission.Problem.Name,
                     ProblemMaximumPoints = submission.Problem.MaximumPoints,
-                    Contest = submission.Problem.Contest.Name,
+                    Contest = submission.Problem.ProblemGroup.Contest.Name,
                     ParticipantId = submission.ParticipantId,
                     ParticipantName = submission.Participant.User.UserName,
                     SubmissionType = submission.SubmissionType.Name,

@@ -54,7 +54,12 @@
             {
                 contest.Id,
                 contest.Name,
-                Problems = contest.Problems.AsQueryable().OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
+                Problems = contest.ProblemGroups
+                    .Where(pg => !pg.IsDeleted)
+                    .SelectMany(pg => pg.Problems)
+                    .AsQueryable()
+                    .OrderBy(x => x.OrderBy)
+                    .ThenBy(x => x.Name),
                 Questions = contest.Questions.OrderBy(x => x.Id),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == compete)
@@ -64,7 +69,8 @@
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
                         Answers = participant.Answers.OrderBy(answer => answer.ContestQuestionId),
-                        ProblemResults = participant.Contest.Problems
+                        ProblemResults = participant.Contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .Select(problem =>
                                 new
                                 {
@@ -342,7 +348,7 @@
         {
             var problems = this.Data.Problems
                 .All()
-                .Where(p => p.ContestId == contestId)
+                .Where(p => p.ProblemGroup.ContestId == contestId)
                 .OrderBy(x => x.OrderBy)
                 .ThenBy(x => x.Name)
                 .Select(ProblemModel.Model)

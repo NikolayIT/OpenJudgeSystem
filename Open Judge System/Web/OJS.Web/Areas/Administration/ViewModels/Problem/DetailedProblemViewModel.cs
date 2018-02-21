@@ -44,8 +44,8 @@
                 {
                     Id = problem.Id,
                     Name = problem.Name,
-                    ContestId = problem.ContestId,
-                    ContestName = problem.Contest.Name,
+                    ContestId = problem.ProblemGroup.ContestId,
+                    ContestName = problem.ProblemGroup.Contest.Name,
                     TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
                     CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
                     MaximumPoints = problem.MaximumPoints,

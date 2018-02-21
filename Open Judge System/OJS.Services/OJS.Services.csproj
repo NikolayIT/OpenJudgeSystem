@@ -68,6 +68,8 @@
     <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
     <Compile Include="Business\Participants\IParticipantsBusinessService.cs" />
     <Compile Include="Business\Participants\ParticipantsBusinessService.cs" />
+    <Compile Include="Business\Problems\IProblemsBusinessService.cs" />
+    <Compile Include="Business\Problems\ProblemsBusinessService.cs" />
     <Compile Include="Business\ProblemGroups\IProblemGroupsBusinessService.cs" />
     <Compile Include="Business\ProblemGroups\ProblemGroupsBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />

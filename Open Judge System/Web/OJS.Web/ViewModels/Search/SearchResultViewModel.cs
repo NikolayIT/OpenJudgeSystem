@@ -15,8 +15,8 @@
                 {
                     Id = problem.Id,
                     Name = problem.Name,
-                    ParentId = problem.ContestId,
-                    ParentName = problem.Contest.Name
+                    ParentId = problem.ProblemGroup.ContestId,
+                    ParentName = problem.ProblemGroup.Contest.Name
                 };
             }
         }

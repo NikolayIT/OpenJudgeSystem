@@ -58,7 +58,7 @@
 
             this.ViewBag.ContestProblems = this.Data.Problems
                 .All()
-                .Where(x => x.ContestId == id)
+                .Where(p => p.ProblemGroup.ContestId == id)
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
 
@@ -87,7 +87,7 @@
                 .All()
                 .Where(x =>
                     x.Participant.UserId == this.UserProfile.Id &&
-                    x.Problem.ContestId == contestId &&
+                    x.Problem.ProblemGroup.ContestId == contestId &&
                     x.Problem.ShowResults)
                 .Select(SubmissionResultViewModel.FromSubmission);
 

@@ -57,13 +57,13 @@
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
                 submissions = submissions.Where(s =>
-                    s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                    s.Problem.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
+                    s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                    s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
             if (this.contestId != null)
             {
-                submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
+                submissions = submissions.Where(s => s.Problem.ProblemGroup.ContestId == this.contestId);
             }
 
             return submissions.Select(GridModelType.ViewModel);
@@ -111,7 +111,7 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ProblemGroup.ContestId);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
@@ -202,7 +202,7 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ProblemGroup.ContestId);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
@@ -533,7 +533,7 @@
         {
             var selectedProblem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == problem);
 
-            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ContestId);
+            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ProblemGroup.ContestId);
 
             if (!string.IsNullOrEmpty(text))
             {
