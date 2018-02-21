@@ -36,7 +36,7 @@
             columns.Command(c => c.Custom("Свали решения").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
             //columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("IndexByContest", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
+            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Index", "Problems") + "/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{Resource.Edit}</a>").Title(GeneralResource.Change);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
         })
