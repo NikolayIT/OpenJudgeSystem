@@ -95,16 +95,16 @@ else
     if (!Model.IsCompiledSuccessfully)
     {
         <div class="alert alert-danger top-buffer">@Resource.Compile_time_error_occured</div>
+
+        if (Model.UserHasAdminPermission && !string.IsNullOrWhiteSpace(Model.CompilerComment))
+        {
+            <h2>@Resource.Compilation_result:</h2>
+            <pre>@Model.CompilerComment</pre>
+        }
     }
     else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
     {
         <h2 class="text-success top-buffer">@Resource.Compiled_successfully</h2>
-    }
-
-    if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
-    {
-        <h2>@Resource.Compilation_result:</h2>
-        <pre>@Model.CompilerComment</pre>
     }
 
     if (!Model.HasTestRuns && Model.IsCompiledSuccessfully && string.IsNullOrEmpty(Model.ProcessingComment) && Model.TotalTests > 0)
