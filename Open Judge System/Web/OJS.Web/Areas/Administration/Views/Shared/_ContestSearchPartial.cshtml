@@ -1,0 +1,35 @@
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.ContestDropDown
+
+<div>
+    <div>
+        <label for="search">@Resource.Search_by_contest</label>
+    </div>
+
+    @(Html
+        .Kendo()
+        .ComboBox()
+        .Name("search")
+        .DataValueField("Id")
+        .DataTextField("Name")
+        .Filter(FilterType.Contains)
+        .MinLength(2)
+        .Placeholder(Resource.Select_contest)
+        .DataSource(data =>
+        {
+            data
+                .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
+                    .Data("setContestFilter"))
+                .ServerFiltering(true);
+        })
+        .AutoBind(false)
+        .Events(ev => ev.Select("onSearchSelect"))
+        .HtmlAttributes(new { style = "width:100%" }))
+</div>
+
+<script type="text/javascript">
+    function setContestFilter() {
+        return {
+            contestFilter: $('#search').data("kendoComboBox").input.val()
+        }
+    }
+</script>

@@ -17,8 +17,16 @@
 
         private readonly ILog logger;
 
-        protected ExecutionStrategy() =>
+        protected ExecutionStrategy(int baseTimeUsed, int baseMemoryUsed)
+        {
+            this.BaseTimeUsed = baseTimeUsed;
+            this.BaseMemoryUsed = baseMemoryUsed;
             this.logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
+        }
+
+        protected int BaseTimeUsed { get; }
+
+        protected int BaseMemoryUsed { get; }
 
         protected string WorkingDirectory { get; set; }
 

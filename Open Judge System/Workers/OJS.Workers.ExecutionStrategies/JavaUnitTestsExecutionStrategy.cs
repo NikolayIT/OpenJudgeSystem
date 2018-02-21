@@ -33,8 +33,10 @@
         public JavaUnitTestsExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
-            string javaLibrariesPath)
-            : base(javaExecutablePath, getCompilerPathFunc)
+            string javaLibrariesPath,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(javaExecutablePath, getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
             if (!Directory.Exists(javaLibrariesPath))
             {
@@ -135,7 +137,7 @@ public class _$TestRunner {{
             FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
             File.Delete(submissionFilePath);
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
                 executionContext.CheckerTypeName,

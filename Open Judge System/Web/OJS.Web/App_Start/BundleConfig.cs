@@ -13,34 +13,41 @@
         private static void RegisterScripts(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/global").Include(
-                      "~/Scripts/global.js"));
+                "~/Scripts/global.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Dependencies/jquery/jquery.js",
-                        "~/Dependencies/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"));
+                "~/Dependencies/jquery/jquery.js",
+                "~/Dependencies/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Dependencies/jquery-validation/jquery.validate.js",
-                        "~/Dependencies/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
-                        ));
+                "~/Dependencies/jquery-validation/jquery.validate.js",
+                "~/Dependencies/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Dependencies/bootstrap/js/bootstrap.js"));
+                "~/Dependencies/bootstrap/js/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
-                        "~/Scripts/KendoUI/2014.3.1411/kendo.all.js",
-                        "~/Scripts/KendoUI/2014.3.1411/kendo.aspnetmvc.js",
-                        "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.bg.js",
-                        "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.en-GB.js"));
+                "~/Scripts/KendoUI/2014.3.1411/kendo.all.js",
+                "~/Scripts/KendoUI/2014.3.1411/kendo.aspnetmvc.js",
+                "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.bg.js",
+                "~/Scripts/KendoUI/2014.3.1411/cultures/kendo.culture.en-GB.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
-                        "~/Dependencies/codemirror/lib/codemirror.js",
-                        "~/Dependencies/codemirror/mode/clike/clike.js",
-                        "~/Dependencies/codemirror/mode/javascript/javascript.js"));
+                "~/Dependencies/codemirror/lib/codemirror.js",
+                "~/Dependencies/codemirror/mode/clike/clike.js",
+                "~/Dependencies/codemirror/mode/javascript/javascript.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/codemirrormerge").Include(
-                        "~/Dependencies/codemirror/addon/merge/merge.js",
-                        "~/Dependencies/diff_match_patch/lib/diff_match_patch.js"));
+                "~/Dependencies/codemirror/addon/merge/merge.js",
+                "~/Dependencies/diff_match_patch/lib/diff_match_patch.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/problems-index").Include(
+                "~/Scripts/Administration/Problems/problems-index.js",
+                "~/Scripts/Administration/Contests/contest-search.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
+                "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
+                "~/Scripts/Administration/Contests/contest-search.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)

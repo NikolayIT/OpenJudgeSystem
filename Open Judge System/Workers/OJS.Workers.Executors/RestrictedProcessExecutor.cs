@@ -19,12 +19,25 @@ namespace OJS.Workers.Executors
     {
         private const int TimeIntervalBetweenTwoMemoryConsumptionRequests = 45;
         private const int TimeBeforeClosingOutputStreams = 300;
+
         private static ILog logger;
 
-        public RestrictedProcessExecutor()
-        {
+        private readonly int baseTimeUsed;
+        private readonly int baseMemoryUsed;
+
+        public RestrictedProcessExecutor() =>
             logger = LogManager.GetLogger(typeof(RestrictedProcessExecutor));
-            //// logger.Info("Initialized.");
+
+        /// <summary>
+        /// Initializes a new instance of the RestrictedProcessExecutor class with base time and memory used
+        /// </summary>
+        /// <param name="baseTimeUsed">The base time in milliseconds added to the time limit when executing</param>
+        /// <param name="baseMemoryUsed">The base memory in bytes added to the memory limit when executing</param>
+        public RestrictedProcessExecutor(int baseTimeUsed, int baseMemoryUsed)
+            : this()
+        {
+            this.baseTimeUsed = baseTimeUsed;
+            this.baseMemoryUsed = baseMemoryUsed;
         }
 
         public ProcessExecutionResult Execute(
@@ -38,6 +51,9 @@ namespace OJS.Workers.Executors
             bool useSystemEncoding = false,
             double timeoutMultiplier = 1.5)
         {
+            timeLimit = timeLimit + this.baseTimeUsed;
+            memoryLimit = memoryLimit + this.baseMemoryUsed;
+
             var result = new ProcessExecutionResult { Type = ProcessExecutionResultType.Success };
             if (workingDirectory == null)
             {
@@ -180,6 +196,8 @@ namespace OJS.Workers.Executors
             {
                 result.Type = ProcessExecutionResultType.MemoryLimit;
             }
+
+            result.ApplyTimeAndMemoryOffset(this.baseTimeUsed, this.baseMemoryUsed);
 
             return result;
         }

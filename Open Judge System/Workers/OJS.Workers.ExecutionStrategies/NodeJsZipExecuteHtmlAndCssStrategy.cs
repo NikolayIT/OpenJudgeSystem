@@ -171,7 +171,7 @@ describe('TestDOMScope', function() {{
                 this.ProgramEntryPath);
 
             var codeSavePath = FileHelpers.SaveStringToTempFile(this.WorkingDirectory, codeToExecute);
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,
@@ -218,7 +218,14 @@ describe('TestDOMScope', function() {{
             arguments.Add(this.MochaModulePath);
             arguments.Add(codeSavePath);
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
-            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments);
+
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
             var currentTest = 0;
             foreach (var test in executionContext.Tests)

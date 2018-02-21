@@ -37,10 +37,8 @@
                 sinonChaiModulePath,
                 underscoreModulePath,
                 baseTimeUsed,
-                baseMemoryUsed)
-        {
-            this.Random = new Random();
-        }
+                baseMemoryUsed) =>
+                    this.Random = new Random();
 
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
@@ -91,7 +89,7 @@ after(function() {
             // In NodeJS there is no compilation
             var result = new ExecutionResult() { IsCompiledSuccessfully = true };
 
-            var executor = new RestrictedProcessExecutor();
+            var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             // Preprocess the user submission
             var codeToExecute = this.PreprocessJsSubmission(
@@ -177,7 +175,13 @@ describe('Test {i} ', function(){{
             arguments.AddRange(executionContext.AdditionalCompilerArguments.Split(' '));
 
             var testCount = 0;
-            var processExecutionResult = this.ExecuteNodeJsProcess(executionContext, executor, string.Empty, arguments);
+            var processExecutionResult = executor.Execute(
+                this.NodeJsExecutablePath,
+                string.Empty,
+                executionContext.TimeLimit,
+                executionContext.MemoryLimit,
+                arguments);
+
             var mochaResult = JsonExecutionResult.Parse(processExecutionResult.ReceivedOutput);
             var numberOfUserTests = mochaResult.UsersTestCount;
             var correctSolutionTestPasses = mochaResult.InitialPassingTests;

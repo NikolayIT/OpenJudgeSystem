@@ -1,5 +1,7 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.ContestCategoryViewModel
 
+@using OJS.Web.Areas.Administration.Controllers;
+
 @using Resource = Resources.Areas.Contests.Views.ListByCategory;
 
 <h3>@Model.CategoryName</h3>
@@ -142,15 +144,15 @@
                     @if (Model.IsUserLecturerInContestCategory)
                     {
                         <td class="edit-contest">
-                            <a href=@Url.Action("Edit", "Contests", new {area = "Administration", id = contest.Id})>
+                            <a href=@(Url.Action<ContestsController>(c => c.Edit(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
                                 <span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span>
                             </a>
-                            <a href=@Url.Action("Contest", "Problems", new {area = "Administration", id = contest.Id})>
+                            <a href=@(Url.Action<ProblemsController>(c => c.Index(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
                                 <span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span>
                             </a>
                             @if (contest.OfficialParticipants > 0 && !contest.CanBeCompeted)
                             {
-                                <a href=@Url.Action("TransferParticipants", "Contests", new { area = "Administration", id = contest.Id, returnUrl = this.Request.Url?.AbsolutePath })>
+                                <a href=@(Url.Action<ContestsController>(c => c.TransferParticipants(contest.Id, null), new { returnUrl = this.Request.Url?.AbsolutePath, area = GlobalConstants.AdministrationAreaName }))>
                                     <span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span>
                                 </a>
                             }

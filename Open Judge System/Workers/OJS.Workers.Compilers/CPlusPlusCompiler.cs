@@ -4,6 +4,11 @@
 
     public class CPlusPlusCompiler : Compiler
     {
+        public CPlusPlusCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
+
         public override string RenameInputFile(string inputFile)
         {
             // Add "cpp" extension so the compiler will treat the file as C++ code file

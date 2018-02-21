@@ -136,11 +136,12 @@
 
         private readonly Func<CompilerType, string> getCompilerPathFunc;
 
-        public DotNetCoreTestRunnerExecutionStrategy(Func<CompilerType, string> getCompilerPathFunc)
-            : base(getCompilerPathFunc)
-        {
-            this.getCompilerPathFunc = getCompilerPathFunc;
-        }
+        public DotNetCoreTestRunnerExecutionStrategy(
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(getCompilerPathFunc, baseTimeUsed, baseMemoryUsed) =>
+                this.getCompilerPathFunc = getCompilerPathFunc;
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -178,7 +179,7 @@
                 executionContext,
                 Path.GetDirectoryName(compileResult.OutputFile));
 
-            IExecutor executor = new RestrictedProcessExecutor();
+            IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var processExecutionResult = executor.Execute(
                 outputAssemblyPath,
                 string.Empty,

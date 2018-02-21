@@ -8,8 +8,11 @@
 
     public class DotNetCompiler : Compiler
     {
-        public override int MaxProcessExitTimeOutMillisecond => GlobalConstants.DefaultProcessExitTimeOutMilliseconds * 9;
-        
+        public DotNetCompiler(int processExitTimeOutMultiplier)
+            : base(processExitTimeOutMultiplier)
+        {
+        }
+
         public override bool ShouldDeleteSourceFile => false;
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)

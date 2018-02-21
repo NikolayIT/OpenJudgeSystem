@@ -5,6 +5,11 @@
 
     public class CheckOnlyExecutionStrategy : ExecutionStrategy
     {
+        public CheckOnlyExecutionStrategy(int baseTimeUsed, int baseMemoryUsed)
+            : base(baseTimeUsed, baseMemoryUsed)
+        {
+        }
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult

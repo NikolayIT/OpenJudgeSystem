@@ -11,11 +11,11 @@
     {
         public CSharpPerformanceProjectTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
-            Func<CompilerType, string> getCompilerPathFunc)
-            : base(nUnitConsoleRunnerPath, getCompilerPathFunc)
-        {
-            this.TestClassNames = new List<string>();
-        }
+            Func<CompilerType, string> getCompilerPathFunc,
+            int baseTimeUsed,
+            int baseMemoryUsed)
+            : base(nUnitConsoleRunnerPath, getCompilerPathFunc, baseTimeUsed, baseMemoryUsed) =>
+                this.TestClassNames = new List<string>();
 
         protected List<string> TestClassNames { get; }
 

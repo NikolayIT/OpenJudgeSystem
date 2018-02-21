@@ -12,7 +12,21 @@
         public ProblemGroupsDataService(IEfDeletableEntityRepository<ProblemGroup> problemGroups) =>
             this.problemGroups = problemGroups;
 
+        public ProblemGroup GetById(int id) => this.problemGroups.GetById(id);
+
+        public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
+            this.GetAll().Where(pg => pg.Id == id);
+
+        public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
+
         public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
             this.problemGroups.All().Where(pg => pg.ContestId == contestId);
+
+        public IQueryable<Problem> GetProblemsById(int id) =>
+            this.GetByIdQuery(id)
+                .SelectMany(eg => eg.Problems)
+                .Where(p => !p.IsDeleted);
+
+        public void Delete(ProblemGroup problemGroup) => this.problemGroups.Delete(problemGroup);
     }
 }

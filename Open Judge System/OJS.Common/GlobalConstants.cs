@@ -56,6 +56,8 @@
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string AdministrationAreaName = "Administration";
+
         public const int FileExtentionMaxLength = 4;
 
         public const int IpAdressMaxLength = 45;
