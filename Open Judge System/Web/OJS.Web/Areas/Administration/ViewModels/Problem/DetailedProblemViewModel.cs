@@ -57,7 +57,8 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
-                    ProblemGroupOrderBy = problem.ProblemGroup.OrderBy + 1,
+                    ProblemGroupId = problem.ProblemGroupId,
+                    ProblemGroupOrderBy = problem.ProblemGroup.OrderBy,
                     SolutionSkeletonData = problem.SolutionSkeleton,
                     HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
@@ -85,6 +86,11 @@
         [DatabaseProperty]
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public int ContestId { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
+        [UIHint("DropDownList")]
+        public int? ProblemGroupId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
@@ -140,10 +146,8 @@
         [DefaultValue(0)]
         public int OrderBy { get; set; }
 
-        [DatabaseProperty]
-        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
-        [UIHint("DropDownList")]
-        public int? ProblemGroupOrderBy { get; set; }
+        [HiddenInput(DisplayValue = false)]
+        public int ProblemGroupOrderBy { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]

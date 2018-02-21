@@ -70,8 +70,12 @@
     <Compile Include="Business\Participants\ParticipantsBusinessService.cs" />
     <Compile Include="Business\Problems\IProblemsBusinessService.cs" />
     <Compile Include="Business\Problems\ProblemsBusinessService.cs" />
+    <Compile Include="Business\ProblemGroups\IProblemGroupsBusinessService.cs" />
+    <Compile Include="Business\ProblemGroups\ProblemGroupsBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Data\ContestCategories\ContestCategoriesDataService.cs" />
+    <Compile Include="Data\ContestCategories\IContestCategoriesDataService.cs" />
     <Compile Include="Data\Contests\ContestsDataService.cs" />
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />

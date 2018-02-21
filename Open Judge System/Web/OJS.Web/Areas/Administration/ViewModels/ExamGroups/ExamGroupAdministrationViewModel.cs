@@ -48,12 +48,12 @@
 
         [DatabaseProperty]
         [Display(Name = "External_id", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public int? ExternalExamGroupId { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Extenral_app_id", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public string ExternalAppId { get; set; }
 
         [DatabaseProperty]
@@ -65,7 +65,7 @@
         public int? ContestId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [HiddenInput(DisplayValue = false)]
         public string ContestName { get; set; }
     }
 }
