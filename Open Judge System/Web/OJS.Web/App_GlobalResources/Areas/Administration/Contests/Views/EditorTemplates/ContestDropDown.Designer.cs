@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.Contests.Views.EditorTemplates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search by contest.
+        /// </summary>
+        public static string Search_by_contest {
+            get {
+                return ResourceManager.GetString("Search_by_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select contest.
         /// </summary>
         public static string Select_contest {

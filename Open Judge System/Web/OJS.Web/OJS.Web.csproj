@@ -813,6 +813,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.designer.cs">
+      <DependentUpon>ProblemGroupsController.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.designer.cs">
+      <DependentUpon>ProblemGroupsController.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1625,8 +1645,11 @@
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\KendoRemoteDataBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\KendoRemoteDataController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersKendoRemoteDataController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionsController.cs" />
@@ -1640,6 +1663,7 @@
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ProblemGroupsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\RolesController.cs" />
@@ -1679,6 +1703,7 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -2290,7 +2315,9 @@
     <Content Include="gulpfile.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\administration-global.js" />
+    <Content Include="Scripts\Administration\Contests\contest-search.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
+    <Content Include="Scripts\Administration\ProblemGroups\problem-groups-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
     <Content Include="Scripts\Administration\Problems\problems-index.js" />
@@ -2417,6 +2444,10 @@
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\AddUserToExamGroup.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ProblemsInProblemGroupGridTemplate.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
@@ -2795,6 +2826,28 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsController.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsController.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

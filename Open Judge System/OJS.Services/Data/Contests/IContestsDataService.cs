@@ -25,9 +25,13 @@
 
         IQueryable<Contest> GetAllVisible();
 
-        IQueryable<Contest> GetAllWithDeleted();
+        IQueryable<Contest> GetAllVisibleByCategory(int categoryId);
 
-        IQueryable<Contest> GetAllByLecturer(string lecturerId);
+        IQueryable<Contest> GetAllVisibleByLecturer(string lecturerId);
+
+        IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId);
+
+        IQueryable<Contest> GetAllWithDeleted();
 
         int GetIdById(int id);
 

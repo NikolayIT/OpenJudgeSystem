@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to navigation.
         /// </summary>
         public static string Back_to_navigation {

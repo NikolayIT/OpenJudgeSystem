@@ -86,26 +86,6 @@
             return this.Json(users.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AvailableUsersForRole(string text)
-        {
-            var users = this.Data.Users.All();
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                users = users.Where(u => u.UserName.ToLower().Contains(text.ToLower()));
-            }
-
-            var result = users
-                .ToList()
-                .Select(pr => new SelectListItem
-                {
-                    Text = pr.UserName,
-                    Value = pr.Id,
-                });
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
         public ActionResult AddUserToRole([DataSourceRequest]DataSourceRequest request, string id, string userId)
         {

@@ -14,7 +14,7 @@
     {
         data
             .ServerFiltering(true)
-            .Read(read => read.Action("GetAvailableContests", "ExamGroups").Data("filterContests"));
+            .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData").Data("filterContests"));
     })
     .AutoBind(false)
     .HtmlAttributes(new { style = "width:100%", data_value_primitive = "true" }))

@@ -12,6 +12,10 @@
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
+            AreaRegistration.RegisterAllAreas();
+
             // TODO: Unit test this route
             routes.MapRoute("robots.txt", "robots.txt", new { controller = "Home", action = "RobotsTxt" }, new[] { "OJS.Web.Controllers" });
 

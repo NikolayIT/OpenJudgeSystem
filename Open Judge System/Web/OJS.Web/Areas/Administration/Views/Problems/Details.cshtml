@@ -1,4 +1,7 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
+﻿@using OJS.Web.Areas.Administration.Controllers;
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
+
 @model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
 
 @{
@@ -56,7 +59,7 @@
         </div>
         <div class="panel-body news-content editor-label">
             <pre id="solution-skeleton" class="monospace-font">@Model.SolutionSkeletonShort</pre>
-        
+
             @if (Model.SolutionSkeleton.Length > 200)
             {
                 @Ajax.ActionLink(Resource.See_more, "FullSolutionSkeleton", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "solution-skeleton", InsertionMode = InsertionMode.Replace, OnComplete = "removeFullSolutionSkeletonAjaxLink" }, new { id = "ajax-solution-skeleton-link" })
@@ -106,9 +109,9 @@
 
     </div>
     <br />
-    <a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">@Resource.Tests</a>
-    <a href="/Administration/Problems/Edit/@Model.Id" class="btn btn-primary">@Resource.Edit</a>
-    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
+    @(Html.ActionLink<TestsController>(Resource.Tests, c => c.Problem(Model.Id), null, new { @class = "btn btn-primary" }))
+    @(Html.ActionLink<ProblemsController>(Resource.Edit, c => c.Edit(Model.Id), null, new { @class = "btn btn-primary" }))
+    @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Index(Model.ContestId), null, new { @class = "btn btn-primary" }))
 </div>
 @section scripts {
     <script>

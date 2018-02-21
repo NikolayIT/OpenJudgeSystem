@@ -15,7 +15,7 @@
     {
         data
             .ServerFiltering(true)
-            .Read(read => read.Action("GetAvailableUsers", "ExamGroups").Data("filterUsers"));
+            .Read(read => read.Action("GetUsersContaining", "KendoRemoteData").Data("filterUsers"));
     })
     .AutoBind(false)
     .HtmlAttributes(new { style = "width: 100%;" }))

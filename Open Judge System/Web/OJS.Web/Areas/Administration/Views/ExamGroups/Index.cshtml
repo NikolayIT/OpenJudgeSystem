@@ -87,13 +87,6 @@
         $('.editor-label').css('width', '10%');
         $('.editor-field').css('width', '80%');
 
-        var disabledFields = $('input:disabled').parent('.editor-field');
-
-        $.each(disabledFields, function (i, field) {
-            $(field).hide();
-            $(field).prev().hide();
-        });
-
         $('#ContestId').change(function () {
             $('#ContestName').val($('#ContestId_option_selected').text()).change();
         });
