@@ -257,19 +257,13 @@
                 }
             }
 
-            var existingProblemGroupId = this.GetProblemGroupId(contest.Id, problem.ProblemGroupOrderBy);
-
-            if (existingProblemGroupId == null)
+            if (newProblem.ProblemGroupId == null)
             {
                 newProblem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contest.Id,
                     OrderBy = contest.ProblemGroups.Count
                 };
-            }
-            else
-            {
-                newProblem.ProblemGroupId = existingProblemGroupId;
             }
 
             this.Data.Problems.Add(newProblem);
@@ -364,10 +358,6 @@
             existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
-            existingProblem.ProblemGroupId = this.GetProblemGroupId(
-                existingProblem.Contest.Id,
-                problem.ProblemGroupOrderBy)
-                    ?? existingProblem.ProblemGroupId;
 
             if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
@@ -963,7 +953,10 @@
 
             if (isOnlineContest && numberOfProblemGroups > 0)
             {
-                this.ViewBag.ProblemGroupOrderByData = DropdownViewModel.GetFromRange(1, numberOfProblemGroups);
+                this.ViewBag.ProblemGroupIdData = this.problemGroupsData
+                    .GetAllByContest(problem.ContestId)
+                    .OrderBy(pg => pg.OrderBy)
+                    .Select(DropdownViewModel.FromProblemGroup);
             }
         }
 
@@ -978,16 +971,6 @@
             }
 
             return isValid;
-        }
-
-        private int? GetProblemGroupId(int contestId, int? problemGroupOrderBy)
-        {
-            problemGroupOrderBy = problemGroupOrderBy >= 1
-                ? problemGroupOrderBy - 1
-                : null;
-
-            return this.problemGroupsData
-                .GetIdByContestAndOrderBy(contestId, problemGroupOrderBy);
         }
     }
 }

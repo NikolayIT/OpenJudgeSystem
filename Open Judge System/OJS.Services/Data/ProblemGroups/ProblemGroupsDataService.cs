@@ -19,10 +19,8 @@
 
         public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
 
-        public int? GetIdByContestAndOrderBy(int contestId, int? orderBy) =>
-            this.problemGroups
-                .All()
-                .FirstOrDefault(pg => pg.ContestId == contestId && pg.OrderBy == orderBy)?.Id;
+        public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
+            this.problemGroups.All().Where(pg => pg.ContestId == contestId);
 
         public IQueryable<Problem> GetProblemsById(int id) =>
             this.GetByIdQuery(id)

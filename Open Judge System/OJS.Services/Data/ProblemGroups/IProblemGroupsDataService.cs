@@ -13,7 +13,7 @@
 
         IQueryable<ProblemGroup> GetAll();
 
-        int? GetIdByContestAndOrderBy(int contestId, int? orderBy);
+        IQueryable<ProblemGroup> GetAllByContest(int contestId);
 
         IQueryable<Problem> GetProblemsById(int id);
 
