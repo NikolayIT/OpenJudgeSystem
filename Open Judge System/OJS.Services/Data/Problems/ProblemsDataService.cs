@@ -22,11 +22,6 @@
         public Problem GetWithContestById(int id) =>
             this.problems.All().Include(p => p.ProblemGroup.Contest).FirstOrDefault(p => p.Id == id);
 
-        public int? GetContestIdById(int id) =>
-            this.GetByIdQuery(id)
-                .Select(p => p.ProblemGroup.ContestId)
-                .FirstOrDefault();
-
         public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);
 
         public void DeleteByProblem(Problem problem)
