@@ -18,7 +18,7 @@
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
-    using Resource = Resources.Areas.Administration.ExamGroups.ExamGroupsController;
+    using Resource = Resources.Areas.Administration.ExamGroups.ExamGroupsControllers;
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel;
 
     public class ExamGroupsController : LecturerBaseGridController

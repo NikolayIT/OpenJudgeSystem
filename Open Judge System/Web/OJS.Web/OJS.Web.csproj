@@ -693,13 +693,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestEditor.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.bg.designer.cs">
-      <DependentUpon>ExamGroupsController.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.bg.Designer.cs">
+      <DependentUpon>ExamGroupsControllers.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.designer.cs">
-      <DependentUpon>ExamGroupsController.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.Designer.cs">
+      <DependentUpon>ExamGroupsControllers.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -813,13 +813,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.designer.cs">
-      <DependentUpon>ProblemGroupsController.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.Designer.cs">
+      <DependentUpon>ProblemGroupsControllers.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.designer.cs">
-      <DependentUpon>ProblemGroupsController.bg.resx</DependentUpon>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.bg.Designer.cs">
+      <DependentUpon>ProblemGroupsControllers.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -2706,14 +2706,14 @@
       <LastGenOutput>ContestEditor.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.Partials</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExamGroupsController.bg.designer.cs</LastGenOutput>
+      <LastGenOutput>ExamGroupsControllers.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsController.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExamGroupsController.designer.cs</LastGenOutput>
+      <LastGenOutput>ExamGroupsControllers.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
     </EmbeddedResource>
@@ -2827,14 +2827,14 @@
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.bg.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProblemGroupsController.bg.designer.cs</LastGenOutput>
+      <LastGenOutput>ProblemGroupsControllers.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsController.resx">
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProblemGroupsController.designer.cs</LastGenOutput>
+      <LastGenOutput>ProblemGroupsControllers.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
     </EmbeddedResource>
