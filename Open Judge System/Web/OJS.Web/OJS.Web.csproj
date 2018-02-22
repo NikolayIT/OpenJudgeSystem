@@ -2441,7 +2441,7 @@
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\UsersComboBox.cshtml" />
-    <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\ContestsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
@@ -2465,8 +2465,6 @@
     <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\Contest.cshtml" />
-    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\ContestsComboBox.cshtml" />
-    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\UsersComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />

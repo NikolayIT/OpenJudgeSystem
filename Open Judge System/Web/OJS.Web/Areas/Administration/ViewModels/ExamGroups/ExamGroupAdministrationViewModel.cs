@@ -61,7 +61,7 @@
         [Required(
             ErrorMessageResourceName = "Contest_required",
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ContestDropDown")]
+        [UIHint("ContestsComboBox")]
         public int? ContestId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
