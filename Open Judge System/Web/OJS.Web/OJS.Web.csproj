@@ -2384,7 +2384,6 @@
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ProblemComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Roles\EditorTemplates\AddUserToRole.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_AdministrationLayout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
@@ -2441,7 +2440,7 @@
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\AddUserToExamGroup.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\UsersComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\EditorTemplates\ContestDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />

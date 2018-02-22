@@ -15,7 +15,8 @@
     {
         data
             .ServerFiltering(true)
-            .Read(read => read.Action("GetUsersContaining", "KendoRemoteData").Data("filterUsers"));
+            .Read(read => read.Action("GetUsersContaining", "KendoRemoteData")
+                .Data(@<text> function () { return { userFilter: $('\\#UserId').data("kendoComboBox").input.val() };} </text>));
     })
     .AutoBind(false)
-    .HtmlAttributes(new { style = "width: 100%;" }))
+    .HtmlAttributes(new {style = "width: 100%;"}))
