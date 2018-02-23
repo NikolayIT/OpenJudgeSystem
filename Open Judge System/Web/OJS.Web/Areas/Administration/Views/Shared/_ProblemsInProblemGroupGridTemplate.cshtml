@@ -5,7 +5,7 @@
         .Name("ProblemsInProblemGroup_#=Id#")
         .Columns(columns =>
         {
-            columns.Bound(m => m.Id);
+            columns.Bound(m => m.Id).Hidden();
             columns.Bound(m => m.Name);
         })
         .ColumnMenu()
