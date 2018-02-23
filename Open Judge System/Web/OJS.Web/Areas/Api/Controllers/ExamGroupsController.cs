@@ -90,7 +90,7 @@
 
         private bool IsUsersExamGroupModelValid(UsersExamGroupModel model)
         {
-            var hasUsers = model.UserIds != null && model.UserIds.Any();
+            var hasUsers = model.UserIds?.Any() == true;
             var hasExamGroupId = model.ExamGroupInfoModel.Id != default(int);
             var hasAppId = !string.IsNullOrWhiteSpace(model.AppId);
             var hasRequiredNames = !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamName) &&
