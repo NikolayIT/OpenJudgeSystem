@@ -96,7 +96,9 @@
             var hasRequiredNames = !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamName) &&
                 !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamGroupTrainingLabName);
 
-            return (hasUsers ?? false) && hasExamGroupId && hasAppId && hasRequiredNames;
+            var isModelValid = (hasUsers ?? false) && hasExamGroupId && hasAppId && hasRequiredNames;
+
+            return isModelValid;
         }
     }
 }
