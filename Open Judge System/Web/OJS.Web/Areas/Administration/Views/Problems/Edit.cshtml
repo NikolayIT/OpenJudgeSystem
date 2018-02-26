@@ -182,7 +182,11 @@
                         @Html.ValidationMessageFor(m => m.ProblemGroupId)
                     </div>
                 </div>
-                <br />
+                <br/>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.ProblemGroupId)
             }
             <div class="row">
                 <div class="editor-label col-xs-3">

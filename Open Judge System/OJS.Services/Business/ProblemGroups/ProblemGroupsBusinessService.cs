@@ -21,7 +21,7 @@
 
             if (problemGroup != null)
             {
-                if (!problemGroup.Problems.All(p => p.IsDeleted))
+                if (problemGroup.Problems.Any(p => !p.IsDeleted))
                 {
                     return new ServiceResult(CannotDeleteProblemGroupWithProblems);
                 }
@@ -30,6 +30,18 @@
             }
 
             return ServiceResult.Success;
+        }
+
+        public void DeleteByProblem(int problemId)
+        {
+            var problemGroup = this.problemGroupsData.GetByProblem(problemId);
+
+            if (problemGroup == null || problemGroup.Problems.Any(p => p.IsDeleted))
+            {
+                return;
+            }
+
+            this.problemGroupsData.Delete(problemGroup);
         }
     }
 }

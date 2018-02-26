@@ -39,6 +39,8 @@
 
         bool IsActiveById(int id);
 
+        bool IsOnlineById(int id);
+
         bool ExistsById(int id);
 
         bool IsUserLecturerInByContestAndUser(int id, string userId);

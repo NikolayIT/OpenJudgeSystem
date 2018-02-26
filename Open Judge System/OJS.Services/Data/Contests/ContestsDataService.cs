@@ -80,6 +80,10 @@
             return contest != null && contest.IsActive;
         }
 
+        public bool IsOnlineById(int id) =>
+            this.GetByIdQuery(id).Select(c => c.Type)
+                .FirstOrDefault() == ContestType.OnlinePracticalExam;
+
         public bool ExistsById(int id) => this.GetAll().Any(c => c.Id == id);
 
         public bool IsUserLecturerInByContestAndUser(int id, string userId) =>

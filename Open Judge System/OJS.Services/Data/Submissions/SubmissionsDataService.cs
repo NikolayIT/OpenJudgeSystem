@@ -1,7 +1,6 @@
 ﻿namespace OJS.Services.Data.Submissions
 {
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
 
     using EntityFramework.Extensions;
@@ -23,6 +22,9 @@
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
 
+        public IQueryable<Submission> GetAllByProblem(int problemId) =>
+            this.submissions.All().Where(s => s.ProblemId == problemId);
+
         public IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId) =>
             this.GetAllByProblem(problemId).Where(s => s.ParticipantId == participantId);
 
@@ -32,7 +34,10 @@
         public void SetAllToUnprocessedByProblem(int problemId) =>
             this.GetAllByProblem(problemId).Update(s => new Submission{ Processed = false });
 
-        private IQueryable<Submission> GetAllByProblem(int problemId) =>
-            this.submissions.All().Where(s => s.ProblemId == problemId);
+        public void DeleteByProblem(int problemId) =>
+            this.submissions.Delete(s => s.ProblemId == problemId);
+
+        public void DeleteByContest(int contestId) =>
+            this.submissions.Delete(s => s.Problem.ProblemGroup.ContestId == contestId);
     }
 }

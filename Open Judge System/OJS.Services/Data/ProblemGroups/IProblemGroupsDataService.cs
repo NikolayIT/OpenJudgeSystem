@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.ProblemGroups
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -8,6 +9,8 @@
     public interface IProblemGroupsDataService : IService
     {
         ProblemGroup GetById(int id);
+
+        ProblemGroup GetByProblem(int problemId);
 
         IQueryable<ProblemGroup> GetByIdQuery(int id);
 
@@ -18,5 +21,7 @@
         IQueryable<Problem> GetProblemsById(int id);
 
         void Delete(ProblemGroup problemGroup);
+
+        void DeleteByIds(IEnumerable<int> ids);
     }
 }

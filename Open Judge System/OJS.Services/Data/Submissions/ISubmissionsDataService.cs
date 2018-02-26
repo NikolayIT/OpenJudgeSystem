@@ -10,10 +10,16 @@
     {
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
 
+        IQueryable<Submission> GetAllByProblem(int problemId);
+
         IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId);
 
         IEnumerable<int> GetIdsByProblem(int problemId);
 
         void SetAllToUnprocessedByProblem(int problemId);
+
+        void DeleteByProblem(int problemId);
+
+        void DeleteByContest(int contestId);
     }
 }
