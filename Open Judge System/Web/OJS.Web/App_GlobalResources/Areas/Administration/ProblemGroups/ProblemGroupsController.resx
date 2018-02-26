@@ -123,6 +123,9 @@
   <data name="Active_contest_cannot_delete_problem_group" xml:space="preserve">
     <value>The contest is аctive and you cannot delete problem groups</value>
   </data>
+  <data name="Cannot_crud_non_online_contest" xml:space="preserve">
+    <value>Cannot manipulate problem groups in contest that is NOT Online</value>
+  </data>
   <data name="Contest_does_not_exist" xml:space="preserve">
     <value>The selected contest does not exist</value>
   </data>

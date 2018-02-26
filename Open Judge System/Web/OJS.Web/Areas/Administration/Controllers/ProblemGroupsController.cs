@@ -10,6 +10,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ProblemGroups;
@@ -143,11 +144,24 @@
             if (string.IsNullOrWhiteSpace(model.ContestName))
             {
                 this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_required);
+                return false;
             }
 
-            if (!this.contestsData.ExistsById(model.ContestId))
+            var contest = this.contestsData
+                .GetByIdQuery(model.ContestId)
+                .Select(c => new { c.Type })
+                .FirstOrDefault();
+
+            if (contest == null)
             {
                 this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_does_not_exist);
+                return false;
+            }
+
+            if (contest.Type != ContestType.OnlinePracticalExam)
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Cannot_crud_non_online_contest);
+                return false;
             }
 
             if (!this.CheckIfUserHasContestPermissions(model.ContestId))

@@ -80,6 +80,15 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot manipulate problem groups in contest that is NOT Online.
+        /// </summary>
+        public static string Cannot_crud_non_online_contest {
+            get {
+                return ResourceManager.GetString("Cannot_crud_non_online_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The selected contest does not exist.
         /// </summary>
         public static string Contest_does_not_exist {
