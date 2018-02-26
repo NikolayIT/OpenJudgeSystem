@@ -62,6 +62,24 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The contest is аctive and you cannot add problem groups.
+        /// </summary>
+        public static string Active_contest_cannot_add_problem_group {
+            get {
+                return ResourceManager.GetString("Active_contest_cannot_add_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The contest is аctive and you cannot delete problem groups.
+        /// </summary>
+        public static string Active_contest_cannot_delete_problem_group {
+            get {
+                return ResourceManager.GetString("Active_contest_cannot_delete_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The selected contest does not exist.
         /// </summary>
         public static string Contest_does_not_exist {

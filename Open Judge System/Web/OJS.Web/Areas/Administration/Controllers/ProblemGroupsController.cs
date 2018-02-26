@@ -80,6 +80,12 @@
                 return this.GridOperation(request, model);
             }
 
+            if (this.contestsData.IsActiveById(model.ContestId))
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_cannot_add_problem_group);
+                return this.GridOperation(request, model);
+            }
+
             this.BaseCreate(model.GetEntityModel());
             return this.GridOperation(request, model);
         }
@@ -103,6 +109,12 @@
         {
             if (!this.IsModelAndContestValid(model))
             {
+                return this.GridOperation(request, model);
+            }
+
+            if (this.contestsData.IsActiveById(model.ContestId))
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_cannot_delete_problem_group);
                 return this.GridOperation(request, model);
             }
 
