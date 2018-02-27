@@ -121,11 +121,13 @@
 
         [DatabaseProperty]
         [Display(Name = "Contest_password", ResourceType = typeof(Resource))]
+        [StringLength(GlobalConstants.ContestPasswordMaxLength)]
         [UIHint("SingleLineText")]
         public string ContestPassword { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Practice_password", ResourceType = typeof(Resource))]
+        [StringLength(GlobalConstants.ContestPasswordMaxLength)]
         [UIHint("SingleLineText")]
         public string PracticePassword { get; set; }
 
