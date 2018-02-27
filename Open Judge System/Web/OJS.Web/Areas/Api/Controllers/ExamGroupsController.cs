@@ -90,13 +90,15 @@
 
         private bool IsUsersExamGroupModelValid(UsersExamGroupModel model)
         {
-            var hasUsers = model.UserIds.Any();
+            var hasUsers = model.UserIds?.Any();
             var hasExamGroupId = model.ExamGroupInfoModel.Id != default(int);
             var hasAppId = !string.IsNullOrWhiteSpace(model.AppId);
             var hasRequiredNames = !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamName) &&
                 !string.IsNullOrWhiteSpace(model.ExamGroupInfoModel.ExamGroupTrainingLabName);
 
-            return hasUsers && hasExamGroupId && hasAppId && hasRequiredNames;
+            var isModelValid = (hasUsers ?? false) && hasExamGroupId && hasAppId && hasRequiredNames;
+
+            return isModelValid;
         }
     }
 }

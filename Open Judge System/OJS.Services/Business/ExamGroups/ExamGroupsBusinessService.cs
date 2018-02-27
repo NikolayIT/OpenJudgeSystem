@@ -61,7 +61,6 @@
                     }
 
                     examGroup.Users.Add(user);
-                    this.examGroupsData.Update(examGroup);
                 }
                 else
                 {
@@ -69,6 +68,8 @@
                         x => x.AddExternalUserByIdAndUser(examGroup.Id, userId));
                 }
             }
+
+            this.examGroupsData.Update(examGroup);
         }
 
         public void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
