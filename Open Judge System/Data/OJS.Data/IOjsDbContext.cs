@@ -16,6 +16,8 @@
 
         IDbSet<Problem> Problems { get; }
 
+        IDbSet<ProblemGroup> ProblemGroups { get; }
+
         IDbSet<News> News { get; }
 
         IDbSet<Event> Events { get; }

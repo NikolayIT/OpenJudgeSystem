@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Linq;
+
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -26,11 +27,6 @@
 
         public IQueryable<Problem> GetByContestQuery(int contestId) =>
             this.problems.All().Where(p => p.ProblemGroup.ContestId == contestId);
-
-        public int? GetContestIdById(int id) =>
-            this.GetByIdQuery(id)
-                .Select(p => p.ProblemGroup.ContestId)
-                .FirstOrDefault();
 
         public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);
 

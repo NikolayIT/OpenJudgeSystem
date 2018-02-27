@@ -621,7 +621,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Retest(ProblemRetestViewModel model)
         {
-            if (model == null)
+            if (model == null || !this.problemsData.ExistsById(model.Id))
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
@@ -633,16 +633,10 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            if (!this.problemsData.ExistsById(model.Id))
-            {
-                this.TempData.AddDangerMessage(GlobalResource.Invalid_problem);
-                return this.RedirectToAction<ProblemsController>(c => c.Index());
-            }
-
             this.problemsBusiness.RetestById(model.Id);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_retested);
-            return this.RedirectToAction(c => c.Index(this.problemsData.GetContestIdById(model.Id).Value));
+            return this.RedirectToAction(c => c.Index(model.ContestId));
         }
 
         [HttpGet]

@@ -17,8 +17,6 @@
 
         IQueryable<Problem> GetByContestQuery(int contestId);
 
-        int? GetContestIdById(int id);
-
         bool ExistsById(int id);
 
         bool IsFromOnlineContestById(int id);
