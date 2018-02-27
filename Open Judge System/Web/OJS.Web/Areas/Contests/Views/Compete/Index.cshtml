@@ -134,7 +134,7 @@
             }
             else
             {
-                if (this.ViewBag.IsUserAdminOrLecturer ?? false)
+                if ((this.ViewBag.IsUserAdminOrLecturer ?? false) && contestIsCompete)
                 {
                     var contestRemainingTimeFormat = remainingTimeFormat.Replace(
                         Resource.Remaining_time,
