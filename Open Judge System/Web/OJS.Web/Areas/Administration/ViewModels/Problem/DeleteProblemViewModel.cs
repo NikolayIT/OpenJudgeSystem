@@ -13,7 +13,7 @@
         public static Expression<Func<Problem, DeleteProblemViewModel>> FromProblem =>
             problem => new DeleteProblemViewModel
             {
-                Id = problem.ProblemGroup.Id,
+                Id = problem.Id,
                 ContestId = problem.ProblemGroup.ContestId,
                 Name = problem.Name,
                 ContestName = problem.ProblemGroup.Contest.Name,
