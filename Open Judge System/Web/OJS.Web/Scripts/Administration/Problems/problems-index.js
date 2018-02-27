@@ -45,7 +45,7 @@ function initializeGrid(contestId) {
             columns: [
                 { field: 'Id', title: 'Номер' },
                 { field: 'Name', title: 'Име' },
-                { field: 'ProblemGroupOrderBy', title: 'Група', template: '#= ProblemGroupOrderBy ? ProblemGroupOrderBy : "Няма" #' },
+                { field: 'ProblemGroupOrderBy', title: 'Група' },
                 { field: 'ContestName', title: 'Състезание' },
                 { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                 {
