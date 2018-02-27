@@ -36,7 +36,7 @@
         {
             var problemGroup = this.problemGroupsData.GetByProblem(problemId);
 
-            if (problemGroup == null || problemGroup.Problems.Any(p => p.IsDeleted))
+            if (problemGroup == null || problemGroup.Problems.Any(p => !p.IsDeleted))
             {
                 return;
             }

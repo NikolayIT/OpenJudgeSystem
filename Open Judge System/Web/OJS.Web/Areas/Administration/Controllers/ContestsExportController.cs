@@ -56,7 +56,7 @@
                 contest.Name,
                 Problems = contest.ProblemGroups
                     .Where(pg => !pg.IsDeleted)
-                    .SelectMany(pg => pg.Problems)
+                    .SelectMany(pg => pg.Problems.Where(p => !p.IsDeleted))
                     .AsQueryable()
                     .OrderBy(x => x.OrderBy)
                     .ThenBy(x => x.Name),
@@ -70,7 +70,8 @@
                         ParticipantLastName = participant.User.UserSettings.LastName,
                         Answers = participant.Answers.OrderBy(answer => answer.ContestQuestionId),
                         ProblemResults = participant.Contest.ProblemGroups
-                            .SelectMany(pg => pg.Problems)
+                            .Where(pg => !pg.IsDeleted)
+                            .SelectMany(pg => pg.Problems.Where(p => !p.IsDeleted))
                             .Select(problem =>
                                 new
                                 {
