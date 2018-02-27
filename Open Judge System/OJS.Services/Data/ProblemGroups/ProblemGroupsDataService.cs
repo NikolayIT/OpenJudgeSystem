@@ -27,9 +27,7 @@
             this.problemGroups.All().Where(pg => pg.ContestId == contestId);
 
         public IQueryable<Problem> GetProblemsById(int id) =>
-            this.GetByIdQuery(id)
-                .SelectMany(eg => eg.Problems)
-                .Where(p => !p.IsDeleted);
+            this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
 
         public void Delete(ProblemGroup problemGroup)
         {
@@ -37,14 +35,7 @@
             this.problemGroups.SaveChanges();
         }
 
-        public void DeleteByIds(IEnumerable<int> ids)
-        {
-            foreach (var id in ids)
-            {
-                this.problemGroups.Delete(id);
-            }
-
-            this.problemGroups.SaveChanges();
-        }
+        public void DeleteByIds(IEnumerable<int> ids) =>
+            this.problemGroups.Delete(pg => ids.Contains(pg.Id));
     }
 }
