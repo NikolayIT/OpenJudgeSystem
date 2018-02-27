@@ -126,10 +126,6 @@
                                     <li>@(Html.ActionLink<ContestsController>(Resource.Contests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li>@(Html.ActionLink<ExamGroupsController>(Resource.Exam_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
-                                    <li class="dropdown-header">@Resource.Problems</li>
-                                    <li>@(Html.ActionLink<ProblemsController>(Resource.Problems, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
-                                    <li>@(Html.ActionLink<ProblemGroupsController>(Resource.Problem_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
-                                    <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Users</li>
                                     <li>@(Html.ActionLink<SubmissionsController>(Resource.Submissions, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
