@@ -65,12 +65,6 @@
         public int GetIdById(int id) =>
             this.GetByIdQuery(id).Select(c => c.Id).SingleOrDefault();
 
-        public void DeleteById(int id)
-        {
-            this.contests.Delete(id);
-            this.contests.SaveChanges();
-        }
-
         public bool IsActiveById(int id)
         {
             var contest = this.contests.GetById(id);

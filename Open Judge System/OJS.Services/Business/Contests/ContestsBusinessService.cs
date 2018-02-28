@@ -5,6 +5,7 @@
     using System.Linq;
 
     using OJS.Data.Models;
+    using OJS.Data.Repositories.Contracts;
     using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
@@ -13,17 +14,20 @@
 
     public class ContestsBusinessService : IContestsBusinessService
     {
+        private readonly IEfDeletableEntityRepository<Contest> contests;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IExamGroupsDataService examGroupsData;
 
         public ContestsBusinessService(
+            IEfDeletableEntityRepository<Contest> contests,
             IContestsDataService contestsData,
             IParticipantsDataService participantsData,
             IParticipantScoresDataService participantScoresData,
             IExamGroupsDataService examGroupsData)
         {
+            this.contests = contests;
             this.contestsData = contestsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
@@ -158,7 +162,9 @@
         public void DeleteById(int id)
         {
             this.examGroupsData.RemoveContestByContest(id);
-            this.contestsData.DeleteById(id);
+
+            this.contests.Delete(id);
+            this.contests.SaveChanges();
         }
     }
 }
