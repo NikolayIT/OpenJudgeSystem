@@ -1,14 +1,13 @@
 ﻿namespace OJS.Services.Business.Problems
 {
-    using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using System.Transactions;
 
+    using OJS.Data.Models;
+    using OJS.Data.Repositories.Contracts;
     using OJS.Services.Business.ProblemGroups;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.ProblemResources;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
@@ -18,10 +17,10 @@
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
+        private readonly IEfDeletableEntityRepository<Problem> problems;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IProblemsDataService problemsData;
-        private readonly IProblemGroupsDataService problemGroupsData;
         private readonly IProblemResourcesDataService problemResourcesData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
@@ -30,10 +29,10 @@
         private readonly IProblemGroupsBusinessService problemGroupsBusiness;
 
         public ProblemsBusinessService(
+            IEfDeletableEntityRepository<Problem> problems,
             IContestsDataService contestsData,
             IParticipantScoresDataService participantScoresData,
             IProblemsDataService problemsData,
-            IProblemGroupsDataService problemGroupsData,
             IProblemResourcesDataService problemResourcesData,
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
@@ -41,10 +40,10 @@
             ITestRunsDataService testRunsData,
             IProblemGroupsBusinessService problemGroupsBusiness)
         {
+            this.problems = problems;
             this.contestsData = contestsData;
             this.participantScoresData = participantScoresData;
             this.problemsData = problemsData;
-            this.problemGroupsData = problemGroupsData;
             this.problemResourcesData = problemResourcesData;
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
@@ -71,6 +70,8 @@
 
         public void DeleteById(int id)
         {
+            var isFromOnlineContest = this.problemsData.IsFromOnlineContestById(id);
+
             this.problemResourcesData.DeleteByProblem(id);
 
             this.testRunsData.DeleteByProblem(id);
@@ -79,9 +80,10 @@
 
             this.submissionsData.DeleteByProblem(id);
 
-            this.problemsData.DeleteById(id);
+            this.problems.Delete(id);
+            this.problems.SaveChanges();
 
-            if (!this.problemsData.IsFromOnlineContestById(id))
+            if (!isFromOnlineContest)
             {
                 this.problemGroupsBusiness.DeleteByProblem(id);
             }
@@ -97,27 +99,11 @@
 
             this.submissionsData.DeleteByContest(contestId);
 
-            this.problemsData.DeleteByContest(contestId);
+            this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
 
             if (!this.contestsData.IsOnlineById(contestId))
             {
-                var problemGroups = this.problemGroupsData
-                    .GetAllByContest(contestId)
-                    .Include(pg => pg.Problems);
-
-                var problemGroupIdsMarkedForDeletion = new List<int>();
-
-                foreach (var problemGroup in problemGroups)
-                {
-                    if (problemGroup.Problems.Any(p => !p.IsDeleted))
-                    {
-                        continue;
-                    }
-
-                    problemGroupIdsMarkedForDeletion.Add(problemGroup.Id);
-                }
-
-                this.problemGroupsData.DeleteByIds(problemGroupIdsMarkedForDeletion);
+                this.problemGroupsBusiness.DeleteByContest(contestId);
             }
         }
     }

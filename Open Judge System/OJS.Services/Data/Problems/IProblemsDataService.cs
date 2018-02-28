@@ -24,11 +24,5 @@
         void Add(Problem problem);
 
         void Update(Problem problem);
-
-        void Delete(Problem problem);
-
-        void DeleteById(int id);
-
-        void DeleteByContest(int contestId);
     }
 }

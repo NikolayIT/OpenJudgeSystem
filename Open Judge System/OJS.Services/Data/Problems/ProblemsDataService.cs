@@ -46,20 +46,5 @@
             this.problems.Update(problem);
             this.problems.SaveChanges();
         }
-
-        public void Delete(Problem problem)
-        {
-            this.problems.Delete(problem);
-            this.problems.SaveChanges();
-        }
-
-        public void DeleteById(int id)
-        {
-            this.problems.Delete(id);
-            this.problems.SaveChanges();
-        }
-
-        public void DeleteByContest(int contestId) =>
-            this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
     }
 }

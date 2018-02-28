@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Data.ProblemGroups
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -19,9 +18,5 @@
         IQueryable<ProblemGroup> GetAllByContest(int contestId);
 
         IQueryable<Problem> GetProblemsById(int id);
-
-        void Delete(ProblemGroup problemGroup);
-
-        void DeleteByIds(IEnumerable<int> ids);
     }
 }

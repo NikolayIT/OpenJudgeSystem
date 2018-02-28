@@ -7,5 +7,7 @@
         ServiceResult DeleteById(int id);
 
         void DeleteByProblem(int problemId);
+
+        void DeleteByContest(int contestId);
     }
 }

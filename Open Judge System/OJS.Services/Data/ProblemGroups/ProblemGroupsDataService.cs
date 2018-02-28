@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Data.ProblemGroups
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -28,14 +27,5 @@
 
         public IQueryable<Problem> GetProblemsById(int id) =>
             this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
-
-        public void Delete(ProblemGroup problemGroup)
-        {
-            this.problemGroups.Delete(problemGroup);
-            this.problemGroups.SaveChanges();
-        }
-
-        public void DeleteByIds(IEnumerable<int> ids) =>
-            this.problemGroups.Delete(pg => ids.Contains(pg.Id));
     }
 }
