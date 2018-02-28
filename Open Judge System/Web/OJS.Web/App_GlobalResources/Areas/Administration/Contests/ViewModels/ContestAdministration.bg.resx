@@ -159,6 +159,9 @@
   <data name="Order_required" xml:space="preserve">
     <value>Подредбата е задължителна!</value>
   </data>
+  <data name="Password_max_length" xml:space="preserve">
+    <value>Паролата не може да бъде по-дълга от {1} символа</value>
+  </data>
   <data name="Practice_end_time" xml:space="preserve">
     <value>Край упражнение</value>
   </data>

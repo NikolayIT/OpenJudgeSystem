@@ -121,13 +121,19 @@
 
         [DatabaseProperty]
         [Display(Name = "Contest_password", ResourceType = typeof(Resource))]
-        [StringLength(GlobalConstants.ContestPasswordMaxLength)]
+        [MaxLength(
+            GlobalConstants.ContestPasswordMaxLength,
+            ErrorMessageResourceName = "Password_max_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string ContestPassword { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Practice_password", ResourceType = typeof(Resource))]
-        [StringLength(GlobalConstants.ContestPasswordMaxLength)]
+        [MaxLength(
+            GlobalConstants.ContestPasswordMaxLength,
+            ErrorMessageResourceName = "Password_max_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string PracticePassword { get; set; }
 

@@ -188,6 +188,15 @@ namespace Resources.Areas.Administration.Contests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The password cannot be longer than {1} symbols.
+        /// </summary>
+        public static string Password_max_length {
+            get {
+                return ResourceManager.GetString("Password_max_length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Practice end.
         /// </summary>
         public static string Practice_end_time {

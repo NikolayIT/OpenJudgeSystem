@@ -159,6 +159,9 @@
   <data name="Order_required" xml:space="preserve">
     <value>The order is required!</value>
   </data>
+  <data name="Password_max_length" xml:space="preserve">
+    <value>The password cannot be longer than {1} symbols</value>
+  </data>
   <data name="Practice_end_time" xml:space="preserve">
     <value>Practice end</value>
   </data>
