@@ -77,7 +77,7 @@
             edit.Window(w => w.Title(ViewBag.Title));
             // edit.AdditionalViewData(new { RoleId = "#= RoleId #" });
             // TODO: Send to editor template the current RoleId so that users in current role cannot dublicate
-            edit.TemplateName("AddUserToRole");
+            edit.TemplateName("UsersComboBox");
             edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .Pageable(x => x.Refresh(true))

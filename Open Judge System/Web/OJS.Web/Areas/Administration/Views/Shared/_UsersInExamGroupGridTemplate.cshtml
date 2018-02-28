@@ -26,7 +26,7 @@
         {
             editable.Mode(GridEditMode.PopUp);
             editable.Window(w => w.Title(Resource.Add_user));
-            editable.TemplateName("AddUserToExamGroup");
+            editable.TemplateName("UsersComboBox");
             editable.DisplayDeleteConfirmation(Resource.Remove_user_prompt);
         })
         .Pageable(x => x.Refresh(true))
@@ -39,12 +39,11 @@
                 .ServerOperation(true)
                 .Model(model => model.Id(m => m.UserId))
                 .Sort(sort => sort.Add(field => field.Username))
-                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #", area = "Administration" }))
+                .Create(create => create.Action("AddUserToExamGroup", ControllerName, new { id = "#= Id #" }))
                 .Read(read => read.Action("UsersInExamGroup", ControllerName, new { id = "#= Id #" }))
                 .Destroy(destroy => destroy.Action("RemoveUserFromExamGroup", ControllerName, new { id = "#= Id #" }))
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
         .Events(ev => ev.DataBound("onDetailDataBound"))
-        .ToClientTemplate()
-    )
+        .ToClientTemplate())
 </script>

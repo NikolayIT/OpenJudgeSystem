@@ -1,4 +1,6 @@
-﻿@using OJS.Web.ViewModels
+﻿@using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.ViewModels;
+
 @using Resource = Resources.Views.Shared.Layout;
 
 <!DOCTYPE html>
@@ -82,50 +84,50 @@
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Categories, GlobalConstants.Index, "ContestCategories", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Category_hierarchy, "Hierarchy", "ContestCategories", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Participants, GlobalConstants.Index, "Participants", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Exam_groups, GlobalConstants.Index, "ExamGroups", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ContestsController>(Resource.Contests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ContestCategoriesController>(Resource.Categories, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ContestCategoriesController>(Resource.Category_hierarchy, c => c.Hierarchy(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ParticipantsController>(Resource.Participants, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ExamGroupsController>(Resource.Exam_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Problems</li>
-                                    <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Problem_groups, GlobalConstants.Index, "ProblemGroups", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Tests, GlobalConstants.Index, "Tests", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ProblemsController>(Resource.Problems, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ProblemGroupsController>(Resource.Problem_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<TestsController>(Resource.Tests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Users</li>
-                                    <li>@Html.ActionLink(Resource.Users, GlobalConstants.Index, "Users", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Roles, GlobalConstants.Index, "Roles", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.LecturersInContestAndCategories, GlobalConstants.Index, "Lecturers", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<UsersController>(Resource.Users, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SubmissionsController>(Resource.Submissions, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<RolesController>(Resource.Roles, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<LecturersController>(Resource.LecturersInContestAndCategories, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Other</li>
-                                    <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.SubmissionTypes, GlobalConstants.Index, "SubmissionTypes", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Log, GlobalConstants.Index, "AccessLogs", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<NewsController>(Resource.News, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<FeedbackController>(Resource.Feedback, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<CheckersController>(Resource.Checkers, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SubmissionTypesController>(Resource.SubmissionTypes, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SettingsController>(Resource.Settings, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<AccessLogsController>(Resource.Log, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Anti-cheat</li>
-                                    <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.SubmissionSimilarity, "BySubmissionSimilarity", "AntiCheat", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<AntiCheatController>(Resource.IpUsage, c => c.ByIp(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<AntiCheatController>(Resource.SubmissionSimilarity, c => c.BySubmissionSimilarity(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Debugging</li>
                                     <li><a href="/Glimpse.axd">Glimpse</a></li>
                                     <li class="divider"></li>
-                                    <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<NavigationController>(Resource.All_administrations, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
                             }
                             else if (this.User.IsLecturer())
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Exam_groups, GlobalConstants.Index, "ExamGroups", new { area = "Administration" }, null)</li>
-                                    <li class="dropdown-header">@Resource.Problems</li>
-                                    <li>@Html.ActionLink(Resource.Problem_groups, GlobalConstants.Index, "ProblemGroups", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ContestsController>(Resource.Contests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ExamGroupsController>(Resource.Exam_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li class="divider"></li>
+                                    <li class="dropdown-header">@Resource.Users</li>
+                                    <li>@(Html.ActionLink<SubmissionsController>(Resource.Submissions, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
                             }
                         </li>
