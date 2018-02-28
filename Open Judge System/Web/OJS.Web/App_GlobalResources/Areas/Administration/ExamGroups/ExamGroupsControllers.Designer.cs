@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration.ExamGroups {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ExamGroupsController {
+    public class ExamGroupsControllers {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExamGroupsController() {
+        internal ExamGroupsControllers() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Resources.Areas.Administration.ExamGroups {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ExamGroups.ExamGroupsController", typeof(ExamGroupsController).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ExamGroups.ExamGroupsControllers" +
+                            "", typeof(ExamGroupsControllers).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

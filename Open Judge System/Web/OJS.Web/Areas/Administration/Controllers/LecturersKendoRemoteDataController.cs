@@ -40,7 +40,7 @@
 
             if (!string.IsNullOrWhiteSpace(contestFilter))
             {
-                contests = contests.Where(c => c.Name.Contains(contestFilter));
+                contests = contests.Where(c => c.Name.Contains(contestFilter)).Take(DefaultItemsToTake);
             }
 
             var result = contests
@@ -49,8 +49,7 @@
                 {
                     Name = c.Name,
                     Id = c.Id
-                })
-                .Take(DefaultItemsToTake);
+                });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
