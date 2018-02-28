@@ -30,11 +30,6 @@
 
         public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);
 
-        public bool IsFromOnlineContestById(int id) =>
-            this.GetByIdQuery(id)
-                .Select(p => p.ProblemGroup.Contest.Type)
-                .FirstOrDefault() == ContestType.OnlinePracticalExam;
-
         public void Add(Problem problem)
         {
             this.problems.Add(problem);

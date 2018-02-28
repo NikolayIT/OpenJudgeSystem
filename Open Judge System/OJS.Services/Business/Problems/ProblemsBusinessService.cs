@@ -13,7 +13,6 @@
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
-    using OJS.Services.Data.Tests;
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
@@ -24,7 +23,6 @@
         private readonly IProblemResourcesDataService problemResourcesData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
-        private readonly ITestsDataService testsData;
         private readonly ITestRunsDataService testRunsData;
         private readonly IProblemGroupsBusinessService problemGroupsBusiness;
 
@@ -36,7 +34,6 @@
             IProblemResourcesDataService problemResourcesData,
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
-            ITestsDataService testsData,
             ITestRunsDataService testRunsData,
             IProblemGroupsBusinessService problemGroupsBusiness)
         {
@@ -47,7 +44,6 @@
             this.problemResourcesData = problemResourcesData;
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
-            this.testsData = testsData;
             this.testRunsData = testRunsData;
             this.problemGroupsBusiness = problemGroupsBusiness;
         }
@@ -70,32 +66,40 @@
 
         public void DeleteById(int id)
         {
-            var isFromOnlineContest = this.problemsData.IsFromOnlineContestById(id);
+            var problem = this.problemsData
+                .GetByIdQuery(id)
+                .Select(p => new
+                {
+                    p.ProblemGroupId,
+                    p.ProblemGroup.ContestId
+                })
+                .FirstOrDefault();
 
-            this.problemResourcesData.DeleteByProblem(id);
+            if (problem == null)
+            {
+                return;
+            }
 
             this.testRunsData.DeleteByProblem(id);
 
-            this.testsData.DeleteByProblem(id);
+            this.problemResourcesData.DeleteByProblem(id);
 
             this.submissionsData.DeleteByProblem(id);
 
             this.problems.Delete(id);
             this.problems.SaveChanges();
 
-            if (!isFromOnlineContest)
+            if (!this.contestsData.IsOnlineById(problem.ContestId))
             {
-                this.problemGroupsBusiness.DeleteByProblem(id);
+                this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
             }
         }
 
         public void DeleteByContest(int contestId)
         {
-            this.problemResourcesData.DeleteByContest(contestId);
-
             this.testRunsData.DeleteByContest(contestId);
 
-            this.testsData.DeleteByContest(contestId);
+            this.problemResourcesData.DeleteByContest(contestId);
 
             this.submissionsData.DeleteByContest(contestId);
 

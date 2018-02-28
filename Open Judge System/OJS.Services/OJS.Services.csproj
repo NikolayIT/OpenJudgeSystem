@@ -100,8 +100,6 @@
     <Compile Include="Data\SubmissionTypes\SubmissionTypesDataService.cs" />
     <Compile Include="Data\TestRuns\ITestRunsDataService.cs" />
     <Compile Include="Data\TestRuns\TestRunsDataService.cs" />
-    <Compile Include="Data\Tests\ITestsDataService.cs" />
-    <Compile Include="Data\Tests\TestsDataService.cs" />
     <Compile Include="Data\Users\IUsersDataService.cs" />
     <Compile Include="Data\Users\UsersDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

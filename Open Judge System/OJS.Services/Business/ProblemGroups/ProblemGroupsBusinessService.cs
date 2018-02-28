@@ -40,27 +40,18 @@
             return ServiceResult.Success;
         }
 
-        public void DeleteByProblem(int problemId)
-        {
-            var problemGroup = this.problemGroupsData.GetByProblem(problemId);
-
-            if (problemGroup == null || problemGroup.Problems.Any(p => !p.IsDeleted))
-            {
-                return;
-            }
-
-            this.Delete(problemGroup);
-        }
-
         public void DeleteByContest(int contestId)
         {
             var problemGroupIds = this.problemGroupsData
                 .GetAllByContest(contestId)
-                .Where(pg => pg.Problems.All(p => p.IsDeleted))
+                .Where(pg => !pg.IsDeleted && pg.Problems.All(p => p.IsDeleted))
                 .Select(pg => pg.Id)
                 .ToList();
 
-            this.problemGroups.Delete(pg => problemGroupIds.Contains(pg.Id));
+            if (problemGroupIds.Any())
+            {
+                this.problemGroups.Delete(pg => problemGroupIds.Contains(pg.Id));
+            }
         }
 
         private void Delete(ProblemGroup problemGroup)

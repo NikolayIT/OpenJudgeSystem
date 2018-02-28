@@ -19,8 +19,6 @@
 
         bool ExistsById(int id);
 
-        bool IsFromOnlineContestById(int id);
-
         void Add(Problem problem);
 
         void Update(Problem problem);
