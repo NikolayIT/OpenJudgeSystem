@@ -87,10 +87,7 @@
 
             if (categoryId.HasValue)
             {
-                var categoryName = this.contestCategoriesData
-                    .GetByIdQuery(categoryId.Value)
-                    .Select(c => c.Name)
-                    .FirstOrDefault();
+                var categoryName = this.contestCategoriesData.GetNameById(categoryId.Value);
 
                 if (categoryName != null)
                 {

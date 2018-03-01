@@ -12,7 +12,11 @@
         public ContestCategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
-        public IQueryable<ContestCategory> GetByIdQuery(int id) =>
-            this.contestCategories.All().Where(cc => cc.Id == id);
+        public string GetNameById(int id) =>
+            this.contestCategories
+                .All()
+                .Where(cc => cc.Id == id)
+                .Select(cc => cc.Name)
+                .FirstOrDefault();
     }
 }
