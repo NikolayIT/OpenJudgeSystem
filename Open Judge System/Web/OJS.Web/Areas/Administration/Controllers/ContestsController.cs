@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -16,13 +15,11 @@
     using OJS.Data.Models;
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
+    using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
-    using OJS.Services.Data.Participants;
-    using OJS.Services.Data.ParticipantScores;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
-    using OJS.Web.Areas.Contests.Helpers;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
@@ -37,21 +34,21 @@
         private const int StartTimeDelayInSeconds = 10;
         private const int LabDurationInSeconds = 30 * 60;
 
-        private readonly IParticipantScoresDataService participantScoresData;
         private readonly IContestsDataService contestsData;
+        private readonly IContestCategoriesDataService contestCategoriesData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData,
             IContestsDataService contestsData,
+            IContestCategoriesDataService contestCategoriesData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
-            this.participantScoresData = participantScoresData;
             this.contestsData = contestsData;
+            this.contestCategoriesData = contestCategoriesData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
         }        
@@ -82,10 +79,27 @@
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? categoryId)
         {
             this.PrepareViewBagData();
-            return this.View(new ViewModelType());
+
+            var viewModel = new ViewModelType();
+
+            if (categoryId.HasValue)
+            {
+                var categoryName = this.contestCategoriesData
+                    .GetByIdQuery(categoryId.Value)
+                    .Select(c => c.Name)
+                    .FirstOrDefault();
+
+                if (categoryName != null)
+                {
+                    viewModel.CategoryId = categoryId;
+                    viewModel.CategoryName = categoryName;
+                }
+            }
+
+            return this.View(viewModel);
         }
 
         [HttpPost]

@@ -71,6 +71,10 @@ input[type="checkbox"].input-validation-error {
     margin-top: 10px;
 }
 
+.top-buffer-lg {
+    margin-top: 15px;
+}
+
 .bottom-buffer {
     margin-bottom: 10px;
 }
