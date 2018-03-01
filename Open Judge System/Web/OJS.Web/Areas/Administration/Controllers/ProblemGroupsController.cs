@@ -10,6 +10,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ProblemGroups;
@@ -80,6 +81,12 @@
                 return this.GridOperation(request, model);
             }
 
+            if (this.contestsData.IsActiveById(model.ContestId))
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_cannot_add_problem_group);
+                return this.GridOperation(request, model);
+            }
+
             this.BaseCreate(model.GetEntityModel());
             return this.GridOperation(request, model);
         }
@@ -103,6 +110,12 @@
         {
             if (!this.IsModelAndContestValid(model))
             {
+                return this.GridOperation(request, model);
+            }
+
+            if (this.contestsData.IsActiveById(model.ContestId))
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Active_contest_cannot_delete_problem_group);
                 return this.GridOperation(request, model);
             }
 
@@ -131,11 +144,24 @@
             if (string.IsNullOrWhiteSpace(model.ContestName))
             {
                 this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_required);
+                return false;
             }
 
-            if (!this.contestsData.ExistsById(model.ContestId))
+            var contest = this.contestsData
+                .GetByIdQuery(model.ContestId)
+                .Select(c => new { c.Type })
+                .FirstOrDefault();
+
+            if (contest == null)
             {
                 this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_does_not_exist);
+                return false;
+            }
+
+            if (contest.Type != ContestType.OnlinePracticalExam)
+            {
+                this.ModelState.AddModelError(string.Empty, Resource.Cannot_crud_non_online_contest);
+                return false;
             }
 
             if (!this.CheckIfUserHasContestPermissions(model.ContestId))
