@@ -139,5 +139,28 @@
 
             return this.Content($"Successfully enqueued {submissionIds.Count()} submissions for retesting.");
         }
+
+        public ActionResult MakeOrderByZeroToAllContestsInProgrammingBasicsExamsCategory()
+        {
+            const int ProgrammingBasicsExamsCategoryId = 38;
+
+            var categoryName = this.Data.ContestCategories
+                .All()
+                .Where(cc => cc.Id == ProgrammingBasicsExamsCategoryId)
+                .Select(cc => cc.Name)
+                .FirstOrDefault();
+
+            if (categoryName == null)
+            {
+                return this.Content("Category not found");
+            }
+
+            var contestsAffected = this.Data.Contests
+                .All()
+                .Where(c => c.CategoryId == ProgrammingBasicsExamsCategoryId)
+                .Update(c => new Contest { OrderBy = 0 });
+
+            return this.Content($"Changed OrderBy of {contestsAffected} contests in the category {categoryName}");
+        }
     }
 }
