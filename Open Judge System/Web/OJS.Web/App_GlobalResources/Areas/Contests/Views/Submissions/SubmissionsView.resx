@@ -171,9 +171,6 @@
   <data name="Submission_is_deleted" xml:space="preserve">
     <value>This submission is deleted!!!</value>
   </data>
-  <data name="Submission_is_processing" xml:space="preserve">
-    <value>This submission is being processed at the moment... Please wait.</value>
-  </data>
   <data name="Test" xml:space="preserve">
     <value>Test #</value>
   </data>

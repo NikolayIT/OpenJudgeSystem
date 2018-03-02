@@ -3,11 +3,15 @@
 @using OJS.Web.Areas.Contests.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
+@using AdministrationResource = Resources.Areas.Administration.AdministrationGeneral
 
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
-    ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName, Model.ProblemName);
+    var action = Model.IsContestActive ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
+    var problemNameAsLink = $@"<a href=""/Contests/{action}/{GlobalConstants.Index}/{Model.ContestId}#{Model.ProblemIndexInContest}"">{Model.ProblemName}</a>";
+
+    ViewBag.Title = Html.Raw(string.Format(Resource.Title, Model.Id, Model.UserName, problemNameAsLink));
 }
 
 @section styles {
@@ -81,14 +85,7 @@
 
 @if (!Model.Processed)
 {
-    if (Model.Processing)
-    {
-        <div class="alert alert-info top-buffer">@Resource.Submission_is_processing</div>
-    }
-    else
-    {
-        <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
-    }
+    <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
 }
 else
 {
@@ -324,6 +321,8 @@ else
 {
     <textarea id="code">@Model.ContentAsString</textarea>
 }
+
+<p class="top-buffer">@AdministrationResource.Created_on: @Model.CreatedOn</p>
 
 <script>
     function onTestInputDataSuccess() {
