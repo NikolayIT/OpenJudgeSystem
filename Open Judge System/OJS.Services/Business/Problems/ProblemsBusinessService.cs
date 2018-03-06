@@ -80,35 +80,45 @@
                 return;
             }
 
-            this.testRunsData.DeleteByProblem(id);
-
-            this.problemResourcesData.DeleteByProblem(id);
-
-            this.submissionsData.DeleteByProblem(id);
-
-            this.problems.Delete(id);
-            this.problems.SaveChanges();
-
-            if (!this.contestsData.IsOnlineById(problem.ContestId))
+            using (var transaction = this.problems.BeginTransaction())
             {
-                this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
+                this.testRunsData.DeleteByProblem(id);
+
+                this.problemResourcesData.DeleteByProblem(id);
+
+                this.submissionsData.DeleteByProblem(id);
+
+                this.problems.Delete(id);
+                this.problems.SaveChanges();
+
+                if (!this.contestsData.IsOnlineById(problem.ContestId))
+                {
+                    this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
+                }
+
+                transaction.Commit();
             }
         }
 
         public void DeleteByContest(int contestId)
         {
-            this.testRunsData.DeleteByContest(contestId);
-
-            this.problemResourcesData.DeleteByContest(contestId);
-
-            this.submissionsData.DeleteByContest(contestId);
-
-            this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
-
-            if (!this.contestsData.IsOnlineById(contestId))
+            using (var transaction = this.problems.BeginTransaction())
             {
-                this.problemGroupsBusiness.DeleteByContest(contestId);
-            }
+                this.testRunsData.DeleteByContest(contestId);
+
+                this.problemResourcesData.DeleteByContest(contestId);
+
+                this.submissionsData.DeleteByContest(contestId);
+
+                this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
+
+                if (!this.contestsData.IsOnlineById(contestId))
+                {
+                    this.problemGroupsBusiness.DeleteByContest(contestId);
+                }
+
+                transaction.Commit();
+            } 
         }
     }
 }

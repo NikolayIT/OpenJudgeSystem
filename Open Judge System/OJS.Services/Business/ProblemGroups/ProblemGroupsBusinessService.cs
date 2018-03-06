@@ -34,30 +34,16 @@
                     return new ServiceResult(CannotDeleteProblemGroupWithProblems);
                 }
 
-                this.Delete(problemGroup);
+                this.problemGroups.Delete(problemGroup);
+                this.problemGroups.SaveChanges();
             }
 
             return ServiceResult.Success;
         }
 
-        public void DeleteByContest(int contestId)
-        {
-            var problemGroupIds = this.problemGroupsData
-                .GetAllByContest(contestId)
-                .Where(pg => !pg.IsDeleted && pg.Problems.All(p => p.IsDeleted))
-                .Select(pg => pg.Id)
-                .ToList();
-
-            if (problemGroupIds.Any())
-            {
-                this.problemGroups.Delete(pg => problemGroupIds.Contains(pg.Id));
-            }
-        }
-
-        private void Delete(ProblemGroup problemGroup)
-        {
-            this.problemGroups.Delete(problemGroup);
-            this.problemGroups.SaveChanges();
-        }
+        public void DeleteByContest(int contestId) =>
+            this.problemGroups.Delete(pg => pg.ContestId == contestId &&
+                !pg.IsDeleted &&
+                pg.Problems.All(p => p.IsDeleted));
     }
 }
