@@ -13,7 +13,7 @@
 
         public IEnumerable<ProblemResultPairViewModel> ProblemResults { get; set; }
 
-        public string ParticipantFullName => $"{this.ParticipantFirstName} {this.ParticipantLastName}";
+        public string ParticipantFullName => $"{this.ParticipantFirstName?.Trim()} {this.ParticipantLastName?.Trim()}";
 
         public int Total => this.ProblemResults
             .Where(pr => pr.ShowResult)

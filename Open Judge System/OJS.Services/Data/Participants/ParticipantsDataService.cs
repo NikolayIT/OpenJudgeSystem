@@ -16,8 +16,8 @@
     {
         private readonly IEfGenericRepository<Participant> participants;
 
-        public ParticipantsDataService(IEfGenericRepository<Participant> participnats) =>
-            this.participants = participnats;
+        public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
+            this.participants = participants;
 
         public void Add(Participant participant)
         {
@@ -80,7 +80,7 @@
                     p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);
 
-        public IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficialQuery(int contestId, bool isOfficial) =>
+        public IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficial(int contestId, bool isOfficial) =>
             this.participants
                 .All()
                 .Where(p => p.ContestId == contestId && p.Scores.Any() && p.IsOfficial == isOfficial);

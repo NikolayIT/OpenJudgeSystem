@@ -22,11 +22,7 @@
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.FullPartial(
-                    Model.Id,
-                    isOfficial,
-                    page,
-                    results.PageSize)),
+                c => c.FullPartial(Model.Id,isOfficial,page,results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",
@@ -38,7 +34,6 @@
 
     @if (results.Count > 0)
     {
-        <script src="/Scripts/Helpers/test-results.js"></script>
         <table class="table table-striped">
             <tr>
                 <th>№</th>
@@ -55,6 +50,7 @@
 
                 <th>@Resource.Total</th>
             </tr>
+
             @for (var i = 0; i < results.Count; i++)
             {
                 var participant = results[i];
@@ -102,22 +98,18 @@
             }
 
         </table>
-                    }
-                    else
-                    {
-                        <h2>@Resource.NoMoreResults</h2>
-                    }
+    }
+    else
+    {
+        <h2>@Resource.NoMoreResults</h2>
+    }
 
     @if (results.PageCount > 1)
     {
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.FullPartial(
-                    Model.Id,
-                    isOfficial,
-                    page,
-                    results.PageSize)),
+                c => c.FullPartial(Model.Id, isOfficial,page, results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",
@@ -127,5 +119,5 @@
             }))
     }
     
-    @Html.Partial("_LoadingMaskPartial", LoadingMaskContainerId)
+    @Html.Partial("_LoadingMask", LoadingMaskContainerId)
 </div>

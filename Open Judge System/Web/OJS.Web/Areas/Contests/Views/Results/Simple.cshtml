@@ -1,6 +1,5 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
-@using OJS.Common.Models
 @using OJS.Web.Areas.Administration.Controllers
 @using OJS.Web.Areas.Contests.Controllers
 
@@ -12,11 +11,7 @@
 }
 
 @section Styles {
-    <link href="/Content/Contests/results-page.css" rel="stylesheet" />
-}
-
-@section Scripts {
-    <script src="/Scripts/Contests/results-pagination.js"></script>
+    @Styles.Render("~/Content/Contests/results-page")
 }
 
 <ol class="breadcrumb">
@@ -33,12 +28,16 @@
     @if (User.IsAdmin())
     {
         <span>
-            @(Html.ActionLink<ResultsController>(Resource.Detailed_results, c => c.Full(Model.Id, Model.IsCompete, null), null, new {@class = "btn btn-primary"}))
+            @(Html.ActionLink<ResultsController>(Resource.Detailed_results, c => c.Full(Model.Id, Model.IsCompete, null), null, new { @class = "btn btn-primary" }))
         </span>
         <span>
-            @(Html.ActionLink<ContestsExportController>(Resource.Export_results, c => c.Results(Model.Id, Model.IsCompete), null, new {@class = "btn btn-primary"}))
+            @(Html.ActionLink<ContestsExportController>(Resource.Export_results, c => c.Results(Model.Id, Model.IsCompete), null, new { @class = "btn btn-primary" }))
         </span>
     }
 </h3>
 
-@Html.Partial("_SimplePartial", Model)
+@Html.Partial("_SimpleResultsPagedList", Model)
+
+@section Scripts {
+    @Scripts.Render("~/bundles/simple-results-page")
+}

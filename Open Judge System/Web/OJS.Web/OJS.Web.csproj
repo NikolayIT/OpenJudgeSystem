@@ -2361,9 +2361,9 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
-    <Content Include="Areas\Contests\Views\Results\_SimplePartial.cshtml" />
-    <Content Include="Areas\Contests\Views\Shared\_LoadingMaskPartial.cshtml" />
-    <Content Include="Areas\Contests\Views\Results\_FullPartial.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\_SimpleResultsPagedList.cshtml" />
+    <Content Include="Areas\Contests\Views\Shared\_LoadingMask.cshtml" />
+    <Content Include="Areas\Contests\Views\Results\_FullResultsPagedList.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

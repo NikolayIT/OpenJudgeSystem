@@ -5,16 +5,12 @@
 @using Resource = Resources.Areas.Contests.Views.ResultsFull
 
 @section Styles {
-    <link href="/Content/Contests/results-page.css" rel="stylesheet" />
+    @Styles.Render("~/Content/Contests/results-page")
 }
 
 @{
     ViewBag.Title = string.Format(Resource.Title, Model.Name);
     var isOfficial = Model.IsCompete;
-}
-
-@section Scripts {
-    <script src="/Scripts/Contests/results-pagination.js"></script>
 }
 
 <ol class="breadcrumb">
@@ -26,7 +22,7 @@
 <h1>@ViewBag.Title</h1>
 <h2>
     <span>
-        @(Html.ActionLink<ResultsController>(Resource.Public_results, c => c.Simple(Model.Id, Model.IsCompete, null), null, new {@class = "btn btn-primary"}))
+        @(Html.ActionLink<ResultsController>(Resource.Public_results, c => c.Simple(Model.Id, Model.IsCompete, null), null, new { @class = "btn btn-primary" }))
     </span>
 </h2>
 
@@ -45,7 +41,8 @@
         }))
 </h4>
 <div id="StatsContainer"></div>
-@Html.Partial("_LoadingMaskPartial", "stats-container")
+
+@Html.Partial("_LoadingMask", "stats-container")
 
 <br />
 
@@ -67,4 +64,8 @@
 
 <br />
 
-@Html.Partial("_FullPartial", Model)
+@Html.Partial("_FullResultsPagedList", Model)
+
+@section Scripts {
+    @Scripts.Render("~/bundles/full-results-page")
+}

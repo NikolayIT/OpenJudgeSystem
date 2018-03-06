@@ -15,22 +15,13 @@
     var results = Model.Results;
 }
 
-@section Styles {
-    <link href="/Content/Contests/results-page.css" rel="stylesheet" />
-}
-
 <div class="results-container" id="@ResultsContainerId">
     @if (results.PageCount > 1)
     {
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.SimplePartial(
-                    Model.Id,
-                    isOfficial,
-                    Model.UserIsLecturerInContest,
-                    page,
-                    results.PageSize)),
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",
@@ -153,12 +144,7 @@
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.SimplePartial(
-                    Model.Id,
-                    isOfficial,
-                    Model.UserIsLecturerInContest,
-                    page,
-                    results.PageSize)),
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",
@@ -168,5 +154,5 @@
             }))
     }
 
-    @Html.Partial("_LoadingMaskPartial", LoadingMaskContainerId)
+    @Html.Partial("_LoadingMask", LoadingMaskContainerId)
 </div>

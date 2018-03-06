@@ -11,10 +11,6 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    using MissingFeatures;
-
-    using X.PagedList;
-
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -25,7 +21,9 @@
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
-    
+
+    using X.PagedList;
+
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class ResultsController : BaseController
@@ -184,7 +182,7 @@
                 }
             }
 
-            return this.PartialView("_SimplePartial", contestResults);
+            return this.PartialView("_SimpleResultsPagedList", contestResults);
         }
 
         // TODO: Unit test
@@ -238,7 +236,7 @@
                 page: page,
                 resultsInPage: resultsInPage);
 
-            return this.PartialView("_FullPartial", contestResults);
+            return this.PartialView("_FullResultsPagedList", contestResults);
         }   
 
         [Authorize]
@@ -457,7 +455,7 @@
             bool isFullResults)
         {
             var participantsInContest = this.participantsData
-                .GetAllWithScoresByContestIdAndIsOfficialQuery(contestId, official);
+                .GetAllWithScoresByContestIdAndIsOfficial(contestId, official);
 
             if (isFullResults)
             {
