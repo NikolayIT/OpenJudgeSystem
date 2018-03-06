@@ -14,6 +14,8 @@
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
 
+    using IsolationLevel = System.Data.IsolationLevel;
+
     public class ProblemsBusinessService : IProblemsBusinessService
     {
         private readonly IEfDeletableEntityRepository<Problem> problems;
@@ -80,7 +82,7 @@
                 return;
             }
 
-            using (var transaction = this.problems.BeginTransaction())
+            using (var transaction = this.problems.BeginTransaction(IsolationLevel.RepeatableRead))
             {
                 this.testRunsData.DeleteByProblem(id);
 
@@ -102,7 +104,7 @@
 
         public void DeleteByContest(int contestId)
         {
-            using (var transaction = this.problems.BeginTransaction())
+            using (var transaction = this.problems.BeginTransaction(IsolationLevel.RepeatableRead))
             {
                 this.testRunsData.DeleteByContest(contestId);
 
