@@ -60,7 +60,7 @@
 
                 this.submissionsData.SetAllToUnprocessedByProblem(id);
 
-                this.submissionsForProcessingData.AddOrUpdate(submissionIds);
+                this.submissionsForProcessingData.AddOrUpdateBySubmissionIds(submissionIds);
 
                 scope.Complete();
             }

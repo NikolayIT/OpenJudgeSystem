@@ -2,8 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using EntityFramework.Extensions;
+    using System.Transactions;
 
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -12,27 +11,25 @@
     {
         private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
-        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing)
-        {
+        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing) =>
             this.submissionsForProcessing = submissionsForProcessing;
-        }
 
-        public void AddOrUpdate(IEnumerable<int> submissionIds)
+        public void AddOrUpdateBySubmissionIds(IEnumerable<int> submissionIds)
         {
-            try
+            using (var scope = new TransactionScope())
             {
-                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = false;
-                foreach (var submissionId in submissionIds)
-                {
-                    this.AddOrUpdateWithNoSaveChanges(submissionId);
-                }
-            }
-            finally
-            {
-                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = true;
-            }
+                this.submissionsForProcessing.Delete(sfp => submissionIds.Contains(sfp.SubmissionId));
 
-            this.submissionsForProcessing.SaveChanges();
+                var newSubmissionsForProcessing = submissionIds
+                    .Select(sId => new SubmissionForProcessing
+                    {
+                        SubmissionId = sId
+                    });
+
+                this.submissionsForProcessing.Add(newSubmissionsForProcessing);
+
+                scope.Complete();
+            }
         }
 
         public void AddOrUpdateBySubmissionId(int submissionId)
@@ -109,29 +106,7 @@
         public ICollection<int> GetProcessingSubmissionIds() => this.submissionsForProcessing
             .All().Where(sfp => sfp.Processing && !sfp.Processed).Select(sfp => sfp.Id).ToList();
 
-        public void Clean() => this.submissionsForProcessing
-            .All()
-            .Where(sfp => sfp.Processed && !sfp.Processing)
-            .Delete();
-
-        private void AddOrUpdateWithNoSaveChanges(int submissionId)
-        {
-            var submissionForProcessing = this.GetBySubmissionId(submissionId);
-
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = false;
-            }
-            else
-            {
-                submissionForProcessing = new SubmissionForProcessing
-                {
-                    SubmissionId = submissionId
-                };
-
-                this.submissionsForProcessing.Add(submissionForProcessing);
-            }
-        }
+        public void Clean() =>
+            this.submissionsForProcessing.Delete(sfp => sfp.Processed && !sfp.Processing);
     }
 }
