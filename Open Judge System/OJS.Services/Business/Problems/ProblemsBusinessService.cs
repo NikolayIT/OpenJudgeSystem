@@ -82,7 +82,7 @@
                 return;
             }
 
-            using (var transaction = this.problems.BeginTransaction(IsolationLevel.RepeatableRead))
+            using (var scope = new TransactionScope())
             {
                 this.testRunsData.DeleteByProblem(id);
 
@@ -98,13 +98,13 @@
                     this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
                 }
 
-                transaction.Commit();
+                scope.Complete();
             }
         }
 
         public void DeleteByContest(int contestId)
         {
-            using (var transaction = this.problems.BeginTransaction(IsolationLevel.RepeatableRead))
+            using (var scope = new TransactionScope())
             {
                 this.testRunsData.DeleteByContest(contestId);
 
@@ -119,7 +119,7 @@
                     this.problemGroupsBusiness.DeleteByContest(contestId);
                 }
 
-                transaction.Commit();
+                scope.Complete();
             } 
         }
     }

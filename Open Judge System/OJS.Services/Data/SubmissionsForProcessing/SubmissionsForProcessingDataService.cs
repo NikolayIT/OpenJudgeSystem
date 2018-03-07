@@ -4,27 +4,35 @@
     using System.Linq;
     using System.Transactions;
 
+    using MissingFeatures;
+
+    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsForProcessingDataService : ISubmissionsForProcessingDataService
     {
+        private const int BatchDeleteChunkSize = 10000;
+
         private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
         public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing) =>
             this.submissionsForProcessing = submissionsForProcessing;
 
-        public void AddOrUpdateBySubmissionIds(IEnumerable<int> submissionIds)
+        public void AddOrUpdateBySubmissionIds(ICollection<int> submissionIds)
         {
+            var newSubmissionsForProcessing = submissionIds
+                .Select(sId => new SubmissionForProcessing
+                {
+                    SubmissionId = sId
+                });
+
             using (var scope = new TransactionScope())
             {
-                this.submissionsForProcessing.Delete(sfp => submissionIds.Contains(sfp.SubmissionId));
-
-                var newSubmissionsForProcessing = submissionIds
-                    .Select(sId => new SubmissionForProcessing
-                    {
-                        SubmissionId = sId
-                    });
+                submissionIds
+                    .ChunkBy(BatchDeleteChunkSize)
+                    .ForEach(chunk => this.submissionsForProcessing
+                        .Delete(sfp => chunk.Contains(sfp.SubmissionId)));
 
                 this.submissionsForProcessing.Add(newSubmissionsForProcessing);
 

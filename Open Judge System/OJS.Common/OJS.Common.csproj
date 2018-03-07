@@ -80,6 +80,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ExecutionStrategyTypeExtensions.cs" />
     <Compile Include="Extensions\HttpPostedFileBaseExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\FileHelpers.cs" />
     <Compile Include="Extensions\PlagiarismDetectorTypeExtensions.cs" />
