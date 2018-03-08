@@ -59,6 +59,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -109,6 +110,7 @@
       <DependentUpon>EnumTranslations.resx</DependentUpon>
     </Compile>
     <Compile Include="SynchronizedHashtable.cs" />
+    <Compile Include="Helpers\TransactionsHelper.cs" />
     <Compile Include="UrlConstants.cs" />
   </ItemGroup>
   <ItemGroup>

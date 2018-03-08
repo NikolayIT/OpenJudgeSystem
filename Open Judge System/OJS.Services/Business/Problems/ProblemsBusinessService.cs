@@ -1,8 +1,8 @@
 ﻿namespace OJS.Services.Business.Problems
 {
     using System.Linq;
-    using System.Transactions;
 
+    using OJS.Common.Helpers;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Business.ProblemGroups;
@@ -14,7 +14,7 @@
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
 
-    using IsolationLevel = System.Data.IsolationLevel;
+    using IsolationLevel = System.Transactions.IsolationLevel;
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
@@ -54,7 +54,7 @@
         {
             var submissionIds = this.submissionsData.GetIdsByProblem(id).ToList();
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.RepeatableRead))
             {
                 this.participantScoresData.DeleteAllByProblem(id);
 
@@ -82,7 +82,7 @@
                 return;
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.RepeatableRead))
             {
                 this.testRunsData.DeleteByProblem(id);
 
@@ -102,25 +102,11 @@
             }
         }
 
-        public void DeleteByContest(int contestId)
-        {
-            using (var scope = new TransactionScope())
-            {
-                this.testRunsData.DeleteByContest(contestId);
-
-                this.problemResourcesData.DeleteByContest(contestId);
-
-                this.submissionsData.DeleteByContest(contestId);
-
-                this.problems.Delete(p => p.ProblemGroup.ContestId == contestId);
-
-                if (!this.contestsData.IsOnlineById(contestId))
-                {
-                    this.problemGroupsBusiness.DeleteByContest(contestId);
-                }
-
-                scope.Complete();
-            } 
-        }
+        public void DeleteByContest(int contestId) =>
+            this.problemsData
+                .GetByContestQuery(contestId)
+                .Select(p => p.Id)
+                .ToList()
+                .ForEach(this.DeleteById);
     }
 }

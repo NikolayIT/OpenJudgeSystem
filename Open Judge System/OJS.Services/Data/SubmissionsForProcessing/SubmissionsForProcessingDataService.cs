@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Transactions;
-
     using MissingFeatures;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Helpers;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -27,7 +27,7 @@
                     SubmissionId = sId
                 });
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 submissionIds
                     .ChunkBy(BatchDeleteChunkSize)

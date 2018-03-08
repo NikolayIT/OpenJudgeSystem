@@ -5,7 +5,5 @@
     public interface ITestRunsDataService : IService
     {
         void DeleteByProblem(int problemId);
-
-        void DeleteByContest(int contestId);
     }
 }

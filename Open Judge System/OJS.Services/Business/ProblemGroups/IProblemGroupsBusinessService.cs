@@ -5,7 +5,5 @@
     public interface IProblemGroupsBusinessService : IService
     {
         ServiceResult DeleteById(int id);
-
-        void DeleteByContest(int contestId);
     }
 }

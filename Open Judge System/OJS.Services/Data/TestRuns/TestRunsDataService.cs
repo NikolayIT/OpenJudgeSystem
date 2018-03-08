@@ -12,8 +12,5 @@
 
         public void DeleteByProblem(int problemId) =>
             this.testRuns.Delete(tr => tr.Submission.ProblemId == problemId);
-
-        public void DeleteByContest(int contestId) =>
-            this.testRuns.Delete(tr => tr.Submission.Problem.ProblemGroup.ContestId == contestId);
     }
 }

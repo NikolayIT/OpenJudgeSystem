@@ -40,10 +40,5 @@
 
             return ServiceResult.Success;
         }
-
-        public void DeleteByContest(int contestId) =>
-            this.problemGroups.Delete(pg => pg.ContestId == contestId &&
-                !pg.IsDeleted &&
-                pg.Problems.All(p => p.IsDeleted));
     }
 }

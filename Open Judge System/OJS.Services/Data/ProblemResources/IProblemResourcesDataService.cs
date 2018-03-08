@@ -10,7 +10,5 @@
         IQueryable<ProblemResource> GetByProblemQuery(int problemId);
 
         void DeleteByProblem(int id);
-
-        void DeleteByContest(int contestId);
     }
 }

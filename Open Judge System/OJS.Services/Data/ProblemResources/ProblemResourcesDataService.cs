@@ -17,8 +17,5 @@
 
         public void DeleteByProblem(int id) =>
             this.problemResources.Delete(pr => pr.ProblemId == id);
-
-        public void DeleteByContest(int contestId) =>
-            this.problemResources.Delete(pr => pr.Problem.ProblemGroup.ContestId == contestId);
     }
 }

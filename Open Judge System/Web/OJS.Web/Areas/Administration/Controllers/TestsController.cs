@@ -18,6 +18,7 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -33,7 +34,6 @@
     using OJS.Web.Common.ZippedTestManipulator;
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
-    using TransactionScope = System.Transactions.TransactionScope;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -175,7 +175,7 @@
 
                 this.Data.SaveChanges();
 
-                using (var scope = new TransactionScope())
+                using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     this.RetestSubmissions(problem.Id);
 
@@ -252,7 +252,7 @@
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
-                using (var scope = new TransactionScope())
+                using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     existingTest.InputData = test.InputData;
                     existingTest.OutputData = test.OutputData;
@@ -343,7 +343,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 // delete all test runs for the test
                 this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
@@ -501,7 +501,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
                 this.Data.SaveChanges();
@@ -761,7 +761,7 @@
                 }
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.Submissions.Update(
                     x => x.ProblemId == id && !x.IsDeleted,
