@@ -1,22 +1,27 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
 @using Resource = Resources.Areas.Administration.Participants.Views.Partials.Participants;
+
 @model int?
+
 @{
     const string ControllerName = "Participants";
+    const string DateTimeFormat = "{0:dd/MM/yyyy HH:mm}";
 }
 
 @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
-        {
-            columns.Bound(col => col.Id);
-            columns.Bound(col => col.UserName);
-            columns.Bound(col => col.ContestName);
-            columns.Bound(col => col.IsOfficial);
-            columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Destroy().Text(" ")).Width(80);
-        })
+    {
+        columns.Bound(col => col.Id);
+        columns.Bound(col => col.UserName);
+        columns.Bound(col => col.ContestName);
+        columns.Bound(col => col.IsOfficial);
+        columns.Bound(col => col.ParticipationStartTime).Format(DateTimeFormat).Hidden();
+        columns.Bound(col => col.ParticipationEndTime).Format(DateTimeFormat).Hidden();
+        columns.Bound(col => col.CreatedOn).Format(DateTimeFormat).Hidden();
+        columns.Bound(col => col.ModifiedOn).Format(DateTimeFormat).Hidden();
+        columns.Command(command => command.Destroy().Text(" ")).Width(80);
+    })
     .ToolBar(toolbar =>
     {
         toolbar.Create().Text(Resource.Add_participant);

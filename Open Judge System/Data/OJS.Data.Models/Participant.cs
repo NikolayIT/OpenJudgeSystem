@@ -33,6 +33,10 @@
 
         public DateTime? ContestEndTime { get; set; }
 
+        public DateTime? ParticipationStartTime { get; set; }
+
+        public DateTime? ParticipationEndTime { get; set; }
+
         [Index]
         public bool IsOfficial { get; set; }
 

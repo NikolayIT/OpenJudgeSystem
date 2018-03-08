@@ -32,8 +32,8 @@
             {
                 participant = new Participant(contest.Id, userId, isOfficial)
                 {
-                    ContestStartTime = DateTime.Now,
-                    ContestEndTime = DateTime.Now + contest.Duration
+                    ParticipationStartTime = DateTime.Now,
+                    ParticipationEndTime = DateTime.Now + contest.Duration
                 };
 
                 if (isOfficial &&
@@ -69,14 +69,14 @@
 
             this.participantsData.Update(
                 participantsInTimeRange
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) >=
-                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime)),
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) >=
+                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
-                    ContestEndTime = SqlFunctions.DateAdd(
+                    ParticipationEndTime = SqlFunctions.DateAdd(
                     "minute",
                     minutes,
-                    p.ContestEndTime)
+                    p.ParticipationEndTime)
                 });
         }
 
@@ -95,8 +95,8 @@
                         contestId,
                         contestStartTimeRangeStart,
                         contestStartTimeRangeEnd)
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) <
-                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime));            
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) <
+                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));            
 
             return participantsInvalidForUpdate;
         }

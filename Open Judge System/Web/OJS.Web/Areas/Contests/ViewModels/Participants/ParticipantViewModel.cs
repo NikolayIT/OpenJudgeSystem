@@ -15,7 +15,7 @@
                 ? (DateTime?)participant.Submissions.Max(x => x.CreatedOn)
                 : null;
             this.ContestIsCompete = official;
-            this.ContestEndTime = participant.ContestEndTime;
+            this.ContestEndTime = participant.ParticipationEndTime;
 
             if (official &&
                 !isAdminOrLecturer &&
