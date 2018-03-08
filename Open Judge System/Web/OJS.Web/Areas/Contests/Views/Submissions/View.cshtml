@@ -8,10 +8,9 @@
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
-    var action = Model.IsContestActive ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
-    var problemNameAsLink = $@"<a href=""/Contests/{action}/{GlobalConstants.Index}/{Model.ContestId}#{Model.ProblemIndexInContest}"">{Model.ProblemName}</a>";
+    var hrefToProblemSubmitPage = $"{Url.Action<CompeteController>(c => c.Index(Model.ContestId, Model.IsContestActive, null))}#{Model.ProblemIndexInContest}";
 
-    ViewBag.Title = Html.Raw(string.Format(Resource.Title, Model.Id, Model.UserName, problemNameAsLink));
+    ViewBag.Title = Html.Raw(string.Format(Resource.Title, Model.Id, Model.UserName));
 }
 
 @section styles {
@@ -50,7 +49,7 @@
     <li class="active">@Model.Id</li>
 </ol>
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title <a href="@hrefToProblemSubmitPage">@Model.ProblemName</a></h2>
 <div class="row'">
     <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
     @if (Model.UserHasAdminPermission)
@@ -219,19 +218,19 @@ else
                 @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
-                          Resource.Show_input_text,
-                          nameof(TestsController.GetInputData),
-                          "Tests",
-                          new { testId = testResult.TestId, submissionId = Model.Id },
-                          new AjaxOptions
-                          {
-                              HttpMethod = "Get",
-                              InsertionMode = InsertionMode.Replace,
-                              UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                              OnSuccess = "onTestInputDataSuccess",
-                              OnBegin = "preventDefaultIfLoadedOnce"
-                          },
-                          new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                                  Resource.Show_input_text,
+                                  nameof(TestsController.GetInputData),
+                                  "Tests",
+                                  new { testId = testResult.TestId, submissionId = Model.Id },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "Get",
+                                      InsertionMode = InsertionMode.Replace,
+                                      UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                                      OnSuccess = "onTestInputDataSuccess",
+                                      OnBegin = "preventDefaultIfLoadedOnce"
+                                  },
+                                  new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -254,19 +253,19 @@ else
                     }
 
                     @(Ajax.ActionLink(
-                        Resource.Show_input_text,
-                        nameof(TestsController.GetInputData),
-                        "Tests",
-                        new { testId = testResult.TestId, submissionId = Model.Id },
-                        new AjaxOptions
-                        {
-                            HttpMethod = "Get",
-                            InsertionMode = InsertionMode.Replace,
-                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                            OnSuccess = "onTestInputDataSuccess",
-                            OnBegin = "preventDefaultIfLoadedOnce"
-                        },
-                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                                Resource.Show_input_text,
+                                nameof(TestsController.GetInputData),
+                                "Tests",
+                                new { testId = testResult.TestId, submissionId = Model.Id },
+                                new AjaxOptions
+                                {
+                                    HttpMethod = "Get",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                                    OnSuccess = "onTestInputDataSuccess",
+                                    OnBegin = "preventDefaultIfLoadedOnce"
+                                },
+                                new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
 

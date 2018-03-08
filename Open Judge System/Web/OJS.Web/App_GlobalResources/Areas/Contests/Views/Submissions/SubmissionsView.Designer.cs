@@ -304,7 +304,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Solution #{0} by {1} for problem {2}.
+        ///   Looks up a localized string similar to Solution #{0} by {1} for problem .
         /// </summary>
         public static string Title {
             get {
