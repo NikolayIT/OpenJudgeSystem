@@ -10,7 +10,7 @@
 @{
     var hrefToProblemSubmitPage = $"{Url.Action<CompeteController>(c => c.Index(Model.ContestId, Model.IsContestActive, null))}#{Model.ProblemIndexInContest}";
 
-    ViewBag.Title = Html.Raw(string.Format(Resource.Title, Model.Id, Model.UserName));
+    ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName);
 }
 
 @section styles {
