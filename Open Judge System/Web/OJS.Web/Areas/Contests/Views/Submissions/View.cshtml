@@ -218,19 +218,19 @@ else
                 @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
-                                  Resource.Show_input_text,
-                                  nameof(TestsController.GetInputData),
-                                  "Tests",
-                                  new { testId = testResult.TestId, submissionId = Model.Id },
-                                  new AjaxOptions
-                                  {
-                                      HttpMethod = "Get",
-                                      InsertionMode = InsertionMode.Replace,
-                                      UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                                      OnSuccess = "onTestInputDataSuccess",
-                                      OnBegin = "preventDefaultIfLoadedOnce"
-                                  },
-                                  new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                        Resource.Show_input_text,
+                        nameof(TestsController.GetInputData),
+                        "Tests",
+                        new { testId = testResult.TestId, submissionId = Model.Id },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                            OnSuccess = "onTestInputDataSuccess",
+                            OnBegin = "preventDefaultIfLoadedOnce"
+                        },
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -240,8 +240,9 @@ else
         }
 
         var displayCheckerComment = !string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
-                                    testResult.ExpectedOutputFragment != null ||
-                                    testResult.UserOutputFragment != null;
+            testResult.ExpectedOutputFragment != null ||
+            testResult.UserOutputFragment != null;
+
         if (displayCheckerComment)
         {
             if (displayShowInputButton)
@@ -253,19 +254,19 @@ else
                     }
 
                     @(Ajax.ActionLink(
-                                Resource.Show_input_text,
-                                nameof(TestsController.GetInputData),
-                                "Tests",
-                                new { testId = testResult.TestId, submissionId = Model.Id },
-                                new AjaxOptions
-                                {
-                                    HttpMethod = "Get",
-                                    InsertionMode = InsertionMode.Replace,
-                                    UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                                    OnSuccess = "onTestInputDataSuccess",
-                                    OnBegin = "preventDefaultIfLoadedOnce"
-                                },
-                                new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                        Resource.Show_input_text,
+                        nameof(TestsController.GetInputData),
+                        "Tests",
+                        new { testId = testResult.TestId, submissionId = Model.Id },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                            OnSuccess = "onTestInputDataSuccess",
+                            OnBegin = "preventDefaultIfLoadedOnce"
+                        },
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
 
