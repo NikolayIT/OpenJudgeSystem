@@ -24,15 +24,9 @@
         [NotMapped]
         public string ContentAsString
         {
-            get
-            {
-                return this.Content.Decompress();
-            }
+            get => this.Content.Decompress();
 
-            set
-            {
-                this.Content = value.Compress();
-            }
+            set => this.Content = value.Compress();
         }
 
         public bool IsPublic { get; set; }

@@ -61,11 +61,7 @@
             }
         }
 
-        public virtual ICollection<Problem> Problems
-        {
-            get { return this.problems; }
-            set { this.problems = value; }
-        }
+        public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
 
         [NotMapped]
         public string FileNameExtension
