@@ -215,5 +215,21 @@
             output.Append("</ol>");
             return this.Content(output.ToString());
         }
+
+        public ActionResult MigrateContestStartEndTimeOfParticipantsInParticipationStartEndTime()
+        {
+            var affected = this.Data.Participants
+                .All()
+                .Where(p => p.ContestStartTime != null || p.ContestEndTime != null)
+                .Update(p => new Participant
+                {
+                    ParticipationStartTime = p.ContestStartTime,
+                    ParticipationEndTime = p.ContestEndTime,
+                    ContestStartTime = null,
+                    ContestEndTime = null
+                });
+
+            return this.Content($"Done! Participants affected: {affected}");
+        }
     }
 }
