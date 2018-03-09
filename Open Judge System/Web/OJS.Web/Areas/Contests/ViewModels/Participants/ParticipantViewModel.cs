@@ -8,6 +8,8 @@
 
     public class ParticipantViewModel
     {
+        private readonly DateTime? participationEndTime;
+
         public ParticipantViewModel(Participant participant, bool official, bool isAdminOrLecturer)
         {
             this.Contest = ContestViewModel.FromContest.Compile()(participant.Contest);
@@ -15,7 +17,7 @@
                 ? (DateTime?)participant.Submissions.Max(x => x.CreatedOn)
                 : null;
             this.ContestIsCompete = official;
-            this.ContestEndTime = participant.ParticipationEndTime;
+            this.participationEndTime = participant.ParticipationEndTime;
 
             if (official &&
                 !isAdminOrLecturer &&
@@ -33,17 +35,15 @@
 
         public DateTime? LastSubmissionTime { get; set; }
 
-        public DateTime? ContestEndTime { get; set; }
-
         public bool ContestIsCompete { get; set; }
 
         public double? RemainingTimeInMilliseconds
         {
             get
             {
-                if (this.Contest.IsOnline && this.ContestIsCompete && this.ContestEndTime.HasValue)
+                if (this.Contest.IsOnline && this.ContestIsCompete && this.participationEndTime.HasValue)
                 {
-                    return (this.ContestEndTime.Value - DateTime.Now).TotalMilliseconds;
+                    return (this.participationEndTime.Value - DateTime.Now).TotalMilliseconds;
                 }
 
                 return null;
