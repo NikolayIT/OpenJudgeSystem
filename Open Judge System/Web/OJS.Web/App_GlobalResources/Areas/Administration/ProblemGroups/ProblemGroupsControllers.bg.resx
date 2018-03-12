@@ -124,10 +124,10 @@
     <value>Състезанието е активно и не може да изтривате групи от проблеми от него</value>
   </data>
   <data name="Cannot_create_non_online_contest" xml:space="preserve">
-    <value>От тук не може да добавяте нови групи задачи в състезание, което НЕ е Онлайн.</value>
+    <value>Не може да добавяте групи задачи в състезание, което не е от тип {0}.</value>
   </data>
   <data name="Cannot_edit_non_online_contest" xml:space="preserve">
-    <value>От тук не може да променяте групата задачи в състезание, което НЕ е Онлайн.</value>
+    <value>Не може да променяте групи задачи в състезание, което не е от тип {0}.</value>
   </data>
   <data name="Contest_does_not_exist" xml:space="preserve">
     <value>Избраното състезание не съществува</value>

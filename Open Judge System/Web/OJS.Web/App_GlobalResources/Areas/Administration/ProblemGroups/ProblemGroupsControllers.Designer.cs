@@ -80,7 +80,7 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot create new problem group from here in NON Online contest..
+        ///   Looks up a localized string similar to You cannot create problem groups in a contest which is not of type {0}..
         /// </summary>
         public static string Cannot_create_non_online_contest {
             get {
@@ -89,7 +89,7 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot edit problem groups from here in NON Online contest..
+        ///   Looks up a localized string similar to You cannot edit problem groups in a contest which is not of type {0}..
         /// </summary>
         public static string Cannot_edit_non_online_contest {
             get {

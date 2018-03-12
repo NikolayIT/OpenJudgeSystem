@@ -10,6 +10,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ProblemGroups;
@@ -82,7 +83,10 @@
 
             if (!this.contestsData.IsOnlineById(model.ContestId))
             {
-                this.ModelState.AddModelError(string.Empty, Resource.Cannot_create_non_online_contest);
+                this.ModelState.AddModelError(
+                    string.Empty,
+                    string.Format(Resource.Cannot_create_non_online_contest, nameof(ContestType.OnlinePracticalExam)));
+
                 return this.GridOperation(request, model);
             }
 
@@ -106,7 +110,10 @@
 
             if (!this.contestsData.IsOnlineById(model.ContestId))
             {
-                this.ModelState.AddModelError(string.Empty, Resource.Cannot_edit_non_online_contest);
+                this.ModelState.AddModelError(
+                    string.Empty,
+                    string.Format(Resource.Cannot_edit_non_online_contest, nameof(ContestType.OnlinePracticalExam)));
+
                 return this.GridOperation(request, model);
             }
 
