@@ -9,6 +9,8 @@
     {
         ProblemGroup GetById(int id);
 
+        ProblemGroup GetByProblem(int problemId);
+
         IQueryable<ProblemGroup> GetByIdQuery(int id);
 
         IQueryable<ProblemGroup> GetAll();
@@ -16,7 +18,5 @@
         IQueryable<ProblemGroup> GetAllByContest(int contestId);
 
         IQueryable<Problem> GetProblemsById(int id);
-
-        void Delete(ProblemGroup problemGroup);
     }
 }

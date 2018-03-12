@@ -16,8 +16,8 @@
 
         public Contest GetById(int id) => this.contests.GetById(id);
 
-        public IQueryable<Contest> GetByIdQuery(int contestId) =>
-            this.GetAll().Where(c => c.Id == contestId);
+        public IQueryable<Contest> GetByIdQuery(int id) =>
+            this.GetAll().Where(c => c.Id == id);
 
         public IQueryable<Contest> GetAll() => this.contests.All();
 
@@ -63,22 +63,18 @@
         public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
 
         public int GetIdById(int id) =>
-            this.GetAll()
-                .Where(c => c.Id == id)
-                .Select(c => c.Id)
-                .SingleOrDefault();
-
-        public void DeleteById(int id)
-        {
-            this.contests.Delete(id);
-            this.contests.SaveChanges();
-        }
+            this.GetByIdQuery(id).Select(c => c.Id).SingleOrDefault();
 
         public bool IsActiveById(int id)
         {
             var contest = this.contests.GetById(id);
             return contest != null && contest.IsActive;
         }
+
+        public bool IsOnlineById(int id) =>
+            this.GetByIdQuery(id)
+                .Select(c => c.Type)
+                .FirstOrDefault() == ContestType.OnlinePracticalExam;
 
         public bool ExistsById(int id) => this.GetAll().Any(c => c.Id == id);
 

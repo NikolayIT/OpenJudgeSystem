@@ -7,16 +7,20 @@
 
     public interface IProblemsDataService : IService
     {
-        IQueryable<Problem> GetByIdQuery(int id);
+        Problem GetById(int id);
 
         Problem GetWithProblemGroupById(int id);
 
         Problem GetWithContestById(int id);
 
+        IQueryable<Problem> GetByIdQuery(int id);
+
+        IQueryable<Problem> GetByContestQuery(int contestId);
+
         bool ExistsById(int id);
 
-        void DeleteByProblem(Problem problem);
+        void Add(Problem problem);
 
-        void DeleteAllByContestId(int contestId);
+        void Update(Problem problem);
     }
 }

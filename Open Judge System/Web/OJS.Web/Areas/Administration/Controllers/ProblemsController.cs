@@ -24,9 +24,13 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.Problems;
+    using OJS.Services.Data.Checkers;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
+    using OJS.Services.Data.ProblemResources;
     using OJS.Services.Data.Problems;
+    using OJS.Services.Data.Submissions;
+    using OJS.Services.Data.SubmissionTypes;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
@@ -47,21 +51,33 @@
     public class ProblemsController : LecturerBaseController
     { 
         private readonly IContestsDataService contestsData;
+        private readonly ICheckersDataService checkersData;
         private readonly IProblemsDataService problemsData;
         private readonly IProblemGroupsDataService problemGroupsData;
+        private readonly IProblemResourcesDataService problemResourcesData;
+        private readonly ISubmissionsDataService submissionsData;
+        private readonly ISubmissionTypesDataService submissionTypesData;
         private readonly IProblemsBusinessService problemsBusiness;
 
         public ProblemsController(
             IOjsData data,
             IContestsDataService contestsData,
+            ICheckersDataService checkersData,
             IProblemsDataService problemsData,
             IProblemGroupsDataService problemGroupsData,
+            IProblemResourcesDataService problemResourcesData,
+            ISubmissionsDataService submissionsData,
+            ISubmissionTypesDataService submissionTypesData,
             IProblemsBusinessService problemsBusiness)
             : base(data)
         {
             this.contestsData = contestsData;
+            this.checkersData = checkersData;
             this.problemsData = problemsData;
             this.problemGroupsData = problemGroupsData;
+            this.problemResourcesData = problemResourcesData;
+            this.submissionsData = submissionsData;
+            this.submissionTypesData = submissionTypesData;
             this.problemsBusiness = problemsBusiness;
         }
 
@@ -120,7 +136,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
+            var contest = this.contestsData.GetById(id.Value);
 
             if (contest == null)
             {
@@ -142,7 +158,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var contest = this.Data.Contests.All().FirstOrDefault(x => x.Id == id);
+            var contest = this.contestsData.GetById(id);
             if (contest == null)
             {
                 this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
@@ -152,12 +168,9 @@
             if (problem == null)
             {
                 problem = this.PrepareProblemViewModelForCreate(contest);
-                problem.AvailableCheckers = this.Data.Checkers.All()
-                .Select(checker => new SelectListItem
-                {
-                    Text = checker.Name,
-                    Value = checker.Name
-                });
+
+                this.AddCheckersToProblemViewModel(problem);
+
                 return this.View(problem);
             }
 
@@ -187,19 +200,18 @@
 
             if (!this.IsValidProblem(problem) || !this.ModelState.IsValid)
             {
-                problem.AvailableCheckers = this.Data.Checkers.All()
-                    .Select(checker => new SelectListItem { Text = checker.Name, Value = checker.Name });
+                this.AddCheckersToProblemViewModel(problem);
                 return this.View(problem);
             }
 
             var newProblem = problem.GetEntityModel();
-            newProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+            newProblem.Checker = this.checkersData.GetByName(problem.Checker);
 
             problem.SubmissionTypes.ForEach(s =>
             {
-                if (s.IsChecked)
+                if (s.IsChecked && s.Id.HasValue)
                 {
-                    var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                    var submission = this.submissionTypesData.GetById(s.Id.Value);
                     newProblem.SubmissionTypes.Add(submission);
                 }
             });
@@ -229,21 +241,19 @@
                 {
                     // TempData is not working with return this.View
                     var systemMessages = new SystemMessageCollection
-                                {
-                                    new SystemMessage
-                                    {
-                                        Content = ex.Message,
-                                        Type = SystemMessageType.Error,
-                                        Importance = 0
-                                    }
-                                };
-                    this.ViewBag.SystemMessages = systemMessages;
-                    problem.AvailableCheckers = this.Data.Checkers.All()
-                        .Select(checker => new SelectListItem
+                    {
+                        new SystemMessage
                         {
-                            Text = checker.Name,
-                            Value = checker.Name
-                        });
+                            Content = ex.Message,
+                            Type = SystemMessageType.Error,
+                            Importance = 0
+                        }
+                    };
+
+                    this.ViewBag.SystemMessages = systemMessages;
+
+                    this.AddCheckersToProblemViewModel(problem);
+
                     return this.View(problem);
                 }
             }
@@ -253,12 +263,11 @@
                 newProblem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contest.Id,
-                    OrderBy = contest.ProblemGroups.Count
+                    OrderBy = newProblem.OrderBy
                 };
             }
 
-            this.Data.Problems.Add(newProblem);
-            this.Data.SaveChanges();
+            this.problemsData.Add(newProblem);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_added);
             return this.RedirectToAction("Problem", "Tests", new { newProblem.Id });
@@ -287,7 +296,8 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            this.Data.SubmissionTypes.All()
+            this.submissionTypesData
+                .GetAll()
                 .Select(SubmissionTypeViewModel.ViewModel)
                 .ForEach(SubmissionTypeViewModel.ApplySelectedTo(selectedProblem));
 
@@ -304,7 +314,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var existingProblem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var existingProblem = this.problemsData.GetWithProblemGroupById(id);
 
             if (existingProblem == null)
             {
@@ -315,12 +325,8 @@
             if (problem == null)
             {
                 problem = this.PrepareProblemViewModelForEdit(id);
-                problem.AvailableCheckers = this.Data.Checkers.All()
-                .Select(checker => new SelectListItem
-                {
-                    Text = checker.Name,
-                    Value = checker.Name
-                });
+
+                this.AddCheckersToProblemViewModel(problem);
 
                 return this.View(problem);
             }
@@ -333,22 +339,26 @@
             if (!this.ModelState.IsValid)
             {
                 problem = this.PrepareProblemViewModelForEdit(id);
-                problem.AvailableCheckers = this.Data.Checkers.All()
-                .Select(checker => new SelectListItem
-                {
-                    Text = checker.Name,
-                    Value = checker.Name
-                });
-                this.Data.SubmissionTypes.All()
+
+                this.AddCheckersToProblemViewModel(problem);
+
+                this.submissionTypesData
+                    .GetAll()
                     .Select(SubmissionTypeViewModel.ViewModel)
                     .ForEach(SubmissionTypeViewModel.ApplySelectedTo(problem));
+
                 return this.View(problem);
             }
 
             existingProblem = problem.GetEntityModel(existingProblem);
-            existingProblem.Checker = this.Data.Checkers.All().FirstOrDefault(x => x.Name == problem.Checker);
+            existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+
+            if (!existingProblem.ProblemGroup.Contest.IsOnline)
+            {
+                existingProblem.ProblemGroup.OrderBy = problem.OrderBy;
+            }
 
             if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
@@ -361,15 +371,14 @@
 
             problem.SubmissionTypes.ForEach(s =>
             {
-                if (s.IsChecked)
+                if (s.IsChecked && s.Id.HasValue)
                 {
-                    var submission = this.Data.SubmissionTypes.All().FirstOrDefault(t => t.Id == s.Id);
+                    var submission = this.submissionTypesData.GetById(s.Id.Value);
                     existingProblem.SubmissionTypes.Add(submission);
                 }
             });
 
-            this.Data.Problems.Update(existingProblem);
-            this.Data.SaveChanges();
+            this.problemsData.Update(existingProblem);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_edited);
             return this.RedirectToAction(c => c.Index(existingProblem.ProblemGroup.ContestId));
@@ -434,17 +443,7 @@
                 return this.RedirectToAction(c => c.Index(problem.ProblemGroup.ContestId));
             }
 
-            this.Data.Resources.Delete(r => r.ProblemId == problemId);
-
-            this.Data.TestRuns.Delete(tr => tr.Submission.ProblemId == problemId);
-
-            this.Data.Tests.Delete(t => t.ProblemId == problemId);
-
-            this.Data.Submissions.Delete(s => s.ProblemId == problemId);
-
-            this.Data.SaveChanges();
-
-            this.problemsData.DeleteByProblem(problem);
+            this.problemsBusiness.DeleteById(problemId);
 
             this.TempData.AddInfoMessage(GlobalResource.Problem_deleted);
             return this.RedirectToAction(c => c.Index(problem.ProblemGroup.ContestId));
@@ -512,17 +511,7 @@
                 return this.RedirectToAction(c => c.Index(contest.Id));
             }
 
-            this.Data.Resources.Delete(r => r.Problem.ProblemGroup.ContestId == contestId);
-
-            this.Data.TestRuns.Delete(tr => tr.Submission.Problem.ProblemGroup.ContestId == contestId);
-
-            this.Data.Tests.Delete(t => t.Problem.ProblemGroup.ContestId == contestId);
-
-            this.Data.Submissions.Delete(s => s.Problem.ProblemGroup.ContestId == contestId);
-
-            this.Data.SaveChanges();
-
-            this.problemsData.DeleteAllByContestId(contestId);
+            this.problemsBusiness.DeleteByContest(contestId);
 
             this.TempData.AddInfoMessage(GlobalResource.Problems_deleted);
             return this.RedirectToAction(c => c.Index(contestId));
@@ -536,8 +525,8 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            var problem = this.Data.Problems.All()
-                .Where(pr => pr.Id == id)
+            var problem = this.problemsData
+                .GetByIdQuery(id.Value)
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
@@ -563,7 +552,7 @@
         /// <returns>Zip file containing all additional files</returns>
         public ActionResult DownloadAdditionalFiles(int id)
         {
-            var problem = this.Data.Problems.GetById(id);
+            var problem = this.problemsData.GetById(id);
 
             if (problem == null)
             {
@@ -603,10 +592,10 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            var problem = this.Data.Problems
-                .All()
+            var problem = this.problemsData
+                .GetByIdQuery(id.Value)
                 .Select(ProblemRetestViewModel.FromProblem)
-                .FirstOrDefault(pr => pr.Id == id);
+                .FirstOrDefault();
 
             if (problem == null)
             {
@@ -671,9 +660,8 @@
                 return this.Json("No premissions");
             }
 
-            var submissions = this.Data.Submissions
-                .All()
-                .Where(s => s.ProblemId == id)
+            var submissions = this.submissionsData
+                .GetAllByProblem(id)
                 .Select(SubmissionAdministrationGridViewModel.ViewModel);
 
             return this.Json(submissions.ToDataSourceResult(request));
@@ -700,9 +688,8 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            var resources = this.Data.Resources
-                .All()
-                .Where(r => r.ProblemId == id)
+            var resources = this.problemResourcesData
+                .GetByProblemQuery(id)
                 .Select(ProblemResourceGridViewModel.FromResource);
 
             return this.Json(resources.ToDataSourceResult(request));
@@ -751,9 +738,8 @@
                 return this.Json(GeneralResource.No_privileges_message);
             }
 
-            var solutionSkeleton = this.Data.Problems
-                .All()
-                .Where(p => p.Id == id)
+            var solutionSkeleton = this.problemsData
+                .GetByIdQuery(id)
                 .Select(p => p.SolutionSkeleton)
                 .FirstOrDefault();
 
@@ -767,8 +753,8 @@
                 return new List<DetailedProblemViewModel>();
             }
 
-            var result = this.Data.Problems.All()
-                .Where(x => x.ProblemGroup.ContestId == id)
+            var result = this.problemsData
+                .GetByContestQuery(id)
                 .OrderBy(x => x.OrderBy)
                 .Select(DetailedProblemViewModel.FromProblem);
 
@@ -859,9 +845,8 @@
         private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
         {
             var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
-            var lastProblem = this.Data.Problems
-                .All()
-                .Where(x => x.ProblemGroup.ContestId == contest.Id)
+            var lastProblem = this.problemsData
+                .GetByContestQuery(contest.Id)
                 .OrderByDescending(x => x.OrderBy)
                 .FirstOrDefault();
 
@@ -880,8 +865,8 @@
                 contest.ProblemGroups.Count,
                 contest.IsOnline);
 
-            problem.SubmissionTypes = this.Data.SubmissionTypes
-                .All()
+            problem.SubmissionTypes = this.submissionTypesData
+                .GetAll()
                 .Select(SubmissionTypeViewModel.ViewModel)
                 .ToList();
 
@@ -893,7 +878,8 @@
             int numberOfProblemGroups,
             bool isOnlineContest)
         {
-            problem.AvailableCheckers = this.Data.Checkers.All()
+            problem.AvailableCheckers = this.checkersData
+                .GetAll()
                 .Select(checker => new SelectListItem
                 {
                     Text = checker.Name,
@@ -909,6 +895,15 @@
                     .Select(DropdownViewModel.FromProblemGroup);
             }
         }
+
+        private void AddCheckersToProblemViewModel(DetailedProblemViewModel problem) =>
+            problem.AvailableCheckers = this.checkersData
+                .GetAll()
+                .Select(checker => new SelectListItem
+                {
+                    Text = checker.Name,
+                    Value = checker.Name
+                });
 
         private bool IsValidProblem(DetailedProblemViewModel model)
         {

@@ -35,9 +35,9 @@
 
         int GetIdById(int id);
 
-        void DeleteById(int id);
-
         bool IsActiveById(int id);
+
+        bool IsOnlineById(int id);
 
         bool ExistsById(int id);
 

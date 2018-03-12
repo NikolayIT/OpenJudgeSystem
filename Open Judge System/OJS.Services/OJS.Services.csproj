@@ -47,6 +47,9 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -74,6 +77,8 @@
     <Compile Include="Business\ProblemGroups\ProblemGroupsBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Data\Checkers\CheckersDataService.cs" />
+    <Compile Include="Data\Checkers\ICheckersDataService.cs" />
     <Compile Include="Data\ContestCategories\ContestCategoriesDataService.cs" />
     <Compile Include="Data\ContestCategories\IContestCategoriesDataService.cs" />
     <Compile Include="Data\Contests\ContestsDataService.cs" />
@@ -88,10 +93,16 @@
     <Compile Include="Data\ProblemGroups\ProblemGroupsDataService.cs" />
     <Compile Include="Data\Problems\IProblemsDataService.cs" />
     <Compile Include="Data\Problems\ProblemsDataService.cs" />
+    <Compile Include="Data\ProblemResources\IProblemResourcesDataService.cs" />
+    <Compile Include="Data\ProblemResources\ProblemResourcesDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
     <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
+    <Compile Include="Data\SubmissionTypes\ISubmissionTypesDataService.cs" />
+    <Compile Include="Data\SubmissionTypes\SubmissionTypesDataService.cs" />
+    <Compile Include="Data\TestRuns\ITestRunsDataService.cs" />
+    <Compile Include="Data\TestRuns\TestRunsDataService.cs" />
     <Compile Include="Data\Users\IUsersDataService.cs" />
     <Compile Include="Data\Users\UsersDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

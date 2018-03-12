@@ -14,6 +14,9 @@
 
         public ProblemGroup GetById(int id) => this.problemGroups.GetById(id);
 
+        public ProblemGroup GetByProblem(int problemId) =>
+            this.problemGroups.All().FirstOrDefault(pg => pg.Problems.Any(p => p.Id == problemId));
+
         public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
             this.GetAll().Where(pg => pg.Id == id);
 
@@ -23,10 +26,6 @@
             this.problemGroups.All().Where(pg => pg.ContestId == contestId);
 
         public IQueryable<Problem> GetProblemsById(int id) =>
-            this.GetByIdQuery(id)
-                .SelectMany(eg => eg.Problems)
-                .Where(p => !p.IsDeleted);
-
-        public void Delete(ProblemGroup problemGroup) => this.problemGroups.Delete(problemGroup);
+            this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
     }
 }
