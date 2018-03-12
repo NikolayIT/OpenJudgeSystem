@@ -215,6 +215,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -281,11 +284,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="X.PagedList, Version=7.1.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\X.PagedList.7.1.0\lib\net452\X.PagedList.dll</HintPath>
+    <Reference Include="X.PagedList, Version=7.2.4.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\X.PagedList.7.2.4\lib\net461\X.PagedList.dll</HintPath>
     </Reference>
-    <Reference Include="X.PagedList.Mvc, Version=7.1.1.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\X.PagedList.Mvc.7.1.1\lib\net452\X.PagedList.Mvc.dll</HintPath>
+    <Reference Include="X.PagedList.Mvc, Version=7.2.0.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\X.PagedList.Mvc.7.2.0\lib\net452\X.PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc.Common, Version=7.2.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\X.PagedList.Mvc.7.2.0\lib\net452\X.PagedList.Mvc.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
