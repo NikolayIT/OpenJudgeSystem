@@ -171,8 +171,8 @@
             (this.Type == ContestType.OnlinePracticalExam &&
                 this.Participants.Any(p =>
                     p.IsOfficial &&
-                    p.ContestEndTime.HasValue &&
-                    p.ContestEndTime.Value >= DateTime.Now));
+                    p.ParticipationEndTime.HasValue &&
+                    p.ParticipationEndTime.Value >= DateTime.Now));
 
         [NotMapped]
         public bool ResultsArePubliclyVisible

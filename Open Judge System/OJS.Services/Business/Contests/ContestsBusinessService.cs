@@ -59,7 +59,7 @@
                     return contest.CanBeCompeted;
                 }
 
-                return participant.ContestEndTime >= DateTime.Now;
+                return participant.ParticipationEndTime >= DateTime.Now;
             }
 
             if (contest.CanBeCompeted || (isUserAdminOrLecturerInContest && allowToAdminAlways))
