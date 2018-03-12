@@ -7,6 +7,8 @@
     using System.Text;
     using System.Web.Mvc;
 
+    using EntityFramework.Extensions;
+
     using MissingFeatures;
 
     using OJS.Common.Extensions;
