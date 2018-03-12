@@ -196,7 +196,7 @@ input[type="checkbox"].input-validation-error {
 
 @media (min-width: 991px) {
     .nav > li > a {
-        padding: 15px 10px;
+        padding: 18px 9px;
     }
 }
 
@@ -342,6 +342,10 @@ input[type="checkbox"].input-validation-error {
 @media only screen and (max-width: 767px) {
     .contests-by-category .results {
         max-width: 80px;
+    }
+
+    .logged-user-wrap a {
+        float: none;
     }
 }
 
