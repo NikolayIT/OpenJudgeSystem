@@ -10,17 +10,6 @@
 
     public class ContestCategory : DeletableEntity, IOrderable
     {
-        private ICollection<ContestCategory> children;
-        private ICollection<Contest> contests;
-        private ICollection<LecturerInContestCategory> lecturers;
-
-        public ContestCategory()
-        {
-            this.children = new HashSet<ContestCategory>();
-            this.contests = new HashSet<Contest>();
-            this.lecturers = new HashSet<LecturerInContestCategory>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -38,23 +27,11 @@
         public virtual ContestCategory Parent { get; set; }
 
         [InverseProperty("Parent")]
-        public virtual ICollection<ContestCategory> Children
-        {
-            get { return this.children; }
-            set { this.children = value; }
-        }
+        public virtual ICollection<ContestCategory> Children { get; set; } = new HashSet<ContestCategory>();
 
-        public virtual ICollection<Contest> Contests
-        {
-            get { return this.contests; }
-            set { this.contests = value; }
-        }
+        public virtual ICollection<Contest> Contests { get; set; } = new HashSet<Contest>();
 
-        public virtual ICollection<LecturerInContestCategory> Lecturers
-        {
-            get { return this.lecturers; }
-            set { this.lecturers = value; }
-        }
+        public virtual ICollection<LecturerInContestCategory> Lecturers { get; set; } = new HashSet<LecturerInContestCategory>();
 
         public bool IsVisible { get; set; }
     }

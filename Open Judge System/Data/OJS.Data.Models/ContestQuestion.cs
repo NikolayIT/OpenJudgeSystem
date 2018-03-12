@@ -14,15 +14,6 @@
     /// </summary>
     public class ContestQuestion : DeletableEntity
     {
-        private ICollection<ContestQuestionAnswer> answers;
-        private ICollection<ParticipantAnswer> participantAnswers;
-
-        public ContestQuestion()
-        {
-            this.answers = new HashSet<ContestQuestionAnswer>();
-            this.participantAnswers = new HashSet<ParticipantAnswer>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -43,17 +34,9 @@
 
         public ContestQuestionType Type { get; set; }
 
-        public virtual ICollection<ContestQuestionAnswer> Answers
-        {
-            get { return this.answers; }
-            set { this.answers = value; }
-        }
+        public virtual ICollection<ContestQuestionAnswer> Answers { get; set; } = new HashSet<ContestQuestionAnswer>();
 
-        public virtual ICollection<ParticipantAnswer> ParticipantAnswers
-        {
-            get { return this.participantAnswers; }
-            set { this.participantAnswers = value; }
-        }
+        public virtual ICollection<ParticipantAnswer> ParticipantAnswers { get; set; } = new HashSet<ParticipantAnswer>();
 
         public string RegularExpressionValidation { get; set; }
     }

@@ -8,13 +8,6 @@
 
     public class Ip : AuditInfo
     {
-        private ICollection<ContestIp> contests;
-
-        public Ip()
-        {
-            this.contests = new HashSet<ContestIp>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -25,10 +18,6 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<ContestIp> Contests
-        {
-            get { return this.contests; }
-            set { this.contests = value; }
-        }
+        public virtual ICollection<ContestIp> Contests { get; set; } = new HashSet<ContestIp>();
     }
 }
