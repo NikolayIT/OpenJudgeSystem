@@ -80,20 +80,20 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot create problem groups in a contest which is not of type {0}..
+        ///   Looks up a localized string similar to You can create problem groups only in a contest which is of type {0}..
         /// </summary>
-        public static string Cannot_create_non_online_contest {
+        public static string Can_create_only_in_online_contest {
             get {
-                return ResourceManager.GetString("Cannot_create_non_online_contest", resourceCulture);
+                return ResourceManager.GetString("Can_create_only_in_online_contest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot edit problem groups in a contest which is not of type {0}..
+        ///   Looks up a localized string similar to You can edit problem groups only in a contest which is of type {0}..
         /// </summary>
-        public static string Cannot_edit_non_online_contest {
+        public static string Can_edit_only_in_online_contest {
             get {
-                return ResourceManager.GetString("Cannot_edit_non_online_contest", resourceCulture);
+                return ResourceManager.GetString("Can_edit_only_in_online_contest", resourceCulture);
             }
         }
         

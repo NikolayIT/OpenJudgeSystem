@@ -85,7 +85,7 @@
             {
                 this.ModelState.AddModelError(
                     string.Empty,
-                    string.Format(Resource.Cannot_create_non_online_contest, nameof(ContestType.OnlinePracticalExam)));
+                    string.Format(Resource.Can_create_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
 
                 return this.GridOperation(request, model);
             }
@@ -112,7 +112,7 @@
             {
                 this.ModelState.AddModelError(
                     string.Empty,
-                    string.Format(Resource.Cannot_edit_non_online_contest, nameof(ContestType.OnlinePracticalExam)));
+                    string.Format(Resource.Can_edit_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
 
                 return this.GridOperation(request, model);
             }

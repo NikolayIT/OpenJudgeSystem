@@ -123,11 +123,11 @@
   <data name="Active_contest_cannot_delete_problem_group" xml:space="preserve">
     <value>The contest is аctive and you cannot delete problem groups</value>
   </data>
-  <data name="Cannot_create_non_online_contest" xml:space="preserve">
-    <value>You cannot create problem groups in a contest which is not of type {0}.</value>
+  <data name="Can_create_only_in_online_contest" xml:space="preserve">
+    <value>You can create problem groups only in a contest which is of type {0}.</value>
   </data>
-  <data name="Cannot_edit_non_online_contest" xml:space="preserve">
-    <value>You cannot edit problem groups in a contest which is not of type {0}.</value>
+  <data name="Can_edit_only_in_online_contest" xml:space="preserve">
+    <value>You can edit problem groups only in a contest which is of type {0}.</value>
   </data>
   <data name="Contest_does_not_exist" xml:space="preserve">
     <value>The selected contest does not exist</value>
