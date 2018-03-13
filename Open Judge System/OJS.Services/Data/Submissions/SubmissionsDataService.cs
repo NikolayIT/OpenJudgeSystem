@@ -7,9 +7,9 @@
 
     public class SubmissionsDataService : ISubmissionsDataService
     {
-        private readonly IEfGenericRepository<Submission> submissions;
+        private readonly IEfDeletableEntityRepository<Submission> submissions;
 
-        public SubmissionsDataService(IEfGenericRepository<Submission> submissions) =>
+        public SubmissionsDataService(IEfDeletableEntityRepository<Submission> submissions) =>
             this.submissions = submissions;
 
         public Submission GetBestForParticipantByProblem(int participantId, int problemId) =>
@@ -22,5 +22,8 @@
                 .OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.Id)
                 .FirstOrDefault();
+
+        public IQueryable<Submission> GetByIdQuery(int id) =>
+            this.submissions.All().Where(s => s.Id == id);
     }
 }

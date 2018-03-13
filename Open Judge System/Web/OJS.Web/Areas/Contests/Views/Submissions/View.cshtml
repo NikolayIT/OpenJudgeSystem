@@ -3,11 +3,14 @@
 @using OJS.Web.Areas.Contests.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.SubmissionsView
+@using AdministrationResource = Resources.Areas.Administration.AdministrationGeneral
 
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
-    ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName, Model.ProblemName);
+    var hrefToProblemSubmitPage = $"{Url.Action<CompeteController>(c => c.Index(Model.ContestId, Model.IsContestActive, null))}#{Model.ProblemIndexInContest}";
+
+    ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName);
 }
 
 @section styles {
@@ -46,7 +49,7 @@
     <li class="active">@Model.Id</li>
 </ol>
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title <a href="@hrefToProblemSubmitPage">@Model.ProblemName</a></h2>
 <div class="row'">
     <a class="btn btn-sm btn-primary" href="#SourceCode">@Resource.View_code</a>
     @if (Model.UserHasAdminPermission)
@@ -81,14 +84,7 @@
 
 @if (!Model.Processed)
 {
-    if (Model.Processing)
-    {
-        <div class="alert alert-info top-buffer">@Resource.Submission_is_processing</div>
-    }
-    else
-    {
-        <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
-    }
+    <div class="alert alert-info top-buffer">@Resource.Submission_in_queue</div>
 }
 else
 {
@@ -222,19 +218,19 @@ else
                 @if (displayShowInputButton)
                 {
                     @(Ajax.ActionLink(
-                          Resource.Show_input_text,
-                          nameof(TestsController.GetInputData),
-                          "Tests",
-                          new { testId = testResult.TestId, submissionId = Model.Id },
-                          new AjaxOptions
-                          {
-                              HttpMethod = "Get",
-                              InsertionMode = InsertionMode.Replace,
-                              UpdateTargetId = $"test-{testResult.TestId}-input-data",
-                              OnSuccess = "onTestInputDataSuccess",
-                              OnBegin = "preventDefaultIfLoadedOnce"
-                          },
-                          new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
+                        Resource.Show_input_text,
+                        nameof(TestsController.GetInputData),
+                        "Tests",
+                        new { testId = testResult.TestId, submissionId = Model.Id },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = $"test-{testResult.TestId}-input-data",
+                            OnSuccess = "onTestInputDataSuccess",
+                            OnBegin = "preventDefaultIfLoadedOnce"
+                        },
+                        new { id = $"test-{testResult.TestId}-input-data-btn", @class = "btn btn-primary btn-sm", data_test_id = testResult.TestId }))
 
                     <div id="test-@(testResult.TestId)-input-data"></div>
                 }
@@ -244,8 +240,9 @@ else
         }
 
         var displayCheckerComment = !string.IsNullOrWhiteSpace(testResult.CheckerComment) ||
-                                    testResult.ExpectedOutputFragment != null ||
-                                    testResult.UserOutputFragment != null;
+            testResult.ExpectedOutputFragment != null ||
+            testResult.UserOutputFragment != null;
+
         if (displayCheckerComment)
         {
             if (displayShowInputButton)
@@ -324,6 +321,8 @@ else
 {
     <textarea id="code">@Model.ContentAsString</textarea>
 }
+
+<p class="top-buffer">@AdministrationResource.Created_on: @Model.CreatedOn</p>
 
 <script>
     function onTestInputDataSuccess() {

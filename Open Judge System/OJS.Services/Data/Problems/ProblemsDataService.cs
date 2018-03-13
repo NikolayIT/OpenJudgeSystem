@@ -13,10 +13,13 @@
         public ProblemsDataService(IEfDeletableEntityRepository<Problem> problems) =>
             this.problems = problems;
 
-        public IQueryable<Problem> GetByIdQuery(int problemId) =>
-            this.problems.All().Where(p => p.Id == problemId);
+        public IQueryable<Problem> GetByIdQuery(int id) =>
+            this.problems.All().Where(p => p.Id == id);
 
-        public Problem GetById(int problemId) => this.problems.GetById(problemId);
+        public IQueryable<Problem> GetAllByContest(int contestId) =>
+            this.problems.All().Where(p => p.ContestId == contestId);
+
+        public Problem GetById(int id) => this.problems.GetById(id);
 
         public Problem GetWithContestById(int problemId) =>
             this.problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);

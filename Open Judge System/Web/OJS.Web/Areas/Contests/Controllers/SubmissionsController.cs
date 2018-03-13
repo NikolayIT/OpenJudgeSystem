@@ -7,6 +7,9 @@
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Problems;
+    using OJS.Services.Data.Submissions;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
@@ -15,17 +18,28 @@
 
     public class SubmissionsController : BaseController
     {
-        public SubmissionsController(IOjsData data)
+        private readonly ISubmissionsDataService submissionsData;
+        private readonly IProblemsDataService problemsData;
+        private readonly IContestsDataService contestsData;
+
+        public SubmissionsController(
+            IOjsData data,
+            ISubmissionsDataService submissionsData,
+            IProblemsDataService problemsData,
+            IContestsDataService contestsData)
             : base(data)
         {
+            this.submissionsData = submissionsData;
+            this.problemsData = problemsData;
+            this.contestsData = contestsData;
         }
 
         [ActionName("View")]
         [Authorize]
         public ActionResult Details(int id)
         {
-            var submission = this.Data.Submissions.All()
-                .Where(x => x.Id == id)
+            var submission = this.submissionsData
+                .GetByIdQuery(id)
                 .Select(SubmissionDetailsViewModel.FromSubmission)
                 .FirstOrDefault();
 
@@ -45,6 +59,16 @@
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
+
+            submission.ProblemIndexInContest = this.problemsData
+                .GetAllByContest(submission.ContestId)
+                .OrderBy(p => p.OrderBy)
+                .ThenBy(p => p.Name)
+                .Select(p => p.Id)
+                .ToList()
+                .IndexOf(submission.ProblemId.Value);
+
+            submission.IsContestActive = this.contestsData.IsActiveById(submission.ContestId);
 
             submission.UserHasAdminPermission = userHasAdminPermissions;
             return this.View(submission);
