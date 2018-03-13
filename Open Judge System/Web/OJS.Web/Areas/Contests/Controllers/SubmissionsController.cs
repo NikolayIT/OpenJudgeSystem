@@ -62,7 +62,8 @@
 
             submission.ProblemIndexInContest = this.problemsData
                 .GetAllByContest(submission.ContestId)
-                .OrderBy(p => p.OrderBy)
+                .OrderBy(p => p.ProblemGroup.OrderBy)
+                .ThenBy(p => p.OrderBy)
                 .ThenBy(p => p.Name)
                 .Select(p => p.Id)
                 .ToList()

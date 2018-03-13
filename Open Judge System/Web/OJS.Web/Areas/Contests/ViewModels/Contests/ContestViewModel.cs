@@ -46,9 +46,10 @@
                         Problems = contest.ProblemGroups
                             .SelectMany(pg => pg.Problems)
                             .AsQueryable()
-                            .Where(x => !x.IsDeleted)
-                            .OrderBy(x => x.OrderBy)
-                            .ThenBy(x => x.Name)
+                            .Where(p => !p.IsDeleted)
+                            .OrderBy(p => p.ProblemGroup.OrderBy)
+                            .ThenBy(p => p.OrderBy)
+                            .ThenBy(p => p.Name)
                             .Select(ContestProblemViewModel.FromProblem),
                         LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                         Description = contest.Description,

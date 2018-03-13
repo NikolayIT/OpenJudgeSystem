@@ -26,6 +26,7 @@
                 this.Contest.Problems = participant.Problems
                     .AsQueryable()
                     .OrderBy(p => p.ProblemGroup.OrderBy)
+                    .ThenBy(p => p.OrderBy)
                     .ThenBy(p => p.Name)
                     .Select(ContestProblemViewModel.FromProblem);
             }

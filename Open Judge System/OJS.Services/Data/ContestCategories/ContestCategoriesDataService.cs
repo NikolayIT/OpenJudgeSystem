@@ -5,11 +5,11 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
-    public class CategoriesDataService : IContestCategoriesDataService
+    public class ContestCategoriesDataService : IContestCategoriesDataService
     {
         private readonly IEfDeletableEntityRepository<ContestCategory> contestCategories;
 
-        public CategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
+        public ContestCategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
         public IQueryable<ContestCategory> GetAllVisible() =>
