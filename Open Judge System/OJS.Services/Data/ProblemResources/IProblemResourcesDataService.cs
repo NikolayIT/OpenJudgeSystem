@@ -7,8 +7,12 @@
 
     public interface IProblemResourcesDataService : IService
     {
+        ProblemResource GetById(int id);
+        
         IQueryable<ProblemResource> GetByProblemQuery(int problemId);
 
-        void DeleteByProblem(int id);
+        void DeleteById(int id);
+
+        void DeleteByProblem(int problemId);
     }
 }

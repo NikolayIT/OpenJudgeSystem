@@ -12,10 +12,19 @@
         public ProblemResourcesDataService(IEfDeletableEntityRepository<ProblemResource> problemResources) =>
             this.problemResources = problemResources;
 
+        public ProblemResource GetById(int id) =>
+            this.problemResources.All().FirstOrDefault(pr => pr.Id == id);
+
         public IQueryable<ProblemResource> GetByProblemQuery(int problemId) =>
             this.problemResources.All().Where(pr => pr.ProblemId == problemId);
 
-        public void DeleteByProblem(int id) =>
-            this.problemResources.Delete(pr => pr.ProblemId == id);
+        public void DeleteById(int id)
+        {
+            this.problemResources.Delete(id);
+            this.problemResources.SaveChanges();
+        }
+
+        public void DeleteByProblem(int problemId) =>
+            this.problemResources.Delete(pr => pr.ProblemId == problemId);
     }
 }
