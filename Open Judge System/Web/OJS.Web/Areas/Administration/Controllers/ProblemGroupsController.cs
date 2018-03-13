@@ -81,6 +81,15 @@
                 return this.GridOperation(request, model);
             }
 
+            if (!this.contestsData.IsOnlineById(model.ContestId))
+            {
+                this.ModelState.AddModelError(
+                    string.Empty,
+                    string.Format(Resource.Can_create_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
+
+                return this.GridOperation(request, model);
+            }
+
             if (this.contestsData.IsActiveById(model.ContestId))
             {
                 this.ModelState.AddModelError(string.Empty, Resource.Active_contest_cannot_add_problem_group);
@@ -96,6 +105,15 @@
         {
             if (!this.IsModelAndContestValid(model))
             {
+                return this.GridOperation(request, model);
+            }
+
+            if (!this.contestsData.IsOnlineById(model.ContestId))
+            {
+                this.ModelState.AddModelError(
+                    string.Empty,
+                    string.Format(Resource.Can_edit_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
+
                 return this.GridOperation(request, model);
             }
 
@@ -147,20 +165,9 @@
                 return false;
             }
 
-            var contest = this.contestsData
-                .GetByIdQuery(model.ContestId)
-                .Select(c => new { c.Type })
-                .FirstOrDefault();
-
-            if (contest == null)
+            if (!this.contestsData.ExistsById(model.ContestId))
             {
                 this.ModelState.AddModelError(nameof(model.ContestName), Resource.Contest_does_not_exist);
-                return false;
-            }
-
-            if (contest.Type != ContestType.OnlinePracticalExam)
-            {
-                this.ModelState.AddModelError(string.Empty, Resource.Cannot_crud_non_online_contest);
                 return false;
             }
 

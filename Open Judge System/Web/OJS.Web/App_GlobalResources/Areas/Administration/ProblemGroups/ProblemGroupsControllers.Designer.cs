@@ -80,11 +80,20 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot manipulate problem groups in contest that is NOT Online.
+        ///   Looks up a localized string similar to You can create problem groups only in a contest which is of type {0}..
         /// </summary>
-        public static string Cannot_crud_non_online_contest {
+        public static string Can_create_only_in_online_contest {
             get {
-                return ResourceManager.GetString("Cannot_crud_non_online_contest", resourceCulture);
+                return ResourceManager.GetString("Can_create_only_in_online_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can edit problem groups only in a contest which is of type {0}..
+        /// </summary>
+        public static string Can_edit_only_in_online_contest {
+            get {
+                return ResourceManager.GetString("Can_edit_only_in_online_contest", resourceCulture);
             }
         }
         

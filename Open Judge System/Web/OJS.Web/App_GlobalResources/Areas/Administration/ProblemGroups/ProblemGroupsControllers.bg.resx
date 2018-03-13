@@ -123,8 +123,11 @@
   <data name="Active_contest_cannot_delete_problem_group" xml:space="preserve">
     <value>Състезанието е активно и не може да изтривате групи от проблеми от него</value>
   </data>
-  <data name="Cannot_crud_non_online_contest" xml:space="preserve">
-    <value>Не може да извършвате операции върху групите от проблеми на състезание, което НЕ е Онлайн</value>
+  <data name="Can_create_only_in_online_contest" xml:space="preserve">
+    <value>Може да добавяте групи задачи само в състезание, което е от тип {0}.</value>
+  </data>
+  <data name="Can_edit_only_in_online_contest" xml:space="preserve">
+    <value>Може да променяте групи задачи само в състезание, което е от тип {0}.</value>
   </data>
   <data name="Contest_does_not_exist" xml:space="preserve">
     <value>Избраното състезание не съществува</value>
