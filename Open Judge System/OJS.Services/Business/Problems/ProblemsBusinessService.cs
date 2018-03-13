@@ -104,7 +104,7 @@
 
         public void DeleteByContest(int contestId) =>
             this.problemsData
-                .GetByContestQuery(contestId)
+                .GetAllByContest(contestId)
                 .Select(p => p.Id)
                 .ToList()
                 .ForEach(this.DeleteById);

@@ -4,7 +4,19 @@
 
 @using Resource = Resources.Areas.Contests.Views.ListByCategory;
 
-<h3>@Model.CategoryName</h3>
+<div class="row">
+    <div class="col-xs-6 pull-left">
+        <h3>@Model.CategoryName</h3>
+    </div>
+
+    @if (Model.Id != default(int) && Model.IsUserLecturerInContestCategory && !Model.SubCategories.Any())
+    {
+        <div class="col-xs-6 pull-right">
+            @(Html.ActionLink<ContestsController>(Resource.Create_contest, c => c.Create(Model.Id), null, new { @class = "btn btn-sm btn-primary pull-right top-buffer-lg"}))
+        </div>
+    }
+</div>
+
 <div>
     @if (Model.Contests.Any())
     {

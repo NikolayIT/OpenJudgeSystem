@@ -15,7 +15,7 @@
 
         IQueryable<Problem> GetByIdQuery(int id);
 
-        IQueryable<Problem> GetByContestQuery(int contestId);
+        IQueryable<Problem> GetAllByContest(int contestId);
 
         bool ExistsById(int id);
 

@@ -754,7 +754,7 @@
             }
 
             var result = this.problemsData
-                .GetByContestQuery(id)
+                .GetAllByContest(id)
                 .OrderBy(x => x.OrderBy)
                 .Select(DetailedProblemViewModel.FromProblem);
 
@@ -846,7 +846,7 @@
         {
             var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
             var lastProblem = this.problemsData
-                .GetByContestQuery(contest.Id)
+                .GetAllByContest(contest.Id)
                 .OrderByDescending(x => x.OrderBy)
                 .FirstOrDefault();
 

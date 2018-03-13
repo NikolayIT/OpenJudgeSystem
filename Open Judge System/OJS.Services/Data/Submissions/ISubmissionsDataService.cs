@@ -10,6 +10,8 @@
     {
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
 
+        IQueryable<Submission> GetByIdQuery(int id);
+
         IQueryable<Submission> GetAllByProblem(int problemId);
 
         IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId);

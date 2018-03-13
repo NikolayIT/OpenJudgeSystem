@@ -19,5 +19,12 @@
             this.GetAllVisible().Where(cc =>
                 cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                 cc.Contests.Any(c => c.Lecturers.Any(l => l.LecturerId == lecturerId)));
+
+        public string GetNameById(int id) =>
+            this.contestCategories
+                .All()
+                .Where(cc => cc.Id == id)
+                .Select(cc => cc.Name)
+                .FirstOrDefault();
     }
 }

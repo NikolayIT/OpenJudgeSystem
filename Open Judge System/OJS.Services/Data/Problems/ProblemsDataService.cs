@@ -3,7 +3,6 @@
     using System.Data.Entity;
     using System.Linq;
 
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -16,16 +15,16 @@
 
         public Problem GetById(int id) => this.problems.GetById(id);
 
+        public IQueryable<Problem> GetByIdQuery(int id) =>
+            this.problems.All().Where(p => p.Id == id);
+
         public Problem GetWithProblemGroupById(int id) =>
             this.problems.All().Include(p => p.ProblemGroup).FirstOrDefault(p => p.Id == id);
 
         public Problem GetWithContestById(int id) =>
             this.problems.All().Include(p => p.ProblemGroup.Contest).FirstOrDefault(p => p.Id == id);
 
-        public IQueryable<Problem> GetByIdQuery(int id) =>
-            this.problems.All().Where(p => p.Id == id);
-
-        public IQueryable<Problem> GetByContestQuery(int contestId) =>
+        public IQueryable<Problem> GetAllByContest(int contestId) =>
             this.problems.All().Where(p => p.ProblemGroup.ContestId == contestId);
 
         public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);

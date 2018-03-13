@@ -10,5 +10,7 @@
         IQueryable<ContestCategory> GetAllVisible();
 
         IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId);
+
+        string GetNameById(int id);
     }
 }

@@ -15,6 +15,7 @@
     using OJS.Data.Models;
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
+    using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.Contests;
@@ -36,17 +37,20 @@
         private const int ProblemGroupsCountLimit = 40;
 
         private readonly IContestsDataService contestsData;
+        private readonly IContestCategoriesDataService contestCategoriesData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
         public ContestsController(
             IOjsData data,
             IContestsDataService contestsData,
+            IContestCategoriesDataService contestCategoriesData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
             this.contestsData = contestsData;
+            this.contestCategoriesData = contestCategoriesData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
         }        
@@ -77,10 +81,24 @@
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? categoryId)
         {
             this.PrepareViewBagData();
-            return this.View(new ViewModelType());
+
+            var viewModel = new ViewModelType();
+
+            if (categoryId.HasValue)
+            {
+                var categoryName = this.contestCategoriesData.GetNameById(categoryId.Value);
+
+                if (categoryName != null)
+                {
+                    viewModel.CategoryId = categoryId;
+                    viewModel.CategoryName = categoryName;
+                }
+            }
+
+            return this.View(viewModel);
         }
 
         [HttpPost]

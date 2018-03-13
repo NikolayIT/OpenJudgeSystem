@@ -22,6 +22,9 @@
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
 
+        public IQueryable<Submission> GetByIdQuery(int id) =>
+            this.submissions.All().Where(s => s.Id == id);
+
         public IQueryable<Submission> GetAllByProblem(int problemId) =>
             this.submissions.All().Where(s => s.ProblemId == problemId);
 
