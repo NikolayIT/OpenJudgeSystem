@@ -15,14 +15,14 @@
                 Id = contestCategory.Id,
                 CategoryName = contestCategory.Name,
                 Contests = contestCategory.Contests.AsQueryable()
-                    .Where(x => x.IsVisible && !x.IsDeleted)
-                    .OrderBy(x => x.OrderBy)
-                    .ThenByDescending(x => x.EndTime)
+                    .Where(c => c.IsVisible && !c.IsDeleted)
+                    .OrderBy(c => c.OrderBy)
+                    .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
                     .Select(ContestViewModel.FromContest),
                 SubCategories = contestCategory.Children
                     .AsQueryable()
-                    .Where(x => !x.IsDeleted && x.IsVisible)
-                    .OrderBy(x => x.OrderBy)
+                    .Where(cc => !cc.IsDeleted && cc.IsVisible)
+                    .OrderBy(cc => cc.OrderBy)
                     .Select(ContestCategoryListViewModel.FromCategory)
             };
 
