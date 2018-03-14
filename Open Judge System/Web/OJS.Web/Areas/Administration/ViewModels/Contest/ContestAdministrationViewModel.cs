@@ -36,7 +36,7 @@
                     Id = contest.Id,
                     Name = contest.Name,
                     Type = (int)contest.Type,
-                    ProblemGroupsCount = contest.ProblemGroups.Count,
+                    ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted),
                     StartTime = contest.StartTime,
                     EndTime = contest.EndTime,
                     PracticeStartTime = contest.PracticeStartTime,
