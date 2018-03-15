@@ -6,8 +6,5 @@
 
         // html attributes
         public const string Placeholder = "placeholder";
-
-        // Kendo constants
-        public const string KendoGridDefaultDateTimeFormat = "{0:dd/MM/yyyy HH:mm}";
     }
 }

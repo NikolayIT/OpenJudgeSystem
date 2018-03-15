@@ -14,8 +14,8 @@
             columns.Bound(col => col.Title).ClientTemplate("<a href='" + Url.Action("Selected", "News", new { Area = string.Empty }) + "/#= Id #' target='_blank'>#= Title #</a>");
             columns.Bound(col => col.Author);
             columns.Bound(col => col.IsVisible);
-            columns.Bound(col => col.CreatedOn).Format(WebConstants.KendoGridDefaultDateTimeFormat).Hidden();
-            columns.Bound(col => col.ModifiedOn).Format(WebConstants.KendoGridDefaultDateTimeFormat).Hidden();
+            columns.Bound(col => col.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+            columns.Bound(col => col.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
