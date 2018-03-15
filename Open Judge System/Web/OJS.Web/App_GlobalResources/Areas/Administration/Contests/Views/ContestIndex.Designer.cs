@@ -124,11 +124,11 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For contest.
+        ///   Looks up a localized string similar to For compete.
         /// </summary>
-        public static string For_contest {
+        public static string For_compete {
             get {
-                return ResourceManager.GetString("For_contest", resourceCulture);
+                return ResourceManager.GetString("For_compete", resourceCulture);
             }
         }
         

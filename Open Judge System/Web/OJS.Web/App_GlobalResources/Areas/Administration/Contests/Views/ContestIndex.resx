@@ -138,8 +138,8 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="For_contest" xml:space="preserve">
-    <value>For contest</value>
+  <data name="For_compete" xml:space="preserve">
+    <value>For compete</value>
   </data>
   <data name="For_practice" xml:space="preserve">
     <value>For practice</value>
