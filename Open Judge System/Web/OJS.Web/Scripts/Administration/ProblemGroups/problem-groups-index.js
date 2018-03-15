@@ -60,6 +60,10 @@ function filterByContest(contestId) {
     }, 200);
 }
 
+function refreshGrid() {
+    this.read();
+}
+
 $(function () {
     var contestId = $("#search").data("kendoComboBox").value() ||
         $("#contests").data("kendoDropDownList").value() ||
