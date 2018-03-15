@@ -138,8 +138,8 @@
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
 
-        // Datetime formats
-        public const string KendoGridDefaultDateTimeFormat = "{0:dd/MM/yyyy HH:mm}";
+        // Date and time formats
+        public const string DefaultDateTimeFormatString = "{0:dd/MM/yyyy HH:mm}";
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";

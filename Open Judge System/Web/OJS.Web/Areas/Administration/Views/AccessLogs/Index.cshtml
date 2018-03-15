@@ -23,8 +23,8 @@
             columns.Bound(x => x.RequestType);
             columns.Bound(x => x.Url);
             columns.Bound(x => x.PostParams);
-            columns.Bound(x => x.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-            columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+            columns.Bound(x => x.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+            columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
         })
         .ToolBar(toolbar =>
         {

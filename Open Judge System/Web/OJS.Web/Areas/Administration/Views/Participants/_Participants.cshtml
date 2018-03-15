@@ -15,10 +15,10 @@
         columns.Bound(col => col.UserName);
         columns.Bound(col => col.ContestName);
         columns.Bound(col => col.IsOfficial);
-        columns.Bound(col => col.ParticipationStartTime).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-        columns.Bound(col => col.ParticipationEndTime).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-        columns.Bound(col => col.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-        columns.Bound(col => col.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+        columns.Bound(col => col.ParticipationStartTime).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.ParticipationEndTime).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
         columns.Command(command => command.Destroy().Text(" ")).Width(80);
     })
     .ToolBar(toolbar =>

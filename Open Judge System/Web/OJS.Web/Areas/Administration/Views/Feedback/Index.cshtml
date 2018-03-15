@@ -22,8 +22,8 @@
             columns.Bound(x => x.Content);
             columns.Bound(x => x.IsFixed);
             columns.Bound(x => x.Username);
-            columns.Bound(x => x.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-            columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+            columns.Bound(x => x.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+            columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })

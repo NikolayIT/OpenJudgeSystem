@@ -29,8 +29,8 @@
                 columns.Bound(model => model.Company).Hidden();
                 columns.Bound(model => model.JobTitle).Hidden();
                 columns.Bound(model => model.Age).Filterable(false);
-                columns.Bound(model => model.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-                columns.Bound(model => model.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+                columns.Bound(model => model.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+                columns.Bound(model => model.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
                 columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             })
         .ToolBar(toolbar =>

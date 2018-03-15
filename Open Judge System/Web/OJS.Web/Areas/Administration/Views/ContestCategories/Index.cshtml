@@ -14,8 +14,8 @@
         columns.Bound(x => x.Name);
         columns.Bound(x => x.IsVisible);
         columns.Bound(x => x.OrderBy);
-        columns.Bound(x => x.CreatedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
-        columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.KendoGridDefaultDateTimeFormat).Hidden();
+        columns.Bound(x => x.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
         columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Change);
         columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
     })
