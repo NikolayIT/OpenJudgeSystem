@@ -35,7 +35,7 @@
             })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
             toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
         .Editable(editable =>
