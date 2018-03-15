@@ -48,35 +48,38 @@
             bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
                 "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
                 "~/Scripts/Administration/Contests/contest-search.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/contests-index").Include(
+                "~/Scripts/Administration/Contests/contests-index.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css"));
+                "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/KendoUI/kendo").Include(
-                      "~/Content/KendoUI/kendo.common.css",
-                      "~/Content/KendoUI/kendo.blueopal.min.css"));
+                "~/Content/KendoUI/kendo.common.css",
+                "~/Content/KendoUI/kendo.blueopal.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap/bootstrap").Include(
-                      "~/Content/bootstrap/bootstrap-flatly.css"));
+                "~/Content/bootstrap/bootstrap-flatly.css"));
 
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirror").Include(
-                      "~/Dependencies/codemirror/lib/codemirror.css",
-                      "~/Dependencies/codemirror/theme/tomorrow-night-eighties.css",
-                      "~/Dependencies/codemirror/theme/the-matrix.css"));
+                "~/Dependencies/codemirror/lib/codemirror.css",
+                "~/Dependencies/codemirror/theme/tomorrow-night-eighties.css",
+                "~/Dependencies/codemirror/theme/the-matrix.css"));
 
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirrormerge").Include(
-                      "~/Dependencies/codemirror/addon/merge/merge.css",
-                      "~/Content/Contests/submission-view-page.css"));
+                "~/Dependencies/codemirror/addon/merge/merge.css",
+                "~/Content/Contests/submission-view-page.css"));
 
             bundles.Add(new StyleBundle("~/Content/Contests/submission-page").Include(
-                      "~/Content/Contests/submission-page.css"));
+                "~/Content/Contests/submission-page.css"));
 
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirrormerge").Include(
-                      "~/Dependencies/codemirror/addon/merge/merge.css",
-                      "~/Content/Contests/submission-view-page.css"));
+                "~/Dependencies/codemirror/addon/merge/merge.css",
+                "~/Content/Contests/submission-view-page.css"));
         }
     }
 }

@@ -18,7 +18,6 @@
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.InputModels.Contests;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Contests.Models;
     using OJS.Web.Common.Extensions;
@@ -312,27 +311,6 @@
                 .ThenBy(a => a.Name);
 
             return this.Json(dropDownData, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult StartAsLab(LabStartInputModel inputModel)
-        {
-            if (!this.CheckIfUserHasContestPermissions(inputModel.ContestCreateId))
-            {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
-            }
-
-            var contest = this.Data.Contests.GetById(inputModel.ContestCreateId);
-
-            if (contest != null)
-            {
-                contest.StartTime = DateTime.Now.AddSeconds(StartTimeDelayInSeconds);
-                contest.EndTime = DateTime.Now.AddSeconds(StartTimeDelayInSeconds + LabDurationInSeconds);
-                contest.IsVisible = true;
-                this.Data.SaveChanges();
-            }
-
-            return new EmptyResult();
         }
 
         [HttpGet]

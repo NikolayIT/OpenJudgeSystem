@@ -1,6 +1,4 @@
-﻿@using OJS.Web.Areas.Administration.InputModels.Contests
-
-@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
@@ -17,7 +15,8 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
         {
@@ -31,10 +30,7 @@
             columns.Bound(x => x.IsVisible).Hidden();
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Custom("Стартирай Лаб").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Лаб стартиране");
-            columns.Command(command => command.Custom("Промени времето").Click("onGridStartBtnClick").HtmlAttributes(new { @class = "k-button" })).Title("Време");
             columns.Command(c => c.Custom("Свали решения").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
-            //columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Solutions", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Решения").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
             columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='Problems/Contest/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{Resource.Edit}</a>").Title(GeneralResource.Change);
@@ -43,7 +39,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
             toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
         .Editable(editable =>
@@ -74,98 +70,15 @@
             .Read(read => read.Action("Read", ContestControllerName))
             .Update(update => update.Action("Update", ContestControllerName))
             .Destroy(destroy => destroy.Action("Destroy", ContestControllerName))
-            .Events(ev => ev.Error("validateModelStateErrors"))
-        )
-    )
-
-    @{ Html.RenderPartial("_LabStartPopupWindow", new LabStartInputModel()); }
+            .Events(ev => ev.Error("validateModelStateErrors"))))
 
     @{ Html.RenderPartial("_DownloadSubmissionsPopupWindow"); }
 
 </div>
 
-<script type="text/javascript">
-    function onDataBound() {
-        CreateExportToExcelButton();
-    }
-
-    function onGridStartBtnClick(ev) {
-        ev.preventDefault();
-
-        var dataItem = this.dataItem($(ev.currentTarget).closest('tr'));
-        $("#ContestCreateId").val(dataItem.Id);
-
-        resetFormValues();
-
-        var startLabWindow = $('#lab-start-popup').kendoWindow({
-            height: 'auto',
-            width: '50%',
-            title: 'Стартиране на Лаб',
-            visible: false,
-            modal: 'true',
-            deactivate: resetFormValues
-        }).data('kendoWindow');
-
-        startLabWindow.center();
-        startLabWindow.open();
-
-        $('#lab-start-btn-cancel').click(closeLabStartPopupWindow);
-    }
-
-    function onStartLabSuccess() {
-        $("#DataGrid").data("kendoGrid").dataSource.read();
-
-        closeLabStartPopupWindow();
-    }
-
-    function closeLabStartPopupWindow() {
-        $('#lab-start-popup').data('kendoWindow').close();
-    }
-
-    function resetFormValues() {
-        document.getElementById('lab-start-form').reset();
-    }
-
-    function showErrorMessage(errorData) {
-        var errorObject = JSON.parse(errorData.responseText);
-        if (errorObject.Message) {
-            $('span[data-valmsg-for=Duration]')
-                .removeClass('field-validation-valid')
-                .addClass('field-validation-error')
-                .html(errorObject.Message);
-        } else {
-            alert('Възникна неочаквана грешка');
-        }
-    }
-
-    function showDownloadSubmissionsPopup(ev) {
-        ev.preventDefault();
-
-        clearDownloadContestSubmissionsForm();
-
-        var contestId = this.dataItem($(ev.currentTarget).closest('tr')).get('Id');
-        $('#download-contest-submissions-form #contest-id').val(contestId);
-
-        var downloadContestSubmissionsWindow = $('#download-contest-submissions-popup').kendoWindow({
-            height: 'auto',
-            width: '30%',
-            title: 'Изтегляне на решения',
-            visible: false,
-            modal: 'true',
-            deactivate: clearDownloadContestSubmissionsForm
-        }).data('kendoWindow');
-
-        downloadContestSubmissionsWindow.center();
-        downloadContestSubmissionsWindow.open();
-    }
-
-    function clearDownloadContestSubmissionsForm() {
-        document.getElementById('download-contest-submissions-form').reset();
-    }
-</script>
-
 <script type="text/x-kendo-template" id="questions-template">
-    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
         .Name("DetailQuestionsGrid_#=Id#")
         .Columns(columns =>
         {
@@ -181,18 +94,18 @@
             columns.Command(com => com.Destroy().Text(" ")).Width(80);
         })
         .ToolBar(tool =>
-            {
-                tool.Create().Text(Resource.Add_question);
-                tool.Custom().Text(Resource.Copy_from).HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
-            })
+        {
+            tool.Create().Text(Resource.Add_question);
+            tool.Custom().Text(Resource.Copy_from).HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
+        })
         .ColumnMenu()
         .ClientDetailTemplateId("answers-template")
         .Editable(edit =>
-            {
-                edit.Mode(GridEditMode.PopUp);
-                edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-            })
+        {
+            edit.Mode(GridEditMode.PopUp);
+            edit.Window(w => w.Title(ViewBag.Title));
+            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
         .DataSource(data => data.Ajax()
             .ServerOperation(true)
             .Model(model => model.Id(m => m.QuestionId))
@@ -203,7 +116,8 @@
             .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ContestQuestionControllerName)))
         .ToClientTemplate())
 
-    @(Html.Kendo().Window()
+    @(Html.Kendo()
+        .Window()
         .Name("CopyFromContestWindow_#=Id#")
         .Title(Resource.Copy_from_contest)
         .LoadContentFrom("/Administration/ContestQuestions/CopyFromAnotherContest/#=Id#")
@@ -216,7 +130,8 @@
 
 <script type="text/x-kendo-template" id="answers-template">
     # if ((Type == 0) || (Type == 1)) { #
-    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
         .Name("DetailAnswerGrid_#=QuestionId#")
         .Columns(columns =>
         {
@@ -227,17 +142,17 @@
             columns.Command(com => com.Destroy().Text(" ")).Width(80);
         })
         .ToolBar(tool =>
-            {
-                tool.Create().Text(Resource.Add_answer);
-                tool.Custom().Text(Resource.Delete_all).HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
-            })
+        {
+            tool.Create().Text(Resource.Add_answer);
+            tool.Custom().Text(Resource.Delete_all).HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
+        })
         .ColumnMenu()
         .Editable(edit =>
-            {
-                edit.Mode(GridEditMode.PopUp);
-                edit.Window(w => w.Title(ViewBag.Title));
-                edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-            })
+        {
+            edit.Mode(GridEditMode.PopUp);
+            edit.Window(w => w.Title(ViewBag.Title));
+            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
         .DataSource(data =>
         {
             data.Ajax()
@@ -260,5 +175,5 @@
 </script>
 
 @section scripts {
-    <script src="~/Scripts/Administration/Contests/contests-index.js"></script>
+    @Scripts.Render("~/bundles/contests-index")
 }

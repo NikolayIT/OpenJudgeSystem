@@ -1674,7 +1674,6 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
-    <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
@@ -2398,7 +2397,6 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\LecturersInContests\_LecturerInContestsGridTemplate.cshtml" />
