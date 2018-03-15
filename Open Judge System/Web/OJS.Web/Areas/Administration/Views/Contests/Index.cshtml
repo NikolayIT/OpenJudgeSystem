@@ -4,7 +4,6 @@
 @{
     ViewBag.Title = Resource.Page_title;
     const string ControllerName = "Contests";
-    const string DateTimeFormat = "{0:dd/MM/yyyy HH:mm}";
 }
 
 @section Styles{
@@ -22,13 +21,13 @@
             columns.Bound(x => x.Id);
             columns.Bound(x => x.CategoryName);
             columns.Bound(x => x.Name);
-            columns.Bound(x => x.StartTime).Format(DateTimeFormat);
-            columns.Bound(x => x.EndTime).Format(DateTimeFormat);
-            columns.Bound(x => x.PracticeStartTime).Format(DateTimeFormat);
-            columns.Bound(x => x.PracticeEndTime).Format(DateTimeFormat).Hidden();
+            columns.Bound(x => x.StartTime).Format(WebConstants.KendoGridDefaultDateTimeFormat);
+            columns.Bound(x => x.EndTime).Format(WebConstants.KendoGridDefaultDateTimeFormat);
+            columns.Bound(x => x.PracticeStartTime).Format(WebConstants.KendoGridDefaultDateTimeFormat);
+            columns.Bound(x => x.PracticeEndTime).Format(WebConstants.KendoGridDefaultDateTimeFormat).Hidden();
             columns.Bound(x => x.IsVisible).Hidden();
-            columns.Bound(x => x.CreatedOn).Format(DateTimeFormat).Hidden();
-            columns.Bound(x => x.ModifiedOn).Format(DateTimeFormat).Hidden();
+            columns.Bound(x => x.CreatedOn).Format(WebConstants.KendoGridDefaultDateTimeFormat).Hidden();
+            columns.Bound(x => x.ModifiedOn).Format(WebConstants.KendoGridDefaultDateTimeFormat).Hidden();
             columns.Command(c => c.Custom(Resource.Download_submissions).Click("showDownloadSubmissionsPopup")).Title(Resource.Submissions).Width(200);
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=true'>{Resource.For_compete}</a><br /><a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=false'>{Resource.For_practice}</a>").Title(Resource.Ranking).Width(200);
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='Problems/Contest/#=Id#'>{Resource.Problems}</a><br /><a class='k-button' href='{Url.Action("Contest", "Participants")}/#=Id#'>{Resource.Participants}</a>").Title(Resource.Other);
