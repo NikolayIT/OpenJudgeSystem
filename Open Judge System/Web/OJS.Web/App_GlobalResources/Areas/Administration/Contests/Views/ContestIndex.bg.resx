@@ -132,6 +132,9 @@
   <data name="Delete_all" xml:space="preserve">
     <value>Изтрий всички</value>
   </data>
+  <data name="Download_submissions" xml:space="preserve">
+    <value>Свали решения</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Промени</value>
   </data>
@@ -153,13 +156,16 @@
   <data name="Participants" xml:space="preserve">
     <value>Участници</value>
   </data>
+  <data name="Problems" xml:space="preserve">
+    <value>Задачи</value>
+  </data>
   <data name="Ranking" xml:space="preserve">
     <value>Класиране</value>
   </data>
   <data name="Results" xml:space="preserve">
     <value>Решения</value>
   </data>
-  <data name="Tasks" xml:space="preserve">
-    <value>Задачи</value>
+  <data name="Submissions" xml:space="preserve">
+    <value>Решения</value>
   </data>
 </root>

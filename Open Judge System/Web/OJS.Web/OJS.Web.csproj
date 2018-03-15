@@ -2445,6 +2445,8 @@
     <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestSearchPartial.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ProblemsInProblemGroupGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestQuestionsGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

@@ -3,9 +3,7 @@
 
 @{
     ViewBag.Title = Resource.Page_title;
-    const string ContestControllerName = "Contests";
-    const string ContestQuestionControllerName = "ContestQuestions";
-    const string ContestQuestionAnswersControllerName = "ContestQuestionAnswers";
+    const string ControllerName = "Contests";
 }
 
 @section Styles{
@@ -30,17 +28,17 @@
             columns.Bound(x => x.IsVisible).Hidden();
             columns.Bound(x => x.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
             columns.Bound(x => x.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(c => c.Custom("Свали решения").Click("showDownloadSubmissionsPopup")).Title("Решения").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=true'>На състезанието</a><br /><a class='k-button' href='" + Url.Action("Results", "ContestsExport") + "/#=Id#?compete=false'>На упражненията</a>").Title("Класиране").Width(200);
-            columns.Template(@<text></text>).ClientTemplate("<a class='k-button' href='Problems/Contest/#=Id#'>Задачи</a><br /><a class='k-button' href='" + Url.Action("Contest", "Participants") + "/#=Id#'>Участници</a>").Title("Други");
+            columns.Command(c => c.Custom(Resource.Download_submissions).Click("showDownloadSubmissionsPopup")).Title(Resource.Submissions).Width(200);
+            columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=true'>{Resource.For_contest}</a><br /><a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=false'>{Resource.For_practice}</a>").Title(Resource.Ranking).Width(200);
+            columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='Problems/Contest/#=Id#'>{Resource.Problems}</a><br /><a class='k-button' href='{Url.Action("Contest", "Participants")}/#=Id#'>{Resource.Participants}</a>").Title(Resource.Other);
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{Resource.Edit}</a>").Title(GeneralResource.Change);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
         })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ContestControllerName);
+            toolbar.Custom().Text(GeneralResource.Create).Action("Create", ControllerName);
             toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
-            toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ContestControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
+            toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
         .Editable(editable =>
         {
@@ -49,7 +47,7 @@
             editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
         })
         .ColumnMenu()
-        .ClientDetailTemplateId("questions-template")
+        .ClientDetailTemplateId("_ContestQuestionsGridTemplate")
         .Events(e => e.DataBound("onDataBound"))
         .Pageable(x => x.Refresh(true))
         .Sortable(x => x.Enabled(true).AllowUnsort(false))
@@ -61,118 +59,22 @@
         })
         .Reorderable(x => x.Columns(true))
         .Resizable(x => x.Columns(true))
-        .DataSource(datasource => datasource
-            .Ajax()
-            .ServerOperation(true)
-            .Model(model => model.Id(x => x.Id))
-            .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
-            .Create(create => create.Action("Create", ContestControllerName))
-            .Read(read => read.Action("Read", ContestControllerName))
-            .Update(update => update.Action("Update", ContestControllerName))
-            .Destroy(destroy => destroy.Action("Destroy", ContestControllerName))
-            .Events(ev => ev.Error("validateModelStateErrors"))))
-
-    @{ Html.RenderPartial("_DownloadSubmissionsPopupWindow"); }
-
-</div>
-
-<script type="text/x-kendo-template" id="questions-template">
-    @(Html.Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
-        .Name("DetailQuestionsGrid_#=Id#")
-        .Columns(columns =>
-        {
-            columns.Bound(m => m.QuestionId);
-            columns.Bound(m => m.Text);
-            columns.Bound(m => m.Type).ClientTemplate("\\#= getTypeName(Type) \\#");
-            columns.Bound(m => m.RegularExpressionValidation).Hidden();
-            columns.Bound(m => m.AskPracticeParticipants);
-            columns.Bound(m => m.AskOfficialParticipants);
-            columns.Bound(m => m.CreatedOn).Hidden();
-            columns.Bound(m => m.ModifiedOn).Hidden();
-            columns.Command(com => com.Edit().Text(" ")).Width(80);
-            columns.Command(com => com.Destroy().Text(" ")).Width(80);
-        })
-        .ToolBar(tool =>
-        {
-            tool.Create().Text(Resource.Add_question);
-            tool.Custom().Text(Resource.Copy_from).HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
-        })
-        .ColumnMenu()
-        .ClientDetailTemplateId("answers-template")
-        .Editable(edit =>
-        {
-            edit.Mode(GridEditMode.PopUp);
-            edit.Window(w => w.Title(ViewBag.Title));
-            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-        })
-        .DataSource(data => data.Ajax()
-            .ServerOperation(true)
-            .Model(model => model.Id(m => m.QuestionId))
-            .Sort(sort => sort.Add(field => field.CreatedOn))
-            .Create(create => create.Action("AddQuestionToContest", ContestQuestionControllerName, new { id = "#= Id #" }))
-            .Read(read => read.Action("QuestionsInContest", ContestQuestionControllerName, new { id = "#= Id #" }))
-            .Update(update => update.Action("UpdateQuestionInContest", ContestQuestionControllerName))
-            .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ContestQuestionControllerName)))
-        .ToClientTemplate())
-
-    @(Html.Kendo()
-        .Window()
-        .Name("CopyFromContestWindow_#=Id#")
-        .Title(Resource.Copy_from_contest)
-        .LoadContentFrom("/Administration/ContestQuestions/CopyFromAnotherContest/#=Id#")
-        .Visible(false)
-        .Modal(true)
-        .Width(400)
-        .Actions(actions => actions.Close())
-        .ToClientTemplate())
-</script>
-
-<script type="text/x-kendo-template" id="answers-template">
-    # if ((Type == 0) || (Type == 1)) { #
-    @(Html.Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
-        .Name("DetailAnswerGrid_#=QuestionId#")
-        .Columns(columns =>
-        {
-            columns.Bound(m => m.AnswerId);
-            columns.Bound(m => m.Text);
-            columns.Bound(m => m.QuestionText);
-            columns.Command(com => com.Edit().Text(" ")).Width(80);
-            columns.Command(com => com.Destroy().Text(" ")).Width(80);
-        })
-        .ToolBar(tool =>
-        {
-            tool.Create().Text(Resource.Add_answer);
-            tool.Custom().Text(Resource.Delete_all).HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
-        })
-        .ColumnMenu()
-        .Editable(edit =>
-        {
-            edit.Mode(GridEditMode.PopUp);
-            edit.Window(w => w.Title(ViewBag.Title));
-            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
-        })
         .DataSource(data =>
         {
             data.Ajax()
                 .ServerOperation(true)
-                .Model(model =>
-                {
-                    model.Id(m => m.QuestionId);
-                })
-                .Sort(sort => sort.Add(field => field.AnswerId))
-                .Create(create => create.Action("AddAnswerToQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }))
-                .Read(read => read.Action("AnswersInQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }))
-                .Update(update => update.Action("UpdateAnswerInQuestion", ContestQuestionAnswersControllerName))
-                .Destroy(destroy => destroy.Action("DeleteAnswerFromQuestion", ContestQuestionAnswersControllerName, new { id = "#= QuestionId #" }));
-        })
-        .ToClientTemplate())
-    # }
-    else { #
-    <div class="text-center">@Resource.No_possible_answers</div>
-    # } #
-</script>
+                .Model(model => model.Id(x => x.Id))
+                .Sort(sort => sort.Add(x => x.CreatedOn).Descending())
+                .Create(create => create.Action("Create", ControllerName))
+                .Read(read => read.Action("Read", ControllerName))
+                .Update(update => update.Action("Update", ControllerName))
+                .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                .Events(ev => ev.Error("validateModelStateErrors"));
+        }))
+
+    @Html.Partial("_DownloadSubmissionsPopupWindow")
+    @Html.Partial("_ContestQuestionsGridTemplate")
+</div>
 
 @section scripts {
     @Scripts.Render("~/bundles/contests-index")
