@@ -80,10 +80,10 @@
                     p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);
 
-        public IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficial(int contestId, bool isOfficial) =>
+        public IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial) =>
             this.participants
                 .All()
-                .Where(p => p.ContestId == contestId && p.Scores.Any() && p.IsOfficial == isOfficial);
+                .Where(p => p.ContestId == contestId && p.IsOfficial == isOfficial);
 
         public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participants

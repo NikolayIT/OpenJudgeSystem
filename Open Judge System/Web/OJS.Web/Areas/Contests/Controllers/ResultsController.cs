@@ -455,7 +455,7 @@
             bool isFullResults)
         {
             var participantsInContest = this.participantsData
-                .GetAllWithScoresByContestIdAndIsOfficial(contestId, official);
+                .GetAllByContestAndIsOfficial(contestId, official);
 
             if (isFullResults)
             {

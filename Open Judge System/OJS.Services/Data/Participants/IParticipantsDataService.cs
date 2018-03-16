@@ -26,7 +26,7 @@
 
         IQueryable<Participant> GetAll();
 
-        IQueryable<Participant> GetAllWithScoresByContestIdAndIsOfficial(int contestId, bool isOfficial);
+        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
 
         bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
 

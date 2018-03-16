@@ -39,8 +39,8 @@
                         PracticePassword = contest.PracticePassword,
                         HasContestQuestions = contest.Questions.Any(q => q.AskOfficialParticipants),
                         HasPracticeQuestions = contest.Questions.Any(q => q.AskPracticeParticipants),
-                        OfficialParticipants = contest.Participants.Count(p => p.Scores.Any() && p.IsOfficial),
-                        PracticeParticipants = contest.Participants.Count(p => p.Scores.Any() && !p.IsOfficial),
+                        OfficialParticipants = contest.Participants.Count(p => p.IsOfficial),
+                        PracticeParticipants = contest.Participants.Count(p => !p.IsOfficial),
                         ProblemsCount = contest.Problems.Count(pr => !pr.IsDeleted),
                         Problems = contest.Problems
                             .AsQueryable()
