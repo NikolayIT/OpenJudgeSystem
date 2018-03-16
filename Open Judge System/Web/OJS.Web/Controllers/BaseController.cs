@@ -108,32 +108,36 @@
         }
 
         protected bool CheckIfUserHasContestPermissions(int contestId) =>
-            this.User.IsAdmin() ||
-            this.Data.Contests
-                .All()
-                .Any(x =>
-                    x.Id == contestId &&
-                    (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                    x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.Contests
+                    .All()
+                    .Any(x =>
+                        x.Id == contestId &&
+                        (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                        x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))));
 
         protected bool CheckIfUserHasProblemPermissions(int problemId) =>
-            this.User.IsAdmin() ||
-            this.Data.Problems
-                .All()
-                .Any(x =>
-                    x.Id == problemId &&
-                    (x.ProblemGroup.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                    x.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.Problems
+                    .All()
+                    .Any(x =>
+                        x.Id == problemId &&
+                        (x.ProblemGroup.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                        x.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))));
 
         protected bool CheckIfUserHasContestCategoryPermissions(int categoryId) =>
-            this.User.IsAdmin() ||
-            this.Data.ContestCategories
-                .All()
-                .Any(x =>
-                    x.Id == categoryId &&
-                    x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.ContestCategories
+                    .All()
+                    .Any(x =>
+                        x.Id == categoryId &&
+                        x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id)));
                
         protected bool CheckIfUserOwnsSubmission(int submissionId) =>
+            this.UserProfile != null &&
             this.Data.Submissions
                 .All()
                 .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);

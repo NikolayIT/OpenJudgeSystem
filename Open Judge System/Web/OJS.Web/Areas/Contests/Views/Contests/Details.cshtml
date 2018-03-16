@@ -5,7 +5,10 @@
 @using OJS.Common.Extensions;
 @using OJS.Common.Models;
 @using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.Areas.Contests.Controllers;
 @using OJS.Web.Areas.Contests.ViewModels.Contests;
+
+@using ContestsController = OJS.Web.Areas.Administration.Controllers.ContestsController
 
 @using Resource = Resources.Areas.Contests.Views.ContestsDetails;
 
@@ -121,7 +124,11 @@
         {
             if (Model.UserCanCompete)
             {
-                @Html.ActionLink(Resource.Compete, GlobalConstants.Index, new { controller = "Compete", id = Model.Id }, new { @class = "btn btn-sm btn-success bottom-buffer-sm" })
+                @(Html.ActionLink<CompeteController>(Resource.Compete, c => c.Index(Model.Id, true, null), null, new {@class = "btn btn-sm btn-success bottom-buffer-sm"}))
+            }
+            else if (Model.UserIsAdminOrLecturerInContest)
+            {
+                @(Html.ActionLink<CompeteController>(Resource.Compete, c => c.Index(Model.Id, true, null), null, new {@class = "btn btn-sm btn-warning bottom-buffer-sm"}))
             }
 
             if (Model.OfficialParticipants > 0)
@@ -145,7 +152,7 @@
 
         @if (Model.CanBePracticed)
         {
-            @Html.ActionLink(Resource.Practice, GlobalConstants.Index, new { controller = "Practice", id = Model.Id }, new { @class = "btn btn-sm btn-primary bottom-buffer-sm" })
+            @(Html.ActionLink<CompeteController>(Resource.Practice, c => c.Index(Model.Id, false, null), null, new {@class = "btn btn-sm btn-primary bottom-buffer-sm"}))
 
             if (Model.UserIsAdminOrLecturerInContest)
             {
@@ -157,28 +164,32 @@
                 }
             }
         }
+        else if (Model.UserIsAdminOrLecturerInContest)
+        {
+            @(Html.ActionLink<CompeteController>(Resource.Practice, c => c.Index(Model.Id, false, null), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm"}))
+        }
 
         @if (Model.UserIsAdminOrLecturerInContest)
         {
             @(Html.ActionLink<ContestsController>(
-                  Resource.Edit,
-                  c => c.Edit(Model.Id),
-                  new { area = GlobalConstants.AdministrationAreaName },
-                  new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+                Resource.Edit,
+                c => c.Edit(Model.Id),
+                new { area = GlobalConstants.AdministrationAreaName },
+                new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
 
             @(Html.ActionLink<ProblemsController>(
-                  Resource.Problems,
-                  c => c.Index(Model.Id),
-                  new { area = GlobalConstants.AdministrationAreaName },
-                  new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+                Resource.Problems,
+                c => c.Index(Model.Id),
+                new { area = GlobalConstants.AdministrationAreaName },
+                new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
 
             if (Model.IsOnline)
             {
                 @(Html.ActionLink<ProblemGroupsController>(
-                      Resource.Problem_groups,
-                      c => c.Index(Model.Id),
-                      new { area = GlobalConstants.AdministrationAreaName },
-                      new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
+                    Resource.Problem_groups,
+                    c => c.Index(Model.Id),
+                    new { area = GlobalConstants.AdministrationAreaName },
+                    new { @class = "btn btn-sm btn-primary bottom-buffer-sm right-buffer-sm" }))
             }
 
             if (!Model.CanBeCompeted && Model.OfficialParticipants > 0)
