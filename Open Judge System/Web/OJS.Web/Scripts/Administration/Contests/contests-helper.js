@@ -9,5 +9,5 @@
         .replace(/-{1,}/g, '-')
         .replace(/^-+|-+$/g, '');
 
-    return "<a class='text-primary' href='/Contests/" + contestId + '/' + nameUrl + "' >" + contestName + "</a>";
+    return "<a class='contest-name-link' href='/Contests/" + contestId + '/' + nameUrl + "' >" + contestName + "</a>";
 }
