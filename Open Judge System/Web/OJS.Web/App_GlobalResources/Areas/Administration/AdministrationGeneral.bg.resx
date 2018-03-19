@@ -156,6 +156,9 @@
   <data name="Modified_on" xml:space="preserve">
     <value>Дата на промяна</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
+  </data>
   <data name="No_privileges_message" xml:space="preserve">
     <value>Нямате привилегии за това действие!</value>
   </data>

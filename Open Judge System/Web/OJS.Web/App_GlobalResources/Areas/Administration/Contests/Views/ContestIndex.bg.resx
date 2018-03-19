@@ -135,9 +135,6 @@
   <data name="Download_submissions" xml:space="preserve">
     <value>Свали решения</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Промени</value>
-  </data>
   <data name="For_compete" xml:space="preserve">
     <value>На състезанието</value>
   </data>
