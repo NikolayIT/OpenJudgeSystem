@@ -106,6 +106,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download submissions.
+        /// </summary>
+        public static string Download_submissions {
+            get {
+                return ResourceManager.GetString("Download_submissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -115,11 +124,11 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For contest.
+        ///   Looks up a localized string similar to For compete.
         /// </summary>
-        public static string For_contest {
+        public static string For_compete {
             get {
-                return ResourceManager.GetString("For_contest", resourceCulture);
+                return ResourceManager.GetString("For_compete", resourceCulture);
             }
         }
         
@@ -169,6 +178,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problems.
+        /// </summary>
+        public static string Problems {
+            get {
+                return ResourceManager.GetString("Problems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ranking.
         /// </summary>
         public static string Ranking {
@@ -187,11 +205,11 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks.
+        ///   Looks up a localized string similar to Submissions.
         /// </summary>
-        public static string Tasks {
+        public static string Submissions {
             get {
-                return ResourceManager.GetString("Tasks", resourceCulture);
+                return ResourceManager.GetString("Submissions", resourceCulture);
             }
         }
     }

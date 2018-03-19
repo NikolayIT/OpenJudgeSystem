@@ -16,15 +16,15 @@
             columns.Bound(col => col.DllFile);
             columns.Bound(col => col.ClassName);
             columns.Bound(col => col.Parameter).ClientTemplate("#= substring(Parameter) #");
-            columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+            columns.Bound(col => col.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+            columns.Bound(col => col.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
             columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             columns.Command(command => command.Destroy().Text(" ")).Width(80);
         })
     .ToolBar(toolbar =>
     {
         toolbar.Create().Text(GeneralResource.Create);
-        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
