@@ -62,7 +62,11 @@
                     .Read(read => read.Action("Read", ControllerName))
                     .Update(update => update.Action("Update", ControllerName))
                     .Destroy(destroy => destroy.Action("Destroy", ControllerName))
-                    .Events(ev => ev.Error("validateModelStateErrors"));
+                    .Events(ev =>
+                    {
+                        ev.Error("validateModelStateErrors");
+                        ev.Sync("refreshGrid");
+                    });
             })
             .Events(ev => ev.Edit("onEdit"))
             .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))

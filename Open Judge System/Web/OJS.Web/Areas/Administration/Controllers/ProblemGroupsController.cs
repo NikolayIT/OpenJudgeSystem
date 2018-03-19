@@ -96,7 +96,7 @@
                 return this.GridOperation(request, model);
             }
 
-            this.BaseCreate(model.GetEntityModel());
+            model.Id = (int)this.BaseCreate(model.GetEntityModel());
             return this.GridOperation(request, model);
         }
 
