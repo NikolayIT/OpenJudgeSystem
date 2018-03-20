@@ -57,7 +57,7 @@
 
         private static void RegisterStyles(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/styles").Include(
                 "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/KendoUI/kendo").Include(
