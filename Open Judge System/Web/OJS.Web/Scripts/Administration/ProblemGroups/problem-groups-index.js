@@ -60,8 +60,10 @@ function filterByContest(contestId) {
     }, 200);
 }
 
-function refreshGrid() {
-    this.read();
+function refreshGrid(e) {
+    if(e.type !== "read" && !e.response.Errors){
+        e.sender.read();
+    }
 }
 
 $(function () {

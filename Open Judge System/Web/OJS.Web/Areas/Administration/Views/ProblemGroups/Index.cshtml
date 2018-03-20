@@ -65,7 +65,7 @@
                     .Events(ev =>
                     {
                         ev.Error("validateModelStateErrors");
-                        ev.Sync("refreshGrid");
+                        ev.RequestEnd("refreshGrid");
                     });
             })
             .Events(ev => ev.Edit("onEdit"))
