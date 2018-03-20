@@ -67,7 +67,7 @@
                 return true;
             }
 
-            if (isUserAdminOrLecturerInContest && (contest.IsActive || contest.StartTime >= DateTime.Now))
+            if (isUserAdminOrLecturerInContest && contest.IsActive)
             {
                 return true;
             }

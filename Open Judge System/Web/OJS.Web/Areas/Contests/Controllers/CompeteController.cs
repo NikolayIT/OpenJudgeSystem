@@ -101,10 +101,11 @@
         [NonAction]
         public void ValidateContest(Contest contest, bool official)
         {
+            var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
+
             if (contest == null ||
                 contest.IsDeleted ||
-                (!contest.IsVisible &&
-                    !this.IsUserAdminOrLecturerInContest(contest)))
+                (!contest.IsVisible && !isUserAdminOrLecturerInContest))
             {
                 throw new HttpException(
                     (int)HttpStatusCode.NotFound,
@@ -123,7 +124,7 @@
                     Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
 
-            if (!official && !contest.CanBePracticed)
+            if (!official && !contest.CanBePracticed && !isUserAdminOrLecturerInContest)
             {
                 throw new HttpException(
                     (int)HttpStatusCode.Forbidden,
