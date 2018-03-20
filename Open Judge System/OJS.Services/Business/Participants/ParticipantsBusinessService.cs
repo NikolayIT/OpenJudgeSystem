@@ -28,16 +28,15 @@
             bool isAdmin)
         {
             Participant participant;
-            if (contest.IsOnline)
+            if (contest.IsOnline && isOfficial)
             {
-                participant = new Participant(contest.Id, userId, isOfficial)
+                participant = new Participant(contest.Id, userId, isOfficial: true)
                 {
                     ParticipationStartTime = DateTime.Now,
                     ParticipationEndTime = DateTime.Now + contest.Duration
                 };
 
-                if (isOfficial &&
-                    !isAdmin &&
+                if (!isAdmin &&
                     !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
