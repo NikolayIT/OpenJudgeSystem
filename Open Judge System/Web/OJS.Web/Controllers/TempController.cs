@@ -12,6 +12,7 @@
     using MissingFeatures;
 
     using OJS.Common.Extensions;
+    using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -172,16 +173,32 @@
 
         public ActionResult MigrateContestStartEndTimeOfParticipantsInParticipationStartEndTime()
         {
-            var affected = this.Data.Participants
-                .All()
-                .Where(p => p.ContestStartTime != null || p.ContestEndTime != null)
-                .Update(p => new Participant
-                {
-                    ParticipationStartTime = p.ContestStartTime,
-                    ParticipationEndTime = p.ContestEndTime,
-                    ContestStartTime = null,
-                    ContestEndTime = null
-                });
+            var affected = 0;
+
+            using (var scope = TransactionsHelper.CreateTransactionScope())
+            {
+                affected += this.Data.Participants
+                    .All()
+                    .Where(p => p.IsOfficial && (p.ContestStartTime != null || p.ContestEndTime != null))
+                    .Update(p => new Participant
+                    {
+                        ParticipationStartTime = p.ContestStartTime,
+                        ParticipationEndTime = p.ContestEndTime
+                    });
+
+                affected += this.Data.Participants
+                    .All()
+                    .Where(p => !p.IsOfficial && (p.ContestStartTime != null || p.ContestEndTime != null))
+                    .Update(p => new Participant
+                    {
+                        ParticipationStartTime = null,
+                        ParticipationEndTime = null,
+                        ContestStartTime = null,
+                        ContestEndTime = null
+                    });
+
+                scope.Complete();
+            }
 
             return this.Content($"Done! Participants affected: {affected}");
         }
