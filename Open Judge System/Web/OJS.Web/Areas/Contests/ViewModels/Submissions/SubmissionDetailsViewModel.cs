@@ -16,7 +16,7 @@
                 Id = submission.Id,
                 UserId = submission.Participant.UserId,
                 ProblemId = submission.ProblemId,
-                ContestId = submission.Problem.ContestId,
+                ContestId = submission.Problem.ProblemGroup.ContestId,
                 UserName = submission.Participant.User.UserName,
                 ProblemName = submission.Problem.Name,
                 CompilerComment = submission.CompilerComment,
