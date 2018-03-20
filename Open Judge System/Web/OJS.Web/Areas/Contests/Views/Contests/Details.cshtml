@@ -128,7 +128,7 @@
             }
             else if (Model.UserIsAdminOrLecturerInContest)
             {
-                @(Html.ActionLink<CompeteController>(Resource.Compete, c => c.Index(Model.Id, true, null), null, new {@class = "btn btn-sm btn-warning bottom-buffer-sm"}))
+                @(Html.ActionLink<CompeteController>(Resource.Compete, c => c.Index(Model.Id, true, null), null, new {@class = "btn btn-sm btn-default bottom-buffer-sm"}))
             }
 
             if (Model.OfficialParticipants > 0)
@@ -207,7 +207,7 @@
                     Resource.Change_time,
                     c => c.ChangeActiveParticipantsEndTime(Model.Id),
                     new { area = GlobalConstants.AdministrationAreaName },
-                    new { @class = "btn btn-sm btn-default bottom-buffer-sm" }))
+                    new { @class = "btn btn-sm btn-primary bottom-buffer-sm" }))
             }
         }
     </div>
