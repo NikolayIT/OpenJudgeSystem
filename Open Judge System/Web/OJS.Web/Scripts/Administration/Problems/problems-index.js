@@ -23,7 +23,7 @@ function initializeGrid(contestId) {
 
     $('#status').show();
 
-    $.get('/Administration/KendoRemoteData/GetContestAdminCompetitionActionName/' + contestId, function (data) {
+    $.get('/Administration/KendoRemoteData/GetContestCompeteOrPracticeActionName/' + contestId, function (data) {
         sendSubmissionsActionName = data;
     }).then(function() {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {

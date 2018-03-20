@@ -68,7 +68,7 @@
         }
 
         [AjaxOnly]
-        public JsonResult GetContestAdminCompetitionActionName(int id)
+        public JsonResult GetContestCompeteOrPracticeActionName(int id)
         {
             var contest = this.contestsData.GetById(id);
 
