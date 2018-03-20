@@ -7,6 +7,7 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Contests.Controllers;
     using OJS.Web.Common.Attributes;
 
     public class KendoRemoteDataController : KendoRemoteDataBaseController
@@ -62,6 +63,18 @@
                 contest = contestId,
                 category = categoryId
             };
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public JsonResult GetContestCompeteOrPracticeActionName(int id)
+        {
+            var contest = this.contestsData.GetById(id);
+
+            var result = contest?.CanBePracticed == true && !contest.IsActive
+                ? CompeteController.PracticeActionName
+                : CompeteController.CompeteActionName;
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
