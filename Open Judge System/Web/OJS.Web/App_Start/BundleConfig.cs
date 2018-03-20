@@ -47,10 +47,12 @@
 
             bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
                 "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
-                "~/Scripts/Administration/Contests/contest-search.js"));
+                "~/Scripts/Administration/Contests/contest-search.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/contests-index").Include(
-                "~/Scripts/Administration/Contests/contests-index.js"));
+                "~/Scripts/Administration/Contests/contests-index.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)

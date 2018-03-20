@@ -178,6 +178,15 @@ namespace Resources.Areas.Administration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have privileges for this action!.
         /// </summary>
         public static string No_privileges_message {
