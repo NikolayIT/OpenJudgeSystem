@@ -96,7 +96,8 @@
                         Settings.JavaExecutablePath,
                         GetCompilerPath,
                         Settings.JavaBaseTimeUsedInMilliseconds,
-                        Settings.JavaBaseMemoryUsedInBytes);
+                        Settings.JavaBaseMemoryUsedInBytes,
+                        Settings.JavaBaseUpdateTimeOffsetInMilliseconds);
                     break;
                 case ExecutionStrategyType.JavaZipFileCompileExecuteAndCheck:
                     executionStrategy = new JavaZipFileCompileExecuteAndCheckExecutionStrategy(
