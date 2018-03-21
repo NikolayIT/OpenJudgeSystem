@@ -60,8 +60,18 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Submission_not_made_by_user);
             }
 
-            submission.ProblemIndexInContest = this.problemsData
-                .GetAllByContest(submission.ContestId)
+            var isContestActive = this.contestsData.IsActiveById(submission.ContestId);
+            var isContestOnline = this.contestsData.IsOnlineById(submission.ContestId);
+
+            var problemsInContest = this.problemsData.GetAllByContest(submission.ContestId);
+
+            if (isContestOnline && isContestActive && !userHasAdminPermissions)
+            {
+                problemsInContest = problemsInContest
+                    .Where(p => p.Participants.Any(par => par.UserId == submission.UserId));
+            }
+
+            submission.ProblemIndexInContest = problemsInContest
                 .OrderBy(p => p.ProblemGroup.OrderBy)
                 .ThenBy(p => p.OrderBy)
                 .ThenBy(p => p.Name)
@@ -69,9 +79,9 @@
                 .ToList()
                 .IndexOf(submission.ProblemId.Value);
 
-            submission.IsContestActive = this.contestsData.IsActiveById(submission.ContestId);
-
+            submission.IsContestActive = isContestActive;
             submission.UserHasAdminPermission = userHasAdminPermissions;
+
             return this.View(submission);
         }
 
