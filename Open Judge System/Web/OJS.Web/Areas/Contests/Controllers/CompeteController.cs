@@ -382,7 +382,11 @@
 
             this.ValidateContest(participant.Contest, official);
 
-            this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId, official);
+            this.ValidateProblemForParticipant(
+                participant,
+                participant.Contest,
+                participantSubmission.ProblemId,
+                official);
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
@@ -459,7 +463,11 @@
 
             this.ValidateContest(participant.Contest, official);
 
-            this.ValidateProblemForParticipant(participant, participant.Contest, participantSubmission.ProblemId, official);
+            this.ValidateProblemForParticipant(
+                participant,
+                participant.Contest,
+                participantSubmission.ProblemId,
+                official);
 
             if (official &&
                 !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
@@ -820,7 +828,11 @@
             return participant;
         }
 
-        private void ValidateProblemForParticipant(Participant participant, Contest contest, int problemId, bool isOfficial)
+        private void ValidateProblemForParticipant(
+            Participant participant,
+            Contest contest,
+            int problemId,
+            bool isOfficial)
         {
             if (isOfficial &&
                 contest.IsOnline &&
