@@ -37,8 +37,6 @@
 
         public virtual IDbSet<ProblemGroup> ProblemGroups { get; set; }
 
-        public virtual IDbSet<News> News { get; set; }
-
         public virtual IDbSet<Event> Events { get; set; }
 
         public virtual IDbSet<Participant> Participants { get; set; }
@@ -112,7 +110,6 @@
                         "AspNetRoles",
                         "AspNetUserLogins",
                         "AspNetUserClaims",
-                        "News",
                         "Events",
                         "TestRuns",
                         "Submissions",
