@@ -242,8 +242,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                     var totalTimeUsed = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
                     var timeOffset = TimeSpan.FromMilliseconds(updateTimeOffset);
 
-                    processExecutionResult.TimeWorked = totalTimeUsed.TotalMilliseconds > timeLimit &&
-                            totalTimeUsed > timeOffset
+                    processExecutionResult.TimeWorked = totalTimeUsed > timeOffset
                         ? totalTimeUsed - timeOffset
                         : totalTimeUsed;
 
