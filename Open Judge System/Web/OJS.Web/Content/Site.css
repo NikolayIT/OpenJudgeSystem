@@ -95,7 +95,7 @@ input[type="checkbox"].input-validation-error {
     margin-left: 10px;
 }
 
-.news-content {
+.bordered-content {
     background-color: #FFF;
     border: 1px solid #000;
     border-radius: 20px;
