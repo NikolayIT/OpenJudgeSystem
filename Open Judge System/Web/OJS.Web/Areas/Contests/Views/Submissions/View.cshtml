@@ -324,6 +324,11 @@ else
 
 <p class="top-buffer">@AdministrationResource.Created_on: @Model.CreatedOn</p>
 
+@if (Model.UserHasAdminPermission)
+{
+    <p>@AdministrationResource.Modified_on: @Model.ModifiedOn</p>
+}
+
 <script>
     function onTestInputDataSuccess() {
         $(this).text('@Resource.Hide_input_text');
