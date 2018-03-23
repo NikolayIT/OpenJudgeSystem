@@ -1,8 +1,10 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
@@ -37,6 +39,19 @@
             }
 
             return this.RedirectToAction(method.Method.Name);
+        }
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            var languageCookie = System.Web.HttpContext.Current.Request.Cookies[WebConstants.LanguageCookieName];
+
+            if (languageCookie != null)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
+            }
+
+            base.Initialize(requestContext);
         }
 
         protected ActionResult RedirectToHome()

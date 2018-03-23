@@ -1779,6 +1779,7 @@
     <Compile Include="Areas\Users\Helpers\NullDisplayFormatAttribute.cs" />
     <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\RedirectsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Areas\Contests\Controllers\TestsController.cs" />
