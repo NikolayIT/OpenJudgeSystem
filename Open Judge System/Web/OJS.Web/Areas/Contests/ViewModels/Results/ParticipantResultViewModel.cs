@@ -37,5 +37,7 @@
         }
 
         public IEnumerable<int> ParticipantProblemIds { get; set; }
+
+        public int IdOfFirstSubmissionThatGaveYouYourContestTotalScore { get; set; }
     }
 }
