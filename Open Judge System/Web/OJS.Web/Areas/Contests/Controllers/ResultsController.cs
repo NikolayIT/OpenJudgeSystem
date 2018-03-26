@@ -411,6 +411,12 @@
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
                         ParticipantProblemIds = participant.Problems.Select(p => p.Id),
+                        IdOfFirstSubmissionThatGaveYouYourContestTotalScore = participant
+                            .Submissions
+                            .GroupBy(x => x.ProblemId)
+                            .Select(x => x.OrderByDescending(s => s.Points).ThenBy(s => s.Id).Select(s => s.Id).FirstOrDefault())
+                            .DefaultIfEmpty(0)
+                            .Max(),
                         ProblemResults = participant.Contest.ProblemGroups
                             .SelectMany(pg => pg.Problems)
                             .Where(x => !x.IsDeleted)
@@ -444,10 +450,7 @@
             }
 
             contestResults.Results = result
-                .ThenByDescending(x => x.ProblemResults
-                    .OrderBy(y => y.BestSubmission?.Id)
-                    .Select(y => y.BestSubmission?.Id)
-                    .FirstOrDefault());
+                .ThenBy(x => x.IdOfFirstSubmissionThatGaveYouYourContestTotalScore);
 
             return contestResults;
         }
