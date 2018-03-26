@@ -1,10 +1,9 @@
 ﻿@using OJS.Web.Areas.Administration.Controllers;
-@using OJS.Web.Controllers
+@using OJS.Web.Controllers;
 @using OJS.Web.ViewModels;
 
-@using FeedbackController = OJS.Web.Areas.Administration.Controllers.FeedbackController
-@using NewsController = OJS.Web.Areas.Administration.Controllers.NewsController
-@using SubmissionsController = OJS.Web.Areas.Administration.Controllers.SubmissionsController
+@using FeedbackController = OJS.Web.Areas.Administration.Controllers.FeedbackController;
+@using SubmissionsController = OJS.Web.Areas.Administration.Controllers.SubmissionsController;
 
 @using Resource = Resources.Views.Shared.Layout;
 
@@ -106,7 +105,6 @@
                                     <li>@(Html.ActionLink<LecturersController>(Resource.LecturersInContestAndCategories, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Other</li>
-                                    <li>@(Html.ActionLink<NewsController>(Resource.News, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li>@(Html.ActionLink<FeedbackController>(Resource.Feedback, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li>@(Html.ActionLink<CheckersController>(Resource.Checkers, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li>@(Html.ActionLink<SubmissionTypesController>(Resource.SubmissionTypes, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>

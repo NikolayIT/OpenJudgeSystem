@@ -89,7 +89,6 @@
     <Compile Include="Participant.cs" />
     <Compile Include="ContestQuestion.cs" />
     <Compile Include="ContestQuestionAnswer.cs" />
-    <Compile Include="News.cs" />
     <Compile Include="ParticipantAnswer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Problem.cs" />

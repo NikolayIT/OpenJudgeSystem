@@ -89,18 +89,6 @@
         // Folder names
         public const string ExecutionStrategiesFolderName = "ExecutionStrategies";
 
-        // News
-        public const int NewsTitleMaxLength = 200;
-        public const int NewsTitleMinLength = 1;
-
-        public const int NewsAuthorNameMaxLength = 25;
-        public const int NewsAuthorNameMinLength = 2;
-
-        public const int NewsSourceMaxLength = 50;
-        public const int NewsSourceMinLength = 6;
-
-        public const int NewsContentMinLength = 10;
-
         // Contests
         public const int ContestNameMaxLength = 100;
         public const int ContestNameMinLength = 4;
