@@ -167,6 +167,12 @@ namespace OJS.Workers.Executors
 
                 // Report exit code and total process working time
                 result.ExitCode = restrictedProcess.ExitCode;
+
+                if (result.ExitCode != 0 && result.ExitCode != -1)
+                {
+                    result.Type = ProcessExecutionResultType.RunTimeError;
+                }
+
                 result.TimeWorked = restrictedProcess.ExitTime - restrictedProcess.StartTime;
                 result.PrivilegedProcessorTime = restrictedProcess.PrivilegedProcessorTime;
                 result.UserProcessorTime = restrictedProcess.UserProcessorTime;
