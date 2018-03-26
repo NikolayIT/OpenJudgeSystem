@@ -228,8 +228,9 @@ input[type="checkbox"].input-validation-error {
 }
 
 .language-switch {
-    margin-top: 7px;
+    margin-top: 8px;
 }
+
     .language-switch a {
         display: block;
     }
@@ -287,6 +288,11 @@ input[type="checkbox"].input-validation-error {
     .nav > li > a {
         padding: 15px 7px;
     }
+
+    .language-switch {
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -326,6 +332,11 @@ input[type="checkbox"].input-validation-error {
 
     .btn-search {
         padding: 5px 15px;
+    }
+
+    .language-switch a {
+        display: inline-block;
+        margin: 8px 5px 0 5px;
     }
 }
 
