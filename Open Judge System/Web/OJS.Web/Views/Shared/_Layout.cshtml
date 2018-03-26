@@ -1,5 +1,10 @@
 ﻿@using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.Controllers
 @using OJS.Web.ViewModels;
+
+@using FeedbackController = OJS.Web.Areas.Administration.Controllers.FeedbackController
+@using NewsController = OJS.Web.Areas.Administration.Controllers.NewsController
+@using SubmissionsController = OJS.Web.Areas.Administration.Controllers.SubmissionsController
 
 @using Resource = Resources.Views.Shared.Layout;
 
@@ -147,6 +152,10 @@
                 <div class="col-sm-1 hidden-lg hidden-sm hidden-xs btn navbar-left">
                     <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
                 </div>
+                <div class="language-switch">
+                    @(Html.ActionLink<LanguageController>("BG", c => c.ChangeLanguageCookie(GlobalConstants.BulgarianCultureCookieValue)))
+                    @(Html.ActionLink<LanguageController>("EN", c => c.ChangeLanguageCookie(GlobalConstants.EnglishCultureCookieValue)))
+                </div>
             </div>
         </div>
     </div>
@@ -175,7 +184,7 @@
                 }
 
                 @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
-        }
+            }
         }
 
         @RenderBody()

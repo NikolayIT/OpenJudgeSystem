@@ -69,6 +69,12 @@
         public const string LecturerRoleName = "Lecturer";
         public const string DefaultPublicIp = "217.174.159.226";
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
+        public const string LanguageCookieName = "language";
+
+        public const string BulgarianCultureInfoName = "bg-BG";
+        public const string EnglishCultureInfoName = "en-GB";
+        public const string BulgarianCultureCookieValue = "bg";
+        public const string EnglishCultureCookieValue = "en";
 
         public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
 

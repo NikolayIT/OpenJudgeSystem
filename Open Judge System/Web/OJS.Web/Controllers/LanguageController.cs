@@ -4,16 +4,18 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Web.Common;
+    using OJS.Common;
 
     public class LanguageController : Controller
     {
-        public void ChangeCulture(string lang)
+        private const int LanguageCookieExpirationYears = 5;
+
+        public void ChangeLanguageCookie(string language)
         {
-            var languageCookie = new HttpCookie(WebConstants.LanguageCookieName)
+            var languageCookie = new HttpCookie(GlobalConstants.LanguageCookieName)
             {
-                Value = lang,
-                Expires = DateTime.Now.AddDays(10)
+                Value = language,
+                Expires = DateTime.Now.AddYears(LanguageCookieExpirationYears)
             };
 
             this.Response.SetCookie(languageCookie);

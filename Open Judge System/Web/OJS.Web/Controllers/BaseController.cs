@@ -43,13 +43,7 @@
 
         protected override void Initialize(RequestContext requestContext)
         {
-            var languageCookie = System.Web.HttpContext.Current.Request.Cookies[WebConstants.LanguageCookieName];
-
-            if (languageCookie != null)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
-            }
+            SetUiCultureFromCookie(requestContext);
 
             base.Initialize(requestContext);
         }
@@ -156,6 +150,27 @@
             this.Data.Submissions
                 .All()
                 .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
+
+        private static void SetUiCultureFromCookie(RequestContext requestContext)
+        {
+            var languageCookie = requestContext.HttpContext.Request.Cookies[GlobalConstants.LanguageCookieName];
+
+            if (languageCookie == null)
+            {
+                return;
+            }
+
+            switch (languageCookie.Value)
+            {
+                case GlobalConstants.BulgarianCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.BulgarianCultureInfoName);
+                    break;
+                case GlobalConstants.EnglishCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.EnglishCultureInfoName);
+                    break;
+                default: return;
+            }
+        }
 
         private SystemMessageCollection PrepareSystemMessages()
         {

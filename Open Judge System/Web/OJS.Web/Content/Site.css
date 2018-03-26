@@ -238,7 +238,7 @@ input[type="checkbox"].input-validation-error {
     }
 
 .admin.logged-user-wrap {
-    width: 185px;
+    width: 180px;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -318,6 +318,13 @@ input[type="checkbox"].input-validation-error {
 .contests-by-category .results a {
     display: table;
 }
+
+.language-switch {
+    margin-top: 7px;
+}
+    .language-switch a {
+        display: block;
+    }
 
 @media only screen and (max-width: 1200px) {
     .contests-by-category .results {
