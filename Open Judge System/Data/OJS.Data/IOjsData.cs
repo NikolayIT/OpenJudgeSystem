@@ -16,8 +16,6 @@
 
         ITestRepository Tests { get; }
 
-        IDeletableEntityRepository<News> News { get; }
-
         IDeletableEntityRepository<Event> Events { get; }
 
         IDeletableEntityRepository<ContestCategory> ContestCategories { get; }

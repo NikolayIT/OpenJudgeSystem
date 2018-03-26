@@ -89,10 +89,6 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>@Resource.News</h2>
-        @{Html.RenderAction("LatestNews", "News", new { newsCount = 4 });}
-    </div>
-    <div class="col-md-4">
         <h2>@Resource.Previous_contests</h2>
         @if (!Model.PastContests.Any())
         {

@@ -743,26 +743,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FeedbackIndexAdmin.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\News\ViewModels\NewsAdministration.bg.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewsAdministration.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\News\ViewModels\NewsAdministration.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewsAdministration.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\News\Views\NewsIndex.bg.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewsIndex.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\News\Views\NewsIndex.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewsIndex.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Participants\ViewModels\ParticipantViewModels.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1503,36 +1483,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestQuestionTypeResource.bg.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\News\Views\All.bg.designer.cs">
-      <DependentUpon>All.bg.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\News\Views\All.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>All.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\News\Views\LatestNews.bg.designer.cs">
-      <DependentUpon>LatestNews.bg.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\News\Views\LatestNews.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LatestNews.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\News\Views\Selected.bg.designer.cs">
-      <DependentUpon>Selected.bg.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\News\Views\Selected.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Selected.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Search\Views\SearchIndex.bg.Designer.cs">
       <DependentUpon>SearchIndex.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1661,7 +1611,6 @@
     <Compile Include="Areas\Administration\Controllers\LecturersInContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\LecturersInContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
-    <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemGroupsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
@@ -1677,11 +1626,6 @@
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
-    <Compile Include="Areas\Administration\Providers\Common\BaseNewsProvider.cs" />
-    <Compile Include="Areas\Administration\Providers\Contracts\INewsProvider.cs" />
-    <Compile Include="Areas\Administration\Providers\InfoManNewsProvider.cs" />
-    <Compile Include="Areas\Administration\Providers\InfosNewsProvider.cs" />
-    <Compile Include="Areas\Administration\Providers\SoftUniNewsProvier.cs" />
     <Compile Include="Areas\Administration\ViewModels\AccessLogs\AccessLogGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\AntiCheatByIpAdministrationViewModel.cs" />
@@ -1706,7 +1650,6 @@
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\News\NewsAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemRetestViewModel.cs" />
@@ -1800,7 +1743,6 @@
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KendoGridAdministrationController.cs" />
-    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1821,9 +1763,6 @@
     <Compile Include="ViewModels\Feedback\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexContestViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexViewModel.cs" />
-    <Compile Include="ViewModels\News\AllNewsViewModel.cs" />
-    <Compile Include="ViewModels\News\NewsViewModel.cs" />
-    <Compile Include="ViewModels\News\SelectedViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
@@ -2307,7 +2246,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Administration\Views\Web.Config" />
-    <Content Include="Areas\Administration\Views\News\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Navigation\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Index.cshtml" />
     <Content Include="google95e631afa25e7960.html" />
@@ -2754,26 +2692,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FeedbackReport.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Feedback.ViewModels</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\News\Views\NewsIndex.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewsIndex.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\News\Views\NewsIndex.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewsIndex.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\News\ViewModels\NewsAdministration.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewsAdministration.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.News.ViewModels</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\News\ViewModels\NewsAdministration.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewsAdministration.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.News.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Participants\ViewModels\ParticipantViewModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -3329,14 +3247,11 @@
     <Content Include="Views\Shared\EditorTemplates\Number.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
-    <Content Include="Views\News\Selected.cshtml" />
-    <Content Include="Views\Shared\_LatestNews.cshtml" />
     <Content Include="webpack.config.js" />
     <Content Include="Xapp_offline.htm" />
     <Content Include="_ViewStart.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Feedback\Submitted.cshtml" />
-    <Content Include="Views\News\All.cshtml" />
     <Content Include="Views\Submissions\BasicSubmissions.cshtml" />
     <Content Include="Views\Submissions\AdvancedSubmissions.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\QuestionViewModel.cshtml" />
@@ -3783,36 +3698,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ContestQuestionTypeResource.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\All.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>All.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\LatestNews.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LatestNews.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\LatestNews.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LatestNews.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\Selected.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Selected.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\All.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>All.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\News\Views\Selected.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Selected.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.News.Views</CustomToolNamespace>
-    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Search\Views\SearchIndex.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SearchIndex.bg.Designer.cs</LastGenOutput>
@@ -3903,6 +3788,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Home.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
