@@ -44,7 +44,6 @@
         /// </summary>
         public int? SourceCodeSizeLimit { get; set; }
 
-        [ForeignKey(nameof(Checker))]
         public int? CheckerId { get; set; }
 
         public virtual Checker Checker { get; set; }

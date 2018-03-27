@@ -17,7 +17,6 @@
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Contest")]
         public int ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
