@@ -1762,7 +1762,7 @@
     <Compile Include="Areas\Administration\ViewModels\Checker\CheckerAdministrationViewModel.cs" />
     <Compile Include="ViewModels\Common\DropdownViewModel.cs" />
     <Compile Include="ViewModels\Feedback\FeedbackViewModel.cs" />
-    <Compile Include="ViewModels\Home\Index\IndexContestViewModel.cs" />
+    <Compile Include="ViewModels\Home\Index\HomeContestViewModel.cs" />
     <Compile Include="ViewModels\Home\Index\IndexViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultGroupViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
@@ -3785,6 +3785,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Home.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Home\Views\Index.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -5,3 +5,16 @@
 .list-group-item {
     line-height: 20px;
 }
+
+.scrollable-container {
+    height: 400px;
+    overflow: auto
+}
+
+    .scrollable-container > table td.participate {
+        vertical-align: middle;
+    }
+
+#previous-contests {
+    font-size: 0.8em;
+}
