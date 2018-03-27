@@ -63,9 +63,8 @@
                                         var remainingTimeMessage = string.Format(
                                             Resource.Remaining_time,
                                             hoursRemaining,
-                                            hoursRemaining != 1
-                                                ? Resource.Hours
-                                                : Resource.Hour, minutesRemaining);
+                                            hoursRemaining != 1 ? Resource.Hours : Resource.Hour,
+                                            minutesRemaining);
                                     }
                                     <small>@remainingTimeMessage</small>
                                 </td>
