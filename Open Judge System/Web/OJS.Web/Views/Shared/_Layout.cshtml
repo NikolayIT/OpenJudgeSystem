@@ -1,8 +1,6 @@
 ﻿@using OJS.Web.Areas.Administration.Controllers;
 @using OJS.Web.ViewModels;
 
-@using LanguageController = OJS.Web.Controllers.LanguageController;
-
 @using Resource = Resources.Views.Shared.Layout;
 
 <!DOCTYPE html>
@@ -149,8 +147,8 @@
                     <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
                 </div>
                 <div class="language-switch">
-                    @(Html.ActionLink<LanguageController>("BG", c => c.ChangeLanguageCookie(GlobalConstants.BulgarianCultureCookieValue)))
-                    @(Html.ActionLink<LanguageController>("EN", c => c.ChangeLanguageCookie(GlobalConstants.EnglishCultureCookieValue)))
+                    <a id="@GlobalConstants.EnglishCultureCookieValue" class="btn-link">EN</a>
+                    <a id="@GlobalConstants.BulgarianCultureCookieValue" class="btn-link">BG</a>
                 </div>
             </div>
         </div>

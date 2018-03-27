@@ -12,7 +12,39 @@
         setCookie('cookies-notification', 'ok', 3650);
         return false;
     });
+
+    initializeLanguageSwitchButtons();
 });
+
+function initializeLanguageSwitchButtons() {
+    var languageSwithContainer = $('.language-switch');
+    var languageCookieName = 'language';
+    var defaultLanguageCookieValue = 'en';
+    var languageCookieExirationDays = 1825;
+
+    languageSwithContainer.find('a').click(function(ev) {
+        ev.preventDefault();
+        setCookie(languageCookieName, ev.target.id, languageCookieExirationDays);
+        window.location.reload();
+    });
+
+    var selectedLanguage = getCookie(languageCookieName);
+
+    if (selectedLanguage === '') {
+        setCookie(languageCookieName, defaultLanguageCookieValue, languageCookieExirationDays);
+        selectedLanguage = defaultLanguageCookieValue;
+    }
+
+    languageSwithContainer.find('a').css({
+        color: '#fff'
+    });
+
+    languageSwithContainer.find('#' + selectedLanguage).css({
+        color: '#aaa',
+        'pointer-events': 'none',
+        cursor: 'default'
+    });
+}
 
 /* exported CreateExportToExcelButton */
 function CreateExportToExcelButton(elementId) {
