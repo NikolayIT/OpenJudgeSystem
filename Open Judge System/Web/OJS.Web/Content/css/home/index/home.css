@@ -6,9 +6,9 @@
     line-height: 20px;
 }
 
-.scrollable-container {
+.contests-scrollable-container {
     height: 400px;
-    overflow: auto
+    overflow: auto;
 }
 
     .scrollable-container > table td.participate {

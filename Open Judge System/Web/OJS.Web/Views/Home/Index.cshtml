@@ -51,7 +51,7 @@
             @if (Model.ActiveContests.Any())
             {
                 <h2>@Resource.Active_contests</h2>
-                <div class="scrollable-container">
+                <div class="contests-scrollable-container">
                     <table class="table table-hover">
                         @foreach (var contest in Model.ActiveContests)
                         {
@@ -86,7 +86,7 @@
             }
             else
             {
-                <div class="scrollable-container">
+                <div class="contests-scrollable-container">
                     <table class="table table-hover">
                         @foreach (var contest in Model.PastContests)
                         {
