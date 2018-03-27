@@ -1793,6 +1793,7 @@
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
+    <Content Include="Content\css\home\index\home.css" />
     <Content Include="Content\docs.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\KendoUI\Black\editor.png" />

@@ -1,4 +1,5 @@
-﻿@using Resource = Resources.Home.Views.Index
+﻿@using OJS.Web.ViewModels
+@using Resource = Resources.Home.Views.Index
 
 @model OJS.Web.ViewModels.Home.Index.IndexViewModel
 
@@ -6,9 +7,13 @@
     ViewBag.Title = Resource.Title;
 }
 
+@section Styles{
+    @Styles.Render("~/Content/css/home/index")
+}
+
 <div class="jumbotron">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <h1>@Resource.Project_title</h1>
             <p class="lead">@Resource.Project_subtitle</p>
             <a href="~/Content/PublicFiles/SoftUni-Judge-System-Guidelines.pdf" target="_blank">Правила за работа с Judge системата</a>
@@ -29,8 +34,15 @@
                 </div>
             }
         </div>
-        <div class="col-md-6">
-            @if (Model.ActiveContests.Any())
+        <div class="col-md-5">
+            <h2>Contest Categories</h2>
+                <div id="top-level-contest-categories" class="list-group">
+                    @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories)
+                    {
+                        <a class="list-group-item" href="@($"/Contests/#!/List/ByCategory/{category.Id}/{category.NameUrl}")">@category.Name</a>
+                    }
+                </div>
+            @*@if (Model.ActiveContests.Any())
             {
                 <h2>@Resource.Active_contests</h2>
                 <table class="table table-hover">
@@ -44,9 +56,9 @@
                                 <td>
                                     <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
                                     @{
-                            string remainingTimeMessage =
-                                string.Format(Resource.Remaining_time, hoursRemaining, hoursRemaining != 1 ?
-                                    Resource.Hours : Resource.Hour, minutesRemaining);
+                                        string remainingTimeMessage =
+                                            string.Format(Resource.Remaining_time, hoursRemaining, hoursRemaining != 1 ?
+                                                Resource.Hours : Resource.Hour, minutesRemaining);
                                     }
                                     <small>@remainingTimeMessage</small>
                                 </td>
@@ -67,23 +79,23 @@
                         }
                     }
                 </table>
-              }
-              else
-              {
-                  <div class="fb-page"
-                       data-href="https://www.facebook.com/SoftwareUniversity"
-                       data-width="400" data-small-header="true" data-adapt-container-width="true"
-                       data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
+            }
+            else
+            {
+                <div class="fb-page"
+                     data-href="https://www.facebook.com/SoftwareUniversity"
+                     data-width="400" data-small-header="true" data-adapt-container-width="true"
+                     data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
 
-                      <div class="fb-xfbml-parse-ignore">
-                          <blockquote cite="https://www.facebook.com/SoftwareUniversity">
-                              <a href="https://www.facebook.com/SoftwareUniversity">
-                                  Software University
-                              </a>
-                          </blockquote>
-                      </div>
-                  </div>
-              }
+                    <div class="fb-xfbml-parse-ignore">
+                        <blockquote cite="https://www.facebook.com/SoftwareUniversity">
+                            <a href="https://www.facebook.com/SoftwareUniversity">
+                                Software University
+                            </a>
+                        </blockquote>
+                    </div>
+                </div>
+            }*@
         </div>
     </div>
 </div>
