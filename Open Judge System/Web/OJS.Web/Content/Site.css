@@ -341,7 +341,7 @@ input[type="checkbox"].input-validation-error {
         padding: 5px 15px;
     }
 
-    .language-switch a {
+    .language-btn {
         display: inline-block;
         margin: 8px 5px 0 5px;
     }
