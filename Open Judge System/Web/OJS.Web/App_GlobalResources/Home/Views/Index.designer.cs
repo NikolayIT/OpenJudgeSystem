@@ -88,6 +88,15 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to infinite.
+        /// </summary>
+        public static string Infinite {
+            get {
+                return ResourceManager.GetString("Infinite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No previous contests.
         /// </summary>
         public static string No_previous_contests {
@@ -115,20 +124,20 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Project_subtitle {
-            get {
-                return ResourceManager.GetString("Project_subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SoftUni Judge.
         /// </summary>
         public static string Project_title {
             get {
                 return ResourceManager.GetString("Project_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time remaining.
+        /// </summary>
+        public static string Remaining_time {
+            get {
+                return ResourceManager.GetString("Remaining_time", resourceCulture);
             }
         }
         

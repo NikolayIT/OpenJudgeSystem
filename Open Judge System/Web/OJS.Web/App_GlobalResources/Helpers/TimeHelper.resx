@@ -132,16 +132,10 @@
   <data name="Hours" xml:space="preserve">
     <value>hours</value>
   </data>
-  <data name="Inifinite" xml:space="preserve">
-    <value>infinite</value>
-  </data>
   <data name="Minute" xml:space="preserve">
     <value>minute</value>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>minutes</value>
-  </data>
-  <data name="Remaining_time" xml:space="preserve">
-    <value>Time remaining:</value>
   </data>
 </root>

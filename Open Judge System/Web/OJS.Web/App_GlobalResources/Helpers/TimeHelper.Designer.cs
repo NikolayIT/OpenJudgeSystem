@@ -22,14 +22,14 @@ namespace Resources.Helpers {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ContestsHelper {
+    public class TimeHelper {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ContestsHelper() {
+        internal TimeHelper() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Helpers {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Helpers.ContestsHelper", typeof(ContestsHelper).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Helpers.TimeHelper", typeof(TimeHelper).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -106,15 +106,6 @@ namespace Resources.Helpers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to infinite.
-        /// </summary>
-        public static string Inifinite {
-            get {
-                return ResourceManager.GetString("Inifinite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to minute.
         /// </summary>
         public static string Minute {
@@ -129,15 +120,6 @@ namespace Resources.Helpers {
         public static string Minutes {
             get {
                 return ResourceManager.GetString("Minutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time remaining:.
-        /// </summary>
-        public static string Remaining_time {
-            get {
-                return ResourceManager.GetString("Remaining_time", resourceCulture);
             }
         }
     }

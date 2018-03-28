@@ -1,45 +1,6 @@
-﻿@using System.Text
-@using OJS.Common.Extensions;
-
-@using Resource = Resources.Helpers.ContestsHelper;
+﻿@using OJS.Common.Extensions;
 
 @helper GetUrl(int contestId, string contestName)
 {
     <text>/Contests/@contestId/@contestName.ToUrl()</text>
-}
-
-@helper GetRemainingTime(DateTime? contestEndTime)
-{
-    var remainingTimeMessage = new StringBuilder(Resource.Remaining_time);
-
-    if (contestEndTime.HasValue)
-    {
-        var remainingTime = contestEndTime.Value - DateTime.Now;
-        var daysRemaining = (int)remainingTime.TotalDays;
-        var hoursRemaining = remainingTime.Hours;
-        var minutesRemaining = remainingTime.Minutes;
-
-        if (daysRemaining >= 1)
-        {
-            remainingTimeMessage.Append($" {daysRemaining} ");
-            remainingTimeMessage.Append(daysRemaining != 1 ? Resource.Days : Resource.Day);
-            remainingTimeMessage.Append(",");
-        }
-
-        if (hoursRemaining >= 1 || daysRemaining >= 1)
-        {
-            remainingTimeMessage.Append($" {hoursRemaining} ");
-            remainingTimeMessage.Append(hoursRemaining != 1 ? Resource.Hours : Resource.Hour);
-            remainingTimeMessage.Append($" {Resource.And}");
-        }
-
-        remainingTimeMessage.Append($" {minutesRemaining} ");
-        remainingTimeMessage.Append(minutesRemaining != 1 ? Resource.Minutes : Resource.Minute);
-    }
-    else
-    {
-        remainingTimeMessage.Append($" {Resource.Inifinite}");
-    }
-
-    <text>@remainingTimeMessage.ToString()</text>
 }

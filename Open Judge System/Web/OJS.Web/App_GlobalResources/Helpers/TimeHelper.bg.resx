@@ -132,16 +132,10 @@
   <data name="Hours" xml:space="preserve">
     <value>часа</value>
   </data>
-  <data name="Inifinite" xml:space="preserve">
-    <value>безкрайно</value>
-  </data>
   <data name="Minute" xml:space="preserve">
     <value>минута</value>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>минути</value>
-  </data>
-  <data name="Remaining_time" xml:space="preserve">
-    <value>Оставащо време:</value>
   </data>
 </root>
