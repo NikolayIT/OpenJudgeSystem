@@ -211,12 +211,9 @@
             {
                 result.Type = ProcessExecutionResultType.RunTimeError;
             }
-            else
+            else if (result.ExitCode != 0 && result.ExitCode != -1)
             {
-                if (result.ExitCode != 0 && result.ExitCode != -1)
-                {
-                    result.Type = ProcessExecutionResultType.RunTimeError;
-                }
+                result.Type = ProcessExecutionResultType.RunTimeError;
             }
 
             if (result.MemoryUsed > memoryLimit)
