@@ -14,13 +14,6 @@
 
     public class Submission : DeletableEntity
     {
-        private ICollection<TestRun> testRuns;
-
-        public Submission()
-        {
-            this.testRuns = new HashSet<TestRun>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -86,11 +79,7 @@
         [Index]
         public bool? IsPublic { get; set; }
 
-        public virtual ICollection<TestRun> TestRuns
-        {
-            get { return this.testRuns; }
-            set { this.testRuns = value; }
-        }
+        public virtual ICollection<TestRun> TestRuns { get; set; } = new HashSet<TestRun>();
 
         /// <summary>
         /// Cache field for submission test runs representing each test run result as an integer equal to <see cref="OJS.Common.Models.TestRunResultType"/>.

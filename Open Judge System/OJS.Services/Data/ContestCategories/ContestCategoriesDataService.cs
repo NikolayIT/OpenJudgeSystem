@@ -12,6 +12,14 @@
         public ContestCategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
+        public IQueryable<ContestCategory> GetAllVisible() =>
+            this.contestCategories.All().Where(cc => cc.IsVisible);
+
+        public IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId) =>
+            this.GetAllVisible().Where(cc =>
+                cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                cc.Contests.Any(c => c.Lecturers.Any(l => l.LecturerId == lecturerId)));
+
         public string GetNameById(int id) =>
             this.contestCategories
                 .All()

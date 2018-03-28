@@ -19,7 +19,7 @@ namespace Resources.Views.Shared {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Layout {
@@ -142,6 +142,15 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exam groups.
+        /// </summary>
+        public static string Exam_groups {
+            get {
+                return ResourceManager.GetString("Exam_groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback {
@@ -228,6 +237,15 @@ namespace Resources.Views.Shared {
         public static string Participants {
             get {
                 return ResourceManager.GetString("Participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem groups.
+        /// </summary>
+        public static string Problem_groups {
+            get {
+                return ResourceManager.GetString("Problem_groups", resourceCulture);
             }
         }
         

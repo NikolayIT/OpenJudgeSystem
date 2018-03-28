@@ -20,7 +20,7 @@
             this.ProblemId = problem.Id;
             this.Name = problem.Name;
             this.OrderBy = problem.OrderBy;
-            this.ContestId = problem.ContestId;
+            this.ContestId = problem.ProblemGroup.ContestId;
             this.ShowResults = problem.ShowResults;
             this.Resources = problem.Resources.AsQueryable()
                                                 .OrderBy(x => x.OrderBy)
@@ -49,7 +49,7 @@
                     Name = problem.Name,
                     OrderBy = problem.OrderBy,
                     ProblemId = problem.Id,
-                    ContestId = problem.ContestId,
+                    ContestId = problem.ProblemGroup.ContestId,
                     MemoryLimit = problem.MemoryLimit,
                     TimeLimit = problem.TimeLimit,
                     FileSizeLimit = problem.SourceCodeSizeLimit,
@@ -57,10 +57,11 @@
                     CheckerName = problem.Checker.Name,
                     CheckerDescription = problem.Checker.Description,
                     MaximumPoints = problem.MaximumPoints,
-                    Resources = problem.Resources.AsQueryable()
-                                                            .Where(x => !x.IsDeleted)
-                                                            .OrderBy(x => x.OrderBy)
-                                                            .Select(ContestProblemResourceViewModel.FromResource)
+                    Resources = problem.Resources
+                        .AsQueryable()
+                        .Where(r => !r.IsDeleted)
+                        .OrderBy(r => r.OrderBy)
+                        .Select(ContestProblemResourceViewModel.FromResource)
                 };
             }
         }

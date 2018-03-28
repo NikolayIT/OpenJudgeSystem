@@ -14,23 +14,20 @@
     public class ParticipantAdministrationViewModel : AdministrationViewModel<Participant>
     {
         [ExcludeFromExcel]
-        public static Expression<Func<Participant, ParticipantAdministrationViewModel>> ViewModel
-        {
-            get
+        public static Expression<Func<Participant, ParticipantAdministrationViewModel>> ViewModel =>
+            participant => new ParticipantAdministrationViewModel
             {
-                return p => new ParticipantAdministrationViewModel
-                {
-                    Id = p.Id,
-                    ContestId = p.ContestId,
-                    ContestName = p.Contest.Name,
-                    UserId = p.UserId,
-                    UserName = p.User.UserName,
-                    IsOfficial = p.IsOfficial,
-                    CreatedOn = p.CreatedOn,
-                    ModifiedOn = p.ModifiedOn,
-                };
-            }
-        }
+                Id = participant.Id,
+                ContestId = participant.ContestId,
+                ContestName = participant.Contest.Name,
+                ParticipationStartTime = participant.ParticipationStartTime,
+                ParticipationEndTime = participant.ParticipationEndTime,
+                UserId = participant.UserId,
+                UserName = participant.User.UserName,
+                IsOfficial = participant.IsOfficial,
+                CreatedOn = participant.CreatedOn,
+                ModifiedOn = participant.ModifiedOn
+            };
 
         [DatabaseProperty]
         [Display(Name = "№")]
@@ -48,6 +45,14 @@
         [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string ContestName { get; set; }
+
+        [Display(Name = "Participation_start_time", ResourceType = typeof(Resource))]
+        [HiddenInput(DisplayValue = false)]
+        public DateTime? ParticipationStartTime { get; set; }
+
+        [Display(Name = "Participation_end_time", ResourceType = typeof(Resource))]
+        [HiddenInput(DisplayValue = false)]
+        public DateTime? ParticipationEndTime { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "User", ResourceType = typeof(Resource))]

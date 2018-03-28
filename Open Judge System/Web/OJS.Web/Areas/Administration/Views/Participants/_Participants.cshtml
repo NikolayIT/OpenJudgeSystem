@@ -1,6 +1,8 @@
 ﻿@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
 @using Resource = Resources.Areas.Administration.Participants.Views.Partials.Participants;
+
 @model int?
+
 @{
     const string ControllerName = "Participants";
 }
@@ -8,19 +10,21 @@
 @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
-        {
-            columns.Bound(col => col.Id);
-            columns.Bound(col => col.UserName);
-            columns.Bound(col => col.ContestName);
-            columns.Bound(col => col.IsOfficial);
-            columns.Bound(col => col.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Bound(col => col.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-            columns.Command(command => command.Destroy().Text(" ")).Width(80);
-        })
+    {
+        columns.Bound(col => col.Id);
+        columns.Bound(col => col.UserName);
+        columns.Bound(col => col.ContestName);
+        columns.Bound(col => col.IsOfficial);
+        columns.Bound(col => col.ParticipationStartTime).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.ParticipationEndTime).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Bound(col => col.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+        columns.Command(command => command.Destroy().Text(" ")).Width(80);
+    })
     .ToolBar(toolbar =>
     {
         toolbar.Create().Text(Resource.Add_participant);
-        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>

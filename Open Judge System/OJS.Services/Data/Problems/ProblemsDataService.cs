@@ -13,23 +13,32 @@
         public ProblemsDataService(IEfDeletableEntityRepository<Problem> problems) =>
             this.problems = problems;
 
+        public Problem GetById(int id) => this.problems.GetById(id);
+
         public IQueryable<Problem> GetByIdQuery(int id) =>
             this.problems.All().Where(p => p.Id == id);
 
+        public Problem GetWithProblemGroupById(int id) =>
+            this.problems.All().Include(p => p.ProblemGroup).FirstOrDefault(p => p.Id == id);
+
+        public Problem GetWithContestById(int id) =>
+            this.problems.All().Include(p => p.ProblemGroup.Contest).FirstOrDefault(p => p.Id == id);
+
         public IQueryable<Problem> GetAllByContest(int contestId) =>
-            this.problems.All().Where(p => p.ContestId == contestId);
+            this.problems.All().Where(p => p.ProblemGroup.ContestId == contestId);
 
-        public Problem GetById(int id) => this.problems.GetById(id);
+        public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);
 
-        public Problem GetWithContestById(int problemId) =>
-            this.problems.All().Include(p => p.Contest).FirstOrDefault(p => p.Id == problemId);
-
-        public void DeleteByProblem(Problem problem)
+        public void Add(Problem problem)
         {
-            this.problems.Delete(problem);
+            this.problems.Add(problem);
             this.problems.SaveChanges();
         }
 
-        public void DeleteAllByContestId(int contestId) => this.problems.Delete(p => p.ContestId == contestId);
+        public void Update(Problem problem)
+        {
+            this.problems.Update(problem);
+            this.problems.SaveChanges();
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Linq;
     using System.Net.Mime;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -14,18 +14,29 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.ProblemResources;
+    using OJS.Services.Data.Problems;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
 
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.Resources.ResourcesControllers;
 
     public class ResourcesController : LecturerBaseController
     {
-        public ResourcesController(IOjsData data)
+        private readonly IProblemsDataService problemsData;
+        private readonly IProblemResourcesDataService problemResourcesData;
+
+        public ResourcesController(
+            IOjsData data,
+            IProblemsDataService problemsData,
+            IProblemResourcesDataService problemResourcesData)
             : base(data)
         {
+            this.problemsData = problemsData;
+            this.problemResourcesData = problemResourcesData;
         }
 
         public JsonResult GetAll(int id, [DataSourceRequest] DataSourceRequest request)
@@ -234,49 +245,53 @@
         [HttpGet]
         public JsonResult Delete(ProblemResourceGridViewModel resource, [DataSourceRequest] DataSourceRequest request)
         {
-            this.Data.Resources.Delete(resource.Id);
-            this.Data.SaveChanges();
+            this.problemResourcesData.DeleteById(resource.Id);
 
             return this.Json(new[] { resource }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Download(int id)
         {
-            var resource = this.Data.Resources
-                .All()
-                .FirstOrDefault(res => res.Id == id);
+            var resource = this.problemResourcesData.GetById(id);
 
-            var problem = this.Data.Problems
-                .All()
+            if (resource == null)
+            {
+                this.TempData.AddDangerMessage(Resource.Resource_not_found);
+                return this.RedirectToAction<ProblemsController>(
+                    c => c.Index(),
+                    new { area = GlobalConstants.AdministrationAreaName });
+            }
+
+            var problem = this.problemsData
+                .GetByIdQuery(resource.ProblemId)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name
+                })
                 .FirstOrDefault(pr => pr.Id == resource.ProblemId);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(Resource.Problem_not_found);
-                return this.RedirectToAction(GlobalConstants.Index, "Problems");
+                return this.RedirectToAction<ProblemsController>(
+                    c => c.Index(),
+                    new { area = GlobalConstants.AdministrationAreaName });
             }
 
-            if (resource == null)
+            if (!this.CheckIfUserHasProblemPermissions(problem.Id))
             {
-                this.TempData.AddDangerMessage(Resource.Resource_not_found);
-                return this.Redirect("/Administration/Problems/Contest/" + resource.Problem.ContestId);
-            }
-
-            if (problem != null && !this.CheckIfUserHasProblemPermissions(problem.Id))
-            {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction<ContestsController>(
+                    c => c.Index(),
+                    new { area = GlobalConstants.AdministrationAreaName });
             }
 
             var fileResult = resource.File.ToStream();
-            if (problem != null)
-            {
-                var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
 
-                return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
-            }
+            var fileName = "Resource-" + resource.Id + "-" + problem.Name.Replace(" ", string.Empty) + "." + resource.FileExtension;
 
-            throw new ArgumentOutOfRangeException(nameof(id), "No problem with that id");
+            return this.File(fileResult, MediaTypeNames.Application.Octet, fileName);
         }
     }
 }

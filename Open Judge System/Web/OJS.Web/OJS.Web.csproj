@@ -663,6 +663,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShortContestAdministration.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.bg.designer.cs">
+      <DependentUpon>ContestDropDown.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -673,6 +678,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CategoryDropDown.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContestDropDown.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -682,6 +692,36 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ContestEditor.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.bg.Designer.cs">
+      <DependentUpon>ExamGroupsControllers.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.Designer.cs">
+      <DependentUpon>ExamGroupsControllers.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.designer.cs">
+      <DependentUpon>ExamGroupAdministration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.bg.designer.cs">
+      <DependentUpon>ExamGroupAdministration.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.designer.cs">
+      <DependentUpon>ExamGroupsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.designer.cs">
+      <DependentUpon>ExamGroupsIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Feedback\ViewModels\FeedbackReport.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -772,6 +812,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticipantsIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.Designer.cs">
+      <DependentUpon>ProblemGroupsControllers.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.bg.Designer.cs">
+      <DependentUpon>ProblemGroupsControllers.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.designer.cs">
+      <DependentUpon>ProblemGroupsIndex.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -962,6 +1022,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingsAdministrationIndex.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Shared\EditorTemplatesGeneral.bg.designer.cs">
+      <DependentUpon>EditorTemplatesGeneral.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Shared\EditorTemplatesGeneral.designer.cs">
+      <DependentUpon>EditorTemplatesGeneral.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1575,13 +1645,17 @@
     <Compile Include="Areas\Administration\Controllers\CheckersController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\AdministrationBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\Common\KendoRemoteDataBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\Common\LecturerBaseGridController.cs" />
+    <Compile Include="Areas\Administration\Controllers\KendoRemoteDataController.cs" />
+    <Compile Include="Areas\Administration\Controllers\LecturersKendoRemoteDataController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestCategoriesController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionAnswersController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestQuestionsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ContestsExportController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ExamGroupsController.cs" />
     <Compile Include="Areas\Administration\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Administration\Controllers\LecturersController.cs" />
     <Compile Include="Areas\Administration\Controllers\LecturersInContestCategoriesController.cs" />
@@ -1589,6 +1663,7 @@
     <Compile Include="Areas\Administration\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ParticipantsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ProblemGroupsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ProblemsController.cs" />
     <Compile Include="Areas\Administration\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Administration\Controllers\RolesController.cs" />
@@ -1599,7 +1674,6 @@
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
-    <Compile Include="Areas\Administration\InputModels\Contests\LabStartInputModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
@@ -1620,6 +1694,7 @@
     <Compile Include="Areas\Administration\ViewModels\Contest\DeleteProblemsFromContestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\TransferParticipantsViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ExamGroups\ExamGroupAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContestCategories\LecturerInContestCategoryShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Lecturers\LecturerGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
@@ -1627,6 +1702,7 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -1637,7 +1713,6 @@
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ShortContestAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Roles\RoleAdministrationViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Roles\UserInRoleAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Setting\SettingAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SubmissionType\SubmissionTypeViewModel.cs" />
@@ -1646,11 +1721,15 @@
     <Compile Include="Areas\Administration\ViewModels\TestRun\TestRunViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Test\TestViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\User\UserProfileAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\User\UserProfileSimpleAdministrationViewModel.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Api\Controllers\ApiController.cs" />
+    <Compile Include="Areas\Api\Controllers\ExamGroupsController.cs" />
     <Compile Include="Areas\Api\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Api\Controllers\SubmissionsController.cs" />
     <Compile Include="Areas\Api\Models\ErrorMessageViewModel.cs" />
+    <Compile Include="Areas\Api\Models\ExamGroupInfoModel.cs" />
+    <Compile Include="Areas\Api\Models\UsersExamGroupModel.cs" />
     <Compile Include="Areas\Contests\ContestsAreaRegistration.cs" />
     <Compile Include="Areas\Contests\Controllers\CompeteController.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -1712,7 +1791,6 @@
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
-    <Compile Include="ViewModels\Account\ExternalUserViewModel.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
@@ -1756,6 +1834,7 @@
     <Compile Include="ViewModels\TestRun\TestRunViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\administration\administration-styles.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.css" />
     <Content Include="Content\bootstrap\bootstrap-amelia.min.css" />
     <Content Include="Content\bootstrap\bootstrap-flatly.css" />
@@ -2235,7 +2314,10 @@
     <Content Include="gulpfile.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\Administration\administration-global.js" />
+    <Content Include="Scripts\Administration\Contests\contest-search.js" />
+    <Content Include="Scripts\Administration\Contests\contests-helper.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
+    <Content Include="Scripts\Administration\ProblemGroups\problem-groups-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
     <Content Include="Scripts\Administration\Problems\problems-index.js" />
@@ -2302,7 +2384,6 @@
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ProblemComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Roles\EditorTemplates\AddUserToRole.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_AdministrationLayout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
@@ -2317,7 +2398,6 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\_LabStartPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
     <Content Include="Areas\Administration\Views\LecturersInContests\_LecturerInContestsGridTemplate.cshtml" />
@@ -2358,6 +2438,16 @@
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
+    <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\UsersComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\ContestsComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_UsersInExamGroupGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\ProblemGroups\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchCascadeFromCategoryPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestSearchPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ProblemsInProblemGroupGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestQuestionsGridTemplate.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
@@ -2376,8 +2466,6 @@
     <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\Contest.cshtml" />
-    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\ContestsComboBox.cshtml" />
-    <Content Include="Areas\Administration\Views\Participants\EditorTemplates\UsersComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_SubmissionsGrid.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\_ResourcesGrid.cshtml" />
@@ -2540,6 +2628,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestIndex.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\ContestIndex.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2586,6 +2675,10 @@
       <LastGenOutput>ShortContestAdministration.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.bg.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ContestDropDown.bg.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CategoryDropDown.Designer.cs</LastGenOutput>
@@ -2594,6 +2687,11 @@
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\CategoryDropDown.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CategoryDropDown.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\EditorTemplates\ContestDropDown.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestDropDown.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.EditorTemplates</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Contests\Views\Partials\ContestEditor.resx">
@@ -2605,6 +2703,37 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestEditor.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsControllers.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ExamGroupsControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsControllers.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupAdministration.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\ViewModels\ExamGroupAdministration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupAdministration.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExamGroupsIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Feedback\Views\FeedbackIndexAdmin.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2695,6 +2824,28 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParticipantsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Participants.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsControllers.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ProblemGroupsControllers.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsControllers.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsIndex.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2888,6 +3039,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsAdministrationIndex.bg.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Settings.Views</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Shared\EditorTemplatesGeneral.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditorTemplatesGeneral.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Shared</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Shared\EditorTemplatesGeneral.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditorTemplatesGeneral.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Shared</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Shared\Views\Partials\Partials.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -3199,7 +3360,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\Areas\Administration\Shared\Views\EditorTemplates\" />
     <Folder Include="App_GlobalResources\Home\ViewModels\" />
     <Folder Include="App_GlobalResources\Submissions\ViewModels\" />
     <Folder Include="Views\Temp\" />

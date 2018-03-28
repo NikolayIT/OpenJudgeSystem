@@ -21,7 +21,6 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
-            AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(
                 GlobalFilters.Filters,
                 new object[] { new ActionFilterDispatcher(SimpleInjectorConfig.Container.GetAllInstances) });

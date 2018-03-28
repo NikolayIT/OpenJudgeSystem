@@ -7,28 +7,7 @@
 
 <div class="row">
     <div class="col-md-10">
-        @(Html
-            .Kendo()
-            .ComboBox()
-            .Name("contests")
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .Filter(FilterType.Contains)
-            .AutoBind(false)
-            .MinLength(3)
-            .Placeholder(Resource.Choose_or_enter_contest)
-            .Events(ev => ev.Change("selectContest"))
-            .DataSource(dataSource =>
-                {
-                    dataSource
-                        .Read(read =>
-                            {
-                                read.Action("Contests", "Participants")
-                                    .Data("additionalComboBoxData");
-                            })
-                        .ServerFiltering(true);
-                })
-            .HtmlAttributes(new { style = "width: 100%;" }))
+        @Html.Partial("_ContestSearchPartial")
     </div>
     <div class="col-md-2 text-right">
         @Ajax.ActionLink(Resource.Clear, "RenderGrid", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "participants-grid", OnSuccess = "clearContestComboBox" }, new { @class = "btn btn-primary btn-sm" })
@@ -43,14 +22,8 @@
 
 @section scripts{
     <script>
-        function additionalComboBoxData() {
-            return {
-                text: $("#contests").data("kendoComboBox").input.val()
-            }
-        }
-
-        function selectContest() {
-            var contestId = $("#contests").val();
+        function onSearchSelect(e) {
+            var contestId = this.dataItem(e.item.index()).Id;
 
             $.post('/Administration/Participants/RenderGrid/' + contestId, function (data) {
                 $("#participants-grid").html(data);

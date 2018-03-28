@@ -32,9 +32,9 @@
                     t.IsTrialTest,
                     t.IsOpenTest,
                     t.ProblemId,
-                    t.Problem.ContestId,
+                    t.Problem.ProblemGroup.ContestId,
                     t.Problem.ShowDetailedFeedback,
-                    t.Problem.Contest.AutoChangeTestsFeedbackVisibility
+                    t.Problem.ProblemGroup.Contest.AutoChangeTestsFeedbackVisibility
                 })
                 .FirstOrDefault();
 

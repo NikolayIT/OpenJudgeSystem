@@ -2,37 +2,42 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Transactions;
+    using MissingFeatures;
 
-    using EntityFramework.Extensions;
-
+    using OJS.Common.Extensions;
+    using OJS.Common.Helpers;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsForProcessingDataService : ISubmissionsForProcessingDataService
     {
+        private const int BatchDeleteChunkSize = 10000;
+
         private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
-        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing)
-        {
+        public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing) =>
             this.submissionsForProcessing = submissionsForProcessing;
-        }
 
-        public void AddOrUpdate(IEnumerable<int> submissionIds)
+        public void AddOrUpdateBySubmissionIds(ICollection<int> submissionIds)
         {
-            try
-            {
-                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = false;
-                foreach (var submissionId in submissionIds)
+            var newSubmissionsForProcessing = submissionIds
+                .Select(sId => new SubmissionForProcessing
                 {
-                    this.AddOrUpdateWithNoSaveChanges(submissionId);
-                }
-            }
-            finally
-            {
-                this.submissionsForProcessing.ContextConfiguration.AutoDetectChangesEnabled = true;
-            }
+                    SubmissionId = sId
+                });
 
-            this.submissionsForProcessing.SaveChanges();
+            using (var scope = TransactionsHelper.CreateTransactionScope())
+            {
+                submissionIds
+                    .ChunkBy(BatchDeleteChunkSize)
+                    .ForEach(chunk => this.submissionsForProcessing
+                        .Delete(sfp => chunk.Contains(sfp.SubmissionId)));
+
+                this.submissionsForProcessing.Add(newSubmissionsForProcessing);
+
+                scope.Complete();
+            }
         }
 
         public void AddOrUpdateBySubmissionId(int submissionId)
@@ -109,29 +114,7 @@
         public ICollection<int> GetProcessingSubmissionIds() => this.submissionsForProcessing
             .All().Where(sfp => sfp.Processing && !sfp.Processed).Select(sfp => sfp.Id).ToList();
 
-        public void Clean() => this.submissionsForProcessing
-            .All()
-            .Where(sfp => sfp.Processed && !sfp.Processing)
-            .Delete();
-
-        private void AddOrUpdateWithNoSaveChanges(int submissionId)
-        {
-            var submissionForProcessing = this.GetBySubmissionId(submissionId);
-
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = false;
-            }
-            else
-            {
-                submissionForProcessing = new SubmissionForProcessing
-                {
-                    SubmissionId = submissionId
-                };
-
-                this.submissionsForProcessing.Add(submissionForProcessing);
-            }
-        }
+        public void Clean() =>
+            this.submissionsForProcessing.Delete(sfp => sfp.Processed && !sfp.Processing);
     }
 }

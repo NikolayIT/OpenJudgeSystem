@@ -38,6 +38,56 @@ function copyFromContest(ev, contestId) {
     });
 }
 
+function onDataBound() {
+    CreateExportToExcelButton();
+
+    $('.contest-name-link').css({
+        color: '#003f59',
+        'font-weight': 'bold'
+    });
+}
+
+function resetFormValues() {
+    document.getElementById('lab-start-form').reset();
+}
+
+function showErrorMessage(errorData) {
+    var errorObject = JSON.parse(errorData.responseText);
+    if (errorObject.Message) {
+        $('span[data-valmsg-for=Duration]')
+            .removeClass('field-validation-valid')
+            .addClass('field-validation-error')
+            .html(errorObject.Message);
+    } else {
+        alert('Възникна неочаквана грешка');
+    }
+}
+
+function showDownloadSubmissionsPopup(ev) {
+    ev.preventDefault();
+
+    clearDownloadContestSubmissionsForm();
+
+    var contestId = this.dataItem($(ev.currentTarget).closest('tr')).get('Id');
+    $('#download-contest-submissions-form #contest-id').val(contestId);
+
+    var downloadContestSubmissionsWindow = $('#download-contest-submissions-popup').kendoWindow({
+        height: 'auto',
+        width: '30%',
+        title: 'Изтегляне на решения',
+        visible: false,
+        modal: 'true',
+        deactivate: clearDownloadContestSubmissionsForm
+    }).data('kendoWindow');
+
+    downloadContestSubmissionsWindow.center();
+    downloadContestSubmissionsWindow.open();
+}
+
+function clearDownloadContestSubmissionsForm() {
+    document.getElementById('download-contest-submissions-form').reset();
+}
+
 $(document).ready(function () {
     'use strict';
 

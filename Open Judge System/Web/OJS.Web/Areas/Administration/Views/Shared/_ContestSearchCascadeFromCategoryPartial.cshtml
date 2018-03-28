@@ -1,0 +1,55 @@
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsIndex;
+
+<div>
+    <div>
+        <label for="categories">@Resource.Category</label>
+    </div>
+
+    @(Html
+        .Kendo()
+        .DropDownList()
+        .Name("categories")
+        .OptionLabel(Resource.Choose_category)
+        .HtmlAttributes(new { @class = "test-file-dropdown" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
+        .DataSource(source =>
+        {
+            source
+                .Read(read => read.Action("GetAvailableCategories", "LecturersKendoRemoteData"))
+                .ServerFiltering(true);
+        }))
+
+    <div>
+        <label for="contests">@Resource.Contest</label>
+    </div>
+
+    @(Html
+        .Kendo()
+        .DropDownList()
+        .Name("contests")
+        .OptionLabel(Resource.Choose_contest)
+        .HtmlAttributes(new { @class = "test-file-dropdown" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+                read.Action("GetCascadeContestsFromCategory", "LecturersKendoRemoteData")
+                    .Data("setCategoryId"))
+                .ServerFiltering(true);
+        })
+        .Enable(false)
+        .AutoBind(false)
+        .CascadeFrom("categories")
+        .Events(e => e.Change("onContestSelect").Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
+</div>
+
+<script type="text/javascript">
+    function setCategoryId() {
+        return {
+            categoryId: $('#categories').val()
+        };
+    }
+</script>

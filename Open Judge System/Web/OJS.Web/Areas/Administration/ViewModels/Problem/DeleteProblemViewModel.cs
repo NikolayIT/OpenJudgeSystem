@@ -14,9 +14,9 @@
             problem => new DeleteProblemViewModel
             {
                 Id = problem.Id,
-                ContestId = problem.ContestId,
+                ContestId = problem.ProblemGroup.ContestId,
                 Name = problem.Name,
-                ContestName = problem.Contest.Name,
+                ContestName = problem.ProblemGroup.Contest.Name,
                 OrderBy = problem.OrderBy
             };
 

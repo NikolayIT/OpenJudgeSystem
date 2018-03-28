@@ -1,0 +1,22 @@
+﻿@model int?
+
+@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.ContestDropDown
+
+@(Html
+    .Kendo()
+    .ComboBoxFor(m => m)
+    .Name("ContestId")
+    .DataValueField("Id")
+    .DataTextField("Name")
+    .Filter(FilterType.Contains)
+    .MinLength(2)
+    .Placeholder(Resource.Select_contest)
+    .DataSource(data =>
+    {
+        data
+            .ServerFiltering(true)
+            .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
+                .Data(@<text> function () { return { contestFilter: $('#ContestId').data("kendoComboBox").input.val() };} </text>));
+    })
+    .AutoBind(false)
+    .HtmlAttributes(new { style = "width:100%", data_value_primitive = "true" }))

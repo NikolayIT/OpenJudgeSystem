@@ -6,12 +6,8 @@
     const string ControllerName = "Users";
 }
 
-@section styles {
-    <style>
-        .container.main-container {
-            max-width: 100%;
-        }
-    </style>
+@section Styles{
+    @Styles.Render("~/Content/css/administration/administration-styles.css")
 }
 
 <div class="administration-container">
@@ -33,13 +29,13 @@
                 columns.Bound(model => model.Company).Hidden();
                 columns.Bound(model => model.JobTitle).Hidden();
                 columns.Bound(model => model.Age).Filterable(false);
-                columns.Bound(model => model.CreatedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
-                columns.Bound(model => model.ModifiedOn).Format("{0:dd/MM/yyyy HH:mm}").Hidden();
+                columns.Bound(model => model.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
+                columns.Bound(model => model.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
                 columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
             })
         .ToolBar(toolbar =>
         {
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
             toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
         })
         .Editable(editable =>

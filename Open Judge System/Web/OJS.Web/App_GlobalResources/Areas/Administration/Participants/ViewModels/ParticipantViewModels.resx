@@ -135,6 +135,12 @@
   <data name="Is_official" xml:space="preserve">
     <value>Is offical?</value>
   </data>
+  <data name="Participation_end_time" xml:space="preserve">
+    <value>Participation end</value>
+  </data>
+  <data name="Participation_start_time" xml:space="preserve">
+    <value>Participation start</value>
+  </data>
   <data name="Question" xml:space="preserve">
     <value>Question</value>
   </data>

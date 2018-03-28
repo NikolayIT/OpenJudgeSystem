@@ -11,6 +11,7 @@
     using OJS.Data;
     using OJS.Services.Business.Contests;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Problems;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Problems;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
@@ -22,57 +23,51 @@
     public class ContestsController : BaseController
     {
         private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
         private readonly IContestsBusinessService contestsBusiness;
 
         public ContestsController(
             IOjsData data,
             IContestsDataService contestsData,
+            IProblemsDataService problemsData,
             IContestsBusinessService contestsBusiness)
             : base(data)
         {
             this.contestsData = contestsData;
+            this.problemsData = problemsData;
             this.contestsBusiness = contestsBusiness;
         }
 
         public ActionResult Details(int id)
         {
-            var isAdmin = this.User.IsAdmin();
             var userId = this.UserProfile?.Id;
+            var isUserAdmin = this.User.IsAdmin();
 
-            var contestViewModel = this.Data.Contests
-                .All()
-                .Where(x =>
-                    x.Id == id &&
-                    !x.IsDeleted &&
-                    (x.IsVisible ||
-                        isAdmin ||
-                        x.Lecturers.Any(l => l.LecturerId == userId) ||
-                        x.Category.Lecturers.Any(cl => cl.LecturerId == userId)))
+            var contestViewModel = this.contestsData
+                .GetByIdQuery(id)
                 .Select(ContestViewModel.FromContest)
                 .FirstOrDefault();
 
-            if (contestViewModel == null)
+            var userHasContestRights = isUserAdmin ||
+                this.contestsData.IsUserLecturerInByContestAndUser(id, userId);
+
+            if (contestViewModel == null || (!userHasContestRights && !contestViewModel.IsVisible))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            this.ViewBag.ContestProblems = this.Data.Problems
-                .All()
-                .Where(x => x.ContestId == id)
+            this.ViewBag.ContestProblems = this.problemsData
+                .GetAllByContest(id)
                 .Select(ProblemListItemViewModel.FromProblem)
                 .ToList();
 
-            contestViewModel.UserIsAdminOrLecturerInContest =
-                this.UserProfile != null && this.CheckIfUserHasContestPermissions(id);
+            contestViewModel.UserIsAdminOrLecturerInContest = userHasContestRights;
 
-            contestViewModel.UserCanCompete = this.UserProfile != null &&
-                this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
-                    contestViewModel.Id,
-                    this.UserProfile.Id,
-                    this.User.IsAdmin());
+            contestViewModel.UserCanCompete = this.contestsBusiness
+                .CanUserCompeteByContestByUserAndIsAdmin(contestViewModel.Id, userId, isUserAdmin);
 
-            contestViewModel.UserIsParticipant = this.UserProfile != null &&
-                this.contestsData.IsUserParticipantInByContestAndUser(contestViewModel.Id, this.UserProfile.Id);
+            contestViewModel.UserIsParticipant = this.contestsData
+                .IsUserParticipantInByContestAndUser(contestViewModel.Id, userId);
 
             contestViewModel.IsActive = this.contestsData.IsActiveById(contestViewModel.Id);
 
@@ -87,7 +82,7 @@
                 .All()
                 .Where(x =>
                     x.Participant.UserId == this.UserProfile.Id &&
-                    x.Problem.ContestId == contestId &&
+                    x.Problem.ProblemGroup.ContestId == contestId &&
                     x.Problem.ShowResults)
                 .Select(SubmissionResultViewModel.FromSubmission);
 

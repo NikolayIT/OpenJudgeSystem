@@ -44,8 +44,8 @@
                 {
                     Id = problem.Id,
                     Name = problem.Name,
-                    ContestId = problem.ContestId,
-                    ContestName = problem.Contest.Name,
+                    ContestId = problem.ProblemGroup.ContestId,
+                    ContestName = problem.ProblemGroup.Contest.Name,
                     TrialTests = problem.Tests.AsQueryable().Count(x => x.IsTrialTest),
                     CompeteTests = problem.Tests.AsQueryable().Count(x => !x.IsTrialTest),
                     MaximumPoints = problem.MaximumPoints,
@@ -57,7 +57,8 @@
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
                     OrderBy = problem.OrderBy,
-                    GroupNumber = problem.GroupNumber,
+                    ProblemGroupId = problem.ProblemGroupId,
+                    ProblemGroupOrderBy = problem.ProblemGroup.OrderBy,
                     SolutionSkeletonData = problem.SolutionSkeleton,
                     HasAdditionalFiles = problem.AdditionalFiles != null && SqlFunctions.DataLength(problem.AdditionalFiles) > 0,
                     CreatedOn = problem.CreatedOn,
@@ -85,6 +86,11 @@
         [DatabaseProperty]
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public int ContestId { get; set; }
+
+        [DatabaseProperty]
+        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
+        [UIHint("DropDownList")]
+        public int? ProblemGroupId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
@@ -140,10 +146,8 @@
         [DefaultValue(0)]
         public int OrderBy { get; set; }
 
-        [DatabaseProperty]
-        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
-        [UIHint("DropDownList")]
-        public short? GroupNumber { get; set; }
+        [HiddenInput(DisplayValue = false)]
+        public int ProblemGroupOrderBy { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]

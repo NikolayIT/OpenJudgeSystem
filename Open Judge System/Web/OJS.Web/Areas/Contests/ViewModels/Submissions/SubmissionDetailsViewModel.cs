@@ -16,7 +16,7 @@
                 Id = submission.Id,
                 UserId = submission.Participant.UserId,
                 ProblemId = submission.ProblemId,
-                ContestId = submission.Problem.ContestId,
+                ContestId = submission.Problem.ProblemGroup.ContestId,
                 UserName = submission.Participant.User.UserName,
                 ProblemName = submission.Problem.Name,
                 CompilerComment = submission.CompilerComment,
@@ -25,6 +25,7 @@
                 Points = submission.Points,
                 MaxPoints = submission.Problem.MaximumPoints,
                 CreatedOn = submission.CreatedOn,
+                ModifiedOn = submission.ModifiedOn,
                 SubmissionType = submission.SubmissionType,
                 IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
                 IsDeleted = submission.IsDeleted,
@@ -59,6 +60,8 @@
         public short MaxPoints { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
 
         public SubmissionType SubmissionType { get; set; }
 

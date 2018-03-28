@@ -3,25 +3,45 @@ function validateModelStateErrors(args) {
     'use strict';
 
     if (args.errors) {
-        var grid = $('#DataGrid').data('kendoGrid');
+        var grid = $('#DataGrid');
+        var kendoGrid = grid.data('kendoGrid');
         var validationTemplate = kendo.template($('#model-state-errors-template').html());
-        $('.k-edit-form-container').prepend('<div id="errors" class="alert alert-danger"></div>');
-        grid.one('dataBinding', function (e) {
-            e.preventDefault();
+        var errorsContainer = $('<div id="errors" class="alert alert-danger"></div>');
+
+        $('.k-edit-form-container').prepend(errorsContainer);
+        kendoGrid.one('dataBinding', function (ev) {
+            ev.preventDefault();
 
             $.each(args.errors, function (propertyName) {
                 var renderedTemplate = validationTemplate({ field: propertyName, errors: this.errors });
-                if (grid.editable) {
-                    grid.editable.element.find('#errors').append(renderedTemplate);
+
+                if (kendoGrid.editable) {
+                    kendoGrid.editable.element.find('#errors').append(renderedTemplate);
                 } else {
-                    window.location.reload();
+                    errorsContainer.append(renderedTemplate);
+                    grid.before(errorsContainer);
+                    kendoGrid.cancelChanges();
+
+                    grid.find('*').click(function () {
+                        removeErrorsContainer();
+                    });
                 }
             });
 
-            $('.k-grid-update').click(function (ev) {
-                ev.preventDefault();
-                $('#errors').remove();
+            $('.k-grid-update').click(function (e) {
+                e.preventDefault();
+                removeErrorsContainer();
             });
+
+            $('#errors').click(function () {
+                removeErrorsContainer();
+            });
+
+            $('ul').css('list-style', 'none');
         });
+    }
+
+    function removeErrorsContainer() {
+        $('#errors').remove();
     }
 }

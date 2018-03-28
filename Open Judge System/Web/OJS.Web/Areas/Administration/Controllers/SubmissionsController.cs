@@ -8,6 +8,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -23,7 +24,6 @@
     using GridModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel;
     using ModelType = OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationViewModel;
     using Resource = Resources.Areas.Administration.Submissions.SubmissionsControllers;
-    using TransactionScope = System.Transactions.TransactionScope;
 
     public class SubmissionsController : LecturerBaseGridController
     {
@@ -57,13 +57,13 @@
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
                 submissions = submissions.Where(s =>
-                    s.Problem.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                    s.Problem.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
+                    s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
+                    s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
             }
 
             if (this.contestId != null)
             {
-                submissions = submissions.Where(s => s.Problem.ContestId == this.contestId);
+                submissions = submissions.Where(s => s.Problem.ProblemGroup.ContestId == this.contestId);
             }
 
             return submissions.Select(GridModelType.ViewModel);
@@ -111,7 +111,7 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ProblemGroup.ContestId);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
@@ -128,7 +128,7 @@
                     entity.Processed = false;
                     entity.Processing = false;
 
-                    using (var scope = new TransactionScope())
+                    using (var scope = TransactionsHelper.CreateTransactionScope())
                     {
                         this.BaseCreate(entity);
                         this.submissionsForProcessingData.AddOrUpdateBySubmissionId(model.Id.Value);
@@ -202,7 +202,7 @@
                     var problem = this.Data.Problems.GetById(model.ProblemId.Value);
                     if (problem != null)
                     {
-                        this.ValidateParticipant(model.ParticipantId, problem.ContestId);
+                        this.ValidateParticipant(model.ParticipantId, problem.ProblemGroup.ContestId);
                     }
 
                     var submissionType = this.GetSubmissionType(model.SubmissionTypeId.Value);
@@ -223,7 +223,7 @@
                         var submissionProblemId = model.ProblemId.Value;
                         var submissionParticipantId = model.ParticipantId.Value;
 
-                        using (var scope = new TransactionScope())
+                        using (var scope = TransactionsHelper.CreateTransactionScope())
                         {
                             submission.Processed = false;
                             submission.Processing = false;
@@ -311,7 +311,7 @@
             var submissionProblemId = submission.ProblemId.Value;
             var submissionParticipantId = submission.ParticipantId.Value;
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
@@ -348,7 +348,7 @@
             var submissionsDataSourceResult = this.GetData().ToDataSourceResult(request);
             var submissions = submissionsDataSourceResult.Data;
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 foreach (GridModelType submission in submissions)
                 {
@@ -477,7 +477,7 @@
                 var submissionProblemId = submission.ProblemId.Value;
                 var submissionParticipantId = submission.ParticipantId.Value;
 
-                using (var scope = new TransactionScope())
+                using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     submission.Processed = false;
                     submission.Processing = false;
@@ -533,7 +533,7 @@
         {
             var selectedProblem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == problem);
 
-            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ContestId);
+            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ProblemGroup.ContestId);
 
             if (!string.IsNullOrEmpty(text))
             {

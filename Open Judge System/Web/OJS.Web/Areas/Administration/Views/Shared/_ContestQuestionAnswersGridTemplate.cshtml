@@ -1,0 +1,49 @@
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+@{
+    const string ControllerName = "ContestQuestionAnswers";
+}
+
+<script type="text/x-kendo-template" id="_ContestQuestionAnswersGridTemplate">
+    # if ((Type == 0) || (Type == 1)) { #
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestionAnswer.ContestQuestionAnswerViewModel>()
+        .Name("DetailAnswerGrid_#=QuestionId#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.AnswerId);
+            columns.Bound(m => m.Text);
+            columns.Bound(m => m.QuestionText);
+            columns.Command(com => com.Edit().Text(" ")).Width(80);
+            columns.Command(com => com.Destroy().Text(" ")).Width(80);
+        })
+        .ToolBar(tool =>
+        {
+            tool.Create().Text(Resource.Add_answer);
+            tool.Custom().Text(Resource.Delete_all).HtmlAttributes(new { id = "delete-all-answers", data_question_id = "#=QuestionId#" });
+        })
+        .ColumnMenu()
+        .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+            edit.Window(w => w.Title(ViewBag.Title));
+            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(m => m.QuestionId))
+                .Sort(sort => sort.Add(field => field.AnswerId))
+                .Create(create => create.Action("AddAnswerToQuestion", ControllerName, new { id = "#= QuestionId #" }))
+                .Read(read => read.Action("AnswersInQuestion", ControllerName, new { id = "#= QuestionId #" }))
+                .Update(update => update.Action("UpdateAnswerInQuestion", ControllerName))
+                .Destroy(destroy => destroy.Action("DeleteAnswerFromQuestion", ControllerName, new { id = "#= QuestionId #" }));
+        })
+        .ToClientTemplate())
+    # }
+    else { #
+    <div class="text-center">@Resource.No_possible_answers</div>
+    # } #
+</script>

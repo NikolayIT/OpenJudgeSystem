@@ -56,6 +56,8 @@
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string AdministrationAreaName = "Administration";
+
         public const int FileExtentionMaxLength = 4;
 
         public const int IpAdressMaxLength = 45;
@@ -69,6 +71,8 @@
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
 
         public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
+
+        public const int DefaultProblemGroupsCountForOnlineContest = 2;
 
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
@@ -106,6 +110,10 @@
         public const int ContestQuestionAnswerMaxLength = 100;
         public const int ContestQuestionAnswerMinLength = 1;
 
+        // ExamGroup Constants
+        public const int ExamGroupNameMinLength = 2;
+        public const int ExamGroupNameMaxLength = 600;
+
         // Administration
         public const int CheckerNameMaxLength = 100;
         public const int CheckerNameMinLength = 1;
@@ -130,8 +138,8 @@
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
 
-        // Authorization error messages
-        public const string NoPrivilegesMessage = "Нямате привилегиите за това действие";
+        // Date and time formats
+        public const string DefaultDateTimeFormatString = "{0:dd/MM/yyyy HH:mm}";
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";

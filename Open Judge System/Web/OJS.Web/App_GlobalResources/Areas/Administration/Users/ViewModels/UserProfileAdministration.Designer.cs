@@ -19,7 +19,7 @@ namespace Resources.Areas.Administration.Users.ViewModels {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class UserProfileAdministration {
@@ -242,6 +242,15 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing.
+        /// </summary>
+        public static string Missing {
+            get {
+                return ResourceManager.GetString("Missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No information.
         /// </summary>
         public static string Null_display_text {
@@ -251,11 +260,20 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UserName.
+        ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username is required!.
+        /// </summary>
+        public static string Username_required {
+            get {
+                return ResourceManager.GetString("Username_required", resourceCulture);
             }
         }
     }

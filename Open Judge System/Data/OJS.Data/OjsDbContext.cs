@@ -31,7 +31,11 @@
 
         public virtual IDbSet<Contest> Contests { get; set; }
 
+        public virtual IDbSet<ExamGroup> ExamGroups { get; set; }
+
         public virtual IDbSet<Problem> Problems { get; set; }
+
+        public virtual IDbSet<ProblemGroup> ProblemGroups { get; set; }
 
         public virtual IDbSet<News> News { get; set; }
 

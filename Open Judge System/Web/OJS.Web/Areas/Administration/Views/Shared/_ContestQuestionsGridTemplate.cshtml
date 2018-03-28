@@ -1,0 +1,63 @@
+﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+@{
+    const string ControllerName = "ContestQuestions";
+}
+
+<script type="text/x-kendo-template" id="_ContestQuestionsGridTemplate">
+    @(Html.Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ContestQuestion.ContestQuestionViewModel>()
+        .Name("DetailQuestionsGrid_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.QuestionId);
+            columns.Bound(m => m.Text);
+            columns.Bound(m => m.Type).ClientTemplate("\\#= getTypeName(Type) \\#");
+            columns.Bound(m => m.RegularExpressionValidation).Hidden();
+            columns.Bound(m => m.AskPracticeParticipants);
+            columns.Bound(m => m.AskOfficialParticipants);
+            columns.Bound(m => m.CreatedOn).Hidden();
+            columns.Bound(m => m.ModifiedOn).Hidden();
+            columns.Command(com => com.Edit().Text(" ")).Width(80);
+            columns.Command(com => com.Destroy().Text(" ")).Width(80);
+        })
+        .ToolBar(tool =>
+        {
+            tool.Create().Text(Resource.Add_question);
+            tool.Custom().Text(Resource.Copy_from).HtmlAttributes(new { onclick = "copyFromContest(event, #=Id#)" });
+        })
+        .ColumnMenu()
+        .ClientDetailTemplateId("_ContestQuestionAnswersGridTemplate")
+        .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+            edit.Window(w => w.Title(ViewBag.Title));
+            edit.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(m => m.QuestionId))
+                .Sort(sort => sort.Add(field => field.CreatedOn))
+                .Create(create => create.Action("AddQuestionToContest", ControllerName, new {id = "#= Id #"}))
+                .Read(read => read.Action("QuestionsInContest", ControllerName, new {id = "#= Id #"}))
+                .Update(update => update.Action("UpdateQuestionInContest", ControllerName))
+                .Destroy(destroy => destroy.Action("DeleteQuestionFromContest", ControllerName));
+        }) 
+        .ToClientTemplate())
+
+    @(Html.Kendo()
+        .Window()
+        .Name("CopyFromContestWindow_#=Id#")
+        .Title(Resource.Copy_from_contest)
+        .LoadContentFrom("/Administration/ContestQuestions/CopyFromAnotherContest/#=Id#")
+        .Visible(false)
+        .Modal(true)
+        .Width(400)
+        .Actions(actions => actions.Close())
+        .ToClientTemplate())
+</script>
+
+@Html.Partial("_ContestQuestionAnswersGridTemplate")

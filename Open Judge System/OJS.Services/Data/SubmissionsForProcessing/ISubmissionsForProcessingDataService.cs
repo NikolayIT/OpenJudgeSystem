@@ -14,7 +14,7 @@
 
         ICollection<int> GetProcessingSubmissionIds();
 
-        void AddOrUpdate(IEnumerable<int> submissionIds);
+        void AddOrUpdateBySubmissionIds(ICollection<int> submissionIds);
 
         void AddOrUpdateBySubmissionId(int submissionId);
 
