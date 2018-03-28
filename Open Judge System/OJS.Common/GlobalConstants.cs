@@ -140,10 +140,7 @@
 
         // Date and time formats
         public const string DefaultDateTimeFormatString = "{0:dd/MM/yyyy HH:mm}";
-
-        // Register redirect urls
-        public const string ExternalJudgeRegisterUrlFormat = "{0}/identity/externaljudgeregister";
-
+        
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";
         public static readonly string CSharpFileExtension = $".{CompilerType.CSharp.GetFileExtension()}";
