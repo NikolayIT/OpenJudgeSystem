@@ -117,31 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contests" xml:space="preserve">
-    <value>Активни състезания</value>
+  <data name="And" xml:space="preserve">
+    <value>и</value>
   </data>
-  <data name="Contest_categories" xml:space="preserve">
-    <value>Категории състезания</value>
+  <data name="Day" xml:space="preserve">
+    <value>ден</value>
   </data>
-  <data name="Ended" xml:space="preserve">
-    <value>Приключило на</value>
+  <data name="Days" xml:space="preserve">
+    <value>дни</value>
   </data>
-  <data name="No_previous_contests" xml:space="preserve">
-    <value>Няма предишни състезания</value>
+  <data name="Hour" xml:space="preserve">
+    <value>час</value>
   </data>
-  <data name="Participate" xml:space="preserve">
-    <value>Участвай</value>
+  <data name="Hours" xml:space="preserve">
+    <value>часа</value>
   </data>
-  <data name="Previous_contests" xml:space="preserve">
-    <value>Предишни състезания</value>
+  <data name="Inifinite" xml:space="preserve">
+    <value>безкрайно</value>
   </data>
-  <data name="Project_subtitle" xml:space="preserve">
-    <value />
+  <data name="Minute" xml:space="preserve">
+    <value>минута</value>
   </data>
-  <data name="Project_title" xml:space="preserve">
-    <value>SoftUni Judge</value>
+  <data name="Minutes" xml:space="preserve">
+    <value>минути</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Начало</value>
+  <data name="Remaining_time" xml:space="preserve">
+    <value>Оставащо време:</value>
   </data>
 </root>

@@ -55,22 +55,13 @@
                     <table class="table table-hover">
                         @foreach (var contest in Model.ActiveContests)
                         {
-                            var hoursRemaining = (int)((contest.EndTime.Value - DateTime.Now)).TotalHours;
-                            var minutesRemaining = (contest.EndTime.Value - DateTime.Now).Minutes;
                             <tr>
                                 <td>
-                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
-                                    @{
-                                        var remainingTimeMessage = string.Format(
-                                            Resource.Remaining_time,
-                                            hoursRemaining,
-                                            hoursRemaining != 1 ? Resource.Hours : Resource.Hour,
-                                            minutesRemaining);
-                                    }
-                                    <small>@remainingTimeMessage</small>
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br/>
+                                    <small>@ContestsHelper.GetRemainingTime(contest.EndTime)</small>
                                 </td>
                                 <td class="participate">
-                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new { @class = "btn btn-sm btn-primary pull-left" }))
+                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new {@class = "btn btn-sm btn-primary pull-left"}))
                                 </td>
                             </tr>
                         }

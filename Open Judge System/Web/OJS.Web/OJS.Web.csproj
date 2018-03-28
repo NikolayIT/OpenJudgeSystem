@@ -1473,6 +1473,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FeedbackSubmitted.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Helpers\ContestsHelper.bg.designer.cs">
+      <DependentUpon>ContestsHelper.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Helpers\ContestsHelper.designer.cs">
+      <DependentUpon>ContestsHelper.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Models\ContestQuestionTypeResource.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3210,6 +3220,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StatsPartial.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Helpers\ContestsHelper.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsHelper.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Helpers</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Helpers\ContestsHelper.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ContestsHelper.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Helpers</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Models\ContestQuestionTypeResource.bg.resx">
       <Generator>ResXFileCodeGenerator</Generator>
