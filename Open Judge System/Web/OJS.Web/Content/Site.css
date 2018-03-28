@@ -231,9 +231,16 @@ input[type="checkbox"].input-validation-error {
     margin-top: 8px;
 }
 
-    .language-switch a {
-        display: block;
-    }
+.language-btn {
+    display: block;
+    color: #FFFFFF;
+}
+
+.selected-language-btn {
+    color: #AAAAAA;
+    pointer-events: none;
+    cursor: default;
+}
 
 #cookies-notification {
     position: fixed !important;

@@ -18,32 +18,29 @@
 
 function initializeLanguageSwitchButtons() {
     var languageSwithContainer = $('.language-switch');
-    var languageCookieName = 'language';
-    var defaultLanguageCookieValue = 'en';
-    var languageCookieExirationDays = 1825;
+    var languageSwitchButtons = languageSwithContainer.find('.language-btn');
+    var languageCookieName = languageSwithContainer.data('cookie');
+    var languageCookieExpirationDays = 1825;
 
-    languageSwithContainer.find('a').click(function(ev) {
-        ev.preventDefault();
-        setCookie(languageCookieName, ev.target.id, languageCookieExirationDays);
+    languageSwitchButtons.click(function(ev) {
+        setCookie(languageCookieName, ev.target.id, languageCookieExpirationDays);
         window.location.reload();
     });
 
     var selectedLanguage = getCookie(languageCookieName);
 
     if (selectedLanguage === '') {
-        setCookie(languageCookieName, defaultLanguageCookieValue, languageCookieExirationDays);
+        var defaultLanguageCookieValue = languageSwithContainer.find('[data-default]').attr('id');
+
+        setCookie(languageCookieName, defaultLanguageCookieValue, languageCookieExpirationDays);
         selectedLanguage = defaultLanguageCookieValue;
     }
 
-    languageSwithContainer.find('a').css({
-        color: '#fff'
-    });
+    var selectedLanguageButton = languageSwithContainer.find('#' + selectedLanguage);
 
-    languageSwithContainer.find('#' + selectedLanguage).css({
-        color: '#aaa',
-        'pointer-events': 'none',
-        cursor: 'default'
-    });
+    if (selectedLanguageButton.length) {
+        selectedLanguageButton.addClass('selected-language-btn');
+    }
 }
 
 /* exported CreateExportToExcelButton */
