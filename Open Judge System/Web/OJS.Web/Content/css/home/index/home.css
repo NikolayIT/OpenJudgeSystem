@@ -11,7 +11,7 @@
     overflow: auto;
 }
 
-    .scrollable-container > table td.participate {
+    .contests-scrollable-container > table td.participate {
         vertical-align: middle;
     }
 
