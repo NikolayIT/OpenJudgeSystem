@@ -82,6 +82,9 @@
             bundles.Add(new StyleBundle("~/Content/CodeMirror/codemirrormerge").Include(
                 "~/Dependencies/codemirror/addon/merge/merge.css",
                 "~/Content/Contests/submission-view-page.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css/home/index").Include(
+                "~/Content/css/home/index/home.css"));
         }
     }
 }
