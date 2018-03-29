@@ -142,6 +142,15 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rules for working with the Judge system.
+        /// </summary>
+        public static string Rules_for_working_with_the_system {
+            get {
+                return ResourceManager.GetString("Rules_for_working_with_the_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Title {
