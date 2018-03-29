@@ -27,6 +27,7 @@
         width: 100%;
         height: 100%;
         border: 0;
+        object-fit: fill;
     }
 
 #previous-contests {
@@ -35,7 +36,7 @@
 
 @media only screen and (min-width: 991px) {
     .video-wrapper {
-        width: 97%;
+        width: 96.5%;
         padding-bottom: 54.25%; /* 16:9 */
     }
 }
