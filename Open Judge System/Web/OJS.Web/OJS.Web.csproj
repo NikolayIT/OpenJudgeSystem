@@ -1473,6 +1473,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FeedbackSubmitted.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Helpers\TimeHelper.bg.Designer.cs">
+      <DependentUpon>TimeHelper.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Helpers\TimeHelper.Designer.cs">
+      <DependentUpon>TimeHelper.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Models\ContestQuestionTypeResource.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2387,6 +2397,7 @@
     <Content Include="Areas\Administration\Views\Shared\_ProblemsInProblemGroupGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionsGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
+    <Content Include="App_Code\TimeHelper.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
@@ -3209,6 +3220,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StatsPartial.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Contests.Views.Partials</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Helpers\TimeHelper.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TimeHelper.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.Helpers</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Helpers\TimeHelper.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TimeHelper.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Helpers</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Models\ContestQuestionTypeResource.bg.resx">
       <Generator>ResXFileCodeGenerator</Generator>

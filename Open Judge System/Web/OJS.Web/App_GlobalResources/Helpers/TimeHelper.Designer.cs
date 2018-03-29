@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Home.Views {
+namespace Resources.Helpers {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Home.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Index {
+    public class TimeHelper {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Index() {
+        internal TimeHelper() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Home.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Home.Views.Index", typeof(Index).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Helpers.TimeHelper", typeof(TimeHelper).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,65 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active contests.
+        ///   Looks up a localized string similar to and.
         /// </summary>
-        public static string Active_contests {
+        public static string And {
             get {
-                return ResourceManager.GetString("Active_contests", resourceCulture);
+                return ResourceManager.GetString("And", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contest categories.
+        ///   Looks up a localized string similar to day.
         /// </summary>
-        public static string Contest_categories {
+        public static string Day {
             get {
-                return ResourceManager.GetString("Contest_categories", resourceCulture);
+                return ResourceManager.GetString("Day", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ended.
+        ///   Looks up a localized string similar to days.
         /// </summary>
-        public static string Ended {
+        public static string Days {
             get {
-                return ResourceManager.GetString("Ended", resourceCulture);
+                return ResourceManager.GetString("Days", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to infinite.
+        ///   Looks up a localized string similar to hour.
         /// </summary>
-        public static string Infinite {
+        public static string Hour {
             get {
-                return ResourceManager.GetString("Infinite", resourceCulture);
+                return ResourceManager.GetString("Hour", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No previous contests.
+        ///   Looks up a localized string similar to hours.
         /// </summary>
-        public static string No_previous_contests {
+        public static string Hours {
             get {
-                return ResourceManager.GetString("No_previous_contests", resourceCulture);
+                return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Participate.
+        ///   Looks up a localized string similar to minute.
         /// </summary>
-        public static string Participate {
+        public static string Minute {
             get {
-                return ResourceManager.GetString("Participate", resourceCulture);
+                return ResourceManager.GetString("Minute", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Previous contests.
+        ///   Looks up a localized string similar to minutes.
         /// </summary>
-        public static string Previous_contests {
+        public static string Minutes {
             get {
-                return ResourceManager.GetString("Previous_contests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SoftUni Judge.
-        /// </summary>
-        public static string Project_title {
-            get {
-                return ResourceManager.GetString("Project_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time remaining.
-        /// </summary>
-        public static string Remaining_time {
-            get {
-                return ResourceManager.GetString("Remaining_time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home.
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Minutes", resourceCulture);
             }
         }
     }
