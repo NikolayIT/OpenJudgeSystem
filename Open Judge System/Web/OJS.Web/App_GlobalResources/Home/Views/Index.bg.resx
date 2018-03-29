@@ -126,6 +126,9 @@
   <data name="Ended" xml:space="preserve">
     <value>Приключило на</value>
   </data>
+  <data name="Guidelines_link_title" xml:space="preserve">
+    <value>Инструкции за работа с Judge системата</value>
+  </data>
   <data name="Infinite" xml:space="preserve">
     <value>безкрайно</value>
   </data>
@@ -143,9 +146,6 @@
   </data>
   <data name="Remaining_time" xml:space="preserve">
     <value>Оставащо време</value>
-  </data>
-  <data name="Rules_for_working_with_the_system" xml:space="preserve">
-    <value>Правила за работа с Judge системата</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Начало</value>
