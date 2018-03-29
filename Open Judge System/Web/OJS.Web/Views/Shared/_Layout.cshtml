@@ -146,6 +146,10 @@
                 <div class="col-sm-1 hidden-lg hidden-sm hidden-xs btn navbar-left">
                     <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
                 </div>
+                <div class="language-switch" data-cookie="@GlobalConstants.LanguageCookieName">
+                    <a id="@GlobalConstants.EnglishCultureCookieValue" class="btn-link language-btn" data-default>EN</a>
+                    <a id="@GlobalConstants.BulgarianCultureCookieValue" class="btn-link language-btn">BG</a>
+                </div>
             </div>
         </div>
     </div>
@@ -174,7 +178,7 @@
                 }
 
                 @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
-        }
+            }
         }
 
         @RenderBody()

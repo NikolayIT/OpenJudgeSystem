@@ -209,6 +209,10 @@ input[type="checkbox"].input-validation-error {
     display: table;
 }
 
+.admin.logged-user-wrap {
+    width: 180px;
+}
+
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
@@ -221,6 +225,21 @@ input[type="checkbox"].input-validation-error {
 .fb_iframe_widget span,
 .fb_iframe_widget span iframe[style] {
     width: 100% !important;
+}
+
+.language-switch {
+    margin-top: 8px;
+}
+
+.language-btn {
+    display: block;
+    color: #FFFFFF;
+}
+
+.selected-language-btn {
+    color: #AAAAAA;
+    pointer-events: none;
+    cursor: default;
 }
 
 #cookies-notification {
@@ -276,6 +295,11 @@ input[type="checkbox"].input-validation-error {
     .nav > li > a {
         padding: 15px 7px;
     }
+
+    .language-switch {
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -285,10 +309,10 @@ input[type="checkbox"].input-validation-error {
         margin-top: 5px;
     }
 
-    .search-form form {
-        padding: 0;
-        margin-left: -5px;
-    }
+        .search-form form {
+            padding: 0;
+            margin-left: -5px;
+        }
 }
 
 @media only screen and (max-width: 992px) {
@@ -297,13 +321,13 @@ input[type="checkbox"].input-validation-error {
         display: block;
     }
 
-    .login-form .nav {
-        display: block;
-    }
+        .login-form .nav {
+            display: block;
+        }
 
-    .login-form .nav.navbar-right {
-        margin-left: -20px;
-    }
+            .login-form .nav.navbar-right {
+                margin-left: -20px;
+            }
 
     .admin.logged-user-wrap {
         width: auto;
@@ -315,6 +339,11 @@ input[type="checkbox"].input-validation-error {
 
     .btn-search {
         padding: 5px 15px;
+    }
+
+    .language-btn {
+        display: inline-block;
+        margin: 8px 5px 0 5px;
     }
 }
 
