@@ -1,0 +1,20 @@
+﻿.list-group {
+    font-size: 0.8em;
+}
+
+.list-group-item {
+    line-height: 20px;
+}
+
+.contests-scrollable-container {
+    height: 400px;
+    overflow: auto;
+}
+
+    .contests-scrollable-container > table td.participate {
+        vertical-align: middle;
+    }
+
+#previous-contests {
+    font-size: 0.8em;
+}
