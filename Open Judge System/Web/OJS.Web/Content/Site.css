@@ -172,6 +172,7 @@ input[type="checkbox"].input-validation-error {
 
 .logged-user-wrap {
     width: 260px;
+    text-align: right;
 }
 
 .logged-user-wrap a {
