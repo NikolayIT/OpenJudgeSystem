@@ -39,9 +39,9 @@
     </div>
     <div class="row">
         <div class="col-md-7">
+            <h2>@Resource.Active_contests</h2>
             @if (Model.ActiveContests.Any())
             {
-                <h2>@Resource.Active_contests</h2>
                 <div class="contests-scrollable-container">
                     <table class="table table-hover">
                         @foreach (var contest in Model.ActiveContests)
@@ -56,12 +56,16 @@
                                     </small>
                                 </td>
                                 <td class="participate">
-                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new { @class = "btn btn-sm btn-primary pull-left" }))
+                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new {@class = "btn btn-sm btn-primary pull-left"}))
                                 </td>
                             </tr>
                         }
                     </table>
                 </div>
+            }
+            else
+            {
+                <p class="top-buffer-lg">@Resource.No_active_contests</p>
             }
         </div>
         <div id="previous-contests" class="col-md-5">

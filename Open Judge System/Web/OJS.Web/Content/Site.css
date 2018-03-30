@@ -225,6 +225,8 @@ input[type="checkbox"].input-validation-error {
 
 .language-switch {
     margin-top: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .language-btn {
@@ -293,7 +295,7 @@ input[type="checkbox"].input-validation-error {
     }
 
     .language-switch {
-        display: flex;
+        flex-direction: row;
         justify-content: flex-end;
     }
 }
