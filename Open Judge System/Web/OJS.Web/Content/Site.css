@@ -30,6 +30,10 @@ input[type="checkbox"].input-validation-error {
     padding-bottom: 20px;
 }
 
+    .jumbotron h1 {
+        font-size: 62px;
+    }
+
 /* Code mirror fix for the matrix theme */
 .cm-s-the-matrix span.cm-builtin {
     color: #2A9FD6 !important;
@@ -263,13 +267,13 @@ input[type="checkbox"].input-validation-error {
 
 @media (max-width: 1200px) {
     .jumbotron h1 {
-        font-size: 63.5px;
+        font-size: 55px;
     }
 }
 
 @media (max-width: 767px) {
     .jumbotron h1 {
-        font-size: 48px;
+        font-size: 45px;
     }
 }
 
