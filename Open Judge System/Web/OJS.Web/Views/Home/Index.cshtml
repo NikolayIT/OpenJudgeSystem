@@ -17,23 +17,15 @@
     <div class="row">
         <div class="col-md-7">
             <h1>@Resource.Project_title</h1>
-            <a href="~/Content/PublicFiles/SoftUni-Judge-System-Guidelines.pdf" target="_blank">Правила за работа с Judge системата</a>
-            @if (Model.ActiveContests.Any())
-            {
-                <div class="fb-page"
-                     data-href="https://www.facebook.com/SoftwareUniversity"
-                     data-width="400" data-small-header="true" data-adapt-container-width="true"
-                     data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
-
-                    <div class="fb-xfbml-parse-ignore">
-                        <blockquote cite="https://www.facebook.com/SoftwareUniversity">
-                            <a href="https://www.facebook.com/SoftwareUniversity">
-                                Software University
-                            </a>
-                        </blockquote>
-                    </div>
-                </div>
+            @{
+                var languageSuffix = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+                    ? GlobalConstants.EnglishCultureCookieValue
+                    : GlobalConstants.BulgarianCultureCookieValue;
             }
+            <a href="@($"/Content/PublicFiles/SoftUni-Judge-System-Guidelines-{languageSuffix}.pdf")" target="_blank">@Resource.Guidelines_link_title</a>
+            <div class="video-wrapper top-buffer">
+                <iframe src="https://www.youtube.com/embed/CjUkFYlmf_A/?autoplay=0&rel=0&showinfo=0" allowfullscreen></iframe>
+            </div>
         </div>
         <div class="col-md-5">
             <h2>@Resource.Contest_categories</h2>

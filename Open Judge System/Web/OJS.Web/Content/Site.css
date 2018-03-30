@@ -28,8 +28,11 @@ input[type="checkbox"].input-validation-error {
     padding: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
-    margin-top: 20px; /* its buggy without it */
 }
+
+    .jumbotron h1 {
+        font-size: 62px;
+    }
 
 /* Code mirror fix for the matrix theme */
 .cm-s-the-matrix span.cm-builtin {
@@ -220,13 +223,6 @@ input[type="checkbox"].input-validation-error {
     background-color: #0f7864;
 }
 
-.fb-page,
-.fb_iframe_widget,
-.fb_iframe_widget span,
-.fb_iframe_widget span iframe[style] {
-    width: 100% !important;
-}
-
 .language-switch {
     margin-top: 8px;
 }
@@ -261,10 +257,6 @@ input[type="checkbox"].input-validation-error {
     color: #00AA00;
 }
 
-#fb-root {
-    display: none;
-}
-
 @media (max-width: 1320px) {
     .main-container .administration-container .k-grid .k-grid-header th.k-header {
         overflow: visible;
@@ -275,13 +267,13 @@ input[type="checkbox"].input-validation-error {
 
 @media (max-width: 1200px) {
     .jumbotron h1 {
-        font-size: 63.5px;
+        font-size: 55px;
     }
 }
 
 @media (max-width: 767px) {
     .jumbotron h1 {
-        font-size: 48px;
+        font-size: 45px;
     }
 }
 
@@ -292,6 +284,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+    .container.main-container .jumbotron {
+        padding: 0 40px;
+    }
+
     .nav > li > a {
         padding: 15px 7px;
     }
@@ -368,6 +364,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 @media only screen and (max-width: 767px) {
+    .jumbotron {
+        padding: 0 20px;
+    }
+
     .contests-by-category .results {
         max-width: 80px;
     }

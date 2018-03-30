@@ -2354,7 +2354,7 @@
     <Content Include="Areas\Administration\Views\LecturersInContestCategories\_LecturerInContestCategoriesGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContestCategory.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\NewContestIp.cshtml" />
-    <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines.pdf" />
+    <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-bg.pdf" />
     <Content Include="Areas\Contests\Views\Results\_StatsPartial.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_StatsChartPartial.cshtml" />
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
@@ -2398,6 +2398,7 @@
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionsGridTemplate.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
     <Content Include="App_Code\TimeHelper.cshtml" />
+    <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

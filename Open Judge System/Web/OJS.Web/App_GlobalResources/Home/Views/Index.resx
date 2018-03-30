@@ -126,6 +126,9 @@
   <data name="Ended" xml:space="preserve">
     <value>Ended</value>
   </data>
+  <data name="Guidelines_link_title" xml:space="preserve">
+    <value>Guidelines for working with the Judge system</value>
+  </data>
   <data name="Infinite" xml:space="preserve">
     <value>infinite</value>
   </data>

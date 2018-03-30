@@ -88,6 +88,15 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guidelines for working with the Judge system.
+        /// </summary>
+        public static string Guidelines_link_title {
+            get {
+                return ResourceManager.GetString("Guidelines_link_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to infinite.
         /// </summary>
         public static string Infinite {

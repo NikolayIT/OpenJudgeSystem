@@ -24,7 +24,7 @@
             {
                 ActiveContests = this.contestsData
                     .GetAllCompetable()
-                    .OrderByDescending(ac => ac.StartTime)
+                    .OrderBy(ac => ac.EndTime)
                     .Select(HomeContestViewModel.FromContest)
                     .ToList(),
                 PastContests = this.contestsData
