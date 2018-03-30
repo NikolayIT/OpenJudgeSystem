@@ -3,6 +3,12 @@
 
 @using Resource = Resources.Views.Shared.Layout;
 
+@{
+    var userIsLoggedIn = this.User.IsLoggedIn();
+    var userIsAdmin = this.User.IsAdmin();
+    var userIsLecturer = this.User.IsLecturer();
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +44,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/">@Resource.Home</a></li>
                     <li class="dropdown">
                         <a href="/Contests" class="dropdown-toggle" data-toggle="dropdown">
                             @Resource.Contests
@@ -53,21 +58,21 @@
                             <li><a href="/Contests">@Resource.All</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Submissions">@Resource.Submissions</a></li>
-                    @if (this.User.IsLoggedIn())
+                    @if (userIsLoggedIn)
                     {
                         <li><a href="/Feedback">@Resource.Feedback</a></li>
                     }
                     
-                    @if (this.User.IsAdmin() || this.User.IsLecturer())
+                    @if (userIsAdmin || userIsLecturer)
                     {
+                        <li><a href="/Submissions">@Resource.Submissions</a></li>
                         <li class="dropdown">
                             <a href="/Administration/Navigation" class="dropdown-toggle" data-toggle="dropdown">
                                 @Resource.Administration
                                 <strong class="caret"></strong>
                             </a>
 
-                            @if (this.User.IsAdmin())
+                            @if (userIsAdmin)
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
@@ -105,7 +110,7 @@
                                     <li>@(Html.ActionLink<NavigationController>(Resource.All_administrations, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
                             }
-                            else if (this.User.IsLecturer())
+                            else
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
@@ -121,7 +126,7 @@
                 </ul>
                 @Html.Partial("_LoginPartial")
 
-                <div class="col-md-3 col-sm-@(this.User.IsLoggedIn() ? "6" : "12") navbar-left hidden-md search-form @(this.User.IsLoggedIn() && (this.User.IsAdmin() || this.User.IsLecturer()) ? "admin" : "")">
+                <div class="col-md-3 col-sm-@(userIsLoggedIn ? "6" : "12") navbar-left hidden-md search-form @(userIsLoggedIn && (userIsAdmin || userIsLecturer) ? "admin" : "")">
                     <form class="navbar-form" role="search" action="/Search/Results">
                         <div class="input-group">
                             <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">

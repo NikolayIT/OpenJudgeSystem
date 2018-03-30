@@ -171,17 +171,19 @@ input[type="checkbox"].input-validation-error {
 }
 
 .logged-user-wrap {
-    width: 260px;
+    max-width: 290px;
     text-align: right;
+    overflow: hidden;
 }
 
-.logged-user-wrap a {
-    float: right;
-}
+    .logged-user-wrap a {
+        float: right;
+        padding-left: 0;
+    }
 
-.admin.logged-user-wrap {
-    width: 185px;
-}
+    .logged-user-wrap.admin {
+        max-width: 190px;
+    }
 
 .contests-by-category > tbody > tr > td {
     vertical-align: middle;
@@ -213,10 +215,6 @@ input[type="checkbox"].input-validation-error {
     display: table;
 }
 
-.admin.logged-user-wrap {
-    width: 180px;
-}
-
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
@@ -227,11 +225,13 @@ input[type="checkbox"].input-validation-error {
 .language-switch {
     margin-top: 8px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .language-btn {
     display: block;
+    margin: 10px 5px 0 5px;
     color: #FFFFFF;
 }
 
@@ -284,6 +284,11 @@ input[type="checkbox"].input-validation-error {
     .nav > li > a {
         padding: 18px 9px;
     }
+
+    .search-form.admin {
+        padding: 0;
+        width: 22%;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -296,8 +301,11 @@ input[type="checkbox"].input-validation-error {
     }
 
     .language-switch {
-        flex-direction: row;
         justify-content: flex-end;
+    }
+
+    .logged-user-wrap {
+        width: 250px;
     }
 }
 
@@ -328,10 +336,6 @@ input[type="checkbox"].input-validation-error {
                 margin-left: -20px;
             }
 
-    .admin.logged-user-wrap {
-        width: auto;
-    }
-
     .admin.search-form {
         display: inline-table !important;
     }
@@ -341,8 +345,7 @@ input[type="checkbox"].input-validation-error {
     }
 
     .language-btn {
-        display: inline-block;
-        margin: 8px 5px 0 5px;
+        margin-top: 8px;
     }
 }
 
@@ -375,7 +378,12 @@ input[type="checkbox"].input-validation-error {
         max-width: 80px;
     }
 
-    .logged-user-wrap a {
-        float: none;
+    .logged-user-wrap {
+        text-align: left;
+        margin-left: 0;
     }
+
+        .logged-user-wrap a {
+            float: none;
+        }
 }
