@@ -28,7 +28,6 @@ input[type="checkbox"].input-validation-error {
     padding: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
-    margin-top: 20px; /* its buggy without it */
 }
 
 /* Code mirror fix for the matrix theme */
@@ -281,6 +280,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+    .container.main-container .jumbotron {
+        padding: 0 40px;
+    }
+
     .nav > li > a {
         padding: 15px 7px;
     }
@@ -357,6 +360,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 @media only screen and (max-width: 767px) {
+    .jumbotron {
+        padding: 0 20px;
+    }
+
     .contests-by-category .results {
         max-width: 80px;
     }

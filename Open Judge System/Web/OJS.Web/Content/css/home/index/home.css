@@ -31,8 +31,12 @@
     }
 
 #previous-contests {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
+
+    #previous-contests p {
+        font-size: 0.85em;
+    }
 
 @media only screen and (min-width: 991px) {
     .video-wrapper {
