@@ -56,7 +56,7 @@
                                     </small>
                                 </td>
                                 <td class="participate">
-                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new {@class = "btn btn-sm btn-primary pull-left"}))
+                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new { @class = "btn btn-sm btn-primary pull-left" }))
                                 </td>
                             </tr>
                         }
