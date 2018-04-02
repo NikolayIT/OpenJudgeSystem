@@ -11,11 +11,7 @@
 
         IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId);
 
-        Submission GetSubmissionForProcessing();
-
         bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions);
-
-        IQueryable<Submission> GetLastFiftySubmissions();
 
         bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId);
     }

@@ -171,17 +171,19 @@ input[type="checkbox"].input-validation-error {
 }
 
 .logged-user-wrap {
-    width: 260px;
+    max-width: 300px;
     text-align: right;
+    overflow: hidden;
 }
 
-.logged-user-wrap a {
-    float: right;
-}
+    .logged-user-wrap a {
+        float: right;
+        padding-left: 0;
+    }
 
-.admin.logged-user-wrap {
-    width: 185px;
-}
+    .logged-user-wrap.admin {
+        max-width: 220px;
+    }
 
 .contests-by-category > tbody > tr > td {
     vertical-align: middle;
@@ -213,10 +215,6 @@ input[type="checkbox"].input-validation-error {
     display: table;
 }
 
-.admin.logged-user-wrap {
-    width: 180px;
-}
-
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
@@ -225,9 +223,12 @@ input[type="checkbox"].input-validation-error {
 }
 
 .language-switch {
-    margin-top: 8px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 11px;
+    padding-left: 5px;
+    font-size: 0.8em;
 }
 
 .language-btn {
@@ -284,6 +285,11 @@ input[type="checkbox"].input-validation-error {
     .nav > li > a {
         padding: 18px 9px;
     }
+
+    .search-form.admin {
+        padding: 0;
+        width: 22%;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -295,8 +301,16 @@ input[type="checkbox"].input-validation-error {
         padding: 15px 7px;
     }
 
-    .language-switch {
-        flex-direction: row;
+    .logged-user-wrap {
+        width: 290px;
+    }
+
+    .language-switch.logged {
+        float: right;
+    }
+
+    .language-switch.admin {
+        float: none;
         justify-content: flex-end;
     }
 }
@@ -314,7 +328,7 @@ input[type="checkbox"].input-validation-error {
         }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 991px) {
     .login-form {
         float: none !important;
         display: block;
@@ -328,10 +342,6 @@ input[type="checkbox"].input-validation-error {
                 margin-left: -20px;
             }
 
-    .admin.logged-user-wrap {
-        width: auto;
-    }
-
     .admin.search-form {
         display: inline-table !important;
     }
@@ -340,9 +350,12 @@ input[type="checkbox"].input-validation-error {
         padding: 5px 15px;
     }
 
+    .language-switch {
+        flex-direction: row;
+    }
+
     .language-btn {
-        display: inline-block;
-        margin: 8px 5px 0 5px;
+        margin: 7px 0 0 7px;
     }
 }
 
@@ -375,7 +388,12 @@ input[type="checkbox"].input-validation-error {
         max-width: 80px;
     }
 
-    .logged-user-wrap a {
-        float: none;
+    .logged-user-wrap {
+        text-align: left;
+        margin-left: 0;
     }
+
+        .logged-user-wrap a {
+            float: none;
+        }
 }
