@@ -106,6 +106,15 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currently there are no active contests..
+        /// </summary>
+        public static string No_active_contests {
+            get {
+                return ResourceManager.GetString("No_active_contests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No previous contests.
         /// </summary>
         public static string No_previous_contests {
