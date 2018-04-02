@@ -226,7 +226,7 @@ input[type="checkbox"].input-validation-error {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: left;
+    align-items: flex-start;
     margin-top: 11px;
     padding-left: 5px;
     font-size: 0.8em;
