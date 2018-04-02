@@ -126,8 +126,14 @@
   <data name="Ended" xml:space="preserve">
     <value>Ended</value>
   </data>
+  <data name="Guidelines_link_title" xml:space="preserve">
+    <value>Guidelines for working with the Judge system</value>
+  </data>
   <data name="Infinite" xml:space="preserve">
     <value>infinite</value>
+  </data>
+  <data name="No_active_contests" xml:space="preserve">
+    <value>Currently there are no active contests.</value>
   </data>
   <data name="No_previous_contests" xml:space="preserve">
     <value>No previous contests</value>
