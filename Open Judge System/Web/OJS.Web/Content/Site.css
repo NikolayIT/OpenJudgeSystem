@@ -171,7 +171,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 .logged-user-wrap {
-    max-width: 290px;
+    max-width: 300px;
     text-align: right;
     overflow: hidden;
 }
@@ -302,7 +302,7 @@ input[type="checkbox"].input-validation-error {
     }
 
     .logged-user-wrap {
-        width: 270px;
+        width: 290px;
     }
 
     .language-switch.logged {
