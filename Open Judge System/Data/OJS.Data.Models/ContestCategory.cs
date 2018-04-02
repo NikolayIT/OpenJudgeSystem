@@ -21,12 +21,11 @@
         [DefaultValue(0)]
         public int OrderBy { get; set; }
 
-        [ForeignKey("Parent")]
         public int? ParentId { get; set; }
 
         public virtual ContestCategory Parent { get; set; }
 
-        [InverseProperty("Parent")]
+        [InverseProperty(nameof(Parent))]
         public virtual ICollection<ContestCategory> Children { get; set; } = new HashSet<ContestCategory>();
 
         public virtual ICollection<Contest> Contests { get; set; } = new HashSet<Contest>();

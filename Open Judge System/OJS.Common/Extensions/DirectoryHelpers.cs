@@ -57,8 +57,15 @@
 
         public static void DeleteExecutionStrategyWorkingDirectories()
         {
-            var directoryPaths = Directory.GetDirectories(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath);
-            foreach (var directoryPath in directoryPaths)
+            var executionStrategiesDirectoryPath = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
+
+            if (!Directory.Exists(executionStrategiesDirectoryPath))
+            {
+                return;
+            }
+
+            var workingDirectoryPaths = Directory.GetDirectories(executionStrategiesDirectoryPath);
+            foreach (var directoryPath in workingDirectoryPaths)
             {
                 var directory = new DirectoryInfo(directoryPath);
                 if (directory.Exists && directory.CreationTime < DateTime.Now.AddHours(-1))

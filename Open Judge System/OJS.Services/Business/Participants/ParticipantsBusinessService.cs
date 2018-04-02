@@ -27,25 +27,18 @@
             bool isOfficial,
             bool isAdmin)
         {
-            Participant participant;
-            if (contest.IsOnline)
-            {
-                participant = new Participant(contest.Id, userId, isOfficial)
-                {
-                    ParticipationStartTime = DateTime.Now,
-                    ParticipationEndTime = DateTime.Now + contest.Duration
-                };
+            var participant = new Participant(contest.Id, userId, isOfficial);
 
-                if (isOfficial &&
-                    !isAdmin &&
+            if (contest.IsOnline && isOfficial)
+            {
+                participant.ParticipationStartTime = DateTime.Now;
+                participant.ParticipationEndTime = DateTime.Now + contest.Duration;
+                
+                if (!isAdmin &&
                     !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }
-            }
-            else
-            {
-                participant = new Participant(contest.Id, userId, isOfficial);
             }
 
             this.participantsData.Add(participant);
