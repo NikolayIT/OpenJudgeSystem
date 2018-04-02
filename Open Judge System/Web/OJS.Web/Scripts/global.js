@@ -12,7 +12,36 @@
         setCookie('cookies-notification', 'ok', 3650);
         return false;
     });
+
+    initializeLanguageSwitchButtons();
 });
+
+function initializeLanguageSwitchButtons() {
+    var languageSwithContainer = $('.language-switch');
+    var languageSwitchButtons = languageSwithContainer.find('.language-btn');
+    var languageCookieName = languageSwithContainer.data('cookie');
+    var languageCookieExpirationDays = 1825;
+
+    languageSwitchButtons.click(function(ev) {
+        setCookie(languageCookieName, ev.target.id, languageCookieExpirationDays);
+        window.location.reload();
+    });
+
+    var selectedLanguage = getCookie(languageCookieName);
+
+    if (selectedLanguage === '') {
+        var defaultLanguageCookieValue = languageSwithContainer.find('[data-default]').attr('id');
+
+        setCookie(languageCookieName, defaultLanguageCookieValue, languageCookieExpirationDays);
+        selectedLanguage = defaultLanguageCookieValue;
+    }
+
+    var selectedLanguageButton = languageSwithContainer.find('#' + selectedLanguage);
+
+    if (selectedLanguageButton.length) {
+        selectedLanguageButton.addClass('selected-language-btn');
+    }
+}
 
 /* exported CreateExportToExcelButton */
 function CreateExportToExcelButton(elementId) {

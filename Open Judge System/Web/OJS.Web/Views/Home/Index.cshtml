@@ -1,4 +1,7 @@
-﻿@using Resource = Resources.Home.Views.Index
+﻿@using OJS.Web.Areas.Contests.Controllers;
+@using OJS.Web.ViewModels;
+
+@using Resource = Resources.Home.Views.Index;
 
 @model OJS.Web.ViewModels.Home.Index.IndexViewModel
 
@@ -6,142 +9,87 @@
     ViewBag.Title = Resource.Title;
 }
 
+@section Styles{
+    @Styles.Render("~/Content/css/home/index")
+}
+
 <div class="jumbotron">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <h1>@Resource.Project_title</h1>
-            <p class="lead">@Resource.Project_subtitle</p>
-            <a href="~/Content/PublicFiles/SoftUni-Judge-System-Guidelines.pdf" target="_blank">Правила за работа с Judge системата</a>
+            @{
+                var languageSuffix = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+                    ? GlobalConstants.EnglishCultureCookieValue
+                    : GlobalConstants.BulgarianCultureCookieValue;
+            }
+            <a href="@($"/Content/PublicFiles/SoftUni-Judge-System-Guidelines-{languageSuffix}.pdf")" target="_blank">@Resource.Guidelines_link_title</a>
+            <div class="video-wrapper top-buffer">
+                <iframe src="https://www.youtube.com/embed/CjUkFYlmf_A/?autoplay=0&rel=0&showinfo=0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h2>@Resource.Contest_categories</h2>
+            <div id="top-level-contest-categories" class="list-group">
+                @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories)
+                {
+                    <a class="list-group-item" href="@($"/Contests/#!/List/ByCategory/{category.Id}/{category.NameUrl}")">@category.Name</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <h2>@Resource.Active_contests</h2>
             @if (Model.ActiveContests.Any())
             {
-                <div class="fb-page"
-                     data-href="https://www.facebook.com/SoftwareUniversity"
-                     data-width="400" data-small-header="true" data-adapt-container-width="true"
-                     data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
-
-                    <div class="fb-xfbml-parse-ignore">
-                        <blockquote cite="https://www.facebook.com/SoftwareUniversity">
-                            <a href="https://www.facebook.com/SoftwareUniversity">
-                                Software University
-                            </a>
-                        </blockquote>
-                    </div>
+                <div class="contests-scrollable-container">
+                    <table class="table table-hover">
+                        @foreach (var contest in Model.ActiveContests)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br/>
+                                    <small>
+                                        @Resource.Remaining_time: @(contest.EndTime.HasValue
+                                            ? TimeHelper.GetReadableRemainingTime(contest.EndTime.Value).ToString()
+                                            : Resource.Infinite)
+                                    </small>
+                                </td>
+                                <td class="participate">
+                                    @(Html.ActionLink<CompeteController>(Resource.Participate, c => c.Index(contest.Id, true, false), null, new { @class = "btn btn-sm btn-primary pull-left" }))
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="top-buffer-lg">@Resource.No_active_contests</p>
+            }
+        </div>
+        <div id="previous-contests" class="col-md-5">
+            <h2>@Resource.Previous_contests</h2>
+            @if (!Model.PastContests.Any())
+            {
+                <p>@Resource.No_previous_contests</p>
+            }
+            else
+            {
+                <div class="contests-scrollable-container">
+                    <table class="table table-hover">
+                        @foreach (var contest in Model.PastContests)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
+                                    <p class="text-right">@Resource.Ended: @contest.EndTime.ToString()</p>
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             }
         </div>
-        <div class="col-md-6">
-            @if (Model.ActiveContests.Any())
-            {
-                <h2>@Resource.Active_contests</h2>
-                <table class="table table-hover">
-                    @if (Model.ActiveContests.Count() <= 3)
-                    {
-                        foreach (var contest in Model.ActiveContests)
-                        {
-                            var hoursRemaining = (int)((contest.EndTime.Value - DateTime.Now)).TotalHours;
-                            var minutesRemaining = (contest.EndTime.Value - DateTime.Now).Minutes;
-                            <tr>
-                                <td>
-                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
-                                    @{
-                            string remainingTimeMessage =
-                                string.Format(Resource.Remaining_time, hoursRemaining, hoursRemaining != 1 ?
-                                    Resource.Hours : Resource.Hour, minutesRemaining);
-                                    }
-                                    <small>@remainingTimeMessage</small>
-                                </td>
-
-                                <td><a class="btn btn-primary pull-left" href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@Resource.Participate</a></td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        foreach (var contest in Model.ActiveContests)
-                        {
-                            <tr>
-                                <td class="">
-                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </table>
-              }
-              else
-              {
-                  <div class="fb-page"
-                       data-href="https://www.facebook.com/SoftwareUniversity"
-                       data-width="400" data-small-header="true" data-adapt-container-width="true"
-                       data-hide-cover="false" data-show-facepile="true" data-show-posts="false">
-
-                      <div class="fb-xfbml-parse-ignore">
-                          <blockquote cite="https://www.facebook.com/SoftwareUniversity">
-                              <a href="https://www.facebook.com/SoftwareUniversity">
-                                  Software University
-                              </a>
-                          </blockquote>
-                      </div>
-                  </div>
-              }
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>@Resource.News</h2>
-        @{Html.RenderAction("LatestNews", "News", new { newsCount = 4 });}
-    </div>
-    <div class="col-md-4">
-        <h2>@Resource.Previous_contests</h2>
-        @if (!Model.PastContests.Any())
-        {
-            <p>@Resource.No_previous_contests</p>
-        }
-        else
-        {
-            <table class="table table-hover">
-                @foreach (var contest in Model.PastContests)
-                {
-                    <tr>
-                        <td>
-                            <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                            <p class="text-right">@Resource.Ended: @contest.EndTime.ToString()</p>
-                        </td>
-                    </tr>
-                }
-            </table>
-        }
-        <p class="pull-right"><a class="btn btn-default" href="/Contests/">@Resource.See_more &raquo;</a></p>
-        @if (User.IsAdmin())
-        {
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">@Resource.Administration &raquo;</a></p>
-        }
-    </div>
-    <div class="col-md-4">
-        <h2>@Resource.Upcoming_contests</h2>
-        @if (!Model.FutureContests.Any())
-        {
-            <p>@Resource.No_upcoming_contests</p>
-        }
-        else
-        {
-            <table class="table table-hover">
-                @foreach (var contest in Model.FutureContests)
-                {
-                    <tr>
-                        <td>
-                            <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                            <p class="text-right">@Resource.Starts: @contest.StartTime.ToString()</p>
-                        </td>
-                    </tr>
-                }
-            </table>
-            <p class="pull-right"><a class="btn btn-default" href="/Contests/">@Resource.See_more &raquo;</a></p>
-        }
-        @if (User.IsAdmin())
-        {
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/Contests">@Resource.Administration &raquo;</a></p>
-        }
     </div>
 </div>

@@ -13,35 +13,35 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.Name)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.Name
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.ContestName)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.ContestName
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.TimeLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.TimeLimit
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.MemoryLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.MemoryLimit
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.SourceCodeSizeLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @if (Model.SourceCodeSizeLimit == null)
         {
             @Resource.Unlimited
@@ -57,7 +57,7 @@
         <div class="editor-label">
             @Html.LabelFor(m => m.SolutionSkeleton)
         </div>
-        <div class="panel-body news-content editor-label">
+        <div class="panel-body bordered-content editor-label">
             <pre id="solution-skeleton" class="monospace-font">@Model.SolutionSkeletonShort</pre>
 
             @if (Model.SolutionSkeleton.Length > 200)
@@ -70,34 +70,34 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.MaximumPoints)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.MaximumPoints
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.Checker)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.Checker
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowResults)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @(Model.ShowResults ? Resource.Results_visible : Resource.Results_invisible)
     </div>
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowDetailedFeedback)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @(Model.ShowDetailedFeedback ? Resource.Full_feedback_visible : Resource.Full_feedback_invisible)
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.OrderBy)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.OrderBy
     </div>
     <br />

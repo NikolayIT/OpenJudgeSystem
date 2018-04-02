@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -38,17 +37,7 @@
                     .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
 
             return submissions;
-        }  
-
-        public Submission GetSubmissionForProcessing() =>
-                this.All()
-                    .Where(s => !s.Processed && !s.Processing)
-                    .OrderBy(s => s.Id)
-                    .Include(s => s.Problem)
-                    .Include(s => s.Problem.Tests)
-                    .Include(s => s.Problem.Checker)
-                    .Include(s => s.SubmissionType)
-                    .FirstOrDefault();
+        }
 
         public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)
         {
@@ -71,16 +60,6 @@
             }
 
             return false;
-        }
-
-        public IQueryable<Submission> GetLastFiftySubmissions()
-        {
-            // TODO: add language type
-            var submissions = this.AllPublic()
-                .OrderByDescending(s => s.CreatedOn)
-                .Take(50);
-
-            return submissions;
         }
 
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>

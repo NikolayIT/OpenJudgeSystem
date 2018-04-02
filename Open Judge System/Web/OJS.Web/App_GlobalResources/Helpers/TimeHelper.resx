@@ -117,13 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Administration" xml:space="preserve">
-    <value>Администрация</value>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
   </data>
-  <data name="No_news" xml:space="preserve">
-    <value>Няма актуални новини</value>
+  <data name="Day" xml:space="preserve">
+    <value>day</value>
   </data>
-  <data name="See_more" xml:space="preserve">
-    <value>Виж още</value>
+  <data name="Days" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>minutes</value>
   </data>
 </root>

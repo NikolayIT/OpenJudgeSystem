@@ -1,8 +1,10 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
@@ -37,6 +39,13 @@
             }
 
             return this.RedirectToAction(method.Method.Name);
+        }
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            SetUiCultureFromCookie(requestContext);
+
+            base.Initialize(requestContext);
         }
 
         protected ActionResult RedirectToHome()
@@ -141,6 +150,27 @@
             this.Data.Submissions
                 .All()
                 .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
+
+        private static void SetUiCultureFromCookie(RequestContext requestContext)
+        {
+            var languageCookie = requestContext.HttpContext.Request.Cookies[GlobalConstants.LanguageCookieName];
+
+            if (languageCookie == null)
+            {
+                return;
+            }
+
+            switch (languageCookie.Value)
+            {
+                case GlobalConstants.BulgarianCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.BulgarianCultureInfoName);
+                    break;
+                case GlobalConstants.EnglishCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.EnglishCultureInfoName);
+                    break;
+                default: return;
+            }
+        }
 
         private SystemMessageCollection PrepareSystemMessages()
         {

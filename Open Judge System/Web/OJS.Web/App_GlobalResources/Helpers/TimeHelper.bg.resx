@@ -117,22 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Failed_compilcation" xml:space="preserve">
-    <value>Compilation failed!</value>
+  <data name="And" xml:space="preserve">
+    <value>и</value>
   </data>
-  <data name="Page_title" xml:space="preserve">
-    <value>Latest submissions</value>
+  <data name="Day" xml:space="preserve">
+    <value>ден</value>
   </data>
-  <data name="Processing" xml:space="preserve">
-    <value>Processing...</value>
+  <data name="Days" xml:space="preserve">
+    <value>дни</value>
   </data>
-  <data name="Result" xml:space="preserve">
-    <value>Result</value>
+  <data name="Hour" xml:space="preserve">
+    <value>час</value>
   </data>
-  <data name="Sent_from" xml:space="preserve">
-    <value>From</value>
+  <data name="Hours" xml:space="preserve">
+    <value>часа</value>
   </data>
-  <data name="Task" xml:space="preserve">
-    <value>Task</value>
+  <data name="Minute" xml:space="preserve">
+    <value>минута</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>минути</value>
   </data>
 </root>

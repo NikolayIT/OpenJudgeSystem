@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Administration" xml:space="preserve">
-    <value>Administration</value>
+  <data name="External_register_message" xml:space="preserve">
+    <value>Ако искате да се регистирате, променяте акаунта си или да възстановите своята парола, моля използвайте главния сайт на &lt;a href="{0}" target="_blank"&gt;Софтуерния университет&lt;/a&gt;.</value>
   </data>
-  <data name="No_news" xml:space="preserve">
-    <value>No news available</value>
+  <data name="Page_title" xml:space="preserve">
+    <value>Съобщение</value>
   </data>
-  <data name="See_more" xml:space="preserve">
-    <value>See more</value>
+  <data name="Sorry_for_the_inconvenience" xml:space="preserve">
+    <value>Съжаляваме за неудобството</value>
   </data>
 </root>

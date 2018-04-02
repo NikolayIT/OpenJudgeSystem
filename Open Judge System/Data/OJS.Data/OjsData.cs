@@ -30,8 +30,6 @@
 
         public ITestRepository Tests => (TestRepository)this.GetRepository<Test>();
 
-        public IDeletableEntityRepository<News> News => this.GetDeletableEntityRepository<News>();
-
         public IDeletableEntityRepository<Event> Events => this.GetDeletableEntityRepository<Event>();
 
         public IDeletableEntityRepository<ContestCategory> ContestCategories => 
