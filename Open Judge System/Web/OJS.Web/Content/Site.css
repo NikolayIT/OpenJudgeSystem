@@ -182,7 +182,7 @@ input[type="checkbox"].input-validation-error {
     }
 
     .logged-user-wrap.admin {
-        max-width: 190px;
+        max-width: 220px;
     }
 
 .contests-by-category > tbody > tr > td {
@@ -223,15 +223,16 @@ input[type="checkbox"].input-validation-error {
 }
 
 .language-switch {
-    margin-top: 8px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
+    margin-top: 11px;
+    padding-left: 5px;
+    font-size: 0.8em;
 }
 
 .language-btn {
     display: block;
-    margin: 10px 5px 0 5px;
     color: #FFFFFF;
 }
 
@@ -300,12 +301,17 @@ input[type="checkbox"].input-validation-error {
         padding: 15px 7px;
     }
 
-    .language-switch {
-        justify-content: flex-end;
+    .logged-user-wrap {
+        width: 270px;
     }
 
-    .logged-user-wrap {
-        width: 250px;
+    .language-switch.logged {
+        float: right;
+    }
+
+    .language-switch.admin {
+        float: none;
+        justify-content: flex-end;
     }
 }
 
@@ -322,7 +328,7 @@ input[type="checkbox"].input-validation-error {
         }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 991px) {
     .login-form {
         float: none !important;
         display: block;
@@ -344,8 +350,12 @@ input[type="checkbox"].input-validation-error {
         padding: 5px 15px;
     }
 
+    .language-switch {
+        flex-direction: row;
+    }
+
     .language-btn {
-        margin-top: 8px;
+        margin: 7px 0 0 7px;
     }
 }
 

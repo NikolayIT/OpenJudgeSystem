@@ -1528,11 +1528,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BasicSubmissions.bg.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Submissions\Views\BasicSubmissions.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BasicSubmissions.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Submissions\Views\Partial\AdvancedSubmissionsGridPartial.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3276,7 +3271,6 @@
     <Content Include="_ViewStart.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Feedback\Submitted.cshtml" />
-    <Content Include="Views\Submissions\BasicSubmissions.cshtml" />
     <Content Include="Views\Submissions\AdvancedSubmissions.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\QuestionViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
@@ -3750,11 +3744,6 @@
     <EmbeddedResource Include="App_GlobalResources\Submissions\Views\AdvancedSubmissions.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AdvancedSubmissions.bg.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Submissions\Views\BasicSubmissions.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>BasicSubmissions.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Submissions.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Submissions\Views\BasicSubmissions.bg.resx">
