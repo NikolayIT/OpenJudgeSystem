@@ -463,6 +463,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SetPassword.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ExternalNotify.designer.cs">
+      <DependentUpon>ExternalNotify.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account\Views\ExternalNotify.bg.designer.cs">
+      <DependentUpon>ExternalNotify.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Account\Views\Register.bg.designer.cs">
       <DependentUpon>Register.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2425,6 +2435,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountControllers.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Account</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalNotify.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExternalNotify.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Account\Views\ExternalNotify.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExternalNotify.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Account.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AccessLogs\Views\AccessLogsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

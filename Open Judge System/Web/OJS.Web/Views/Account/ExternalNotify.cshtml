@@ -1,18 +1,18 @@
 ﻿@using OJS.Web
 
-@{
-    ViewBag.Title = "Съобщение";
+@using Resource = Resources.Account.Views.ExternalNotify;
 
-    var externalRegisterFullAddress = string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl);
+@{
+    ViewBag.Title = Resource.Page_title;
+
+    var langCookieName = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+        ? GlobalConstants.EnglishCultureCookieValue
+        : GlobalConstants.BulgarianCultureCookieValue;
+
+    var externalRegisterFullAddress = $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
 }
 
-<h2>Съжаляваме за неудобството</h2>
+<h2>@Resource.Sorry_for_the_inconvenience</h2>
 <p>
-    Ако искате да се регистирате, променяте акаунта си или да възстановите своята парола, моля използвайте главния сайт на <a href="@externalRegisterFullAddress" target="_blank">Софтуерния универсистет</a>.
-</p>
-<br />
-<hr />
-<h2>Sorry for the interruption</h2>
-<p>
-    If you want to register, change your account or restore password, please visit main web site of <a href="@externalRegisterFullAddress?lang=en" target="_blank">Software university</a>.
+    @Html.Raw(string.Format(Resource.External_register_message, externalRegisterFullAddress))
 </p>
