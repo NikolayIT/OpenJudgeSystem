@@ -226,13 +226,13 @@ input[type="checkbox"].input-validation-error {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: left;
     margin-top: 11px;
     padding-left: 5px;
     font-size: 0.8em;
 }
 
 .language-btn {
-    display: block;
     color: #FFFFFF;
 }
 
