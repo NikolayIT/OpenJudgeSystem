@@ -45,7 +45,8 @@
             string workingDirectory = null,
             bool useProcessTime = false,
             bool useSystemEncoding = false,
-            double timeoutMultiplier = 1.5)
+            double timeoutMultiplier = 1.5,
+            bool dependOnExitCodeForRunTimeError = false)
         {
             timeLimit = timeLimit + this.baseTimeUsed;
             memoryLimit = memoryLimit + this.baseMemoryUsed;
@@ -192,33 +193,21 @@
                 result.UserProcessorTime = process.UserProcessorTime;
             }
 
-            if (useProcessTime)
+            if ((useProcessTime && result.TimeWorked.TotalMilliseconds > timeLimit) ||
+                result.TotalProcessorTime.TotalMilliseconds > timeLimit)
             {
-                if (result.TimeWorked.TotalMilliseconds > timeLimit)
-                {
-                    result.Type = ProcessExecutionResultType.TimeLimit;
-                }
-            }
-            else
-            {
-                if (result.TotalProcessorTime.TotalMilliseconds > timeLimit)
-                {
-                    result.Type = ProcessExecutionResultType.TimeLimit;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(result.ErrorOutput))
-            {
-                result.Type = ProcessExecutionResultType.RunTimeError;
-            }
-            else if (result.ExitCode != 0 && result.ExitCode != -1)
-            {
-                result.Type = ProcessExecutionResultType.RunTimeError;
+                result.Type = ProcessExecutionResultType.TimeLimit;
             }
 
             if (result.MemoryUsed > memoryLimit)
             {
                 result.Type = ProcessExecutionResultType.MemoryLimit;
+            }
+
+            if (!string.IsNullOrEmpty(result.ErrorOutput) ||
+                (dependOnExitCodeForRunTimeError && result.ExitCode < -1))
+            {
+                result.Type = ProcessExecutionResultType.RunTimeError;
             }
 
             result.ApplyTimeAndMemoryOffset(this.baseTimeUsed, this.baseMemoryUsed);

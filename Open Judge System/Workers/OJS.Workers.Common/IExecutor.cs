@@ -20,7 +20,19 @@
         /// to the <param name="timeLimit">timeLimit</param> * <param name="timeoutMultiplier">timeoutMultiplier</param></param>
         /// <param name="useSystemEncoding">A boolean value indicating whether the redirected Input and Output streams 
         /// should use the default System Encoding or use UTF-8</param>
+        /// <param name="dependOnExitCodeForRunTimeError">A boolean value indicating whether the executor should consider an exit code 
+        /// lower that -1 as a RunTime error if the ErrorOutput is empty</param>
         /// <returns></returns>
-        ProcessExecutionResult Execute(string fileName, string inputData, int timeLimit, int memoryLimit, IEnumerable<string> executionArguments = null, string workingDirectory = null, bool useProcessTime = false, bool useSystemEncoding = false, double timeoutMultiplier = 1.5);
+        ProcessExecutionResult Execute(
+            string fileName,
+            string inputData,
+            int timeLimit,
+            int memoryLimit,
+            IEnumerable<string> executionArguments = null,
+            string workingDirectory = null,
+            bool useProcessTime = false,
+            bool useSystemEncoding = false,
+            double timeoutMultiplier = 1.5,
+            bool dependOnExitCodeForRunTimeError = false);
     }
 }
