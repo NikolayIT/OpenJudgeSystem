@@ -60,7 +60,7 @@
             var problem = this.Data.Problems.GetById(id);
 
             if (!this.participantsData
-                    .AnyByContestIdUserIdAndIsOfficial(problem.ContestId, this.UserProfile.Id, official))
+                    .AnyByContestIdUserIdAndIsOfficial(problem.ProblemGroup.ContestId, this.UserProfile.Id, official))
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.User_is_not_registered_for_exam);
             }
@@ -457,7 +457,7 @@
                                 .DefaultIfEmpty(0)
                                 .Max(),
                             ProblemResults = par.Scores
-                                .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contest.Id)
+                                .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ProblemGroup.ContestId == contest.Id)
                                 .Select(sc => new ProblemResultPairViewModel
                                 {
                                     ProblemId = sc.ProblemId,
