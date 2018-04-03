@@ -26,8 +26,8 @@
                     ParticipantName = sub.Participant.User.UserName,
                     ProblemId = sub.ProblemId,
                     ProblemName = sub.Problem.Name,
-                    ContestName = sub.Problem.Contest.Name,
-                    ContestId = sub.Problem.ContestId,
+                    ContestName = sub.Problem.ProblemGroup.Contest.Name,
+                    ContestId = sub.Problem.ProblemGroup.ContestId,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
                     Status = !sub.Processing && sub.Processed

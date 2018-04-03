@@ -18,6 +18,7 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
+    using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -33,7 +34,6 @@
     using OJS.Web.Common.ZippedTestManipulator;
 
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
-    using TransactionScope = System.Transactions.TransactionScope;
 
     /// <summary>
     /// Controller class for administrating problems' input and output tests, inherits Administration controller for authorisation
@@ -175,7 +175,7 @@
 
                 this.Data.SaveChanges();
 
-                using (var scope = new TransactionScope())
+                using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     this.RetestSubmissions(problem.Id);
 
@@ -252,7 +252,7 @@
                     return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
                 }
 
-                using (var scope = new TransactionScope())
+                using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     existingTest.InputData = test.InputData;
                     existingTest.OutputData = test.OutputData;
@@ -343,7 +343,7 @@
                 return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 // delete all test runs for the test
                 this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
@@ -462,7 +462,7 @@
             var problem = this.Data.Problems
                 .All()
                 .Where(pr => pr.Id == id)
-                .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.Contest.Name })
+                .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.ProblemGroup.Contest.Name })
                 .FirstOrDefault();
 
             if (problem == null)
@@ -501,7 +501,7 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
                 this.Data.SaveChanges();
@@ -639,7 +639,7 @@
         {
             var problems = this.Data.Problems
                 .All()
-                .Where(pr => pr.ContestId == id)
+                .Where(pr => pr.ProblemGroup.ContestId == id)
                 .Select(pr => new { pr.Id, pr.Name });
 
             return this.Json(problems, JsonRequestBehavior.AllowGet);
@@ -661,9 +661,9 @@
 
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
 
-            var contestId = problem.ContestId;
+            var contestId = problem.ProblemGroup.ContestId;
 
-            var categoryId = problem.Contest.CategoryId;
+            var categoryId = problem.ProblemGroup.Contest.CategoryId;
 
             var result = new { Contest = contestId, Category = categoryId };
 
@@ -761,7 +761,7 @@
                 }
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.Submissions.Update(
                     x => x.ProblemId == id && !x.IsDeleted,

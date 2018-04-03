@@ -15,8 +15,8 @@
             {
                 Id = problem.Id,
                 Name = problem.Name,
-                ContestName = problem.Contest.Name,
-                ContestId = problem.ContestId,
+                ContestName = problem.ProblemGroup.Contest.Name,
+                ContestId = problem.ProblemGroup.ContestId,
                 SubmissionsCount = problem.Submissions.Count(s => !s.IsDeleted)
             };
 

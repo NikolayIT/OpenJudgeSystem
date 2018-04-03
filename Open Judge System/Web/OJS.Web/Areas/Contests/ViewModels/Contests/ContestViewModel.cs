@@ -37,20 +37,29 @@
                         IsOnline = contest.Type == ContestType.OnlinePracticalExam,
                         ContestPassword = contest.ContestPassword,
                         PracticePassword = contest.PracticePassword,
-                        HasContestQuestions = contest.Questions.Any(q => q.AskOfficialParticipants),
-                        HasPracticeQuestions = contest.Questions.Any(q => q.AskPracticeParticipants),
-                        OfficialParticipants = contest.Participants.Count(p => p.IsOfficial),
-                        PracticeParticipants = contest.Participants.Count(p => !p.IsOfficial),
-                        ProblemsCount = contest.Problems.Count(pr => !pr.IsDeleted),
-                        Problems = contest.Problems
+                        HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
+                        HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
+                        ContestType = contest.Type,
+                        OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
+                        PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
+                        ProblemsCount = contest.ProblemGroups.SelectMany(pg => pg.Problems).Count(p => !p.IsDeleted),
+                        Problems = contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
                             .AsQueryable()
-                            .Where(pr => !pr.IsDeleted)
-                            .OrderBy(pr => pr.OrderBy)
-                            .ThenBy(pr => pr.Name)
+                            .Where(p => !p.IsDeleted)
+                            .OrderBy(p => p.ProblemGroup.OrderBy)
+                            .ThenBy(p => p.OrderBy)
+                            .ThenBy(p => p.Name)
                             .Select(ContestProblemViewModel.FromProblem),
                         LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
                         Description = contest.Description,
-                        AllowedSubmissionTypes = contest.Problems.AsQueryable().SelectMany(p => p.SubmissionTypes).GroupBy(st => st.Id).Select(g => g.FirstOrDefault()).Select(SubmissionTypeViewModel.FromSubmissionType),
+                        AllowedSubmissionTypes = contest.ProblemGroups
+                            .SelectMany(pg => pg.Problems)
+                            .AsQueryable()
+                            .SelectMany(p => p.SubmissionTypes)
+                            .GroupBy(st => st.Id)
+                            .Select(g => g.FirstOrDefault())
+                            .Select(SubmissionTypeViewModel.FromSubmissionType)
                     };
             }
         }

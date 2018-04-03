@@ -224,6 +224,15 @@ namespace Resources.Areas.Administration.Contests.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can manage problem groups count from the Problem Groups Administration.
+        /// </summary>
+        public static string Problem_groups_edit_from_administration {
+            get {
+                return ResourceManager.GetString("Problem_groups_edit_from_administration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Submission types.
         /// </summary>
         public static string Submission_types {

@@ -142,6 +142,15 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exam groups.
+        /// </summary>
+        public static string Exam_groups {
+            get {
+                return ResourceManager.GetString("Exam_groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback {
@@ -196,15 +205,6 @@ namespace Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to News.
-        /// </summary>
-        public static string News {
-            get {
-                return ResourceManager.GetString("News", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Open source project..
         /// </summary>
         public static string Open_source_project {
@@ -228,6 +228,15 @@ namespace Resources.Views.Shared {
         public static string Participants {
             get {
                 return ResourceManager.GetString("Participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem groups.
+        /// </summary>
+        public static string Problem_groups {
+            get {
+                return ResourceManager.GetString("Problem_groups", resourceCulture);
             }
         }
         

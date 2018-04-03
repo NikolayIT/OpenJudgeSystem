@@ -223,6 +223,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem groups.
+        /// </summary>
+        public static string Problem_groups {
+            get {
+                return ResourceManager.GetString("Problem_groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problems.
         /// </summary>
         public static string Problems {

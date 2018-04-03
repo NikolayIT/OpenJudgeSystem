@@ -14,23 +14,13 @@
 
     public class UserProfile : IdentityUser, IDeletableEntity, IAuditInfo
     {
-        private ICollection<LecturerInContest> lecturerInContests;
-        private ICollection<LecturerInContestCategory> lecturerInContestCategories;
-
         public UserProfile()
             : this(string.Empty, string.Empty)
         {
         }
 
         public UserProfile(string userName, string email)
-            : base(userName)
-        {
-            this.Email = email;
-            this.UserSettings = new UserSettings();
-            this.lecturerInContests = new HashSet<LecturerInContest>();
-            this.lecturerInContestCategories = new HashSet<LecturerInContestCategory>();
-            this.CreatedOn = DateTime.Now;
-        }
+            : base(userName) => this.Email = email;
 
         [Required]
         [MaxLength(GlobalConstants.EmailMaxLength)]
@@ -48,21 +38,9 @@
 
         public int? OldId { get; set; }
 
-        public UserSettings UserSettings { get; set; }
+        public UserSettings UserSettings { get; set; } = new UserSettings();
 
         public Guid? ForgottenPasswordToken { get; set; }
-
-        public virtual ICollection<LecturerInContest> LecturerInContests
-        {
-            get { return this.lecturerInContests; }
-            set { this.lecturerInContests = value; }
-        }
-
-        public virtual ICollection<LecturerInContestCategory> LecturerInContestCategories
-        {
-            get { return this.lecturerInContestCategories; }
-            set { this.lecturerInContestCategories = value; }
-        }
 
         public bool IsDeleted { get; set; }
 
@@ -70,7 +48,7 @@
         public DateTime? DeletedOn { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Specifies whether or not the CreatedOn property should be automatically set.
@@ -80,5 +58,13 @@
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
+
+        public virtual ICollection<LecturerInContest> LecturerInContests { get; set; } =
+            new HashSet<LecturerInContest>();
+
+        public virtual ICollection<LecturerInContestCategory> LecturerInContestCategories { get; set; } =
+            new HashSet<LecturerInContestCategory>();
+
+        public virtual ICollection<ExamGroup> ExamGroups { get; set; } = new HashSet<ExamGroup>();
     }
 }

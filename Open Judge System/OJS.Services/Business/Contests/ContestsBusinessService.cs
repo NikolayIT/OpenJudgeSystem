@@ -5,25 +5,33 @@
     using System.Linq;
 
     using OJS.Data.Models;
+    using OJS.Data.Repositories.Contracts;
     using OJS.Services.Common;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
 
     public class ContestsBusinessService : IContestsBusinessService
     {
+        private readonly IEfDeletableEntityRepository<Contest> contests;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IExamGroupsDataService examGroupsData;
 
         public ContestsBusinessService(
+            IEfDeletableEntityRepository<Contest> contests,
             IContestsDataService contestsData,
             IParticipantsDataService participantsData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IExamGroupsDataService examGroupsData)
         {
+            this.contests = contests;
             this.contestsData = contestsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
+            this.examGroupsData = examGroupsData;
         }
 
         public bool IsContestIpValidByContestAndIp(int contestId, string ip) =>
@@ -51,7 +59,7 @@
                     return contest.CanBeCompeted;
                 }
 
-                return participant.ContestEndTime >= DateTime.Now;
+                return participant.ParticipationEndTime >= DateTime.Now;
             }
 
             if (contest.CanBeCompeted || (isUserAdminOrLecturerInContest && allowToAdminAlways))
@@ -59,7 +67,7 @@
                 return true;
             }
 
-            if (isUserAdminOrLecturerInContest && (contest.IsActive || contest.StartTime >= DateTime.Now))
+            if (isUserAdminOrLecturerInContest && contest.IsActive)
             {
                 return true;
             }
@@ -149,6 +157,14 @@
             this.participantsData.Delete(participantsForDeletion);
 
             return ServiceResult.Success;
+        }
+
+        public void DeleteById(int id)
+        {
+            this.examGroupsData.RemoveContestByContest(id);
+
+            this.contests.Delete(id);
+            this.contests.SaveChanges();
         }
     }
 }

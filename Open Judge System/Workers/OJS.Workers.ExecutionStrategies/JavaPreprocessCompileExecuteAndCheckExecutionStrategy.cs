@@ -18,11 +18,14 @@
         protected const string SandboxExecutorClassName = "_$SandboxExecutor";
         protected const string JavaCompiledFileExtension = ".class";
 
+        private readonly int baseUpdateTimeOffset;
+
         public JavaPreprocessCompileExecuteAndCheckExecutionStrategy(
             string javaExecutablePath,
             Func<CompilerType, string> getCompilerPathFunc,
             int baseTimeUsed,
-            int baseMemoryUsed)
+            int baseMemoryUsed,
+            int baseUpdateTimeOffset = 0)
             : base(baseTimeUsed, baseMemoryUsed)
         {
             if (!File.Exists(javaExecutablePath))
@@ -30,6 +33,7 @@
                 throw new ArgumentException($"Java not found in: {javaExecutablePath}!", nameof(javaExecutablePath));
             }
 
+            this.baseUpdateTimeOffset = baseUpdateTimeOffset;
             this.JavaExecutablePath = javaExecutablePath;
             this.GetCompilerPathFunc = getCompilerPathFunc;
         }
@@ -215,7 +219,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                     timeMeasurementFilePath,
                     processExecutionResult,
                     executionContext.TimeLimit,
-                    this.BaseTimeUsed);
+                    this.baseUpdateTimeOffset);
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, processExecutionResult.ReceivedOutput);
                 result.TestResults.Add(testResult);
@@ -228,7 +232,7 @@ class _$SandboxSecurityManager extends SecurityManager {
             string timeMeasurementFilePath,
             ProcessExecutionResult processExecutionResult,
             int timeLimit,
-            int baseTimeUsedInMilliseconds)
+            int updateTimeOffset)
         {
             if (File.Exists(timeMeasurementFilePath))
             {
@@ -236,10 +240,10 @@ class _$SandboxSecurityManager extends SecurityManager {
                 if (long.TryParse(timeMeasurementFileContent, out var timeInNanoseconds))
                 {
                     var totalTimeUsed = TimeSpan.FromMilliseconds((double)timeInNanoseconds / 1000000);
-                    var baseTimeUsed = TimeSpan.FromMilliseconds(baseTimeUsedInMilliseconds);
+                    var timeOffset = TimeSpan.FromMilliseconds(updateTimeOffset);
 
-                    processExecutionResult.TimeWorked = totalTimeUsed > baseTimeUsed
-                        ? totalTimeUsed - baseTimeUsed
+                    processExecutionResult.TimeWorked = totalTimeUsed > timeOffset
+                        ? totalTimeUsed - timeOffset
                         : totalTimeUsed;
 
                     if (processExecutionResult.Type == ProcessExecutionResultType.TimeLimit &&

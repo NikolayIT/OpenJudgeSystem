@@ -1,0 +1,32 @@
+﻿@using System.Text;
+
+@using Resource = Resources.Helpers.TimeHelper;
+
+@helper GetReadableRemainingTime(DateTime endTime)
+{
+    var remainingTimeMessage = new StringBuilder();
+
+    var remainingTime = endTime - DateTime.Now;
+    var daysRemaining = (int)remainingTime.TotalDays;
+    var hoursRemaining = remainingTime.Hours;
+    var minutesRemaining = remainingTime.Minutes;
+
+    if (daysRemaining >= 1)
+    {
+        remainingTimeMessage.Append($"{daysRemaining} ");
+        remainingTimeMessage.Append(daysRemaining != 1 ? Resource.Days : Resource.Day);
+        remainingTimeMessage.Append(", ");
+    }
+
+    if (hoursRemaining >= 1 || daysRemaining >= 1)
+    {
+        remainingTimeMessage.Append($"{hoursRemaining} ");
+        remainingTimeMessage.Append(hoursRemaining != 1 ? Resource.Hours : Resource.Hour);
+        remainingTimeMessage.Append($" {Resource.And} ");
+    }
+
+    remainingTimeMessage.Append($"{minutesRemaining} ");
+    remainingTimeMessage.Append(minutesRemaining != 1 ? Resource.Minutes : Resource.Minute);
+
+    <text>@remainingTimeMessage.ToString()</text>
+}

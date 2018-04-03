@@ -7,13 +7,6 @@
 
     public class Tag : DeletableEntity
     {
-        private ICollection<Problem> problems;
-
-        public Tag()
-        {
-            this.problems = new HashSet<Problem>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -25,10 +18,6 @@
 
         public string BackgroundColor { get; set; }
 
-        public virtual ICollection<Problem> Problems
-        {
-            get { return this.problems; }
-            set { this.problems = value; }
-        }
+        public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
     }
 }

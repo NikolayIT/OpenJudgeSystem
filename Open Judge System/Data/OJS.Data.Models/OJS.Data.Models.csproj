@@ -73,10 +73,12 @@
     <Compile Include="Checker.cs" />
     <Compile Include="ContestIp.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="ExamGroup.cs" />
     <Compile Include="Ip.cs" />
     <Compile Include="LecturerInContest.cs" />
     <Compile Include="LecturerInContestCategory.cs" />
     <Compile Include="ParticipantScore.cs" />
+    <Compile Include="ProblemGroup.cs" />
     <Compile Include="ProblemResource.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SourceCode.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Participant.cs" />
     <Compile Include="ContestQuestion.cs" />
     <Compile Include="ContestQuestionAnswer.cs" />
-    <Compile Include="News.cs" />
     <Compile Include="ParticipantAnswer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Problem.cs" />

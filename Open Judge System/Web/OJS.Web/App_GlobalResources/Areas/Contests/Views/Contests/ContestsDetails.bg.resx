@@ -183,4 +183,7 @@
   <data name="Change_time" xml:space="preserve">
     <value>Промени времето</value>
   </data>
+  <data name="Problem_groups" xml:space="preserve">
+    <value>Групи задачи</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿@using OJS.Web.ViewModels.Common
 
-@model short?
+@model int?
 
 @{
     var placeholder = string.Empty;
@@ -24,5 +24,4 @@
     .DataTextField("Name")
     .Value(Model.ToString())
     .OptionLabel(placeholder)
-    .HtmlAttributes(htmlAttributes)
-)
+    .HtmlAttributes(htmlAttributes))

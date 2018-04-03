@@ -23,5 +23,7 @@
             .Sum(pr => pr.BestSubmission.Points);
 
         public IEnumerable<int> ParticipantProblemIds { get; set; }
+
+        public int IdOfFirstSubmissionThatGaveYouYourContestTotalScore { get; set; }
     }
 }

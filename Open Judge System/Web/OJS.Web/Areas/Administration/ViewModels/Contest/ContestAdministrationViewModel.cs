@@ -36,7 +36,7 @@
                     Id = contest.Id,
                     Name = contest.Name,
                     Type = (int)contest.Type,
-                    NumberOfProblemGroups = contest.NumberOfProblemGroups,
+                    ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted),
                     StartTime = contest.StartTime,
                     EndTime = contest.EndTime,
                     PracticeStartTime = contest.PracticeStartTime,
@@ -89,9 +89,9 @@
 
         [DatabaseProperty]
         [Display(Name = "Number_of_problem_groups", ResourceType = typeof(Resource))]
-        [UIHint("PositiveShortInteger")]
+        [UIHint("PositiveInteger")]
         [DefaultValue(0)]
-        public short NumberOfProblemGroups { get; set; }
+        public int ProblemGroupsCount { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Start_time", ResourceType = typeof(Resource))]
@@ -121,11 +121,19 @@
 
         [DatabaseProperty]
         [Display(Name = "Contest_password", ResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.ContestPasswordMaxLength,
+            ErrorMessageResourceName = "Password_max_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string ContestPassword { get; set; }
 
         [DatabaseProperty]
         [Display(Name = "Practice_password", ResourceType = typeof(Resource))]
+        [MaxLength(
+            GlobalConstants.ContestPasswordMaxLength,
+            ErrorMessageResourceName = "Password_max_length",
+            ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string PracticePassword { get; set; }
 

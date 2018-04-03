@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -19,10 +18,10 @@
         public IQueryable<Submission> AllPublic() => 
             this.All()
                 .Where(s => s.IsPublic ??
-                    (((s.Participant.IsOfficial && s.Problem.Contest.ContestPassword == null) ||
-                        (!s.Participant.IsOfficial && s.Problem.Contest.PracticePassword == null)) &&
-                    s.Problem.Contest.IsVisible &&
-                    !s.Problem.Contest.IsDeleted &&
+                    (((s.Participant.IsOfficial && s.Problem.ProblemGroup.Contest.ContestPassword == null) ||
+                        (!s.Participant.IsOfficial && s.Problem.ProblemGroup.Contest.PracticePassword == null)) &&
+                    s.Problem.ProblemGroup.Contest.IsVisible &&
+                    !s.Problem.ProblemGroup.Contest.IsDeleted &&
                     s.Problem.ShowResults));
 
         public IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId)
@@ -31,24 +30,14 @@
                 this.Context.Contests
                     .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
                         c.Lecturers.Any(l => l.LecturerId == lecturerId))
-                    .SelectMany(c => c.Problems.Select(p => p.Id)));
+                    .SelectMany(c => c.ProblemGroups.SelectMany(pg => pg.Problems).Select(p => p.Id)));
 
             var submissions =
                 this.All()
                     .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
 
             return submissions;
-        }  
-
-        public Submission GetSubmissionForProcessing() =>
-                this.All()
-                    .Where(s => !s.Processed && !s.Processing)
-                    .OrderBy(s => s.Id)
-                    .Include(s => s.Problem)
-                    .Include(s => s.Problem.Tests)
-                    .Include(s => s.Problem.Checker)
-                    .Include(s => s.SubmissionType)
-                    .FirstOrDefault();
+        }
 
         public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)
         {
@@ -71,16 +60,6 @@
             }
 
             return false;
-        }
-
-        public IQueryable<Submission> GetLastFiftySubmissions()
-        {
-            // TODO: add language type
-            var submissions = this.AllPublic()
-                .OrderByDescending(s => s.CreatedOn)
-                .Take(50);
-
-            return submissions;
         }
 
         public bool HasUserNotProcessedSubmissionForProblem(int problemId, string userId) =>

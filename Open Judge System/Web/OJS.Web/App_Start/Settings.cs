@@ -15,11 +15,9 @@
 
         public static string JavaDisassemblerPath => GetSetting("JavaDisassemblerPath");
 
+        public static string SulsPlatformBaseUrl => GetSetting("SulsPlatformBaseUrl");
+
         public static string SvnBaseUrl => GetSetting("SvnBaseUrl");
-
-        public static string GetExternalUserUrl => GetSetting("GetExternalUserUrl");
-
-        public static string CanUserCompeteInContestUrl => GetSetting("CanUserCompeteInContestUrl");
 
         public static string LearningSystemSvnDownloadBaseUrl => GetSetting("LearningSystemSvnDownloadBaseUrl");
 

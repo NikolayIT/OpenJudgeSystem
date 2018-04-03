@@ -7,7 +7,5 @@
         public IEnumerable<HomeContestViewModel> ActiveContests { get; set; }
 
         public IEnumerable<HomeContestViewModel> PastContests { get; set; }
-
-        public IEnumerable<HomeContestViewModel> FutureContests { get; set; }
     }
 }

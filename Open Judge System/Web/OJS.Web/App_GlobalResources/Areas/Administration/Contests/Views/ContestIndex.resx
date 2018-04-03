@@ -132,11 +132,11 @@
   <data name="Delete_all" xml:space="preserve">
     <value>Delete all</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="Download_submissions" xml:space="preserve">
+    <value>Download submissions</value>
   </data>
-  <data name="For_contest" xml:space="preserve">
-    <value>For contest</value>
+  <data name="For_compete" xml:space="preserve">
+    <value>For compete</value>
   </data>
   <data name="For_practice" xml:space="preserve">
     <value>For practice</value>
@@ -153,13 +153,16 @@
   <data name="Participants" xml:space="preserve">
     <value>Participants</value>
   </data>
+  <data name="Problems" xml:space="preserve">
+    <value>Problems</value>
+  </data>
   <data name="Ranking" xml:space="preserve">
     <value>Ranking</value>
   </data>
   <data name="Results" xml:space="preserve">
     <value>Resuls</value>
   </data>
-  <data name="Tasks" xml:space="preserve">
-    <value>Tasks</value>
+  <data name="Submissions" xml:space="preserve">
+    <value>Submissions</value>
   </data>
 </root>

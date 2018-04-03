@@ -1,0 +1,80 @@
+﻿@using Resource = Resources.Areas.Administration.ProblemGroups.Views.ProblemGroupsIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+@using ViewModelResource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem
+
+@{
+    const string ControllerName = "ProblemGroups";
+
+    ViewBag.Title = Resource.Page_title;
+}
+
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
+    
+    @if (ViewBag.ContestId != null)
+    {
+        <input id="contestId-input" type="hidden" value="@ViewBag.ContestId" />
+    }
+    
+    <div class="row bottom-buffer">
+        <div class="col-md-6">
+            @(Html.Partial("_ContestSearchCascadeFromCategoryPartial"))
+        </div>
+
+        <div class="col-md-6">
+            @(Html.Partial("_ContestSearchPartial"))
+        </div>
+    </div>
+    
+    <div class="top-buffer-lg">
+        @(Html
+            .Kendo()
+            .Grid<OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel>()
+            .Name("DataGrid")
+            .Columns(columns =>
+            {
+                columns.Bound(m => m.OrderBy).HtmlAttributes(new { data_order = "#= OrderBy #" });
+                columns.Template(@<text></text>).ClientTemplate("#= makeContestNameLinkToDetailsPage(data) #").Title(ViewModelResource.Contest);
+                columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
+                columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+            })
+            .ToolBar(toolbar =>
+            {
+                toolbar.Create().Text(GeneralResource.Add);
+                toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+            })
+            .Editable(editable =>
+            {
+                editable.Mode(GridEditMode.PopUp);
+                editable.Window(w =>w.Title(Resource.Page_title).Width(500));
+                editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+            })
+            .Pageable(pageable => pageable.Refresh(true).PageSizes(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .DataSource(data =>
+            {
+                data
+                    .Ajax()
+                    .ServerOperation(true)
+                    .Model(model => model.Id(m => m.Id))
+                    .Sort(sort => sort.Add(field => field.OrderBy))
+                    .Create(create => create.Action("Create", ControllerName))
+                    .Read(read => read.Action("Read", ControllerName))
+                    .Update(update => update.Action("Update", ControllerName))
+                    .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                    .Events(ev =>
+                    {
+                        ev.Error("validateModelStateErrors");
+                        ev.RequestEnd("refreshGrid");
+                    });
+            })
+            .Events(ev => ev.Edit("onEdit"))
+            .ClientDetailTemplateId("_ProblemsInProblemGroupGridTemplate"))
+    </div>
+
+    @(Html.Partial("_ProblemsInProblemGroupGridTemplate"))
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/problem-groups-index")
+}

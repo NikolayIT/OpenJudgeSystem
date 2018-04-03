@@ -159,9 +159,6 @@
   <data name="Log" xml:space="preserve">
     <value>Log</value>
   </data>
-  <data name="News" xml:space="preserve">
-    <value>News</value>
-  </data>
   <data name="Open_source_project" xml:space="preserve">
     <value>Open source project.</value>
   </data>
@@ -200,5 +197,11 @@
   </data>
   <data name="SubmissionTypes" xml:space="preserve">
     <value>Submission types</value>
+  </data>
+  <data name="Exam_groups" xml:space="preserve">
+    <value>Exam groups</value>
+  </data>
+  <data name="Problem_groups" xml:space="preserve">
+    <value>Problem groups</value>
   </data>
 </root>

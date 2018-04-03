@@ -284,7 +284,8 @@
                 .GetAll()
                 .Where(participant => participant.ContestId == contestInfo.Id && participant.IsOfficial)
                 .SelectMany(participant =>
-                    participant.Contest.Problems
+                    participant.Contest.ProblemGroups
+                        .SelectMany(pg => pg.Problems)
                         .Where(pr => !pr.IsDeleted)
                         .SelectMany(pr => pr.Submissions
                             .Where(subm => !subm.IsDeleted && subm.ParticipantId == participant.Id)
@@ -432,77 +433,51 @@
                     ContestCanBePracticed = contest.CanBePracticed,
                     UserIsLecturerInContest = isUserAdminOrLecturer,
                     ContestType = contest.Type,
-                    Problems = contest.Problems
+                    Problems = contest.ProblemGroups
+                        .SelectMany(pg => pg.Problems)
                         .AsQueryable()
                         .OrderBy(pr => pr.OrderBy)
                         .ThenBy(pr => pr.Name)
                         .Where(pr => !pr.IsDeleted)
                         .Select(ContestProblemListViewModel.FromProblem),
-                    Results = this.GetParticipantResultsAsQueryable(contest.Id, official, isFullResults)
+                    Results = this.participantsData
+                        .GetAllByContestAndIsOfficial(contest.Id, official)
+                        .Select(par => new ParticipantResultViewModel
+                        {
+                            ParticipantUsername = par.User.UserName,
+                            ParticipantFirstName = par.User.UserSettings.FirstName,
+                            ParticipantLastName = par.User.UserSettings.LastName,
+                            ParticipantProblemIds = par.Problems.Select(p => p.Id),
+                            IdOfFirstSubmissionThatGaveYouYourContestTotalScore = par.Submissions
+                                .GroupBy(s => s.ProblemId)
+                                .Select(x => x
+                                    .OrderByDescending(s => s.Points)
+                                    .ThenBy(s => s.Id).Select(s => s.Id)
+                                    .FirstOrDefault())
+                                .DefaultIfEmpty(0)
+                                .Max(),
+                            ProblemResults = par.Scores
+                                .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contest.Id)
+                                .Select(sc => new ProblemResultPairViewModel
+                                {
+                                    ProblemId = sc.ProblemId,
+                                    ShowResult = sc.Problem.ShowResults,
+                                    MaximumPoints = isFullResults ? sc.Problem.MaximumPoints : default(int),
+                                    BestSubmission = new BestSubmissionViewModel
+                                    {
+                                        Id = sc.SubmissionId,
+                                        Points = sc.Points,
+                                        IsCompiledSuccessfully = isFullResults && sc.Submission.IsCompiledSuccessfully,
+                                        SubmissionType = isFullResults ? sc.Submission.SubmissionType.Name : null,
+                                        TestRunsCache = isFullResults ? sc.Submission.TestRunsCache : null
+                                    }
+                                })
+                        })
                         .OrderByDescending(parRes => isUserAdminOrLecturer
                             ? parRes.ProblemResults.Sum(pr => pr.BestSubmission.Points)
                             : parRes.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points))
-                        .ThenByDescending(parResult => parResult.ProblemResults
-                            .OrderBy(prRes => prRes.BestSubmission.Id)
-                            .Select(prRes => prRes.BestSubmission.Id)
-                            .FirstOrDefault())
+                        .ThenByDescending(parResult => parResult.IdOfFirstSubmissionThatGaveYouYourContestTotalScore)
                         .ToPagedList(page, resultsInPage)
                 };
-
-        private IQueryable<ParticipantResultViewModel> GetParticipantResultsAsQueryable(
-            int contestId,
-            bool official,
-            bool isFullResults)
-        {
-            var participantsInContest = this.participantsData
-                .GetAllByContestAndIsOfficial(contestId, official);
-
-            if (isFullResults)
-            {
-                return participantsInContest.Select(par => new ParticipantResultViewModel
-                {
-                    ParticipantUsername = par.User.UserName,
-                    ParticipantFirstName = par.User.UserSettings.FirstName,
-                    ParticipantLastName = par.User.UserSettings.LastName,
-                    ParticipantProblemIds = par.Problems.Select(p => p.Id),
-                    ProblemResults = par.Scores
-                        .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contestId)
-                        .Select(sc => new ProblemResultPairViewModel
-                        {
-                            ProblemId = sc.ProblemId,
-                            ShowResult = sc.Problem.ShowResults,
-                            MaximumPoints = sc.Problem.MaximumPoints,
-                            BestSubmission = new BestSubmissionViewModel
-                            {
-                                Id = sc.SubmissionId,
-                                Points = sc.Points,
-                                IsCompiledSuccessfully = sc.Submission.IsCompiledSuccessfully,
-                                SubmissionType = sc.Submission.SubmissionType.Name,
-                                TestRunsCache = sc.Submission.TestRunsCache
-                            }
-                        })
-                });
-            }
-
-            return participantsInContest.Select(par => new ParticipantResultViewModel
-            {
-                ParticipantUsername = par.User.UserName,
-                ParticipantFirstName = par.User.UserSettings.FirstName,
-                ParticipantLastName = par.User.UserSettings.LastName,
-                ParticipantProblemIds = par.Problems.Select(p => p.Id),
-                ProblemResults = par.Scores
-                    .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ContestId == contestId)
-                    .Select(sc => new ProblemResultPairViewModel
-                    {
-                        ProblemId = sc.ProblemId,
-                        ShowResult = sc.Problem.ShowResults,
-                        BestSubmission = new BestSubmissionViewModel
-                        {
-                            Id = sc.SubmissionId,
-                            Points = sc.Points
-                        }
-                    })
-            });
-        }
     }
 }

@@ -74,8 +74,8 @@
             this.participants
                 .All()
                 .Where(p =>
-                    p.ContestStartTime >= contestStartTimeRangeStart &&
-                    p.ContestStartTime <= contestStartTimeRangeEnd &&
+                    p.ParticipationStartTime >= contestStartTimeRangeStart &&
+                    p.ParticipationStartTime <= contestStartTimeRangeEnd &&
                     p.ContestId == contestId &&
                     p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);

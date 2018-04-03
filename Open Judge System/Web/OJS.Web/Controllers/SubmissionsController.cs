@@ -10,8 +10,10 @@
     using Newtonsoft.Json;
 
     using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
@@ -22,28 +24,18 @@
         {
         }
 
-        [HttpGet]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Index()
         {
-            if (this.User.IsLoggedIn())
+            if (this.User.IsAdmin())
             {
-                if (this.User.IsAdmin())
-                {
-                    this.ViewBag.SubmissionsInQueue = this.Data.Submissions.All().Count(x => !x.Processed);
-                }
-
-                return this.View("AdvancedSubmissions");
+                this.ViewBag.SubmissionsInQueue = this.Data.Submissions.All().Count(x => !x.Processed);
             }
 
-            var submissions = this.Data.Submissions
-                .GetLastFiftySubmissions()
-                .Select(SubmissionViewModel.FromSubmission)
-                .ToList();
-
-            return this.View("BasicSubmissions", submissions);
+            return this.View("AdvancedSubmissions");
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetSubmissionsGrid(
             bool notProcessedOnly = false,
             string userId = null,
@@ -101,7 +93,7 @@
 
             if (contestId.HasValue)
             {
-                data = data.Where(s => s.Problem.ContestId == contestId.Value);
+                data = data.Where(s => s.Problem.ProblemGroup.ContestId == contestId.Value);
             }
 
             var result = data.Select(SubmissionViewModel.FromSubmission);

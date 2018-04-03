@@ -1,10 +1,13 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
@@ -36,6 +39,18 @@
             }
 
             return this.RedirectToAction(method.Method.Name);
+        }
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            SetUiCultureFromCookie(requestContext);
+
+            base.Initialize(requestContext);
+        }
+
+        protected ActionResult RedirectToHome()
+        {
+            return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
@@ -102,35 +117,60 @@
         }
 
         protected bool CheckIfUserHasContestPermissions(int contestId) =>
-            this.User.IsAdmin() ||
-            this.Data.Contests
-                .All()
-                .Any(x =>
-                    x.Id == contestId &&
-                    (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                    x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.Contests
+                    .All()
+                    .Any(x =>
+                        x.Id == contestId &&
+                        (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                        x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))));
 
         protected bool CheckIfUserHasProblemPermissions(int problemId) =>
-            this.User.IsAdmin() ||
-            this.Data.Problems
-                .All()
-                .Any(x =>
-                    x.Id == problemId &&
-                    (x.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                    x.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.Problems
+                    .All()
+                    .Any(x =>
+                        x.Id == problemId &&
+                        (x.ProblemGroup.Contest.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
+                        x.ProblemGroup.Contest.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))));
 
         protected bool CheckIfUserHasContestCategoryPermissions(int categoryId) =>
-            this.User.IsAdmin() ||
-            this.Data.ContestCategories
-                .All()
-                .Any(x =>
-                    x.Id == categoryId &&
-                    x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id));
+            this.UserProfile != null &&
+            (this.User.IsAdmin() ||
+                this.Data.ContestCategories
+                    .All()
+                    .Any(x =>
+                        x.Id == categoryId &&
+                        x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id)));
                
         protected bool CheckIfUserOwnsSubmission(int submissionId) =>
+            this.UserProfile != null &&
             this.Data.Submissions
                 .All()
                 .Any(s => s.Id == submissionId && s.Participant.UserId == this.UserProfile.Id);
+
+        private static void SetUiCultureFromCookie(RequestContext requestContext)
+        {
+            var languageCookie = requestContext.HttpContext.Request.Cookies[GlobalConstants.LanguageCookieName];
+
+            if (languageCookie == null)
+            {
+                return;
+            }
+
+            switch (languageCookie.Value)
+            {
+                case GlobalConstants.BulgarianCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.BulgarianCultureInfoName);
+                    break;
+                case GlobalConstants.EnglishCultureCookieValue:
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(GlobalConstants.EnglishCultureInfoName);
+                    break;
+                default: return;
+            }
+        }
 
         private SystemMessageCollection PrepareSystemMessages()
         {

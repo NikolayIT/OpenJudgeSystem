@@ -135,6 +135,12 @@
   <data name="Is_official" xml:space="preserve">
     <value>Официално участие</value>
   </data>
+  <data name="Participation_end_time" xml:space="preserve">
+    <value>Край на участието</value>
+  </data>
+  <data name="Participation_start_time" xml:space="preserve">
+    <value>Начало на участието</value>
+  </data>
   <data name="Question" xml:space="preserve">
     <value>Въпрос</value>
   </data>

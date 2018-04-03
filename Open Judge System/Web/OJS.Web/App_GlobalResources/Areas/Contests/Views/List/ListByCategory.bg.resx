@@ -126,6 +126,9 @@
   <data name="Contest_results" xml:space="preserve">
     <value>Резултати от състезание</value>
   </data>
+  <data name="Create_contest" xml:space="preserve">
+    <value>Създай състезание</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Промяна</value>
   </data>

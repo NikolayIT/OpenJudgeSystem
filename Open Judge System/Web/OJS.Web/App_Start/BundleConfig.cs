@@ -47,11 +47,24 @@
             bundles.Add(new ScriptBundle("~/bundles/full-results-page").Include(
                 "~/Scripts/Contests/results-pagination.js",
                 "~/Scripts/Helpers/test-results.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/problems-index").Include(
+                "~/Scripts/Administration/Problems/problems-index.js",
+                "~/Scripts/Administration/Contests/contest-search.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
+                "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
+                "~/Scripts/Administration/Contests/contest-search.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/contests-index").Include(
+                "~/Scripts/Administration/Contests/contests-index.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/styles").Include(
                 "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/KendoUI/kendo").Include(
@@ -79,6 +92,9 @@
 
             bundles.Add(new StyleBundle("~/Content/Contests/results-page").Include(
                 "~/Content/Contests/results-page.css"));
+
+            bundles.Add(new StyleBundle("~/Content/home/index").Include(
+                "~/Content/css/home/index/home.css"));
         }
     }
 }
