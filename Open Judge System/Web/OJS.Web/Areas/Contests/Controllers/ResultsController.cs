@@ -476,7 +476,7 @@
                         .OrderByDescending(parRes => isUserAdminOrLecturer
                             ? parRes.ProblemResults.Sum(pr => pr.BestSubmission.Points)
                             : parRes.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points))
-                        .ThenByDescending(parResult => parResult.IdOfFirstSubmissionThatGaveYouYourContestTotalScore)
+                        .ThenBy(parResult => parResult.IdOfFirstSubmissionThatGaveYouYourContestTotalScore)
                         .ToPagedList(page, resultsInPage)
                 };
     }
