@@ -49,8 +49,8 @@ namespace OJS.Workers.Executors
             string workingDirectory = null,
             bool useProcessTime = false,
             bool useSystemEncoding = false,
-            double timeoutMultiplier = 1.5,
-            bool dependOnExitCodeForRunTimeError = false)
+            bool dependOnExitCodeForRunTimeError = false,
+            double timeoutMultiplier = 1.5)
         {
             timeLimit = timeLimit + this.baseTimeUsed;
             memoryLimit = memoryLimit + this.baseMemoryUsed;
