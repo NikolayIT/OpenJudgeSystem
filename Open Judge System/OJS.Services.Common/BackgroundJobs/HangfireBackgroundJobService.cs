@@ -7,6 +7,9 @@
 
     public class HangfireBackgroundJobService : IHangfireBackgroundJobService
     {
+        public object AddFireAndForgetJob<T>(Expression<Action<T>> methodCall) =>
+            BackgroundJob.Enqueue(methodCall);
+
         public void AddOrUpdateRecurringJob(
             object recurringJobId,
             Expression<Action> methodCall,

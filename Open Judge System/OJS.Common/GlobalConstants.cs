@@ -56,6 +56,8 @@
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string AdministrationAreaName = "Administration";
+
         public const int FileExtentionMaxLength = 4;
 
         public const int IpAdressMaxLength = 45;
@@ -67,8 +69,16 @@
         public const string LecturerRoleName = "Lecturer";
         public const string DefaultPublicIp = "217.174.159.226";
         public const string AuthCookieName = ".AspNet.SoftUniJudgeCookie";
+        public const string LanguageCookieName = "language";
+
+        public const string BulgarianCultureInfoName = "bg-BG";
+        public const string EnglishCultureInfoName = "en-GB";
+        public const string BulgarianCultureCookieValue = "bg";
+        public const string EnglishCultureCookieValue = "en";
 
         public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
+
+        public const int DefaultProblemGroupsCountForOnlineContest = 2;
 
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
@@ -78,18 +88,6 @@
 
         // Folder names
         public const string ExecutionStrategiesFolderName = "ExecutionStrategies";
-
-        // News
-        public const int NewsTitleMaxLength = 200;
-        public const int NewsTitleMinLength = 1;
-
-        public const int NewsAuthorNameMaxLength = 25;
-        public const int NewsAuthorNameMinLength = 2;
-
-        public const int NewsSourceMaxLength = 50;
-        public const int NewsSourceMinLength = 6;
-
-        public const int NewsContentMinLength = 10;
 
         // Contests
         public const int ContestNameMaxLength = 100;
@@ -105,6 +103,10 @@
 
         public const int ContestQuestionAnswerMaxLength = 100;
         public const int ContestQuestionAnswerMinLength = 1;
+
+        // ExamGroup Constants
+        public const int ExamGroupNameMinLength = 2;
+        public const int ExamGroupNameMaxLength = 600;
 
         // Administration
         public const int CheckerNameMaxLength = 100;
@@ -130,8 +132,8 @@
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
 
-        // Authorization error messages
-        public const string NoPrivilegesMessage = "Нямате привилегиите за това действие";
+        // Date and time formats
+        public const string DefaultDateTimeFormatString = "{0:dd/MM/yyyy HH:mm}";
 
         // Runtime constants
         public static readonly string JavaSourceFileExtension = $".{CompilerType.Java.GetFileExtension()}";

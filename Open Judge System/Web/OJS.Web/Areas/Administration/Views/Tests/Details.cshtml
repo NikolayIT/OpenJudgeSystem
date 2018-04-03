@@ -11,14 +11,14 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.ProblemName)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.ProblemName
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.Input)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         <pre id="test-input" class="monospace-font">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0, 200) + "..." : Model.InputFull)</pre>
 
         @if (Model.InputFull.Length > 200)
@@ -30,7 +30,7 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.Output)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         <pre id ="test-output" class="monospace-font">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
         
         @if (Model.OutputFull.Length > 200)
@@ -42,14 +42,14 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.Type)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.Type.GetLocalizedDescription()
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.OrderBy)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.OrderBy
     </div>
     <br />    

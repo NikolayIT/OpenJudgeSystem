@@ -19,5 +19,5 @@
     </p>
 
     <input type="submit" class="btn btn-primary" value="@Resource.Confirm" />
-    @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Contest(Model.Id), null, new { @class = "btn btn-primary" }))
+    @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Index(Model.Id), null, new { @class = "btn btn-primary" }))
 }

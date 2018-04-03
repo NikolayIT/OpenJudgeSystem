@@ -1,0 +1,23 @@
+﻿<script type="text/x-kendo-template" id="_ProblemsInProblemGroupGridTemplate">
+    @(Html
+        .Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel>()
+        .Name("ProblemsInProblemGroup_#=Id#")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id).Hidden();
+            columns.Bound(m => m.Name);
+        })
+        .ColumnMenu()
+        .Filterable(filter => filter.Enabled(true))
+        .Pageable(pageable => pageable.Enabled(true))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(x => x.Id))
+                .Read(read => read.Action("GetProblemsInProblemGroup", "ProblemGroups", new {id = "#= Id #"}));
+        })
+        .ToClientTemplate())
+</script>

@@ -1,0 +1,125 @@
+﻿@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+@{
+    const string ControllerName = "ExamGroups";
+    const string ContestColumnIdSuffix = "_ContestName";
+
+    ViewBag.Title = Resource.Page_title;
+}
+
+@section Styles{
+    @Styles.Render("~/Content/css/administration/administration-styles.css")
+}
+
+<div class="administration-container">
+    <h1>@ViewBag.Title</h1>
+
+    @(Html
+        .Kendo()
+        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
+        .Name("DataGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(m => m.Id).Hidden();
+            columns.Bound(m => m.Name);
+            columns.Bound(m => m.ContestName).HtmlAttributes(new { id = "#= Id #" + ContestColumnIdSuffix });
+            columns.Bound(m => m.ExternalExamGroupId).Hidden();
+            columns.Bound(m => m.ExternalAppId);
+            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80).Title(GeneralResource.Edit);
+            columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create().Text(GeneralResource.Create);
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+        })
+        .Editable(editable =>
+        {
+            editable.Mode(GridEditMode.PopUp);
+            editable.Window(w =>w.Title(Resource.Page_title).Width(700));
+            editable.DisplayDeleteConfirmation(GeneralResource.Delete_prompt);
+        })
+        .ColumnMenu()
+        .Pageable(x => x.Refresh(true).PageSizes(true))
+        .Sortable(x => x.Enabled(true).AllowUnsort(false))
+        .Filterable(x => x.Enabled(true))
+        .Resizable(x => x.Columns(true))
+        .DataSource(data =>
+        {
+            data
+                .Ajax()
+                .ServerOperation(true)
+                .Model(model => model.Id(x => x.Id))
+                .Sort(sort => sort.Add(field => field.Id).Descending())
+                .Create(read => read.Action("Create", "ExamGroups"))
+                .Read(read => read.Action("Read", "ExamGroups"))
+                .Update(update => update.Action("Update", ControllerName))
+                .Destroy(destroy => destroy.Action("Destroy", ControllerName))
+                .Events(ev => ev.Error("validateModelStateErrors"));
+        })
+        .Events(ev =>
+        {
+            ev.Edit("onEdit");
+            ev.DetailExpand("onDetailExpand");
+        })
+        .ClientDetailTemplateId("_UsersInExamGroupGridTemplate")
+    )
+    
+    @Html.Partial("_UsersInExamGroupGridTemplate")
+</div>
+
+<script type="text/javascript">
+    function onEdit() {
+        $('.k-edit-form-container').css('width', '100%');
+        $('.editor-label').css('width', '10%');
+        $('.editor-field').css('width', '80%');
+
+        $('#ContestId').change(function () {
+            $('#ContestName').val($('#ContestId_option_selected').text()).change();
+        });
+    }
+
+    function onDetailExpand(e) {
+        var contestName = $(e.masterRow[0].cells)
+            .filter(function(i, cell) {
+                var cellId = $(cell).attr("id");
+                return typeof cellId != typeof undefined && cellId.indexOf("@ContestColumnIdSuffix") >= 0;
+            })
+            .first()
+            .text();
+
+        if (contestName === '') {
+            var addButton = $(e.detailRow).find('.k-grid-add').last();
+            disabableKendoButtons(addButton);
+
+            var message = $(e.detailRow).find('.cannot-add-remove-users');
+            if (message.length) {
+                message.show();
+            } else {
+                addButton.after('<span class="cannot-add-remove-users">' +
+                    '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
+            }
+        }
+    }
+
+    function onDetailDataBound() {
+        var detailsGrid = $('#' + this.element.attr("id"));
+        var isAddButtonDisabled = detailsGrid.find('.k-grid-add.k-state-disabled').length >= 1;
+        if (isAddButtonDisabled) {
+            var deleteButtons = $('#' + this.element.attr("id")).find('.k-button.k-grid-delete');
+            disabableKendoButtons(deleteButtons);
+        }
+    }
+
+    function disabableKendoButtons(buttons) {
+        buttons.kendoButton({
+            enable: false
+        });
+
+        buttons.css({
+            'pointer-events': 'none',
+            cursor: 'default'
+        });
+    }
+</script>

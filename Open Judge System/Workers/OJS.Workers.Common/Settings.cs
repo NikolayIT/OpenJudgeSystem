@@ -116,6 +116,8 @@
 
         public static int JavaBaseMemoryUsedInBytes => GetSettingOrDefault("JavaBaseMemoryUsedInBytes", 0);
 
+        public static int JavaBaseUpdateTimeOffsetInMilliseconds => GetSettingOrDefault("JavaBaseUpdateTimeOffsetInMilliseconds", 0);
+
         public static int GPlusPlusBaseTimeUsedInMilliseconds => GetSettingOrDefault("GPlusPlusBaseTimeUsedInMilliseconds", 0);
 
         public static int GPlusPlusBaseMemoryUsedInBytes => GetSettingOrDefault("GPlusPlusBaseMemoryUsedInBytes", 0);

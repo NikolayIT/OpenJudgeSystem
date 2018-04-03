@@ -31,7 +31,6 @@
             this.SeedCheckers(context);
 
             // this.SeedContests(context);
-            // this.SeedLongNews(context);
             // this.SeedRandomContests(context);
             // this.SeedProblem(context);
             // this.SeedTest(context);
@@ -510,6 +509,18 @@
                 Category = category
             };
 
+            var problemGroup1 = new ProblemGroup
+            {
+                OrderBy = 0,
+                Contest = contest
+            };
+
+            var problemGroup2 = new ProblemGroup
+            {
+                OrderBy = 1,
+                Contest = contest
+            };
+
             var problem = new Problem
             {
                 Name = "Problem",
@@ -519,7 +530,7 @@
                 OrderBy = 1,
                 ShowResults = true,
                 IsDeleted = false,
-                Contest = contest
+                ProblemGroup = problemGroup1
             };
 
             var otherProblem = new Problem
@@ -531,7 +542,7 @@
                 OrderBy = 1,
                 ShowResults = true,
                 IsDeleted = false,
-                Contest = contest
+                ProblemGroup = problemGroup2
             };
 
             var test = new Test
@@ -577,7 +588,7 @@
             }
 
             context.Problems.Add(problem);
-            contest.Problems.Add(otherProblem);
+            context.Problems.Add(otherProblem);
             context.Contests.Add(otherContest);
             context.ContestCategories.Add(otherCategory);
             context.Tests.Add(test);
@@ -631,10 +642,16 @@
                 OrderBy = 1
             };
 
+            var problemGroup = new ProblemGroup
+            {
+                OrderBy = 0,
+                Contest = contest
+            };
+
             var problem = new Problem
             {
                 OldId = 0,
-                Contest = contest,
+                ProblemGroup = problemGroup,
                 Name = "Problem",
                 MaximumPoints = 100,
                 MemoryLimit = 100,
@@ -695,14 +712,20 @@
 
             var contest = context.Contests.FirstOrDefault(x => x.Name == "Contest");
 
-            contest.Problems.Add(new Problem
+            contest.ProblemGroups.Add(new ProblemGroup
             {
-                Name = "Problem"
-            });
-
-            contest.Problems.Add(new Problem
-            {
-                Name = "Other problem"
+                OrderBy = 0,
+                Problems = new List<Problem>
+                {
+                    new Problem
+                    {
+                        Name = "Problem"
+                    },
+                    new Problem
+                    {
+                        Name = "Other problem"
+                    }
+                }
             });
 
             context.SaveChanges();
@@ -765,37 +788,6 @@
                     OutputDataAsString = (i + 1).ToString() + "other",
                     IsTrialTest = false
                 });
-            }
-        }
-
-        private void SeedLongNews(OjsDbContext context)
-        {
-            foreach (var news in context.News)
-            {
-                context.News.Remove(news);
-            }
-
-            for (int i = 1; i < 150; i++)
-            {
-                context.News.Add(
-                new News
-                {
-                    IsVisible = true,
-                    Author = "Author",
-                    Source = "Source",
-                    Title = "News " + i,
-                    Content = "Very Some long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long news",
-                });
-
-                context.News.Add(
-                    new News
-                    {
-                        Author = "Author",
-                        Source = "Source",
-                        IsVisible = false,
-                        Title = "This should not be visible!",
-                        Content = "Very Some long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long newsSome long long long long long long long long long long long news",
-                    });
             }
         }
 

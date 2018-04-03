@@ -159,9 +159,6 @@
   <data name="Log" xml:space="preserve">
     <value>Лог</value>
   </data>
-  <data name="News" xml:space="preserve">
-    <value>Новини</value>
-  </data>
   <data name="Open_source_project" xml:space="preserve">
     <value>Проект с отворен код.</value>
   </data>
@@ -200,5 +197,11 @@
   </data>
   <data name="SubmissionTypes" xml:space="preserve">
     <value>Типове решения</value>
+  </data>
+  <data name="Exam_groups" xml:space="preserve">
+    <value>Групи за изпити</value>
+  </data>
+  <data name="Problem_groups" xml:space="preserve">
+    <value>Групи задачи</value>
   </data>
 </root>

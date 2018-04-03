@@ -250,15 +250,6 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This submission is being processed at the moment... Please wait..
-        /// </summary>
-        public static string Submission_is_processing {
-            get {
-                return ResourceManager.GetString("Submission_is_processing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Submissions.
         /// </summary>
         public static string Submissions {
@@ -313,7 +304,7 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Solution #{0} by {1} for problem {2}.
+        ///   Looks up a localized string similar to Solution #{0} by {1} for problem .
         /// </summary>
         public static string Title {
             get {

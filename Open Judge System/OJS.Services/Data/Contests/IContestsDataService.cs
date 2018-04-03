@@ -7,9 +7,11 @@
 
     public interface IContestsDataService : IService
     {
-        Contest GetById(int contestId);
+        Contest GetById(int id);
 
-        IQueryable<Contest> GetByIdQuery(int contestId);
+        IQueryable<Contest> GetByIdQuery(int id);
+
+        IQueryable<Contest> GetAll();
 
         IQueryable<Contest> GetAllActive();
 
@@ -23,14 +25,26 @@
 
         IQueryable<Contest> GetAllVisible();
 
+        IQueryable<Contest> GetAllVisibleByCategory(int categoryId);
+
+        IQueryable<Contest> GetAllVisibleByLecturer(string lecturerId);
+
+        IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId);
+
         IQueryable<Contest> GetAllWithDeleted();
 
-        void DeleteById(int contestId);
+        int GetIdById(int id);
 
-        bool IsActiveById(int contestId);
+        bool IsActiveById(int id);
 
-        bool IsUserLecturerInByContestAndUser(int contestId, string userId);
+        bool IsOnlineById(int id);
 
-        bool IsUserParticipantInByContestAndUser(int contestId, string userId);
+        bool ExistsById(int id);
+
+        bool IsUserLecturerInByContestAndUser(int id, string userId);
+
+        bool IsUserParticipantInByContestAndUser(int id, string userId);
+
+        bool IsUserInExamGroupByContestAndUser(int id, string userId);
     }
 }

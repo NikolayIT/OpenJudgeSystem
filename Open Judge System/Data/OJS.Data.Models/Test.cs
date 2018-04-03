@@ -9,13 +9,6 @@
 
     public class Test : IOrderable
     {
-        private ICollection<TestRun> testRuns;
-
-        public Test()
-        {
-            this.testRuns = new HashSet<TestRun>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -31,15 +24,9 @@
         [NotMapped]
         public string InputDataAsString
         {
-            get
-            {
-                return this.InputData.Decompress();
-            }
+            get => this.InputData.Decompress();
 
-            set
-            {
-                this.InputData = value.Compress();
-            }
+            set => this.InputData = value.Compress();
         }
 
         /// <remarks>
@@ -50,15 +37,9 @@
         [NotMapped]
         public string OutputDataAsString
         {
-            get
-            {
-                return this.OutputData.Decompress();
-            }
+            get => this.OutputData.Decompress();
 
-            set
-            {
-                this.OutputData = value.Compress();
-            }
+            set => this.OutputData = value.Compress();
         }
 
         public bool IsTrialTest { get; set; }
@@ -67,10 +48,6 @@
 
         public int OrderBy { get; set; }
 
-        public virtual ICollection<TestRun> TestRuns
-        {
-            get { return this.testRuns; }
-            set { this.testRuns = value; }
-        }
+        public virtual ICollection<TestRun> TestRuns { get; set; } = new HashSet<TestRun>();
     }
 }

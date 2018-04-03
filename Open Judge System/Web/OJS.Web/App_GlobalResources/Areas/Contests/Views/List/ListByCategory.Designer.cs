@@ -88,6 +88,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create contest.
+        /// </summary>
+        public static string Create_contest {
+            get {
+                return ResourceManager.GetString("Create_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {

@@ -116,6 +116,24 @@ namespace Resources.Areas.Administration.Participants.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Participation end.
+        /// </summary>
+        public static string Participation_end_time {
+            get {
+                return ResourceManager.GetString("Participation_end_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participation start.
+        /// </summary>
+        public static string Participation_start_time {
+            get {
+                return ResourceManager.GetString("Participation_start_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Question.
         /// </summary>
         public static string Question {

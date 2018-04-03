@@ -1,5 +1,16 @@
-﻿@using OJS.Web.ViewModels
+﻿@using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.ViewModels;
+
 @using Resource = Resources.Views.Shared.Layout;
+
+@{
+    var userIsLoggedIn = this.User.IsLoggedIn();
+    var userIsAdmin = this.User.IsAdmin();
+    var userIsLecturer = this.User.IsLecturer();
+
+    var adminClassName = userIsLoggedIn && (userIsAdmin || userIsLecturer) ? "admin" : string.Empty;
+    var loggedUserClassName = userIsLoggedIn ? "logged" : string.Empty;
+}
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - SoftUni Judge</title>
     <meta name="description" content="Online system for programming competitions" />
-    @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/css")
+    @Styles.Render("~/Content/bootstrap/bootstrap", "~/Content/KendoUI/kendo", "~/Content/styles")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/jquery", "~/bundles/kendo", "~/bundles/global")
 </head>
@@ -23,18 +34,6 @@
         ga('send', 'pageview');
     </script>
 
-    <!-- Facebook -->
-    <div id="fb-root"></div>
-    <script>
-        (function (d, s, id) {
-            var fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            var js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=140725269459425";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-
     <!-- Header -->
     <div class="navbar navbar-default">
         <div class="container">
@@ -44,12 +43,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand hidden-sm hidden-md hidden-lg">SoftUni Judge</a>
+                <a href="/" class="navbar-brand">SoftUni Judge</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/" class="navbar-brand">SoftUni Judge</a></li>
-                    <li><a href="/">@Resource.Home</a></li>
                     <li class="dropdown">
                         <a href="/Contests" class="dropdown-toggle" data-toggle="dropdown">
                             @Resource.Contests
@@ -64,63 +61,67 @@
                             <li><a href="/Contests">@Resource.All</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Submissions">@Resource.Submissions</a></li>
-                    @if (this.User.IsLoggedIn())
+                    @if (userIsLoggedIn)
                     {
                         <li><a href="/Feedback">@Resource.Feedback</a></li>
                     }
-                    
-                    @if (this.User.IsAdmin() || this.User.IsLecturer())
+
+                    @if (userIsAdmin || userIsLecturer)
                     {
+                        <li><a href="/Submissions">@Resource.Submissions</a></li>
                         <li class="dropdown">
                             <a href="/Administration/Navigation" class="dropdown-toggle" data-toggle="dropdown">
                                 @Resource.Administration
                                 <strong class="caret"></strong>
                             </a>
 
-                            @if (this.User.IsAdmin())
+                            @if (userIsAdmin)
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Categories, GlobalConstants.Index, "ContestCategories", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Category_hierarchy, "Hierarchy", "ContestCategories", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Participants, GlobalConstants.Index, "Participants", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ContestsController>(Resource.Contests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ContestCategoriesController>(Resource.Categories, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ContestCategoriesController>(Resource.Category_hierarchy, c => c.Hierarchy(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ParticipantsController>(Resource.Participants, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ExamGroupsController>(Resource.Exam_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Problems</li>
-                                    <li>@Html.ActionLink(Resource.Problems, GlobalConstants.Index, "Problems", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Tests, GlobalConstants.Index, "Tests", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ProblemsController>(Resource.Problems, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ProblemGroupsController>(Resource.Problem_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<TestsController>(Resource.Tests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Users</li>
-                                    <li>@Html.ActionLink(Resource.Users, GlobalConstants.Index, "Users", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Roles, GlobalConstants.Index, "Roles", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.LecturersInContestAndCategories, GlobalConstants.Index, "Lecturers", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<UsersController>(Resource.Users, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SubmissionsController>(Resource.Submissions, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<RolesController>(Resource.Roles, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<LecturersController>(Resource.LecturersInContestAndCategories, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">@Resource.Other</li>
-                                    <li>@Html.ActionLink(Resource.News, GlobalConstants.Index, "News", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Feedback, GlobalConstants.Index, "Feedback", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Checkers, GlobalConstants.Index, "Checkers", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.SubmissionTypes, GlobalConstants.Index, "SubmissionTypes", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Settings, GlobalConstants.Index, "Settings", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Log, GlobalConstants.Index, "AccessLogs", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<FeedbackController>(Resource.Feedback, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<CheckersController>(Resource.Checkers, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SubmissionTypesController>(Resource.SubmissionTypes, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<SettingsController>(Resource.Settings, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<AccessLogsController>(Resource.Log, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Anti-cheat</li>
-                                    <li>@Html.ActionLink(Resource.IpUsage, "ByIP", "AntiCheat", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.SubmissionSimilarity, "BySubmissionSimilarity", "AntiCheat", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<AntiCheatController>(Resource.IpUsage, c => c.ByIp(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<AntiCheatController>(Resource.SubmissionSimilarity, c => c.BySubmissionSimilarity(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                     <li class="divider"></li>
                                     <li class="dropdown-header">Debugging</li>
                                     <li><a href="/Glimpse.axd">Glimpse</a></li>
                                     <li class="divider"></li>
-                                    <li>@Html.ActionLink(Resource.All_administrations, GlobalConstants.Index, "Navigation", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<NavigationController>(Resource.All_administrations, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
                             }
-                            else if (this.User.IsLecturer())
+                            else
                             {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">@Resource.Contests</li>
-                                    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "Contests", new { area = "Administration" }, null)</li>
-                                    <li>@Html.ActionLink(Resource.Submissions, GlobalConstants.Index, "Submissions", new { area = "Administration" }, null)</li>
+                                    <li>@(Html.ActionLink<ContestsController>(Resource.Contests, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li>@(Html.ActionLink<ExamGroupsController>(Resource.Exam_groups, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
+                                    <li class="divider"></li>
+                                    <li class="dropdown-header">@Resource.Users</li>
+                                    <li>@(Html.ActionLink<SubmissionsController>(Resource.Submissions, c => c.Index(), new { area = GlobalConstants.AdministrationAreaName }))</li>
                                 </ul>
                             }
                         </li>
@@ -128,7 +129,7 @@
                 </ul>
                 @Html.Partial("_LoginPartial")
 
-                <div class="col-md-3 col-sm-@(this.User.IsLoggedIn() ? "6" : "12") navbar-left hidden-md search-form @(this.User.IsLoggedIn() && (this.User.IsAdmin() || this.User.IsLecturer()) ? "admin" : "")">
+                <div class="col-md-3 col-sm-@(userIsLoggedIn ? "6" : "12") navbar-left hidden-md search-form @adminClassName">
                     <form class="navbar-form" role="search" action="/Search/Results">
                         <div class="input-group">
                             <input type="text" class="form-control search-box" placeholder=@Resource.Search name="searchTerm" id="searchTerm">
@@ -140,6 +141,10 @@
                 </div>
                 <div class="col-sm-1 hidden-lg hidden-sm hidden-xs btn navbar-left">
                     <a href="/Search/" class="btn btn-default btn-search"><i class="glyphicon glyphicon-search"></i></a>
+                </div>
+                <div class="language-switch @adminClassName @loggedUserClassName" data-cookie="@GlobalConstants.LanguageCookieName">
+                    <a id="@GlobalConstants.EnglishCultureCookieValue" class="btn-link language-btn" data-default>EN</a>
+                    <a id="@GlobalConstants.BulgarianCultureCookieValue" class="btn-link language-btn">BG</a>
                 </div>
             </div>
         </div>
@@ -169,7 +174,7 @@
                 }
 
                 @:<div class="@messageClass"><strong>@Html.Raw(message.Content)</strong></div>
-        }
+            }
         }
 
         @RenderBody()

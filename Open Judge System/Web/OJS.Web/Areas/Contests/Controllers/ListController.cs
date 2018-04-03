@@ -100,22 +100,16 @@
 
             foreach (var contest in contestCategory.Contests)
             {
-                contest.UserIsAdminOrLecturerInContest = this.UserProfile != null &&
-                    this.CheckIfUserHasContestPermissions(contest.Id);
+                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
 
-                contest.UserCanCompete = this.UserProfile != null &&
-                    this.contestsBusiness.CanUserCompeteByContestByUserAndIsAdmin(
-                        contest.Id,
-                        this.UserProfile.Id,
-                        this.User.IsAdmin());
+                contest.UserCanCompete = this.contestsBusiness
+                    .CanUserCompeteByContestByUserAndIsAdmin(contest.Id, this.UserProfile?.Id, this.User.IsAdmin());
 
-                contest.UserIsParticipant = this.UserProfile != null &&
-                    this.contestsData.IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile.Id);
+                contest.UserIsParticipant = this.contestsData
+                    .IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile?.Id);
             }
 
-            contestCategory.IsUserLecturerInContestCategory =
-                this.UserProfile != null &&
-                this.CheckIfUserHasContestCategoryPermissions(contestCategory.Id);
+            contestCategory.IsUserLecturerInContestCategory = this.CheckIfUserHasContestCategoryPermissions(contestCategory.Id);
 
             if (this.Request.IsAjaxRequest())
             {
@@ -150,9 +144,10 @@
 
             var contests = this.Data.Contests
                 .All()
-                .Where(c => c.IsVisible &&
-                            c.Problems.Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
-                .OrderBy(x => x.OrderBy)
+                .Where(c => c.IsVisible && c.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
+                .OrderBy(c => c.OrderBy)
                 .Select(ContestViewModel.FromContest);
 
             this.ViewBag.SubmissionType = submissionType.Name;

@@ -13,7 +13,6 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.ViewModels.Participant;
 
     using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
     using DatabaseModelType = OJS.Data.Models.Participant;
@@ -130,34 +129,6 @@
         {
             this.BaseDestroy(model.Id);
             return this.GridOperation(request, model);
-        }
-
-        public JsonResult Contests(string text)
-        {
-            var contests = this.Data.Contests
-                .All()
-                .Select(ContestViewModel.ViewModel);
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                contests = contests.Where(c => c.Name.ToLower().Contains(text.ToLower()));
-            }
-
-            return this.Json(contests, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult Users(string text)
-        {
-            var users = this.Data.Users
-                .All()
-                .Select(UserViewModel.ViewModel);
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                users = users.Where(c => c.Name.ToLower().Contains(text.ToLower()));
-            }
-
-            return this.Json(users, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult RenderGrid(int? id)

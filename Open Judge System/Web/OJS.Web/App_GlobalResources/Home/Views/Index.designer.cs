@@ -70,11 +70,11 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administration.
+        ///   Looks up a localized string similar to Contest categories.
         /// </summary>
-        public static string Administration {
+        public static string Contest_categories {
             get {
-                return ResourceManager.GetString("Administration", resourceCulture);
+                return ResourceManager.GetString("Contest_categories", resourceCulture);
             }
         }
         
@@ -88,29 +88,29 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hour.
+        ///   Looks up a localized string similar to Guidelines for working with the Judge system.
         /// </summary>
-        public static string Hour {
+        public static string Guidelines_link_title {
             get {
-                return ResourceManager.GetString("Hour", resourceCulture);
+                return ResourceManager.GetString("Guidelines_link_title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hours.
+        ///   Looks up a localized string similar to infinite.
         /// </summary>
-        public static string Hours {
+        public static string Infinite {
             get {
-                return ResourceManager.GetString("Hours", resourceCulture);
+                return ResourceManager.GetString("Infinite", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to News.
+        ///   Looks up a localized string similar to Currently there are no active contests..
         /// </summary>
-        public static string News {
+        public static string No_active_contests {
             get {
-                return ResourceManager.GetString("News", resourceCulture);
+                return ResourceManager.GetString("No_active_contests", resourceCulture);
             }
         }
         
@@ -120,15 +120,6 @@ namespace Resources.Home.Views {
         public static string No_previous_contests {
             get {
                 return ResourceManager.GetString("No_previous_contests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No upcoming contests.
-        /// </summary>
-        public static string No_upcoming_contests {
-            get {
-                return ResourceManager.GetString("No_upcoming_contests", resourceCulture);
             }
         }
         
@@ -151,15 +142,6 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Project_subtitle {
-            get {
-                return ResourceManager.GetString("Project_subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SoftUni Judge.
         /// </summary>
         public static string Project_title {
@@ -169,29 +151,11 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time remaining: {0} {1} and {2} minutes.
+        ///   Looks up a localized string similar to Time remaining.
         /// </summary>
         public static string Remaining_time {
             get {
                 return ResourceManager.GetString("Remaining_time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See more.
-        /// </summary>
-        public static string See_more {
-            get {
-                return ResourceManager.GetString("See_more", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starts.
-        /// </summary>
-        public static string Starts {
-            get {
-                return ResourceManager.GetString("Starts", resourceCulture);
             }
         }
         
@@ -201,15 +165,6 @@ namespace Resources.Home.Views {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upcoming contests.
-        /// </summary>
-        public static string Upcoming_contests {
-            get {
-                return ResourceManager.GetString("Upcoming_contests", resourceCulture);
             }
         }
     }

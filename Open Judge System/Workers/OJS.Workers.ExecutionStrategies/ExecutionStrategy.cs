@@ -96,9 +96,6 @@
                 result.TestResults.Add(testResult);
             }
 
-            // Clean our mess
-            File.Delete(outputFile);
-
             return result;
         }
 

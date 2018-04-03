@@ -1,4 +1,7 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
+﻿@using OJS.Web.Areas.Administration.Controllers;
+
+@using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
+
 @model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
 
 @{
@@ -10,35 +13,35 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.Name)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.Name
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.ContestName)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.ContestName
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.TimeLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.TimeLimit
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.MemoryLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.MemoryLimit
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.SourceCodeSizeLimit)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @if (Model.SourceCodeSizeLimit == null)
         {
             @Resource.Unlimited
@@ -54,9 +57,9 @@
         <div class="editor-label">
             @Html.LabelFor(m => m.SolutionSkeleton)
         </div>
-        <div class="panel-body news-content editor-label">
+        <div class="panel-body bordered-content editor-label">
             <pre id="solution-skeleton" class="monospace-font">@Model.SolutionSkeletonShort</pre>
-        
+
             @if (Model.SolutionSkeleton.Length > 200)
             {
                 @Ajax.ActionLink(Resource.See_more, "FullSolutionSkeleton", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "solution-skeleton", InsertionMode = InsertionMode.Replace, OnComplete = "removeFullSolutionSkeletonAjaxLink" }, new { id = "ajax-solution-skeleton-link" })
@@ -67,34 +70,34 @@
     <div class="editor-label">
         @Html.LabelFor(m => m.MaximumPoints)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.MaximumPoints
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.Checker)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.Checker
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowResults)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @(Model.ShowResults ? Resource.Results_visible : Resource.Results_invisible)
     </div>
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowDetailedFeedback)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @(Model.ShowDetailedFeedback ? Resource.Full_feedback_visible : Resource.Full_feedback_invisible)
     </div>
     <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.OrderBy)
     </div>
-    <div class="panel-body news-content editor-label">
+    <div class="panel-body bordered-content editor-label">
         @Model.OrderBy
     </div>
     <br />
@@ -106,9 +109,9 @@
 
     </div>
     <br />
-    <a href="/Administration/Tests/Problem/@Model.Id" class="btn btn-primary">@Resource.Tests</a>
-    <a href="/Administration/Problems/Edit/@Model.Id" class="btn btn-primary">@Resource.Edit</a>
-    <a href="/Administration/Problems/Contest/@Model.ContestId" class="btn btn-primary">@Resource.Back</a>
+    @(Html.ActionLink<TestsController>(Resource.Tests, c => c.Problem(Model.Id), null, new { @class = "btn btn-primary" }))
+    @(Html.ActionLink<ProblemsController>(Resource.Edit, c => c.Edit(Model.Id), null, new { @class = "btn btn-primary" }))
+    @(Html.ActionLink<ProblemsController>(Resource.Back, c => c.Index(Model.ContestId), null, new { @class = "btn btn-primary" }))
 </div>
 @section scripts {
     <script>

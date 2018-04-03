@@ -1,9 +1,18 @@
-﻿@{
-    ViewBag.Title = "Съобщение";
+﻿@using OJS.Web
+
+@using Resource = Resources.Account.Views.ExternalNotify;
+
+@{
+    ViewBag.Title = Resource.Page_title;
+
+    var langCookieName = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+        ? GlobalConstants.EnglishCultureCookieValue
+        : GlobalConstants.BulgarianCultureCookieValue;
+
+    var externalRegisterFullAddress = $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
 }
 
-<h2>Съжаляваме за неудобството</h2>
+<h2>@Resource.Sorry_for_the_inconvenience</h2>
 <p>
-    Ако искате да се регистирате, променяте акаунта си или да възстановите своята парола, моля използвайте главния сайт на <a href="https://softuni.bg/account/authenticate" target="_blank">Софтуерния универсистет</a>.
+    @Html.Raw(string.Format(Resource.External_register_message, externalRegisterFullAddress))
 </p>
-

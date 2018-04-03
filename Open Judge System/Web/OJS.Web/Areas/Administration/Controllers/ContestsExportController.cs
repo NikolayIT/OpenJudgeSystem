@@ -54,7 +54,12 @@
             {
                 contest.Id,
                 contest.Name,
-                Problems = contest.Problems.AsQueryable().OrderBy(x => x.OrderBy).ThenBy(x => x.Name),
+                Problems = contest.ProblemGroups
+                    .Where(pg => !pg.IsDeleted)
+                    .SelectMany(pg => pg.Problems.Where(p => !p.IsDeleted))
+                    .AsQueryable()
+                    .OrderBy(x => x.OrderBy)
+                    .ThenBy(x => x.Name),
                 Questions = contest.Questions.OrderBy(x => x.Id),
                 Results = this.Data.Participants.All()
                     .Where(participant => participant.ContestId == contest.Id && participant.IsOfficial == compete)
@@ -64,7 +69,9 @@
                         ParticipantFirstName = participant.User.UserSettings.FirstName,
                         ParticipantLastName = participant.User.UserSettings.LastName,
                         Answers = participant.Answers.OrderBy(answer => answer.ContestQuestionId),
-                        ProblemResults = participant.Contest.Problems
+                        ProblemResults = participant.Contest.ProblemGroups
+                            .Where(pg => !pg.IsDeleted)
+                            .SelectMany(pg => pg.Problems.Where(p => !p.IsDeleted))
                             .Select(problem =>
                                 new
                                 {
@@ -107,10 +114,9 @@
 
             if (contest.IsOnline)
             {
-                var maxPointsForOnlineContest = contest.Problems
-                    .GroupBy(p => p.GroupNumber)
-                    .Select(gr => gr.First())
-                    .Sum(p => p.MaximumPoints);
+                var maxPointsForOnlineContest = contest.ProblemGroups
+                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                    .Sum(pg => pg.Problems.First().MaximumPoints);
 
                 totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPointsForOnlineContest})";
             }
@@ -343,7 +349,7 @@
         {
             var problems = this.Data.Problems
                 .All()
-                .Where(p => p.ContestId == contestId)
+                .Where(p => p.ProblemGroup.ContestId == contestId)
                 .OrderBy(x => x.OrderBy)
                 .ThenBy(x => x.Name)
                 .Select(ProblemModel.Model)

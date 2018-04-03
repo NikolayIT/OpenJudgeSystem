@@ -27,25 +27,18 @@
             bool isOfficial,
             bool isAdmin)
         {
-            Participant participant;
-            if (contest.IsOnline)
-            {
-                participant = new Participant(contest.Id, userId, isOfficial)
-                {
-                    ContestStartTime = DateTime.Now,
-                    ContestEndTime = DateTime.Now + contest.Duration
-                };
+            var participant = new Participant(contest.Id, userId, isOfficial);
 
-                if (isOfficial &&
-                    !isAdmin &&
+            if (contest.IsOnline && isOfficial)
+            {
+                participant.ParticipationStartTime = DateTime.Now;
+                participant.ParticipationEndTime = DateTime.Now + contest.Duration;
+                
+                if (!isAdmin &&
                     !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
                     this.AssignRandomProblemsToParticipant(participant, contest);
                 }
-            }
-            else
-            {
-                participant = new Participant(contest.Id, userId, isOfficial);
             }
 
             this.participantsData.Add(participant);
@@ -69,14 +62,14 @@
 
             this.participantsData.Update(
                 participantsInTimeRange
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) >=
-                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime)),
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) >=
+                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
-                    ContestEndTime = SqlFunctions.DateAdd(
+                    ParticipationEndTime = SqlFunctions.DateAdd(
                     "minute",
                     minutes,
-                    p.ContestEndTime)
+                    p.ParticipationEndTime)
                 });
         }
 
@@ -95,8 +88,8 @@
                         contestId,
                         contestStartTimeRangeStart,
                         contestStartTimeRangeEnd)
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ContestEndTime) <
-                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ContestStartTime));            
+                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) <
+                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));            
 
             return participantsInvalidForUpdate;
         }
@@ -105,15 +98,17 @@
         {
             var random = new Random();
 
-            var problemGroups = contest.Problems
-                .Where(p => !p.IsDeleted)
-                .GroupBy(p => p.GroupNumber)
-                .Select(problemGroup => problemGroup.ToList());
+            var problemGroups = contest.ProblemGroups
+                .Where(pg => !pg.IsDeleted && pg.Problems.Any(p => !p.IsDeleted));
 
             foreach (var problemGroup in problemGroups)
             {
-                var randomProblem = problemGroup[random.Next(0, problemGroup.Count)];
-                participant.Problems.Add(randomProblem);
+                var problemsInGroup = problemGroup.Problems.Where(p => !p.IsDeleted).ToList();
+                if (problemsInGroup.Any())
+                {
+                    var randomProblem = problemsInGroup[random.Next(0, problemsInGroup.Count)];
+                    participant.Problems.Add(randomProblem);
+                }
             }
         }
     }

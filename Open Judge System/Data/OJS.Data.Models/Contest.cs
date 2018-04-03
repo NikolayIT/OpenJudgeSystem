@@ -96,9 +96,13 @@
 
         public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
 
+        public virtual ICollection<ProblemGroup> ProblemGroups { get; set; } = new HashSet<ProblemGroup>();
+
         public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
         public virtual ICollection<ContestIp> AllowedIps { get; set; } = new HashSet<ContestIp>();
+
+        public virtual ICollection<ExamGroup> ExamGroups { get; set; } = new HashSet<ExamGroup>();
 
         [NotMapped]
         public bool CanBeCompeted
@@ -167,8 +171,8 @@
             (this.Type == ContestType.OnlinePracticalExam &&
                 this.Participants.Any(p =>
                     p.IsOfficial &&
-                    p.ContestEndTime.HasValue &&
-                    p.ContestEndTime.Value >= DateTime.Now));
+                    p.ParticipationEndTime.HasValue &&
+                    p.ParticipationEndTime.Value >= DateTime.Now));
 
         [NotMapped]
         public bool ResultsArePubliclyVisible
