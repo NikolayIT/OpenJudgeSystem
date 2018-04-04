@@ -56,7 +56,8 @@
             ExecutionContext executionContext,
             Func<CompilerType, string> getCompilerPathFunc,
             IExecutor executor,
-            bool useSystemEncoding = true)
+            bool useSystemEncoding = true,
+            bool dependOnExitCodeForRunTimeError = false)
         {
             var result = new ExecutionResult();
 
@@ -85,7 +86,8 @@
                     null,
                     null,
                     false,
-                    useSystemEncoding);
+                    useSystemEncoding,
+                    dependOnExitCodeForRunTimeError);
 
                 var testResult = this.ExecuteAndCheckTest(
                     test,
