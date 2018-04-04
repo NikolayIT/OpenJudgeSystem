@@ -132,4 +132,7 @@
   <data name="Forgotten_password" xml:space="preserve">
     <value>Забравена парола</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Начало</value>
+  </data>
 </root>
