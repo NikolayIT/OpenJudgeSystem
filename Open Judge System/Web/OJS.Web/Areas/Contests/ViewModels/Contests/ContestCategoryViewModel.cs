@@ -9,7 +9,7 @@
 
     public class ContestCategoryViewModel
     {
-        public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromContestCategory =>
+        public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromLeafContestCategory =>
             contestCategory => new ContestCategoryViewModel
             {
                 Id = contestCategory.Id,
@@ -26,11 +26,23 @@
                     .Select(ContestCategoryListViewModel.FromCategory)
             };
 
+        public static Expression<Func<ContestCategory, ContestCategoryViewModel>> FromContestCategory =>
+            contestCategory => new ContestCategoryViewModel
+            {
+                Id = contestCategory.Id,
+                CategoryName = contestCategory.Name,
+                SubCategories = contestCategory.Children
+                    .AsQueryable()
+                    .Where(cc => !cc.IsDeleted && cc.IsVisible)
+                    .OrderBy(cc => cc.OrderBy)
+                    .Select(ContestCategoryListViewModel.FromCategory)
+            };
+
         public int Id { get; set; }
 
         public string CategoryName { get; set; }
 
-        public IEnumerable<ContestViewModel> Contests { get; set; }
+        public IEnumerable<ContestViewModel> Contests { get; set; } = Enumerable.Empty<ContestViewModel>();
 
         public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; }
 
