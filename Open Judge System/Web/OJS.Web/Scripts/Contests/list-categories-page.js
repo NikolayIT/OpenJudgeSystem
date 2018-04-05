@@ -26,6 +26,12 @@
 
         if (window.location.hash) {
             var categoryId = getCategoryIdFromHash();
+
+            var elementObj = {
+                elementId: categoryId
+            };
+
+            treeview.trigger('select', elementObj);
             self.select(categoryId);
         } else {
             $.get('/Contests/List/ByCategory/', null, function (data) {
@@ -97,8 +103,14 @@
                 elementId: id
             };
 
-            treeview.trigger('select', elementObj);
-            treeview.expand(element);
+            var isNonTreeCall = self.getQueryParameterFromUrl('nonTreeCall');
+
+            if (isNonTreeCall) {
+                window.location.href = window.location.href.split('?')[0];
+                treeview.trigger('select', elementObj);
+                treeview.expand(element);
+            }
+
             treeview.select(element);
         }
     };
@@ -107,8 +119,24 @@
         return currentlySelectedId;
     };
 
+    var getQueryParameterFromUrl = function (queryParameterName) {
+        var query = window.location.href.split('?').pop();
+        var queryParameters = query.split('&');
+
+        for (var i = 0; i < queryParameters.length; i++) {
+            var parameterName = queryParameters[i].split('=');
+
+            if (parameterName[0] === queryParameterName) {
+                return parameterName[1] === undefined ? true : parameterName[1];
+            }
+        }
+
+        return undefined;
+    };
+
     return {
         expandSubcategories: expandSubcategories,
+        getQueryParameterFromUrl: getQueryParameterFromUrl,
         select: select,
         currentId: currentId,
         onDataBound: onDataBound,

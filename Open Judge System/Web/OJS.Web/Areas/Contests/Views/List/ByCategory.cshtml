@@ -182,9 +182,9 @@
                 @foreach (var subCategory in Model.SubCategories)
                 {
                     string url;
-                    if (ViewBag.IsAjax)
+                    if (ViewBag.IsAjax ?? false)
                     {
-                        url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}";
+                        url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}?nonTreeCall=true";
                     }
                     else
                     {
