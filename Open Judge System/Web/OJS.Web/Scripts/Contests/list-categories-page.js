@@ -1,47 +1,42 @@
-﻿// TODO: Fix nesting problem
-function CategoryExpander() {
+﻿function CategoryExpander() {
     'use strict';
 
     var treeview;
     var treeviewSelector;
+    var containerToFill;
     var currentlySelectedId;
     var firstLoad = true;
 
     /* eslint consistent-this: 0 */
     var self;
 
-    var init = function(treeView, treeViewSelector) {
+    var init = function(treeView, treeViewSelector, containerToFillSelector) {
         treeview = treeView;
         treeviewSelector = treeViewSelector;
+        containerToFill = containerToFillSelector;
         self = this;
     };
 
     function onDataBound() {
-        var categoryId;
-        if (firstLoad && window.location.hash) {
-            categoryId = getCategoryIdFromHash();
-            self.select(categoryId);
-            firstLoad = false;
-        } else {
+        if (!firstLoad) {
             return;
         }
 
-        var element = treeview.dataSource.get(categoryId);
+        firstLoad = false;
 
-        var nodeToSelect = {
-            elementId: categoryId,
-            elementName: element === undefined ? null : element.NameUrl,
-            uid: element === undefined ? null : element.uid
-        };
-
-        if (categoryId) {
-            treeview.trigger('select', nodeToSelect);
+        if (window.location.hash) {
+            var categoryId = getCategoryIdFromHash();
+            self.select(categoryId);
+        } else {
+            $.get('/Contests/List/ByCategory/', null, function (data) {
+                containerToFill.append(data);
+            });
         }
     }
 
     var categorySelected = function(e) {
-        $('#contestsList').html('');
-        $('#contestsList').addClass('k-loading');
+        containerToFill.html('');
+        containerToFill.addClass('k-loading');
 
         var elementId;
         var elementName;
@@ -70,8 +65,8 @@ function CategoryExpander() {
         }
 
         var ajaxUrl = '/Contests/List/ByCategory/' + elementId;
-        $('#contestsList').load(ajaxUrl, function() {
-            $('#contestsList').removeClass('k-loading');
+        containerToFill.load(ajaxUrl, function() {
+            containerToFill.removeClass('k-loading');
         });
     };
 
@@ -143,6 +138,8 @@ $(document).ready(function () {
     });
 
     var treeviewSelector = $('#contestsCategories');
+    var containerToFillSelector = $('#contestsList');
     var treeview = treeviewSelector.data('kendoTreeView');
-    expander.init(treeview, treeviewSelector);
+    
+    expander.init(treeview, treeviewSelector, containerToFillSelector);
 });

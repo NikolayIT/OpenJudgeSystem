@@ -31,11 +31,7 @@
             this.contestsData = contestsData;
         }
 
-        public ActionResult Index()
-        {
-            var contests = this.Data.Contests.All().Select(ContestViewModel.FromContest).ToList();
-            return this.View(contests);
-        }
+        public ActionResult Index() => this.View();
 
         public ActionResult ReadCategories(int? id)
         {
