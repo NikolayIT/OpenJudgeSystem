@@ -5,7 +5,6 @@ function CategoryExpander() {
     var treeview;
     var treeviewSelector;
     var currentlySelectedId;
-    var data = [];
     var firstLoad = true;
 
     /* eslint consistent-this: 0 */
@@ -24,7 +23,7 @@ function CategoryExpander() {
             self.select(categoryId);
             firstLoad = false;
         } else {
-            categoryId = currentlySelectedId;
+            return;
         }
 
         var element = treeview.dataSource.get(categoryId);
@@ -76,34 +75,27 @@ function CategoryExpander() {
         });
     };
 
-    var setNestingData = function(categoriesArray) {
-        if (categoriesArray) {
-            data = categoriesArray;
-        }
-    };
-
-    var expandSubcategories = function() {
-        for (var i = 0; i < data.length; i++) {
-            var id = data[i];
-            self.select(id);
-        }
+    var expandSubcategories = function (data) {
+        var selectedCategoryId = data.pop();
+        treeview.expandPath(data, function () {
+            self.select(selectedCategoryId);
+        });
     };
 
     var select = function(id) {
         currentlySelectedId = id;
 
         var el = treeview.dataSource.get(id);
-        if (!el && data.indexOf(id) < 0) {
+        if (!el) {
             var parentsUrl = '/Contests/List/GetParents/' + id;
 
             $.ajax({
                 url: parentsUrl,
                 success: function(result) {
-                    self.setNestingData(result);
-                    self.expandSubcategories();
+                    self.expandSubcategories(result);
                 }
             });
-        } else if (el) {
+        } else {
             var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
 
             var elementObj = {
@@ -124,7 +116,6 @@ function CategoryExpander() {
         expandSubcategories: expandSubcategories,
         select: select,
         currentId: currentId,
-        setNestingData: setNestingData,
         onDataBound: onDataBound,
         categorySelected: categorySelected,
         init: init
