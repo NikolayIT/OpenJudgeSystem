@@ -6,12 +6,16 @@
     ViewBag.Title = Resource.Title;
 }
 
+@section Styles{
+    @Styles.Render("~/Content/contests/list/index")
+}
+
 <ol class="breadcrumb">
     <li><a href="/">@Resource.Home</a></li>
     <li class="active">@Resource.Contests</li>
 </ol>
 
-<div class="row">
+<div class="row treeview-contests-container">
     <div class="col-md-3">
         <h2>@ViewBag.Title</h2>
 
@@ -19,16 +23,16 @@
             .Name("contestsCategories")
             .DataTextField("Name")
             .DataSource(dataSource => dataSource
-            .Model(m =>
+                .Model(m =>
+                {
+                    m.Id("Id");
+                    m.HasChildren("HasChildren");
+                })
+                .Read(read => read.Action("ReadCategories", "List", new {area = "Contests"})))
+            .Events(ev =>
             {
-                m.Id("Id");
-                m.HasChildren("HasChildren");
-            })
-            .Read(read => read.Action("ReadCategories", "List", new { area = "Contests" })))
-            .Events(x =>
-            {
-                x.Select("expander.categorySelected");
-                x.DataBound("expander.onDataBound");
+                ev.Select("expander.categorySelected");
+                ev.DataBound("expander.onDataBound");
             }))
 
         @if (User.IsAdmin())
@@ -43,6 +47,8 @@
         <div id="contestsList">
         </div>
     </div>
+    
+    @Html.Partial("_LoadingMask", "contest-categories-loading-mask")
 </div>
 
 @section Scripts {

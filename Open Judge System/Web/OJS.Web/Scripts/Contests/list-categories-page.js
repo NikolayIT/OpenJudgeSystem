@@ -42,7 +42,7 @@
 
     var categorySelected = function(e) {
         containerToFill.html('');
-        containerToFill.addClass('k-loading');
+        $('#contest-categories-loading-mask').show();
 
         var elementId;
         var elementName;
@@ -71,8 +71,8 @@
         }
 
         var ajaxUrl = '/Contests/List/ByCategory/' + elementId;
-        containerToFill.load(ajaxUrl, function() {
-            containerToFill.removeClass('k-loading');
+        containerToFill.load(ajaxUrl, function () {
+            $('#contest-categories-loading-mask').hide();
         });
     };
 
