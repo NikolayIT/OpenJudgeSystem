@@ -18,7 +18,7 @@
                     .Where(c => c.IsVisible && !c.IsDeleted)
                     .OrderBy(c => c.OrderBy)
                     .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
-                    .Select(ContestViewModel.FromContest),
+                    .Select(ContestListViewModel.FromContest),
                 SubCategories = contestCategory.Children
                     .AsQueryable()
                     .Where(cc => !cc.IsDeleted && cc.IsVisible)
@@ -42,7 +42,7 @@
 
         public string CategoryName { get; set; }
 
-        public IEnumerable<ContestViewModel> Contests { get; set; } = Enumerable.Empty<ContestViewModel>();
+        public IEnumerable<ContestListViewModel> Contests { get; set; } = Enumerable.Empty<ContestListViewModel>();
 
         public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; }
 

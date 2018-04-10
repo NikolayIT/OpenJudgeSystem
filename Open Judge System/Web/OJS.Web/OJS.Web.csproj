@@ -1709,6 +1709,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsChartViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />

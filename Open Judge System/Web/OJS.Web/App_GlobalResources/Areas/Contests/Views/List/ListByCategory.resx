@@ -138,9 +138,6 @@
   <data name="Has_practice_password" xml:space="preserve">
     <value>You need a password to practice</value>
   </data>
-  <data name="Has_questions_to_be_answered" xml:space="preserve">
-    <value>The contest has questions to be answered</value>
-  </data>
   <data name="Participant_count" xml:space="preserve">
     <value>Participant count</value>
   </data>

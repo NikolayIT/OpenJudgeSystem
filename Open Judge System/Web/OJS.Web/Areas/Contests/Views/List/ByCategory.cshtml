@@ -41,11 +41,6 @@
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
                             }
 
-                            @if (contest.HasContestQuestions)
-                            {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
-                            }
-
                             @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
                             {
                                 <div class="row-results">
@@ -68,11 +63,6 @@
                                 <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
                             }
 
-                            @if (contest.HasPracticeQuestions)
-                            {
-                                <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
-                            }
-
                             <div class="row-results">
                                 <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
                                 <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
@@ -93,11 +83,6 @@
                                 if (contest.HasContestPassword)
                                 {
                                     <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
-                                }
-
-                                if (contest.HasContestQuestions)
-                                {
-                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                                 }
                             }
                         </td>
@@ -129,11 +114,6 @@
                                 if (contest.HasPracticePassword)
                                 {
                                     <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
-                                }
-
-                                if (contest.HasPracticeQuestions)
-                                {
-                                    <div class="glyphicon glyphicon-question-sign text-white" title="@Resource.Has_questions_to_be_answered"></div>
                                 }
                             }
                         </td>
