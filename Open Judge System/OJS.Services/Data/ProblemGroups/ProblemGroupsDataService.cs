@@ -22,6 +22,8 @@
 
         public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
 
+        public IQueryable<ProblemGroup> GetAllWithDeleted() => this.problemGroups.AllWithDeleted();
+
         public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
             this.problemGroups.All().Where(pg => pg.ContestId == contestId);
 

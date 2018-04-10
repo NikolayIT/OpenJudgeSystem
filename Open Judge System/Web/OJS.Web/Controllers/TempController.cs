@@ -18,6 +18,7 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
 
@@ -28,12 +29,17 @@
         private const string DeleteLeftOverFoldersInTempFolderCronExpression = "0 1 * * *";
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
+        private readonly IProblemGroupsDataService problemGroupsData;
 
         public TempController(
             IOjsData data,
-            IHangfireBackgroundJobService backgroundJobs)
-            : base(data) =>
-                this.backgroundJobs = backgroundJobs;
+            IHangfireBackgroundJobService backgroundJobs,
+            IProblemGroupsDataService problemGroupsData)
+            : base(data)
+        {
+            this.backgroundJobs = backgroundJobs;
+            this.problemGroupsData = problemGroupsData;
+        }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
         {
@@ -224,6 +230,25 @@
                 .Update(c => new Contest { OrderBy = 0 });
 
             return this.Content($"Changed OrderBy of {contestsAffected} contests in the category {categoryName}");
+        }
+
+        public ActionResult DeleteEmptyProblemGroups()
+        {
+            var softDeleted = this.problemGroupsData
+                .GetAll()
+                .Where(pg => pg.Problems.All(p => p.IsDeleted))
+                .Update(pg => new ProblemGroup
+                {
+                    IsDeleted = true
+                });
+
+            var harDeleted = this.problemGroupsData
+                .GetAllWithDeleted()
+                .Where(pg => !pg.Problems.Any())
+                .Delete();
+
+            return this.Content($"Done! ProblemGroups set to deleted: {softDeleted}" +
+                $"<br/> ProblemGroups hard deleted: {harDeleted}");
         }
     }
 }
