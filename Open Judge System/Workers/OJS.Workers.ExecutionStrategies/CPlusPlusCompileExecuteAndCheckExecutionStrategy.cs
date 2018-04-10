@@ -19,7 +19,14 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
-            var result = this.CompileExecuteAndCheck(executionContext, this.GetCompilerPathFunc, executor, false);
+
+            var result = this.CompileExecuteAndCheck(
+                executionContext,
+                this.GetCompilerPathFunc,
+                executor,
+                useSystemEncoding: false,
+                dependOnExitCodeForRunTimeError: true);
+
             return result;
         }
     }
