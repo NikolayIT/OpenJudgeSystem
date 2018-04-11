@@ -45,6 +45,12 @@
                         Settings.DotNetCliBaseTimeUsedInMilliseconds,
                         Settings.DotNetCliBaseMemoryUsedInBytes);
                     break;
+                case ExecutionStrategyType.DotNetCoreUnitTestsExecutionStrategy:
+                    executionStrategy = new DotNetCoreUnitTestsExecutionStrategy(
+                        GetCompilerPath,
+                        Settings.DotNetCliBaseTimeUsedInMilliseconds,
+                        Settings.DotNetCliBaseMemoryUsedInBytes);
+                    break;
                 case ExecutionStrategyType.CSharpUnitTestsExecutionStrategy:
                     executionStrategy = new CSharpUnitTestsExecutionStrategy(
                         Settings.NUnitConsoleRunnerPath,
