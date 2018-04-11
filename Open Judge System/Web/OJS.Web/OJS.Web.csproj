@@ -1709,6 +1709,7 @@
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestRegistrationViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsChartViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\DropDownAnswerViewModel.cs" />
@@ -1807,6 +1808,8 @@
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
+    <Content Include="Content\css\common\loading-mask.css" />
+    <Content Include="Content\css\contests\list\list-index.css" />
     <Content Include="Content\css\home\index\home.css" />
     <Content Include="Content\docs.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -3311,6 +3314,7 @@
     <Content Include="Views\Shared\_SimplePagination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
+    <Content Include="Views\Shared\_LoadingMask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

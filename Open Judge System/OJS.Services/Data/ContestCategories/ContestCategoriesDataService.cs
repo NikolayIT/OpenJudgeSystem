@@ -15,6 +15,9 @@
         public IQueryable<ContestCategory> GetAllVisible() =>
             this.contestCategories.All().Where(cc => cc.IsVisible);
 
+        public IQueryable<ContestCategory> GetVisibleByIdQuery(int id) =>
+            this.GetAllVisible().Where(cc => cc.Id == id);
+
         public IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId) =>
             this.GetAllVisible().Where(cc =>
                 cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
@@ -25,6 +28,11 @@
                 .All()
                 .Where(cc => cc.Id == id)
                 .Select(cc => cc.Name)
+                .FirstOrDefault();
+
+        public bool HasContestsById(int id) =>
+            this.GetVisibleByIdQuery(id)
+                .Select(c => c.Contests.Any())
                 .FirstOrDefault();
     }
 }

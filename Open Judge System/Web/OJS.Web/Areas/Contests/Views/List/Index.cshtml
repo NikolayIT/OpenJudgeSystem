@@ -1,9 +1,13 @@
-﻿@using OJS.Web.Areas.Contests.ViewModels.Contests
+﻿@using OJS.Web.Areas.Administration.Controllers
+
 @using Resource = Resources.Areas.Contests.Views.ListIndex
 
-@model IEnumerable<ContestViewModel>
 @{
     ViewBag.Title = Resource.Title;
+}
+
+@section Styles{
+    @Styles.Render("~/Content/contests/list/index")
 }
 
 <ol class="breadcrumb">
@@ -11,35 +15,31 @@
     <li class="active">@Resource.Contests</li>
 </ol>
 
-@section Scripts {
-    <script src="/Scripts/Contests/list-categories-page.js"></script>
-}
-
-<div class="row">
+<div class="row treeview-contests-container">
     <div class="col-md-3">
         <h2>@ViewBag.Title</h2>
+
         @(Html.Kendo().TreeView()
-              .Name("contestsCategories")
-              .DataTextField("Name")
-              .DataSource(dataSource => dataSource
-                          .Model(x =>
-                          {
-                              x.Id("Id");
-                              x.HasChildren("HasChildren");
-                          })
-                          .Read(read => read
-                              .Action("ReadCategories", "List", new { area = "Contests" })))
-              .Events(x =>
-              {
-                  x.Select("expander.categorySelected");
-                  x.DataBound("expander.onDataBound");
-              })
-        )
+            .Name("contestsCategories")
+            .DataTextField("Name")
+            .DataSource(dataSource => dataSource
+                .Model(m =>
+                {
+                    m.Id("Id");
+                    m.HasChildren("HasChildren");
+                })
+                .Read(read => read.Action("ReadCategories", "List", new {area = "Contests"})))
+            .Events(ev =>
+            {
+                ev.Select("expander.categorySelected");
+                ev.DataBound("expander.onDataBound");
+            }))
+
         @if (User.IsAdmin())
         {
             <br />
-            <p class="pull-left"><a class="btn btn-primary" href="/Administration/ContestCategories">@Resource.Categories &raquo;</a></p>
-            <p class="pull-right"><a class="btn btn-primary" href="/Administration/ContestCategories/Hierarchy">@Resource.Hierarchy &raquo;</a></p>
+            <p class="pull-left"><a class="btn btn-primary" href="@(Url.Action<ContestCategoriesController>(c => c.Index()))">@Resource.Categories &raquo;</a></p>
+            <p class="pull-right"><a class="btn btn-primary" href="@(Url.Action<ContestCategoriesController>(c => c.Hierarchy()))">@Resource.Hierarchy &raquo;</a></p>
             <div class="clearfix"></div>
         }
     </div>
@@ -47,11 +47,10 @@
         <div id="contestsList">
         </div>
     </div>
+    
+    @Html.Partial("_LoadingMask", "contest-categories-loading-mask")
 </div>
 
-<script>
-    var contestsList = $('#contestsList');
-    $.get('/Contests/List/ByCategory/', null, function (data) {
-        contestsList.append(data);
-    });
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/list-categories")
+}
