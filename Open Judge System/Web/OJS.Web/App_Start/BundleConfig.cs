@@ -94,7 +94,8 @@
                 "~/Content/Contests/submission-view-page.css"));
 
             bundles.Add(new StyleBundle("~/Content/Contests/results-page").Include(
-                "~/Content/Contests/results-page.css"));
+                "~/Content/Contests/results-page.css",
+                "~/Content/css/common/loading-mask.css"));
 
             bundles.Add(new StyleBundle("~/Content/home/index").Include(
                 "~/Content/css/home/index/home.css"));
