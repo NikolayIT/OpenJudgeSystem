@@ -138,9 +138,6 @@
   <data name="Has_practice_password" xml:space="preserve">
     <value>Състезанието е защитено с парола</value>
   </data>
-  <data name="Has_questions_to_be_answered" xml:space="preserve">
-    <value>За да участвате в състезанието, трябва да отговорите на въпроси</value>
-  </data>
   <data name="Participant_count" xml:space="preserve">
     <value>Участници</value>
   </data>

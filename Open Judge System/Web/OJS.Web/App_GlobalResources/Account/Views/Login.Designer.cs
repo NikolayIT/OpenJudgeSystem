@@ -70,6 +70,15 @@ namespace Resources.Account.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to if you are not already registered..
         /// </summary>
         public static string If_not_already_registered {

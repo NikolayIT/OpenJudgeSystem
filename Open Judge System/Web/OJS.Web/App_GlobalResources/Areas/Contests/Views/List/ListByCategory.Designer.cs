@@ -124,15 +124,6 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The contest has questions to be answered.
-        /// </summary>
-        public static string Has_questions_to_be_answered {
-            get {
-                return ResourceManager.GetString("Has_questions_to_be_answered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Participant count.
         /// </summary>
         public static string Participant_count {

@@ -1,48 +1,48 @@
-﻿// TODO: Fix nesting problem
-function CategoryExpander() {
+﻿function CategoryExpander() {
     'use strict';
 
     var treeview;
     var treeviewSelector;
+    var containerToFill;
     var currentlySelectedId;
-    var data = [];
     var firstLoad = true;
 
     /* eslint consistent-this: 0 */
     var self;
 
-    var init = function(treeView, treeViewSelector) {
+    var init = function(treeView, treeViewSelector, containerToFillSelector) {
         treeview = treeView;
         treeviewSelector = treeViewSelector;
+        containerToFill = containerToFillSelector;
         self = this;
     };
 
     function onDataBound() {
-        var categoryId;
-        if (firstLoad && window.location.hash) {
-            categoryId = getCategoryIdFromHash();
-            self.select(categoryId);
-            firstLoad = false;
-        } else {
-            categoryId = currentlySelectedId;
+        if (!firstLoad) {
+            return;
         }
 
-        var element = treeview.dataSource.get(categoryId);
+        firstLoad = false;
 
-        var nodeToSelect = {
-            elementId: categoryId,
-            elementName: element === undefined ? null : element.NameUrl,
-            uid: element === undefined ? null : element.uid
-        };
+        if (window.location.hash) {
+            var categoryId = getCategoryIdFromHash();
 
-        if (categoryId) {
-            treeview.trigger('select', nodeToSelect);
+            var elementObj = {
+                elementId: categoryId
+            };
+
+            treeview.trigger('select', elementObj);
+            self.select(categoryId);
+        } else {
+            $.get('/Contests/List/ByCategory/', null, function (data) {
+                containerToFill.append(data);
+            });
         }
     }
 
     var categorySelected = function(e) {
-        $('#contestsList').html('');
-        $('#contestsList').addClass('k-loading');
+        containerToFill.html('');
+        $('#contest-categories-loading-mask').show();
 
         var elementId;
         var elementName;
@@ -71,47 +71,46 @@ function CategoryExpander() {
         }
 
         var ajaxUrl = '/Contests/List/ByCategory/' + elementId;
-        $('#contestsList').load(ajaxUrl, function() {
-            $('#contestsList').removeClass('k-loading');
+        containerToFill.load(ajaxUrl, function () {
+            $('#contest-categories-loading-mask').hide();
         });
     };
 
-    var setNestingData = function(categoriesArray) {
-        if (categoriesArray) {
-            data = categoriesArray;
-        }
-    };
-
-    var expandSubcategories = function() {
-        for (var i = 0; i < data.length; i++) {
-            var id = data[i];
-            self.select(id);
-        }
+    var expandSubcategories = function (data) {
+        var selectedCategoryId = data.pop();
+        treeview.expandPath(data, function () {
+            self.select(selectedCategoryId);
+        });
     };
 
     var select = function(id) {
         currentlySelectedId = id;
 
         var el = treeview.dataSource.get(id);
-        if (!el && data.indexOf(id) < 0) {
+        if (!el) {
             var parentsUrl = '/Contests/List/GetParents/' + id;
 
             $.ajax({
                 url: parentsUrl,
                 success: function(result) {
-                    self.setNestingData(result);
-                    self.expandSubcategories();
+                    self.expandSubcategories(result);
                 }
             });
-        } else if (el) {
+        } else {
             var element = treeviewSelector.find('[data-uid=' + el.uid + ']');
 
             var elementObj = {
                 elementId: id
             };
 
-            treeview.trigger('select', elementObj);
-            treeview.expand(element);
+            var isNonTreeCall = self.getQueryParameterFromUrl('nonTreeCall');
+
+            if (isNonTreeCall) {
+                window.location.href = window.location.href.split('?')[0];
+                treeview.trigger('select', elementObj);
+                treeview.expand(element);
+            }
+
             treeview.select(element);
         }
     };
@@ -120,11 +119,26 @@ function CategoryExpander() {
         return currentlySelectedId;
     };
 
+    var getQueryParameterFromUrl = function (queryParameterName) {
+        var query = window.location.href.split('?').pop();
+        var queryParameters = query.split('&');
+
+        for (var i = 0; i < queryParameters.length; i++) {
+            var parameterName = queryParameters[i].split('=');
+
+            if (parameterName[0] === queryParameterName) {
+                return parameterName[1] === undefined ? true : parameterName[1];
+            }
+        }
+
+        return undefined;
+    };
+
     return {
         expandSubcategories: expandSubcategories,
+        getQueryParameterFromUrl: getQueryParameterFromUrl,
         select: select,
         currentId: currentId,
-        setNestingData: setNestingData,
         onDataBound: onDataBound,
         categorySelected: categorySelected,
         init: init
@@ -152,6 +166,8 @@ $(document).ready(function () {
     });
 
     var treeviewSelector = $('#contestsCategories');
+    var containerToFillSelector = $('#contestsList');
     var treeview = treeviewSelector.data('kendoTreeView');
-    expander.init(treeview, treeviewSelector);
+    
+    expander.init(treeview, treeviewSelector, containerToFillSelector);
 });

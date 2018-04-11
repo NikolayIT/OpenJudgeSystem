@@ -68,7 +68,12 @@
                     compilationResult.OutputFile,
                     test.Input,
                     executionContext.TimeLimit,
-                    executionContext.MemoryLimit);
+                    executionContext.MemoryLimit,
+                    executionArguments: null,
+                    workingDirectory: null,
+                    useProcessTime: false,
+                    useSystemEncoding: false,
+                    dependOnExitCodeForRunTimeError: true);
 
                 var testResults = this.ExecuteAndCheckTest(
                     test,
