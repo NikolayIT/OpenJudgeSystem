@@ -242,13 +242,13 @@
                     IsDeleted = true
                 });
 
-            var harDeleted = this.problemGroupsData
+            var hardDeleted = this.problemGroupsData
                 .GetAllWithDeleted()
                 .Where(pg => !pg.Problems.Any())
                 .Delete();
 
             return this.Content($"Done! ProblemGroups set to deleted: {softDeleted}" +
-                $"<br/> ProblemGroups hard deleted: {harDeleted}");
+                $"<br/> ProblemGroups hard deleted: {hardDeleted}");
         }
     }
 }
