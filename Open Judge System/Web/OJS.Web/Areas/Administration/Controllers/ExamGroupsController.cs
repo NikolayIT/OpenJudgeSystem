@@ -45,7 +45,7 @@
         {
             var examGroups = this.examGroupsData.GetAll();
 
-            if (this.User.IsLecturer())
+            if (this.User.IsLecturer() && !this.User.IsAdmin())
             {
                 examGroups = this.examGroupsData.GetAllByLecturer(this.UserProfile.Id);
             }
