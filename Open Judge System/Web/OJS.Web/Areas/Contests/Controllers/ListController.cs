@@ -8,6 +8,7 @@
 
     using OJS.Data;
     using OJS.Services.Business.Contests;
+    using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
@@ -20,22 +21,21 @@
     {
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IContestsDataService contestsData;
+        private readonly IContestCategoriesDataService contestCategoriesData;
 
         public ListController(
             IOjsData data,
             IContestsBusinessService contestsBusiness,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IContestCategoriesDataService contestCategoriesData)
             : base(data)
         {
             this.contestsBusiness = contestsBusiness;
             this.contestsData = contestsData;
+            this.contestCategoriesData = contestCategoriesData;
         }
 
-        public ActionResult Index()
-        {
-            var contests = this.Data.Contests.All().Select(ContestViewModel.FromContest).ToList();
-            return this.View(contests);
-        }
+        public ActionResult Index() => this.View();
 
         public ActionResult ReadCategories(int? id)
         {
@@ -72,19 +72,28 @@
             ContestCategoryViewModel contestCategory;
             if (id.HasValue)
             {
-                contestCategory = this.Data.ContestCategories
-                    .All()
-                    .Where(cc => cc.Id == id && !cc.IsDeleted && cc.IsVisible)
-                    .OrderBy(cc => cc.OrderBy)
-                    .Select(ContestCategoryViewModel.FromContestCategory)
-                    .FirstOrDefault();
+                var categories = this.contestCategoriesData
+                    .GetVisibleByIdQuery(id.Value)
+                    .OrderBy(cc => cc.OrderBy);
+
+                if (this.contestCategoriesData.HasContestsById(id.Value))
+                {
+                    contestCategory = categories
+                        .Select(ContestCategoryViewModel.FromLeafContestCategory)
+                        .FirstOrDefault();
+                }
+                else
+                {
+                    contestCategory = categories
+                        .Select(ContestCategoryViewModel.FromContestCategory)
+                        .FirstOrDefault();
+                }
             }
             else
             {
                 contestCategory = new ContestCategoryViewModel
                 {
                     CategoryName = Resource.Main_categories,
-                    Contests = new HashSet<ContestViewModel>(),
                     SubCategories = this.Data.ContestCategories
                         .All()
                         .Where(cc => cc.IsVisible && !cc.IsDeleted && cc.Parent == null)

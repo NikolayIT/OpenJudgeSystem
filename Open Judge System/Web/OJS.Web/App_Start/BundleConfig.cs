@@ -53,6 +53,9 @@
             bundles.Add(new ScriptBundle("~/bundles/contests-index").Include(
                 "~/Scripts/Administration/Contests/contests-index.js",
                 "~/Scripts/Administration/Contests/contests-helper.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/list-categories").Include(
+                "~/Scripts/Contests/list-categories-page.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)
@@ -85,6 +88,10 @@
 
             bundles.Add(new StyleBundle("~/Content/home/index").Include(
                 "~/Content/css/home/index/home.css"));
+
+            bundles.Add(new StyleBundle("~/Content/contests/list/index").Include(
+                "~/Content/css/contests/list/list-index.css",
+                "~/Content/css/common/loading-mask.css"));
         }
     }
 }

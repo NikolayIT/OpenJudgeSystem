@@ -15,6 +15,8 @@
 
         IQueryable<ProblemGroup> GetAll();
 
+        IQueryable<ProblemGroup> GetAllWithDeleted();
+
         IQueryable<ProblemGroup> GetAllByContest(int contestId);
 
         IQueryable<Problem> GetProblemsById(int id);
