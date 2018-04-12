@@ -101,7 +101,6 @@
                 "~/Content/css/home/index/home.css"));
 
             bundles.Add(new StyleBundle("~/Content/contests/list/index").Include(
-                "~/Content/css/contests/list/list-index.css",
                 "~/Content/css/common/loading-mask.css"));
         }
     }

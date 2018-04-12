@@ -5,7 +5,3 @@
 tr.success a, tr.success a:hover {
     color: #fff;
 }
-
-.results-container {
-    position: relative;
-}
