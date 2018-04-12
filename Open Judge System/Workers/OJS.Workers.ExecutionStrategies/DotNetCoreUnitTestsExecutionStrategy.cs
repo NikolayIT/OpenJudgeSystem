@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -13,6 +15,15 @@
     public class DotNetCoreUnitTestsExecutionStrategy : DotNetCoreProjectTestsExecutionStrategy
     {
         private const string TestedCode = "TestedCode.cs";
+        private const string TestedCodeFolderName = "TestedCodeProject";
+        private const string TestedCodeCsProjTemplate = @"
+            <Project Sdk=""Microsoft.NET.Sdk\"">
+                <PropertyGroup>
+                    <TargetFramework>netcoreapp2.0</TargetFramework>
+                </PropertyGroup>
+            </Project>";
+
+        private string nUnitLiteConsoleAppCsProjTemplate;
 
         public DotNetCoreUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -22,21 +33,29 @@
         {
         }
 
+        private string TestedCodeDirectory => Path.Combine(this.WorkingDirectory, TestedCodeFolderName);
+
+        private string TestedCodeCsProjPath =>
+            Path.Combine(this.TestedCodeDirectory, TestedCodeFolderName + CsProjFileExtention);
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
-            Directory.CreateDirectory(this.UserProjectDirectory);
-
             var result = new ExecutionResult();
 
-            var userSubmission = executionContext.FileContent;
+            Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
+            Directory.CreateDirectory(this.UserProjectDirectory);
+            Directory.CreateDirectory(this.TestedCodeDirectory);
 
-            this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
-            this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
+            File.WriteAllText(this.TestedCodeCsProjPath, TestedCodeCsProjTemplate);
 
-            var userCsProjPaths = new List<string> { this.GetCsProjFilePath() };
+            this.ExtractFilesInWorkingDirectory(executionContext.FileContent, this.UserProjectDirectory);
 
-            var nunitLiteConsoleAppCsProjPath = this.CreateNunitLiteConsoleApp(userCsProjPaths);
+            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(
+                new List<string> { this.TestedCodeCsProjPath });
+
+            this.nUnitLiteConsoleAppCsProjTemplate = nunitLiteConsoleApp.csProjTemplate;
+
+            this.MoveUserTestsToNunitLiteConsoleAppFolder();
 
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
@@ -45,12 +64,12 @@
                 executionContext.CheckerParameter);
 
             result = this.RunUnitTests(
-                nunitLiteConsoleAppCsProjPath,
+                nunitLiteConsoleApp.csProjPath,
                 executionContext,
                 executor,
                 checker,
                 result,
-                userCsProjPaths.First(),
+                this.TestedCodeCsProjPath,
                 AdditionalExecutionArguments);
 
             return result;
@@ -65,8 +84,7 @@
             string csProjFilePath,
             string additionalExecutionArguments)
         {
-            var projectDirectory = Path.GetDirectoryName(csProjFilePath);
-            var testedCodePath = $"{projectDirectory}\\{TestedCode}";
+            var testedCodePath = $"{this.TestedCodeDirectory}\\{TestedCode}";
             var originalTestsPassed = -1;
             var count = 0;
 
@@ -75,7 +93,7 @@
 
             foreach (var test in tests)
             {
-                File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
+                this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
                 File.WriteAllText(testedCodePath, test.Input);
 
@@ -94,31 +112,47 @@
                     return result;
                 }
 
-                //// Delete tests before execution so the user can't acces them
+                // Delete tests before execution so the user can't acces them
                 FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string>
                 {
-                    "test",
-                    csProjFilePath,
-                    "--no-build",
-                    "--no-restore",
-                    "--output",
-                    Path.GetDirectoryName(compilerResult.OutputFile)
+                    compilerResult.OutputFile,
+                    additionalExecutionArguments
                 };
 
                 var processExecutionResult = executor.Execute(
-                    consoleRunnerPath,
+                    compilerPath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
                     arguments,
-                    null,
-                    false,
-                    true);
+                    workingDirectory: null,
+                    useProcessTime: false,
+                    useSystemEncoding: true);
+
+                // Recreate NUnitLite Console App .csproj file, deleted after compilation
+                this.CreateNuinitLiteConsoleAppCsProjFile(this.nUnitLiteConsoleAppCsProjTemplate);
             }
 
             return result;
+        }
+
+        private void MoveUserTestsToNunitLiteConsoleAppFolder()
+        {
+            var userSubmissionFiles = FileHelpers.FindAllFilesMatchingPattern(
+                this.UserProjectDirectory, $"*{GlobalConstants.CSharpFileExtension}");
+
+            foreach (var userFile in userSubmissionFiles)
+            {
+                var userFileInfo = new FileInfo(userFile);
+                var destination = $@"{this.NUnitLiteConsoleAppDirectory}\{userFileInfo.Name}";
+
+                if (File.Exists(userFile))
+                {
+                    File.Move(userFile, destination);
+                }
+            }
         }
     }
 }
