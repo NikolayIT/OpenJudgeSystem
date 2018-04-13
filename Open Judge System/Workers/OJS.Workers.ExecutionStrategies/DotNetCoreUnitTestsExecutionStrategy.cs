@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -14,6 +15,7 @@
 
     public class DotNetCoreUnitTestsExecutionStrategy : DotNetCoreProjectTestsExecutionStrategy
     {
+        private const string NUnitTestFixtureAttributeName = "TestFixture";
         private const string TestedCode = "TestedCode.cs";
         private const string TestedCodeFolderName = "TestedCodeProject";
         private const string TestedCodeCsProjTemplate = @"
@@ -41,13 +43,14 @@
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
+            Directory.CreateDirectory(this.UserProjectDirectory);
             Directory.CreateDirectory(this.TestedCodeDirectory);
 
             var result = new ExecutionResult();
 
             var userSubmission = executionContext.FileContent;
 
-            this.ExtractFilesInWorkingDirectory(userSubmission, this.NUnitLiteConsoleAppDirectory);
+            this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
 
             // Create .csproj for the tests to reference it from the NUnitLite console app
             File.WriteAllText(this.TestedCodeCsProjPath, TestedCodeCsProjTemplate);
@@ -55,6 +58,8 @@
             var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(new List<string> { this.TestedCodeCsProjPath });
 
             this.nUnitLiteConsoleAppCsProjTemplate = nunitLiteConsoleApp.csProjTemplate;
+
+            this.MoveUserTestsToNunitLiteConsoleAppFolder();
 
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
@@ -152,6 +157,34 @@
             }
 
             return result;
+        }
+
+        private void MoveUserTestsToNunitLiteConsoleAppFolder()
+        {
+            var userSubmissionFiles = FileHelpers.FindAllFilesMatchingPattern(
+                this.UserProjectDirectory, $"*{GlobalConstants.CSharpFileExtension}");
+
+            var hasTestFiles = false;
+
+            foreach (var userFile in userSubmissionFiles)
+            {
+                var isTestFile = File.ReadAllLines(userFile).Any(l => l.Contains(NUnitTestFixtureAttributeName));
+
+                if (isTestFile)
+                {
+                    hasTestFiles = true;
+
+                    var userFileInfo = new FileInfo(userFile);
+                    var destination = $@"{this.NUnitLiteConsoleAppDirectory}\{userFileInfo.Name}";
+
+                    File.Move(userFile, destination);
+                }
+            }
+
+            if (!hasTestFiles)
+            {
+                throw new ArgumentException("No test files found in the submitted solution!");
+            }
         }
     }
 }
