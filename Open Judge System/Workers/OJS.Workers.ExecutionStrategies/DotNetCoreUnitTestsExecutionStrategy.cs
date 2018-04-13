@@ -10,6 +10,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.ExecutionStrategies.Helpers.UnitTestStrategies;
     using OJS.Workers.Executors;
 
     public class DotNetCoreUnitTestsExecutionStrategy : DotNetCoreProjectTestsExecutionStrategy
@@ -84,15 +85,20 @@
             string csProjFilePath,
             string additionalExecutionArguments)
         {
-            var testedCodePath = $"{this.TestedCodeDirectory}\\{TestedCode}";
-            var originalTestsPassed = -1;
-            var count = 0;
+            var additionalExecutionArgumentsArray = additionalExecutionArguments
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy);
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
 
-            foreach (var test in tests)
+            var testedCodePath = $"{this.TestedCodeDirectory}\\{TestedCode}";
+            var originalTestsPassed = -1;
+
+            var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy).ToList();
+
+            for (var i = 0;  i < tests.Count; i++)
             {
+                var test = tests[i];
+
                 this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
                 File.WriteAllText(testedCodePath, test.Input);
@@ -115,11 +121,8 @@
                 // Delete tests before execution so the user can't acces them
                 FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
-                var arguments = new List<string>
-                {
-                    compilerResult.OutputFile,
-                    additionalExecutionArguments
-                };
+                var arguments = new List<string> { compilerResult.OutputFile };
+                arguments.AddRange(additionalExecutionArgumentsArray);
 
                 var processExecutionResult = executor.Execute(
                     compilerPath,
@@ -131,8 +134,23 @@
                     useProcessTime: false,
                     useSystemEncoding: true);
 
-                // Recreate NUnitLite Console App .csproj file, deleted after compilation
-                this.CreateNuinitLiteConsoleAppCsProjFile(this.nUnitLiteConsoleAppCsProjTemplate);
+                var processExecutionTestResult = UnitTestStrategiesHelper.GetTestResult(
+                    processExecutionResult.ReceivedOutput,
+                    TestResultsRegex,
+                    originalTestsPassed,
+                    i == 0);
+
+                var message = processExecutionTestResult.message;
+                originalTestsPassed = processExecutionTestResult.originalTestsPassed;
+
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
+                result.TestResults.Add(testResult);
+
+                if (i < tests.Count - 1)
+                {
+                    // Recreate NUnitLite Console App .csproj file, deleted after compilation, to compile again
+                    this.CreateNuinitLiteConsoleAppCsProjFile(this.nUnitLiteConsoleAppCsProjTemplate);
+                }
             }
 
             return result;

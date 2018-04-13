@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using Microsoft.Build.Evaluation;
 
@@ -14,6 +13,7 @@
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
+    using OJS.Workers.ExecutionStrategies.Helpers.UnitTestStrategies;
     using OJS.Workers.Executors;
 
     public class CSharpUnitTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
@@ -79,6 +79,8 @@
             var originalTestsPassed = -1;
             var count = 0;
 
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+
             var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy);
 
             foreach (var test in tests)
@@ -88,10 +90,9 @@
                 File.WriteAllText(testedCodePath, test.Input);
 
                 // Compiling
-                var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
                 var compilerResult = this.Compile(
-                    executionContext.CompilerType, 
-                    compilerPath, 
+                    executionContext.CompilerType,
+                    compilerPath,
                     executionContext.AdditionalCompilerArguments,
                     csProjFilePath);
 
@@ -119,34 +120,14 @@
                     false,
                     true);
 
-                this.ExtractTestResult(
+                var processExecutionTestResult = UnitTestStrategiesHelper.GetTestResult(
                     processExecutionResult.ReceivedOutput,
-                    out var passedTests,
-                    out var totalTests);
+                    TestResultsRegex,
+                    originalTestsPassed,
+                    count == 0);
 
-                var message = "Test Passed!";
-
-                if (totalTests == 0)
-                {
-                    message = "No tests found";
-                }
-                else if (passedTests >= originalTestsPassed)
-                {
-                    message = "No functionality covering this test!";
-                }
-
-                if (count == 0)
-                {
-                    originalTestsPassed = passedTests;
-                    if (totalTests != passedTests)
-                    {
-                        message = "Not all tests passed on the correct solution.";
-                    }
-                    else
-                    {
-                        message = "Test Passed!";
-                    }
-                }
+                var message = processExecutionTestResult.message;
+                originalTestsPassed = processExecutionTestResult.originalTestsPassed;
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
                 result.TestResults.Add(testResult);
@@ -175,27 +156,6 @@
             var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
             return compilerResult;
-        }
-
-        /// <summary>
-        /// Grabs the last match from a match collection
-        /// thus ensuring that the tests output is the genuine one,
-        /// preventing the user from tampering with it
-        /// </summary>
-        /// <param name="receivedOutput"></param>
-        /// <param name="passedTests"></param>
-        /// <param name="totalTests"></param>
-        private void ExtractTestResult(string receivedOutput, out int passedTests, out int totalTests)
-        {           
-            var testResultsRegex = new Regex(TestResultsRegex);
-            var res = testResultsRegex.Matches(receivedOutput);
-            if (res.Count == 0)
-            {
-                throw new ArgumentException("The process did not produce any output!");
-            }
-
-            totalTests = int.Parse(res[res.Count - 1].Groups[1].Value);
-            passedTests = int.Parse(res[res.Count - 1].Groups[2].Value);
         }
 
         private void CorrectProjectReferences(Project project)

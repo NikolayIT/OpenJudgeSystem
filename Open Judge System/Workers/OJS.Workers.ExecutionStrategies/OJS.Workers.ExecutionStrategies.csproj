@@ -95,6 +95,7 @@
     <Compile Include="DotNetCoreProjectExecutionStrategy.cs" />
     <Compile Include="DotNetCoreProjectTestsExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
+    <Compile Include="Helpers\UnitTestStrategies\UnitTestStrategiesHelper.cs" />
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="JavaProjectTestsExecutionStrategy.cs" />
