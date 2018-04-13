@@ -126,14 +126,14 @@
         }
 
         protected(string csProjTemplate, string csProjPath) CreateNunitLiteConsoleApp(
-            IEnumerable<string> userCsProjPaths)
+            IEnumerable<string> projectsToTestCsProjPaths)
         {
             var consoleAppEntryPointPath =
                 $@"{this.NUnitLiteConsoleAppDirectory}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
 
             File.WriteAllText(consoleAppEntryPointPath, NUnitLiteConsoleAppProgramTemplate);
 
-            var references = userCsProjPaths
+            var references = projectsToTestCsProjPaths
                 .Select(path => this.projectReferenceTemplate.Replace(ProjectPathPlaceholder, path));
 
             var csProjTemplate = this.nunitLiteConsoleAppCsProjTemplate

@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -41,22 +40,21 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
-            var result = new ExecutionResult();
-
             Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
-            Directory.CreateDirectory(this.UserProjectDirectory);
             Directory.CreateDirectory(this.TestedCodeDirectory);
 
+            var result = new ExecutionResult();
+
+            var userSubmission = executionContext.FileContent;
+
+            this.ExtractFilesInWorkingDirectory(userSubmission, this.NUnitLiteConsoleAppDirectory);
+
+            // Create .csproj for the tests to reference it from the NUnitLite console app
             File.WriteAllText(this.TestedCodeCsProjPath, TestedCodeCsProjTemplate);
 
-            this.ExtractFilesInWorkingDirectory(executionContext.FileContent, this.UserProjectDirectory);
-
-            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(
-                new List<string> { this.TestedCodeCsProjPath });
+            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(new List<string> { this.TestedCodeCsProjPath });
 
             this.nUnitLiteConsoleAppCsProjTemplate = nunitLiteConsoleApp.csProjTemplate;
-
-            this.MoveUserTestsToNunitLiteConsoleAppFolder();
 
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
@@ -154,23 +152,6 @@
             }
 
             return result;
-        }
-
-        private void MoveUserTestsToNunitLiteConsoleAppFolder()
-        {
-            var userSubmissionFiles = FileHelpers.FindAllFilesMatchingPattern(
-                this.UserProjectDirectory, $"*{GlobalConstants.CSharpFileExtension}");
-
-            foreach (var userFile in userSubmissionFiles)
-            {
-                var userFileInfo = new FileInfo(userFile);
-                var destination = $@"{this.NUnitLiteConsoleAppDirectory}\{userFileInfo.Name}";
-
-                if (File.Exists(userFile))
-                {
-                    File.Move(userFile, destination);
-                }
-            }
         }
     }
 }
