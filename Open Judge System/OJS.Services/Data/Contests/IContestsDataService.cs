@@ -9,6 +9,8 @@
     {
         Contest GetById(int id);
 
+        Contest GetByIdWithProblems(int id);
+
         IQueryable<Contest> GetByIdQuery(int id);
 
         IQueryable<Contest> GetAll();

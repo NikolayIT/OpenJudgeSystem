@@ -41,6 +41,13 @@
                 "~/Dependencies/codemirror/addon/merge/merge.js",
                 "~/Dependencies/diff_match_patch/lib/diff_match_patch.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/simple-results-page").Include(
+                "~/Scripts/Contests/results-pagination.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/full-results-page").Include(
+                "~/Scripts/Contests/results-pagination.js",
+                "~/Scripts/Helpers/test-results.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/problems-index").Include(
                 "~/Scripts/Administration/Problems/problems-index.js",
                 "~/Scripts/Administration/Contests/contest-search.js"));
@@ -86,11 +93,14 @@
                 "~/Dependencies/codemirror/addon/merge/merge.css",
                 "~/Content/Contests/submission-view-page.css"));
 
+            bundles.Add(new StyleBundle("~/Content/Contests/results-page").Include(
+                "~/Content/Contests/results-page.css",
+                "~/Content/css/common/loading-mask.css"));
+
             bundles.Add(new StyleBundle("~/Content/home/index").Include(
                 "~/Content/css/home/index/home.css"));
 
             bundles.Add(new StyleBundle("~/Content/contests/list/index").Include(
-                "~/Content/css/contests/list/list-index.css",
                 "~/Content/css/common/loading-mask.css"));
         }
     }

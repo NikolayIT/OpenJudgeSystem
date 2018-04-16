@@ -2,19 +2,20 @@
 {
     using System.Collections.Generic;
     using OJS.Common.Models;
+   
     using OJS.Web.Areas.Contests.ViewModels.Contests;
+
+    using X.PagedList;
 
     public class ContestResultsViewModel
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public int CurrentPage { get; set; }
         
-        public IEnumerable<ContestProblemViewModel> Problems { get; set; }
+        public IEnumerable<ContestProblemListViewModel> Problems { get; set; }
 
-        public IEnumerable<ParticipantResultViewModel> Results { get; set; }
+        public IPagedList<ParticipantResultViewModel> Results { get; set; }
 
         public bool ContestCanBeCompeted { get; set; }
 
