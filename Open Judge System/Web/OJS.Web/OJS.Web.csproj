@@ -2404,7 +2404,6 @@
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_SimpleResultsPagedList.cshtml" />
-    <Content Include="Areas\Contests\Views\Shared\_LoadingMask.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_FullResultsPagedList.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\UsersComboBox.cshtml" />
