@@ -24,7 +24,13 @@
 
         IQueryable<Participant> GetByIdQuery(int participantId);
 
-        bool IsOfficial(int participantId);
+        IQueryable<Participant> GetAll();
+
+        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
+
+        bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+
+        bool IsOfficialById(int participantId);
 
         IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
             int contestId,

@@ -1,3 +1,7 @@
 ﻿.table-bordered th {
     padding: 10px;
 }
+
+tr.success a, tr.success a:hover {
+    color: #fff;
+}

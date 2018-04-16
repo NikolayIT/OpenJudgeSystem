@@ -1,9 +1,11 @@
 ﻿namespace OJS.Web.Tests.Areas.Contests.ViewModels
 {
-    using Common.Models;
-    using NUnit.Framework;
     using System.Linq;
-    using Web.Areas.Contests.ViewModels.Results;
+
+    using NUnit.Framework;
+
+    using OJS.Common.Models;
+    using OJS.Web.Areas.Contests.ViewModels.Results;
 
     [TestFixture]
     public class TestRunFullResultsViewModelTests

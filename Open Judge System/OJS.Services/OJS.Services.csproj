@@ -85,10 +85,12 @@
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />
     <Compile Include="Data\ExamGroups\IExamGroupsDataService.cs" />
-    <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
-    <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
     <Compile Include="Data\Participants\IParticipantsDataService.cs" />
     <Compile Include="Data\Participants\ParticipantsDataService.cs" />
+    <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
+    <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
+    <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
     <Compile Include="Data\ProblemGroups\IProblemGroupsDataService.cs" />
     <Compile Include="Data\ProblemGroups\ProblemGroupsDataService.cs" />
     <Compile Include="Data\Problems\IProblemsDataService.cs" />
@@ -97,8 +99,6 @@
     <Compile Include="Data\ProblemResources\ProblemResourcesDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
     <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
-    <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
-    <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
     <Compile Include="Data\SubmissionTypes\ISubmissionTypesDataService.cs" />
     <Compile Include="Data\SubmissionTypes\SubmissionTypesDataService.cs" />
     <Compile Include="Data\TestRuns\ITestRunsDataService.cs" />

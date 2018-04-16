@@ -5,36 +5,22 @@
 
     public class ParticipantResultViewModel
     {
-        public ParticipantResultViewModel()
-        {
-            this.ProblemResults = new List<ProblemResultPairViewModel>();
-        }
-
         public string ParticipantUsername { get; set; }
 
         public string ParticipantFirstName { get; set; }
 
         public string ParticipantLastName { get; set; }
 
-        public string ParticipantFullName => $"{this.ParticipantFirstName} {this.ParticipantLastName}".Trim();
-
         public IEnumerable<ProblemResultPairViewModel> ProblemResults { get; set; }
 
-        public int Total
-        {
-            get
-            {
-                return this.ProblemResults.Where(x => x.ShowResult).Sum(x => x.BestSubmission?.Points ?? 0);
-            }
-        }
+        public string ParticipantFullName => $"{this.ParticipantFirstName?.Trim()} {this.ParticipantLastName?.Trim()}";
 
-        public int AdminTotal
-        {
-            get
-            {
-                return this.ProblemResults.Sum(x => x.BestSubmission?.Points ?? 0);
-            }
-        }
+        public int Total => this.ProblemResults
+            .Where(pr => pr.ShowResult)
+            .Sum(pr => pr.BestSubmission.Points);
+
+        public int AdminTotal => this.ProblemResults
+            .Sum(pr => pr.BestSubmission.Points);
 
         public IEnumerable<int> ParticipantProblemIds { get; set; }
 

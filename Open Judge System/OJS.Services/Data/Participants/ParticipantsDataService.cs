@@ -53,12 +53,14 @@
                 .Include(p => p.Contest)
                 .FirstOrDefault(p => p.ContestId == contestId && p.UserId == userId && p.IsOfficial == isOfficial);
 
+        public IQueryable<Participant> GetAll() => this.participants.All();
+
         public IQueryable<Participant> GetByIdQuery(int participantId) =>
             this.participants
                 .All()
                 .Where(x => x.Id == participantId);
 
-        public bool IsOfficial(int participantId) =>
+        public bool IsOfficialById(int participantId) =>
             this.participants
                 .All()
                 .Where(x => x.Id == participantId)
@@ -77,5 +79,17 @@
                     p.ContestId == contestId &&
                     p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);
+
+        public IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial) =>
+            this.participants
+                .All()
+                .Where(p => p.ContestId == contestId && p.IsOfficial == isOfficial);
+
+        public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+            this.participants
+                .All()
+                .Any(p => p.ContestId == contestId &&
+                    p.UserId == userId &&
+                    p.IsOfficial == isOfficial);
     }
 }

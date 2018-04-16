@@ -1,0 +1,158 @@
+﻿@model ContestResultsViewModel
+
+@using OJS.Common.Models
+@using OJS.Web.Areas.Contests.Controllers
+@using OJS.Web.Areas.Contests.ViewModels.Results
+@using OJS.Web.Areas.Users.Controllers
+
+@using Resource = Resources.Areas.Contests.Views.ResultsSimple
+
+@{
+    const string ResultsContainerId = "simple-results-container";
+    const string LoadingMaskContainerId = "simple-results-loading-mask-container";
+    const string OnPageChangedEventHandlerName = "OnPageChanged";
+    var isOfficial = Model.IsCompete;
+    var results = Model.Results;
+}
+
+<div class="loading-mask-container" id="@ResultsContainerId">
+    @if (results.PageCount > 1)
+    {
+        @Html.PagedListPager(
+            results,
+            page => Url.Action<ResultsController>(
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = ResultsContainerId,
+                LoadingElementId = LoadingMaskContainerId,
+                OnSuccess = OnPageChangedEventHandlerName
+            }))
+    }
+
+    @if (results.Count > 0)
+    {
+        <table class="table table-responsive table-bordered table-striped text-center width100percent">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th class="text-center">@Resource.User</th>
+                <th class="text-center">@Resource.UserFullName</th>
+                @{
+                    var problemCounter = 0;
+                    var displayLink = Model.ContestCanBeCompeted || Model.ContestCanBePracticed;
+                    var contestLink = Model.ContestCanBeCompeted ?
+                        CompeteController.CompeteActionName :
+                        CompeteController.PracticeActionName;
+                }
+
+                @foreach (var problem in Model.Problems)
+                {
+                    if (problem.ShowResults ||
+                        (Model.ContestCanBePracticed && !ViewBag.IsOfficial) ||
+                        User.IsAdmin() ||
+                        Model.UserIsLecturerInContest)
+                    {
+                        <th class="text-center">
+                            @if (displayLink)
+                            {
+                                <a href="/Contests/@contestLink/Index/@Model.Id#@problemCounter">@problem.Name</a>
+                                problemCounter++;
+                            }
+                            else
+                            {
+                                @problem.Name
+                            }
+
+                        </th>
+                    }
+                }
+
+                <th class="text-center">@Resource.Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (var i = 0; i < results.Count; i++)
+            {
+                var participant = results[i];
+                var className = User.Identity.Name == participant.ParticipantUsername ? "success" : string.Empty;
+                <tr class="@className">
+                    <td>@((results.PageNumber - 1) * results.PageSize + i + 1)</td>
+                    <td>
+                        <a href="@(Url.Action<ProfileController>(c => c.Index(participant.ParticipantUsername)))">@participant.ParticipantUsername</a>
+                    </td>
+                    <td>@participant.ParticipantFullName</td>
+                    @foreach (var problem in Model.Problems)
+                    {
+                        var problemResult = participant.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
+
+                        if (problemResult != null)
+                        {
+                            if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                            {
+                                <td>
+                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points</a>
+                                </td>
+                            }
+                            else if (problemResult.ShowResult)
+                            {
+                                <td>@problemResult.BestSubmission.Points</td>
+                            }
+                            else
+                            {
+                                <td>0</td>
+                            }
+                        }
+                        else
+                        {
+                            if (!participant.ParticipantProblemIds.Contains(problem.Id) &&
+                                Model.IsCompete &&
+                                Model.ContestType == ContestType.OnlinePracticalExam)
+                            {
+                                <td>-</td>
+                            }                   
+                            else
+                            {
+                                <td>0</td>
+                            }
+                        }
+                    }
+
+                    @if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                    {
+                        <td>@participant.AdminTotal</td>
+                    }
+                    else
+                    {
+                        <td>@participant.Total</td>
+                    }
+
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2>@Resource.NoMoreResults</h2>
+    }
+
+    @if (results.PageCount > 1)
+    {
+        @Html.PagedListPager(
+            results,
+            page => Url.Action<ResultsController>(
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = ResultsContainerId,
+                LoadingElementId = LoadingMaskContainerId,
+                OnSuccess = OnPageChangedEventHandlerName
+            }))
+    }
+
+    @Html.Partial("_LoadingMask", LoadingMaskContainerId)
+</div>

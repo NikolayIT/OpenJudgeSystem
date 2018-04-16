@@ -84,7 +84,7 @@
 
         public void DeleteForParticipantByProblem(int participantId, int problemId)
         {
-            var isOfficial = this.participantsData.IsOfficial(participantId);
+            var isOfficial = this.participantsData.IsOfficialById(participantId);
 
             var existingScore = this.GetByParticipantIdProblemIdAndIsOfficial(participantId, problemId, isOfficial);
 
