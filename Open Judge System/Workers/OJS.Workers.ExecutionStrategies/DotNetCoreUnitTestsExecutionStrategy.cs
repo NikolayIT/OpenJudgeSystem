@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using OJS.Common;
     using OJS.Common.Extensions;
@@ -15,16 +16,15 @@
 
     public class DotNetCoreUnitTestsExecutionStrategy : DotNetCoreProjectTestsExecutionStrategy
     {
-        private const string NUnitTestFixtureAttributeName = "TestFixture";
-        private const string TestedCode = "TestedCode.cs";
-        private const string TestedCodeFolderName = "TestedCodeProject";
-        private const string TestedCodeCsProjTemplate = @"
-            <Project Sdk=""Microsoft.NET.Sdk\"">
-                <PropertyGroup>
-                    <TargetFramework>netcoreapp2.0</TargetFramework>
-                </PropertyGroup>
-            </Project>";
+        private const string ProjectReferencesSearchPattern =
+            @"(<ItemGroup>\s*<ProjectReference(?s)(.*)<\/ItemGroup>)";
 
+        private const string NUnitPackageReferenceSearchPattern =
+            @"<PackageReference\s+Include=""\s*nunit\s*"".+\/>";
+
+        private readonly string csFileSearchPattern = $"*{GlobalConstants.CSharpFileExtension}";
+
+        private readonly string testedCodePath;
         private string nUnitLiteConsoleAppCsProjTemplate;
 
         public DotNetCoreUnitTestsExecutionStrategy(
@@ -33,18 +33,13 @@
             int baseMemoryUsed)
                 : base(getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
+            this.testedCodePath = $"{this.NUnitLiteConsoleAppDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
         }
-
-        private string TestedCodeDirectory => Path.Combine(this.WorkingDirectory, TestedCodeFolderName);
-
-        private string TestedCodeCsProjPath =>
-            Path.Combine(this.TestedCodeDirectory, TestedCodeFolderName + CsProjFileExtention);
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             Directory.CreateDirectory(this.NUnitLiteConsoleAppDirectory);
             Directory.CreateDirectory(this.UserProjectDirectory);
-            Directory.CreateDirectory(this.TestedCodeDirectory);
 
             var result = new ExecutionResult();
 
@@ -52,14 +47,13 @@
 
             this.ExtractFilesInWorkingDirectory(userSubmission, this.UserProjectDirectory);
 
-            // Create .csproj for the tests to reference it from the NUnitLite console app
-            File.WriteAllText(this.TestedCodeCsProjPath, TestedCodeCsProjTemplate);
+            this.MoveUserCsFilesToNunitLiteConsoleAppFolder();
 
-            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(new List<string> { this.TestedCodeCsProjPath });
+            var userCsProjPath = this.DeleteProjectReferencesFromUserCsProj();
+
+            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(new List<string> { userCsProjPath });
 
             this.nUnitLiteConsoleAppCsProjTemplate = nunitLiteConsoleApp.csProjTemplate;
-
-            this.MoveUserTestsToNunitLiteConsoleAppFolder();
 
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
@@ -73,7 +67,7 @@
                 executor,
                 checker,
                 result,
-                this.TestedCodeCsProjPath,
+                string.Empty,
                 AdditionalExecutionArguments);
 
             return result;
@@ -92,8 +86,6 @@
                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-
-            var testedCodePath = $"{this.TestedCodeDirectory}\\{TestedCode}";
             var originalTestsPassed = -1;
 
             var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy).ToList();
@@ -104,7 +96,7 @@
 
                 this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
-                File.WriteAllText(testedCodePath, test.Input);
+                File.WriteAllText(this.testedCodePath, test.Input);
 
                 // Compiling
                 var compilerResult = this.Compile(
@@ -122,7 +114,7 @@
                 }
 
                 // Delete tests before execution so the user can't acces them
-                FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
+                FileHelpers.DeleteFiles(this.testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
                 arguments.AddRange(additionalExecutionArgumentsArray);
@@ -159,32 +151,44 @@
             return result;
         }
 
-        private void MoveUserTestsToNunitLiteConsoleAppFolder()
+        private void MoveUserCsFilesToNunitLiteConsoleAppFolder()
         {
-            var userSubmissionFiles = FileHelpers.FindAllFilesMatchingPattern(
-                this.UserProjectDirectory, $"*{GlobalConstants.CSharpFileExtension}");
+            var userCsFiles = FileHelpers
+                .FindAllFilesMatchingPattern(this.UserProjectDirectory, this.csFileSearchPattern)
+                .Select(f => new FileInfo(f));
 
-            var hasTestFiles = false;
-
-            foreach (var userFile in userSubmissionFiles)
+            foreach (var userFile in userCsFiles)
             {
-                var isTestFile = File.ReadAllLines(userFile).Any(l => l.Contains(NUnitTestFixtureAttributeName));
+                var destination = userFile.FullName
+                    .Replace(this.UserProjectDirectory, this.NUnitLiteConsoleAppDirectory);
 
-                if (isTestFile)
-                {
-                    hasTestFiles = true;
+                new FileInfo(destination).Directory?.Create();
+                File.Move(userFile.FullName, destination);
+            }
+        }
 
-                    var userFileInfo = new FileInfo(userFile);
-                    var destination = $@"{this.NUnitLiteConsoleAppDirectory}\{userFileInfo.Name}";
+        private string DeleteProjectReferencesFromUserCsProj()
+        {
+            var userCsProjFiles = FileHelpers
+                .FindAllFilesMatchingPattern(this.UserProjectDirectory, CsProjFileSearchPattern)
+                .ToList();
 
-                    File.Move(userFile, destination);
-                }
+            if (userCsProjFiles.Count != 1)
+            {
+                throw new ArgumentException("The submission should have exactly one .csproj file.");
             }
 
-            if (!hasTestFiles)
-            {
-                throw new ArgumentException("No test files found in the submitted solution!");
-            }
+            var csProjPath = userCsProjFiles.First();
+
+            var csProjText = new Regex(ProjectReferencesSearchPattern)
+                .Replace(File.ReadAllText(csProjPath), string.Empty);
+
+            csProjText = new Regex(NUnitPackageReferenceSearchPattern, RegexOptions.IgnoreCase)
+                .Replace(csProjText, string.Empty);
+
+            File.WriteAllText(csProjPath, csProjText);
+
+            return csProjPath;
         }
     }
 }

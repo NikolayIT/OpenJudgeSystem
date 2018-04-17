@@ -3,8 +3,10 @@
     using System;
     using System.Text.RegularExpressions;
 
-    public class UnitTestStrategiesHelper
+    public static class UnitTestStrategiesHelper
     {
+        public const string TestedCodeFileName = "TestedCode.cs";
+
         /// <summary>
         /// Gets the output message and the count of the original tests passed,
         /// by running the provided regex on the received output from the execution process

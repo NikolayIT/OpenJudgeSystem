@@ -18,8 +18,6 @@
 
     public class CSharpUnitTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
-        private const string TestedCode = "TestedCode.cs";
-
         public CSharpUnitTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc,
@@ -75,7 +73,7 @@
             string additionalExecutionArguments)
         {
             var projectDirectory = Path.GetDirectoryName(csProjFilePath);
-            var testedCodePath = $"{projectDirectory}\\{TestedCode}";
+            var testedCodePath = $"{projectDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
             var originalTestsPassed = -1;
             var count = 0;
 
@@ -171,7 +169,7 @@
                 project.RemoveItem(projectReference);
             }
 
-            project.AddItem("Compile", TestedCode);
+            project.AddItem("Compile", UnitTestStrategiesHelper.TestedCodeFileName);
             project.SetProperty("OutputType", "Library");
 
             var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
