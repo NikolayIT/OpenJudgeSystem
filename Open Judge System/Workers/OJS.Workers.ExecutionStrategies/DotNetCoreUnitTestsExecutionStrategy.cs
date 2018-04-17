@@ -49,7 +49,7 @@
 
             this.MoveUserCsFilesToNunitLiteConsoleAppFolder();
 
-            var userCsProjPath = this.DeleteProjectReferencesFromUserCsProj();
+            var userCsProjPath = this.RemoveUnwantedReferencesFromUserCsProjFile();
 
             var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(new List<string> { userCsProjPath });
 
@@ -167,7 +167,7 @@
             }
         }
 
-        private string DeleteProjectReferencesFromUserCsProj()
+        private string RemoveUnwantedReferencesFromUserCsProjFile()
         {
             var userCsProjFiles = FileHelpers
                 .FindAllFilesMatchingPattern(this.UserProjectDirectory, CsProjFileSearchPattern)
