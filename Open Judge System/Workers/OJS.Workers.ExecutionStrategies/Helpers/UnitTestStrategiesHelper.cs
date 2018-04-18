@@ -1,9 +1,9 @@
-﻿namespace OJS.Workers.ExecutionStrategies.Helpers.UnitTestStrategies
+﻿namespace OJS.Workers.ExecutionStrategies.Helpers
 {
     using System;
     using System.Text.RegularExpressions;
 
-    public static class UnitTestStrategiesHelper
+    internal static class UnitTestStrategiesHelper
     {
         public const string TestedCodeFileName = "TestedCode.cs";
 

@@ -4,27 +4,26 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
-    using OJS.Workers.ExecutionStrategies.Helpers.UnitTestStrategies;
+    using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class DotNetCoreUnitTestsExecutionStrategy : DotNetCoreProjectTestsExecutionStrategy
     {
-        private const string ProjectReferencesSearchPattern =
-            @"(<ItemGroup>\s*<ProjectReference(?s)(.*)<\/ItemGroup>)";
-
-        private const string NUnitPackageReferenceSearchPattern =
-            @"<PackageReference\s+Include=""\s*nunit\s*"".+\/>";
+        private readonly IEnumerable<string> packageNamesToRemoveFromUserCsProjFile = new[]
+        {
+            "NUnit",
+            "NUnitLite",
+            "Microsoft.EntityFrameworkCore.InMemory"
+        };
 
         private readonly string csFileSearchPattern = $"*{GlobalConstants.CSharpFileExtension}";
 
-        private readonly string testedCodePath;
         private string nUnitLiteConsoleAppCsProjTemplate;
 
         public DotNetCoreUnitTestsExecutionStrategy(
@@ -33,7 +32,6 @@
             int baseMemoryUsed)
                 : base(getCompilerPathFunc, baseTimeUsed, baseMemoryUsed)
         {
-            this.testedCodePath = $"{this.NUnitLiteConsoleAppDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
         }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
@@ -86,6 +84,7 @@
                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var testedCodePath = $"{this.NUnitLiteConsoleAppDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
             var originalTestsPassed = -1;
 
             var tests = executionContext.Tests.OrderBy(x => x.IsTrialTest).ThenBy(x => x.OrderBy).ToList();
@@ -96,7 +95,7 @@
 
                 this.SaveSetupFixture(this.NUnitLiteConsoleAppDirectory);
 
-                File.WriteAllText(this.testedCodePath, test.Input);
+                File.WriteAllText(testedCodePath, test.Input);
 
                 // Compiling
                 var compilerResult = this.Compile(
@@ -114,7 +113,7 @@
                 }
 
                 // Delete tests before execution so the user can't acces them
-                FileHelpers.DeleteFiles(this.testedCodePath, this.SetupFixturePath);
+                FileHelpers.DeleteFiles(testedCodePath, this.SetupFixturePath);
 
                 var arguments = new List<string> { compilerResult.OutputFile };
                 arguments.AddRange(additionalExecutionArgumentsArray);
@@ -180,13 +179,11 @@
 
             var csProjPath = userCsProjFiles.First();
 
-            var csProjText = new Regex(ProjectReferencesSearchPattern)
-                .Replace(File.ReadAllText(csProjPath), string.Empty);
+            DotNetCoreStrategiesHelper.RemoveAllProjectReferencesFromCsProj(csProjPath);
 
-            csProjText = new Regex(NUnitPackageReferenceSearchPattern, RegexOptions.IgnoreCase)
-                .Replace(csProjText, string.Empty);
-
-            File.WriteAllText(csProjPath, csProjText);
+            DotNetCoreStrategiesHelper.RemovePackageReferencesFromCsProj(
+                csProjPath,
+                this.packageNamesToRemoveFromUserCsProjFile);
 
             return csProjPath;
         }

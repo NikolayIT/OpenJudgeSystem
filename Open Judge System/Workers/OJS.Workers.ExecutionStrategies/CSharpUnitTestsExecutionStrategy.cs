@@ -13,7 +13,7 @@
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
-    using OJS.Workers.ExecutionStrategies.Helpers.UnitTestStrategies;
+    using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class CSharpUnitTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
