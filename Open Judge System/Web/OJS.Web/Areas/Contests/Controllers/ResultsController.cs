@@ -22,8 +22,6 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
-    using X.PagedList;
-
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class ResultsController : BaseController
@@ -125,13 +123,9 @@
                 resultsInPage = OfficialResultsPageSize;
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturerInContest,
-                isFullResults: false,
-                page: page.Value,
-                resultsInPage: resultsInPage);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturerInContest, isFullResults: false)
+                .ToPagedResults(page.Value, resultsInPage);
 
             return this.View(contestResults);
         }
@@ -161,13 +155,9 @@
                     throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
                 }
 
-                contestResults = this.GetContestResults(
-                    contest,
-                    official,
-                    isUserAdminOrLecturerInContest,
-                    isFullResults: false,
-                    page: page,
-                    resultsInPage: resultsInPage);
+                contestResults = this
+                    .GetContestResults(contest, official, isUserAdminOrLecturerInContest, isFullResults: false)
+                    .ToPagedResults(page, resultsInPage);
 
                 if (!official && !isUserAdminOrLecturerInContest)
                 {
@@ -203,13 +193,9 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturer: true,
-                isFullResults: true,
-                page: page.Value,
-                resultsInPage: NotOfficialResultsPageSize);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturer: true, isFullResults: true)
+                .ToPagedResults(page.Value, NotOfficialResultsPageSize);
 
             return this.View(contestResults);
         }
@@ -228,13 +214,9 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturer: true,
-                isFullResults: true,
-                page: page,
-                resultsInPage: resultsInPage);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturer: true, isFullResults: true)
+                .ToPagedResults(page, resultsInPage);
 
             return this.PartialView("_FullResultsPagedList", contestResults);
         }   
@@ -350,7 +332,7 @@
 
             var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
 
-            var participantsCount = contestResults.Results.TotalItemCount;
+            var participantsCount = contestResults.Results.Count();
             var statsModel = new ContestStatsViewModel
             {
                 MinResultsCount = contestResults.Results.Count(r => r.Total == 0),
@@ -421,9 +403,7 @@
             Contest contest,
             bool official,
             bool isUserAdminOrLecturer,
-            bool isFullResults,
-            int page = 1,
-            int resultsInPage = int.MaxValue) =>
+            bool isFullResults) =>
                 new ContestResultsViewModel
                 {
                     Id = contest.Id,
@@ -448,14 +428,6 @@
                             ParticipantFirstName = par.User.UserSettings.FirstName,
                             ParticipantLastName = par.User.UserSettings.LastName,
                             ParticipantProblemIds = par.Problems.Select(p => p.Id),
-                            IdOfFirstSubmissionThatGaveYouYourContestTotalScore = par.Submissions
-                                .GroupBy(s => s.ProblemId)
-                                .Select(x => x
-                                    .OrderByDescending(s => s.Points)
-                                    .ThenBy(s => s.Id).Select(s => s.Id)
-                                    .FirstOrDefault())
-                                .DefaultIfEmpty(0)
-                                .Max(),
                             ProblemResults = par.Scores
                                 .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ProblemGroup.ContestId == contest.Id)
                                 .Select(sc => new ProblemResultPairViewModel
@@ -476,8 +448,10 @@
                         .OrderByDescending(parRes => isUserAdminOrLecturer
                             ? parRes.ProblemResults.Sum(pr => pr.BestSubmission.Points)
                             : parRes.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points))
-                        .ThenBy(parResult => parResult.IdOfFirstSubmissionThatGaveYouYourContestTotalScore)
-                        .ToPagedList(page, resultsInPage)
+                        .ThenBy(parResult => parResult.ProblemResults
+                            .OrderByDescending(pr => pr.BestSubmission.Id)
+                            .Select(pr => pr.BestSubmission.Id)
+                            .FirstOrDefault())
                 };
     }
 }
