@@ -1,6 +1,5 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Results.ContestResultsViewModel
 
-@using OJS.Web.Areas.Administration.Controllers
 @using OJS.Web.Areas.Contests.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.ResultsSimple
@@ -31,7 +30,7 @@
             @(Html.ActionLink<ResultsController>(Resource.Detailed_results, c => c.Full(Model.Id, Model.IsCompete, null), null, new { @class = "btn btn-primary" }))
         </span>
         <span>
-            @(Html.ActionLink<ContestsExportController>(Resource.Export_results, c => c.Results(Model.Id, Model.IsCompete), null, new { @class = "btn btn-primary" }))
+            @(Html.ActionLink<ResultsController>(Resource.Export_results, c => c.Export(Model.Id, Model.IsCompete), null, new { @class = "btn btn-primary" }))
         </span>
     }
 </h3>

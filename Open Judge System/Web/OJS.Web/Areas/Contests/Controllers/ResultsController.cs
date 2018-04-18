@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -11,6 +12,11 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using NPOI.HSSF.UserModel;
+    using NPOI.SS.UserModel;
+
+    using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -110,10 +116,7 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var isUserLecturerInContest =
-                this.Data.Users.All().Any(x => x.Id == this.UserProfile.Id && x.LecturerInContests.Any(y => y.ContestId == id));
-
-            var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
+            var isUserAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
 
             page = page ?? 1;
 
@@ -221,10 +224,10 @@
             return this.PartialView("_FullResultsPagedList", contestResults);
         }   
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Export(int id, bool official)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -238,7 +241,79 @@
 
             var contestResults = this.GetContestResults(contest, official, true, true);
 
-            return this.View(contestResults);
+            var workbook = new HSSFWorkbook();
+            var sheet = workbook.CreateSheet();
+
+            // Header
+            var headerRow = sheet.CreateRow(0);
+            var columnNumber = 0;
+            headerRow.CreateCell(columnNumber++).SetCellValue("Username");
+            headerRow.CreateCell(columnNumber++).SetCellValue("Name");
+
+            foreach (var problem in contestResults.Problems)
+            {
+                headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
+            }
+
+            var totalPointsCellTitle = "Total";
+
+            if (contest.IsOnline)
+            {
+                var maxPointsForOnlineContest = contest.ProblemGroups
+                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                    .Sum(pg => pg.Problems.First().MaximumPoints);
+
+                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPointsForOnlineContest})";
+            }
+
+            headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
+
+            // All rows
+            var rowNumber = 1;
+            foreach (var result in contestResults.Results)
+            {
+                var cellNumber = 0;
+                var row = sheet.CreateRow(rowNumber++);
+                row.CreateCell(cellNumber++).SetCellValue(result.ParticipantUsername);
+                row.CreateCell(cellNumber++).SetCellValue(result.ParticipantFullName);
+
+                foreach (var problem in contestResults.Problems)
+                {
+                    var problemResult = result.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
+
+                    if (problemResult != null)
+                    {
+                        row.CreateCell(cellNumber++).SetCellValue(problemResult.BestSubmission.Points);
+                    }
+                    else
+                    {
+                        row.CreateCell(cellNumber++, CellType.Blank);
+                    }
+                }
+
+                row.CreateCell(cellNumber).SetCellValue(result.Total);
+            }
+
+            // Auto-size all columns
+            for (var i = 0; i < columnNumber; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+
+            // Write the workbook to a memory stream
+            var outputStream = new MemoryStream();
+            workbook.Write(outputStream);
+
+            var fileName = string.Format(
+                Resource.Report_excel_format,
+                official ? Resource.Contest : Resource.Practice,
+                contest.Name);
+
+            // Return the result to the end user
+            return this.File(
+                outputStream.ToArray(), // The binary data of the XLS file
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
+                fileName); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
         [Authorize]
@@ -316,7 +391,7 @@
         [Authorize]
         public ActionResult Stats(int contestId, bool official)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -416,9 +491,9 @@
                     Problems = contest.ProblemGroups
                         .SelectMany(pg => pg.Problems)
                         .AsQueryable()
-                        .OrderBy(pr => pr.OrderBy)
-                        .ThenBy(pr => pr.Name)
-                        .Where(pr => !pr.IsDeleted)
+                        .Where(p => !p.IsDeleted)
+                        .OrderBy(p => p.OrderBy)
+                        .ThenBy(p => p.Name)
                         .Select(ContestProblemListViewModel.FromProblem),
                     Results = this.participantsData
                         .GetAllByContestAndIsOfficial(contest.Id, official)
