@@ -23,7 +23,7 @@
 
         public bool ContestCanBePracticed { get; set; }
 
-        public bool UserIsLecturerInContest { get; set; }
+        public bool UserHasContestRights { get; set; }
 
         public ContestType ContestType { get; set; }
 
@@ -34,6 +34,6 @@
             this.PagedResults = this.Results.ToPagedList(page, pageSize);
 
             return this;
-        }  
+        }
     }
 }

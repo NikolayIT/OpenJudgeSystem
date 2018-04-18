@@ -24,7 +24,7 @@
     @ViewBag.Subtitle
     <br />
     <br />
-    @if (User.IsAdmin())
+    @if (Model.UserHasContestRights)
     {
         <span>
             @(Html.ActionLink<ResultsController>(Resource.Detailed_results, c => c.Full(Model.Id, Model.IsCompete, null), null, new { @class = "btn btn-primary" }))

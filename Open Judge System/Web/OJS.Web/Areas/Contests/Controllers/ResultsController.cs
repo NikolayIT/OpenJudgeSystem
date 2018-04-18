@@ -95,6 +95,7 @@
         /// <param name="id">The contest id.</param>
         /// <param name="official">A flag, showing if the results are for practice
         /// or for competition</param>
+        /// <param name="page">The page on which to open the results table</param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
@@ -141,7 +142,7 @@
             int page,
             int resultsInPage)
         {
-            var cacheKey = $"{this.Request.Url.AbsolutePath}?{nameof(page)}={page}";
+            var cacheKey = $"{this.Request.Url?.AbsolutePath}?{nameof(page)}={page}";
 
             ContestResultsViewModel contestResults = null;
             if (!official && !isUserAdminOrLecturerInContest)
@@ -182,7 +183,7 @@
         [Authorize]
         public ActionResult Full(int id, bool official, int? page)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -316,10 +317,10 @@
                 fileName); // Suggested file name in the "Save as" dialog which will be displayed to the end user
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -388,7 +389,7 @@
             return this.Json(viewModel);
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Stats(int contestId, bool official)
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
@@ -463,10 +464,10 @@
             return this.PartialView("_StatsPartial", statsModel);
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult StatsChart(int contestId)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -486,7 +487,7 @@
                     IsCompete = official,
                     ContestCanBeCompeted = contest.CanBeCompeted,
                     ContestCanBePracticed = contest.CanBePracticed,
-                    UserIsLecturerInContest = isUserAdminOrLecturer,
+                    UserHasContestRights = isUserAdminOrLecturer,
                     ContestType = contest.Type,
                     Problems = contest.ProblemGroups
                         .SelectMany(pg => pg.Problems)
