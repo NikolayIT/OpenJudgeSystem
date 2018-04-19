@@ -480,7 +480,7 @@
 
             if (this.contestsData.IsOnlineById(contestResults.Id))
             {
-                var maxPoints = this.contestsData.GetMaxPointsForContestById(contestResults.Id);
+                var maxPoints = this.contestsData.GetMaxPointsById(contestResults.Id);
 
                 totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPoints})";
             }

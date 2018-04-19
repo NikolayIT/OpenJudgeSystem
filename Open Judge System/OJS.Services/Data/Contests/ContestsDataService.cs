@@ -71,7 +71,7 @@
         public int GetIdById(int id) =>
             this.GetByIdQuery(id).Select(c => c.Id).SingleOrDefault();
 
-        public int GetMaxPointsForContestById(int id) =>
+        public int GetMaxPointsById(int id) =>
             this.GetByIdQuery(id)
                 .Select(c => c.ProblemGroups
                     .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
