@@ -37,6 +37,8 @@
 
         int GetIdById(int id);
 
+        int GetMaxPointsForContestById(int id);
+
         bool IsActiveById(int id);
 
         bool IsOnlineById(int id);

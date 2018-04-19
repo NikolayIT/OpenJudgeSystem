@@ -242,79 +242,13 @@
 
             var contestResults = this.GetContestResults(contest, official, true, true);
 
-            var workbook = new HSSFWorkbook();
-            var sheet = workbook.CreateSheet();
-
-            // Header
-            var headerRow = sheet.CreateRow(0);
-            var columnNumber = 0;
-            headerRow.CreateCell(columnNumber++).SetCellValue("Username");
-            headerRow.CreateCell(columnNumber++).SetCellValue("Name");
-
-            foreach (var problem in contestResults.Problems)
-            {
-                headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
-            }
-
-            var totalPointsCellTitle = "Total";
-
-            if (contest.IsOnline)
-            {
-                var maxPointsForOnlineContest = contest.ProblemGroups
-                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
-                    .Sum(pg => pg.Problems.First().MaximumPoints);
-
-                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPointsForOnlineContest})";
-            }
-
-            headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
-
-            // All rows
-            var rowNumber = 1;
-            foreach (var result in contestResults.Results)
-            {
-                var cellNumber = 0;
-                var row = sheet.CreateRow(rowNumber++);
-                row.CreateCell(cellNumber++).SetCellValue(result.ParticipantUsername);
-                row.CreateCell(cellNumber++).SetCellValue(result.ParticipantFullName);
-
-                foreach (var problem in contestResults.Problems)
-                {
-                    var problemResult = result.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
-
-                    if (problemResult != null)
-                    {
-                        row.CreateCell(cellNumber++).SetCellValue(problemResult.BestSubmission.Points);
-                    }
-                    else
-                    {
-                        row.CreateCell(cellNumber++, CellType.Blank);
-                    }
-                }
-
-                row.CreateCell(cellNumber).SetCellValue(result.Total);
-            }
-
-            // Auto-size all columns
-            for (var i = 0; i < columnNumber; i++)
-            {
-                sheet.AutoSizeColumn(i);
-            }
-
-            // Write the workbook to a memory stream
-            var outputStream = new MemoryStream();
-            workbook.Write(outputStream);
-
+            // Suggested file name in the "Save as" dialog which will be displayed to the end user
             var fileName = string.Format(
                 Resource.Report_excel_format,
                 official ? Resource.Contest : Resource.Practice,
                 contest.Name);
 
-            // Return the result to the end user
-            return this.File(
-                outputStream.ToArray(), // The binary data of the XLS file
-                GlobalConstants.ExcelMimeType, // MIME type of Excel files
-                fileName); // Suggested file name in the "Save as" dialog which will be displayed to the end user
+            return this.ExportResultsToExcel(contestResults, fileName);
         }
 
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
@@ -529,5 +463,81 @@
                             .Select(pr => pr.BestSubmission.Id)
                             .FirstOrDefault())
                 };
+
+        private int CreateResultsSheetHeaderRow(ISheet sheet, ContestResultsViewModel contestResults)
+        {
+            var headerRow = sheet.CreateRow(0);
+            var columnNumber = 0;
+            headerRow.CreateCell(columnNumber++).SetCellValue("Username");
+            headerRow.CreateCell(columnNumber++).SetCellValue("Name");
+
+            foreach (var problem in contestResults.Problems)
+            {
+                headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
+            }
+
+            var totalPointsCellTitle = "Total";
+
+            if (this.contestsData.IsOnlineById(contestResults.Id))
+            {
+                var maxPoints = this.contestsData.GetMaxPointsForContestById(contestResults.Id);
+
+                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPoints})";
+            }
+
+            headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
+
+            return columnNumber;
+        }
+
+        private void FillSheetWithParticipantResults(ISheet sheet, ContestResultsViewModel contestResults)
+        {
+            var rowNumber = 1;
+            foreach (var result in contestResults.Results)
+            {
+                var colNumber = 0;
+                var row = sheet.CreateRow(rowNumber++);
+                row.CreateCell(colNumber++).SetCellValue(result.ParticipantUsername);
+                row.CreateCell(colNumber++).SetCellValue(result.ParticipantFullName);
+
+                foreach (var problem in contestResults.Problems)
+                {
+                    var problemResult = result.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
+
+                    if (problemResult != null)
+                    {
+                        row.CreateCell(colNumber++).SetCellValue(problemResult.BestSubmission.Points);
+                    }
+                    else
+                    {
+                        row.CreateCell(colNumber++, CellType.Blank);
+                    }
+                }
+
+                row.CreateCell(colNumber).SetCellValue(result.Total);
+            }
+        }
+
+        private FileResult ExportResultsToExcel(ContestResultsViewModel contestResults, string fileName)
+        {
+            var workbook = new HSSFWorkbook();
+            var sheet = workbook.CreateSheet();
+
+            var columnsCount = this.CreateResultsSheetHeaderRow(sheet, contestResults);
+
+            this.FillSheetWithParticipantResults(sheet, contestResults);
+
+            sheet.AutoSizeColumns(columnsCount);
+
+            // Write the workbook to a memory stream
+            var outputStream = new MemoryStream();
+            workbook.Write(outputStream);
+
+            // Return the result to the end user
+            return this.File(
+                outputStream.ToArray(), // The binary data of the XLS file
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
+                fileName);
+        }
     }
 }
