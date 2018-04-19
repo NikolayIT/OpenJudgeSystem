@@ -332,6 +332,16 @@
                 },
                 new SubmissionType
                 {
+                    Name = ".NET Core Unit Tests",
+                    CompilerType = CompilerType.DotNetCompiler,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.DotNetCoreUnitTestsExecutionStrategy,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
                     Name = "C# Project Tests",
                     CompilerType = CompilerType.MsBuildLibrary,
                     AdditionalCompilerArguments = "/t:rebuild /p:Configuration=Release,Optimize=true /verbosity:quiet /nologo",

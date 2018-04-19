@@ -13,8 +13,9 @@
 
     public class DotNetCoreProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
-        private new const string AdditionalExecutionArguments = "--noresult";
-        private const string CsProjFileExtention = ".csproj";
+        protected new const string AdditionalExecutionArguments = "--noresult";
+        protected const string CsProjFileExtention = ".csproj";
+
         private const string ProjectPathPlaceholder = "##projectPath##";
         private const string ProjectReferencesPlaceholder = "##ProjectReferences##";
         private const string NUnitLiteConsoleAppFolderName = "NUnitLiteConsoleApp";
@@ -61,10 +62,10 @@
         {
         }
 
-        private string NUnitLiteConsoleAppDirectory =>
+        protected string NUnitLiteConsoleAppDirectory =>
             Path.Combine(this.WorkingDirectory, NUnitLiteConsoleAppFolderName);
 
-        private string UserProjectDirectory =>
+        protected string UserProjectDirectory =>
             Path.Combine(this.WorkingDirectory, UserSubmissionFolderName);
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
@@ -85,11 +86,7 @@
             var userCsProjPaths = FileHelpers.FindAllFilesMatchingPattern(
                 this.UserProjectDirectory, CsProjFileSearchPattern);
 
-            var nunitLiteConsoleAppCsProjPath = this.CreateNunitLiteConsoleApp(
-                NUnitLiteConsoleAppProgramTemplate,
-                this.nunitLiteConsoleAppCsProjTemplate,
-                this.NUnitLiteConsoleAppDirectory,
-                userCsProjPaths);
+            var nunitLiteConsoleApp = this.CreateNunitLiteConsoleApp(userCsProjPaths);
 
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
 
@@ -97,7 +94,7 @@
                 executionContext.CompilerType,
                 compilerPath,
                 executionContext.AdditionalCompilerArguments,
-                nunitLiteConsoleAppCsProjPath);
+                nunitLiteConsoleApp.csProjPath);
 
             result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
 
@@ -128,24 +125,31 @@
             return result;
         }
 
-        private string CreateNunitLiteConsoleApp(
-            string nUnitLiteProgramTemplate,
-            string nUnitLiteCsProjTemplate,
-            string directoryPath,
-            IEnumerable<string> userCsProjPaths)
+        protected(string csProjTemplate, string csProjPath) CreateNunitLiteConsoleApp(
+            IEnumerable<string> projectsToTestCsProjPaths)
         {
             var consoleAppEntryPointPath =
-                $@"{directoryPath}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
-            File.WriteAllText(consoleAppEntryPointPath, nUnitLiteProgramTemplate);
+                $@"{this.NUnitLiteConsoleAppDirectory}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
 
-            var references = userCsProjPaths
+            File.WriteAllText(consoleAppEntryPointPath, NUnitLiteConsoleAppProgramTemplate);
+
+            var references = projectsToTestCsProjPaths
                 .Select(path => this.projectReferenceTemplate.Replace(ProjectPathPlaceholder, path));
 
-            nUnitLiteCsProjTemplate = nUnitLiteCsProjTemplate
+            var csProjTemplate = this.nunitLiteConsoleAppCsProjTemplate
                 .Replace(ProjectReferencesPlaceholder, string.Join(Environment.NewLine, references));
 
-            var consoleAppCsProjPath = $@"{directoryPath}\{NUnitLiteConsoleAppFolderName}{CsProjFileExtention}";
-            File.WriteAllText(consoleAppCsProjPath, nUnitLiteCsProjTemplate);
+            var csProjPath = this.CreateNuinitLiteConsoleAppCsProjFile(csProjTemplate);
+
+            return (csProjTemplate, csProjPath);
+        }
+
+        protected string CreateNuinitLiteConsoleAppCsProjFile(string csProjTemplate)
+        {
+            var consoleAppCsProjPath =
+                $@"{this.NUnitLiteConsoleAppDirectory}\{NUnitLiteConsoleAppFolderName}{CsProjFileExtention}";
+
+            File.WriteAllText(consoleAppCsProjPath, csProjTemplate);
 
             return consoleAppCsProjPath;
         }
