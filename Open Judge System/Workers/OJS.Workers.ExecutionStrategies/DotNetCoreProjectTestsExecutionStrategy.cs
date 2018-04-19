@@ -43,7 +43,7 @@
                     <TargetFramework>netcoreapp2.0</TargetFramework>
                 </PropertyGroup>
                 <ItemGroup>
-                    <PackageReference Include=""NUnitLite"" Version=""3.8.1"" />
+                    <PackageReference Include=""NUnitLite"" Version=""3.10.1"" />
                     <PackageReference Include=""Microsoft.EntityFrameworkCore.InMemory"" Version=""2.0.0"" />
                 </ItemGroup>
                 <ItemGroup>
