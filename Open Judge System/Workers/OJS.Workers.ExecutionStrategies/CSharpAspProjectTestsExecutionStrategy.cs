@@ -1,7 +1,6 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
     using System;
-    using System.Collections.Generic;
 
     using Microsoft.Build.Evaluation;
 
@@ -25,11 +24,11 @@
         {
         }
 
-        protected override void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
+        protected override void CorrectProjectReferences(Project project)
         {
             project.AddReferences(MoqAssemblyReference, CastleCoreAssemblyReference);
 
-            base.CorrectProjectReferences(tests, project);
+            base.CorrectProjectReferences(project);
 
             project.RemoveVsToolsImport();
         }

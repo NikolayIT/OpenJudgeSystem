@@ -8,6 +8,8 @@
 
     using Microsoft.Build.Evaluation;
 
+    using OJS.Common;
+
     internal static class CSharpProjectExtensions
     {
         private const string MicrosoftCsProjXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
@@ -49,15 +51,23 @@
         {
             RemoveExistingReferences(project, references);
 
+            var referenceMetaData = new Dictionary<string, string>
+            {
+                { "SpecificVersion", "False" },
+                { "Private", "True" }
+            };
+
             foreach (var reference in references)
             {
-                var referenceMetaData = new Dictionary<string, string>
-                {
-                    { "SpecificVersion", "False" },
-                    { "Private", "True" }
-                };
-
                 project.AddItem("Reference", reference, referenceMetaData);
+            }
+        }
+
+        public static void AddCompileItems(this Project project, IEnumerable<string> itemNames)
+        {
+            foreach (var itemName in itemNames)
+            {
+                project.AddItem("Compile", $"{itemName}{GlobalConstants.CSharpFileExtension}");
             }
         }
 

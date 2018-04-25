@@ -115,7 +115,7 @@
             this.SaveTestFiles(executionContext.Tests, compileDirectory);
             this.SaveSetupFixture(compileDirectory);
 
-            this.CorrectProjectReferences(executionContext.Tests, project);
+            this.CorrectProjectReferences(project);
             
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
@@ -237,16 +237,13 @@
             return errorsByFiles;
         }
 
-        protected virtual void CorrectProjectReferences(IEnumerable<TestContext> tests, Project project)
+        protected virtual void CorrectProjectReferences(Project project)
         {
-            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
+            var additionalCompileItems = new List<string>(this.TestNames) { SetupFixtureFileName };
+
+            project.AddCompileItems(additionalCompileItems);
 
             project.EnsureAssemblyNameIsCorrect();
-
-            foreach (var testName in this.TestNames)
-            {
-                project.AddItem("Compile", $"{testName}{GlobalConstants.CSharpFileExtension}");
-            }
 
             project.SetProperty("OutputType", "Library");
 

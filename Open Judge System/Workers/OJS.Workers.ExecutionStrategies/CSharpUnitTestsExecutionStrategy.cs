@@ -7,7 +7,6 @@
 
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -74,7 +73,8 @@
             string additionalExecutionArguments)
         {
             var projectDirectory = Path.GetDirectoryName(csProjFilePath);
-            var testedCodePath = $"{projectDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
+            var testedCodePath =
+                $"{projectDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileNameWithExtension}";
             var originalTestsPassed = -1;
             var count = 0;
 
@@ -157,9 +157,15 @@
             return compilerResult;
         }
 
-        private void CorrectProjectReferences(Project project)
+        protected override void CorrectProjectReferences(Project project)
         {
-            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
+            var additionalCompileItems = new[]
+            {
+                UnitTestStrategiesHelper.TestedCodeFileName,
+                SetupFixtureFileName
+            };
+
+            project.AddCompileItems(additionalCompileItems);
 
             project.EnsureAssemblyNameIsCorrect();
 
@@ -170,7 +176,6 @@
                 project.RemoveItem(projectReference);
             }
 
-            project.AddItem("Compile", UnitTestStrategiesHelper.TestedCodeFileName);
             project.SetProperty("OutputType", "Library");
 
             project.RemoveItemByName(NUnitFrameworkPackageName);
