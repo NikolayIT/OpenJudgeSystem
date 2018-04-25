@@ -17,12 +17,12 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.ViewModels.ProblemGroup;
     using OJS.Web.Common.Extensions;
 
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.ProblemGroups.ProblemGroupsControllers;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ProblemGroup.ProblemGroupAdministrationViewModel;
 
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("ProblemGroups")]
@@ -47,7 +47,7 @@
         public override IEnumerable GetData() =>
             this.problemGroupsData
                 .GetAll()
-                .Select(ProblemGroupAdministrationViewModel.FromProblemGroup);
+                .Select(ViewModelType.FromProblemGroup);
 
         public override object GetById(object id) => this.GetByIdAsNoTracking((int)id);
 
@@ -74,7 +74,7 @@
         [HttpPost]
         public ActionResult Create(
             [DataSourceRequest] DataSourceRequest request,
-            ProblemGroupAdministrationViewModel model)
+            ViewModelType model)
         {
             if (!this.IsModelAndContestValid(model))
             {
@@ -101,7 +101,7 @@
         }
 
         [HttpPost]
-        public ActionResult Update([DataSourceRequest] DataSourceRequest request, ProblemGroupAdministrationViewModel model)
+        public ActionResult Update([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
             if (!this.IsModelAndContestValid(model))
             {
@@ -124,7 +124,7 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy([DataSourceRequest] DataSourceRequest request, ProblemGroupAdministrationViewModel model)
+        public ActionResult Destroy([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
             if (!this.IsModelAndContestValid(model))
             {
@@ -157,7 +157,7 @@
             return this.Json(problems.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        private bool IsModelAndContestValid(ProblemGroupAdministrationViewModel model)
+        private bool IsModelAndContestValid(ViewModelType model)
         {
             if (string.IsNullOrWhiteSpace(model.ContestName))
             {

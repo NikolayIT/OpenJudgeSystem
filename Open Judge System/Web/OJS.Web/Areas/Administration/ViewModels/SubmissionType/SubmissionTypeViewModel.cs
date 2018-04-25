@@ -29,7 +29,7 @@
 
         public bool IsChecked { get; set; }
 
-        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ProblemAdministrationViewModel problemAdministration)
+        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ProblemAdministrationViewModel problem)
         {
             return st =>
             {
@@ -40,14 +40,14 @@
                     IsChecked = false,
                 };
 
-                var selectedSubmission = problemAdministration.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
+                var selectedSubmission = problem.SelectedSubmissionTypes.FirstOrDefault(s => s.Id == st.Id);
 
                 if (selectedSubmission != null)
                 {
                     submissionViewModel.IsChecked = true;
                 }
 
-                problemAdministration.SubmissionTypes.Add(submissionViewModel);
+                problem.SubmissionTypes.Add(submissionViewModel);
             };
         }
 

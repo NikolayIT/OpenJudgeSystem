@@ -45,6 +45,7 @@
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemAdministrationViewModel;
 
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("Problems")]
@@ -150,7 +151,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, ProblemAdministrationViewModel problemAdministration)
+        public ActionResult Create(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
@@ -165,18 +166,18 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (problemAdministration == null)
+            if (problem == null)
             {
-                problemAdministration = this.PrepareProblemViewModelForCreate(contest);
+                problem = this.PrepareProblemViewModelForCreate(contest);
 
-                this.AddCheckersToProblemViewModel(problemAdministration);
+                this.AddCheckersToProblemViewModel(problem);
 
-                return this.View(problemAdministration);
+                return this.View(problem);
             }
 
-            if (problemAdministration.Resources != null && problemAdministration.Resources.Any())
+            if (problem.Resources != null && problem.Resources.Any())
             {
-                var validResources = problemAdministration.Resources
+                var validResources = problem.Resources
                     .All(res => !string.IsNullOrEmpty(res.Name) &&
                         ((res.Type == ProblemResourceType.AuthorsSolution && res.File != null && res.File.ContentLength > 0) ||
                         (res.Type == ProblemResourceType.ProblemDescription && res.File != null && res.File.ContentLength > 0) ||
@@ -188,26 +189,26 @@
                 }
             }
 
-            if (problemAdministration.AdditionalFiles != null && problemAdministration.AdditionalFiles.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
-                this.ValidateUploadedFile(nameof(problemAdministration.AdditionalFiles), problemAdministration.AdditionalFiles);
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
             }
 
-            if (problemAdministration.Tests != null && problemAdministration.Tests.ContentLength != 0)
+            if (problem.Tests != null && problem.Tests.ContentLength != 0)
             {
-                this.ValidateUploadedFile(nameof(problemAdministration.Tests), problemAdministration.Tests);
+                this.ValidateUploadedFile(nameof(problem.Tests), problem.Tests);
             }
 
-            if (!this.IsValidProblem(problemAdministration) || !this.ModelState.IsValid)
+            if (!this.IsValidProblem(problem) || !this.ModelState.IsValid)
             {
-                this.AddCheckersToProblemViewModel(problemAdministration);
-                return this.View(problemAdministration);
+                this.AddCheckersToProblemViewModel(problem);
+                return this.View(problem);
             }
 
-            var newProblem = problemAdministration.GetEntityModel();
-            newProblem.Checker = this.checkersData.GetByName(problemAdministration.Checker);
+            var newProblem = problem.GetEntityModel();
+            newProblem.Checker = this.checkersData.GetByName(problem.Checker);
 
-            problemAdministration.SubmissionTypes.ForEach(s =>
+            problem.SubmissionTypes.ForEach(s =>
             {
                 if (s.IsChecked && s.Id.HasValue)
                 {
@@ -216,26 +217,26 @@
                 }
             });
 
-            if (problemAdministration.SolutionSkeletonData != null && problemAdministration.SolutionSkeletonData.Any())
+            if (problem.SolutionSkeletonData != null && problem.SolutionSkeletonData.Any())
             {
-                newProblem.SolutionSkeleton = problemAdministration.SolutionSkeletonData;
+                newProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             }
 
-            if (problemAdministration.Resources != null && problemAdministration.Resources.Any())
+            if (problem.Resources != null && problem.Resources.Any())
             {
-                this.AddResourcesToProblem(newProblem, problemAdministration.Resources);
+                this.AddResourcesToProblem(newProblem, problem.Resources);
             }
 
-            if (problemAdministration.AdditionalFiles != null && problemAdministration.AdditionalFiles.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
-                newProblem.AdditionalFiles = problemAdministration.AdditionalFiles.ToByteArray();
+                newProblem.AdditionalFiles = problem.AdditionalFiles.ToByteArray();
             }
 
-            if (problemAdministration.Tests != null && problemAdministration.Tests.ContentLength != 0)
+            if (problem.Tests != null && problem.Tests.ContentLength != 0)
             {
                 try
                 {
-                    this.AddTestsToProblem(newProblem, problemAdministration.Tests);
+                    this.AddTestsToProblem(newProblem, problem.Tests);
                 }
                 catch (Exception ex)
                 {
@@ -252,9 +253,9 @@
 
                     this.ViewBag.SystemMessages = systemMessages;
 
-                    this.AddCheckersToProblemViewModel(problemAdministration);
+                    this.AddCheckersToProblemViewModel(problem);
 
-                    return this.View(problemAdministration);
+                    return this.View(problem);
                 }
             }
 
@@ -306,7 +307,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, ProblemAdministrationViewModel problemAdministration)
+        public ActionResult Edit(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
@@ -322,54 +323,54 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (problemAdministration == null)
+            if (problem == null)
             {
-                problemAdministration = this.PrepareProblemViewModelForEdit(id);
+                problem = this.PrepareProblemViewModelForEdit(id);
 
-                this.AddCheckersToProblemViewModel(problemAdministration);
+                this.AddCheckersToProblemViewModel(problem);
 
-                return this.View(problemAdministration);
+                return this.View(problem);
             }
 
-            if (problemAdministration.AdditionalFiles != null && problemAdministration.AdditionalFiles.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
-                this.ValidateUploadedFile(nameof(problemAdministration.AdditionalFiles), problemAdministration.AdditionalFiles);
+                this.ValidateUploadedFile(nameof(problem.AdditionalFiles), problem.AdditionalFiles);
             }
 
             if (!this.ModelState.IsValid)
             {
-                problemAdministration = this.PrepareProblemViewModelForEdit(id);
+                problem = this.PrepareProblemViewModelForEdit(id);
 
-                this.AddCheckersToProblemViewModel(problemAdministration);
+                this.AddCheckersToProblemViewModel(problem);
 
                 this.submissionTypesData
                     .GetAll()
                     .Select(SubmissionTypeViewModel.ViewModel)
-                    .ForEach(SubmissionTypeViewModel.ApplySelectedTo(problemAdministration));
+                    .ForEach(SubmissionTypeViewModel.ApplySelectedTo(problem));
 
-                return this.View(problemAdministration);
+                return this.View(problem);
             }
 
-            existingProblem = problemAdministration.GetEntityModel(existingProblem);
-            existingProblem.Checker = this.checkersData.GetByName(problemAdministration.Checker);
-            existingProblem.SolutionSkeleton = problemAdministration.SolutionSkeletonData;
+            existingProblem = problem.GetEntityModel(existingProblem);
+            existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
+            existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
 
             if (!existingProblem.ProblemGroup.Contest.IsOnline)
             {
-                existingProblem.ProblemGroup.OrderBy = problemAdministration.OrderBy;
+                existingProblem.ProblemGroup.OrderBy = problem.OrderBy;
             }
 
-            if (problemAdministration.AdditionalFiles != null && problemAdministration.AdditionalFiles.ContentLength != 0)
+            if (problem.AdditionalFiles != null && problem.AdditionalFiles.ContentLength != 0)
             {
                 using (var archiveStream = new MemoryStream())
                 {
-                    problemAdministration.AdditionalFiles.InputStream.CopyTo(archiveStream);
+                    problem.AdditionalFiles.InputStream.CopyTo(archiveStream);
                     existingProblem.AdditionalFiles = archiveStream.ToArray();
                 }
             }
 
-            problemAdministration.SubmissionTypes.ForEach(s =>
+            problem.SubmissionTypes.ForEach(s =>
             {
                 if (s.IsChecked && s.Id.HasValue)
                 {
@@ -527,7 +528,7 @@
 
             var problem = this.problemsData
                 .GetByIdQuery(id.Value)
-                .Select(ProblemAdministrationViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
             if (problem == null)
@@ -750,13 +751,13 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                return new List<ProblemAdministrationViewModel>();
+                return new List<ViewModelType>();
             }
 
             var result = this.problemsData
                 .GetAllByContest(id)
                 .OrderBy(x => x.OrderBy)
-                .Select(ProblemAdministrationViewModel.FromProblem);
+                .Select(ViewModelType.FromProblem);
 
             return result;
         }
@@ -824,12 +825,12 @@
             }
         }
 
-        private ProblemAdministrationViewModel PrepareProblemViewModelForEdit(int id)
+        private ViewModelType PrepareProblemViewModelForEdit(int id)
         {
             var problemEntity = this.problemsData.GetByIdQuery(id);
 
             var problem = problemEntity
-                .Select(ProblemAdministrationViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
             var contest = problemEntity.FirstOrDefault()?.ProblemGroup.Contest;
@@ -847,7 +848,7 @@
             return problem;
         }
 
-        private ProblemAdministrationViewModel PrepareProblemViewModelForCreate(Contest contest)
+        private ViewModelType PrepareProblemViewModelForCreate(Contest contest)
         {
             var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
             var lastProblem = this.problemsData
@@ -861,7 +862,7 @@
                 problemOrder = lastProblem.OrderBy + 1;
             }
 
-            var problem = new ProblemAdministrationViewModel
+            var problem = new ViewModelType
             {
                 ContestId = contest.Id,
                 ContestName = contest.Name,
@@ -882,11 +883,11 @@
         }
 
         private void AddCheckersAndProblemGroupsToProblemViewModel(
-            ProblemAdministrationViewModel problemAdministration,
+            ViewModelType problem,
             int numberOfProblemGroups,
             bool isOnlineContest)
         {
-            problemAdministration.AvailableCheckers = this.checkersData
+            problem.AvailableCheckers = this.checkersData
                 .GetAll()
                 .Select(checker => new SelectListItem
                 {
@@ -898,14 +899,14 @@
             if (isOnlineContest && numberOfProblemGroups > 0)
             {
                 this.ViewBag.ProblemGroupIdData = this.problemGroupsData
-                    .GetAllByContest(problemAdministration.ContestId)
+                    .GetAllByContest(problem.ContestId)
                     .OrderBy(pg => pg.OrderBy)
                     .Select(DropdownViewModel.FromProblemGroup);
             }
         }
 
-        private void AddCheckersToProblemViewModel(ProblemAdministrationViewModel problemAdministration) =>
-            problemAdministration.AvailableCheckers = this.checkersData
+        private void AddCheckersToProblemViewModel(ViewModelType problem) =>
+            problem.AvailableCheckers = this.checkersData
                 .GetAll()
                 .Select(checker => new SelectListItem
                 {
@@ -913,7 +914,7 @@
                     Value = checker.Name
                 });
 
-        private bool IsValidProblem(ProblemAdministrationViewModel model)
+        private bool IsValidProblem(ViewModelType model)
         {
             var isValid = true;
 
