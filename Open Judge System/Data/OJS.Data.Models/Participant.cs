@@ -29,10 +29,6 @@
 
         public string UserId { get; set; }
 
-        public DateTime? ContestStartTime { get; set; }
-
-        public DateTime? ContestEndTime { get; set; }
-
         public DateTime? ParticipationStartTime { get; set; }
 
         public DateTime? ParticipationEndTime { get; set; }

@@ -95,7 +95,7 @@
 
                 if (!this.contestsData.IsOnlineById(problem.ContestId))
                 {
-                    this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
+                    this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId);
                 }
 
                 scope.Complete();

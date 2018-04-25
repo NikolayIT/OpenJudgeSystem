@@ -15,11 +15,7 @@
 
         public int? OldId { get; set; }
 
-        public int ContestId { get; set; }
-
-        public virtual Contest Contest { get; set; }
-
-        public int? ProblemGroupId { get; set; }
+        public int ProblemGroupId { get; set; }
 
         public virtual ProblemGroup ProblemGroup { get; set; }
 

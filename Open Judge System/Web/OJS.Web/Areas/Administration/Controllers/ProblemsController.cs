@@ -258,7 +258,7 @@
                 }
             }
 
-            if (newProblem.ProblemGroupId == null)
+            if (newProblem.ProblemGroupId == default(int))
             {
                 newProblem.ProblemGroup = new ProblemGroup
                 {
