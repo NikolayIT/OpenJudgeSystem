@@ -14,6 +14,7 @@
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.ExecutionStrategies.Extensions;
     using OJS.Workers.Executors;
 
     public class CSharpProjectTestsExecutionStrategy : ExecutionStrategy
@@ -48,6 +49,7 @@
         protected const string SystemDataCommonReference =
             "System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL";
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
+        protected const string VsttPackageName = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
 
         // Extracts the number of total and passed tests 
         protected const string TestResultsRegex =
@@ -239,7 +241,7 @@
         {
             project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
 
-            this.EnsureAssemblyNameIsCorrect(project);
+            project.EnsureAssemblyNameIsCorrect();
 
             foreach (var testName in this.TestNames)
             {
@@ -248,35 +250,18 @@
 
             project.SetProperty("OutputType", "Library");
 
-            this.AddProjectReferences(
-                project,
-                NUnitReference, 
-                EntityFrameworkCoreInMemoryReference, 
+            project.AddReferences(
+                NUnitReference,
+                EntityFrameworkCoreInMemoryReference,
                 SystemDataCommonReference);
 
             // Check for VSTT just in case, we don't want Assert conflicts
-            var vsTestFrameworkReference = project.Items
-                .FirstOrDefault(x => x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
-            if (vsTestFrameworkReference != null)
-            {
-                project.RemoveItem(vsTestFrameworkReference);
-            }
+            project.RemoveItemByName(VsttPackageName);
 
             project.Save(project.FullPath);
             project.ProjectCollection.UnloadAllProjects();
-        }
 
-        protected void AddProjectReferences(Project project, params string[] references)
-        {
-            this.RemoveExistingReferences(project, references);
-            var referenceMetaData = new Dictionary<string, string>();
-            foreach (var reference in references)
-            {
-                referenceMetaData.Add("SpecificVersion", "False");
-                referenceMetaData.Add("Private", "True");
-                project.AddItem("Reference", reference, referenceMetaData);
-                referenceMetaData.Clear();
-            }
+            project.RemoveNuGetPackageImportsTarget();
         }
 
         protected virtual void ExtractTestNames(IEnumerable<TestContext> tests)
@@ -286,19 +271,6 @@
                 var testName = CSharpPreprocessorHelper.GetClassName(test.Input);
                 this.TestNames.Add(testName);
             }
-        }
-
-        protected void EnsureAssemblyNameIsCorrect(Project project)
-        {
-            var assemblyNameProperty = project.AllEvaluatedProperties.FirstOrDefault(x => x.Name == "AssemblyName");
-            if (assemblyNameProperty == null)
-            {
-                throw new ArgumentException("Project file does not contain Assembly Name property!");
-            }
-
-            var csProjFullpath = project.FullPath;
-            var projectName = Path.GetFileNameWithoutExtension(csProjFullpath);
-            project.SetProperty("AssemblyName", projectName);
         }
 
         protected virtual void ExtractFilesInWorkingDirectory(byte[] userSubmissionContent, string workingDirectory)
@@ -328,18 +300,5 @@
             this.WorkingDirectory,
             CsProjFileSearchPattern,
             f => new FileInfo(f).Length);
-
-        private void RemoveExistingReferences(Project project, string[] references)
-        {
-            foreach (var reference in references)
-            {
-                var referenceName = reference.Substring(0, reference.IndexOf(","));
-                var existingReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains(referenceName));
-                if (existingReference != null)
-                {
-                    project.RemoveItem(existingReference);
-                }
-            }
-        }
     }
 }
