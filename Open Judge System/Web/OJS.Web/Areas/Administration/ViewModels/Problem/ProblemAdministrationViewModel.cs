@@ -22,14 +22,14 @@
 
     using Resource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
 
-    public class DetailedProblemViewModel : AdministrationViewModel<Problem>
+    public class ProblemAdministrationViewModel : AdministrationViewModel<Problem>
     {
         [ExcludeFromExcel]
-        public static Expression<Func<Problem, DetailedProblemViewModel>> FromProblem
+        public static Expression<Func<Problem, ProblemAdministrationViewModel>> FromProblem
         {
             get
             {
-                return problem => new DetailedProblemViewModel
+                return problem => new ProblemAdministrationViewModel
                 {
                     Id = problem.Id,
                     Name = problem.Name,
