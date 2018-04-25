@@ -832,7 +832,12 @@
                 .Select(DetailedProblemViewModel.FromProblem)
                 .FirstOrDefault();
 
-            var contest = problemEntity.FirstOrDefault().ProblemGroup.Contest;
+            var contest = problemEntity.FirstOrDefault()?.ProblemGroup.Contest;
+
+            if (problem == null || contest == null)
+            {
+                return null;
+            }
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
@@ -848,6 +853,7 @@
             var lastProblem = this.problemsData
                 .GetAllByContest(contest.Id)
                 .OrderByDescending(x => x.OrderBy)
+                .Select(p => new { p.OrderBy })
                 .FirstOrDefault();
 
             if (lastProblem != null)
@@ -855,10 +861,12 @@
                 problemOrder = lastProblem.OrderBy + 1;
             }
 
-            var problem = new DetailedProblemViewModel();
-            problem.OrderBy = problemOrder;
-            problem.ContestId = contest.Id;
-            problem.ContestName = contest.Name;
+            var problem = new DetailedProblemViewModel
+            {
+                ContestId = contest.Id,
+                ContestName = contest.Name,
+                OrderBy = problemOrder
+            };
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
