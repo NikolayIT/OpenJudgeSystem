@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -11,6 +12,11 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using NPOI.HSSF.UserModel;
+    using NPOI.SS.UserModel;
+
+    using OJS.Common;
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -21,8 +27,6 @@
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
-
-    using X.PagedList;
 
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
@@ -91,6 +95,7 @@
         /// <param name="id">The contest id.</param>
         /// <param name="official">A flag, showing if the results are for practice
         /// or for competition</param>
+        /// <param name="page">The page on which to open the results table</param>
         /// <returns>Returns a view with the results of the contest.</returns>
         [Authorize]
         public ActionResult Simple(int id, bool official, int? page)
@@ -112,10 +117,7 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var isUserLecturerInContest =
-                this.Data.Users.All().Any(x => x.Id == this.UserProfile.Id && x.LecturerInContests.Any(y => y.ContestId == id));
-
-            var isUserAdminOrLecturerInContest = isUserLecturerInContest || this.User.IsAdmin();
+            var isUserAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
 
             page = page ?? 1;
 
@@ -125,13 +127,9 @@
                 resultsInPage = OfficialResultsPageSize;
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturerInContest,
-                isFullResults: false,
-                page: page.Value,
-                resultsInPage: resultsInPage);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturerInContest, isFullResults: false)
+                .ToPagedResults(page.Value, resultsInPage);
 
             return this.View(contestResults);
         }
@@ -144,7 +142,7 @@
             int page,
             int resultsInPage)
         {
-            var cacheKey = $"{this.Request.Url.AbsolutePath}?{nameof(page)}={page}";
+            var cacheKey = $"{this.Request.Url?.AbsolutePath}?{nameof(page)}={page}";
 
             ContestResultsViewModel contestResults = null;
             if (!official && !isUserAdminOrLecturerInContest)
@@ -161,13 +159,9 @@
                     throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
                 }
 
-                contestResults = this.GetContestResults(
-                    contest,
-                    official,
-                    isUserAdminOrLecturerInContest,
-                    isFullResults: false,
-                    page: page,
-                    resultsInPage: resultsInPage);
+                contestResults = this
+                    .GetContestResults(contest, official, isUserAdminOrLecturerInContest, isFullResults: false)
+                    .ToPagedResults(page, resultsInPage);
 
                 if (!official && !isUserAdminOrLecturerInContest)
                 {
@@ -189,7 +183,7 @@
         [Authorize]
         public ActionResult Full(int id, bool official, int? page)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -203,13 +197,9 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturer: true,
-                isFullResults: true,
-                page: page.Value,
-                resultsInPage: NotOfficialResultsPageSize);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturer: true, isFullResults: true)
+                .ToPagedResults(page.Value, NotOfficialResultsPageSize);
 
             return this.View(contestResults);
         }
@@ -228,21 +218,17 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var contestResults = this.GetContestResults(
-                contest,
-                official,
-                isUserAdminOrLecturer: true,
-                isFullResults: true,
-                page: page,
-                resultsInPage: resultsInPage);
+            var contestResults = this
+                .GetContestResults(contest, official, isUserAdminOrLecturer: true, isFullResults: true)
+                .ToPagedResults(page, resultsInPage);
 
             return this.PartialView("_FullResultsPagedList", contestResults);
         }   
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Export(int id, bool official)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -256,13 +242,19 @@
 
             var contestResults = this.GetContestResults(contest, official, true, true);
 
-            return this.View(contestResults);
+            // Suggested file name in the "Save as" dialog which will be displayed to the end user
+            var fileName = string.Format(
+                Resource.Report_excel_format,
+                official ? Resource.Contest : Resource.Practice,
+                contest.Name);
+
+            return this.ExportResultsToExcel(contestResults, fileName);
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -331,10 +323,10 @@
             return this.Json(viewModel);
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Stats(int contestId, bool official)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -350,7 +342,7 @@
 
             var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
 
-            var participantsCount = contestResults.Results.TotalItemCount;
+            var participantsCount = contestResults.Results.Count();
             var statsModel = new ContestStatsViewModel
             {
                 MinResultsCount = contestResults.Results.Count(r => r.Total == 0),
@@ -406,10 +398,10 @@
             return this.PartialView("_StatsPartial", statsModel);
         }
 
-        [Authorize]
+        [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult StatsChart(int contestId)
         {
-            if (!this.User.IsAdmin() && !this.contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -421,9 +413,7 @@
             Contest contest,
             bool official,
             bool isUserAdminOrLecturer,
-            bool isFullResults,
-            int page = 1,
-            int resultsInPage = int.MaxValue) =>
+            bool isFullResults) =>
                 new ContestResultsViewModel
                 {
                     Id = contest.Id,
@@ -431,14 +421,14 @@
                     IsCompete = official,
                     ContestCanBeCompeted = contest.CanBeCompeted,
                     ContestCanBePracticed = contest.CanBePracticed,
-                    UserIsLecturerInContest = isUserAdminOrLecturer,
+                    UserHasContestRights = isUserAdminOrLecturer,
                     ContestType = contest.Type,
                     Problems = contest.ProblemGroups
                         .SelectMany(pg => pg.Problems)
                         .AsQueryable()
-                        .OrderBy(pr => pr.OrderBy)
-                        .ThenBy(pr => pr.Name)
-                        .Where(pr => !pr.IsDeleted)
+                        .Where(p => !p.IsDeleted)
+                        .OrderBy(p => p.OrderBy)
+                        .ThenBy(p => p.Name)
                         .Select(ContestProblemListViewModel.FromProblem),
                     Results = this.participantsData
                         .GetAllByContestAndIsOfficial(contest.Id, official)
@@ -448,14 +438,6 @@
                             ParticipantFirstName = par.User.UserSettings.FirstName,
                             ParticipantLastName = par.User.UserSettings.LastName,
                             ParticipantProblemIds = par.Problems.Select(p => p.Id),
-                            IdOfFirstSubmissionThatGaveYouYourContestTotalScore = par.Submissions
-                                .GroupBy(s => s.ProblemId)
-                                .Select(x => x
-                                    .OrderByDescending(s => s.Points)
-                                    .ThenBy(s => s.Id).Select(s => s.Id)
-                                    .FirstOrDefault())
-                                .DefaultIfEmpty(0)
-                                .Max(),
                             ProblemResults = par.Scores
                                 .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ProblemGroup.ContestId == contest.Id)
                                 .Select(sc => new ProblemResultPairViewModel
@@ -476,8 +458,86 @@
                         .OrderByDescending(parRes => isUserAdminOrLecturer
                             ? parRes.ProblemResults.Sum(pr => pr.BestSubmission.Points)
                             : parRes.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points))
-                        .ThenBy(parResult => parResult.IdOfFirstSubmissionThatGaveYouYourContestTotalScore)
-                        .ToPagedList(page, resultsInPage)
+                        .ThenBy(parResult => parResult.ProblemResults
+                            .OrderByDescending(pr => pr.BestSubmission.Id)
+                            .Select(pr => pr.BestSubmission.Id)
+                            .FirstOrDefault())
                 };
+
+        private int CreateResultsSheetHeaderRow(ISheet sheet, ContestResultsViewModel contestResults)
+        {
+            var headerRow = sheet.CreateRow(0);
+            var columnNumber = 0;
+            headerRow.CreateCell(columnNumber++).SetCellValue("Username");
+            headerRow.CreateCell(columnNumber++).SetCellValue("Name");
+
+            foreach (var problem in contestResults.Problems)
+            {
+                headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
+            }
+
+            var totalPointsCellTitle = "Total";
+
+            if (this.contestsData.IsOnlineById(contestResults.Id))
+            {
+                var maxPoints = this.contestsData.GetMaxPointsById(contestResults.Id);
+
+                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPoints})";
+            }
+
+            headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
+
+            return columnNumber;
+        }
+
+        private void FillSheetWithParticipantResults(ISheet sheet, ContestResultsViewModel contestResults)
+        {
+            var rowNumber = 1;
+            foreach (var result in contestResults.Results)
+            {
+                var colNumber = 0;
+                var row = sheet.CreateRow(rowNumber++);
+                row.CreateCell(colNumber++).SetCellValue(result.ParticipantUsername);
+                row.CreateCell(colNumber++).SetCellValue(result.ParticipantFullName);
+
+                foreach (var problem in contestResults.Problems)
+                {
+                    var problemResult = result.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
+
+                    if (problemResult != null)
+                    {
+                        row.CreateCell(colNumber++).SetCellValue(problemResult.BestSubmission.Points);
+                    }
+                    else
+                    {
+                        row.CreateCell(colNumber++, CellType.Blank);
+                    }
+                }
+
+                row.CreateCell(colNumber).SetCellValue(result.Total);
+            }
+        }
+
+        private FileResult ExportResultsToExcel(ContestResultsViewModel contestResults, string fileName)
+        {
+            var workbook = new HSSFWorkbook();
+            var sheet = workbook.CreateSheet();
+
+            var columnsCount = this.CreateResultsSheetHeaderRow(sheet, contestResults);
+
+            this.FillSheetWithParticipantResults(sheet, contestResults);
+
+            sheet.AutoSizeColumns(columnsCount);
+
+            // Write the workbook to a memory stream
+            var outputStream = new MemoryStream();
+            workbook.Write(outputStream);
+
+            // Return the result to the end user
+            return this.File(
+                outputStream.ToArray(), // The binary data of the XLS file
+                GlobalConstants.ExcelMimeType, // MIME type of Excel files
+                fileName);
+        }
     }
 }

@@ -68,7 +68,7 @@
                         this.AddNew(submission, participant.UserName, participant.IsOfficial);
                     }
                     else if (resetScore ||
-                        submission.Points >= existingScore.Points ||
+                        submission.Points > existingScore.Points ||
                         submission.Id == existingScore.SubmissionId)
                     {
                         this.Update(existingScore, submission.Id, submission.Points);

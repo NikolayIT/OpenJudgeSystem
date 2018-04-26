@@ -15,6 +15,7 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data;
+    using OJS.Web.Common.Extensions;
     using OJS.Web.Infrastructure.Filters.Attributes;
 
     [LogAccess]
@@ -145,11 +146,7 @@
                 }
             }
 
-            // Auto-size all columns
-            for (int i = 0; i < columnNumber; i++)
-            {
-                sheet.AutoSizeColumn(i);
-            }
+            sheet.AutoSizeColumns(columnNumber);
 
             // Write the workbook to a memory stream
             var outputStream = new MemoryStream();

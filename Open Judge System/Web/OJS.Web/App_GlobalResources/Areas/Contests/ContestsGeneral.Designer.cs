@@ -97,6 +97,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contest.
+        /// </summary>
+        public static string Contest {
+            get {
+                return ResourceManager.GetString("Contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This contest cannot be competed!.
         /// </summary>
         public static string Contest_cannot_be_competed {
@@ -169,6 +178,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Practice.
+        /// </summary>
+        public static string Practice {
+            get {
+                return ResourceManager.GetString("Practice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The problem is not part of your problems for the exam.
         /// </summary>
         public static string Problem_not_assigned_to_user {
@@ -192,6 +210,15 @@ namespace Resources.Areas.Contests {
         public static string Problem_results_not_available {
             get {
                 return ResourceManager.GetString("Problem_results_not_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking for {0} {1}.xls.
+        /// </summary>
+        public static string Report_excel_format {
+            get {
+                return ResourceManager.GetString("Report_excel_format", resourceCulture);
             }
         }
         
