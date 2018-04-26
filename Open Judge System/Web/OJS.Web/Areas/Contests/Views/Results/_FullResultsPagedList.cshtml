@@ -13,7 +13,7 @@
     const string OnPageChangedEventHandlerName = "OnPageChanged";
     var isOfficialStr = Model.IsCompete ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
     var isOfficial = Model.IsCompete;
-    var results = Model.Results;
+    var results = Model.PagedResults;
 }
 
 <div class="loading-mask-container" id="@ResultsContainerId">

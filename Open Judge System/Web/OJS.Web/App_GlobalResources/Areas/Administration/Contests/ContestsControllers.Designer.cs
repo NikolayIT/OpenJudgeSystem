@@ -97,15 +97,6 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to contest.
-        /// </summary>
-        public static string Contest {
-            get {
-                return ResourceManager.GetString("Contest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Contest added successfully.
         /// </summary>
         public static string Contest_added {
@@ -214,15 +205,6 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to practice.
-        /// </summary>
-        public static string Practice {
-            get {
-                return ResourceManager.GetString("Practice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Practice start date must be before the practice end date.
         /// </summary>
         public static string Practice_start_date_before_end {
@@ -237,15 +219,6 @@ namespace Resources.Areas.Administration.Contests {
         public static string Problem_groups_count_limit {
             get {
                 return ResourceManager.GetString("Problem_groups_count_limit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ranking for {0} {1}.xls.
-        /// </summary>
-        public static string Report_excel_format {
-            get {
-                return ResourceManager.GetString("Report_excel_format", resourceCulture);
             }
         }
         

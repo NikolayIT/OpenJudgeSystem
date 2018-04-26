@@ -195,4 +195,13 @@
   <data name="Problem_not_assigned_to_user" xml:space="preserve">
     <value>Задачата не е част от вашите задачи за изпита</value>
   </data>
+  <data name="Contest" xml:space="preserve">
+    <value>Състезание</value>
+  </data>
+  <data name="Practice" xml:space="preserve">
+    <value>Практика</value>
+  </data>
+  <data name="Report_excel_format" xml:space="preserve">
+    <value>Класиране за {0} {1}.xls</value>
+  </data>
 </root>
