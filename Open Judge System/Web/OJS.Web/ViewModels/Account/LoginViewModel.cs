@@ -18,8 +18,12 @@
         [StringLength(
             GlobalConstants.UsernameMaxLength,
             MinimumLength = GlobalConstants.UsernameMinLength,
-            ErrorMessage = "Потребителското име трябва да бъде между {2} и {1} символа.")]
-        [RegularExpression(GlobalConstants.UsernameRegEx, ErrorMessage = "Невалиден формат на потребителското име.")]
+            ErrorMessageResourceName = "Username_validation",
+            ErrorMessageResourceType = typeof(Resource))]
+        [RegularExpression(
+            GlobalConstants.UsernameRegEx,
+            ErrorMessageResourceName = "Username_regex_validation",
+            ErrorMessageResourceType = typeof(Resource))]
         public string UserName { get; set; }
 
         [AllowHtml]
@@ -33,7 +37,8 @@
         [StringLength(
             GlobalConstants.PasswordMaxLength,
             MinimumLength = GlobalConstants.PasswordMinLength,
-            ErrorMessage = "{0}та трябва да бъде между {2} и {1} символа.")]
+            ErrorMessageResourceName = "Password_length_validation_message",
+            ErrorMessageResourceType = typeof(Resource))]
         public string Password { get; set; }
 
         [Display(
