@@ -13,12 +13,15 @@
     internal static class CSharpProjectExtensions
     {
         private const string MicrosoftCsProjXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
-        private const string NuGetXmlNodeXPath = @"//msns:Target[@Name='EnsureNuGetPackageBuildImports']";
-        private const string VsToolsXmlNodeXPath = @"//msns:Import[@Project='$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets']";
+        private const string VsToolsImportProjectPath = @"$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets";
+        private const string EnsureNuGetPackageBuildImportsTargetName = "EnsureNuGetPackageBuildImports";
+
+        private static readonly string NuGetXmlNodeXPath = $@"//msns:Target[@Name='{EnsureNuGetPackageBuildImportsTargetName}']";
+        private static readonly string VsToolsXmlNodeXPath = $@"//msns:Import[@Project='{VsToolsImportProjectPath}']";
 
         public static void RemoveNuGetPackageImportsTarget(this Project project)
         {
-            if (project.Targets.ContainsKey("EnsureNuGetPackageBuildImports"))
+            if (project.Targets.ContainsKey(EnsureNuGetPackageBuildImportsTargetName))
             {
                 RemoveXmlNodeFromCsProj(project.FullPath, NuGetXmlNodeXPath);
             }
@@ -27,8 +30,7 @@
         public static void RemoveVsToolsImport(this Project project)
         {
             var vsToolsImport = project.Imports.Any(i =>
-                i.ImportingElement.Project ==
-                    "$(VSToolsPath)\\WebApplications\\Microsoft.WebApplication.targets");
+                i.ImportingElement.Project == VsToolsImportProjectPath);
 
             if (vsToolsImport)
             {
