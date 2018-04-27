@@ -2495,6 +2495,7 @@
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
     <Content Include="App_Code\TimeHelper.cshtml" />
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
+    <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />

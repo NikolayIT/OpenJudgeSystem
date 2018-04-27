@@ -38,6 +38,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
@@ -744,6 +745,22 @@
                 .FirstOrDefault();
 
             return this.Content(solutionSkeleton.Decompress());
+        }
+
+        [AjaxOnly]
+        public ActionResult CopyToContestPartial(int id) =>
+            this.PartialView("_CopyProblemToAnotherContest");
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CopyToContest(int id, int contestToCopyTo, int? problemGroupId)
+        {
+            var problem = this.problemsData.GetById(id);
+            var contest = this.contestsData.GetById(contestToCopyTo);
+            var problemGroup = this.problemGroupsData.GetById(problemGroupId.Value);
+
+            this.TempData.AddInfoMessage("Successfuly copied the problem to contest with id ");
+            return this.RedirectToAction(c => c.Index(contestToCopyTo));
         }
 
         private IEnumerable GetData(int id)

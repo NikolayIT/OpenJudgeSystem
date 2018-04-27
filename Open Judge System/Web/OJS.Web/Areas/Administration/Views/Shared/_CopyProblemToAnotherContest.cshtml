@@ -1,0 +1,54 @@
+﻿@using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials;
+
+<form class="top-buffer-sm">
+    @Html.AntiForgeryToken()
+
+    <div>
+        <label for="ContestToCopyTo">Search for the contest to copy the problem in</label>
+    </div>
+
+    @(Html
+        .Kendo()
+        .ComboBox()
+        .Name("ContestToCopyTo")
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .Filter(FilterType.Contains)
+        .MinLength(2)
+        .Placeholder("Choose a contest")
+        .DataSource(data =>
+        {
+            data
+                .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
+                    .Data("setContestFilter"))
+                .ServerFiltering(true);
+        })
+        .AutoBind(false)
+        .HtmlAttributes(new { style = "width:100%" }))
+    
+    <div class="top-buffer">
+        <label for="ProblemGroupId">Problem Group:</label>
+    </div>
+
+    @(Html
+        .Kendo()
+        .DropDownList()
+        .Name("ProblemGroupId")
+        .OptionLabel("Copy in new Problem Group")
+        .HtmlAttributes(new { @class = "test-file-dropdown" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(data =>
+        {
+            data
+                .Read(read => read.Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
+                    .Data("setContestId"))
+                .ServerFiltering(true);
+        })
+        .Enable(false)
+        .AutoBind(false)
+        .CascadeFrom("ContestToCopyTo")
+        .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
+
+    <input class="k-button pull-right top-buffer-lg" type="submit" value="@SharedResource.Copy" />
+</form>
