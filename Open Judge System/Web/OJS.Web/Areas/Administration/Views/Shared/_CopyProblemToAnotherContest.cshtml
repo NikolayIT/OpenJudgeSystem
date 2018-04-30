@@ -20,7 +20,7 @@
         {
             data
                 .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
-                    .Data("setContestFilter"))
+                    .Data("setContestFilterToCopySearch"))
                 .ServerFiltering(true);
         })
         .AutoBind(false)
@@ -42,7 +42,7 @@
         {
             data
                 .Read(read => read.Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
-                    .Data("setContestId"))
+                    .Data("setContestIdToGetProblemGroups"))
                 .ServerFiltering(true);
         })
         .Enable(false)

@@ -7,13 +7,13 @@ function onSearchSelect(e) {
     initializeGrid(contestId);
 }
 
-function setContestId() {
+function setContestIdToGetProblemGroups() {
     return {
         contestId: $('#ContestToCopyTo').val()
     }
 }
 
-function setContestFilter() {
+function setContestFilterToCopySearch() {
     return {
         contestFilter: $('#ContestToCopyTo').data("kendoComboBox").input.val()
     }
@@ -190,7 +190,8 @@ function prepareCopyWindow(problemId, problemName) {
                 title: title,
                 content: url,
                 visible: false,
-                refresh: onWindowLoaded
+                refresh: onWindowLoaded,
+                error: validateModelStateErrors
             });
 
             copyPopUp = copyWindowSelector.data('kendoWindow');
