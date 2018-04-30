@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Business.Problems
 {
+    using System;
     using System.Data.Entity;
     using System.Linq;
 
@@ -7,6 +8,7 @@
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Business.ProblemGroups;
+    using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.ProblemGroups;
@@ -114,32 +116,36 @@
                 .ToList()
                 .ForEach(this.DeleteById);
 
-        public void CopyToContestByIdAndContest(int id, int contestId)
+        public ServiceResult CopyToContestByIdAndContest(int id, int contestId)
         {
             var problem = this.GetProblemWithModelsForCopy(id);
 
             if (problem == null || !this.contestsData.ExistsById(contestId))
             {
-                return;
+                return new ServiceResult("Invalid problem or contest");
             }
 
             var problemNewOrderBy = this.problemsData.GetNewOrderByContest(contestId);
 
             this.CopyProblem(problem, contestId, null, problemNewOrderBy);
+
+            return ServiceResult.Success;
         }
 
-        public void CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId)
+        public ServiceResult CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId)
         {
             var problem = this.GetProblemWithModelsForCopy(id);
 
             if (problem == null || !this.problemGroupsData.ExistsById(problemGroupId))
             {
-                return;
+                return new ServiceResult("Invalid problem or contest");
             }
 
             var problemNewOrderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId);
 
             this.CopyProblem(problem, null, problemGroupId, problemNewOrderBy);
+
+            return ServiceResult.Success;
         }
 
         private void CopyProblem(Problem problem, int? contestId, int? problemGroupId, int newOrderBy)

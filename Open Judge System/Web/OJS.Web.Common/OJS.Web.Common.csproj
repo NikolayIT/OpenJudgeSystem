@@ -61,6 +61,9 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
     </Reference>
@@ -107,17 +110,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionResults\StandardJsonResult.cs" />
     <Compile Include="Attributes\AjaxOnlyAttribute.cs" />
     <Compile Include="Attributes\AuthorizeRolesAttribute.cs" />
     <Compile Include="Attributes\RestrictRequestsAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Extensions\ActionDescriptorExtensions.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\SheetExtensions.cs" />
     <Compile Include="Extensions\TempDataExtentions.cs" />
     <Compile Include="Extensions\UrlHelpers.cs" />
     <Compile Include="Interfaces\IKendoGridAdministrationController.cs" />
     <Compile Include="Interfaces\IAdministrationViewModel.cs" />
     <Compile Include="Extensions\PrincipalExtensions.cs" />
+    <Compile Include="Models\JsonResponse.cs" />
     <Compile Include="OjsUserManager.cs" />
     <Compile Include="SearchResultType.cs" />
     <Compile Include="SystemMessage.cs" />
@@ -131,8 +137,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">

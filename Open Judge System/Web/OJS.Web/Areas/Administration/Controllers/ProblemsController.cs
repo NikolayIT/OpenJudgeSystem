@@ -24,6 +24,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.Problems;
+    using OJS.Services.Common;
     using OJS.Services.Data.Checkers;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
@@ -755,17 +756,25 @@
         [ValidateAntiForgeryToken]
         public ActionResult CopyTo(int id, int contestToCopyTo, int? problemGroupToCopyTo)
         {
-            if (problemGroupToCopyTo.HasValue)
+            if (!this.CheckIfUserHasContestPermissions(contestToCopyTo) ||
+                !this.CheckIfUserHasProblemPermissions(id))
             {
-                this.problemsBusiness.CopyToProblemGroupByIdAndProblemGroup(id, problemGroupToCopyTo.Value);
-            }
-            else
-            {
-                this.problemsBusiness.CopyToContestByIdAndContest(id, contestToCopyTo);
+                return this.JsonError(GeneralResource.No_privileges_message);
             }
 
-            this.TempData.AddInfoMessage("Successfuly copied the problem!");
-            return this.RedirectToAction(c => c.Index(contestToCopyTo));
+            var serviceResult = problemGroupToCopyTo.HasValue
+                ? this.problemsBusiness.CopyToProblemGroupByIdAndProblemGroup(id, problemGroupToCopyTo.Value)
+                : this.problemsBusiness.CopyToContestByIdAndContest(id, contestToCopyTo);
+
+            if (serviceResult.IsError)
+            {
+                return this.JsonError(serviceResult.Error);
+            }
+
+            return this.JsonSuccess(string.Format(
+                GlobalResource.Copy_problem_success_message,
+                this.problemsData.GetByIdQuery(id).Select(p => p.Name).FirstOrDefault(),
+                this.contestsData.GetByIdQuery(contestToCopyTo).Select(c => c.Name).FirstOrDefault()));
         }
 
         private IEnumerable GetData(int id)

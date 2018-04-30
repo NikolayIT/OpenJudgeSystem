@@ -159,4 +159,7 @@
   <data name="Active_contest_problems_permitted_for_deletion" xml:space="preserve">
     <value>Състезанието е активно и не могат да се трият задачи!</value>
   </data>
+  <data name="Copy_problem_success_message" xml:space="preserve">
+    <value>Успешно копирахте задачата {0} в състезанието {1}</value>
+  </data>
 </root>

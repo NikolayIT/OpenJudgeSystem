@@ -10,8 +10,8 @@
 
         void DeleteByContest(int contestId);
 
-        void CopyToContestByIdAndContest(int id, int contestId);
+        ServiceResult CopyToContestByIdAndContest(int id, int contestId);
 
-        void CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId);
+        ServiceResult CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId);
     }
 }

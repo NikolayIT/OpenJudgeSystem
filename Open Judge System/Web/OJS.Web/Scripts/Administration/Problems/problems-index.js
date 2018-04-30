@@ -209,7 +209,8 @@ function prepareCopyWindow(problemId, problemName) {
         var form = copyWindowSelector.children('form');
 
         form.submit(function () {
-            $.post('/Administration/Problems/CopyTo/' + problemId, form.serialize(), function () {
+            $.post('/Administration/Problems/CopyTo/' + problemId, form.serialize(), function (response) {
+                displayResponseMessage(response);
                 copyPopUp.close();
             });
 

@@ -45,3 +45,22 @@ function validateModelStateErrors(args) {
         $('#errors').remove();
     }
 }
+
+function displayResponseMessage(response) {
+    var messageContainer = $('<div class="alert"></div>'), message;
+    console.log(response);
+    if (response.Success) {
+        messageContainer.addClass('alert-success');
+        message = response.SuccessMessage;
+    } else {
+        messageContainer.addClass('alert-danger');
+        message = response.ErrorMessage;
+    }
+
+    messageContainer.text(message);
+    messageContainer.click(function () {
+        messageContainer.hide();
+    });
+
+    $('.container.main-container').prepend(messageContainer);
+}
