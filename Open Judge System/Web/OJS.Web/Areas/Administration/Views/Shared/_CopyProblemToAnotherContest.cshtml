@@ -27,13 +27,13 @@
         .HtmlAttributes(new { style = "width:100%" }))
     
     <div class="top-buffer">
-        <label for="ProblemGroupId">Problem Group:</label>
+        <label for="ProblemGroupToCopyTo">Problem Group:</label>
     </div>
 
     @(Html
         .Kendo()
         .DropDownList()
-        .Name("ProblemGroupId")
+        .Name("ProblemGroupToCopyTo")
         .OptionLabel("Copy in new Problem Group")
         .HtmlAttributes(new { @class = "test-file-dropdown" })
         .DataTextField("Name")

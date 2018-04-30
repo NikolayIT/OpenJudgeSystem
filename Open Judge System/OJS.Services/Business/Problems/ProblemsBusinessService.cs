@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Business.Problems
 {
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Common.Helpers;
@@ -8,6 +9,7 @@
     using OJS.Services.Business.ProblemGroups;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.ProblemResources;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
@@ -26,6 +28,7 @@
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly ITestRunsDataService testRunsData;
+        private readonly IProblemGroupsDataService problemGroupsData;
         private readonly IProblemGroupsBusinessService problemGroupsBusiness;
 
         public ProblemsBusinessService(
@@ -37,6 +40,7 @@
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             ITestRunsDataService testRunsData,
+            IProblemGroupsDataService problemGroupsData,
             IProblemGroupsBusinessService problemGroupsBusiness)
         {
             this.problems = problems;
@@ -47,6 +51,7 @@
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.testRunsData = testRunsData;
+            this.problemGroupsData = problemGroupsData;
             this.problemGroupsBusiness = problemGroupsBusiness;
         }
 
@@ -108,5 +113,68 @@
                 .Select(p => p.Id)
                 .ToList()
                 .ForEach(this.DeleteById);
+
+        public void CopyToContestByIdAndContest(int id, int contestId)
+        {
+            var problem = this.GetProblemWithModelsForCopy(id);
+
+            if (problem == null || !this.contestsData.ExistsById(contestId))
+            {
+                return;
+            }
+
+            var problemNewOrderBy = this.problemsData.GetNewOrderByContest(contestId);
+
+            this.CopyProblem(problem, contestId, null, problemNewOrderBy);
+        }
+
+        public void CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId)
+        {
+            var problem = this.GetProblemWithModelsForCopy(id);
+
+            if (problem == null || !this.problemGroupsData.ExistsById(problemGroupId))
+            {
+                return;
+            }
+
+            var problemNewOrderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId);
+
+            this.CopyProblem(problem, null, problemGroupId, problemNewOrderBy);
+        }
+
+        private void CopyProblem(Problem problem, int? contestId, int? problemGroupId, int newOrderBy)
+        {
+            if (problemGroupId.HasValue)
+            {
+                problem.ProblemGroupId = problemGroupId;
+            }
+            else if (contestId.HasValue)
+            {
+                problem.ProblemGroup = new ProblemGroup
+                {
+                    ContestId = contestId.Value,
+                    OrderBy = newOrderBy
+                };
+            }
+            else
+            {
+                return;
+            }
+
+            problem.Id = default(int);
+            problem.ModifiedOn = null;
+            problem.OrderBy = newOrderBy;
+
+            this.problemsData.Add(problem);
+        }
+
+        private Problem GetProblemWithModelsForCopy(int problemId) =>
+            this.problemsData
+                .GetByIdQuery(problemId)
+                .AsNoTracking()
+                .Include(p => p.Tests)
+                .Include(p => p.Resources)
+                .Include(p => p.SubmissionTypes)
+                .SingleOrDefault();
     }
 }

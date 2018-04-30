@@ -9,5 +9,9 @@
         void DeleteById(int id);
 
         void DeleteByContest(int contestId);
+
+        void CopyToContestByIdAndContest(int id, int contestId);
+
+        void CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId);
     }
 }

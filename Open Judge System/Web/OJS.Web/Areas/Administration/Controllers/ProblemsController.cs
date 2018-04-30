@@ -753,13 +753,18 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CopyToContest(int id, int contestToCopyTo, int? problemGroupId)
+        public ActionResult CopyTo(int id, int contestToCopyTo, int? problemGroupToCopyTo)
         {
-            var problem = this.problemsData.GetById(id);
-            var contest = this.contestsData.GetById(contestToCopyTo);
-            var problemGroup = this.problemGroupsData.GetById(problemGroupId.Value);
+            if (problemGroupToCopyTo.HasValue)
+            {
+                this.problemsBusiness.CopyToProblemGroupByIdAndProblemGroup(id, problemGroupToCopyTo.Value);
+            }
+            else
+            {
+                this.problemsBusiness.CopyToContestByIdAndContest(id, contestToCopyTo);
+            }
 
-            this.TempData.AddInfoMessage("Successfuly copied the problem to contest with id ");
+            this.TempData.AddInfoMessage("Successfuly copied the problem!");
             return this.RedirectToAction(c => c.Index(contestToCopyTo));
         }
 
@@ -861,21 +866,12 @@
 
         private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
         {
-            var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
-            var lastProblem = this.problemsData
-                .GetAllByContest(contest.Id)
-                .OrderByDescending(x => x.OrderBy)
-                .FirstOrDefault();
-
-            if (lastProblem != null)
+            var problem = new DetailedProblemViewModel
             {
-                problemOrder = lastProblem.OrderBy + 1;
-            }
-
-            var problem = new DetailedProblemViewModel();
-            problem.OrderBy = problemOrder;
-            problem.ContestId = contest.Id;
-            problem.ContestName = contest.Name;
+                OrderBy = this.problemsData.GetNewOrderByContest(contest.Id),
+                ContestId = contest.Id,
+                ContestName = contest.Name
+            };
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
