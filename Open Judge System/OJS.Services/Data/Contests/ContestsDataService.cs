@@ -58,13 +58,13 @@
         public IQueryable<Contest> GetAllVisibleByCategory(int categoryId) =>
             this.GetAllVisible().Where(c => c.CategoryId == categoryId);
 
-        public IQueryable<Contest> GetAllVisibleByLecturer(string lecturerId) =>
-            this.GetAllVisible().Where(c =>
+        public IQueryable<Contest> GetAllByLecturer(string lecturerId) =>
+            this.GetAll().Where(c =>
                 c.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                 c.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
         public IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId) =>
-            this.GetAllVisibleByLecturer(lecturerId).Where(c => c.CategoryId == categoryId);
+            this.GetAllByLecturer(lecturerId).Where(c => c.CategoryId == categoryId);
 
         public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
 
