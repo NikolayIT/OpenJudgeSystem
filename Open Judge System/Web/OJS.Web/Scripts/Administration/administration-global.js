@@ -48,7 +48,7 @@ function validateModelStateErrors(args) {
 
 function displayResponseMessage(response) {
     var messageContainer = $('<div class="alert"></div>'), message;
-    console.log(response);
+
     if (response.Success) {
         messageContainer.addClass('alert-success');
         message = response.SuccessMessage;

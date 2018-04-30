@@ -39,6 +39,8 @@
 
         int GetMaxPointsById(int id);
 
+        string GetNameById(int id);
+
         bool IsActiveById(int id);
 
         bool IsOnlineById(int id);

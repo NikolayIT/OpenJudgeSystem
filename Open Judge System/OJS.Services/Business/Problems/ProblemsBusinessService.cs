@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Business.Problems
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
 
@@ -22,6 +21,10 @@
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
+        // TODO: Add messages to resources
+        private const string InvalidProblemOrContestErrorMessage = "Invalid problem or contest";
+        private const string CannotCopyProblemInActiveContestErrorMessage = "Cannot copy problems into Active Contest";
+
         private readonly IEfDeletableEntityRepository<Problem> problems;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantScoresDataService participantScoresData;
@@ -122,14 +125,12 @@
 
             if (problem == null || !this.contestsData.ExistsById(contestId))
             {
-                return new ServiceResult("Invalid problem or contest");
+                return new ServiceResult(InvalidProblemOrContestErrorMessage);
             }
 
             var problemNewOrderBy = this.problemsData.GetNewOrderByContest(contestId);
 
-            this.CopyProblem(problem, contestId, null, problemNewOrderBy);
-
-            return ServiceResult.Success;
+            return this.CopyProblem(problem, contestId, problemNewOrderBy);
         }
 
         public ServiceResult CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId)
@@ -138,33 +139,32 @@
 
             if (problem == null || !this.problemGroupsData.ExistsById(problemGroupId))
             {
-                return new ServiceResult("Invalid problem or contest");
+                return new ServiceResult(InvalidProblemOrContestErrorMessage);
             }
 
             var problemNewOrderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId);
 
-            this.CopyProblem(problem, null, problemGroupId, problemNewOrderBy);
-
-            return ServiceResult.Success;
+            return this.CopyProblem(problem, problem.ProblemGroup.ContestId, problemNewOrderBy, problemGroupId);
         }
 
-        private void CopyProblem(Problem problem, int? contestId, int? problemGroupId, int newOrderBy)
+        private ServiceResult CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId = null)
         {
+            if (this.contestsData.IsActiveById(contestId))
+            {
+                return new ServiceResult(CannotCopyProblemInActiveContestErrorMessage);
+            }
+
             if (problemGroupId.HasValue)
             {
                 problem.ProblemGroupId = problemGroupId;
             }
-            else if (contestId.HasValue)
+            else
             {
                 problem.ProblemGroup = new ProblemGroup
                 {
-                    ContestId = contestId.Value,
+                    ContestId = contestId,
                     OrderBy = newOrderBy
                 };
-            }
-            else
-            {
-                return;
             }
 
             problem.Id = default(int);
@@ -172,6 +172,7 @@
             problem.OrderBy = newOrderBy;
 
             this.problemsData.Add(problem);
+            return ServiceResult.Success;
         }
 
         private Problem GetProblemWithModelsForCopy(int problemId) =>

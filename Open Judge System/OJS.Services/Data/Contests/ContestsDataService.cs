@@ -78,6 +78,9 @@
                     .Sum(pg => pg.Problems.FirstOrDefault().MaximumPoints))
                 .FirstOrDefault();
 
+        public string GetNameById(int id) =>
+            this.GetByIdQuery(id).Select(c => c.Name).FirstOrDefault();
+
         public bool IsActiveById(int id)
         {
             var contest = this.contests.GetById(id);

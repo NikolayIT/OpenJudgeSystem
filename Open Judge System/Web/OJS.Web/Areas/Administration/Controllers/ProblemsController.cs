@@ -773,8 +773,8 @@
 
             return this.JsonSuccess(string.Format(
                 GlobalResource.Copy_problem_success_message,
-                this.problemsData.GetByIdQuery(id).Select(p => p.Name).FirstOrDefault(),
-                this.contestsData.GetByIdQuery(contestToCopyTo).Select(c => c.Name).FirstOrDefault()));
+                this.problemsData.GetNameById(id),
+                this.contestsData.GetNameById(contestToCopyTo)));
         }
 
         private IEnumerable GetData(int id)

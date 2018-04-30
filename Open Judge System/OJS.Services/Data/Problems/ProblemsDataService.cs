@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Linq;
+
     using OJS.Common;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -45,6 +46,9 @@
                 .Select(p => new { p.OrderBy })
                 .FirstOrDefault()
                 ?.OrderBy + 1 ?? GlobalConstants.ProblemDefaultOrderBy;
+
+        public string GetNameById(int id) =>
+            this.GetByIdQuery(id).Select(p => p.Name).FirstOrDefault();
 
         public void Add(Problem problem)
         {

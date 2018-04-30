@@ -25,6 +25,8 @@
 
         int GetNewOrderByProblemGroup(int problemGroupId);
 
+        string GetNameById(int id);
+
         void Add(Problem problem);
 
         void Update(Problem problem);
