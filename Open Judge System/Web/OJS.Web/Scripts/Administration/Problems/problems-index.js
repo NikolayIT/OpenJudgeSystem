@@ -7,12 +7,6 @@ function onSearchSelect(e) {
     initializeGrid(contestId);
 }
 
-function setContestIdToGetProblemGroups() {
-    return {
-        contestId: $('#ContestId').val()
-    }
-}
-
 /* exported onContestSelect */
 function onContestSelect() {
     'use strict';

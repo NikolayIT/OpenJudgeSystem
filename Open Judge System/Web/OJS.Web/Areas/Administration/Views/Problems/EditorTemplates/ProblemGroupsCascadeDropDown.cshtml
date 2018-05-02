@@ -2,6 +2,14 @@
 
 @using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials
 
+<script>
+    function setContestIdToGetProblemGroups() {
+        return {
+            contestId: $('#ContestId').val()
+        }
+    }
+</script>
+
 @(Html
       .Kendo()
       .DropDownList()
