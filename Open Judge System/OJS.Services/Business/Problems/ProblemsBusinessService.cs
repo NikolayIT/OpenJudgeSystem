@@ -10,7 +10,6 @@
     using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.ProblemResources;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
@@ -33,7 +32,6 @@
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly ITestRunsDataService testRunsData;
-        private readonly IProblemGroupsDataService problemGroupsData;
         private readonly IProblemGroupsBusinessService problemGroupsBusiness;
 
         public ProblemsBusinessService(
@@ -45,7 +43,6 @@
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             ITestRunsDataService testRunsData,
-            IProblemGroupsDataService problemGroupsData,
             IProblemGroupsBusinessService problemGroupsBusiness)
         {
             this.problems = problems;
@@ -56,7 +53,6 @@
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.testRunsData = testRunsData;
-            this.problemGroupsData = problemGroupsData;
             this.problemGroupsBusiness = problemGroupsBusiness;
         }
 
@@ -161,7 +157,6 @@
                 };
             }
 
-            problem.Id = default(int);
             problem.ModifiedOn = null;
             problem.OrderBy = newOrderBy;
 
