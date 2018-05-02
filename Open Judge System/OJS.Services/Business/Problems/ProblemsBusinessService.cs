@@ -23,6 +23,7 @@
     {
         // TODO: Add messages to resources
         private const string CannotCopyProblemInActiveContestErrorMessage = "Cannot copy problems into Active Contest";
+        private const string CannotCopyProblemIntoTheSameContest = "Cannot copy problems into the same contest";
 
         private readonly IEfDeletableEntityRepository<Problem> problems;
         private readonly IContestsDataService contestsData;
@@ -131,6 +132,11 @@
             var problemNewOrderBy = problemGroupId.HasValue
                 ? this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value)
                 : this.problemsData.GetNewOrderByContest(contestId);
+
+            if (problem?.ProblemGroup.ContestId == contestId)
+            {
+                return new ServiceResult(CannotCopyProblemIntoTheSameContest);
+            }
 
             return this.CopyProblem(problem, contestId, problemNewOrderBy, problemGroupId);
         }
