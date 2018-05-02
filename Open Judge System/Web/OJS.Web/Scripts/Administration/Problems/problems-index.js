@@ -183,7 +183,6 @@ function prepareCopyWindow(problemId, problemName) {
             copyWindowSelector.kendoWindow({
                 width: '600px',
                 modal: true,
-                height: '200px',
                 iframe: false,
                 resizable: false,
                 title: title,
