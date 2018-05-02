@@ -133,18 +133,20 @@
             return this.CopyProblem(problem, contestId, problemNewOrderBy);
         }
 
-        public ServiceResult CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId)
+        public ServiceResult CopyToContestByIdAndProblemGroup(int id, int problemGroupId)
         {
             var problem = this.GetProblemWithModelsForCopy(id);
 
-            if (problem == null || !this.problemGroupsData.ExistsById(problemGroupId))
+            var contestId = this.problemGroupsData.GetContestIdById(problemGroupId);
+
+            if (problem == null || !contestId.HasValue)
             {
                 return new ServiceResult(InvalidProblemOrContestErrorMessage);
             }
 
             var problemNewOrderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId);
 
-            return this.CopyProblem(problem, problem.ProblemGroup.ContestId, problemNewOrderBy, problemGroupId);
+            return this.CopyProblem(problem, contestId.Value, problemNewOrderBy, problemGroupId);
         }
 
         private ServiceResult CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId = null)

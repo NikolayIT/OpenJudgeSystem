@@ -210,7 +210,7 @@ function prepareCopyWindow(problemId, problemName) {
 
         form.submit(function () {
             $.post('/Administration/Problems/CopyTo/' + problemId, form.serialize(), function (response) {
-                displayResponseMessage(response);
+                displayStandardJsonResultMessage(response);
                 copyPopUp.close();
             });
 

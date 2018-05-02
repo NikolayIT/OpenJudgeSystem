@@ -7,28 +7,19 @@
 
     public static class ControllerExtensions
     {
-        public static ActionResult JsonSuccess(
+        public static JsonResult JsonSuccess(
             this Controller controller,
             object data,
             string contentType = null,
             Encoding contentEncoding = null,
-            JsonRequestBehavior jsonRequestBehavior = JsonRequestBehavior.AllowGet)
-        {
-            var result = new StandardJsonResult
-            {
-                Data = data,
-                ContentType = contentType,
-                ContentEncoding = contentEncoding,
-                JsonRequestBehavior = jsonRequestBehavior
-            };
-
-            if (data is string message)
-            {
-               result.AddSuccessMessage(message);
-            }
-
-            return result;
-        }
+            JsonRequestBehavior jsonRequestBehavior = JsonRequestBehavior.AllowGet) =>
+                new StandardJsonResult
+                {
+                    Data = data,
+                    ContentType = contentType,
+                    ContentEncoding = contentEncoding,
+                    JsonRequestBehavior = jsonRequestBehavior
+                };
 
         public static JsonResult JsonError(
             this Controller controller,
@@ -41,7 +32,7 @@
             {
                 ContentType = contentType,
                 ContentEncoding = contentEncoding,
-                JsonRequestBehavior = jsonRequestBehavior,
+                JsonRequestBehavior = jsonRequestBehavior
             };
 
             result.AddErrorMessage(errorMessage);

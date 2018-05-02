@@ -1,10 +1,11 @@
-﻿@using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials;
+﻿@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials
+@using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials
 
 <form class="top-buffer-sm">
     @Html.AntiForgeryToken()
 
     <div>
-        <label for="ContestToCopyTo">Search for the contest to copy the problem in</label>
+        <label for="ContestToCopyTo">@Resource.Search_for_contest_to_copy_to_title</label>
     </div>
 
     @(Html
@@ -15,7 +16,7 @@
         .DataValueField("Id")
         .Filter(FilterType.Contains)
         .MinLength(2)
-        .Placeholder("Choose a contest")
+        .Placeholder(Resource.Choose_contest)
         .DataSource(data =>
         {
             data
@@ -27,14 +28,14 @@
         .HtmlAttributes(new { style = "width:100%" }))
     
     <div class="top-buffer">
-        <label for="ProblemGroupToCopyTo">Problem Group:</label>
+        <label for="ProblemGroupToCopyTo">@Resource.Problem_group:</label>
     </div>
 
     @(Html
         .Kendo()
         .DropDownList()
         .Name("ProblemGroupToCopyTo")
-        .OptionLabel("Copy in new Problem Group")
+        .OptionLabel(Resource.Copy_in_new_problem_group)
         .HtmlAttributes(new { @class = "test-file-dropdown" })
         .DataTextField("Name")
         .DataValueField("Id")

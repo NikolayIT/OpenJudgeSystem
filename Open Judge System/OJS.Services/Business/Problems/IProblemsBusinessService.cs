@@ -12,6 +12,6 @@
 
         ServiceResult CopyToContestByIdAndContest(int id, int contestId);
 
-        ServiceResult CopyToProblemGroupByIdAndProblemGroup(int id, int problemGroupId);
+        ServiceResult CopyToContestByIdAndProblemGroup(int id, int problemGroupId);
     }
 }

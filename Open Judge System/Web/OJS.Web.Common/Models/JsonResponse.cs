@@ -1,13 +1,15 @@
 ﻿namespace OJS.Web.Common.Models
 {
+    using System.Collections.Generic;
+
+    using OJS.Common.Extensions;
+
     public class JsonResponse
     {
-        public bool Success => this.ErrorMessage == null;
+        public bool Success => this.ErrorMessages.IsNullOrEmpty();
 
-        public object Data { get; set; }
+        public object OriginalData { get; set; }
 
-        public string SuccessMessage { get; set; }
-
-        public string ErrorMessage { get; set; }
+        public IEnumerable<string> ErrorMessages { get; set; }
     }
 }

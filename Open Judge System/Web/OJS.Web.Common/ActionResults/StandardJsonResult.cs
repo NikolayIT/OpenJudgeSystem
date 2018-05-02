@@ -1,6 +1,8 @@
 ﻿namespace OJS.Web.Common.ActionResults
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Mvc;
@@ -13,17 +15,14 @@
 
     internal class StandardJsonResult : JsonResult
     {
-        private string errorMessage;
-        private string successMessage;
+        private const string JsonReuqestGetBehaviorNotAllowedErrorMessage =
+            "GET access is not allowed. Change the JsonRequestBehavior if you need GET access.";
+
+        private readonly ICollection<string> errorMessages = new List<string>();
 
         public void AddErrorMessage(string message)
         {
-            this.errorMessage = message;
-        }
-
-        public void AddSuccessMessage(string message)
-        {
-            this.successMessage = message;
+            this.errorMessages.Add(message);
         }
 
         public override void ExecuteResult(ControllerContext context)
@@ -39,8 +38,7 @@
                     WebRequestMethods.Http.Get,
                     StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException(
-                    "GET access is not allowed. Change the JsonRequestBehavior if you need GET access.");
+                throw new InvalidOperationException(JsonReuqestGetBehaviorNotAllowedErrorMessage);
             }
 
             var response = context.HttpContext.Response;
@@ -58,12 +56,16 @@
 
         protected virtual void SerializeData(HttpResponseBase response)
         {
-            this.Data = new JsonResponse
+            if (this.errorMessages.Any())
             {
-                Data = this.Data,
-                SuccessMessage = this.successMessage,
-                ErrorMessage = this.errorMessage
-            };
+                this.Data = new JsonResponse
+                {
+                    OriginalData = this.Data,
+                    ErrorMessages = this.errorMessages
+                };
+
+                response.TrySkipIisCustomErrors = true;
+            }
 
             var settings = new JsonSerializerSettings
             {

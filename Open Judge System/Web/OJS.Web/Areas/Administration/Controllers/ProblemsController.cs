@@ -756,14 +756,13 @@
         [ValidateAntiForgeryToken]
         public ActionResult CopyTo(int id, int contestToCopyTo, int? problemGroupToCopyTo)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestToCopyTo) ||
-                !this.CheckIfUserHasProblemPermissions(id))
+            if (!this.CheckIfUserHasContestPermissions(contestToCopyTo))
             {
                 return this.JsonError(GeneralResource.No_privileges_message);
             }
 
             var serviceResult = problemGroupToCopyTo.HasValue
-                ? this.problemsBusiness.CopyToProblemGroupByIdAndProblemGroup(id, problemGroupToCopyTo.Value)
+                ? this.problemsBusiness.CopyToContestByIdAndProblemGroup(id, problemGroupToCopyTo.Value)
                 : this.problemsBusiness.CopyToContestByIdAndContest(id, contestToCopyTo);
 
             if (serviceResult.IsError)

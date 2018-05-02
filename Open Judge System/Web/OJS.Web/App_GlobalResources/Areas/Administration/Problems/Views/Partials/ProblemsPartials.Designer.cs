@@ -107,6 +107,24 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to choose a contest.
+        /// </summary>
+        public static string Choose_contest {
+            get {
+                return ResourceManager.GetString("Choose_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy into a new problem group.
+        /// </summary>
+        public static string Copy_in_new_problem_group {
+            get {
+                return ResourceManager.GetString("Copy_in_new_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the max points for the problem.
         /// </summary>
         public static string Enter_max_points {
@@ -202,6 +220,24 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         public static string Precision_checker_description {
             get {
                 return ResourceManager.GetString("Precision_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem group.
+        /// </summary>
+        public static string Problem_group {
+            get {
+                return ResourceManager.GetString("Problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for the contest in which you want to copy the problem in.
+        /// </summary>
+        public static string Search_for_contest_to_copy_to_title {
+            get {
+                return ResourceManager.GetString("Search_for_contest_to_copy_to_title", resourceCulture);
             }
         }
         
