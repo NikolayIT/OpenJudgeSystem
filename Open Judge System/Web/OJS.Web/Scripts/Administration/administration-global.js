@@ -46,10 +46,16 @@ function validateModelStateErrors(args) {
     }
 }
 
-function prepareAlertMessage(message, isSuccess) {
-    var messageContainer = $('<div class="alert"></div>');
+function displayAlertMessage(message, status, containerSelector) {
+    var messageContainer = $('#alert-message-container');
 
-    if (isSuccess) {
+    if (messageContainer.length) {
+        messageContainer.remove();
+    }
+
+    messageContainer = $('<div id="alert-message-container" class="alert"></div>');
+
+    if (status === 'success') {
         messageContainer.addClass('alert-success');
     } else {
         messageContainer.addClass('alert-danger');
@@ -65,5 +71,5 @@ function prepareAlertMessage(message, isSuccess) {
         messageContainer.hide();
     });
 
-    return messageContainer;
+    containerSelector.prepend(messageContainer);
 }

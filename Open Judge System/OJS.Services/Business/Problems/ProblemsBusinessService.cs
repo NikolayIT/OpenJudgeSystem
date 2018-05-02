@@ -161,6 +161,7 @@
             problem.OrderBy = newOrderBy;
 
             this.problemsData.Add(problem);
+
             return ServiceResult.Success;
         }
     }

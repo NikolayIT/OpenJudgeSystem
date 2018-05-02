@@ -15,15 +15,13 @@ function onContestSelect() {
     initializeGrid(contestId);
 }
 
-function onCopySuccess(response) {
-    var messageContainer = prepareAlertMessage(response, true);
+function onCopySuccess(response, status) {
     $('#copy-popup-window').data('kendoWindow').close();
-    $('.main-container').prepend(messageContainer);
+    displayAlertMessage(response, status, $('.main-container'));
 }
 
-function onCopyFailure(response) {
-    var messageContainer = prepareAlertMessage(response.responseJSON.errorMessages, false);
-    $(this).parent().prepend(messageContainer);
+function onCopyFailure(response, status) {
+    displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
 }
 
 function initializeGrid(contestId) {
