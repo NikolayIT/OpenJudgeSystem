@@ -30,7 +30,7 @@
         public IQueryable<Problem> GetProblemsById(int id) =>
             this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
 
-        public int? GetContestIdById(int id) =>
-            this.GetByIdQuery(id).Select(pg => (int?)pg.ContestId).FirstOrDefault();
+        public bool IsFromContestByIdAndContest(int id, int contestId) =>
+            this.GetByIdQuery(id).Any(pg => pg.ContestId == contestId);
     }
 }

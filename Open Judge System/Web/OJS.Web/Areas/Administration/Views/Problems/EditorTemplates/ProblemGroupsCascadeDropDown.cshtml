@@ -5,7 +5,7 @@
 @(Html
       .Kendo()
       .DropDownList()
-      .Name("ProblemGroupToCopyTo")
+      .Name("ProblemGroupId")
       .OptionLabel(Resource.Copy_in_new_problem_group)
       .HtmlAttributes(new { @class = "test-file-dropdown" })
       .DataTextField("Name")
@@ -19,5 +19,5 @@
       })
       .Enable(false)
       .AutoBind(false)
-      .CascadeFrom("ContestToCopyTo")
+      .CascadeFrom("ContestId")
       .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))

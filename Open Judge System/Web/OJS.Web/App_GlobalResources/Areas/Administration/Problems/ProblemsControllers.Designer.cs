@@ -97,6 +97,15 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid problem group.
+        /// </summary>
+        public static string Invalid_problem_group {
+            get {
+                return ResourceManager.GetString("Invalid_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid tests.
         /// </summary>
         public static string Invalid_tests {

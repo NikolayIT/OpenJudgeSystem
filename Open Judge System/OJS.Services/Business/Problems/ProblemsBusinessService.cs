@@ -22,7 +22,6 @@
     public class ProblemsBusinessService : IProblemsBusinessService
     {
         // TODO: Add messages to resources
-        private const string InvalidProblemOrContestErrorMessage = "Invalid problem or contest";
         private const string CannotCopyProblemInActiveContestErrorMessage = "Cannot copy problems into Active Contest";
 
         private readonly IEfDeletableEntityRepository<Problem> problems;
@@ -119,37 +118,24 @@
                 .ToList()
                 .ForEach(this.DeleteById);
 
-        public ServiceResult CopyToContestByIdAndContest(int id, int contestId)
+        public ServiceResult CopyToContestByIdByContestAndProblemGroup(int id, int contestId, int? problemGroupId)
         {
-            var problem = this.GetProblemWithModelsForCopy(id);
+            var problem = this.problemsData
+                .GetByIdQuery(id)
+                .AsNoTracking()
+                .Include(p => p.Tests)
+                .Include(p => p.Resources)
+                .Include(p => p.SubmissionTypes)
+                .SingleOrDefault();
 
-            if (problem == null || !this.contestsData.ExistsById(contestId))
-            {
-                return new ServiceResult(InvalidProblemOrContestErrorMessage);
-            }
+            var problemNewOrderBy = problemGroupId.HasValue
+                ? this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value)
+                : this.problemsData.GetNewOrderByContest(contestId);
 
-            var problemNewOrderBy = this.problemsData.GetNewOrderByContest(contestId);
-
-            return this.CopyProblem(problem, contestId, problemNewOrderBy);
+            return this.CopyProblem(problem, contestId, problemNewOrderBy, problemGroupId);
         }
 
-        public ServiceResult CopyToContestByIdAndProblemGroup(int id, int problemGroupId)
-        {
-            var problem = this.GetProblemWithModelsForCopy(id);
-
-            var contestId = this.problemGroupsData.GetContestIdById(problemGroupId);
-
-            if (problem == null || !contestId.HasValue)
-            {
-                return new ServiceResult(InvalidProblemOrContestErrorMessage);
-            }
-
-            var problemNewOrderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId);
-
-            return this.CopyProblem(problem, contestId.Value, problemNewOrderBy, problemGroupId);
-        }
-
-        private ServiceResult CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId = null)
+        private ServiceResult CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
         {
             if (this.contestsData.IsActiveById(contestId))
             {
@@ -176,14 +162,5 @@
             this.problemsData.Add(problem);
             return ServiceResult.Success;
         }
-
-        private Problem GetProblemWithModelsForCopy(int problemId) =>
-            this.problemsData
-                .GetByIdQuery(problemId)
-                .AsNoTracking()
-                .Include(p => p.Tests)
-                .Include(p => p.Resources)
-                .Include(p => p.SubmissionTypes)
-                .SingleOrDefault();
     }
 }

@@ -2507,7 +2507,6 @@
     <Content Include="App_Code\TimeHelper.cshtml" />
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
     <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
-    <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ContestsCopyToComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
@@ -2576,6 +2575,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AdministrationGeneral.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AdministrationGeneral.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2903,6 +2903,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsControllers.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

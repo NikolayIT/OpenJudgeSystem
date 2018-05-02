@@ -162,4 +162,7 @@
   <data name="Copy_problem_success_message" xml:space="preserve">
     <value>You successfully copied the problem {0} into the contest {1}</value>
   </data>
+  <data name="Invalid_problem_group" xml:space="preserve">
+    <value>Invalid problem group</value>
+  </data>
 </root>

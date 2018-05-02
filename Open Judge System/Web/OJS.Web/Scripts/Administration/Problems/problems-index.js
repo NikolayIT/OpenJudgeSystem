@@ -9,13 +9,7 @@ function onSearchSelect(e) {
 
 function setContestIdToGetProblemGroups() {
     return {
-        contestId: $('#ContestToCopyTo').val()
-    }
-}
-
-function setContestFilterToCopySearch() {
-    return {
-        contestFilter: $('#ContestToCopyTo').data("kendoComboBox").input.val()
+        contestId: $('#ContestId').val()
     }
 }
 
@@ -25,6 +19,17 @@ function onContestSelect() {
 
     var contestId = $('#contests').val();
     initializeGrid(contestId);
+}
+
+function onCopySuccess(response) {
+    var messageContainer = prepareAlertMessage(response, true);
+    $('#copy-popup-window').data('kendoWindow').close();
+    $('.main-container').prepend(messageContainer);
+}
+
+function onCopyFailure(response) {
+    var messageContainer = prepareAlertMessage(response.responseJSON.errorMessages, false);
+    $(this).parent().prepend(messageContainer);
 }
 
 function initializeGrid(contestId) {
@@ -175,7 +180,7 @@ function hideTheadFromGrid() {
 function prepareCopyWindow(problemId, problemName) {
     var copyWindowSelector = $('#copy-popup-window');
     var title = 'Копиране на задача ' + problemName;
-    var url = '/Administration/Problems/CopyToContestPartial/' + problemId;
+    var url = '/Administration/Problems/CopyPartial/' + problemId;
 
     var copyPopUp = copyWindowSelector.data('kendoWindow');
 
@@ -184,7 +189,7 @@ function prepareCopyWindow(problemId, problemName) {
             copyWindowSelector.kendoWindow({
                 width: '600px',
                 modal: true,
-                height: '220px',
+                height: '200px',
                 iframe: false,
                 resizable: false,
                 title: title,

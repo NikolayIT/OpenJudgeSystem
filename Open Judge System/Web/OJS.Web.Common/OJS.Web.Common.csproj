@@ -117,6 +117,7 @@
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Extensions\ActionDescriptorExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
+    <Compile Include="Extensions\HttpResponseBaseExtensions.cs" />
     <Compile Include="Extensions\SheetExtensions.cs" />
     <Compile Include="Extensions\TempDataExtentions.cs" />
     <Compile Include="Extensions\UrlHelpers.cs" />

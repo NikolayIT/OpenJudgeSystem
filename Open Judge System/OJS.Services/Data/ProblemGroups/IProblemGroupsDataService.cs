@@ -21,6 +21,6 @@
 
         IQueryable<Problem> GetProblemsById(int id);
 
-        int? GetContestIdById(int id);
+        bool IsFromContestByIdAndContest(int id, int contestId);
     }
 }

@@ -749,34 +749,56 @@
         }
 
         [AjaxOnly]
-        public ActionResult CopyToContestPartial(int id) =>
+        public ActionResult CopyPartial(int id) =>
             this.PartialView("_CopyProblemToAnotherContest", new CopyProblemViewModel(id));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CopyTo(int id, int contestToCopyTo, int? problemGroupToCopyTo)
+        public ActionResult Copy(CopyProblemViewModel problem)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestToCopyTo))
+            var contestId = problem.ContestId;
+            var problemGroupId = problem.ProblemGroupId;
+
+            if (!this.ModelState.IsValid)
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction(c => c.Index());
+                return this.JsonValidation();
             }
 
-            var serviceResult = problemGroupToCopyTo.HasValue
-                ? this.problemsBusiness.CopyToContestByIdAndProblemGroup(id, problemGroupToCopyTo.Value)
-                : this.problemsBusiness.CopyToContestByIdAndContest(id, contestToCopyTo);
-
-            if (serviceResult.IsError)
+            if (!this.problemsData.ExistsById(problem.Id))
             {
-                this.TempData.AddDangerMessage(serviceResult.Error);
-                return this.RedirectToAction(c => c.Index());
+                return this.JsonError(GlobalResource.Invalid_problem);
             }
 
-            this.TempData.AddInfoMessage(string.Format(
+            if (!contestId.HasValue || !this.contestsData.ExistsById(contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_contest);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(contestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            if (problemGroupId.HasValue &&
+                !this.problemGroupsData.IsFromContestByIdAndContest(problemGroupId.Value, contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_problem_group);
+            }
+
+            var result = this.problemsBusiness.CopyToContestByIdByContestAndProblemGroup(
+                problem.Id,
+                contestId.Value,
+                problemGroupId);
+
+            if (result.IsError)
+            {
+                return this.JsonError(result.Error);
+            }
+
+            return this.JsonSuccess(string.Format(
                 GlobalResource.Copy_problem_success_message,
-                this.problemsData.GetNameById(id),
-                this.contestsData.GetNameById(contestToCopyTo)));
-            return this.RedirectToAction(c => c.Index(contestToCopyTo));
+                this.problemsData.GetNameById(problem.Id),
+                this.contestsData.GetNameById(contestId.Value)));
         }
 
         private IEnumerable GetData(int id)

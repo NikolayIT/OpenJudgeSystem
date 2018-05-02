@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.ViewModels.Problem
 {
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
@@ -7,6 +8,10 @@
 
     public class CopyProblemViewModel
     {
+        public CopyProblemViewModel()
+        {
+        }
+
         public CopyProblemViewModel(int problemId) => this.Id = problemId;
 
         [Required]
@@ -17,11 +22,12 @@
         [Required(
             ErrorMessageResourceName = "Contest_required",
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ContestsCopyToComboBox")]
-        public int ContestToCopyTo { get; set; }
+        [DefaultValue(null)]
+        [UIHint("ContestsComboBox")]
+        public int? ContestId { get; set; }
 
         [Display(Name = "Problem_group_label", ResourceType = typeof(Resource))]
         [UIHint("ProblemGroupsCascadeDropDown")]
-        public int? ProblemGroupToCopyTo { get; set; }
+        public int? ProblemGroupId { get; set; }
     }
 }
