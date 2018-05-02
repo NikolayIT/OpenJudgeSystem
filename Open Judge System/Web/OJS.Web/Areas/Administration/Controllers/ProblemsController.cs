@@ -750,7 +750,7 @@
 
         [AjaxOnly]
         public ActionResult CopyToContestPartial(int id) =>
-            this.PartialView("_CopyProblemToAnotherContest");
+            this.PartialView("_CopyProblemToAnotherContest", new CopyProblemViewModel(id));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -758,7 +758,8 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestToCopyTo))
             {
-                return this.JsonError(GeneralResource.No_privileges_message);
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
+                return this.RedirectToAction(c => c.Index());
             }
 
             var serviceResult = problemGroupToCopyTo.HasValue
@@ -767,13 +768,15 @@
 
             if (serviceResult.IsError)
             {
-                return this.JsonError(serviceResult.Error);
+                this.TempData.AddDangerMessage(serviceResult.Error);
+                return this.RedirectToAction(c => c.Index());
             }
 
-            return this.JsonSuccess(string.Format(
+            this.TempData.AddInfoMessage(string.Format(
                 GlobalResource.Copy_problem_success_message,
                 this.problemsData.GetNameById(id),
                 this.contestsData.GetNameById(contestToCopyTo)));
+            return this.RedirectToAction(c => c.Index(contestToCopyTo));
         }
 
         private IEnumerable GetData(int id)

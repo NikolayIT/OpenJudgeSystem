@@ -1,55 +1,32 @@
-﻿@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials
+﻿@model OJS.Web.Areas.Administration.ViewModels.Problem.CopyProblemViewModel
+
+@using OJS.Web.Areas.Administration.Controllers
 @using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials
 
-<form class="top-buffer-sm">
+@using (Html.BeginForm<ProblemsController>(
+    c => c.CopyTo(Model.Id, Model.ContestToCopyTo, Model.ProblemGroupToCopyTo),
+    FormMethod.Post,
+    new { @class = "form-horizontal", role = "form" }))
+{
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
 
-    <div>
-        <label for="ContestToCopyTo">@Resource.Search_for_contest_to_copy_to_title</label>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ContestToCopyTo, new { @class = "control-label" })
+
+        <div>
+            @Html.EditorFor(m => m.ContestToCopyTo, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ContestToCopyTo)
+        </div>
     </div>
 
-    @(Html
-        .Kendo()
-        .ComboBox()
-        .Name("ContestToCopyTo")
-        .DataTextField("Name")
-        .DataValueField("Id")
-        .Filter(FilterType.Contains)
-        .MinLength(2)
-        .Placeholder(Resource.Choose_contest)
-        .DataSource(data =>
-        {
-            data
-                .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
-                    .Data("setContestFilterToCopySearch"))
-                .ServerFiltering(true);
-        })
-        .AutoBind(false)
-        .HtmlAttributes(new { style = "width:100%" }))
-    
-    <div class="top-buffer">
-        <label for="ProblemGroupToCopyTo">@Resource.Problem_group:</label>
-    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ProblemGroupToCopyTo, new { @class = "control-label" })
 
-    @(Html
-        .Kendo()
-        .DropDownList()
-        .Name("ProblemGroupToCopyTo")
-        .OptionLabel(Resource.Copy_in_new_problem_group)
-        .HtmlAttributes(new { @class = "test-file-dropdown" })
-        .DataTextField("Name")
-        .DataValueField("Id")
-        .DataSource(data =>
-        {
-            data
-                .Read(read => read.Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
-                    .Data("setContestIdToGetProblemGroups"))
-                .ServerFiltering(true);
-        })
-        .Enable(false)
-        .AutoBind(false)
-        .CascadeFrom("ContestToCopyTo")
-        .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
+        <div>
+            @Html.EditorFor(m => m.ProblemGroupToCopyTo, new { @class = "form-control" })
+        </div>
+    </div>
 
     <input class="k-button pull-right top-buffer-lg" type="submit" value="@SharedResource.Copy" />
-</form>
+}

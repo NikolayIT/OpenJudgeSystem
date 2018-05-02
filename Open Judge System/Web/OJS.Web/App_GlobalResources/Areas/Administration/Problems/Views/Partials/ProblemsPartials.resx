@@ -132,9 +132,6 @@
   <data name="Choose_code_checker" xml:space="preserve">
     <value>Choose a source code checker for this problem. The basic options are:</value>
   </data>
-  <data name="Choose_contest" xml:space="preserve">
-    <value>choose a contest</value>
-  </data>
   <data name="Copy_in_new_problem_group" xml:space="preserve">
     <value>Copy into a new problem group</value>
   </data>
@@ -170,12 +167,6 @@
   </data>
   <data name="Precision_checker_description" xml:space="preserve">
     <value>- the system compares only N digits after the decimal separator. Works only for problems where the answers are floating point numbers positioned on new lines.</value>
-  </data>
-  <data name="Problem_group" xml:space="preserve">
-    <value>Problem group</value>
-  </data>
-  <data name="Search_for_contest_to_copy_to_title" xml:space="preserve">
-    <value>Search for the contest in which you want to copy the problem in</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

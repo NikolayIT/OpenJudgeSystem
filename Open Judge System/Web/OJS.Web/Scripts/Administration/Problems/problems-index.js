@@ -184,14 +184,12 @@ function prepareCopyWindow(problemId, problemName) {
             copyWindowSelector.kendoWindow({
                 width: '600px',
                 modal: true,
-                height: '200px',
+                height: '220px',
                 iframe: false,
                 resizable: false,
                 title: title,
                 content: url,
-                visible: false,
-                refresh: onWindowLoaded,
-                error: validateModelStateErrors
+                visible: false
             });
 
             copyPopUp = copyWindowSelector.data('kendoWindow');
@@ -204,19 +202,6 @@ function prepareCopyWindow(problemId, problemName) {
 
     copyPopUp.open();
     copyPopUp.center();
-
-    function onWindowLoaded() {
-        var form = copyWindowSelector.children('form');
-
-        form.submit(function () {
-            $.post('/Administration/Problems/CopyTo/' + problemId, form.serialize(), function (response) {
-                displayStandardJsonResultMessage(response);
-                copyPopUp.close();
-            });
-
-            return false;
-        });
-    }
 }
 
 $(document).ready(function () {

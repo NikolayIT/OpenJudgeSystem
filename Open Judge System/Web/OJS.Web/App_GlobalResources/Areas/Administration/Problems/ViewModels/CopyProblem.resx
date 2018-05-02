@@ -117,73 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Additional_files" xml:space="preserve">
-    <value>Допълнителни файлове</value>
+  <data name="Contest_label" xml:space="preserve">
+    <value>Search for the contest in which you want to copy the problem in</value>
   </data>
-  <data name="Additional_files_label" xml:space="preserve">
-    <value>Допълнителни файлове (.zip формат)</value>
+  <data name="Contest_required" xml:space="preserve">
+    <value>Contest is required</value>
   </data>
-  <data name="Case_insensitive_checker_description" xml:space="preserve">
-    <value>- системата не отчита разлика между главна и малка буква като сравнява символ по символ;</value>
+  <data name="Problem_group_label" xml:space="preserve">
+    <value>Problem group:</value>
   </data>
-  <data name="Choose_additional_file" xml:space="preserve">
-    <value>Избери .zip файл със допълнителни файлове които да се добавят към проекта на потребителя.</value>
-  </data>
-  <data name="Choose_code_checker" xml:space="preserve">
-    <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>
-  </data>
-  <data name="Copy_in_new_problem_group" xml:space="preserve">
-    <value>Копирай в нова група от задачи</value>
-  </data>
-  <data name="Enter_max_points" xml:space="preserve">
-    <value>Въведете максимален брой точки, които състезателят може да получи от задачата</value>
-  </data>
-  <data name="Enter_memory_limit" xml:space="preserve">
-    <value>Въведете максималнa памет в байтове, която състезателят може да достигне с решението си върху задачата</value>
-  </data>
-  <data name="Enter_name" xml:space="preserve">
-    <value>Въведете заглавие на задачата</value>
-  </data>
-  <data name="Enter_order" xml:space="preserve">
-    <value>Въведете номер под ред на задачата в текущото състезание</value>
-  </data>
-  <data name="Enter_solution_skeleton" xml:space="preserve">
-    <value>Въведете скелет</value>
-  </data>
-  <data name="Enter_sorce_code_size_limit" xml:space="preserve">
-    <value>Въведете максимален размер на сорс код в байтове, която състезателят може да изпрати като решение на задачата</value>
-  </data>
-  <data name="Enter_time_limit" xml:space="preserve">
-    <value>Въведете максимално време в милисекунди, които състезателят може да достигне с решението си върху задачата</value>
-  </data>
-  <data name="Exact_checker_description" xml:space="preserve">
-    <value>- системата проверява резултатите на състезателя с очаквания изход символ по символ;</value>
-  </data>
-  <data name="For" xml:space="preserve">
-    <value>към</value>
-  </data>
-  <data name="General_info" xml:space="preserve">
-    <value>Основна информация</value>
-  </data>
-  <data name="Precision_checker_description" xml:space="preserve">
-    <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Show_detailed_feedback" xml:space="preserve">
-    <value>Изберете дали участниците ще могат да си виждат пълен feedback на решенията си, както го виждат администраторите</value>
-  </data>
-  <data name="Show_results" xml:space="preserve">
-    <value>Изберете дали участниците ще могат да си виждат резултатите в реално време</value>
-  </data>
-  <data name="Sort_checker_description" xml:space="preserve">
-    <value>- системата първо сортира по линии резултатите на състезателя и очаквания изход и след това ги сравнява символ по символ;</value>
-  </data>
-  <data name="Submission_types" xml:space="preserve">
-    <value>Видове решения</value>
-  </data>
-  <data name="Trim_checker_description" xml:space="preserve">
-    <value>- системата първо премахва празните интервали в началото и края на резултатите на състезателя и след това ги сравнява с очаквания изход символ по символ;</value>
+  <data name="Problem_group_placeholder" xml:space="preserve">
+    <value>Copy into a new problem group</value>
   </data>
 </root>

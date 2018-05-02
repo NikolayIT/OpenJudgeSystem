@@ -1,0 +1,23 @@
+﻿@model int?
+
+@using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials
+
+@(Html
+      .Kendo()
+      .DropDownList()
+      .Name("ProblemGroupToCopyTo")
+      .OptionLabel(Resource.Copy_in_new_problem_group)
+      .HtmlAttributes(new { @class = "test-file-dropdown" })
+      .DataTextField("Name")
+      .DataValueField("Id")
+      .DataSource(data =>
+      {
+          data
+              .Read(read => read.Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
+                  .Data("setContestIdToGetProblemGroups"))
+              .ServerFiltering(true);
+      })
+      .Enable(false)
+      .AutoBind(false)
+      .CascadeFrom("ContestToCopyTo")
+      .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))

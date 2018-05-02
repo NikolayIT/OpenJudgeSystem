@@ -923,6 +923,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsControllers.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.designer.cs">
+      <DependentUpon>CopyProblem.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.bg.designer.cs">
+      <DependentUpon>CopyProblem.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1752,6 +1762,7 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\CopyProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
@@ -2496,6 +2507,8 @@
     <Content Include="App_Code\TimeHelper.cshtml" />
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
     <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ContestsCopyToComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
@@ -2895,6 +2908,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsControllers.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CopyProblem.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CopyProblem.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

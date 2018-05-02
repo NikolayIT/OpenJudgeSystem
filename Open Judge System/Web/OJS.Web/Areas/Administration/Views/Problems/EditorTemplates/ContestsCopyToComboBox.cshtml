@@ -1,0 +1,22 @@
+﻿@model int
+
+@using Resource = Resources.Areas.Administration.Contests.Views.EditorTemplates.ContestDropDown
+
+@(Html
+      .Kendo()
+      .ComboBox()
+      .Name("ContestToCopyTo")
+      .DataTextField("Name")
+      .DataValueField("Id")
+      .Filter(FilterType.Contains)
+      .MinLength(2)
+      .Placeholder(Resource.Select_contest)
+      .DataSource(data =>
+      {
+          data
+              .Read(read => read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
+                  .Data("setContestFilterToCopySearch"))
+              .ServerFiltering(true);
+      })
+      .AutoBind(false)
+      .HtmlAttributes(new { style = "width:100%" }))
