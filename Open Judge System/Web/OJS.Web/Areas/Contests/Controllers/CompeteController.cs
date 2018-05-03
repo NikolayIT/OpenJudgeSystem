@@ -83,13 +83,27 @@
         /// </summary>
         /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
         /// <param name="problem">The problem which the user is attempting to solve</param>
+        /// <param name="shouldAllowBinaryFiles">Bool indicating if the validation should allow binary file uploads</param>
         [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Problem problem)
+        public static SubmissionType ValidateSubmissionType(int submissionTypeId, Problem problem, bool shouldAllowBinaryFiles)
         {
-            if (problem.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            var submissionType = problem.SubmissionTypes.FirstOrDefault(st => st.Id == submissionTypeId);
+            if (submissionType == null)
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
+
+            if (shouldAllowBinaryFiles && !submissionType.AllowBinaryFilesUpload)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
+            }
+
+            if (!shouldAllowBinaryFiles && submissionType.AllowBinaryFilesUpload)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Text_upload_not_allowed);
+            }
+
+            return submissionType;
         }
 
         /// <summary>
@@ -394,7 +408,7 @@
                 return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem, shouldAllowBinaryFiles: false);
 
             if (!this.ModelState.IsValid)
             {
@@ -475,8 +489,6 @@
                 return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
-
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
                 throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -487,18 +499,10 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
-            // Validate submission type existence
-            var submissionType = this.Data.SubmissionTypes.GetById(participantSubmission.SubmissionTypeId);
-            if (submissionType == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
-            }
-
-            // Validate if binary files are allowed
-            if (!submissionType.AllowBinaryFilesUpload)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
-            }
+            var submissionType = ValidateSubmissionType(
+                participantSubmission.SubmissionTypeId,
+                problem,
+                shouldAllowBinaryFiles: true);
 
             // Validate file extension
             if (!submissionType.AllowedFileExtensionsList.Contains(
