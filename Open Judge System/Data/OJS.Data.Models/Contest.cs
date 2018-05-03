@@ -94,8 +94,6 @@
 
         public virtual ICollection<ContestQuestion> Questions { get; set; } = new HashSet<ContestQuestion>();
 
-        public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
-
         public virtual ICollection<ProblemGroup> ProblemGroups { get; set; } = new HashSet<ProblemGroup>();
 
         public virtual ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();

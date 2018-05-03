@@ -22,7 +22,7 @@
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.ProblemGroups.ProblemGroupsControllers;
-    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ProblemGroup.DetailedProblemGroupViewModel;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.ProblemGroup.ProblemGroupAdministrationViewModel;
 
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("ProblemGroups")]
