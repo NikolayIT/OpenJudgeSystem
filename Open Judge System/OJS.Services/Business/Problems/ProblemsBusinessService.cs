@@ -101,7 +101,7 @@
 
                 if (!this.contestsData.IsOnlineById(problem.ContestId))
                 {
-                    this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId.Value);
+                    this.problemGroupsBusiness.DeleteById(problem.ProblemGroupId);
                 }
 
                 scope.Complete();
@@ -146,7 +146,7 @@
 
             if (problemGroupId.HasValue)
             {
-                problem.ProblemGroupId = problemGroupId;
+                problem.ProblemGroupId = problemGroupId.Value;
             }
             else
             {

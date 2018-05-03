@@ -7,17 +7,19 @@
 
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
+    using OJS.Workers.ExecutionStrategies.Extensions;
     using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class CSharpUnitTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {
+        private const string NUnitFrameworkPackageName = "nunit.framework";
+
         public CSharpUnitTestsExecutionStrategy(
             string nUnitConsoleRunnerPath,
             Func<CompilerType, string> getCompilerPathFunc,
@@ -42,8 +44,6 @@
             this.SaveSetupFixture(project.DirectoryPath);
 
             this.CorrectProjectReferences(project);
-            project.Save(csProjFilePath);
-            project.ProjectCollection.UnloadAllProjects();
 
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
@@ -73,7 +73,8 @@
             string additionalExecutionArguments)
         {
             var projectDirectory = Path.GetDirectoryName(csProjFilePath);
-            var testedCodePath = $"{projectDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileName}";
+            var testedCodePath =
+                $"{projectDirectory}\\{UnitTestStrategiesHelper.TestedCodeFileNameWithExtension}";
             var originalTestsPassed = -1;
             var count = 0;
 
@@ -156,11 +157,17 @@
             return compilerResult;
         }
 
-        private void CorrectProjectReferences(Project project)
+        protected override void CorrectProjectReferences(Project project)
         {
-            project.AddItem("Compile", $"{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}");
+            var additionalCompileItems = new[]
+            {
+                UnitTestStrategiesHelper.TestedCodeFileName,
+                SetupFixtureFileName
+            };
 
-            this.EnsureAssemblyNameIsCorrect(project);
+            project.AddCompileItems(additionalCompileItems);
+
+            project.EnsureAssemblyNameIsCorrect();
 
             // Remove the first Project Reference (this should be the reference to the tested project)
             var projectReference = project.GetItems("ProjectReference").FirstOrDefault();
@@ -169,30 +176,20 @@
                 project.RemoveItem(projectReference);
             }
 
-            project.AddItem("Compile", UnitTestStrategiesHelper.TestedCodeFileName);
             project.SetProperty("OutputType", "Library");
 
-            var nUnitPrevReference = project.Items.FirstOrDefault(x => x.EvaluatedInclude.Contains("nunit.framework"));
-            if (nUnitPrevReference != null)
-            {
-                project.RemoveItem(nUnitPrevReference);
-            }
+            project.RemoveItemByName(NUnitFrameworkPackageName);
 
-            // Add our NUnit Reference, if private is false, the .dll will not be copied and the tests will not run
-            var nUnitMetaData = new Dictionary<string, string>();
-            nUnitMetaData.Add("SpecificVersion", "False");
-            nUnitMetaData.Add("Private", "True");
-            project.AddItem("Reference", NUnitReference, nUnitMetaData);
+            // Add our NUnit Reference
+            project.AddReferences(NUnitReference);
 
             // If we use NUnit we don't really need the VSTT, it will save us copying of the .dll
-            var vsTestFrameworkReference = project.Items
-                .FirstOrDefault(x =>
-                    x.EvaluatedInclude.Contains("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
+            project.RemoveItemByName(VsttPackageName);
 
-            if (vsTestFrameworkReference != null)
-            {
-                project.RemoveItem(vsTestFrameworkReference);
-            }
+            project.Save(project.FullPath);
+            project.ProjectCollection.UnloadAllProjects();
+
+            project.RemoveNuGetPackageImportsTarget();
         }
     }
 }

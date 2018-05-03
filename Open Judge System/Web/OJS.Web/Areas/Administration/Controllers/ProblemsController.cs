@@ -47,6 +47,7 @@
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemAdministrationViewModel;
 
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("Problems")]
@@ -152,7 +153,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, DetailedProblemViewModel problem)
+        public ActionResult Create(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
@@ -260,7 +261,7 @@
                 }
             }
 
-            if (newProblem.ProblemGroupId == null)
+            if (newProblem.ProblemGroupId == default(int))
             {
                 newProblem.ProblemGroup = new ProblemGroup
                 {
@@ -308,7 +309,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, DetailedProblemViewModel problem)
+        public ActionResult Edit(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
@@ -529,7 +530,7 @@
 
             var problem = this.problemsData
                 .GetByIdQuery(id.Value)
-                .Select(DetailedProblemViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
             if (problem == null)
@@ -805,13 +806,13 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                return new List<DetailedProblemViewModel>();
+                return new List<ViewModelType>();
             }
 
             var result = this.problemsData
                 .GetAllByContest(id)
                 .OrderBy(x => x.OrderBy)
-                .Select(DetailedProblemViewModel.FromProblem);
+                .Select(ViewModelType.FromProblem);
 
             return result;
         }
@@ -879,15 +880,20 @@
             }
         }
 
-        private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
+        private ViewModelType PrepareProblemViewModelForEdit(int id)
         {
             var problemEntity = this.problemsData.GetByIdQuery(id);
 
             var problem = problemEntity
-                .Select(DetailedProblemViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
-            var contest = problemEntity.FirstOrDefault().ProblemGroup.Contest;
+            var contest = problemEntity.FirstOrDefault()?.ProblemGroup.Contest;
+
+            if (problem == null || contest == null)
+            {
+                return null;
+            }
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
@@ -897,13 +903,13 @@
             return problem;
         }
 
-        private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
+        private ViewModelType PrepareProblemViewModelForCreate(Contest contest)
         {
-            var problem = new DetailedProblemViewModel
+            var problem = new ViewModelType
             {
-                OrderBy = this.problemsData.GetNewOrderByContest(contest.Id),
                 ContestId = contest.Id,
-                ContestName = contest.Name
+                ContestName = contest.Name,
+                OrderBy = this.problemsData.GetNewOrderByContest(contest.Id)
             };
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
@@ -920,7 +926,7 @@
         }
 
         private void AddCheckersAndProblemGroupsToProblemViewModel(
-            DetailedProblemViewModel problem,
+            ViewModelType problem,
             int numberOfProblemGroups,
             bool isOnlineContest)
         {
@@ -942,7 +948,7 @@
             }
         }
 
-        private void AddCheckersToProblemViewModel(DetailedProblemViewModel problem) =>
+        private void AddCheckersToProblemViewModel(ViewModelType problem) =>
             problem.AvailableCheckers = this.checkersData
                 .GetAll()
                 .Select(checker => new SelectListItem
@@ -951,7 +957,7 @@
                     Value = checker.Name
                 });
 
-        private bool IsValidProblem(DetailedProblemViewModel model)
+        private bool IsValidProblem(ViewModelType model)
         {
             var isValid = true;
 

@@ -29,7 +29,7 @@
 
         public bool IsChecked { get; set; }
 
-        public static Action<SubmissionTypeViewModel> ApplySelectedTo(DetailedProblemViewModel problem)
+        public static Action<SubmissionTypeViewModel> ApplySelectedTo(ProblemAdministrationViewModel problem)
         {
             return st =>
             {

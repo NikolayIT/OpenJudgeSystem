@@ -1761,10 +1761,10 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\ProblemGroupAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\CopyProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\ProblemAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceViewModel.cs" />

@@ -11,10 +11,10 @@
 
     using ProblemResource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
 
-    public class DetailedProblemGroupViewModel : AdministrationViewModel<ProblemGroup>
+    public class ProblemGroupAdministrationViewModel : AdministrationViewModel<ProblemGroup>
     {
-        public static Expression<Func<ProblemGroup, DetailedProblemGroupViewModel>> FromProblemGroup =>
-            problemGroup => new DetailedProblemGroupViewModel
+        public static Expression<Func<ProblemGroup, ProblemGroupAdministrationViewModel>> FromProblemGroup =>
+            problemGroup => new ProblemGroupAdministrationViewModel
             {
                 Id = problemGroup.Id,
                 OrderBy = problemGroup.OrderBy,
