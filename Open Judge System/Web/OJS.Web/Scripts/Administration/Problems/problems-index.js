@@ -189,7 +189,6 @@ function prepareCopyWindow(problemId, problemName) {
             });
 
             copyPopUp = copyWindowSelector.data('kendoWindow');
-
         })();
     } else {
         copyPopUp.title(title);
