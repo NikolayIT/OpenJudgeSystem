@@ -11,21 +11,22 @@
 </script>
 
 @(Html
-      .Kendo()
-      .DropDownList()
-      .Name("ProblemGroupId")
-      .OptionLabel(Resource.Copy_in_new_problem_group)
-      .HtmlAttributes(new { @class = "test-file-dropdown" })
-      .DataTextField("Name")
-      .DataValueField("Id")
-      .DataSource(data =>
-      {
-          data
-              .Read(read => read.Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
-                  .Data("setContestIdToGetProblemGroups"))
-              .ServerFiltering(true);
-      })
-      .Enable(false)
-      .AutoBind(false)
-      .CascadeFrom("ContestId")
-      .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
+    .Kendo()
+    .DropDownList()
+    .Name("ProblemGroupId")
+    .OptionLabel(Resource.Copy_in_new_problem_group)
+    .HtmlAttributes(new { @class = "test-file-dropdown" })
+    .DataTextField("Name")
+    .DataValueField("Id")
+    .DataSource(data =>
+    {
+        data
+            .Read(read => read
+                .Action("GetCascadeProblemGroupsFromContest", "KendoRemoteData")
+                .Data("setContestIdToGetProblemGroups"))
+            .ServerFiltering(true);
+    })
+    .Enable(false)
+    .AutoBind(false)
+    .CascadeFrom("ContestId")
+    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput")))
