@@ -70,7 +70,7 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You successfully copied the problem {0} into the contest {1}.
+        ///   Looks up a localized string similar to Successfully copied the problem {0} into the contest {1}.
         /// </summary>
         public static string Copy_problem_success_message {
             get {

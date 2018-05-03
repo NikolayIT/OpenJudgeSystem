@@ -67,7 +67,6 @@
                     ErrorMessages = this.errorMessages
                 };
 
-                // Set error response status code if it's not already set
                 if (!response.IsError())
                 {
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
