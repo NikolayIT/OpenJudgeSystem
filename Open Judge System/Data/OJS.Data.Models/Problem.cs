@@ -46,8 +46,6 @@
 
         public int OrderBy { get; set; }
 
-        public short? GroupNumber { get; set; }
-
         /// <summary>
         /// Gets or sets a predefined skeleton for the task
         /// </summary>
