@@ -118,5 +118,63 @@
             return this.Content($"Done! ProblemGroups set to deleted: {softDeleted}" +
                 $"<br/> ProblemGroups hard deleted: {hardDeleted}");
         }
+
+        public ActionResult FixMismatchedUserIdFromPlatform()
+        {
+            const string CorrectUserId = "d921cb09-1c36-4fa6-8ae9-320d1c18eb1e";
+            const string RealUserName = "ipetkow";
+            const string TempUserName = "tempJudgeUser";
+
+            var tempUserId = this.Data.Users
+                .All()
+                .Where(u => u.UserName == TempUserName)
+                .Select(u => u.Id)
+                .SingleOrDefault();
+
+            var realUserId = this.Data.Users
+                .All()
+                .Where(u => u.UserName == RealUserName)
+                .Select(u => u.Id)
+                .SingleOrDefault();
+
+            if (realUserId == CorrectUserId)
+            {
+                return this.Content("The Id is already correct.");
+            }
+
+            if (tempUserId == null)
+            {
+                return this.Content($"No {TempUserName} exists");
+            }
+
+            // Attach the Participants of the user to the temp userId
+            this.Data.Participants.Update(
+                p => p.UserId == realUserId,
+                p => new Participant
+                {
+                    UserId = tempUserId
+                });
+
+            // Change the Id of the user
+            this.Data.Users.Update(
+                u => u.Id == realUserId,
+                u => new UserProfile
+                {
+                    Id = CorrectUserId
+                });
+
+            // Reattach the Participants to the correct userId of the user
+            this.Data.Participants.Update(
+                p => p.UserId == tempUserId,
+                p => new Participant
+                {
+                    UserId = CorrectUserId
+                });
+
+            // Hard delete the temp user from the database
+            this.Data.Users.Delete(u => u.Id == tempUserId);
+
+            return this.Content("Done.");
+        }
     }
 }
