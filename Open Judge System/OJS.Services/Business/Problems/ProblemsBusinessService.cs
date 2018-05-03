@@ -134,16 +134,18 @@
                 return new ServiceResult(CannotCopyProblemIntoTheSameContest);
             }
 
-            return this.CopyProblem(problem, contestId, problemNewOrderBy, problemGroupId);
-        }
-
-        private ServiceResult CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
-        {
             if (this.contestsData.IsActiveById(contestId))
             {
                 return new ServiceResult(CannotCopyProblemInActiveContestErrorMessage);
             }
 
+            this.CopyProblem(problem, contestId, problemNewOrderBy, problemGroupId);
+
+            return ServiceResult.Success;
+        }
+
+        private void CopyProblem(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
+        {
             if (problemGroupId.HasValue)
             {
                 problem.ProblemGroupId = problemGroupId.Value;
@@ -161,8 +163,6 @@
             problem.OrderBy = newOrderBy;
 
             this.problemsData.Add(problem);
-
-            return ServiceResult.Success;
         }
     }
 }
