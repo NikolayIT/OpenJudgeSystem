@@ -139,12 +139,12 @@
                 return new ServiceResult(CannotCopyProblemInActiveContestErrorMessage);
             }
 
-            this.CopyProblemToContest(problem, contestId, problemNewOrderBy, problemGroupId);
+            this.CopyToContest(problem, contestId, problemNewOrderBy, problemGroupId);
 
             return ServiceResult.Success;
         }
 
-        private void CopyProblemToContest(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
+        private void CopyToContest(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
         {
             if (problemGroupId.HasValue)
             {
