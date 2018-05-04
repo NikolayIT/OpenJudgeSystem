@@ -10,6 +10,25 @@
 
     public interface IParticipantsDataService : IService
     {
+        Participant GetByContestByUserAndByIsOfficial(int contestId, string userId, bool isOfficial);
+
+        Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
+
+        IQueryable<Participant> GetByIdQuery(int id);
+
+        IQueryable<Participant> GetAll();
+
+        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
+
+        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+            int contestId,
+            DateTime contestStartTimeRangeStart,
+            DateTime contestStartTimeRangeEnd);
+
+        bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+
+        bool IsOfficialById(int id);
+
         void Add(Participant participant);
 
         void Update(Participant participant);
@@ -20,21 +39,6 @@
 
         void Delete(IEnumerable<Participant> participants);
 
-        Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
-
-        IQueryable<Participant> GetByIdQuery(int participantId);
-
-        IQueryable<Participant> GetAll();
-
-        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
-
-        bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
-
-        bool IsOfficialById(int participantId);
-
-        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
-            int contestId,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd);
+        void InvalidateByContestAndIsOfficial(int contestId, bool isOfficial);
     }
 }
