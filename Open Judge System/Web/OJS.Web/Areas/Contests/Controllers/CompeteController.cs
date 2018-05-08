@@ -151,19 +151,21 @@
                 return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
             }
 
+            var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
+
             var participant = this.participantsData
                 .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
 
             if (participant == null || participant.IsInvalidated)
             {
-                var shouldShowConfirmation = official &&
+                var shouldShowConfirmation = participant == null &&
+                    official &&
                     contest.IsOnline &&
-                    (!hasConfirmed.HasValue ||
-                    hasConfirmed.Value == false) &&
+                    (!hasConfirmed.HasValue || hasConfirmed.Value == false) &&
                     contest.Duration.HasValue &&
-                    !this.IsUserAdminOrLecturerInContest(contest);
+                    !isUserAdminOrLecturerInContest;
 
-                if (shouldShowConfirmation && participant == null)
+                if (shouldShowConfirmation)
                 {
                     return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
                     {
@@ -186,10 +188,10 @@
             var participantViewModel = new ParticipantViewModel(
                 participant,
                 official,
-                this.IsUserAdminOrLecturerInContest(contest));
+                isUserAdminOrLecturerInContest);
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
-            this.ViewBag.IsUserAdminOrLecturer = this.IsUserAdminOrLecturerInContest(contest);
+            this.ViewBag.IsUserAdminOrLecturer = isUserAdminOrLecturerInContest;
 
             return this.View(participantViewModel);
         }
