@@ -163,7 +163,7 @@
                     contest.Duration.HasValue &&
                     !this.IsUserAdminOrLecturerInContest(contest);
 
-                if (shouldShowConfirmation)
+                if (shouldShowConfirmation && participant == null)
                 {
                     return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
                     {
