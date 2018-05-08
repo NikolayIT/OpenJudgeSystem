@@ -21,7 +21,7 @@ function hideInput(val) {
 $(document).ready(function () {
     'use strict';
 
-    var value = $('#Type').data('kendoDropDownList').value();
+    var value = parseInt($('#Type').data('kendoDropDownList').value());
     hideInput(value);
 
     $('#file-button-resource').click(function() {
