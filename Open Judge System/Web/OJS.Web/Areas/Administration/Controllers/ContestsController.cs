@@ -221,22 +221,6 @@
             return this.RedirectToAction<ContestsController>(c => c.Index());
         }
 
-        private void InvalidateParticipants(
-            string orginalContestPassword,
-            string originalPracticePassword,
-            Contest contest)
-        {
-            if (orginalContestPassword != contest.ContestPassword)
-            {
-                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: true);
-            }
-
-            if (originalPracticePassword != contest.PracticePassword)
-            {
-                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: false);
-            }
-        }
-
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ContestAdministrationViewModel model)
         {
@@ -580,6 +564,24 @@
                 {
                     OrderBy = i
                 });
+            }
+        }
+
+        private void InvalidateParticipants(
+            string orginalContestPassword,
+            string originalPracticePassword,
+            Contest contest)
+        {
+            if (orginalContestPassword != contest.ContestPassword &&
+                !string.IsNullOrWhiteSpace(contest.ContestPassword))
+            {
+                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: true);
+            }
+
+            if (originalPracticePassword != contest.PracticePassword &&
+                !string.IsNullOrWhiteSpace(contest.PracticePassword))
+            {
+                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: false);
             }
         }
     }
