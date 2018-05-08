@@ -38,7 +38,7 @@
         public IQueryable<ParticipantScore> GetAll() =>
             this.participantScores.All();
 
-        public void SaveBySubmission(Submission submission, bool resetScore = false)
+        public void ResetBySubmission(Submission submission)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)
             {
@@ -54,28 +54,23 @@
                 })
                 .FirstOrDefault();
 
-            if (participant != null)
+            if (participant == null)
             {
-                using (var transaction = this.participantScores.BeginTransaction())
-                {
-                    var existingScore = this.GetByParticipantIdProblemIdAndIsOfficial(
-                        submission.ParticipantId.Value,
-                        submission.ProblemId.Value,
-                        participant.IsOfficial);
+                return;
+            }
 
-                    if (existingScore == null)
-                    {
-                        this.AddNew(submission, participant.UserName, participant.IsOfficial);
-                    }
-                    else if (resetScore ||
-                        submission.Points > existingScore.Points ||
-                        submission.Id == existingScore.SubmissionId)
-                    {
-                        this.Update(existingScore, submission.Id, submission.Points);
-                    }
+            var existingScore = this.GetByParticipantIdProblemIdAndIsOfficial(
+                submission.ParticipantId.Value,
+                submission.ProblemId.Value,
+                participant.IsOfficial);
 
-                    transaction.Commit();
-                }
+            if (existingScore == null)
+            {
+                this.AddBySubmissionByUsernameAndIsOfficial(submission, participant.UserName, participant.IsOfficial);
+            }
+            else
+            {
+                this.UpdateBySubmissionAndPoints(existingScore, submission.Id, submission.Points);
             }
         }
 
@@ -105,7 +100,7 @@
             this.participantScores.SaveChanges();
         }
 
-        private void AddNew(Submission submission, string participantName, bool isOfficial)
+        public void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string participantName, bool isOfficial)
         {
             this.participantScores.Add(new ParticipantScore
             {
@@ -120,7 +115,7 @@
             this.participantScores.SaveChanges();
         }
 
-        private void Update(ParticipantScore participantScore, int submissionId, int submissionPoints)
+        public void UpdateBySubmissionAndPoints(ParticipantScore participantScore, int submissionId, int submissionPoints)
         {
             participantScore.SubmissionId = submissionId;
             participantScore.Points = submissionPoints;
