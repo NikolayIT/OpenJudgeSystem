@@ -100,14 +100,14 @@
             this.participantScores.SaveChanges();
         }
 
-        public void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string participantName, bool isOfficial)
+        public void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string username, bool isOfficial)
         {
             this.participantScores.Add(new ParticipantScore
             {
                 ParticipantId = submission.ParticipantId.Value,
                 ProblemId = submission.ProblemId.Value,
                 SubmissionId = submission.Id,
-                ParticipantName = participantName,
+                ParticipantName = username,
                 Points = submission.Points,
                 IsOfficial = isOfficial
             });

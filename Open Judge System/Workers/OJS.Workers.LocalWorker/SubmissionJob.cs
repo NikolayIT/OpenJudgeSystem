@@ -21,6 +21,8 @@
 
     public class SubmissionJob : IJob
     {
+        private readonly object sharedLockObject;
+
         private readonly ILog logger;
 
         private readonly ConcurrentQueue<int> submissionsForProcessing;
@@ -29,7 +31,8 @@
 
         public SubmissionJob(
             string name,
-            ConcurrentQueue<int> submissionsForProcessing)
+            ConcurrentQueue<int> submissionsForProcessing,
+            object sharedLockObject)
         {
             this.Name = name;
 
@@ -39,6 +42,7 @@
             this.stopping = false;
 
             this.submissionsForProcessing = submissionsForProcessing;
+            this.sharedLockObject = sharedLockObject;
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -288,16 +292,17 @@
             }
 
             var participant = submission.Participant;
-            ParticipantScore existingScore;
 
             if (participant == null)
             {
                 return;
             }
 
+            ParticipantScore existingScore;
+
             var username = participant.User.UserName;
-           
-            lock (this.submissionsForProcessing)
+
+            lock (this.sharedLockObject)
             {
                 existingScore = participantScoresData.GetByParticipantIdProblemIdAndIsOfficial(
                     submission.ParticipantId.Value,
