@@ -59,9 +59,9 @@
                 {
                     var testRunsData = container.GetInstance<ITestRunsDataService>();
                     var submissionsData = container.GetInstance<ISubmissionsDataService>();
-                    var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
                     var participantScoresData = container.GetInstance<IParticipantScoresDataService>();
-                
+                    var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
+
                     Submission submission = null;
                     SubmissionForProcessing submissionForProcessing = null;
                     bool retrievedSubmissionSuccessfully;
