@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Transactions;
+
     using MissingFeatures;
 
     using OJS.Common.Extensions;
@@ -18,6 +18,19 @@
 
         public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing) =>
             this.submissionsForProcessing = submissionsForProcessing;
+
+        public SubmissionForProcessing GetBySubmission(int submissionId) =>
+            this.submissionsForProcessing.All().FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+
+        public IQueryable<SubmissionForProcessing> GetAllUnprocessed() =>
+            this.submissionsForProcessing.All().Where(sfp => !sfp.Processed && !sfp.Processing);
+
+        public ICollection<int> GetIdsOfAllProcessing() =>
+            this.submissionsForProcessing
+                .All()
+                .Where(sfp => sfp.Processing && !sfp.Processed)
+                .Select(sfp => sfp.Id)
+                .ToList();
 
         public void AddOrUpdateBySubmissionIds(ICollection<int> submissionIds)
         {
@@ -40,9 +53,9 @@
             }
         }
 
-        public void AddOrUpdateBySubmissionId(int submissionId)
+        public void AddOrUpdateBySubmission(int submissionId)
         {
-            var submissionForProcessing = this.GetBySubmissionId(submissionId);
+            var submissionForProcessing = this.GetBySubmission(submissionId);
 
             if (submissionForProcessing != null)
             {
@@ -61,9 +74,9 @@
             }
         }
 
-        public void RemoveBySubmissionId(int submissionId)
+        public void RemoveBySubmission(int submissionId)
         {
-            var submissionForProcessing = this.GetBySubmissionId(submissionId);
+            var submissionForProcessing = this.GetBySubmission(submissionId);
 
             if (submissionForProcessing != null)
             {
@@ -72,29 +85,7 @@
             }
         }
 
-        public void SetToProcessing(int id)
-        {
-            var submissionForProcessing = this.submissionsForProcessing.GetById(id);
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = true;
-                submissionForProcessing.Processed = false;
-                this.submissionsForProcessing.SaveChanges();
-            }
-        }
-
-        public void SetToProcessed(int id)
-        {
-            var submissionForProcessing = this.submissionsForProcessing.GetById(id);
-            if (submissionForProcessing != null)
-            {
-                submissionForProcessing.Processing = false;
-                submissionForProcessing.Processed = true;
-                this.submissionsForProcessing.SaveChanges();
-            }
-        }
-
-        public void ResetProcessingStatus(int id)
+        public void ResetProcessingStatusById(int id)
         {
             var submissionForProcessing = this.submissionsForProcessing.GetById(id);
             if (submissionForProcessing != null)
@@ -104,17 +95,14 @@
                 this.submissionsForProcessing.SaveChanges();
             }
         }
-
-        public SubmissionForProcessing GetBySubmissionId(int submissionId) =>
-            this.submissionsForProcessing.All().FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
-
-        public IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions() =>
-            this.submissionsForProcessing.All().Where(sfp => !sfp.Processed && !sfp.Processing);
-
-        public ICollection<int> GetProcessingSubmissionIds() => this.submissionsForProcessing
-            .All().Where(sfp => sfp.Processing && !sfp.Processed).Select(sfp => sfp.Id).ToList();
 
         public void Clean() =>
             this.submissionsForProcessing.Delete(sfp => sfp.Processed && !sfp.Processing);
+
+        public void Update(SubmissionForProcessing submissionForProcessing)
+        {
+            this.submissionsForProcessing.Update(submissionForProcessing);
+            this.submissionsForProcessing.SaveChanges();
+        }
     }
 }

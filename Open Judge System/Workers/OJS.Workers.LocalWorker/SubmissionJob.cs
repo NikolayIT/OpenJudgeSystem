@@ -8,6 +8,7 @@
     using log4net;
 
     using OJS.Data.Models;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -59,6 +60,7 @@
                 {
                     var testRunsData = container.GetInstance<ITestRunsDataService>();
                     var submissionsData = container.GetInstance<ISubmissionsDataService>();
+                    var participantsData = container.GetInstance<IParticipantsDataService>();
                     var participantScoresData = container.GetInstance<IParticipantScoresDataService>();
                     var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
 
@@ -72,7 +74,7 @@
                             if (this.submissionsForProcessing.IsEmpty)
                             {
                                 var submissions = submissionsForProccessingData
-                                    .GetUnprocessedSubmissions()
+                                    .GetAllUnprocessed()
                                     .OrderBy(x => x.Id)
                                     .Select(x => x.SubmissionId)
                                     .ToList();
@@ -90,12 +92,14 @@
 
                                 submission = submissionsData.GetById(submissionId);
 
-                                submissionForProcessing = submissionsForProccessingData
-                                    .GetBySubmissionId(submissionId);
+                                submissionForProcessing = submissionsForProccessingData.GetBySubmission(submissionId);
 
                                 if (submission != null && submissionForProcessing != null && !submission.Processing)
                                 {
-                                    submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
+                                    submissionForProcessing.Processed = false;
+                                    submissionForProcessing.Processing = true;
+
+                                    submissionsForProccessingData.Update(submissionForProcessing);
                                 }
                             }
                         }
@@ -113,8 +117,8 @@
                             submissionForProcessing,
                             testRunsData,
                             submissionsData,
-                            participantScoresData,
-                            submissionsForProccessingData);
+                            participantsData,
+                            participantScoresData);
                     }
                     else
                     {
@@ -136,14 +140,17 @@
             SubmissionForProcessing submissionForProcessing,
             ITestRunsDataService testRunsData,
             ISubmissionsDataService submissionsData,
-            IParticipantScoresDataService participantScoresData,
-            ISubmissionsForProcessingDataService submissionsForProccessingData)
+            IParticipantsDataService participantsData,
+            IParticipantScoresDataService participantScoresData)
         {
             submission.ProcessingComment = null;
+
             try
             {
                 testRunsData.DeleteBySubmission(submission.Id);
+
                 this.ProcessSubmission(submission);
+
                 submissionsData.Update(submission);
             }
             catch (Exception exception)
@@ -163,11 +170,12 @@
             }
 
             submission.Processed = true;
-            submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
+            submissionForProcessing.Processed = true;
+            submissionForProcessing.Processing = false;
 
             try
             {
-                this.SaveParticipantScore(submission, participantScoresData);
+                this.SaveParticipantScore(submission, participantsData, participantScoresData);
             }
             catch (Exception exception)
             {
@@ -283,14 +291,24 @@
             }
         }
 
-        private void SaveParticipantScore(Submission submission, IParticipantScoresDataService participantScoresData)
+        private void SaveParticipantScore(
+            Submission submission,
+            IParticipantsDataService participantsData,
+            IParticipantScoresDataService participantScoresData)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)
             {
                 return;
             }
 
-            var participant = submission.Participant;
+            var participant = participantsData
+                .GetByIdQuery(submission.ParticipantId.Value)
+                .Select(p => new
+                {
+                    p.IsOfficial,
+                    p.User.UserName
+                })
+                .FirstOrDefault();
 
             if (participant == null)
             {
@@ -298,8 +316,6 @@
             }
 
             ParticipantScore existingScore;
-
-            var username = participant.User.UserName;
 
             lock (this.sharedLockObject)
             {
@@ -312,7 +328,7 @@
                 {
                     participantScoresData.AddBySubmissionByUsernameAndIsOfficial(
                         submission,
-                        username,
+                        participant.UserName,
                         participant.IsOfficial);
 
                     return;
