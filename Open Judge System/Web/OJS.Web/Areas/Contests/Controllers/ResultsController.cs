@@ -226,14 +226,14 @@
         }   
 
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
-        public ActionResult Export(int id, bool official)
+        public ActionResult Export(int? id, bool official)
         {
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!id.HasValue || !this.CheckIfUserHasContestPermissions(id.Value))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var contest = this.contestsData.GetByIdWithProblems(id);
+            var contest = this.contestsData.GetByIdWithProblems(id.Value);
 
             if (contest == null)
             {

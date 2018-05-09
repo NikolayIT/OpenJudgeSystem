@@ -75,8 +75,8 @@
             this.GetByIdQuery(id)
                 .Select(c => c.ProblemGroups
                     .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
-                    .Sum(pg => pg.Problems.FirstOrDefault().MaximumPoints))
-                .FirstOrDefault();
+                    .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
+                .FirstOrDefault() ?? default(int);
 
         public bool IsActiveById(int id)
         {
