@@ -25,7 +25,7 @@
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd);
 
-        bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial);
+        bool ExistsByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 
         bool IsOfficialById(int id);
 

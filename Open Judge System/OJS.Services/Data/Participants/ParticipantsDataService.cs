@@ -59,7 +59,7 @@
                 .Select(p => p.IsOfficial)
                 .FirstOrDefault();
 
-        public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
+        public bool ExistsByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.GetAll()
                 .Any(p => p.ContestId == contestId &&
                     p.UserId == userId &&
