@@ -52,7 +52,6 @@
         public void Start()
         {
             this.logger.Info("SubmissionJob starting...");
-            Thread.Sleep(15000);
             var container = Bootstrap.Container;
             while (!this.stopping)
             {
