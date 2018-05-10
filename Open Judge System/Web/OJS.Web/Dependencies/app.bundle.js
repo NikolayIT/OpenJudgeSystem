@@ -91,6 +91,35 @@ function CreateExportToExcelButton(elementId) {
     CreateKendoSubmitParamsButton('export', elementId);
 }
 
+/* exported initializeLanguageSwitchButtons */
+function initializeLanguageSwitchButtons() {
+    var languageSwithContainer = $('.language-switch');
+    var languageSwitchButtons = languageSwithContainer.find('.language-btn');
+    var languageCookieName = languageSwithContainer.data('cookie');
+    var languageCookieExpirationDays = 1825;
+    var cookiePath = '/';
+
+    languageSwitchButtons.click(function (ev) {
+        setCookie(languageCookieName, ev.target.id, languageCookieExpirationDays, cookiePath);
+        window.location.reload();
+    });
+
+    var selectedLanguage = getCookie(languageCookieName);
+
+    if (selectedLanguage === '') {
+        var defaultLanguageCookieValue = languageSwithContainer.find('[data-default]').attr('id');
+
+        setCookie(languageCookieName, defaultLanguageCookieValue, languageCookieExpirationDays, cookiePath);
+        selectedLanguage = defaultLanguageCookieValue;
+    }
+
+    var selectedLanguageButton = languageSwithContainer.find('#' + selectedLanguage);
+
+    if (selectedLanguageButton.length) {
+        selectedLanguageButton.addClass('selected-language-btn');
+    }
+}
+
 /* eslint new-cap: 0 */
 // TODO: Convert to lower-case
 function CreateKendoSubmitParamsButton(buttonId, elementId) {
@@ -131,13 +160,19 @@ function CreateKendoSubmitParamsButton(buttonId, elementId) {
     $exportLink.attr('href', href);
 }
 
-function setCookie(cname, cvalue, exdays) {
+function setCookie(cname, cvalue, exdays, path) {
     'use strict';
 
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = 'expires=' + d.toGMTString();
-    document.cookie = cname + '=' + cvalue + '; ' + expires;
+    var expires = '; expires=' + d.toGMTString();
+    var props = expires;
+
+    if (typeof path != typeof undefined) {
+        props += '; path=' + path;
+    }
+
+    document.cookie = cname + '=' + cvalue + props;
 }
 
 function getCookie(cname) {
