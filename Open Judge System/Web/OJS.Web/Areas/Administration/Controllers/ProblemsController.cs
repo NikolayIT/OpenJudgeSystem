@@ -24,6 +24,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.Problems;
+    using OJS.Services.Common;
     using OJS.Services.Data.Checkers;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
@@ -38,6 +39,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.Controllers;
@@ -747,6 +749,59 @@
             return this.Content(solutionSkeleton.Decompress());
         }
 
+        [AjaxOnly]
+        public ActionResult CopyPartial(int id) =>
+            this.PartialView("_CopyProblemToAnotherContest", new CopyProblemViewModel(id));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Copy(CopyProblemViewModel problem)
+        {
+            var contestId = problem.ContestId;
+            var problemGroupId = problem.ProblemGroupId;
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.JsonValidation();
+            }
+
+            if (!this.problemsData.ExistsById(problem.Id))
+            {
+                return this.JsonError(GlobalResource.Invalid_problem);
+            }
+
+            if (!contestId.HasValue || !this.contestsData.ExistsById(contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_contest);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(contestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            if (problemGroupId.HasValue &&
+                !this.problemGroupsData.IsFromContestByIdAndContest(problemGroupId.Value, contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_problem_group);
+            }
+
+            var result = this.problemsBusiness.CopyToContestByIdByContestAndProblemGroup(
+                problem.Id,
+                contestId.Value,
+                problemGroupId);
+
+            if (result.IsError)
+            {
+                return this.JsonError(result.Error);
+            }
+
+            return this.JsonSuccess(string.Format(
+                GlobalResource.Copy_problem_success_message,
+                this.problemsData.GetNameById(problem.Id),
+                this.contestsData.GetNameById(contestId.Value)));
+        }
+
         private IEnumerable GetData(int id)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
@@ -850,23 +905,11 @@
 
         private ViewModelType PrepareProblemViewModelForCreate(Contest contest)
         {
-            var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
-            var lastProblem = this.problemsData
-                .GetAllByContest(contest.Id)
-                .OrderByDescending(x => x.OrderBy)
-                .Select(p => new { p.OrderBy })
-                .FirstOrDefault();
-
-            if (lastProblem != null)
-            {
-                problemOrder = lastProblem.OrderBy + 1;
-            }
-
             var problem = new ViewModelType
             {
                 ContestId = contest.Id,
                 ContestName = contest.Name,
-                OrderBy = problemOrder
+                OrderBy = this.problemsData.GetNewOrderByContest(contest.Id)
             };
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(

@@ -132,6 +132,9 @@
   <data name="Choose_code_checker" xml:space="preserve">
     <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>
   </data>
+  <data name="Copy_in_new_problem_group" xml:space="preserve">
+    <value>Копирай в нова група от задачи</value>
+  </data>
   <data name="Enter_max_points" xml:space="preserve">
     <value>Въведете максимален брой точки, които състезателят може да получи от задачата</value>
   </data>

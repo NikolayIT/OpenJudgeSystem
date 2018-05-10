@@ -45,3 +45,31 @@ function validateModelStateErrors(args) {
         $('#errors').remove();
     }
 }
+
+function displayAlertMessage(message, status, containerSelector) {
+    var messageContainer = $('#alert-message-container');
+
+    if (messageContainer.length) {
+        messageContainer.remove();
+    }
+
+    messageContainer = $('<div id="alert-message-container" class="alert"></div>');
+
+    if (status === 'success') {
+        messageContainer.addClass('alert-success');
+    } else {
+        messageContainer.addClass('alert-danger');
+    }
+
+    if (message.constructor === Array) {
+        messageContainer.text(message.join('\r\n'));
+    } else {
+        messageContainer.text(message);
+    }
+    
+    messageContainer.click(function () {
+        messageContainer.hide();
+    });
+
+    containerSelector.prepend(messageContainer);
+}

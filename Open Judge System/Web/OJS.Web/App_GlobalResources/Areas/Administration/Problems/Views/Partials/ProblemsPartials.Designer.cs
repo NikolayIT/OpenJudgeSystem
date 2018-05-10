@@ -107,6 +107,15 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy into a new problem group.
+        /// </summary>
+        public static string Copy_in_new_problem_group {
+            get {
+                return ResourceManager.GetString("Copy_in_new_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the max points for the problem.
         /// </summary>
         public static string Enter_max_points {

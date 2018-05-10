@@ -31,11 +31,11 @@
         [AjaxOnly]
         public JsonResult GetAvailableContestsContaining(string contestFilter)
         {
-            var contests = this.contestsData.GetAllVisible();
+            var contests = this.contestsData.GetAll();
 
             if (this.UserIsNotAdminButLecturer)
             {
-                contests = this.contestsData.GetAllVisibleByLecturer(this.UserProfile.Id);
+                contests = this.contestsData.GetAllByLecturer(this.UserProfile.Id);
             }
 
             if (!string.IsNullOrWhiteSpace(contestFilter))

@@ -9,5 +9,7 @@
         void DeleteById(int id);
 
         void DeleteByContest(int contestId);
+
+        ServiceResult CopyToContestByIdByContestAndProblemGroup(int id, int contestId, int? problemGroupId);
     }
 }

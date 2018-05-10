@@ -20,5 +20,7 @@
         IQueryable<ProblemGroup> GetAllByContest(int contestId);
 
         IQueryable<Problem> GetProblemsById(int id);
+
+        bool IsFromContestByIdAndContest(int id, int contestId);
     }
 }

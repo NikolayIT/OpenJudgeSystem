@@ -29,5 +29,8 @@
 
         public IQueryable<Problem> GetProblemsById(int id) =>
             this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
+
+        public bool IsFromContestByIdAndContest(int id, int contestId) =>
+            this.GetByIdQuery(id).Any(pg => pg.ContestId == contestId);
     }
 }

@@ -17,7 +17,15 @@
 
         IQueryable<Problem> GetAllByContest(int contestId);
 
+        IQueryable<Problem> GetAllByProblemGroup(int problemGroupId);
+
         bool ExistsById(int id);
+
+        int GetNewOrderByContest(int contestId);
+
+        int GetNewOrderByProblemGroup(int problemGroupId);
+
+        string GetNameById(int id);
 
         void Add(Problem problem);
 

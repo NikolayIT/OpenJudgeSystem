@@ -1,0 +1,37 @@
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.Problem
+
+@using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials
+
+@model CopyProblemViewModel
+
+@using (Ajax.BeginForm<ProblemsController>(
+    c => c.Copy((CopyProblemViewModel)null),
+    FormMethod.Post,
+    new AjaxOptions
+    {
+        OnSuccess = "onCopySuccess",
+        OnFailure = "onCopyFailure"
+    }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ContestId, new { @class = "control-label" })
+
+        <div>
+            @Html.EditorFor(m => m.ContestId, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ProblemGroupId, new { @class = "control-label" })
+
+        <div>
+            @Html.EditorFor(m => m.ProblemGroupId, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <input class="k-button pull-right" type="submit" value="@SharedResource.Copy" />
+}

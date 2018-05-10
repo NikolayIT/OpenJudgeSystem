@@ -15,6 +15,15 @@ function onContestSelect() {
     initializeGrid(contestId);
 }
 
+function onCopySuccess(response, status) {
+    $('#copy-popup-window').data('kendoWindow').close();
+    displayAlertMessage(response, status, $('.main-container'));
+}
+
+function onCopyFailure(response, status) {
+    displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
+}
+
 function initializeGrid(contestId) {
     'use strict';
 
@@ -59,7 +68,8 @@ function initializeGrid(contestId) {
                         '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
                         '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a></div>'
+                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
+                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
                     }
                 ],
                 detailInit: detailInit
@@ -157,6 +167,36 @@ function hideTheadFromGrid() {
         populateDropDowns(contestId);
         initializeGrid(contestId);
     });
+}
+
+function prepareCopyWindow(problemId, problemName) {
+    var copyWindowSelector = $('#copy-popup-window');
+    var title = 'Копиране на задача ' + problemName;
+    var url = '/Administration/Problems/CopyPartial/' + problemId;
+
+    var copyPopUp = copyWindowSelector.data('kendoWindow');
+
+    if (typeof copyPopUp == typeof undefined) {
+        (function () {
+            copyWindowSelector.kendoWindow({
+                width: '600px',
+                modal: true,
+                iframe: false,
+                resizable: false,
+                title: title,
+                content: url,
+                visible: false
+            });
+
+            copyPopUp = copyWindowSelector.data('kendoWindow');
+        })();
+    } else {
+        copyPopUp.title(title);
+        copyPopUp.refresh(url);
+    }
+
+    copyPopUp.open();
+    copyPopUp.center();
 }
 
 $(document).ready(function () {
