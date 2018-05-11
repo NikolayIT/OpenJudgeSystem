@@ -51,7 +51,9 @@
             this.participants
                 .All()
                 .Include(p => p.Contest)
-                .FirstOrDefault(p => p.ContestId == contestId && p.UserId == userId && p.IsOfficial == isOfficial);
+                .FirstOrDefault(p =>
+                    p.ContestId == contestId &&
+                    p.UserId == userId && p.IsOfficial == isOfficial);
 
         public IQueryable<Participant> GetAll() => this.participants.All();
 
@@ -83,12 +85,15 @@
         public IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial) =>
             this.participants
                 .All()
-                .Where(p => p.ContestId == contestId && p.IsOfficial == isOfficial);
+                .Where(p =>
+                    p.ContestId == contestId &&
+                    p.IsOfficial == isOfficial);
 
         public bool AnyByContestIdUserIdAndIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.participants
                 .All()
-                .Any(p => p.ContestId == contestId &&
+                .Any(p =>
+                    p.ContestId == contestId &&
                     p.UserId == userId &&
                     p.IsOfficial == isOfficial);
     }

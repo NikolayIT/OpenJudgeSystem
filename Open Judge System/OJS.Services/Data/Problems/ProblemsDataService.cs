@@ -17,21 +17,36 @@
         public Problem GetById(int id) => this.problems.GetById(id);
 
         public IQueryable<Problem> GetByIdQuery(int id) =>
-            this.problems.All().Where(p => p.Id == id);
+            this.problems
+                .All()
+                .Where(p => p.Id == id);
 
         public Problem GetWithProblemGroupById(int id) =>
-            this.problems.All().Include(p => p.ProblemGroup).FirstOrDefault(p => p.Id == id);
+            this.problems
+                .All()
+                .Include(p => p.ProblemGroup)
+                .FirstOrDefault(p => p.Id == id);
 
         public Problem GetWithContestById(int id) =>
-            this.problems.All().Include(p => p.ProblemGroup.Contest).FirstOrDefault(p => p.Id == id);
+            this.problems
+                .All()
+                .Include(p => p.ProblemGroup.Contest)
+                .FirstOrDefault(p => p.Id == id);
 
         public IQueryable<Problem> GetAllByContest(int contestId) =>
-            this.problems.All().Where(p => p.ProblemGroup.ContestId == contestId);
+            this.problems
+                .All()
+                .Where(p => p.ProblemGroup.ContestId == contestId);
 
         public IQueryable<Problem> GetAllByProblemGroup(int problemGroupId) =>
-            this.problems.All().Where(p => p.ProblemGroupId == problemGroupId);
+            this.problems
+                .All()
+                .Where(p => p.ProblemGroupId == problemGroupId);
 
-        public bool ExistsById(int id) => this.problems.All().Any(p => p.Id == id);
+        public bool ExistsById(int id) =>
+            this.problems
+                .All()
+                .Any(p => p.Id == id);
 
         public int GetNewOrderByContest(int contestId) =>
             this.GetAllByContest(contestId)
@@ -48,7 +63,9 @@
                 ?.OrderBy + 1 ?? GlobalConstants.ProblemDefaultOrderBy;
 
         public string GetNameById(int id) =>
-            this.GetByIdQuery(id).Select(p => p.Name).FirstOrDefault();
+            this.GetByIdQuery(id)
+                .Select(p => p.Name)
+                .FirstOrDefault();
 
         public void Add(Problem problem)
         {
