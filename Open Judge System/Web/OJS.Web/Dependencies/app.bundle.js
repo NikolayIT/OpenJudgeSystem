@@ -81,15 +81,9 @@
         setCookie('cookies-notification', 'ok', 3650);
         return false;
     });
+
+    initializeLanguageSwitchButtons();
 });
-
-/* exported CreateExportToExcelButton */
-function CreateExportToExcelButton(elementId) {
-    'use strict';
-
-    elementId = typeof elementId === 'undefined' ? 'DataGrid' : elementId;
-    CreateKendoSubmitParamsButton('export', elementId);
-}
 
 /* exported initializeLanguageSwitchButtons */
 function initializeLanguageSwitchButtons() {
@@ -118,6 +112,14 @@ function initializeLanguageSwitchButtons() {
     if (selectedLanguageButton.length) {
         selectedLanguageButton.addClass('selected-language-btn');
     }
+}
+
+/* exported CreateExportToExcelButton */
+function CreateExportToExcelButton(elementId) {
+    'use strict';
+
+    elementId = typeof elementId === 'undefined' ? 'DataGrid' : elementId;
+    CreateKendoSubmitParamsButton('export', elementId);
 }
 
 /* eslint new-cap: 0 */
