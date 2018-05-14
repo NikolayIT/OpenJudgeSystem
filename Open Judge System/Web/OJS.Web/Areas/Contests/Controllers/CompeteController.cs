@@ -144,28 +144,36 @@
             try
             {
                 this.ValidateContest(contest, official);
+            }
+            catch (HttpException httpEx)
+            {
+                this.TempData.AddDangerMessage(httpEx.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
 
-                var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
+            var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
 
-                if (!participantFound)
+            var participant = this.participantsData
+                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
+
+            if (participant == null || participant.IsInvalidated)
+            {
+                var shouldShowConfirmation = participant == null &&
+                    official &&
+                    contest.IsOnline &&
+                    (!hasConfirmed.HasValue || hasConfirmed.Value == false) &&
+                    contest.Duration.HasValue &&
+                    !isUserAdminOrLecturerInContest;
+
+                if (shouldShowConfirmation)
                 {
-                    var shouldShowConfirmation = official &&
-                        contest.IsOnline &&
-                        (!hasConfirmed.HasValue ||
-                        hasConfirmed.Value == false) &&
-                        contest.Duration.HasValue &&
-                        !this.IsUserAdminOrLecturerInContest(contest);
-
-                    if (shouldShowConfirmation)
+                    return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
                     {
-                        return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
-                        {
-                            ContesId = contest.Id,
-                            ContestName = contest.Name,
-                            ContestDuration = contest.Duration.Value,
-                            ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
-                        });
-                    }
+                        ContesId = contest.Id,
+                        ContestName = contest.Name,
+                        ContestDuration = contest.Duration.Value,
+                        ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
+                    });
                 }
 
                 if (official &&
@@ -174,26 +182,16 @@
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
 
-                if (!participantFound)
-                {
-                    return this.RedirectToAction(c => c.Register(id, official));
-                }
-            }
-            catch (HttpException httpEx)
-            {
-                this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToAction(c => c.Register(id, official));
             }
 
-            var participant = this.participantsData
-                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(
                 participant,
                 official,
-                this.IsUserAdminOrLecturerInContest(contest));
+                isUserAdminOrLecturerInContest);
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
-            this.ViewBag.IsUserAdminOrLecturer = this.IsUserAdminOrLecturerInContest(contest);
+            this.ViewBag.IsUserAdminOrLecturer = isUserAdminOrLecturerInContest;
 
             return this.View(participantViewModel);
         }
@@ -206,10 +204,11 @@
         [Authorize]
         public ActionResult Register(int id, bool official)
         {
-            var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
-            if (participantFound)
+            var participant = this.participantsData
+                .GetByContestByUserAndByIsOfficial(id, this.UserProfile.Id, official);
+
+            if (participant != null && !participant.IsInvalidated)
             {
-                // Participant exists. Redirect to index page.
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official });
             }
 
@@ -225,7 +224,15 @@
                     return this.View(contestRegistrationModel);
                 }
 
-                this.AddNewParticipantToContest(contest, official);
+                if (participant == null)
+                {
+                    this.AddNewParticipantToContest(contest, official);
+                }
+                else
+                {
+                    participant.IsInvalidated = false;
+                    this.participantsData.Update(participant);
+                }
             }
             catch (HttpException httpEx)
             {
@@ -246,10 +253,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
-            // check if the user has already registered for participation and redirect him to the correct action
-            var participantFound = this.Data.Participants.Any(registrationData.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData.GetByContestByUserAndByIsOfficial(registrationData.ContestId, this.UserProfile.Id, official);
 
-            if (participantFound)
+            if (participant != null && !participant.IsInvalidated)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
             }
@@ -339,7 +345,15 @@
                     return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
                 }
 
-                var participant = this.AddNewParticipantToContest(contest, official);
+                if (participant == null)
+                {
+                    participant = this.AddNewParticipantToContest(contest, official);
+                }
+                else
+                {
+                    participant.IsInvalidated = false;
+                }
+                
                 foreach (var participantAnswer in answers)
                 {
                     participant.Answers.Add(participantAnswer);
