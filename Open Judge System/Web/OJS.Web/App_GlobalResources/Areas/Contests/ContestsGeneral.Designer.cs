@@ -286,6 +286,15 @@ namespace Resources.Areas.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This submission type does not allow sending text.
+        /// </summary>
+        public static string Text_upload_not_allowed {
+            get {
+                return ResourceManager.GetString("Text_upload_not_allowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please upload file..
         /// </summary>
         public static string Upload_file {

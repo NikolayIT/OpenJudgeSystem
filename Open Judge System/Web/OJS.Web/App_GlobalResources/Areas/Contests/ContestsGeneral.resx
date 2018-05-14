@@ -204,4 +204,7 @@
   <data name="Report_excel_format" xml:space="preserve">
     <value>Ranking for {0} {1}.xls</value>
   </data>
+  <data name="Text_upload_not_allowed" xml:space="preserve">
+    <value>This submission type does not allow sending text</value>
+  </data>
 </root>
