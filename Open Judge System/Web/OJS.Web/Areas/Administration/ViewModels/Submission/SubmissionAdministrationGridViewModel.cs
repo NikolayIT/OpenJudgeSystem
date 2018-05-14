@@ -30,15 +30,11 @@
                     ContestId = sub.Problem.ProblemGroup.ContestId,
                     SubmissionTypeName = sub.SubmissionType.Name,
                     Points = sub.Points,
-                    Status = !sub.Processing && sub.Processed
+                    Status = sub.Processed
                         ? SubmissionStatus.Processed
-                        : sub.Processing && !sub.Processed
-                            ? SubmissionStatus.Processing
-                            : !sub.Processing && !sub.Processed
-                                ? SubmissionStatus.Pending
-                                : SubmissionStatus.Invalid,
+                        : SubmissionStatus.Pending,
                     CreatedOn = sub.CreatedOn,
-                    ModifiedOn = sub.ModifiedOn,
+                    ModifiedOn = sub.ModifiedOn
                 };
             }
         }

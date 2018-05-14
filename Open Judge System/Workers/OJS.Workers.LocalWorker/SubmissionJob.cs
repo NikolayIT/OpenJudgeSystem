@@ -87,7 +87,7 @@
                                 submissionForProcessing = submissionsForProccessingData
                                     .GetBySubmissionId(submissionId);
 
-                                if (submission != null && submissionForProcessing != null && !submission.Processing)
+                                if (submission != null && submissionForProcessing != null)
                                 {
                                     submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
                                 }

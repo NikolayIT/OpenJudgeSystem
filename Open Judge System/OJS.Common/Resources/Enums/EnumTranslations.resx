@@ -126,9 +126,6 @@
   <data name="DropDown" xml:space="preserve">
     <value>DropDown</value>
   </data>
-  <data name="InvalidSubmissionStatus" xml:space="preserve">
-    <value>Invalid</value>
-  </data>
   <data name="Lab" xml:space="preserve">
     <value>Lab</value>
   </data>
@@ -152,9 +149,6 @@
   </data>
   <data name="ProcessedSubmissionStatus" xml:space="preserve">
     <value>Processed</value>
-  </data>
-  <data name="ProcessingSubmissionStatus" xml:space="preserve">
-    <value>Processing</value>
   </data>
   <data name="StandardTestDescription" xml:space="preserve">
     <value>Contest</value>
