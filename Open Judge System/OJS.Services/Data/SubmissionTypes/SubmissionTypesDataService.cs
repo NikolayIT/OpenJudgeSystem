@@ -15,5 +15,10 @@
         public SubmissionType GetById(int id) => this.submissionTypes.GetById(id);
 
         public IQueryable<SubmissionType> GetAll() => this.submissionTypes.All();
+
+        public IQueryable<SubmissionType> GetAllByProblem(int problemId) =>
+            this.GetAll()
+                .Where(st => st.Problems
+                    .Any(p => p.Id == problemId));
     }
 }
