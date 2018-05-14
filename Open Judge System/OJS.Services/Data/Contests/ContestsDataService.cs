@@ -49,7 +49,7 @@
                 .Where(c =>
                     c.StartTime > DateTime.Now ||
                     (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePracticalExam) ||
-                        !c.Participants.Any(p => p.ParticipationEndTime < DateTime.Now));
+                    !c.Participants.Any(p => p.ParticipationEndTime < DateTime.Now));
 
         public IQueryable<Contest> GetAllUpcoming() =>
             this.GetAll()
