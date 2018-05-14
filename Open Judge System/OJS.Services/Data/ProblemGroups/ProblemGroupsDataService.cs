@@ -16,7 +16,8 @@
 
         public ProblemGroup GetByProblem(int problemId) =>
             this.GetAll()
-                .FirstOrDefault(pg => pg.Problems.Any(p => p.Id == problemId));
+                .FirstOrDefault(pg => pg.Problems
+                    .Any(p => p.Id == problemId));
 
         public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
             this.GetAll()
@@ -24,7 +25,8 @@
 
         public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
 
-        public IQueryable<ProblemGroup> GetAllWithDeleted() => this.problemGroups.AllWithDeleted();
+        public IQueryable<ProblemGroup> GetAllWithDeleted() =>
+            this.problemGroups.AllWithDeleted();
 
         public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
             this.GetAll()
