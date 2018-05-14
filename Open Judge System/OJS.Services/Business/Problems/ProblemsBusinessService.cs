@@ -14,6 +14,7 @@
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Services.Data.SubmissionTypes;
     using OJS.Services.Data.TestRuns;
 
     using IsolationLevel = System.Transactions.IsolationLevel;
@@ -32,6 +33,7 @@
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly ITestRunsDataService testRunsData;
+        private readonly ISubmissionTypesDataService submissionTypesData;
         private readonly IProblemGroupsBusinessService problemGroupsBusiness;
 
         public ProblemsBusinessService(
@@ -43,6 +45,7 @@
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             ITestRunsDataService testRunsData,
+            ISubmissionTypesDataService submissionTypesData,
             IProblemGroupsBusinessService problemGroupsBusiness)
         {
             this.problems = problems;
@@ -53,6 +56,7 @@
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.testRunsData = testRunsData;
+            this.submissionTypesData = submissionTypesData;
             this.problemGroupsBusiness = problemGroupsBusiness;
         }
 
@@ -122,7 +126,6 @@
                 .AsNoTracking()
                 .Include(p => p.Tests)
                 .Include(p => p.Resources)
-                .Include(p => p.SubmissionTypes)
                 .SingleOrDefault();
 
             var problemNewOrderBy = problemGroupId.HasValue
@@ -161,6 +164,7 @@
 
             problem.ModifiedOn = null;
             problem.OrderBy = newOrderBy;
+            problem.SubmissionTypes = this.submissionTypesData.GetAllByProblem(problem.Id).ToList();
 
             this.problemsData.Add(problem);
         }

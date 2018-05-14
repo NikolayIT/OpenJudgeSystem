@@ -10,5 +10,7 @@
         SubmissionType GetById(int id);
 
         IQueryable<SubmissionType> GetAll();
+
+        IQueryable<SubmissionType> GetAllByProblem(int problemId);
     }
 }

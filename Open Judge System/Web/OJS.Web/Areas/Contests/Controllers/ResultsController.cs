@@ -64,7 +64,7 @@
             var problem = this.Data.Problems.GetById(id);
 
             if (!this.participantsData
-                    .AnyByContestIdUserIdAndIsOfficial(problem.ProblemGroup.ContestId, this.UserProfile.Id, official))
+                    .ExistsByContestByUserAndIsOfficial(problem.ProblemGroup.ContestId, this.UserProfile.Id, official))
             {
                 throw new HttpException((int)HttpStatusCode.Unauthorized, Resource.User_is_not_registered_for_exam);
             }
@@ -111,7 +111,7 @@
             // then he is not authorized to view the results
             if (!contest.ResultsArePubliclyVisible &&
                 official &&
-                !this.participantsData.AnyByContestIdUserIdAndIsOfficial(id, this.UserProfile.Id, official) &&
+                !this.participantsData.ExistsByContestByUserAndIsOfficial(id, this.UserProfile.Id, official) &&
                 !this.User.IsAdmin())
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);

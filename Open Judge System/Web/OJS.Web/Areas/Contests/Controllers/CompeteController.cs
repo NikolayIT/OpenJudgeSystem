@@ -83,13 +83,27 @@
         /// </summary>
         /// <param name="submissionTypeId">The id of the submission type selected by the participant</param>
         /// <param name="problem">The problem which the user is attempting to solve</param>
+        /// <param name="shouldAllowBinaryFiles">Bool indicating if the validation should allow binary file uploads</param>
         [NonAction]
-        public static void ValidateSubmissionType(int submissionTypeId, Problem problem)
+        public static SubmissionType ValidateSubmissionType(int submissionTypeId, Problem problem, bool shouldAllowBinaryFiles)
         {
-            if (problem.SubmissionTypes.All(submissionType => submissionType.Id != submissionTypeId))
+            var submissionType = problem.SubmissionTypes.FirstOrDefault(st => st.Id == submissionTypeId);
+            if (submissionType == null)
             {
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_type_not_found);
             }
+
+            if (shouldAllowBinaryFiles && !submissionType.AllowBinaryFilesUpload)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
+            }
+
+            if (!shouldAllowBinaryFiles && submissionType.AllowBinaryFilesUpload)
+            {
+                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Text_upload_not_allowed);
+            }
+
+            return submissionType;
         }
 
         /// <summary>
@@ -144,28 +158,36 @@
             try
             {
                 this.ValidateContest(contest, official);
+            }
+            catch (HttpException httpEx)
+            {
+                this.TempData.AddDangerMessage(httpEx.Message);
+                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+            }
 
-                var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
+            var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
 
-                if (!participantFound)
+            var participant = this.participantsData
+                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
+
+            if (participant == null || participant.IsInvalidated)
+            {
+                var shouldShowConfirmation = participant == null &&
+                    official &&
+                    contest.IsOnline &&
+                    (!hasConfirmed.HasValue || hasConfirmed.Value == false) &&
+                    contest.Duration.HasValue &&
+                    !isUserAdminOrLecturerInContest;
+
+                if (shouldShowConfirmation)
                 {
-                    var shouldShowConfirmation = official &&
-                        contest.IsOnline &&
-                        (!hasConfirmed.HasValue ||
-                        hasConfirmed.Value == false) &&
-                        contest.Duration.HasValue &&
-                        !this.IsUserAdminOrLecturerInContest(contest);
-
-                    if (shouldShowConfirmation)
+                    return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
                     {
-                        return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
-                        {
-                            ContesId = contest.Id,
-                            ContestName = contest.Name,
-                            ContestDuration = contest.Duration.Value,
-                            ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
-                        });
-                    }
+                        ContesId = contest.Id,
+                        ContestName = contest.Name,
+                        ContestDuration = contest.Duration.Value,
+                        ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
+                    });
                 }
 
                 if (official &&
@@ -174,26 +196,16 @@
                     return this.RedirectToAction(c => c.NewContestIp(id));
                 }
 
-                if (!participantFound)
-                {
-                    return this.RedirectToAction(c => c.Register(id, official));
-                }
-            }
-            catch (HttpException httpEx)
-            {
-                this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToAction(c => c.Register(id, official));
             }
 
-            var participant = this.participantsData
-                .GetWithContestByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
             var participantViewModel = new ParticipantViewModel(
                 participant,
                 official,
-                this.IsUserAdminOrLecturerInContest(contest));
+                isUserAdminOrLecturerInContest);
 
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
-            this.ViewBag.IsUserAdminOrLecturer = this.IsUserAdminOrLecturerInContest(contest);
+            this.ViewBag.IsUserAdminOrLecturer = isUserAdminOrLecturerInContest;
 
             return this.View(participantViewModel);
         }
@@ -206,10 +218,11 @@
         [Authorize]
         public ActionResult Register(int id, bool official)
         {
-            var participantFound = this.Data.Participants.Any(id, this.UserProfile.Id, official);
-            if (participantFound)
+            var participant = this.participantsData
+                .GetByContestByUserAndByIsOfficial(id, this.UserProfile.Id, official);
+
+            if (participant != null && !participant.IsInvalidated)
             {
-                // Participant exists. Redirect to index page.
                 return this.RedirectToAction(GlobalConstants.Index, new { id, official });
             }
 
@@ -225,7 +238,15 @@
                     return this.View(contestRegistrationModel);
                 }
 
-                this.AddNewParticipantToContest(contest, official);
+                if (participant == null)
+                {
+                    this.AddNewParticipantToContest(contest, official);
+                }
+                else
+                {
+                    participant.IsInvalidated = false;
+                    this.participantsData.Update(participant);
+                }
             }
             catch (HttpException httpEx)
             {
@@ -246,10 +267,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult Register(bool official, ContestRegistrationModel registrationData)
         {
-            // check if the user has already registered for participation and redirect him to the correct action
-            var participantFound = this.Data.Participants.Any(registrationData.ContestId, this.UserProfile.Id, official);
+            var participant = this.participantsData.GetByContestByUserAndByIsOfficial(registrationData.ContestId, this.UserProfile.Id, official);
 
-            if (participantFound)
+            if (participant != null && !participant.IsInvalidated)
             {
                 return this.RedirectToAction(GlobalConstants.Index, new { id = registrationData.ContestId, official });
             }
@@ -339,7 +359,15 @@
                     return this.View(new ContestRegistrationViewModel(contest, registrationData, official));
                 }
 
-                var participant = this.AddNewParticipantToContest(contest, official);
+                if (participant == null)
+                {
+                    participant = this.AddNewParticipantToContest(contest, official);
+                }
+                else
+                {
+                    participant.IsInvalidated = false;
+                }
+                
                 foreach (var participantAnswer in answers)
                 {
                     participant.Answers.Add(participantAnswer);
@@ -394,7 +422,7 @@
                 return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
+            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem, shouldAllowBinaryFiles: false);
 
             if (!this.ModelState.IsValid)
             {
@@ -475,8 +503,6 @@
                 return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
             }
 
-            ValidateSubmissionType(participantSubmission.SubmissionTypeId, problem);
-
             if (this.Data.Submissions.HasSubmissionTimeLimitPassedForParticipant(participant.Id, participant.Contest.LimitBetweenSubmissions))
             {
                 throw new HttpException((int)HttpStatusCode.ServiceUnavailable, Resource.ContestsGeneral.Submission_was_sent_too_soon);
@@ -487,18 +513,10 @@
                 throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Submission_too_long);
             }
 
-            // Validate submission type existence
-            var submissionType = this.Data.SubmissionTypes.GetById(participantSubmission.SubmissionTypeId);
-            if (submissionType == null)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Invalid_request);
-            }
-
-            // Validate if binary files are allowed
-            if (!submissionType.AllowBinaryFilesUpload)
-            {
-                throw new HttpException((int)HttpStatusCode.BadRequest, Resource.ContestsGeneral.Binary_files_not_allowed);
-            }
+            var submissionType = ValidateSubmissionType(
+                participantSubmission.SubmissionTypeId,
+                problem,
+                shouldAllowBinaryFiles: true);
 
             // Validate file extension
             if (!submissionType.AllowedFileExtensionsList.Contains(

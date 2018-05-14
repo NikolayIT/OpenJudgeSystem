@@ -204,4 +204,7 @@
   <data name="Report_excel_format" xml:space="preserve">
     <value>Класиране за {0} {1}.xls</value>
   </data>
+  <data name="Text_upload_not_allowed" xml:space="preserve">
+    <value>Не е позволено качването на текст</value>
+  </data>
 </root>
