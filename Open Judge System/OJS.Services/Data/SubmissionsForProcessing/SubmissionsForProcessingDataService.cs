@@ -20,10 +20,14 @@
             this.submissionsForProcessing = submissionsForProcessing;
 
         public SubmissionForProcessing GetBySubmission(int submissionId) =>
-            this.submissionsForProcessing.All().FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
+            this.submissionsForProcessing
+                .All()
+                .FirstOrDefault(sfp => sfp.SubmissionId == submissionId);
 
         public IQueryable<SubmissionForProcessing> GetAllUnprocessed() =>
-            this.submissionsForProcessing.All().Where(sfp => !sfp.Processed && !sfp.Processing);
+            this.submissionsForProcessing
+                .All()
+                .Where(sfp => !sfp.Processed && !sfp.Processing);
 
         public ICollection<int> GetIdsOfAllProcessing() =>
             this.submissionsForProcessing
