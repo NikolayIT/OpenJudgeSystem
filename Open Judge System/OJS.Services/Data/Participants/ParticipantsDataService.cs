@@ -53,7 +53,8 @@
                 .Include(p => p.Contest)
                 .FirstOrDefault(p =>
                     p.ContestId == contestId &&
-                    p.UserId == userId && p.IsOfficial == isOfficial);
+                    p.UserId == userId &&
+                    p.IsOfficial == isOfficial);
 
         public IQueryable<Participant> GetAll() => this.participants.All();
 
