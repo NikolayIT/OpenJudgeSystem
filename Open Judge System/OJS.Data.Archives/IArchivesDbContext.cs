@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity;
 
-    using OJS.Data.Archives.Models;
+    using OJS.Data.Models;
 
     public interface IArchivesDbContext : IDisposable
     {

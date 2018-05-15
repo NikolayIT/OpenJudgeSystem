@@ -50,7 +50,6 @@
     <Compile Include="ArchivesDbContext.cs" />
     <Compile Include="IArchivesDbContext.cs" />
     <Compile Include="Migrations\ArchivesDefaultMigrationConfiguration.cs" />
-    <Compile Include="Models\ArchivedSubmission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OJS.Common\OJS.Common.csproj">
-      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
-      <Name>OJS.Common</Name>
+    <ProjectReference Include="..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+      <Project>{341ca732-d483-4487-923e-27ed2a6e9a4f}</Project>
+      <Name>OJS.Data.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

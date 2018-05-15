@@ -2,7 +2,7 @@
 {
     using System.Data.Entity;
 
-    using OJS.Data.Archives.Models;
+    using OJS.Data.Models;
 
     public class ArchivesDbContext : DbContext, IArchivesDbContext
     {

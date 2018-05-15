@@ -21,5 +21,7 @@
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);
+
+        void ArchiveById(int id);
     }
 }

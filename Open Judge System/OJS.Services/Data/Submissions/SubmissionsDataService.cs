@@ -5,15 +5,23 @@
 
     using EntityFramework.Extensions;
 
+    using OJS.Common.Helpers;
+    using OJS.Data.Archives;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsDataService : ISubmissionsDataService
     {
         private readonly IEfDeletableEntityRepository<Submission> submissions;
+        private readonly IArchivesDbContext archivesContext;
 
-        public SubmissionsDataService(IEfDeletableEntityRepository<Submission> submissions) =>
+        public SubmissionsDataService(
+            IEfDeletableEntityRepository<Submission> submissions,
+            IArchivesDbContext archivesContext)
+        {
             this.submissions = submissions;
+            this.archivesContext = archivesContext;
+        }
 
         public Submission GetBestForParticipantByProblem(int participantId, int problemId) =>
             this.GetAllByProblemAndParticipant(problemId, participantId)
@@ -39,5 +47,25 @@
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
+
+        public void ArchiveById(int id)
+        {
+            var submission = this.GetByIdQuery(id).SingleOrDefault();
+
+            if (submission == null)
+            {
+                return;
+            }
+
+            using (var scope = TransactionsHelper.CreateTransactionScope())
+            {
+                this.archivesContext.Submissions.Add(new ArchivedSubmission(submission));
+                this.archivesContext.DbContext.SaveChanges();
+
+                this.submissions.HardDelete(submission);
+
+                scope.Complete();
+            }
+        }
     }
 }
