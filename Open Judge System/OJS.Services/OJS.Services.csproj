@@ -77,6 +77,8 @@
     <Compile Include="Business\ProblemGroups\ProblemGroupsBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
     <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Business\Submissions\ISubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
     <Compile Include="Data\Checkers\CheckersDataService.cs" />
     <Compile Include="Data\Checkers\ICheckersDataService.cs" />
     <Compile Include="Data\ContestCategories\ContestCategoriesDataService.cs" />

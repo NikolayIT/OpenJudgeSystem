@@ -10,6 +10,8 @@
     {
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
 
+        IQueryable<Submission> GetAllWithDeleted();
+
         IQueryable<Submission> GetByIdQuery(int id);
 
         IQueryable<Submission> GetAllByProblem(int problemId);
@@ -22,6 +24,6 @@
 
         void DeleteByProblem(int problemId);
 
-        void ArchiveById(int id);
+        void HardDeleteByIds(IEnumerable<int> ids);
     }
 }

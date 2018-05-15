@@ -91,7 +91,7 @@
                             if (Model.UserHasContestRights)
                             {
                                 <td>
-                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points</a>
+                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id ?? default(int))))">@problemResult.BestSubmission.Points</a>
                                 </td>
                             }
                             else if (problemResult.ShowResult)

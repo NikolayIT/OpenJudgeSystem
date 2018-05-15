@@ -21,5 +21,7 @@
         void DeleteForParticipantByProblem(int participantId, int problemId);
 
         void Delete(IEnumerable<ParticipantScore> participantScores);
+
+        void RemoveSubmissionIdsBySubmissionIds(IEnumerable<int> submissionIds);
     }
 }

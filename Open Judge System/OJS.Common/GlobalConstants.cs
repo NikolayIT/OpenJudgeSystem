@@ -80,6 +80,8 @@
 
         public const int DefaultProblemGroupsCountForOnlineContest = 2;
 
+        public const int BatchOperationsChunkSize = 10000;
+
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
         public const string ZipFileExtension = ".zip";

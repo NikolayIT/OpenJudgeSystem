@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Transactions;
+
     using MissingFeatures;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Helpers;
     using OJS.Data.Models;
@@ -12,8 +13,6 @@
 
     public class SubmissionsForProcessingDataService : ISubmissionsForProcessingDataService
     {
-        private const int BatchDeleteChunkSize = 10000;
-
         private readonly IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing;
 
         public SubmissionsForProcessingDataService(IEfGenericRepository<SubmissionForProcessing> submissionsForProcessing) =>
@@ -30,7 +29,7 @@
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 submissionIds
-                    .ChunkBy(BatchDeleteChunkSize)
+                    .ChunkBy(GlobalConstants.BatchOperationsChunkSize)
                     .ForEach(chunk => this.submissionsForProcessing
                         .Delete(sfp => chunk.Contains(sfp.SubmissionId)));
 

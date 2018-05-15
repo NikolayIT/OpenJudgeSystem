@@ -64,7 +64,7 @@
                         <td style="white-space: nowrap">
                         @if (problemResult != null)
                         {
-                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
+                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id ?? default(int))))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
                             @problemResult.BestSubmission.SubmissionType
                             <br />
                             if (!problemResult.BestSubmission.IsCompiledSuccessfully)

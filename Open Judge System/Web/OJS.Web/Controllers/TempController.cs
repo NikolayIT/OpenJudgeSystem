@@ -14,6 +14,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
+    using OJS.Services.Business.Submissions;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -24,6 +25,7 @@
     {
         private const string CleanSubmissionsForProcessingTableCronExpression = "0 0 * * *";
         private const string DeleteLeftOverFoldersInTempFolderCronExpression = "0 1 * * *";
+        private const string ArchiveSubmissionsOlderThanOneYearCronExpression = "0 2 * * MON";
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
@@ -54,6 +56,16 @@
                 "DeleteLeftOverFoldersInTempFolder",
                 () => DirectoryHelpers.DeleteExecutionStrategyWorkingDirectories(),
                 DeleteLeftOverFoldersInTempFolderCronExpression);
+
+            return null;
+        }
+
+        public ActionResult RegisterJobForArchivingSubmissionsOlderThanOneYear()
+        {
+            this.backgroundJobs.AddOrUpdateRecurringJob<ISubmissionsBusinessService>(
+                "ArchiveAllSubmissionsOlderThanOneYearExceptBest",
+                s => s.ArchiveAllExceptBestOlderThanOneYear(),
+                ArchiveSubmissionsOlderThanOneYearCronExpression);
 
             return null;
         }

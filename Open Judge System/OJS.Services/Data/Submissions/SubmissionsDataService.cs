@@ -5,23 +5,19 @@
 
     using EntityFramework.Extensions;
 
-    using OJS.Common.Helpers;
-    using OJS.Data.Archives;
+    using MissingFeatures;
+
+    using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
     public class SubmissionsDataService : ISubmissionsDataService
     {
         private readonly IEfDeletableEntityRepository<Submission> submissions;
-        private readonly IArchivesDbContext archivesContext;
 
-        public SubmissionsDataService(
-            IEfDeletableEntityRepository<Submission> submissions,
-            IArchivesDbContext archivesContext)
-        {
+        public SubmissionsDataService(IEfDeletableEntityRepository<Submission> submissions) =>
             this.submissions = submissions;
-            this.archivesContext = archivesContext;
-        }
 
         public Submission GetBestForParticipantByProblem(int participantId, int problemId) =>
             this.GetAllByProblemAndParticipant(problemId, participantId)
@@ -29,6 +25,8 @@
                 .OrderByDescending(s => s.Points)
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
+
+        public IQueryable<Submission> GetAllWithDeleted() => this.submissions.AllWithDeleted();
 
         public IQueryable<Submission> GetByIdQuery(int id) =>
             this.submissions.All().Where(s => s.Id == id);
@@ -48,24 +46,10 @@
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
 
-        public void ArchiveById(int id)
-        {
-            var submission = this.GetByIdQuery(id).SingleOrDefault();
-
-            if (submission == null)
-            {
-                return;
-            }
-
-            using (var scope = TransactionsHelper.CreateTransactionScope())
-            {
-                this.archivesContext.Submissions.Add(new ArchivedSubmission(submission));
-                this.archivesContext.DbContext.SaveChanges();
-
-                this.submissions.HardDelete(submission);
-
-                scope.Complete();
-            }
-        }
+        public void HardDeleteByIds(IEnumerable<int> ids) =>
+            ids
+                .ChunkBy(GlobalConstants.BatchOperationsChunkSize)
+                .ForEach(chunk => this.submissions
+                    .HardDelete(s => chunk.Contains(s.Id)));
     }
 }

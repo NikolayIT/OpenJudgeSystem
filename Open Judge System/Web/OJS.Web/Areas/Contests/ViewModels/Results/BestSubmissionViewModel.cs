@@ -4,7 +4,7 @@
 
     public class BestSubmissionViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public int Points { get; set; }
 
