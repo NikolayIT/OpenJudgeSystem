@@ -10,8 +10,6 @@
     using HangfireConfiguration;
 
     using OJS.Data;
-    using OJS.Data.Archives;
-    using OJS.Data.Archives.Migrations;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
     using OJS.Web.Infrastructure.Filters;
@@ -21,9 +19,6 @@
         protected void Application_Start()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<OjsDbContext, DefaultMigrationConfiguration>());
-            Database.SetInitializer(
-                new MigrateDatabaseToLatestVersion<ArchivesDbContext,
-                    ArchivesDefaultMigrationConfiguration>());
             EfBulkInsertGlimpseProviderRegistry.Execute();
 
             FilterConfig.RegisterGlobalFilters(
