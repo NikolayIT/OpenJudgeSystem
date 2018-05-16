@@ -1,30 +1,34 @@
 ﻿namespace OJS.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq.Expressions;
+
     using OJS.Common;
 
     [Table("Submissions")]
     public class ArchivedSubmission
     {
-        public ArchivedSubmission(Submission submission)
-        {
-            this.Id = submission.Id;
-            this.ParticipantId = submission.ParticipantId;
-            this.ProblemId = submission.ProblemId;
-            this.SubmissionTypeId = submission.SubmissionTypeId;
-            this.Content = submission.Content;
-            this.FileExtension = submission.FileExtension;
-            this.SolutionSkeleton = submission.SolutionSkeleton;
-            this.IpAddress = submission.IpAddress;
-            this.IsCompiledSuccessfully = submission.IsCompiledSuccessfully;
-            this.CompilerComment = submission.CompilerComment;
-            this.IsPublic = submission.IsPublic;
-            this.TestRunsCache = submission.TestRunsCache;
-            this.Processed = submission.Processed;
-            this.ProcessingComment = submission.ProcessingComment;
-            this.Points = submission.Points;
-        }
+        public static Expression<Func<Submission, ArchivedSubmission>> FromSubmission =>
+            submission => new ArchivedSubmission
+            {
+                Id = submission.Id,
+                ParticipantId = submission.ParticipantId,
+                ProblemId = submission.ProblemId,
+                SubmissionTypeId = submission.SubmissionTypeId,
+                Content = submission.Content,
+                FileExtension = submission.FileExtension,
+                SolutionSkeleton = submission.SolutionSkeleton,
+                IpAddress = submission.IpAddress,
+                IsCompiledSuccessfully = submission.IsCompiledSuccessfully,
+                CompilerComment = submission.CompilerComment,
+                IsPublic = submission.IsPublic,
+                TestRunsCache = submission.TestRunsCache,
+                Processed = submission.Processed,
+                ProcessingComment = submission.ProcessingComment,
+                Points = submission.Points
+            };
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

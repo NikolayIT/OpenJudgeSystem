@@ -3,6 +3,8 @@
     using System;
     using System.Configuration;
 
+    using OJS.Common.Constants;
+
     public static class Settings
     {
         public static string ApiKey => GetSetting("ApiKey");
@@ -20,6 +22,11 @@
         public static string SvnBaseUrl => GetSetting("SvnBaseUrl");
 
         public static string LearningSystemSvnDownloadBaseUrl => GetSetting("LearningSystemSvnDownloadBaseUrl");
+
+        public static string ArchivesConnectionString =>
+            ConfigurationManager
+                .ConnectionStrings[AppSettingConstants.ArchivesDbConnectionStringName]
+                .ConnectionString;
 
         private static string GetSetting(string settingName)
         {

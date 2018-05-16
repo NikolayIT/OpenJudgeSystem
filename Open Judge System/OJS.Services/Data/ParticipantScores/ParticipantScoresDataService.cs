@@ -4,10 +4,7 @@
     using System.Linq;
 
     using EntityFramework.Extensions;
-    using MissingFeatures;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Data.Participants;
@@ -109,16 +106,13 @@
         }
 
         public void RemoveSubmissionIdsBySubmissionIds(IEnumerable<int> submissionIds) =>
-            submissionIds
-                .Cast<int?>()
-                .ChunkBy(GlobalConstants.BatchOperationsChunkSize)
-                .ForEach(chunk => this.participantScores
-                    .Update(
-                        ps => chunk.Contains(ps.SubmissionId),
-                        ps => new ParticipantScore
-                        {
-                            SubmissionId = null
-                        }));
+            this.participantScores
+                .Update(
+                    ps => submissionIds.Cast<int?>().Contains(ps.SubmissionId),
+                    ps => new ParticipantScore
+                    {
+                        SubmissionId = null
+                    });
 
         private void AddNew(Submission submission, string participantName, bool isOfficial)
         {

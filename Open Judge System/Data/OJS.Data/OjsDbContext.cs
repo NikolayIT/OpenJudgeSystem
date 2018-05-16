@@ -10,6 +10,7 @@
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    using OJS.Common.Constants;
     using OJS.Data.Configurations;
     using OJS.Data.Contracts;
     using OJS.Data.Contracts.CodeFirstConventions;
@@ -18,7 +19,7 @@
     public class OjsDbContext : IdentityDbContext<UserProfile>, IOjsDbContext
     {
         public OjsDbContext()
-            : this("DefaultConnection")
+            : this(AppSettingConstants.DefaultDbConnectionStringName)
         {
         }
 

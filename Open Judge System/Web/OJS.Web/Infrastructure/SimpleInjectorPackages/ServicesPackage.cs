@@ -5,10 +5,13 @@
     using MissingFeatures;
 
     using OJS.Services.Business.ExamGroups;
+    using OJS.Services.Business.Submissions.ArchivedSubmissions;
     using OJS.Services.Common;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Common.HttpRequester;
     using OJS.Services.Data.ExamGroups;
+    using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.Users;
     using OJS.Workers.Tools.AntiCheat;
@@ -40,6 +43,13 @@
                     container.GetInstance<IHangfireBackgroundJobService>(),
                     Settings.SulsPlatformBaseUrl,
                     Settings.ApiKey),
+                Lifestyle.Scoped);
+
+            container.Register<IArchivedSubmissionsBusinessService>(
+                () => new ArchivedSubmissionsBusinessService(
+                    container.GetInstance<ISubmissionsDataService>(),
+                    container.GetInstance<IParticipantScoresDataService>(),
+                    Settings.ArchivesConnectionString),
                 Lifestyle.Scoped);
         }
 

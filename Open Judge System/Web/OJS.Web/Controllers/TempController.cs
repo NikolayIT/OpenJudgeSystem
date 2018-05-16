@@ -14,7 +14,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
-    using OJS.Services.Business.Submissions;
+    using OJS.Services.Business.Submissions.ArchivedSubmissions;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
@@ -25,7 +25,7 @@
     {
         private const string CleanSubmissionsForProcessingTableCronExpression = "0 0 * * *";
         private const string DeleteLeftOverFoldersInTempFolderCronExpression = "0 1 * * *";
-        private const string ArchiveSubmissionsOlderThanOneYearCronExpression = "0 2 * * MON";
+        private const string ArchiveOldSubmissionsCronExpression = "0 2 * * MON";
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
@@ -60,12 +60,12 @@
             return null;
         }
 
-        public ActionResult RegisterJobForArchivingSubmissionsOlderThanOneYear()
+        public ActionResult RegisterJobForArchivingOldSubmissions()
         {
-            this.backgroundJobs.AddOrUpdateRecurringJob<ISubmissionsBusinessService>(
-                "ArchiveAllSubmissionsOlderThanOneYearExceptBest",
-                s => s.ArchiveAllExceptBestOlderThanOneYear(),
-                ArchiveSubmissionsOlderThanOneYearCronExpression);
+            this.backgroundJobs.AddOrUpdateRecurringJob<IArchivedSubmissionsBusinessService>(
+                "ArchiveOldSubmissions",
+                s => s.ArchiveOldSubmissions(),
+                ArchiveOldSubmissionsCronExpression);
 
             return null;
         }
