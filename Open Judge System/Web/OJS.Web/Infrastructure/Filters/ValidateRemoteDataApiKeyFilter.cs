@@ -31,7 +31,7 @@
             var apiKey = request.QueryString[ApiKeyQueryStringParamName] ?? request[ApiKeyQueryStringParamName];
 
             var isValidApiKey = !string.IsNullOrWhiteSpace(apiKey) &&
-                this.userManager.Users.Any(u => u.Id == apiKey) &&
+                this.userManager.Users.Any(u => u.Id == apiKey && u.IsDeleted == false) &&
                 this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
 
             if (!isValidApiKey)
