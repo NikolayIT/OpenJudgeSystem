@@ -10,6 +10,13 @@
 <script src="/Scripts/Contests/submission-page.js"></script>
 
 <h2>@Resource.Shared.ContestsAllContestSubmissionsByUser.User_submission</h2>
+<h5>
+    <span class="glyphicon glyphicon-warning-sign text-warning right-buffer-sm"></span>
+    @string.Format(
+        Resource.Shared.ContestsAllContestSubmissionsByUser.Deleted_submissions_info_message,
+        GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears,
+        GlobalConstants.SubmissionEligibleForArchiveAgeInYears)
+</h5>
 
 @{
     var clientTemplate = "#= IsCalculated ? " +

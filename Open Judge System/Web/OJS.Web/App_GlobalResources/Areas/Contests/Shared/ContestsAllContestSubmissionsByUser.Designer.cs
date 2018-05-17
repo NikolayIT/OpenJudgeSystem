@@ -80,6 +80,15 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submissions older than {0} year, except for the best ones per problem are deleted. All submissions older than {1} years are also deleted..
+        /// </summary>
+        public static string Deleted_submissions_info_message {
+            get {
+                return ResourceManager.GetString("Deleted_submissions_info_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Memory.
         /// </summary>
         public static string Memory {

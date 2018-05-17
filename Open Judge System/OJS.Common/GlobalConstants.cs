@@ -82,6 +82,9 @@
 
         public const int BatchOperationsChunkSize = 5000;
 
+        public const int RegularSubmissionEligibleForArchiveAgeInYears = 1;
+        public const int BestSubmissionEligibleForArchiveAgeInYears = 2;
+
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
         public const string ZipFileExtension = ".zip";

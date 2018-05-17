@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Transactions;
 
+    using OJS.Common;
     using OJS.Common.Helpers;
     using OJS.Data.Archives;
     using OJS.Data.Models;
@@ -34,8 +35,12 @@
         {
             this.archivesContext.CreateDatabaseIfNotExists(this.archivesConnectionString);
 
-            var oneYearLimit = DateTime.Now.AddYears(-1);
-            var twoYearsLimit = DateTime.Now.AddYears(-2);
+            var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
+                -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
+
+            var archiveRegularSubmissionsLimit = DateTime.Now.AddYears(
+                -GlobalConstants.RegularSubmissionEligibleForArchiveAgeInYears);
+
             const int SubmissionsToTake = 1000;
             var submissionsToSkip = 0;
 
@@ -46,8 +51,8 @@
                 submissionsForArchive = this.submissionsData
                     .GetAllWithDeleted()
                     .AsNoTracking()
-                    .Where(s => s.CreatedOn < twoYearsLimit ||
-                        (s.CreatedOn < oneYearLimit &&
+                    .Where(s => s.CreatedOn < archiveBestSubmissionsLimit ||
+                        (s.CreatedOn < archiveRegularSubmissionsLimit &&
                             s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)))
                     .Select(ArchivedSubmission.FromSubmission)
                     .OrderBy(s => s.Id)
