@@ -64,12 +64,25 @@
                         <td style="white-space: nowrap">
                         @if (problemResult != null)
                         {
-                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id ?? default(int))))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
-                            @problemResult.BestSubmission.SubmissionType
-                            <br />
-                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                            if (problemResult.BestSubmission.Id.HasValue)
                             {
-                                @:Compilation failed!
+                                <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id ?? default(int))))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
+                            }
+                            else
+                            {
+                                <strong>@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</strong>
+                            }
+
+                            <span>@problemResult.BestSubmission.SubmissionType</span>
+                            <br />
+
+                            if (!problemResult.BestSubmission.Id.HasValue)
+                            {
+                                <span>@Resource.Submission_deleted</span>
+                            }
+                            else if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                            {
+                                <span>@Resource.Compilation_failed</span>
                             }
 
                             foreach (var testRun in problemResult.BestSubmission.TestRuns)

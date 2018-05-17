@@ -28,7 +28,6 @@
             this.submissionsData = submissionsData;
             this.participantScoresData = participantScoresData;
             this.archivesConnectionString = archivesConnectionString;
-            
         }
 
         public void ArchiveOldSubmissions()
@@ -37,7 +36,6 @@
 
             var oneYearLimit = DateTime.Now.AddYears(-1);
             var twoYearsLimit = DateTime.Now.AddYears(-2);
-            const int CommitRateCount = 100;
             const int SubmissionsToTake = 1000;
             var submissionsToSkip = 0;
 
@@ -45,8 +43,6 @@
 
             do
             {
-                this.archivesContext = new ArchivesDbContext();
-
                 submissionsForArchive = this.submissionsData
                     .GetAllWithDeleted()
                     .AsNoTracking()
@@ -58,43 +54,55 @@
                     .Skip(submissionsToSkip)
                     .Take(SubmissionsToTake);
 
-                var submissionIds = new HashSet<int>();
+                var submissionIds = new HashSet<int>(submissionsForArchive.Select(s => s.Id));
 
                 using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.ReadCommitted))
                 {
-                    try
-                    {
-                        this.archivesContext.DbContext.Database.Connection.Open();
-                        this.archivesContext.DbContext.Configuration.AutoDetectChangesEnabled = false;
+                    this.archivesContext.DbContext.Database.Connection.Open();
 
-                        var count = 0;
-                        foreach (var submission in submissionsForArchive)
-                        {
-                            this.archivesContext.Submissions.Add(submission);
+                    this.archivesContext = AddSubmissionsToArchivesContext(
+                        this.archivesContext,
+                        submissionsForArchive);
 
-                            if (++count % CommitRateCount == 0)
-                            {
-                                this.archivesContext.DbContext.SaveChanges();
-                            }
+                    this.participantScoresData.RemoveSubmissionIdsBySubmissionIds(submissionIds);
+                    this.submissionsData.HardDeleteByIds(submissionIds);
 
-                            submissionIds.Add(submission.Id);
-                        }
-
-                        this.archivesContext.DbContext.SaveChanges();
-
-                        this.participantScoresData.RemoveSubmissionIdsBySubmissionIds(submissionIds);
-                        this.submissionsData.HardDeleteByIds(submissionIds);
-
-                        scope.Complete();
-                    }
-                    finally
-                    {
-                        this.archivesContext?.DbContext?.Dispose();
-                    }
+                    scope.Complete();
                 }
 
                 submissionsToSkip += SubmissionsToTake;
             } while (submissionsForArchive.Any());
+        }
+
+        private static ArchivesDbContext AddSubmissionsToArchivesContext(
+            ArchivesDbContext context,
+            IEnumerable<ArchivedSubmission> submissions)
+        {
+            const int CommitRateCount = 100;
+
+            try
+            {
+                context.DbContext.Configuration.AutoDetectChangesEnabled = false;
+
+                var count = 0;
+                foreach (var submission in submissions)
+                {
+                    context.Submissions.Add(submission);
+
+                    if (++count % CommitRateCount == 0)
+                    {
+                        context.DbContext.SaveChanges();
+                    }
+                }
+
+                context.DbContext.SaveChanges();
+            }
+            finally
+            {
+                context.DbContext.Dispose();
+            }
+
+            return new ArchivesDbContext();
         }
     }
 }
