@@ -13,11 +13,19 @@
             this.users = users;
 
         public UserProfile GetByIdIncludingDeleted(string userId) =>
-            this.users.AllWithDeleted().FirstOrDefault(u => u.Id == userId);
+            this.users
+                .AllWithDeleted()
+                .FirstOrDefault(u => u.Id == userId);
 
         public UserProfile GetById(string id) =>
-            this.users.All().FirstOrDefault(u => u.Id == id);
+            this.users
+                .All()
+                .FirstOrDefault(u => u.Id == id);
 
-        public IQueryable<UserProfile> GetAll() => this.users.All();
+        public IQueryable<UserProfile> GetAll() =>
+            this.users.All();
+
+        public void DeleteById(string id) =>
+            this.users.Delete(u => u.Id == id);
     }
 }
