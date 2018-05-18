@@ -10,6 +10,8 @@
     {
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
 
+        IQueryable<Submission> GetAll();
+
         IQueryable<Submission> GetAllWithDeleted();
 
         IQueryable<Submission> GetByIdQuery(int id);
@@ -17,6 +19,8 @@
         IQueryable<Submission> GetAllByProblem(int problemId);
 
         IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId);
+
+        IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId);
 
         IEnumerable<int> GetIdsByProblem(int problemId);
 

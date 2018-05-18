@@ -26,6 +26,8 @@
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
 
+        public IQueryable<Submission> GetAll() => this.submissions.All();
+
         public IQueryable<Submission> GetAllWithDeleted() => this.submissions.AllWithDeleted();
 
         public IQueryable<Submission> GetByIdQuery(int id) =>
@@ -36,6 +38,13 @@
 
         public IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId) =>
             this.GetAllByProblem(problemId).Where(s => s.ParticipantId == participantId);
+
+        public IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId) =>
+            this.GetAll()
+                .Where(s =>
+                    (s.IsPublic.HasValue && s.IsPublic.Value) ||
+                    s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                    s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
             this.GetAllByProblem(problemId).Select(s => s.Id);
