@@ -1,7 +1,7 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -10,7 +10,7 @@
 
     public class SubmissionsRepository : EfDeletableEntityRepository<Submission>, ISubmissionsRepository
     {
-        public SubmissionsRepository(IOjsDbContext context)
+        public SubmissionsRepository(DbContext context)
             : base(context)
         {
         }
@@ -26,17 +26,19 @@
 
         public IQueryable<Submission> AllPublicWithLecturerContests(string lecturerId)
         {
-            var problemsIds = new HashSet<int>(
-                this.Context.Contests
-                    .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
-                        c.Lecturers.Any(l => l.LecturerId == lecturerId))
-                    .SelectMany(c => c.ProblemGroups.SelectMany(pg => pg.Problems).Select(p => p.Id)));
+            //var problemsIds = new HashSet<int>(
+            //    this.Context.Contests
+            //        .Where(c => c.Category.Lecturers.Any(cat => cat.LecturerId == lecturerId) ||
+            //            c.Lecturers.Any(l => l.LecturerId == lecturerId))
+            //        .SelectMany(c => c.ProblemGroups.SelectMany(pg => pg.Problems).Select(p => p.Id)));
 
-            var submissions =
-                this.All()
-                    .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
+            //var submissions =
+            //    this.All()
+            //        .Where(s => s.IsPublic.Value || problemsIds.Contains(s.Problem.Id));
 
-            return submissions;
+            //return submissions;
+
+            return null;
         }
 
         public bool HasSubmissionTimeLimitPassedForParticipant(int participantId, int limitBetweenSubmissions)

@@ -9,7 +9,7 @@
 
     public class ParticipantsRepository : EfGenericRepository<Participant>, IParticipantsRepository
     {
-        public ParticipantsRepository(IOjsDbContext context)
+        public ParticipantsRepository(DbContext context)
             : base(context)
         {
         }

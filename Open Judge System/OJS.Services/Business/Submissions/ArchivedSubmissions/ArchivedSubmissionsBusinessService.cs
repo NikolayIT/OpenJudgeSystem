@@ -8,32 +8,30 @@
 
     using OJS.Common;
     using OJS.Common.Helpers;
-    using OJS.Data.Archives;
+    using OJS.Data.Archives.Repositories.Contracts;
     using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
 
     public class ArchivedSubmissionsBusinessService : IArchivedSubmissionsBusinessService
     {
-        private ArchivesDbContext archivesContext;
+        private readonly IArchivesGenericRepository<ArchivedSubmission> archivedSubmissions;
         private readonly ISubmissionsDataService submissionsData;
         private readonly IParticipantScoresDataService participantScoresData;
-        private readonly string archivesConnectionString;
 
         public ArchivedSubmissionsBusinessService(
+            IArchivesGenericRepository<ArchivedSubmission> archivedSubmissions,
             ISubmissionsDataService submissionsData,
-            IParticipantScoresDataService participantScoresData,
-            string archivesConnectionString)
+            IParticipantScoresDataService participantScoresData)
         {
-            this.archivesContext = new ArchivesDbContext();
+            this.archivedSubmissions = archivedSubmissions;
             this.submissionsData = submissionsData;
             this.participantScoresData = participantScoresData;
-            this.archivesConnectionString = archivesConnectionString;
         }
 
         public void ArchiveOldSubmissions()
         {
-            this.archivesContext.CreateDatabaseIfNotExists(this.archivesConnectionString);
+            this.archivedSubmissions.CreateDatabaseIfNotExists();
 
             var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
                 -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
@@ -61,14 +59,18 @@
 
                 var submissionIds = new HashSet<int>(submissionsForArchive.Select(s => s.Id));
 
+                var notArchivedsubmissionIds = submissionIds.Except(
+                    this.archivedSubmissions
+                        .All()
+                        .AsNoTracking()
+                        .Where(s => submissionIds.Contains(s.Id))
+                        .Select(s => s.Id));
+
+                this.archivedSubmissions.Add(
+                    submissionsForArchive.Where(s => notArchivedsubmissionIds.Contains(s.Id)));
+
                 using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.ReadCommitted))
                 {
-                    this.archivesContext.DbContext.Database.Connection.Open();
-
-                    this.archivesContext = AddSubmissionsToArchivesContext(
-                        this.archivesContext,
-                        submissionsForArchive);
-
                     this.participantScoresData.RemoveSubmissionIdsBySubmissionIds(submissionIds);
                     this.submissionsData.HardDeleteByIds(submissionIds);
 
@@ -77,37 +79,6 @@
 
                 submissionsToSkip += SubmissionsToTake;
             } while (submissionsForArchive.Any());
-        }
-
-        private static ArchivesDbContext AddSubmissionsToArchivesContext(
-            ArchivesDbContext context,
-            IEnumerable<ArchivedSubmission> submissions)
-        {
-            const int CommitRateCount = 100;
-
-            try
-            {
-                context.DbContext.Configuration.AutoDetectChangesEnabled = false;
-
-                var count = 0;
-                foreach (var submission in submissions)
-                {
-                    context.Submissions.Add(submission);
-
-                    if (++count % CommitRateCount == 0)
-                    {
-                        context.DbContext.SaveChanges();
-                    }
-                }
-
-                context.DbContext.SaveChanges();
-            }
-            finally
-            {
-                context.DbContext.Dispose();
-            }
-
-            return new ArchivesDbContext();
         }
     }
 }

@@ -27,7 +27,11 @@
                 TestRunsCache = submission.TestRunsCache,
                 Processed = submission.Processed,
                 ProcessingComment = submission.ProcessingComment,
-                Points = submission.Points
+                Points = submission.Points,
+                IsDeleted = submission.IsDeleted,
+                DeletedOn = submission.DeletedOn,
+                CreatedOn = submission.CreatedOn,
+                ModifiedOn = submission.ModifiedOn
             };
 
         [Key]
@@ -63,5 +67,13 @@
         public string ProcessingComment { get; set; }
 
         public int Points { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
     }
 }

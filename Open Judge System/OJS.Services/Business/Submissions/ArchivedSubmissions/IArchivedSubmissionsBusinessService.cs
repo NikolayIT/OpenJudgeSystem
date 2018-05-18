@@ -1,6 +1,8 @@
 ﻿namespace OJS.Services.Business.Submissions.ArchivedSubmissions
 {
-    public interface IArchivedSubmissionsBusinessService
+    using OJS.Services.Common;
+
+    public interface IArchivedSubmissionsBusinessService : IService
     {
         void ArchiveOldSubmissions();
     }
