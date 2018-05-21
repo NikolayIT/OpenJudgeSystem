@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Threading.Tasks;
 
     using log4net;
 
@@ -42,17 +41,14 @@
             }
             finally
             {
-                Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        this.logger.Error("executionStrategy.SafeDeleteDirectory has thrown an exception:", ex);
-                    }
-                });
+                    DirectoryHelpers.SafeDeleteDirectory(this.WorkingDirectory, true);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.Error("executionStrategy.SafeDeleteDirectory has thrown an exception:", ex);
+                }
             }
         }
 
