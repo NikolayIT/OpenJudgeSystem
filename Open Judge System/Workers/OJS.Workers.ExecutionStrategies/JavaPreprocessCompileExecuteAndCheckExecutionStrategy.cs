@@ -138,12 +138,12 @@ class _$SandboxSecurityManager extends SecurityManager {
 
         if (permission instanceof RuntimePermission) {
             if (permission.getName().equals(""createClassLoader"") ||
-                permission.getName().equals(""getClassLoader"") ||
-                permission.getName().equals(""accessSystemModules"") ||
-                permission.getName().startsWith(""accessClassInPackage.sun."") ||
-                permission.getName().equals(""accessDeclaredMembers"")
-                permission.getName().equals(""getProtectionDomain"") ||
-                permission.getName().equals(""localeServiceProvider"")) {
+                    permission.getName().equals(""getClassLoader"") ||
+                    permission.getName().equals(""accessSystemModules"") ||
+                    permission.getName().startsWith(""accessClassInPackage.sun."") ||
+                    permission.getName().equals(""accessDeclaredMembers"") ||
+                    permission.getName().equals(""getProtectionDomain"") ||
+                    permission.getName().equals(""localeServiceProvider"")) {
                 // Allow createClassLoader, getClassLoader, accessClassInPackage.sun,
                 // getProtectionDomain, accessDeclaredMembers and localeServiceProvider
                 return;
