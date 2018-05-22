@@ -1,14 +1,12 @@
 ﻿namespace OJS.Services.Data.Submissions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using EntityFramework.Extensions;
 
-    using MissingFeatures;
-
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -28,8 +26,6 @@
 
         public IQueryable<Submission> GetAll() => this.submissions.All();
 
-        public IQueryable<Submission> GetAllWithDeleted() => this.submissions.AllWithDeleted();
-
         public IQueryable<Submission> GetByIdQuery(int id) =>
             this.submissions.All().Where(s => s.Id == id);
 
@@ -46,6 +42,21 @@
                     s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                     s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
+        public IQueryable<Submission> GetAllForArchiving()
+        {
+            var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
+                -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
+
+            var archiveRegularSubmissionsLimit = DateTime.Now.AddYears(
+                -GlobalConstants.RegularSubmissionEligibleForArchiveAgeInYears);
+
+            return this.submissions
+                .AllWithDeleted()
+                .Where(s => s.CreatedOn < archiveBestSubmissionsLimit ||
+                    (s.CreatedOn < archiveRegularSubmissionsLimit &&
+                        s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
+        }
+
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
             this.GetAllByProblem(problemId).Select(s => s.Id);
 
@@ -56,9 +67,6 @@
             this.submissions.Delete(s => s.ProblemId == problemId);
 
         public void HardDeleteByIds(IEnumerable<int> ids) =>
-            ids
-                .ChunkBy(GlobalConstants.BatchOperationsChunkSize)
-                .ForEach(chunk => this.submissions
-                    .HardDelete(s => chunk.Contains(s.Id)));
+            this.submissions.HardDelete(s => ids.Contains(s.Id));
     }
 }

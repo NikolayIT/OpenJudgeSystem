@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Business.Submissions.ArchivedSubmissions
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -8,38 +7,30 @@
 
     using OJS.Common;
     using OJS.Common.Helpers;
-    using OJS.Data.Archives.Repositories.Contracts;
     using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
+    using OJS.Services.Data.Submissions.ArchivedSubmissions;
 
     public class ArchivedSubmissionsBusinessService : IArchivedSubmissionsBusinessService
     {
-        private readonly IArchivesGenericRepository<ArchivedSubmission> archivedSubmissions;
+        private readonly IArchivedSubmissionsDataService archivedSubmissionsData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly IParticipantScoresDataService participantScoresData;
 
         public ArchivedSubmissionsBusinessService(
-            IArchivesGenericRepository<ArchivedSubmission> archivedSubmissions,
+            IArchivedSubmissionsDataService archivedSubmissionsData,
             ISubmissionsDataService submissionsData,
             IParticipantScoresDataService participantScoresData)
         {
-            this.archivedSubmissions = archivedSubmissions;
+            this.archivedSubmissionsData = archivedSubmissionsData;
             this.submissionsData = submissionsData;
             this.participantScoresData = participantScoresData;
         }
 
         public void ArchiveOldSubmissions()
         {
-            this.archivedSubmissions.CreateDatabaseIfNotExists();
-
-            var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
-                -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
-
-            var archiveRegularSubmissionsLimit = DateTime.Now.AddYears(
-                -GlobalConstants.RegularSubmissionEligibleForArchiveAgeInYears);
-
-            const int SubmissionsToTake = 1000;
+            const int SubmissionsToTake = GlobalConstants.BatchOperationsChunkSize;
             var submissionsToSkip = 0;
 
             IQueryable<ArchivedSubmission> submissionsForArchive;
@@ -47,11 +38,8 @@
             do
             {
                 submissionsForArchive = this.submissionsData
-                    .GetAllWithDeleted()
+                    .GetAllForArchiving()
                     .AsNoTracking()
-                    .Where(s => s.CreatedOn < archiveBestSubmissionsLimit ||
-                        (s.CreatedOn < archiveRegularSubmissionsLimit &&
-                            s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)))
                     .Select(ArchivedSubmission.FromSubmission)
                     .OrderBy(s => s.Id)
                     .Skip(submissionsToSkip)
@@ -59,14 +47,14 @@
 
                 var submissionIds = new HashSet<int>(submissionsForArchive.Select(s => s.Id));
 
-                var notArchivedsubmissionIds = submissionIds.Except(
-                    this.archivedSubmissions
-                        .All()
-                        .AsNoTracking()
-                        .Where(s => submissionIds.Contains(s.Id))
-                        .Select(s => s.Id));
+                var archivedSubmissionIds = this.archivedSubmissionsData
+                    .GetAllBySubmissionIds(submissionIds)
+                    .AsNoTracking()
+                    .Select(s => s.Id);
 
-                this.archivedSubmissions.Add(
+                var notArchivedsubmissionIds = new HashSet<int>(submissionIds.Except(archivedSubmissionIds));
+
+                this.archivedSubmissionsData.Add(
                     submissionsForArchive.Where(s => notArchivedsubmissionIds.Contains(s.Id)));
 
                 using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.ReadCommitted))

@@ -91,6 +91,8 @@
     <Compile Include="Data\Participants\ParticipantsDataService.cs" />
     <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
     <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
+    <Compile Include="Data\Submissions\ArchivedSubmissions\ArchivedSubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\ArchivedSubmissions\IArchivedSubmissionsDataService.cs" />
     <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
     <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
     <Compile Include="Data\ProblemGroups\IProblemGroupsDataService.cs" />

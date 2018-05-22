@@ -5,6 +5,5 @@
     public interface IArchivesGenericRepository<T> : IEfGenericRepository<T>
         where T : class
     {
-        void CreateDatabaseIfNotExists();
     }
 }

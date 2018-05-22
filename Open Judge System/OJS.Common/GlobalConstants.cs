@@ -80,7 +80,7 @@
 
         public const int DefaultProblemGroupsCountForOnlineContest = 2;
 
-        public const int BatchOperationsChunkSize = 5000;
+        public const int BatchOperationsChunkSize = 2000;
 
         public const int RegularSubmissionEligibleForArchiveAgeInYears = 1;
         public const int BestSubmissionEligibleForArchiveAgeInYears = 2;
