@@ -53,11 +53,11 @@
         public Dictionary<string, Tuple<string, string>> Dependencies =>
             new Dictionary<string, Tuple<string, string>>()
             {
-                { "javax.el", new Tuple<string, string>("el-api", "2.2") },
+                { "javax.el", new Tuple<string, string>("javax.el-api", "3.0.0") },
                 { "junit", new Tuple<string, string>("junit", null) },
                 { "org.hsqldb", new Tuple<string, string>("hsqldb", null) },
-                { "org.springframework.boot", new Tuple<string, string>("spring-boot-starter-test", "1.5.2.RELEASE") },
-                { "com.sun.xml.bind", new Tuple<string, string>("jaxb-impl", "2.2.7") }
+                { "org.springframework.boot", new Tuple<string, string>("spring-boot-starter-test", "2.0.2.RELEASE") },
+                { "com.sun.xml.bind", new Tuple<string, string>("jaxb-impl", "2.3.0") }
             };
 
         protected string MavenPath { get; set; }
@@ -75,11 +75,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.7.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>10</release>
                 </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                    <version>6.1.1</version>
+                </dependency>
+            </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
