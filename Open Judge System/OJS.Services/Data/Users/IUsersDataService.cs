@@ -12,5 +12,7 @@
         UserProfile GetById(string userId);
 
         IQueryable<UserProfile> GetAll();
+
+        void DeleteById(string id);
     }
 }

@@ -21,6 +21,10 @@
             this.GetAll()
                 .FirstOrDefault(u => u.Id == id);
 
-        public IQueryable<UserProfile> GetAll() => this.users.All();
+        public IQueryable<UserProfile> GetAll() =>
+            this.users.All();
+
+        public void DeleteById(string id) =>
+            this.users.Delete(u => u.Id == id);
     }
 }
