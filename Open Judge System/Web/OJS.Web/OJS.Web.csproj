@@ -1786,6 +1786,7 @@
     <Compile Include="Areas\Api\Controllers\ExamGroupsController.cs" />
     <Compile Include="Areas\Api\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Api\Controllers\SubmissionsController.cs" />
+    <Compile Include="Areas\Api\Controllers\UserRelatedEventsReceiverController.cs" />
     <Compile Include="Areas\Api\Models\ErrorMessageViewModel.cs" />
     <Compile Include="Areas\Api\Models\ExamGroupInfoModel.cs" />
     <Compile Include="Areas\Api\Models\UsersExamGroupModel.cs" />
@@ -1843,8 +1844,10 @@
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
+    <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />

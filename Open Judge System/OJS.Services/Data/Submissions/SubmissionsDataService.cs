@@ -23,16 +23,20 @@
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
 
-        public IQueryable<Submission> GetAll() => this.submissions.All();
+        public IQueryable<Submission> GetAll() =>
+            this.submissions.All();
 
         public IQueryable<Submission> GetByIdQuery(int id) =>
-            this.submissions.All().Where(s => s.Id == id);
+            this.GetAll()
+                .Where(s => s.Id == id);
 
         public IQueryable<Submission> GetAllByProblem(int problemId) =>
-            this.submissions.All().Where(s => s.ProblemId == problemId);
+            this.GetAll()
+                .Where(s => s.ProblemId == problemId);
 
         public IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId) =>
-            this.GetAllByProblem(problemId).Where(s => s.ParticipantId == participantId);
+            this.GetAllByProblem(problemId)
+                .Where(s => s.ParticipantId == participantId);
 
         public IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId) =>
             this.GetAll()
@@ -51,10 +55,15 @@
                         s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
 
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
-            this.GetAllByProblem(problemId).Select(s => s.Id);
+            this.GetAllByProblem(problemId)
+                .Select(s => s.Id);
 
         public void SetAllToUnprocessedByProblem(int problemId) =>
-            this.GetAllByProblem(problemId).Update(s => new Submission{ Processed = false });
+            this.GetAllByProblem(problemId)
+                .Update(s => new Submission
+                {
+                    Processed = false
+                });
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);

@@ -13,15 +13,19 @@
             this.contestCategories = contestCategories;
 
         public IQueryable<ContestCategory> GetAllVisible() =>
-            this.contestCategories.All().Where(cc => cc.IsVisible);
+            this.contestCategories
+                .All()
+                .Where(cc => cc.IsVisible);
 
         public IQueryable<ContestCategory> GetVisibleByIdQuery(int id) =>
-            this.GetAllVisible().Where(cc => cc.Id == id);
+            this.GetAllVisible()
+                .Where(cc => cc.Id == id);
 
         public IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId) =>
-            this.GetAllVisible().Where(cc =>
-                cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
-                cc.Contests.Any(c => c.Lecturers.Any(l => l.LecturerId == lecturerId)));
+            this.GetAllVisible()
+                .Where(cc =>
+                    cc.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                    cc.Contests.Any(c => c.Lecturers.Any(l => l.LecturerId == lecturerId)));
 
         public string GetNameById(int id) =>
             this.contestCategories

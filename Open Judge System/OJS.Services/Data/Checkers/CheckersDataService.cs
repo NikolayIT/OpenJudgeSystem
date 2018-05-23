@@ -13,7 +13,8 @@
             this.checkers = checkers;
 
         public Checker GetByName(string name) =>
-            this.checkers.All().FirstOrDefault(ch => ch.Name == name);
+            this.GetAll()
+                .FirstOrDefault(ch => ch.Name == name);
 
         public IQueryable<Checker> GetAll() => this.checkers.All();
     }
