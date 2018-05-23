@@ -21,9 +21,9 @@
 
         IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId);
 
-        IQueryable<Submission> GetAllCreatedBeforeDateAndNotBestCreatedBeforeDate(
+        IQueryable<Submission> GetAllCreatedBeforeDateAndNonBestCreatedBeforeDate(
             DateTime createdBeforeDate,
-            DateTime notBestCreatedBeforeDate);
+            DateTime nonBestCreatedBeforeDate);
 
         IEnumerable<int> GetIdsByProblem(int problemId);
 

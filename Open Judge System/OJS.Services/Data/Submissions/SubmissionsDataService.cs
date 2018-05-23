@@ -45,13 +45,13 @@
                     s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                     s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
-        public IQueryable<Submission> GetAllCreatedBeforeDateAndNotBestCreatedBeforeDate(
+        public IQueryable<Submission> GetAllCreatedBeforeDateAndNonBestCreatedBeforeDate(
             DateTime createdBeforeDate,
-            DateTime notBestCreatedBeforeDate) =>
+            DateTime nonBestCreatedBeforeDate) =>
             this.submissions
                 .AllWithDeleted()
                 .Where(s => s.CreatedOn < createdBeforeDate ||
-                    (s.CreatedOn < notBestCreatedBeforeDate &&
+                    (s.CreatedOn < nonBestCreatedBeforeDate &&
                         s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
 
         public IEnumerable<int> GetIdsByProblem(int problemId) =>

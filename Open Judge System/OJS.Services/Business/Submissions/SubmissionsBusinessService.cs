@@ -12,7 +12,6 @@
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
 
-
     public class SubmissionsBusinessService : ISubmissionsBusinessService
     {
         private readonly IEfDeletableEntityRepository<Submission> submissions;
@@ -34,12 +33,12 @@
             var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
                 -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
 
-            var archiveRegularSubmissionsLimit = DateTime.Now.AddYears(
-                -GlobalConstants.RegularSubmissionEligibleForArchiveAgeInYears);
+            var archiveNonBestSubmissionsLimit = DateTime.Now.AddYears(
+                -GlobalConstants.NonBestSubmissionEligibleForArchiveAgeInYears);
 
-            return this.submissionsData.GetAllCreatedBeforeDateAndNotBestCreatedBeforeDate(
+            return this.submissionsData.GetAllCreatedBeforeDateAndNonBestCreatedBeforeDate(
                 archiveBestSubmissionsLimit,
-                archiveRegularSubmissionsLimit);
+                archiveNonBestSubmissionsLimit);
         }
 
         public void HardDeleteByIds(ICollection<int> ids)

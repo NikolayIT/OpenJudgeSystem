@@ -82,8 +82,8 @@
 
         public const int BatchOperationsChunkSize = 2000;
 
-        public const int RegularSubmissionEligibleForArchiveAgeInYears = 1;
         public const int BestSubmissionEligibleForArchiveAgeInYears = 2;
+        public const int NonBestSubmissionEligibleForArchiveAgeInYears = 1;
 
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
