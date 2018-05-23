@@ -16,7 +16,8 @@
 <div class="container">
     <h2>
         @string.Format(Resource.Profile_title, Model.Username)
-        @if (!string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.LastName))
+        @if (userIsProfileOwnerOrAdmin &&
+            (!string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.LastName)))
         {
             <text>(@Model.FirstName @Model.LastName)</text>
         }
@@ -40,33 +41,26 @@
                 @Model.Email
             </div>
         </div>
+
+        <div class="col-md-6">
+            @if (Model.Age != null)
+            {
+                <div class="text-white">
+                    <span class="text-primary">@Resource.Age: </span>
+                    @Model.Age
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.City))
+            {
+                <div class="text-white">
+                    <span class="text-primary">@Resource.City: </span>
+                    @Model.City
+                </div>
+            }
+        </div>
     }
-
-    <div class="col-md-6">
-        <div class="text-white">
-            <span class="text-primary">@Resource.Age: </span>
-            @if (Model.Age != null && userIsProfileOwnerOrAdmin)
-            {
-                <text>@Model.Age</text>
-            }
-            else
-            {
-                <text>@Resource.No_information</text>
-            }
-        </div>
-
-        <div class="text-white">
-            <span class="text-primary">@Resource.City: </span>
-            @if (!string.IsNullOrWhiteSpace(Model.City) && userIsProfileOwnerOrAdmin)
-            {
-                <text>@Model.City</text>
-            }
-            else
-            {
-                <text>@Resource.No_information</text>
-            }
-        </div>
-    </div>
+    
     @if (userIsProfileOwner)
     {
         <div class="col-md-offset-4 col-md-2">

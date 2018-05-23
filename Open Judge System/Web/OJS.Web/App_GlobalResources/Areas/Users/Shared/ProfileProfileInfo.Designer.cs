@@ -97,15 +97,6 @@ namespace Resources.Areas.Users.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No information.
-        /// </summary>
-        public static string No_information {
-            get {
-                return ResourceManager.GetString("No_information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Participations.
         /// </summary>
         public static string Participations {

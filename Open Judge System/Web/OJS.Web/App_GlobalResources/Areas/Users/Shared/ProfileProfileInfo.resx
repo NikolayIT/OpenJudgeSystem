@@ -129,9 +129,6 @@
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>
   </data>
-  <data name="No_information" xml:space="preserve">
-    <value>No information</value>
-  </data>
   <data name="Participations" xml:space="preserve">
     <value>Participations</value>
   </data>
