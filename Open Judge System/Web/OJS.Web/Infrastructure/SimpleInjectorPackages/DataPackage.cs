@@ -1,13 +1,13 @@
 ﻿namespace OJS.Web.Infrastructure.SimpleInjectorPackages
 {
-    using SimpleInjector;
-    using SimpleInjector.Packaging;
-
     using OJS.Data;
     using OJS.Data.Contracts;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
-    
+
+    using SimpleInjector;
+    using SimpleInjector.Packaging;
+
     public class DataPackage : IPackage
     {
         public void RegisterServices(Container container)

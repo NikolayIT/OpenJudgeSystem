@@ -1,9 +1,9 @@
 ﻿namespace OJS.Web.Infrastructure.SimpleInjectorPackages
 {
+    using OJS.Web.Infrastructure.Filters.Contracts;
+
     using SimpleInjector;
     using SimpleInjector.Packaging;
-
-    using OJS.Web.Infrastructure.Filters.Contracts;
 
     public class ActionFiltersPackage : IPackage
     {
