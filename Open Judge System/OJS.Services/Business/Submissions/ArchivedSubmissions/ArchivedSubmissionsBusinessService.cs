@@ -3,47 +3,40 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using System.Transactions;
 
-    using OJS.Common;
-    using OJS.Common.Helpers;
     using OJS.Data.Models;
-    using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.Submissions;
     using OJS.Services.Data.Submissions.ArchivedSubmissions;
 
     public class ArchivedSubmissionsBusinessService : IArchivedSubmissionsBusinessService
     {
         private readonly IArchivedSubmissionsDataService archivedSubmissionsData;
-        private readonly ISubmissionsDataService submissionsData;
-        private readonly IParticipantScoresDataService participantScoresData;
+        private readonly ISubmissionsBusinessService submissionsBusiness;
 
         public ArchivedSubmissionsBusinessService(
             IArchivedSubmissionsDataService archivedSubmissionsData,
-            ISubmissionsDataService submissionsData,
-            IParticipantScoresDataService participantScoresData)
+            ISubmissionsBusinessService submissionsBusiness)
         {
             this.archivedSubmissionsData = archivedSubmissionsData;
-            this.submissionsData = submissionsData;
-            this.participantScoresData = participantScoresData;
+            this.submissionsBusiness = submissionsBusiness;
         }
 
         public void ArchiveOldSubmissions()
         {
-            const int SubmissionsToTake = GlobalConstants.BatchOperationsChunkSize;
+            const int SubmissionsToTake = 200;
             var submissionsToSkip = 0;
 
-            IQueryable<ArchivedSubmission> submissionsForArchive;
+            var allSubmissionsForArchive = this.submissionsBusiness
+                .GetAllForArchiving()
+                .AsNoTracking()
+                .Select(ArchivedSubmission.FromSubmission)
+                .OrderBy(s => s.Id);
 
             do
             {
-                submissionsForArchive = this.submissionsData
-                    .GetAllForArchiving()
-                    .AsNoTracking()
-                    .Select(ArchivedSubmission.FromSubmission)
-                    .OrderBy(s => s.Id)
+                var submissionsForArchive = allSubmissionsForArchive
                     .Skip(submissionsToSkip)
-                    .Take(SubmissionsToTake);
+                    .Take(SubmissionsToTake)
+                    .ToList();
 
                 var submissionIds = new HashSet<int>(submissionsForArchive.Select(s => s.Id));
 
@@ -57,16 +50,10 @@
                 this.archivedSubmissionsData.Add(
                     submissionsForArchive.Where(s => notArchivedsubmissionIds.Contains(s.Id)));
 
-                using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.ReadCommitted))
-                {
-                    this.participantScoresData.RemoveSubmissionIdsBySubmissionIds(submissionIds);
-                    this.submissionsData.HardDeleteByIds(submissionIds);
-
-                    scope.Complete();
-                }
+                this.submissionsBusiness.HardDeleteByIds(submissionIds);
 
                 submissionsToSkip += SubmissionsToTake;
-            } while (submissionsForArchive.Any());
+            } while (allSubmissionsForArchive.Any());
         }
     }
 }

@@ -6,7 +6,6 @@
 
     using EntityFramework.Extensions;
 
-    using OJS.Common;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
 
@@ -42,20 +41,14 @@
                     s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
                     s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
-        public IQueryable<Submission> GetAllForArchiving()
-        {
-            var archiveBestSubmissionsLimit = DateTime.Now.AddYears(
-                -GlobalConstants.BestSubmissionEligibleForArchiveAgeInYears);
-
-            var archiveRegularSubmissionsLimit = DateTime.Now.AddYears(
-                -GlobalConstants.RegularSubmissionEligibleForArchiveAgeInYears);
-
-            return this.submissions
+        public IQueryable<Submission> GetAllCreatedBeforeDateAndNotBestCreatedBeforeDate(
+            DateTime createdBeforeDate,
+            DateTime notBestCreatedBeforeDate) =>
+            this.submissions
                 .AllWithDeleted()
-                .Where(s => s.CreatedOn < archiveBestSubmissionsLimit ||
-                    (s.CreatedOn < archiveRegularSubmissionsLimit &&
+                .Where(s => s.CreatedOn < createdBeforeDate ||
+                    (s.CreatedOn < notBestCreatedBeforeDate &&
                         s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
-        }
 
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
             this.GetAllByProblem(problemId).Select(s => s.Id);
@@ -65,8 +58,5 @@
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
-
-        public void HardDeleteByIds(IEnumerable<int> ids) =>
-            this.submissions.HardDelete(s => ids.Contains(s.Id));
     }
 }

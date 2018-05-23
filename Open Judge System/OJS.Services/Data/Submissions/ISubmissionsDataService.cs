@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Submissions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -20,14 +21,14 @@
 
         IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId);
 
-        IQueryable<Submission> GetAllForArchiving();
+        IQueryable<Submission> GetAllCreatedBeforeDateAndNotBestCreatedBeforeDate(
+            DateTime createdBeforeDate,
+            DateTime notBestCreatedBeforeDate);
 
         IEnumerable<int> GetIdsByProblem(int problemId);
 
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);
-
-        void HardDeleteByIds(IEnumerable<int> ids);
     }
 }
