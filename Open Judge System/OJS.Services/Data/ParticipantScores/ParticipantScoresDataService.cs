@@ -25,13 +25,15 @@
         public ParticipantScore GetByParticipantIdAndProblemId(int participantId, int problemId) =>
             this.participantScores
                 .All()
-                .FirstOrDefault(ps => ps.ParticipantId == participantId &&
+                .FirstOrDefault(ps =>
+                    ps.ParticipantId == participantId &&
                     ps.ProblemId == problemId);
 
         public ParticipantScore GetByParticipantIdProblemIdAndIsOfficial(int participantId, int problemId, bool isOfficial) =>
             this.participantScores
                 .All()
-                .FirstOrDefault(ps => ps.ParticipantId == participantId &&
+                .FirstOrDefault(ps =>
+                    ps.ParticipantId == participantId &&
                     ps.ProblemId == problemId &&
                     ps.IsOfficial == isOfficial);
 
@@ -80,7 +82,10 @@
         }
 
         public void DeleteAllByProblem(int problemId) =>
-            this.participantScores.All().Where(x => x.ProblemId == problemId).Delete();
+            this.participantScores
+                .All()
+                .Where(x => x.ProblemId == problemId)
+                .Delete();
 
         public void DeleteForParticipantByProblem(int participantId, int problemId)
         {

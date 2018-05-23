@@ -18,8 +18,7 @@
                 .FirstOrDefault(u => u.Id == userId);
 
         public UserProfile GetById(string id) =>
-            this.users
-                .All()
+            this.GetAll()
                 .FirstOrDefault(u => u.Id == id);
 
         public IQueryable<UserProfile> GetAll() =>

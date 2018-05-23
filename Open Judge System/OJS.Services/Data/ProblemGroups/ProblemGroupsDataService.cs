@@ -15,22 +15,30 @@
         public ProblemGroup GetById(int id) => this.problemGroups.GetById(id);
 
         public ProblemGroup GetByProblem(int problemId) =>
-            this.problemGroups.All().FirstOrDefault(pg => pg.Problems.Any(p => p.Id == problemId));
+            this.GetAll()
+                .FirstOrDefault(pg => pg.Problems
+                    .Any(p => p.Id == problemId));
 
         public IQueryable<ProblemGroup> GetByIdQuery(int id) =>
-            this.GetAll().Where(pg => pg.Id == id);
+            this.GetAll()
+                .Where(pg => pg.Id == id);
 
         public IQueryable<ProblemGroup> GetAll() => this.problemGroups.All();
 
-        public IQueryable<ProblemGroup> GetAllWithDeleted() => this.problemGroups.AllWithDeleted();
+        public IQueryable<ProblemGroup> GetAllWithDeleted() =>
+            this.problemGroups.AllWithDeleted();
 
         public IQueryable<ProblemGroup> GetAllByContest(int contestId) =>
-            this.problemGroups.All().Where(pg => pg.ContestId == contestId);
+            this.GetAll()
+                .Where(pg => pg.ContestId == contestId);
 
         public IQueryable<Problem> GetProblemsById(int id) =>
-            this.GetByIdQuery(id).SelectMany(eg => eg.Problems).Where(p => !p.IsDeleted);
+            this.GetByIdQuery(id)
+                .SelectMany(eg => eg.Problems)
+                .Where(p => !p.IsDeleted);
 
         public bool IsFromContestByIdAndContest(int id, int contestId) =>
-            this.GetByIdQuery(id).Any(pg => pg.ContestId == contestId);
+            this.GetByIdQuery(id)
+                .Any(pg => pg.ContestId == contestId);
     }
 }
