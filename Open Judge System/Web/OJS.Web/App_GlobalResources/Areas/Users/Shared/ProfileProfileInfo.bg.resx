@@ -129,6 +129,9 @@
   <data name="Contest" xml:space="preserve">
     <value>Състезание</value>
   </data>
+  <data name="No_information" xml:space="preserve">
+    <value>Няма информация</value>
+  </data>
   <data name="Participations" xml:space="preserve">
     <value>Участия</value>
   </data>

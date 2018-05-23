@@ -5,6 +5,13 @@
 @using SubmissionsAdministrationResource = Resources.Areas.Administration.Submissions.Views.SubmissionsIndex
 
 @model UserProfileViewModel
+    
+@{
+    var userIsProfileOwner = Model.Username == User.Identity.Name;
+    var userIsAdmin = User.IsAdmin();
+    var userIsLecturer = User.IsLecturer();
+    var userIsProfileOwnerOrAdmin = userIsProfileOwner || userIsAdmin;
+}
 
 <div class="container">
     <h2>
@@ -15,7 +22,7 @@
         }
     </h2>
 
-    @if (User.IsAdmin())
+    @if (userIsAdmin)
     {
         <div class="col-md-12">
             <div class="text-white">
@@ -23,6 +30,10 @@
                 @Model.Id
             </div>
         </div>
+    }
+    
+    @if (userIsProfileOwnerOrAdmin)
+    {
         <div class="col-md-12">
             <div class="text-white">
                 <span class="text-primary">E-mail: </span>
@@ -32,23 +43,31 @@
     }
 
     <div class="col-md-6">
-        @if (Model.Age != null)
-        {
-            <div class="text-white">
-                <span class="text-primary">@Resource.Age: </span>
-                @Model.Age
-            </div>
-        }
+        <div class="text-white">
+            <span class="text-primary">@Resource.Age: </span>
+            @if (Model.Age != null && userIsProfileOwnerOrAdmin)
+            {
+                <text>@Model.Age</text>
+            }
+            else
+            {
+                <text>@Resource.No_information</text>
+            }
+        </div>
 
-        @if (!string.IsNullOrEmpty(Model.City))
-        {
-            <div class="text-white">
-                <span class="text-primary">@Resource.City: </span>
-                @Model.City
-            </div>
-        }
+        <div class="text-white">
+            <span class="text-primary">@Resource.City: </span>
+            @if (!string.IsNullOrWhiteSpace(Model.City) && userIsProfileOwnerOrAdmin)
+            {
+                <text>@Model.City</text>
+            }
+            else
+            {
+                <text>@Resource.No_information</text>
+            }
+        </div>
     </div>
-    @if (User.Identity.Name == Model.Username)
+    @if (userIsProfileOwner)
     {
         <div class="col-md-offset-4 col-md-2">
             <a href="Settings/" class="btn btn-primary pull-right">@Resource.Settings</a>
@@ -57,9 +76,9 @@
 </div>
 <br />
 
-@if (User.Identity.Name == Model.Username || User.IsAdmin() || User.IsLecturer())
+@if (userIsProfileOwnerOrAdmin || userIsLecturer)
 {
-    if (User.IsAdmin() || User.IsLecturer())
+    if (userIsAdmin || userIsLecturer)
     {
         <div class="col-md-11">
             @(Html.Kendo()
@@ -112,7 +131,7 @@
                 <th>
                     @Resource.Contest
                 </th>
-                @if (User.Identity.Name == Model.Username || User.IsAdmin())
+                @if (userIsProfileOwnerOrAdmin)
                 {
                     <th>@Resource.Results</th>
                 }
@@ -128,7 +147,7 @@
                         </a>
                     </td>
 
-                    @if (User.Identity.Name == Model.Username || User.IsAdmin())
+                    @if (userIsProfileOwnerOrAdmin)
                     {
                         <td>
                             @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>
@@ -142,7 +161,7 @@
     </table>
 </div>
 
-@if (User.IsAdmin() || User.IsLecturer())
+@if (userIsAdmin || userIsLecturer)
 {
     <script>
         function additionalComboBoxData() {
