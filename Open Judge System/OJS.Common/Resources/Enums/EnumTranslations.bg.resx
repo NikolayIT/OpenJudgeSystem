@@ -126,9 +126,6 @@
   <data name="DropDown" xml:space="preserve">
     <value>Dropdown лист</value>
   </data>
-  <data name="InvalidSubmissionStatus" xml:space="preserve">
-    <value>Невалиден</value>
-  </data>
   <data name="Lab" xml:space="preserve">
     <value>Лаб</value>
   </data>
@@ -152,9 +149,6 @@
   </data>
   <data name="ProcessedSubmissionStatus" xml:space="preserve">
     <value>Изчислен</value>
-  </data>
-  <data name="ProcessingSubmissionStatus" xml:space="preserve">
-    <value>Изчислява се</value>
   </data>
   <data name="StandardTestDescription" xml:space="preserve">
     <value>Състезателен</value>

@@ -6,16 +6,10 @@
 
     public enum SubmissionStatus
     {
-        [LocalizedDescription("ProcessingSubmissionStatus", typeof(Resource))]
-        Processing = 1,
-
         [LocalizedDescription("ProcessedSubmissionStatus", typeof(Resource))]
-        Processed = 2,
+        Processed = 1,
 
         [LocalizedDescription("PendingSubmissionStatus", typeof(Resource))]
-        Pending = 3,
-
-        [LocalizedDescription("InvalidSubmissionStatus", typeof(Resource))]
-        Invalid = 4
+        Pending = 2
     }
 }
