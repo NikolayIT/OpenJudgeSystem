@@ -168,6 +168,9 @@
   <data name="Precision_checker_description" xml:space="preserve">
     <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
   </data>
+  <data name="Retest" xml:space="preserve">
+    <value>Ретест</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
   </data>

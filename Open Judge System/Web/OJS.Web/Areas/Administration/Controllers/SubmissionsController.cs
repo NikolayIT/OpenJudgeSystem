@@ -126,7 +126,6 @@
                 {
                     var entity = model.GetEntityModel();
                     entity.Processed = false;
-                    entity.Processing = false;
 
                     using (var scope = TransactionsHelper.CreateTransactionScope())
                     {
@@ -226,7 +225,6 @@
                         using (var scope = TransactionsHelper.CreateTransactionScope())
                         {
                             submission.Processed = false;
-                            submission.Processing = false;
 
                             this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 
@@ -458,9 +456,8 @@
 
             if (this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) ||
                 (string.IsNullOrEmpty(submission.TestRunsCache) &&
-                userOwnsSubmission &&
-                submission.Processed &&
-                !submission.Processing))
+                    userOwnsSubmission &&
+                    submission.Processed))
             {
                 if (!submission.ParticipantId.HasValue)
                 {
@@ -480,7 +477,6 @@
                 using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     submission.Processed = false;
-                    submission.Processing = false;
 
                     this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
 

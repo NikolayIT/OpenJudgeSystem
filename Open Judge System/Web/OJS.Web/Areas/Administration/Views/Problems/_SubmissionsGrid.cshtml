@@ -1,4 +1,5 @@
 ﻿@using System.Collections
+
 @using Resource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
 @using AdministrationGeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
@@ -8,7 +9,8 @@
     const string ControllerName = "Submissions";
 }
 
-@(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
+@(Html.Kendo()
+    .Grid<OJS.Web.Areas.Administration.ViewModels.Submission.SubmissionAdministrationGridViewModel>()
     .Name("submissions-grid")
     .Columns(columns =>
     {
@@ -19,9 +21,9 @@
         columns.Bound(model => model.Points);
         columns.Bound(model => model.CreatedOn).Hidden();
         columns.Bound(model => model.ModifiedOn).Hidden();
-        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Update", ControllerName), AdministrationGeneralResource.Change));
-        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext'>{1}</a>", Url.Action("Delete", ControllerName), AdministrationGeneralResource.Delete));    
-        columns.Template(@<text></text>).ClientTemplate(string.Format("<a href='{0}/#= Id #' class='k-button k-button-icontext' target='_blank'>{1}</a>", Url.Action("Retest", ControllerName), Resource.Retest));
+        columns.Template(@<text></text>).ClientTemplate($"<a href='{Url.Action("Update", ControllerName)}/#= Id #' class='k-button k-button-icontext'>{AdministrationGeneralResource.Change}</a>");
+        columns.Template(@<text></text>).ClientTemplate($"<a href='{Url.Action("Delete", ControllerName)}/#= Id #' class='k-button k-button-icontext'>{AdministrationGeneralResource.Delete}</a>");    
+        columns.Template(@<text></text>).ClientTemplate($"<a href='{Url.Action("Retest", ControllerName)}/#= Id #' class='k-button k-button-icontext' target='_blank'>{Resource.Retest}</a>");
     })
     .Pageable(x => x.Refresh(true))
     .Sortable(x => x.Enabled(true).AllowUnsort(false))
