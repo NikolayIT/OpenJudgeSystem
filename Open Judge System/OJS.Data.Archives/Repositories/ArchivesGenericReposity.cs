@@ -11,5 +11,8 @@
             : base(context)
         {
         }
+
+        public void CreateDatabaseIfNotExists() =>
+            this.Context.Database.CreateIfNotExists();
     }
 }

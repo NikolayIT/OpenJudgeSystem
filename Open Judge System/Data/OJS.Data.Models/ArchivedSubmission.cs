@@ -75,5 +75,8 @@
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
+
+        [Index]
+        public bool IsHardDeletedFromMainDatabase { get; set; }
     }
 }

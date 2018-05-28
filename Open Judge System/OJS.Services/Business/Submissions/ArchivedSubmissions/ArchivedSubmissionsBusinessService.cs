@@ -1,59 +1,44 @@
 ﻿namespace OJS.Services.Business.Submissions.ArchivedSubmissions
 {
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
 
+    using Hangfire.Server;
+
     using OJS.Data.Models;
+    using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.Submissions.ArchivedSubmissions;
 
     public class ArchivedSubmissionsBusinessService : IArchivedSubmissionsBusinessService
     {
         private readonly IArchivedSubmissionsDataService archivedSubmissionsData;
         private readonly ISubmissionsBusinessService submissionsBusiness;
+        private readonly IHangfireBackgroundJobService backgroundJobs;
 
         public ArchivedSubmissionsBusinessService(
             IArchivedSubmissionsDataService archivedSubmissionsData,
-            ISubmissionsBusinessService submissionsBusiness)
+            ISubmissionsBusinessService submissionsBusiness,
+            IHangfireBackgroundJobService backgroundJobs)
         {
             this.archivedSubmissionsData = archivedSubmissionsData;
             this.submissionsBusiness = submissionsBusiness;
+            this.backgroundJobs = backgroundJobs;
         }
 
-        public void ArchiveOldSubmissions()
+        public void ArchiveOldSubmissions(PerformContext context)
         {
-            const int SubmissionsToTake = 200;
-            var submissionsToSkip = 0;
+            this.archivedSubmissionsData.CreateDatabaseIfNotExists();
 
             var allSubmissionsForArchive = this.submissionsBusiness
                 .GetAllForArchiving()
                 .AsNoTracking()
-                .Select(ArchivedSubmission.FromSubmission)
-                .OrderBy(s => s.Id);
+                .Select(ArchivedSubmission.FromSubmission);
 
-            do
-            {
-                var submissionsForArchive = allSubmissionsForArchive
-                    .Skip(submissionsToSkip)
-                    .Take(SubmissionsToTake)
-                    .ToList();
+            this.archivedSubmissionsData.Add(allSubmissionsForArchive);
 
-                var submissionIds = new HashSet<int>(submissionsForArchive.Select(s => s.Id));
-
-                var archivedSubmissionIds = this.archivedSubmissionsData
-                    .GetAllBySubmissionIds(submissionIds)
-                    .AsNoTracking()
-                    .Select(s => s.Id);
-
-                var notArchivedsubmissionIds = new HashSet<int>(submissionIds.Except(archivedSubmissionIds));
-
-                this.archivedSubmissionsData.Add(
-                    submissionsForArchive.Where(s => notArchivedsubmissionIds.Contains(s.Id)));
-
-                this.submissionsBusiness.HardDeleteByIds(submissionIds);
-
-                submissionsToSkip += SubmissionsToTake;
-            } while (allSubmissionsForArchive.Any());
+             this.backgroundJobs.OnSucceededStateContinueWith<ISubmissionsBusinessService>(
+                 context.BackgroundJob.Id,
+                 s => s.HardDeleteAllArchived());
         }
     }
 }

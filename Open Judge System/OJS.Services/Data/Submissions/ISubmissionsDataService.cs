@@ -30,5 +30,7 @@
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);
+
+        void HardDeleteByIds(IEnumerable<int> ids);
     }
 }

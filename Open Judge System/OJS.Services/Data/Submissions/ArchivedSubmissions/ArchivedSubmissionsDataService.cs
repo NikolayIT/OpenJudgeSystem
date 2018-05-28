@@ -20,7 +20,24 @@
                 .All()
                 .Where(s => submissionIds.Contains(s.Id));
 
+        public IQueryable<ArchivedSubmission> GetAllUndeletedFromMainDatabase() =>
+            this.archivedSubmissions
+                .All()
+                .Where(s => !s.IsHardDeletedFromMainDatabase);
+
         public void Add(IEnumerable<ArchivedSubmission> entities) =>
             this.archivedSubmissions.Add(entities);
+
+        public void SetToHardDeletedFromMainDatabaseByIds(IEnumerable<int> ids) =>
+            this.archivedSubmissions
+                .Update(
+                    s => ids.Contains(s.Id),
+                    s => new ArchivedSubmission
+                    {
+                        IsHardDeletedFromMainDatabase = true
+                    });
+
+        public void CreateDatabaseIfNotExists() =>
+            this.archivedSubmissions.CreateDatabaseIfNotExists();
     }
 }

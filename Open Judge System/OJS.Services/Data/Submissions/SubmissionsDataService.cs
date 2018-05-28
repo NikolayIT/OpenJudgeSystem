@@ -67,5 +67,8 @@
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
+
+        public void HardDeleteByIds(IEnumerable<int> ids) =>
+            this.submissions.HardDelete(s => ids.Contains(s.Id));
     }
 }

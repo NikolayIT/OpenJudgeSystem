@@ -8,8 +8,12 @@
 
     public interface IArchivedSubmissionsDataService : IService
     {
-        IQueryable<ArchivedSubmission> GetAllBySubmissionIds(IEnumerable<int> submissionIds);
+        IQueryable<ArchivedSubmission> GetAllUndeletedFromMainDatabase();
 
         void Add(IEnumerable<ArchivedSubmission> entities);
+
+        void SetToHardDeletedFromMainDatabaseByIds(IEnumerable<int> ids);
+
+        void CreateDatabaseIfNotExists();
     }
 }
