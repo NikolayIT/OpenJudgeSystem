@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using System.Transactions;
 
@@ -50,7 +49,6 @@
         public void HardDeleteAllArchived() =>
             this.archivedSubmissionsData
                 .GetAllUndeletedFromMainDatabase()
-                .AsNoTracking()
                 .Select(s => s.Id)
                 .AsEnumerable()
                 .ChunkBy(GlobalConstants.BatchOperationsChunkSize)

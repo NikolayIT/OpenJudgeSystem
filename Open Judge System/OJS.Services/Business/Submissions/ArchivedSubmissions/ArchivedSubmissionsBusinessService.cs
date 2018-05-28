@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Business.Submissions.ArchivedSubmissions
 {
-    using System.Data.Entity;
     using System.Linq;
 
     using Hangfire.Server;
@@ -31,7 +30,6 @@
 
             var allSubmissionsForArchive = this.submissionsBusiness
                 .GetAllForArchiving()
-                .AsNoTracking()
                 .Select(ArchivedSubmission.FromSubmission);
 
             this.archivedSubmissionsData.Add(allSubmissionsForArchive);
