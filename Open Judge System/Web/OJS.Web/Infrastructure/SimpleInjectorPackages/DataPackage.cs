@@ -26,8 +26,16 @@
             container.Register<IOjsDbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
             container.Register<IArchivesDbContext>(container.GetInstance<ArchivesDbContext>, Lifestyle.Scoped);
 
-            container.Register(typeof(IRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
-            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
+            container.Register(
+                typeof(IRepository<>),
+                typeof(EfGenericRepository<>),
+                Lifestyle.Scoped);
+
+            container.Register(
+                typeof(IEfGenericRepository<>),
+                typeof(EfGenericRepository<>),
+                Lifestyle.Scoped);
+
             container.Register(
                 typeof(IArchivesGenericRepository<>),
                 typeof(ArchivesGenericReposity<>),
