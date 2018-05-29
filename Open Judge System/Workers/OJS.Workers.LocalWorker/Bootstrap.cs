@@ -1,17 +1,17 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System.Data.Entity;
-    using OJS.Services.Business.SubmissionsForProcessing;
-    using OJS.Services.Data.SubmissionsForProcessing;
-
-    using SimpleInjector;
-    using SimpleInjector.Lifestyles;
 
     using OJS.Data;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
+    using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.SubmissionsForProcessing;
+
+    using SimpleInjector;
+    using SimpleInjector.Lifestyles;
 
     internal class Bootstrap
     {

@@ -14,12 +14,6 @@
             IArchivesGenericRepository<ArchivedSubmission> archivedSubmissions) =>
                 this.archivedSubmissions = archivedSubmissions;
 
-
-        public IQueryable<ArchivedSubmission> GetAllBySubmissionIds(IEnumerable<int> submissionIds) =>
-            this.archivedSubmissions
-                .All()
-                .Where(s => submissionIds.Contains(s.Id));
-
         public IQueryable<ArchivedSubmission> GetAllUndeletedFromMainDatabase() =>
             this.archivedSubmissions
                 .All()
