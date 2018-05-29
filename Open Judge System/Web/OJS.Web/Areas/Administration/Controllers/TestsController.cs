@@ -890,7 +890,7 @@
             foreach (var submission in submissions)
             {
                 submission.Processed = false;
-                this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
+                this.submissionsForProcessingData.AddOrUpdateBySubmission(submission.Id);
             }          
         }
     }

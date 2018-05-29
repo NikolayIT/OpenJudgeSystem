@@ -14,12 +14,16 @@
 
         IQueryable<ParticipantScore> GetAll();
 
-        void SaveBySubmission(Submission submission, bool resetScore = false);
+        void ResetBySubmission(Submission submission);
 
         void DeleteAllByProblem(int problemId);
 
         void DeleteForParticipantByProblem(int participantId, int problemId);
 
         void Delete(IEnumerable<ParticipantScore> participantScores);
+
+        void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string username, bool participantIsOfficial);
+
+        void UpdateBySubmissionAndPoints(ParticipantScore existingScore, int submissionId, int submissionPoints);
     }
 }

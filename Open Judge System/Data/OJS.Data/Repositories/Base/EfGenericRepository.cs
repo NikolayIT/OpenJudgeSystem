@@ -30,10 +30,7 @@
 
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
-            this.ContextConfiguration = context.DbContext.Configuration;
         }
-
-        public DbContextConfiguration ContextConfiguration { get; }
 
         protected IDbSet<T> DbSet { get; set; }
 
@@ -179,12 +176,6 @@
                             }
                         });
         }
-
-        public DbContextTransaction BeginTransaction() =>
-            this.Context.DbContext.Database.BeginTransaction();
-
-        public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) =>
-            this.Context.DbContext.Database.BeginTransaction(isolationLevel);
 
         private int GetPrimaryKey(DbEntityEntry entry)
         {

@@ -24,7 +24,7 @@
         /// </summary>
         public void ResetAllProcessingSubmissions(ILog logger)
         {
-            var allProcessingSubmissionIds = this.submissionsForProcessingData.GetProcessingSubmissionIds();
+            var allProcessingSubmissionIds = this.submissionsForProcessingData.GetIdsOfAllProcessing();
 
             if (allProcessingSubmissionIds.Count > 0)
             {
@@ -32,7 +32,7 @@
                 {
                     foreach (var submissionForProcessingId in allProcessingSubmissionIds)
                     {
-                        this.submissionsForProcessingData.ResetProcessingStatus(submissionForProcessingId);
+                        this.submissionsForProcessingData.ResetProcessingStatusById(submissionForProcessingId);
                     }
                 }
                 catch (Exception ex)

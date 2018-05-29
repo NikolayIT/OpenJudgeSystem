@@ -65,11 +65,14 @@
             ICollection<Thread> threadsToSpawn,
             ConcurrentQueue<int> submissionsForProcessing)
         {
+            var sharedLockObject = new object();
+
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
                 var job = new SubmissionJob(
                     $"Job №{i}",
-                    submissionsForProcessing);
+                    submissionsForProcessing,
+                    sharedLockObject);
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 
