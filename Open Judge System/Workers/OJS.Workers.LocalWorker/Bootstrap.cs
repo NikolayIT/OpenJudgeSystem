@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
+    using System.Data.Entity;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Services.Data.SubmissionsForProcessing;
 
@@ -20,11 +21,13 @@
         {
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
+            container.Register<LocalWorkerService>(Lifestyle.Scoped);
+            container.Register<OjsDbContext>(Lifestyle.Scoped);
+
+            container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
             container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
             container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
-
-            container.Register<LocalWorkerService>(Lifestyle.Scoped);
-
+           
             container.Register<
                 ISubmissionsForProcessingDataService,
                 SubmissionsForProcessingDataService>(Lifestyle.Scoped);
