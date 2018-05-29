@@ -25,7 +25,6 @@
         [Column("City")]
         [MinLength(GlobalConstants.CityMinLength)]
         [MaxLength(GlobalConstants.CityMaxLength)]
-        [RegularExpression(GlobalConstants.CityRegEx)]
         public string City { get; set; }
 
         [Column("EducationalInstitution")]
@@ -43,13 +42,11 @@
         [Column("Company")]
         [MaxLength(GlobalConstants.CompanyMaxLength)]
         [MinLength(GlobalConstants.CompanyMinLength)]
-        [RegularExpression(GlobalConstants.CompanyRegEx)]
         public string Company { get; set; }
 
         [Column("JobTitle")]
         [MaxLength(GlobalConstants.JobTitleMaxLength)]
         [MinLength(GlobalConstants.JobTitleMinLength)]
-        [RegularExpression(GlobalConstants.JobTitleRegEx)]
         public string JobTitle { get; set; }
 
         [NotMapped]
