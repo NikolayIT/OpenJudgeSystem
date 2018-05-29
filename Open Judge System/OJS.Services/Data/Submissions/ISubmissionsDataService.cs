@@ -9,6 +9,8 @@
 
     public interface ISubmissionsDataService : IService
     {
+        Submission GetById(int id);
+
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
 
         IQueryable<Submission> GetAll();
@@ -30,6 +32,8 @@
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);
+
+        void Update(Submission submission);
 
         void HardDeleteByIds(IEnumerable<int> ids);
     }

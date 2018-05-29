@@ -130,7 +130,7 @@
                     using (var scope = TransactionsHelper.CreateTransactionScope())
                     {
                         this.BaseCreate(entity);
-                        this.submissionsForProcessingData.AddOrUpdateBySubmissionId(model.Id.Value);
+                        this.submissionsForProcessingData.AddOrUpdateBySubmission(model.Id.Value);
 
                         scope.Complete();
                     }
@@ -226,7 +226,7 @@
                         {
                             submission.Processed = false;
 
-                            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
+                            this.submissionsForProcessingData.AddOrUpdateBySubmission(submission.Id);
 
                             var submissionIsBestSubmission = this.IsBestSubmission(
                                 submissionProblemId,
@@ -314,7 +314,7 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
+                this.submissionsForProcessingData.RemoveBySubmission(submission.Id);
 
                 this.Data.SaveChanges();
 
@@ -351,7 +351,7 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
+                    this.submissionsForProcessingData.RemoveBySubmission(submission.Id);
                 }
 
                 this.Data.SaveChanges();
@@ -478,7 +478,7 @@
                 {
                     submission.Processed = false;
 
-                    this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
+                    this.submissionsForProcessingData.AddOrUpdateBySubmission(submission.Id);
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
                         submissionProblemId,
@@ -652,7 +652,7 @@
                 return false;
             }
 
-            var submissionForProcessing = this.submissionsForProcessingData.GetBySubmissionId(submission.Id);
+            var submissionForProcessing = this.submissionsForProcessingData.GetBySubmission(submission.Id);
 
             return submissionForProcessing != null && !submissionForProcessing.Processed;
         }

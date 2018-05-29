@@ -1,13 +1,12 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System.Data.Entity;
+    using System.Linq;
 
     using OJS.Data;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
-    using OJS.Services.Business.SubmissionsForProcessing;
-    using OJS.Services.Data.Participants;
-    using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Common;
     using OJS.Services.Data.SubmissionsForProcessing;
 
     using SimpleInjector;
@@ -21,32 +20,57 @@
         {
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
-            container.Register<LocalWorkerService>(Lifestyle.Scoped);
-            container.Register<OjsDbContext>(Lifestyle.Scoped);
-
-            container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
-            container.Register<IOjsDbContext, OjsDbContext>(Lifestyle.Scoped);
-            container.Register(typeof(IEfGenericRepository<>), typeof(EfGenericRepository<>), Lifestyle.Scoped);
-           
-            container.Register<
-                ISubmissionsForProcessingDataService,
-                SubmissionsForProcessingDataService>(Lifestyle.Scoped);
-
-            container.Register<
-                ISubmissionsForProcessingBusinessService,
-                SubmissionsForProcessingBusinessService>(Lifestyle.Scoped);
-
-            container.Register<
-                IParticipantsDataService,
-                ParticipantsDataService>(Lifestyle.Scoped);
-
-            container.Register<
-                IParticipantScoresDataService,
-                ParticipantScoresDataService>(Lifestyle.Scoped);
+            RegisterTypes(container);
 
             container.Verify();
 
             Container = container;
+        }
+
+        private static void RegisterTypes(Container container)
+        {
+            container.Register<LocalWorkerService>(Lifestyle.Scoped);
+            container.Register<OjsDbContext>(Lifestyle.Scoped);
+
+            container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
+
+            container.Register(
+                typeof(IEfGenericRepository<>),
+                typeof(EfGenericRepository<>),
+                Lifestyle.Scoped);
+
+            container.Register(
+                typeof(IEfDeletableEntityRepository<>),
+                typeof(EfDeletableEntityRepository<>),
+                Lifestyle.Scoped);
+
+            RegisterServices(container);
+        }
+
+        private static void RegisterServices(Container container)
+        {
+            var servicesAssembly = typeof(ISubmissionsForProcessingDataService).Assembly;
+
+            var registrations = servicesAssembly
+                .GetExportedTypes()
+                .Where(type =>
+                    typeof(IService).IsAssignableFrom(type) &&
+                    !type.IsAbstract &&
+                    !type.IsGenericTypeDefinition)
+                .Select(type => new
+                {
+                    ServiceType = type
+                        .GetInterfaces()
+                        .First(i => i.IsPublic &&
+                            !i.GenericTypeArguments.Any() &&
+                            i != typeof(IService)),
+                    Implementation = type
+                });
+
+            foreach (var registration in registrations)
+            {
+                container.Register(registration.ServiceType, registration.Implementation, Lifestyle.Scoped);
+            }
         }
     }
 }

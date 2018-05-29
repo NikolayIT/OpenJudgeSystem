@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -30,10 +29,7 @@
 
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
-            this.ContextConfiguration = context.Configuration;
         }
-
-        public DbContextConfiguration ContextConfiguration { get; }
 
         protected IDbSet<T> DbSet { get; set; }
 
@@ -179,12 +175,6 @@
                             }
                         });
         }
-
-        public DbContextTransaction BeginTransaction() =>
-            this.Context.Database.BeginTransaction();
-
-        public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) =>
-            this.Context.Database.BeginTransaction(isolationLevel);
 
         private int GetPrimaryKey(DbEntityEntry entry)
         {
