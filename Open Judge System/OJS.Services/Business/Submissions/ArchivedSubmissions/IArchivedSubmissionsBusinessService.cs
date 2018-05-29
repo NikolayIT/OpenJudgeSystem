@@ -4,8 +4,10 @@
 
     using OJS.Services.Common;
 
-    public interface IArchivedSubmissionsBusinessService : IService
+    public interface IArchivedSubmissionsBusinessService : IArchivesService
     {
         void ArchiveOldSubmissions(PerformContext context);
+
+        void HardDeleteArchivedFromMainDatabase();
     }
 }

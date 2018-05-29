@@ -81,6 +81,7 @@
     <Compile Include="BackgroundJobs\IHangfireBackgroundJobService.cs" />
     <Compile Include="BackgroundJobs\HangfireBackgroundJobService.cs" />
     <Compile Include="HttpRequester\Models\Users\ExternalUserInfoModel.cs" />
+    <Compile Include="IArchivesService.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResult.cs" />

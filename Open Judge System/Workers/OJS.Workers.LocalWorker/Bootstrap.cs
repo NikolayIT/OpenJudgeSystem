@@ -6,13 +6,9 @@
     using MissingFeatures;
 
     using OJS.Data;
-    using OJS.Data.Archives;
-    using OJS.Data.Archives.Repositories;
-    using OJS.Data.Archives.Repositories.Contracts;
     using OJS.Data.Repositories.Base;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Common;
-    using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
 
     using SimpleInjector;
@@ -37,18 +33,12 @@
         {
             container.Register<LocalWorkerService>(Lifestyle.Scoped);
             container.Register<OjsDbContext>(Lifestyle.Scoped);
-            container.Register<ArchivesDbContext>(Lifestyle.Scoped);
 
             container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
 
             container.Register(
                 typeof(IEfGenericRepository<>),
                 typeof(EfGenericRepository<>),
-                Lifestyle.Scoped);
-
-            container.Register(
-                typeof(IArchivesGenericRepository<>),
-                typeof(ArchivesGenericReposity<>),
                 Lifestyle.Scoped);
 
             container.Register(
@@ -59,36 +49,28 @@
             RegisterServices(container);
         }
 
-        private static void RegisterServices(Container container)
-        {
-            var serviceAssemblies = new[]
-            {
-                typeof(ISubmissionsForProcessingDataService).Assembly,
-                typeof(IHangfireBackgroundJobService).Assembly
-            };
-
-            var registrations = serviceAssemblies
-                .SelectMany(a => a.GetExportedTypes())
+        private static void RegisterServices(Container container) =>
+            typeof(ISubmissionsForProcessingDataService).Assembly
+                .GetExportedTypes()
                 .Where(type =>
                     typeof(IService).IsAssignableFrom(type) &&
+                    !typeof(IArchivesService).IsAssignableFrom(type) &&
                     !type.IsAbstract &&
                     !type.IsGenericTypeDefinition)
                 .Select(type => new
                 {
-                    ServiceTypes = type
+                    ServiceType = type
                         .GetInterfaces()
-                        .Where(i =>
+                        .First(i =>
                             i.IsPublic &&
                             !i.GenericTypeArguments.Any() &&
                             i != typeof(IService)),
                     Implementation = type
-                });
-
-            foreach (var registration in registrations)
-            {
-                registration.ServiceTypes.ForEach(
-                    service => container.Register(service, registration.Implementation, Lifestyle.Scoped));
-            }
-        }
+                })
+                .ForEach(registration =>
+                    container.Register(
+                        registration.ServiceType,
+                        registration.Implementation,
+                        Lifestyle.Scoped));
     }
 }

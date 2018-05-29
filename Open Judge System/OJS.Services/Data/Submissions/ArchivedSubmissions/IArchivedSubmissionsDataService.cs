@@ -6,7 +6,7 @@
     using OJS.Data.Models;
     using OJS.Services.Common;
 
-    public interface IArchivedSubmissionsDataService : IService
+    public interface IArchivedSubmissionsDataService : IArchivesService
     {
         IQueryable<ArchivedSubmission> GetAllUndeletedFromMainDatabase();
 
