@@ -64,8 +64,7 @@
                         .Where(i =>
                             i.IsPublic &&
                             !i.GenericTypeArguments.Any() &&
-                            i != typeof(IService) &&
-                            i != typeof(IArchivesService)),
+                            i != typeof(IService)),
                     Implementation = type
                 });
 

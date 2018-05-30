@@ -128,6 +128,10 @@
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Data.Archives\OJS.Data.Archives.csproj">
+      <Project>{7D684E33-0AA6-44F8-BCFE-A82B70BD48BC}</Project>
+      <Name>OJS.Data.Archives</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
       <Name>OJS.Services.Common</Name>

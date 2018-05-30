@@ -4,7 +4,7 @@
 
     using OJS.Services.Common;
 
-    public interface IArchivedSubmissionsBusinessService : IArchivesService
+    public interface IArchivedSubmissionsBusinessService : IService
     {
         void ArchiveOldSubmissions(PerformContext context);
 
