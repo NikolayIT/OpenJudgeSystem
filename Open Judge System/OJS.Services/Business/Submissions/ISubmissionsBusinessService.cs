@@ -8,5 +8,7 @@
     public interface ISubmissionsBusinessService : IService
     {
         IQueryable<Submission> GetAllForArchiving();
+
+        void HardDeleteAllArchived();
     }
 }

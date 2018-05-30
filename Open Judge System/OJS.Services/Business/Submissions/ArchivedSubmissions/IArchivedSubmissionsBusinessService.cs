@@ -7,7 +7,5 @@
     public interface IArchivedSubmissionsBusinessService : IService
     {
         void ArchiveOldSubmissions(PerformContext context);
-
-        void HardDeleteArchivedFromMainDatabase();
     }
 }

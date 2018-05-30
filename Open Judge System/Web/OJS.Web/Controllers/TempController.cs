@@ -25,7 +25,7 @@
     {
         private const string CleanSubmissionsForProcessingTableCronExpression = "0 0 * * *";
         private const string DeleteLeftOverFoldersInTempFolderCronExpression = "0 1 * * *";
-        private const string ArchiveOldSubmissionsCronExpression = "0 2 * * MON";
+        private const string ArchiveOldSubmissionsCronExpression = "30 1 * * MON";
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;

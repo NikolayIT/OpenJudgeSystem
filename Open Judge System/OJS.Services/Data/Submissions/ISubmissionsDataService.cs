@@ -34,7 +34,5 @@
         void DeleteByProblem(int problemId);
 
         void Update(Submission submission);
-
-        void HardDeleteByIds(IEnumerable<int> ids);
     }
 }

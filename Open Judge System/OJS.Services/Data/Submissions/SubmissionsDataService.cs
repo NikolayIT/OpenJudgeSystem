@@ -75,8 +75,5 @@
             this.submissions.Update(submission);
             this.submissions.SaveChanges();
         }
-
-        public void HardDeleteByIds(IEnumerable<int> ids) =>
-            this.submissions.HardDelete(s => ids.Contains(s.Id));
     }
 }
