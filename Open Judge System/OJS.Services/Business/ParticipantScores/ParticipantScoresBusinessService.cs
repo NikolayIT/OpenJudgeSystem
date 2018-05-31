@@ -22,7 +22,7 @@
 
             if (submission != null)
             {
-                this.participantScoresData.SaveBySubmission(submission, true);
+                this.participantScoresData.ResetBySubmission(submission);
             }
             else
             {

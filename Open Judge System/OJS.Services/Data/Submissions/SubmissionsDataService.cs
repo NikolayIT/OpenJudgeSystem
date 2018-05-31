@@ -15,6 +15,8 @@
         public SubmissionsDataService(IEfDeletableEntityRepository<Submission> submissions) =>
             this.submissions = submissions;
 
+        public Submission GetById(int id) => this.submissions.GetById(id);
+
         public Submission GetBestForParticipantByProblem(int participantId, int problemId) =>
             this.GetAllByProblemAndParticipant(problemId, participantId)
                 .Where(s => s.Processed)
@@ -39,5 +41,11 @@
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
+
+        public void Update(Submission submission)
+        {
+            this.submissions.Update(submission);
+            this.submissions.SaveChanges();
+        }
     }
 }

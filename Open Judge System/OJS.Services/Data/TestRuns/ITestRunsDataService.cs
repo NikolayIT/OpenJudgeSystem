@@ -5,5 +5,7 @@
     public interface ITestRunsDataService : IService
     {
         void DeleteByProblem(int problemId);
+
+        void DeleteBySubmission(int submissionId);
     }
 }

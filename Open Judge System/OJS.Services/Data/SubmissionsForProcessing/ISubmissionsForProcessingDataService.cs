@@ -8,24 +8,22 @@
 
     public interface ISubmissionsForProcessingDataService : IService
     {
-        SubmissionForProcessing GetBySubmissionId(int submissionId);
+        SubmissionForProcessing GetBySubmission(int submissionId);
 
-        IQueryable<SubmissionForProcessing> GetUnprocessedSubmissions();
+        IQueryable<SubmissionForProcessing> GetAllUnprocessed();
 
-        ICollection<int> GetProcessingSubmissionIds();
+        ICollection<int> GetIdsOfAllProcessing();
 
         void AddOrUpdateBySubmissionIds(ICollection<int> submissionIds);
 
-        void AddOrUpdateBySubmissionId(int submissionId);
+        void AddOrUpdateBySubmission(int submissionId);
 
-        void RemoveBySubmissionId(int submissionId);
+        void RemoveBySubmission(int submissionId);
 
-        void SetToProcessing(int id);
-
-        void SetToProcessed(int id);
-
-        void ResetProcessingStatus(int id);
+        void ResetProcessingStatusById(int id);
 
         void Clean();
+
+        void Update(SubmissionForProcessing submissionForProcessing);
     }
 }
