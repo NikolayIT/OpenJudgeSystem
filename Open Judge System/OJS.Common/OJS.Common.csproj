@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgeCalculator.cs" />
+    <Compile Include="Calculator.cs" />
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Attributes\LocalizedDisplayFormatAttribute.cs" />
     <Compile Include="Constants\AppSettingConstants.cs" />
