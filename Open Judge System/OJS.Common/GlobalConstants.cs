@@ -25,14 +25,11 @@
 
         public const int CityMinLength = 2;
         public const int CityMaxLength = 200;
-        public const string CityRegEx = @"^[a-zA-Zа-яА-Я]+(?:[\s-][a-zA-Zа-яА-Я]+)*$";
 
         public const int CompanyMinLength = 2;
         public const int CompanyMaxLength = 200;
-        public const string CompanyRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!""])*$";
         public const int JobTitleMinLength = 2;
         public const int JobTitleMaxLength = 100;
-        public const string JobTitleRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!])*$";
         public const int FacultyNumberMaxLength = 30;
 
         // TempData dictionary keys
