@@ -2511,6 +2511,7 @@
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
     <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
     <Content Include="Scripts\Helpers\validations.js" />
