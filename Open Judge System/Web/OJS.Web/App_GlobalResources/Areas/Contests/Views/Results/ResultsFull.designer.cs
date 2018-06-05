@@ -88,6 +88,15 @@ namespace Resources.Areas.Contests.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation failed.
+        /// </summary>
+        public static string Compilation_failed {
+            get {
+                return ResourceManager.GetString("Compilation_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Detailed results.
         /// </summary>
         public static string Full_results {
@@ -156,6 +165,15 @@ namespace Resources.Areas.Contests.Views {
         public static string ShowStatistics {
             get {
                 return ResourceManager.GetString("ShowStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submissions is deleted.
+        /// </summary>
+        public static string Submission_deleted {
+            get {
+                return ResourceManager.GetString("Submission_deleted", resourceCulture);
             }
         }
         

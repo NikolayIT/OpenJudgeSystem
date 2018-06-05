@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Repositories
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Data.Models;
@@ -9,7 +10,7 @@
 
     public class UsersRepository : EfGenericRepository<UserProfile>, IUsersRepository
     {
-        public UsersRepository(IOjsDbContext context)
+        public UsersRepository(DbContext context)
             : base(context)
         {
         }

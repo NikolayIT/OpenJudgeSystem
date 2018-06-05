@@ -16,7 +16,7 @@
 
         public virtual Participant Participant { get; set; }
 
-        public int SubmissionId { get; set; }
+        public int? SubmissionId { get; set; }
 
         public virtual Submission Submission { get; set; }
 

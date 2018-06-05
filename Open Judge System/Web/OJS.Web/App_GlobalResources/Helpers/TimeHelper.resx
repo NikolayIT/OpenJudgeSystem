@@ -138,4 +138,10 @@
   <data name="Minutes" xml:space="preserve">
     <value>minutes</value>
   </data>
+  <data name="Year" xml:space="preserve">
+    <value>year</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>years</value>
+  </data>
 </root>

@@ -13,11 +13,18 @@
         public void AddOrUpdateRecurringJob(
             object recurringJobId,
             Expression<Action> methodCall,
-            string cronExpression) => RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
+            string cronExpression) =>
+                RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
 
         public void AddOrUpdateRecurringJob<T>(
             object recurringJobId,
             Expression<Action<T>> methodCall,
-            string cronExpression) => RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
+            string cronExpression) =>
+                RecurringJob.AddOrUpdate((string)recurringJobId, methodCall, cronExpression);
+
+        public void OnSucceededStateContinueWith<T>(
+            string parentJobId,
+            Expression<Action<T>> methodCall) =>
+                BackgroundJob.ContinueWith(parentJobId, methodCall, JobContinuationOptions.OnlyOnSucceededState);
     }
 }
