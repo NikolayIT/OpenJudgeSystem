@@ -14,8 +14,5 @@
                 })
                 .GroupBy(x => x.Index / chunkSize)
                 .Select(x => x.Select(v => v.Value));
-
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable) =>
-            enumerable == null || !enumerable.Any();
     }
 }

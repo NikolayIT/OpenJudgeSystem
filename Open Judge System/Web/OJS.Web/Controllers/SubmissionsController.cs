@@ -12,17 +12,20 @@
     using OJS.Common;
     using OJS.Common.Models;
     using OJS.Data;
-    using OJS.Data.Models;
+    using OJS.Services.Data.Submissions;
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
 
     public class SubmissionsController : BaseController
     {
-        public SubmissionsController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly ISubmissionsDataService submissionsData;
+
+        public SubmissionsController(
+            IOjsData data,
+            ISubmissionsDataService submissionsData)
+            : base(data) =>
+                this.submissionsData = submissionsData;
 
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Index()
@@ -35,6 +38,7 @@
             return this.View("AdvancedSubmissions");
         }
 
+        [AjaxOnly]
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetSubmissionsGrid(
             bool notProcessedOnly = false,
@@ -59,23 +63,18 @@
             bool notProcessedOnly = false,
             int? contestId = null)
         {
-            IQueryable<Submission> data = null;
+            var data = this.submissionsData.GetAll();
 
-            if (this.User.IsLecturer())
+            var userIsAdmin = this.User.IsAdmin();
+            var userIsLecturer = this.User.IsLecturer();
+
+            if (userIsLecturer && !userIsAdmin)
             {
-                data = this.Data.Submissions.AllPublicWithLecturerContests(this.UserProfile.Id);
-            }
-            else if (this.User.IsAdmin())
-            {
-                data = this.Data.Submissions.All();
-            }
-            else
-            {
-                data = this.Data.Submissions.AllPublic();
+                data = this.submissionsData.GetAllFromContestsByLecturer(this.UserProfile.Id);
             }
 
             // UserId filter is available only for administrators and lecturers
-            if (!this.User.IsAdmin() && !this.User.IsLecturer())
+            if (!userIsAdmin && !userIsLecturer)
             {
                 userId = this.UserProfile.Id;
             }
@@ -86,7 +85,7 @@
             }
 
             // NotProcessedOnly filter is available only for administrators
-            if (this.User.IsAdmin() && notProcessedOnly)
+            if (userIsAdmin && notProcessedOnly)
             {
                 data = data.Where(s => !s.Processed);
             }

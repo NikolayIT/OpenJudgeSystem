@@ -449,9 +449,19 @@
                                     {
                                         Id = sc.SubmissionId,
                                         Points = sc.Points,
-                                        IsCompiledSuccessfully = isFullResults && sc.Submission.IsCompiledSuccessfully,
-                                        SubmissionType = isFullResults ? sc.Submission.SubmissionType.Name : null,
-                                        TestRunsCache = isFullResults ? sc.Submission.TestRunsCache : null
+                                        IsCompiledSuccessfully = isFullResults &&
+                                            sc.Submission != null &&
+                                            sc.Submission.IsCompiledSuccessfully,
+                                        SubmissionType = isFullResults
+                                            ? sc.Submission != null
+                                                ? sc.Submission.SubmissionType.Name
+                                                : null
+                                            : null,
+                                        TestRunsCache = isFullResults
+                                            ? sc.Submission != null
+                                                ? sc.Submission.TestRunsCache
+                                                : null
+                                            : null
                                     }
                                 })
                         })

@@ -126,6 +126,9 @@
   <data name="Average_result_by_minutes" xml:space="preserve">
     <value>Average result by minutes</value>
   </data>
+  <data name="Compilation_failed" xml:space="preserve">
+    <value>Compilation failed</value>
+  </data>
   <data name="Full_results" xml:space="preserve">
     <value>Detailed results</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ShowStatistics" xml:space="preserve">
     <value>Show statistics</value>
+  </data>
+  <data name="Submission_deleted" xml:space="preserve">
+    <value>Submissions is deleted</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>{0} participants</value>

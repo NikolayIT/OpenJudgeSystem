@@ -128,5 +128,14 @@
             this.participantScores.Update(participantScore);
             this.participantScores.SaveChanges();
         }
+
+        public void RemoveSubmissionIdsBySubmissionIds(IEnumerable<int> submissionIds) =>
+            this.participantScores
+                .Update(
+                    ps => submissionIds.Cast<int?>().Contains(ps.SubmissionId),
+                    ps => new ParticipantScore
+                    {
+                        SubmissionId = null
+                    });
     }
 }
