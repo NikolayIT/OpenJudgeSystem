@@ -315,9 +315,9 @@ namespace Resources.Areas.Contests.Views {
         /// <summary>
         ///   Looks up a localized string similar to The process executing your submission for this test may not received the output successfully. Please try to submit again the same solution. If the result does not change, then search the error in the submission itself..
         /// </summary>
-        public static string Try_again_message_when_no_output {
+        public static string Try_submit_again_message_when_no_output {
             get {
-                return ResourceManager.GetString("Try_again_message_when_no_output", resourceCulture);
+                return ResourceManager.GetString("Try_submit_again_message_when_no_output", resourceCulture);
             }
         }
         
