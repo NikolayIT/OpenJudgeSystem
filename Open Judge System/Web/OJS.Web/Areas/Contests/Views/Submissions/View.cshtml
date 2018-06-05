@@ -184,6 +184,17 @@ else
             Model.ShowDetailedFeedback ||
             testResult.IsOpenTest);
 
+        var displayTryAgainMessage = testResult.ResultType == TestRunResultType.WrongAnswer &&
+            string.IsNullOrEmpty(testResult.UserOutputFragment) &&
+            string.IsNullOrEmpty(testResult.ExecutionComment);
+
+        if (displayTryAgainMessage)
+        {
+            <div>
+                <pre>@Resource.Try_again_message_when_no_output</pre>
+            </div>
+        }
+
         if (displayExecutionComment)
         {
             var executionComment = testResult.ExecutionComment;
