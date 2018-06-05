@@ -24,7 +24,6 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.Problems;
-    using OJS.Services.Common;
     using OJS.Services.Data.Checkers;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
@@ -860,8 +859,7 @@
 
                 var parsedTests = ZippedTestsParser.Parse(memory);
 
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count ||
-                    parsedTests.Inputs.Count != parsedTests.Outputs.Count)
+                if (!ZippedTestsParser.AreTestsParsedCorrectly(parsedTests))
                 {
                     throw new ArgumentException(GlobalResource.Invalid_tests);
                 }

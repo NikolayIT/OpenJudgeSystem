@@ -11,6 +11,7 @@
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
 
     using Ionic.Zip;
 
@@ -23,6 +24,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
@@ -42,24 +44,21 @@
     {
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IProblemsDataService problemsData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsController"/> class.
         /// </summary>
-        /// <param name="data">Open Judge System Database context for the control
-        /// ler to work with</param>
-        /// <param name="submissionsForProcessingData">ISubmissionsForProcessingDataService
-        /// for the controller to work with the SubmissionsForProcessing table via a service</param>
-        /// /// <param name="participantScoresData">IParticipantScoresDataService
-        /// for the controller to work with the ParticipantScore table via a service</param>
         public TestsController(
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IProblemsDataService problemsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresData = participantScoresData;
+            this.problemsData = problemsData;
         }
 
         /// <summary>
@@ -701,15 +700,13 @@
         [ValidateAntiForgeryToken]
         public ActionResult Import(string problemId, HttpPostedFileBase file, bool retestTask, bool deleteOldFiles)
         {
-            int id;
-
-            if (!int.TryParse(problemId, out id))
+            if (!int.TryParse(problemId, out var id))
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             if (problem == null)
             {
@@ -726,15 +723,15 @@
             if (file == null || file.ContentLength == 0)
             {
                 this.TempData.AddDangerMessage(Resource.No_empty_file);
-                return this.RedirectToAction("Problem", new { id });
+                return this.RedirectToAction(c => c.Problem(id));
             }
 
-            var extension = file.FileName.Substring(file.FileName.Length - 4, 4);
+            var extension = Path.GetExtension(file.FileName);
 
             if (extension != ".zip")
             {
                 this.TempData.AddDangerMessage(Resource.Must_be_zip);
-                return this.RedirectToAction("Problem", new { id });
+                return this.RedirectToAction(c => c.Problem(id));
             }
 
             TestsParseResult parsedTests;
@@ -751,21 +748,24 @@
                 catch
                 {
                     this.TempData.AddDangerMessage(Resource.Zip_damaged);
-                    return this.RedirectToAction("Problem", new { id });
-                }
-
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
-                {
-                    this.TempData.AddDangerMessage(Resource.Invalid_tests);
-                    return this.RedirectToAction("Problem", new { id });
+                    return this.RedirectToAction(c => c.Problem(id));
                 }
             }
+
+            if (!ZippedTestsParser.AreTestsParsedCorrectly(parsedTests))
+            {
+                this.TempData.AddDangerMessage(Resource.Invalid_tests);
+                return this.RedirectToAction(c => c.Problem(id));
+            }
+
+            var addedTestsCount = ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.Data.Submissions.Update(
                     x => x.ProblemId == id && !x.IsDeleted,
                     x => new Submission { TestRunsCache = null });
+
                 this.Data.SaveChanges();
 
                 if (deleteOldFiles)
@@ -774,7 +774,7 @@
                     this.Data.Tests.Delete(t => t.ProblemId == problem.Id);
                 }
 
-                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+                this.problemsData.Update(problem);
 
                 if (retestTask)
                 {
@@ -785,9 +785,9 @@
                 scope.Complete();
             }
 
-            this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
+            this.TempData.AddInfoMessage(string.Format(Resource.Tests_added_to_problem, addedTestsCount));
 
-            return this.RedirectToAction("Problem", new { id });
+            return this.RedirectToAction(c => c.Problem(id));
         }
 
         /// <summary>

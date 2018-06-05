@@ -28,17 +28,19 @@
             return result;
         }
 
-        public static void AddTestsToProblem(Problem problem, TestsParseResult tests)
+        public static int AddTestsToProblem(Problem problem, TestsParseResult tests)
         {
             var lastTrialTest = problem.Tests.Where(x => x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
-            int zeroTestsOrder = 1;
+            var zeroTestsOrder = 1;
 
             if (lastTrialTest != null)
             {
                 zeroTestsOrder = lastTrialTest.OrderBy + 1;
             }
 
-            for (int i = 0; i < tests.ZeroInputs.Count; i++)
+            var addedTestsCount = 0;
+
+            for (var i = 0; i < tests.ZeroInputs.Count; i++)
             {
                 problem.Tests.Add(new Test
                 {
@@ -50,44 +52,49 @@
                 });
 
                 zeroTestsOrder++;
+                addedTestsCount++;
             }
 
             var lastTest = problem.Tests.Where(x => !x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
-            int count = 1;
+            var orderBy = 1;
 
             if (lastTest != null)
             {
-                count = lastTest.OrderBy + 1;
+                orderBy = lastTest.OrderBy + 1;
             }
 
-            for (int i = 0; i < tests.OpenInputs.Count; i++)
+            for (var i = 0; i < tests.OpenInputs.Count; i++)
             {
                 problem.Tests.Add(new Test
                 {
                     IsTrialTest = false,
                     IsOpenTest = true,
-                    OrderBy = count,
+                    OrderBy = orderBy,
                     Problem = problem,
                     InputDataAsString = tests.OpenInputs[i],
                     OutputDataAsString = tests.OpenOutputs[i]
                 });
 
-                count++;
+                orderBy++;
+                addedTestsCount++;
             }
 
-            for (int i = 0; i < tests.Inputs.Count; i++)
+            for (var i = 0; i < tests.Inputs.Count; i++)
             {
                 problem.Tests.Add(new Test
                 {
                     IsTrialTest = false,
-                    OrderBy = count,
+                    OrderBy = orderBy,
                     Problem = problem,
                     InputDataAsString = tests.Inputs[i],
                     OutputDataAsString = tests.Outputs[i]
                 });
 
-                count++;
+                orderBy++;
+                addedTestsCount++;
             }
+
+            return addedTestsCount;
         }
 
         public static string ExtractFileFromStream(ZipEntry entry)
@@ -101,6 +108,19 @@
             var text = streamReader.ReadToEnd();
             reader.Dispose();
             return text;
+        }
+
+        public static bool AreTestsParsedCorrectly(TestsParseResult tests)
+        {
+            var hasInputs = tests.ZeroInputs.Count != 0 ||
+                tests.Inputs.Count != 0 ||
+                tests.OpenInputs.Count != 0;
+
+            var hasEqualAmountOfInputsAndOutputs = tests.ZeroInputs.Count == tests.ZeroOutputs.Count &&
+                tests.Inputs.Count == tests.Outputs.Count &&
+                tests.OpenInputs.Count == tests.OpenOutputs.Count;
+
+            return hasInputs && hasEqualAmountOfInputsAndOutputs;
         }
 
         private static void ExcractInAndSolFiles(ZipFile zipFile, TestsParseResult result)
