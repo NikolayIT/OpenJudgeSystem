@@ -6,6 +6,7 @@
     using OJS.Data;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Contests.Controllers;
@@ -16,17 +17,20 @@
     {
         private readonly IUsersDataService usersData;
         private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
         private readonly IProblemGroupsDataService problemGroupsData;
 
         public KendoRemoteDataController(
             IOjsData data,
             IUsersDataService usersData,
             IContestsDataService contestsData,
+            IProblemsDataService problemsData,
             IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.usersData = usersData;
             this.contestsData = contestsData;
+            this.problemsData = problemsData;
             this.problemGroupsData = problemGroupsData;
         }
 
@@ -50,6 +54,29 @@
                     Value = u.Id
                 })
                 .ToList();
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public JsonResult GetProblemsContaining(string text)
+        {
+            var problems = this.problemsData.GetAll().Take(DefaultItemsToTake);
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                problems = this.problemsData
+                    .GetAll()
+                    .Where(p => p.Name.Contains(text))
+                    .Take(DefaultItemsToTake);
+            }
+
+            var result = problems
+                .Select(p => new DropdownViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -94,6 +121,21 @@
                 {
                     Name = pg.OrderBy.ToString(),
                     Id = pg.Id
+                });
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public JsonResult GetCascadeProblemsFromContest(int contestId)
+        {
+            var problems = this.problemsData.GetAllByContest(contestId);
+
+            var result = problems
+                .Select(p => new DropdownViewModel
+                {
+                    Name = p.Name,
+                    Id = p.Id
                 });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);

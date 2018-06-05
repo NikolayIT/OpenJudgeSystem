@@ -75,5 +75,12 @@
             this.submissions.Update(submission);
             this.submissions.SaveChanges();
         }
+
+        public void RemoveTestRunsCacheByProblem(int problemId) =>
+            this.GetAllByProblem(problemId)
+            .Update(s => new Submission
+            {
+                TestRunsCache = null
+            });
     }
 }
