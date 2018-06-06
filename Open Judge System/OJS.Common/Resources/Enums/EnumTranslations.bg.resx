@@ -126,6 +126,9 @@
   <data name="DropDown" xml:space="preserve">
     <value>Dropdown лист</value>
   </data>
+  <data name="Excluded_from_homework_problem_group" xml:space="preserve">
+    <value>Изключена от домашно</value>
+  </data>
   <data name="Lab" xml:space="preserve">
     <value>Лаб</value>
   </data>

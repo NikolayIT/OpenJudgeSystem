@@ -13,13 +13,6 @@
 
     public class SubmissionType
     {
-        private ICollection<Problem> problems;
-
-        public SubmissionType()
-        {
-            this.problems = new HashSet<Problem>();
-        }
-
         [Key]
         public int Id { get; set; }
 
