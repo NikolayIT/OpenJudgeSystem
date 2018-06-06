@@ -14,6 +14,8 @@
 
         IQueryable<ParticipantScore> GetAll();
 
+        IQueryable<ParticipantScore> GetAllByProblem(int problemId);
+
         void ResetBySubmission(Submission submission);
 
         void DeleteAllByProblem(int problemId);

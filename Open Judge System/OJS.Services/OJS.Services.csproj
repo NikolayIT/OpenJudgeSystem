@@ -98,6 +98,7 @@
     <Compile Include="Business\Submissions\ArchivedSubmissions\ArchivedSubmissionsBusinessService.cs" />
     <Compile Include="Business\Submissions\ArchivedSubmissions\IArchivedSubmissionsBusinessService.cs" />
     <Compile Include="Business\Submissions\ISubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\Models\ParticipantScoreModel.cs" />
     <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
     <Compile Include="Data\Checkers\CheckersDataService.cs" />
     <Compile Include="Data\Checkers\ICheckersDataService.cs" />

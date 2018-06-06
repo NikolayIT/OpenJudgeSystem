@@ -13,9 +13,13 @@
 
         IQueryable<Test> GetAllByProblem(int problemId);
 
+        IQueryable<Test> GetAllNonTrialByProblem(int problemId);
+
         void Add(Test test);
 
         void Update(Test test);
+
+        void Delete(Test test);
 
         void DeleteByProblem(int problemId);
     }

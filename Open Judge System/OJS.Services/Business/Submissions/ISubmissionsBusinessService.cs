@@ -9,6 +9,8 @@
     {
         IQueryable<Submission> GetAllForArchiving();
 
+        void RecalculatePointsByProblem(int problemId);
+
         void HardDeleteAllArchived();
     }
 }

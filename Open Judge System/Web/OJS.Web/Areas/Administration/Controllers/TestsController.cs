@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -20,17 +19,15 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Helpers;
-    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.Problems;
-    using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Business.Submissions;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.TestRuns;
     using OJS.Services.Data.Tests;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
@@ -46,32 +43,32 @@
     /// </summary>
     public class TestsController : LecturerBaseController
     {
-        private readonly IParticipantScoresDataService participantScoresData;
         private readonly IProblemsDataService problemsData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly ITestRunsDataService testRunsData;
         private readonly ITestsDataService testsData;
         private readonly IProblemsBusinessService problemsBusiness;
+        private readonly ISubmissionsBusinessService submissionsBusiness;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsController"/> class.
         /// </summary>
         public TestsController(
             IOjsData data,
-            IParticipantScoresDataService participantScoresData,
             IProblemsDataService problemsData,
             ISubmissionsDataService submissionsData,
             ITestRunsDataService testRunsData,
             ITestsDataService testsData,
-            IProblemsBusinessService problemsBusiness)
+            IProblemsBusinessService problemsBusiness,
+            ISubmissionsBusinessService submissionsBusiness)
             : base(data)
         {
-            this.participantScoresData = participantScoresData;
             this.problemsData = problemsData;
             this.submissionsData = submissionsData;
             this.testRunsData = testRunsData;
             this.testsData = testsData;
             this.problemsBusiness = problemsBusiness;
+            this.submissionsBusiness = submissionsBusiness;
         }
 
         /// <summary>
@@ -128,14 +125,15 @@
             {
                 ProblemId = problem.Id,
                 ProblemName = problem.Name,
-                AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
-                {
-                    Text = v.GetLocalizedDescription(),
-                    Value = ((int)v).ToString(CultureInfo.InvariantCulture)
-                }),
-                OrderBy = this.Data.Tests
-                    .All()
-                    .Where(t => t.ProblemId == problem.Id && !t.IsTrialTest)
+                AllTypes = Enum.GetValues(typeof(TestType))
+                    .Cast<TestType>()
+                    .Select(v => new SelectListItem
+                    {
+                        Text = v.GetLocalizedDescription(),
+                        Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+                    }),
+                OrderBy = this.testsData
+                    .GetAllNonTrialByProblem(problem.Id)
                     .OrderByDescending(t => t.OrderBy)
                     .Select(t => t.OrderBy)
                     .FirstOrDefault() + 1
@@ -194,8 +192,8 @@
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var test = this.Data.Tests.All()
-                .Where(t => t.Id == id)
+            var test = this.testsData
+                .GetByIdQuery(id)
                 .Select(TestViewModel.FromTest)
                 .FirstOrDefault();
 
@@ -205,17 +203,19 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            test.AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
-            {
-                Text = v.GetLocalizedDescription(),
-                Value = ((int)v).ToString(CultureInfo.InvariantCulture),
-                Selected = v == test.Type
-            });
-
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
+
+            test.AllTypes = Enum.GetValues(typeof(TestType))
+                .Cast<TestType>()
+                .Select(tt => new SelectListItem
+                {
+                    Text = tt.GetLocalizedDescription(),
+                    Value = ((int)tt).ToString(CultureInfo.InvariantCulture),
+                    Selected = tt == test.Type
+                });
 
             return this.View(test);
         }
@@ -282,14 +282,14 @@
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
                 return this.RedirectToAction(c => c.Index());
             }
 
-            var test = this.Data.Tests.All()
-                .Where(t => t.Id == id)
+            var test = this.testsData
+                .GetByIdQuery(id.Value)
                 .Select(TestViewModel.FromTest)
                 .FirstOrDefault();
 
@@ -314,13 +314,13 @@
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful deletion otherwise to /Administration/Test/ with proper error message</returns>
         public ActionResult ConfirmDelete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
                 return this.RedirectToAction(x => x.Index());
             }
 
-            var test = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
+            var test = this.testsData.GetById(id.Value);
 
             if (test == null)
             {
@@ -335,92 +335,11 @@
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                // delete all test runs for the test
-                this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
-                this.Data.SaveChanges();
+                this.testRunsData.DeleteByTest(id.Value);
 
-                // delete the test
-                this.Data.Tests.Delete(test);
-                this.Data.SaveChanges();
+                this.testsData.Delete(test);
 
-                // recalculate submissions point
-                var problemSubmissions = this.Data.Submissions
-                    .All()
-                    .Include(s => s.TestRuns)
-                    .Include(s => s.TestRuns.Select(tr => tr.Test))
-                    .Where(s => s.ProblemId == test.ProblemId)
-                    .ToList();
-
-                var submissionResults = problemSubmissions
-                    .Select(s => new
-                    {
-                        s.Id,
-                        s.ParticipantId,
-                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer && !t.Test.IsTrialTest),
-                        AllTestRuns = s.TestRuns.Count(t => !t.Test.IsTrialTest),
-                        MaxPoints = s.Problem.MaximumPoints
-                    })
-                    .ToList();
-
-                var problemSubmissionsById = problemSubmissions.ToDictionary(s => s.Id);
-                var topResults = new Dictionary<int, ParticipantScoreModel>();
-
-                foreach (var submissionResult in submissionResults)
-                {
-                    var submission = problemSubmissionsById[submissionResult.Id];
-                    int points = 0;
-                    if (submissionResult.AllTestRuns != 0)
-                    {
-                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) / submissionResult.AllTestRuns;
-                    }
-
-                    submission.Points = points;
-                    submission.CacheTestRuns();
-
-                    if (submissionResult.ParticipantId.HasValue)
-                    {
-                        var participantId = submissionResult.ParticipantId.Value;
-
-                        if (!topResults.ContainsKey(participantId) || topResults[participantId].Points < points)
-                        {
-                            // score does not exists or have less points than current submission
-                            topResults[participantId] = new ParticipantScoreModel
-                            {
-                                Points = points,
-                                SubmissionId = submission.Id
-                            };
-                        }
-                        else if (topResults[participantId].Points == points)
-                        {
-                            // save score with latest submission
-                            if (topResults[participantId].SubmissionId < submission.Id)
-                            {
-                                topResults[participantId].SubmissionId = submission.Id;
-                            }
-                        }
-                    }
-                }
-
-                this.Data.SaveChanges();
-
-                var participants = topResults.Keys.ToList();
-
-                // find all participant scores for the test's problem
-                var existingScores = this.participantScoresData
-                    .GetAll()
-                    .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
-                    .ToList();
-
-                // replace the scores with updated values
-                foreach (var existingScore in existingScores)
-                {
-                    var topScore = topResults[existingScore.ParticipantId];
-
-                    existingScore.Points = topScore.Points;
-                    existingScore.SubmissionId = topScore.SubmissionId;
-                }
-
-                this.Data.SaveChanges();
+                this.submissionsBusiness.RecalculatePointsByProblem(test.ProblemId);
 
                 scope.Complete();
             }
@@ -571,8 +490,8 @@
         public JsonResult GetTestRuns(int id)
         {
             // TODO: Add server side paging and sorting to test runs grid
-            var result = this.Data.TestRuns.All()
-                .Where(tr => tr.TestId == id)
+            var result = this.testRunsData
+                .GetAllByTest(id)
                 .OrderByDescending(tr => tr.Submission.CreatedOn)
                 .Select(TestRunViewModel.FromTestRun);
 
@@ -710,7 +629,7 @@
         /// <returns>Zip file containing all tests in format {task}.{testNum}[.{zeroNum}].{in|out}.txt</returns>
         public ActionResult Export(int id)
         {
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             if (problem == null)
             {
@@ -726,33 +645,33 @@
 
             var tests = problem.Tests.OrderBy(x => x.OrderBy);
 
-            string zipFileName = $"{problem.Name}_Tests_{DateTime.Now}";
+            var zipFileName = $"{problem.Name}_Tests_{DateTime.Now}";
             var zipFile = new ZipFile(zipFileName);
 
             using (zipFile)
             {
-                int trialTestCounter = 1;
-                int openTestCounter = 1;
-                int testCounter = 1;
+                var trialTestCounter = 1;
+                var openTestCounter = 1;
+                var testCounter = 1;
 
                 foreach (var test in tests)
                 {
                     if (test.IsTrialTest)
                     {
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         trialTestCounter++;
                     }
                     else if (test.IsOpenTest)
                     {
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.in.txt", openTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.out.txt", openTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         openTestCounter++;
                     }
                     else
                     {
-                        zipFile.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.{testCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.{testCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         testCounter++;
                     }
                 }

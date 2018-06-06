@@ -24,6 +24,10 @@
                 .All()
                 .Where(t => t.ProblemId == problemId);
 
+        public IQueryable<Test> GetAllNonTrialByProblem(int problemId) =>
+            this.GetAllByProblem(problemId)
+                .Where(t => !t.IsTrialTest);
+
         public void Add(Test test)
         {
             this.tests.Add(test);
@@ -33,6 +37,12 @@
         public void Update(Test test)
         {
             this.tests.Update(test);
+            this.tests.SaveChanges();
+        }
+
+        public void Delete(Test test)
+        {
+            this.tests.Delete(test);
             this.tests.SaveChanges();
         }
 
