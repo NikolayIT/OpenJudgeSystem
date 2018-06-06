@@ -5,42 +5,31 @@
     using System.Linq;
     using System.Web.Mvc;
 
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-
-    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Web.Areas.Api.Models;
-    using OJS.Web.Common;
+    using OJS.Web.Infrastructure.Filters.Attributes;
 
+    [ValidateRemoteDataApiKey]
     public class ResultsController : ApiController
     {
         private const string ErrorMessage = "ERROR";
         private const string InvalidArgumentsMessage = "Invalid arguments";
-        private const string InvalidApiKeyMessage = "Invalid API key";
         private const string NoParticipantsFoundErrorMessage = ErrorMessage + ": No participants found";
         private const string MoreThanOneParticipantFoundErrorMessage = ErrorMessage + ": More than one participants found";
 
         private readonly IOjsData data;
-        private readonly UserManager<UserProfile> userManager;
 
         public ResultsController(IOjsData data)
         {
             this.data = data;
-            this.userManager = new OjsUserManager<UserProfile>(new UserStore<UserProfile>(data.Context.DbContext));
         }
 
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(answer) || !contestId.HasValue)
+            if (string.IsNullOrWhiteSpace(answer) || !contestId.HasValue)
             {
                 return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
-            }
-
-            if (!this.IsApiKeyValid(apiKey, contestId.Value))
-            {
-                return this.Content($"{ErrorMessage}: {InvalidApiKeyMessage}");
             }
 
             var participants = this.data.Participants
@@ -65,14 +54,9 @@
 
         public ContentResult GetPointsByEmail(string apiKey, int? contestId, string email)
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(email) || !contestId.HasValue)
+            if (string.IsNullOrWhiteSpace(email) || !contestId.HasValue)
             {
                 return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
-            }
-
-            if (!this.IsApiKeyValid(apiKey, contestId.Value))
-            {
-                return this.Content($"{ErrorMessage}: {InvalidApiKeyMessage}");
             }
 
             var participants = this.data.Participants.All().Where(
@@ -96,14 +80,9 @@
 
         public JsonResult GetAllResultsForContest(string apiKey, int? contestId)
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
+            if (!contestId.HasValue)
             {
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
-            }
-
-            if (!this.IsApiKeyValid(apiKey, contestId.Value))
-            {
-                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var participants = this.data.Participants
@@ -139,14 +118,9 @@
 
         public JsonResult GetAllUserResultsPercentageByForContest(string apiKey, int? contestId)
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
+            if (!contestId.HasValue)
             {
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
-            }
-
-            if (!this.IsApiKeyValid(apiKey, contestId.Value))
-            {
-                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var contestMaxPoints = this.data.Problems
@@ -178,14 +152,9 @@
 
         public JsonResult GetAllResultsForContestWithPoints(string apiKey, int? contestId)
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || !contestId.HasValue)
+            if (!contestId.HasValue)
             {
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
-            }
-
-            if (!this.IsApiKeyValid(apiKey, contestId.Value))
-            {
-                return this.Json(new ErrorMessageViewModel(InvalidApiKeyMessage), JsonRequestBehavior.AllowGet);
             }
 
             var participants = this.data.Participants
@@ -216,15 +185,6 @@
                 .ToList();
 
             return this.Json(participants, JsonRequestBehavior.AllowGet);
-        }
-
-        private bool IsApiKeyValid(string apiKey, int contestId)
-        {
-            var userIsAdmin = this.userManager.IsInRole(apiKey, GlobalConstants.AdministratorRoleName);
-            return this.data.Users
-                .All()
-                .Any(x => x.Id == apiKey &&
-                    (userIsAdmin || x.LecturerInContests.Any(y => y.ContestId == contestId)));
         }
 
         private int GetParticipantPoints(Participant participant) =>
