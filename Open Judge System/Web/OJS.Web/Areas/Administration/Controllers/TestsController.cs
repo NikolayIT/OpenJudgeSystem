@@ -89,8 +89,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.ProblemId = id;
@@ -106,7 +105,7 @@
         [HttpGet]
         public ActionResult Create(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
                 return this.RedirectToAction(c => c.Index());
@@ -114,11 +113,10 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
+            var problem = this.problemsData.GetById(id.Value);
 
             if (problem == null)
             {
@@ -169,8 +167,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.testsData.Add(new Test
@@ -217,8 +214,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(test);
@@ -250,8 +246,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(existingTest.ProblemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
@@ -306,8 +301,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(test);
@@ -323,7 +317,7 @@
             if (id == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction<TestsController>(x => x.Index());
+                return this.RedirectToAction(x => x.Index());
             }
 
             var test = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
@@ -331,13 +325,12 @@
             if (test == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction<TestsController>(x => x.Index());
+                return this.RedirectToAction(x => x.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
@@ -452,8 +445,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.problemsData
@@ -485,13 +477,12 @@
             if (!id.HasValue || !this.problemsData.ExistsById(id.Value))
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction<TestsController>(c => c.Index());
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
@@ -514,7 +505,7 @@
         /// <returns>View for /Administration/Tests/Details/{id} otherwise redirects to /Administration/Test/ with proper error message</returns>
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
                 return this.RedirectToAction(c => c.Index());
@@ -533,8 +524,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(test);
@@ -603,7 +593,7 @@
                 return this.Json("No premissions");
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             var contestId = problem.ProblemGroup.ContestId;
 
@@ -788,9 +778,8 @@
                 return new List<TestViewModel>();
             }
 
-            var result = this.Data.Tests
-                .All()
-                .Where(test => test.ProblemId == id)
+            var result = this.testsData
+                .GetAllByProblem(id)
                 .OrderByDescending(test => test.IsTrialTest)
                 .ThenBy(test => test.OrderBy)
                 .Select(TestViewModel.FromTest);

@@ -41,7 +41,6 @@
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
-    using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
@@ -90,10 +89,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(
-                    c => c.Index(),
-                    new { area = GlobalConstants.AdministrationAreaName });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.ContestId = contestId;
@@ -105,8 +101,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.problemsData.GetWithProblemGroupById(id.Value);
@@ -134,8 +129,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id.Value);
@@ -156,8 +150,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id);
@@ -286,8 +279,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var selectedProblem = this.PrepareProblemViewModelForEdit(id.Value);
@@ -312,8 +304,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var existingProblem = this.problemsData.GetWithProblemGroupById(id);
@@ -397,8 +388,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var selectedProblem = this.problemsData
@@ -427,8 +417,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(problemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.problemsData.GetWithContestById(problemId);
@@ -462,8 +451,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id.Value);
@@ -495,8 +483,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(contestId);
@@ -540,8 +527,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(problem);
@@ -565,7 +551,7 @@
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             var additionalFiles = problem.AdditionalFiles;
@@ -646,8 +632,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
@@ -674,8 +659,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.PartialView("_ResourcesGrid", id);
@@ -686,8 +670,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var resources = this.problemResourcesData

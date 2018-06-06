@@ -11,6 +11,8 @@
 
         IQueryable<Test> GetByIdQuery(int id);
 
+        IQueryable<Test> GetAllByProblem(int problemId);
+
         void Add(Test test);
 
         void Update(Test test);

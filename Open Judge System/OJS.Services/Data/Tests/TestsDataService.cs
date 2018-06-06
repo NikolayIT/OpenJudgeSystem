@@ -19,6 +19,11 @@
                 .All()
                 .Where(t => t.Id == id);
 
+        public IQueryable<Test> GetAllByProblem(int problemId) =>
+            this.tests
+                .All()
+                .Where(t => t.ProblemId == problemId);
+
         public void Add(Test test)
         {
             this.tests.Add(test);
