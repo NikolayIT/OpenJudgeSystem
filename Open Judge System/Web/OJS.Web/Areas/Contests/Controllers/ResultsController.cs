@@ -22,7 +22,6 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Attributes;
@@ -39,20 +38,17 @@
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
-        private readonly IProblemGroupsDataService problemGroupsData;
 
         public ResultsController(
             IOjsData data,
             IContestsDataService contestsData,
             IParticipantsDataService participantsData,
-            IParticipantScoresDataService participantScoresData,
-            IProblemGroupsDataService problemGroupsData)
+            IParticipantScoresDataService participantScoresData)
             : base(data)
         {
             this.contestsData = contestsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
-            this.problemGroupsData = problemGroupsData;
         }
 
         /// <summary>
