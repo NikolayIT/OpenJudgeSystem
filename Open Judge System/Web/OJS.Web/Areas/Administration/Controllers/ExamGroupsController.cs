@@ -64,7 +64,10 @@
                 return this.GridOperation(request, model);
             }
 
-            var contestId = this.contestsData.GetIdById(model.ContestId.Value);
+            var contestId = this.contestsData
+                .GetByIdQuery(model.ContestId.Value)
+                .Select(c => c.Id)
+                .FirstOrDefault();
 
             if (contestId == default(int))
             {

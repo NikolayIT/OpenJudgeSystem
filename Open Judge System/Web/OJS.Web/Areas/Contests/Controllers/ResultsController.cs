@@ -22,6 +22,7 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Common.Attributes;
@@ -38,17 +39,20 @@
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IProblemGroupsDataService problemGroupsData;
 
         public ResultsController(
             IOjsData data,
             IContestsDataService contestsData,
             IParticipantsDataService participantsData,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.contestsData = contestsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
+            this.problemGroupsData = problemGroupsData;
         }
 
         /// <summary>
@@ -483,17 +487,17 @@
 
             foreach (var problem in contestResults.Problems)
             {
+                if (problem.IsExcludedFromExport)
+                {
+                    problem.Name = $"(*){problem.Name}";
+                }
+
                 headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
             }
 
-            var totalPointsCellTitle = "Total";
+            var maxPoints = this.contestsData.GetMaxPointsForExportById(contestResults.Id);
 
-            if (this.contestsData.IsOnlineById(contestResults.Id))
-            {
-                var maxPoints = this.contestsData.GetMaxPointsById(contestResults.Id);
-
-                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPoints})";
-            }
+            var totalPointsCellTitle = $"Total (Max: {maxPoints})";
 
             headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
 
@@ -510,13 +514,22 @@
                 row.CreateCell(colNumber++).SetCellValue(result.ParticipantUsername);
                 row.CreateCell(colNumber++).SetCellValue(result.ParticipantFullName);
 
+                var excludedPoints = 0;
+
                 foreach (var problem in contestResults.Problems)
                 {
                     var problemResult = result.ProblemResults.FirstOrDefault(pr => pr.ProblemId == problem.Id);
 
                     if (problemResult != null)
                     {
-                        row.CreateCell(colNumber++).SetCellValue(problemResult.BestSubmission.Points);
+                        var points = problemResult.BestSubmission.Points;
+
+                        row.CreateCell(colNumber++).SetCellValue(points);
+
+                        if (problem.IsExcludedFromExport)
+                        {
+                            excludedPoints += points;
+                        }
                     }
                     else
                     {
@@ -524,7 +537,9 @@
                     }
                 }
 
-                row.CreateCell(colNumber).SetCellValue(result.Total);
+                var totalPoints = result.Total - excludedPoints;
+
+                row.CreateCell(colNumber).SetCellValue(totalPoints);
             }
         }
 

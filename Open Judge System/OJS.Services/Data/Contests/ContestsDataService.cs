@@ -79,15 +79,12 @@
 
         public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
 
-        public int GetIdById(int id) =>
-            this.GetByIdQuery(id)
-                .Select(c => c.Id)
-                .SingleOrDefault();
-
-        public int GetMaxPointsById(int id) =>
+        public int GetMaxPointsForExportById(int id) =>
             this.GetByIdQuery(id)
                 .Select(c => c.ProblemGroups
-                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                    .Where(pg =>
+                        pg.Type != ProblemGroupType.ExcludedFromExport &&
+                        pg.Problems.Any(p => !p.IsDeleted))
                     .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
                 .FirstOrDefault() ?? default(int);
 

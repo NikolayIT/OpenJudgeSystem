@@ -4,9 +4,10 @@
     using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
-
+    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Api.Models;
     using OJS.Web.Infrastructure.Filters.Attributes;
 
@@ -19,10 +20,14 @@
         private const string MoreThanOneParticipantFoundErrorMessage = ErrorMessage + ": More than one participants found";
 
         private readonly IOjsData data;
+        private readonly IContestsDataService contestsData;
 
-        public ResultsController(IOjsData data)
+        public ResultsController(
+            IOjsData data,
+            IContestsDataService contestsData)
         {
             this.data = data;
+            this.contestsData = contestsData;
         }
 
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
@@ -123,12 +128,7 @@
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var contestMaxPoints = this.data.Problems
-                .All()
-                .Where(p => !p.IsDeleted && p.ProblemGroup.ContestId == contestId)
-                .Select(p => (double)p.MaximumPoints)
-                .DefaultIfEmpty(1)
-                .Sum();
+            var contestMaxPoints = (double)this.contestsData.GetMaxPointsForExportById(contestId.Value);
 
             var participants = this.data.Participants
                 .All()
@@ -138,7 +138,10 @@
                     participant.UserId,
                     ResultsInPercentages = participant
                         .Scores
-                        .Where(s => !s.Problem.IsDeleted && s.Problem.ProblemGroup.ContestId == contestId.Value)
+                        .Where(s =>
+                            !s.Problem.IsDeleted &&
+                            s.Problem.ProblemGroup.ContestId == contestId.Value &&
+                            s.Problem.ProblemGroup.Type != ProblemGroupType.ExcludedFromExport)
                         .Select(p => p.Points)
                         .DefaultIfEmpty(0)
                         .Sum() / contestMaxPoints * 100

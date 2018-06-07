@@ -6,7 +6,7 @@
 
     public enum ProblemGroupType
     {
-        [LocalizedDescription("Excluded_from_homework_problem_group", typeof(Resource))]
-        ExcludedFromHomework = 1
+        [LocalizedDescription("Excluded_from_export_problem_group", typeof(Resource))]
+        ExcludedFromExport = 1
     }
 }
