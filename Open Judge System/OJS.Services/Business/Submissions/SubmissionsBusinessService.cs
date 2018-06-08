@@ -67,7 +67,9 @@
                     {
                         s.Id,
                         s.ParticipantId,
-                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer && !t.Test.IsTrialTest),
+                        CorrectTestRuns = s.TestRuns.Count(t =>
+                            t.ResultType == TestRunResultType.CorrectAnswer &&
+                            !t.Test.IsTrialTest),
                         AllTestRuns = s.TestRuns.Count(t => !t.Test.IsTrialTest),
                         MaxPoints = s.Problem.MaximumPoints
                     })
@@ -82,7 +84,8 @@
                     var points = 0;
                     if (submissionResult.AllTestRuns != 0)
                     {
-                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) / submissionResult.AllTestRuns;
+                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) /
+                            submissionResult.AllTestRuns;
                     }
 
                     submission.Points = points;

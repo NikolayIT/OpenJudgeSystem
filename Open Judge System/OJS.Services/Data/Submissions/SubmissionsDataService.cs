@@ -78,9 +78,9 @@
 
         public void RemoveTestRunsCacheByProblem(int problemId) =>
             this.GetAllByProblem(problemId)
-            .Update(s => new Submission
-            {
-                TestRunsCache = null
-            });
+                .Update(s => new Submission
+                {
+                    TestRunsCache = null
+                });
     }
 }

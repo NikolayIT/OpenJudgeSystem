@@ -30,7 +30,11 @@
 
         public static int AddTestsToProblem(Problem problem, TestsParseResult tests)
         {
-            var lastTrialTest = problem.Tests.Where(x => x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
+            var lastTrialTest = problem.Tests
+                .Where(x => x.IsTrialTest)
+                .OrderByDescending(x => x.OrderBy)
+                .FirstOrDefault();
+
             var zeroTestsOrder = 1;
 
             if (lastTrialTest != null)
@@ -55,7 +59,11 @@
                 addedTestsCount++;
             }
 
-            var lastTest = problem.Tests.Where(x => !x.IsTrialTest).OrderByDescending(x => x.OrderBy).FirstOrDefault();
+            var lastTest = problem.Tests
+                .Where(x => !x.IsTrialTest)
+                .OrderByDescending(x => x.OrderBy)
+                .FirstOrDefault();
+
             var orderBy = 1;
 
             if (lastTest != null)
