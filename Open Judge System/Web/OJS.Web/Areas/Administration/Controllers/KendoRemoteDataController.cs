@@ -52,8 +52,7 @@
                 {
                     Text = u.UserName,
                     Value = u.Id
-                })
-                .ToList();
+                });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -129,9 +128,8 @@
         [AjaxOnly]
         public JsonResult GetCascadeProblemsFromContest(int contestId)
         {
-            var problems = this.problemsData.GetAllByContest(contestId);
-
-            var result = problems
+            var result = this.problemsData
+                .GetAllByContest(contestId)
                 .Select(p => new DropdownViewModel
                 {
                     Name = p.Name,
