@@ -37,17 +37,15 @@
         [AjaxOnly]
         public JsonResult GetUsersContaining(string userFilter)
         {
-            var users = this.usersData.GetAll().Take(DefaultItemsToTake);
+            var users = this.usersData.GetAll();
 
             if (!string.IsNullOrWhiteSpace(userFilter))
             {
-                users = this.usersData
-                    .GetAll()
-                    .Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()))
-                    .Take(DefaultItemsToTake);
+                users = users.Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()));
             }
 
             var result = users
+                .Take(DefaultItemsToTake)
                 .Select(u => new SelectListItem
                 {
                     Text = u.UserName,
@@ -60,17 +58,15 @@
         [AjaxOnly]
         public JsonResult GetProblemsContaining(string text)
         {
-            var problems = this.problemsData.GetAll().Take(DefaultItemsToTake);
+            var problems = this.problemsData.GetAll();
 
             if (!string.IsNullOrWhiteSpace(text))
             {
-                problems = this.problemsData
-                    .GetAll()
-                    .Where(p => p.Name.Contains(text))
-                    .Take(DefaultItemsToTake);
+                problems = problems.Where(p => p.Name.Contains(text));
             }
 
             var result = problems
+                .Take(DefaultItemsToTake)
                 .Select(p => new DropdownViewModel
                 {
                     Id = p.Id,
