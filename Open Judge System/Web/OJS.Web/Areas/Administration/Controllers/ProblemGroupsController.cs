@@ -110,23 +110,26 @@
         [HttpPost]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
-            if (!this.IsModelAndContestValid(model))
+            var problemGroup = this.GetByIdAsNoTracking(model.Id);
+
+            if (problemGroup == null || !this.IsModelAndContestValid(model))
             {
                 return this.GridOperation(request, model);
             }
 
-            if (!this.contestsData.IsOnlineById(model.ContestId))
+            if (problemGroup.OrderBy != model.OrderBy &&
+                !this.contestsData.IsOnlineById(model.ContestId))
             {
                 this.ModelState.AddModelError(
                     string.Empty,
-                    string.Format(Resource.Can_edit_only_in_online_contest, ContestType.OnlinePracticalExam.GetDescription()));
+                    string.Format(
+                        Resource.Can_edit_orderby_only_in_online_contest,
+                        ContestType.OnlinePracticalExam.GetDescription()));
 
                 return this.GridOperation(request, model);
             }
 
-            var problemGroup = model.GetEntityModel(this.GetByIdAsNoTracking(model.Id));
-
-            this.BaseUpdate(problemGroup);
+            this.BaseUpdate(model.GetEntityModel(problemGroup));
             return this.GridOperation(request, model);
         }
 
