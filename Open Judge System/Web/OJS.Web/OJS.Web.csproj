@@ -903,6 +903,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.bg.Designer.cs">
+      <DependentUpon>ProblemGroupAdministration.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.designer.cs">
+      <DependentUpon>ProblemGroupAdministration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.designer.cs">
       <DependentUpon>ProblemGroupsIndex.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2891,6 +2901,16 @@
       <LastGenOutput>ProblemGroupsControllers.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupAdministration.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupAdministration.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

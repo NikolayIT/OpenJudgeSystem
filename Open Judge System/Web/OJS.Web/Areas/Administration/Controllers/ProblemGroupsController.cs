@@ -10,6 +10,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -18,6 +19,7 @@
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Extensions;
+    using OJS.Web.ViewModels.Common;
 
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
@@ -53,7 +55,11 @@
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ProblemGroup));
 
-        public ActionResult Index() => this.View();
+        public ActionResult Index()
+        {
+            this.PrepareViewBagData();
+            return this.View();
+        }
 
         [Route("Contest/{contestId:int}")]
         public ActionResult Index(int contestId)
@@ -68,6 +74,7 @@
 
             this.ViewBag.ContestId = contestId;
 
+            this.PrepareViewBagData();
             return this.View();
         }
 
@@ -112,7 +119,7 @@
             {
                 this.ModelState.AddModelError(
                     string.Empty,
-                    string.Format(Resource.Can_edit_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
+                    string.Format(Resource.Can_edit_only_in_online_contest, ContestType.OnlinePracticalExam.GetDescription()));
 
                 return this.GridOperation(request, model);
             }
@@ -181,5 +188,8 @@
 
         private ProblemGroup GetByIdAsNoTracking(int id) =>
             this.problemGroupsData.GetByIdQuery(id).AsNoTracking().SingleOrDefault();
+
+        private void PrepareViewBagData() =>
+            this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ProblemGroupType>();
     }
 }

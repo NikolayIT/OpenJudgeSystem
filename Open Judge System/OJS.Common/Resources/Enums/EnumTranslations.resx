@@ -135,6 +135,9 @@
   <data name="MultiLineTextBox" xml:space="preserve">
     <value>MultiLine TextBox</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
   <data name="Online_practical_exam" xml:space="preserve">
     <value>Online Practical Exam</value>
   </data>

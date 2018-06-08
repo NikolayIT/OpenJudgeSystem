@@ -12,8 +12,8 @@ function onContestSelect() {
 
 function onEdit(e) {
     $('.k-edit-form-container').css('width', '100%');
-    $('.editor-label').css('width', '10%');
-    $('.editor-field').css('width', '80%');
+    $('.editor-label').css('width', '15%');
+    $('.editor-field').css('width', '75%');
 
     var searchComboBox = $("#search").data("kendoComboBox");
     var contestsDropDown = $("#contests").data("kendoDropDownList");
@@ -64,6 +64,10 @@ function refreshGrid(e) {
     if(e.type !== "read" && !e.response.Errors){
         e.sender.read();
     }
+}
+
+function displayTypeName(data) {
+    console.log(data);
 }
 
 $(function () {

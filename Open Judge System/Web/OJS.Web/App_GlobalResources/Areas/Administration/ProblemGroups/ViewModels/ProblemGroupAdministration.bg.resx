@@ -117,55 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AuthorsSolution" xml:space="preserve">
-    <value>Авторско решение</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>По подразбиране</value>
-  </data>
-  <data name="DropDown" xml:space="preserve">
-    <value>Dropdown лист</value>
-  </data>
-  <data name="Excluded_from_export_problem_group" xml:space="preserve">
-    <value>Изключена от експорт</value>
-  </data>
-  <data name="Lab" xml:space="preserve">
-    <value>Лаб</value>
-  </data>
-  <data name="MultiLineTextBox" xml:space="preserve">
-    <value>Многоредов текст</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>Няма</value>
-  </data>
-  <data name="Online_practical_exam" xml:space="preserve">
-    <value>Онлайн практически изпит</value>
-  </data>
-  <data name="Onsite_practical_exam" xml:space="preserve">
-    <value>Практически изпит на място</value>
-  </data>
-  <data name="OpenTestDescription" xml:space="preserve">
-    <value>Отворен</value>
-  </data>
-  <data name="PendingSubmissionStatus" xml:space="preserve">
-    <value>Предстои изчисляване</value>
-  </data>
-  <data name="ProblemDescription" xml:space="preserve">
-    <value>Условие</value>
-  </data>
-  <data name="ProcessedSubmissionStatus" xml:space="preserve">
-    <value>Изчислен</value>
-  </data>
-  <data name="StandardTestDescription" xml:space="preserve">
-    <value>Състезателен</value>
-  </data>
-  <data name="TextBox" xml:space="preserve">
-    <value>Едноредов текст</value>
-  </data>
-  <data name="TrialTestDescription" xml:space="preserve">
-    <value>Нулев</value>
-  </data>
-  <data name="Video" xml:space="preserve">
-    <value>Видео</value>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
   </data>
 </root>
