@@ -64,3 +64,11 @@
 .problem-result-container .k-grid tr.success td a {
     color: #fff;
 }
+
+.excluded-from-export-tab {
+    background-color: #F7ECDE !important;
+}
+
+.excluded-from-export-tab.k-state-active {
+    background-color: #FFFFFF !important;
+}
