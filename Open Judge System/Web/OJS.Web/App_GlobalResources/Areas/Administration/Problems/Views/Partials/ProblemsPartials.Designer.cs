@@ -215,6 +215,15 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose the type for the group of problems in which the problem is.
+        /// </summary>
+        public static string Problem_group_type_description {
+            get {
+                return ResourceManager.GetString("Problem_group_type_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retest.
         /// </summary>
         public static string Retest {

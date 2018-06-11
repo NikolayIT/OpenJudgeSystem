@@ -168,6 +168,9 @@
   <data name="Precision_checker_description" xml:space="preserve">
     <value>- the system compares only N digits after the decimal separator. Works only for problems where the answers are floating point numbers positioned on new lines.</value>
   </data>
+  <data name="Problem_group_type_description" xml:space="preserve">
+    <value>Choose the type for the group of problems in which the problem is</value>
+  </data>
   <data name="Retest" xml:space="preserve">
     <value>Retest</value>
   </data>

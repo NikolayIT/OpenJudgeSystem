@@ -13,6 +13,7 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
@@ -42,6 +43,7 @@
                     MemoryLimit = problem.MemoryLimit,
                     SelectedSubmissionTypes = problem.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     ShowResults = problem.ShowResults,
+                    ProblemGroupType = problem.ProblemGroup.Type,
                     ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
@@ -76,6 +78,13 @@
         [Display(Name = "Group_number", ResourceType = typeof(Resource))]
         [UIHint("DropDownList")]
         public int ProblemGroupId { get; set; }
+
+        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
+        [UIHint("DropDownListCustom")]
+        public ProblemGroupType? ProblemGroupType { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string ProblemGroupTypeName => this.ProblemGroupType?.GetDescription() ?? string.Empty;
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public int ContestId { get; set; }

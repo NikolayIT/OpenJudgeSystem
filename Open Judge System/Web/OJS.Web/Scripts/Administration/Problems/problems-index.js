@@ -59,17 +59,18 @@ function initializeGrid(contestId) {
                     { field: 'Id', title: 'Номер' },
                     { field: 'Name', title: 'Име' },
                     { field: 'ProblemGroupOrderBy', title: 'Група' },
+                    { field: 'ProblemGroupType', title: 'Тип на групата', template: '#: ProblemGroupTypeName #' },
                     { field: 'ContestName', title: 'Състезание' },
                     { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                     {
-                        title: 'Операции', width: '50%', template: '<div class="text-center">' +
+                        title: 'Операции', width: '30%', template: '<div class="text-center">' +
                         '<a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;' +
                         '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;' +
                         '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
-                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
+                        '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Промяна</a>&nbsp;' +
+                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Изтриване</a>&nbsp;' +
+                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary top-buffer-sm">Копиране</a></div>'
                     }
                 ],
                 detailInit: detailInit
