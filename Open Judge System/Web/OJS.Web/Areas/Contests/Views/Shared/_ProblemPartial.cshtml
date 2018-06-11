@@ -7,7 +7,16 @@
 
 @model ContestProblemViewModel
 
-<h2>@Model.Name</h2>
+@{
+    var excludedFromHomeworkMessage = Model.IsExcludedFromExport
+        ? $" ({Resource.Not_included_in_final_score})"
+        : string.Empty;
+}
+
+<h2>
+    @Model.Name
+    <span class="excluded-from-export-disclaimer-message">@excludedFromHomeworkMessage</span>
+</h2>
 
 <div class="row">
     @if (User.IsAdmin())

@@ -186,4 +186,7 @@
   <data name="Tests_admin_button" xml:space="preserve">
     <value>Tests</value>
   </data>
+  <data name="Not_included_in_final_score" xml:space="preserve">
+    <value>not included in final score</value>
+  </data>
 </root>

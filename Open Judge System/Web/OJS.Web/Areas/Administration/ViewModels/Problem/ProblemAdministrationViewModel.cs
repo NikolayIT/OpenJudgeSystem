@@ -43,7 +43,7 @@
                     MemoryLimit = problem.MemoryLimit,
                     SelectedSubmissionTypes = problem.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     ShowResults = problem.ShowResults,
-                    ProblemGroupType = problem.ProblemGroup.Type,
+                    ProblemGroupType = (int?)problem.ProblemGroup.Type,
                     ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
@@ -79,12 +79,15 @@
         [UIHint("DropDownList")]
         public int ProblemGroupId { get; set; }
 
+        [ExcludeFromExcel]
         [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
         [UIHint("DropDownListCustom")]
-        public ProblemGroupType? ProblemGroupType { get; set; }
+        public int? ProblemGroupType { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public string ProblemGroupTypeName => this.ProblemGroupType?.GetDescription() ?? string.Empty;
+        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
+        public string ProblemGroupTypeName =>
+            ((ProblemGroupType?)this.ProblemGroupType)?.GetDescription() ?? string.Empty;
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public int ContestId { get; set; }

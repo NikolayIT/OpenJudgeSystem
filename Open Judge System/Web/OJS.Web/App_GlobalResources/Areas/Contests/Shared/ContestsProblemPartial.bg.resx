@@ -187,4 +187,7 @@
     <value>Администрация</value>
     <comment>Администрация</comment>
   </data>
+  <data name="Not_included_in_final_score" xml:space="preserve">
+    <value>не влиза в крайната оценка</value>
+  </data>
 </root>
