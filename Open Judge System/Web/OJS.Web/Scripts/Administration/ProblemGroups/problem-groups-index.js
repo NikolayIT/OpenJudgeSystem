@@ -66,10 +66,6 @@ function refreshGrid(e) {
     }
 }
 
-function displayTypeName(data) {
-    console.log(data);
-}
-
 $(function () {
     var contestId = $("#search").data("kendoComboBox").value() ||
         $("#contests").data("kendoDropDownList").value() ||
