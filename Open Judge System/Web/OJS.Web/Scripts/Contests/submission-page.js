@@ -296,6 +296,7 @@ function TabStripManager() {
             }
 
             selectTabWithIndex(hashIndex);
+            markTabsOfNotIncludedInExportProblems();
         }
     }
 
@@ -323,6 +324,12 @@ function TabStripManager() {
 
             $.data(element, 'CodeMirrorInstance', editor);
         }
+    }
+
+    function markTabsOfNotIncludedInExportProblems() {
+        var marker = $('<span class="right-buffer">&#10038;</span>').css('color', '#b88700');
+
+        $('.excluded-from-export-tab').append(marker);
     }
 
     function onContentLoad() {

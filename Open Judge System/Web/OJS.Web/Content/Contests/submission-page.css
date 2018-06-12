@@ -68,11 +68,3 @@
 .excluded-from-export-disclaimer-message {
     font-size: 0.5em;
 }
-
-.k-item.excluded-from-export-tab {
-    background-color: #F7ECDE;
-}
-
-    .k-item.excluded-from-export-tab.k-state-active {
-        background-color: #FFFFFF;
-    }
