@@ -1918,6 +1918,7 @@
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
+    <Content Include="Content\css\administration\problems\problems-index.css" />
     <Content Include="Content\css\common\loading-mask.css" />
     <Content Include="Content\css\home\index\home.css" />
     <Content Include="Content\docs.css" />

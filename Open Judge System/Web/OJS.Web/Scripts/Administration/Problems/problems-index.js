@@ -38,6 +38,8 @@ function initializeGrid(contestId) {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
+            var contestName = response[0].ContestName;
+            var urlContestName = convertContestnameToUrlName(contestName);
             $('#status').hide();
             $('#problems-grid').html('');
             $('#problems-grid').kendoGrid({
@@ -48,28 +50,28 @@ function initializeGrid(contestId) {
                 toolbar: [{
                     template: '<a href="/Administration/Problems/Create/' + contestId +
                     '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Problems/DeleteAll/' + contestId +
+                    '<a href="/Administration/Problems/DeleteAll/' + contestId +
                     '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
-                    '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
-                    '" class="btn btn-sm btn-primary"><span></span>Изпрати решение/я</a>'
+                    '<a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
+                    '" id="export" class="btn btn-sm btn-primary">Експорт към Excel</a>' +
+                    '<a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
+                    '" class="btn btn-sm btn-primary">Изпрати решение/я</a>' +
+                    '<a href="/Contests/' + contestId + '/' + urlContestName +
+                    '" class="pull-right kendo-grid-link text-bold">' + contestName + '</a>'
                 }],
                 columns: [
-                    { field: 'Name', title: 'Име' },
+                    { field: 'Name', title: 'Име', template: '<a href="/Administration/Problems/Details/#= Id #" class="kendo-grid-link text-bold">#=Name#</a>'},
                     { field: 'ProblemGroupOrderBy', title: 'Група' },
                     { field: 'ProblemGroupType', title: 'Тип група', template: '#: ProblemGroupTypeName #' },
-                    { field: 'ContestName', title: 'Състезание' },
                     { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                     {
-                        title: 'Операции', width: '30%', template: '<div class="text-center">' +
-                        '<a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Детайли</a>&nbsp;' +
-                        '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Тестове</a>&nbsp;' +
-                        '<button class="btn btn-sm btn-primary resource-btn top-buffer-sm" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
-                        '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Ретест</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Промяна</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary top-buffer-sm">Изтриване</a>&nbsp;' +
-                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary top-buffer-sm">Копиране</a></div>'
+                        title: 'Операции', width: '45%', template: '<div class="text-center">' +
+                        '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;' +
+                        '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
+                        '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
+                        '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
+                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
+                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
                     }
                 ],
                 detailInit: detailInit
@@ -148,6 +150,8 @@ function initializeGrid(contestId) {
                     target.data('expanded', true);
                 }
             });
+
+            $('.k-header.k-grid-toolbar').addClass('problems-grid-toolbar');
 
             if ($('#problemId').val()) {
                 $('#resource-btn-' + $('#problemId').val()).click();
