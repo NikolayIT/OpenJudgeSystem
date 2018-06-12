@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
-    using System;
     using System.Collections;
     using System.Data.Entity;
     using System.Linq;
@@ -105,7 +104,7 @@
             }
 
             var problemGroup = model.GetEntityModel();
-            problemGroup.Type = GetValidTypeOrNull(model.Type);
+            problemGroup.Type = model.Type.GetValidTypeOrNull();
 
             model.Id = (int)this.BaseCreate(problemGroup);
             return this.GridOperation(request, model);
@@ -134,7 +133,7 @@
             }
 
             var newProblemGroup = model.GetEntityModel(existingProblemGroup);
-            newProblemGroup.Type = GetValidTypeOrNull(model.Type);
+            newProblemGroup.Type = model.Type.GetValidTypeOrNull();
 
             this.BaseUpdate(newProblemGroup);
             return this.GridOperation(request, model);
@@ -172,18 +171,6 @@
                 .Select(DetailViewModelType.FromProblem);
 
             return this.Json(problems.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
-
-        internal static ProblemGroupType? GetValidTypeOrNull(ProblemGroupType? problemGroupType)
-        {
-            if (problemGroupType.HasValue &&
-                Enum.IsDefined(typeof(ProblemGroupType), problemGroupType) &&
-                problemGroupType != default(ProblemGroupType))
-            {
-                return problemGroupType;
-            }
-
-            return null;
         }
 
         private bool IsModelAndContestValid(ViewModelType model)

@@ -267,7 +267,7 @@
                 {
                     ContestId = contest.Id,
                     OrderBy = newProblem.OrderBy,
-                    Type = ProblemGroupsController.GetValidTypeOrNull((ProblemGroupType?)problem.ProblemGroupType)
+                    Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull()
                 };
             }
 
@@ -358,8 +358,7 @@
             existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
-            existingProblem.ProblemGroup.Type = ProblemGroupsController
-                .GetValidTypeOrNull((ProblemGroupType?)problem.ProblemGroupType);
+            existingProblem.ProblemGroup.Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull();
 
             if (!existingProblem.ProblemGroup.Contest.IsOnline)
             {

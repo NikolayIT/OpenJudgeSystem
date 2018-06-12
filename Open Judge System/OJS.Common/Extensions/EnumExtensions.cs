@@ -30,6 +30,19 @@
             return GetEnumDescription(enumerationValue, typeof(LocalizedDescriptionAttribute));
         }
 
+        public static T? GetValidTypeOrNull<T>(this T? enumerationValue)
+            where T : struct
+        {
+            if (enumerationValue.HasValue &&
+                Enum.IsDefined(typeof(T), enumerationValue) &&
+                !enumerationValue.Value.Equals(default(T)))
+            {
+                return enumerationValue;
+            }
+
+            return null;
+        }
+
         private static string GetEnumDescription<T>(this T enumerationValue, Type descriptionType)
         {
             var type = enumerationValue.GetType();
