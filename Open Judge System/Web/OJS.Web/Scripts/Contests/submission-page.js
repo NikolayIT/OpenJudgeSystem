@@ -296,7 +296,7 @@ function TabStripManager() {
             }
 
             selectTabWithIndex(hashIndex);
-            markTabsOfNotIncludedInExportProblems();
+            markEcludedFromHomeworkTabs();
         }
     }
 
@@ -326,10 +326,10 @@ function TabStripManager() {
         }
     }
 
-    function markTabsOfNotIncludedInExportProblems() {
+    function markEcludedFromHomeworkTabs() {
         var marker = $('<span class="right-buffer">&#10038;</span>').css('color', '#b88700');
 
-        $('.excluded-from-export-tab').append(marker);
+        $('.excluded-from-homework-tab').append(marker);
     }
 
     function onContentLoad() {

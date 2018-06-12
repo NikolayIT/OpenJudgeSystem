@@ -460,7 +460,7 @@
                 participantResults = participants
                     .Select(ParticipantResultViewModel.FromParticipantAsExportResultByContest(contest.Id))
                     .OrderByDescending(parRes => parRes.ProblemResults
-                        .Where(pr => pr.ShowResult && !pr.IsExcludedFromExport)
+                        .Where(pr => pr.ShowResult && !pr.IsExcludedFromHomework)
                         .Sum(pr => pr.BestSubmission.Points));
             }
 
@@ -482,7 +482,7 @@
 
             foreach (var problem in contestResults.Problems)
             {
-                if (problem.IsExcludedFromExport)
+                if (problem.IsExcludedFromHomework)
                 {
                     problem.Name = $"(*){problem.Name}";
                 }

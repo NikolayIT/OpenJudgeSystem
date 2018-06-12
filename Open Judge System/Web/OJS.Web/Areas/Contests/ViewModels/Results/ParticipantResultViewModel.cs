@@ -27,7 +27,7 @@
             .Sum(pr => pr.BestSubmission.Points);
 
         public int ExportTotal => this.ProblemResults
-            .Where(pr => pr.ShowResult && !pr.IsExcludedFromExport)
+            .Where(pr => pr.ShowResult && !pr.IsExcludedFromHomework)
             .Sum(pr => pr.BestSubmission.Points);
 
         public IEnumerable<int> ParticipantProblemIds { get; set; }

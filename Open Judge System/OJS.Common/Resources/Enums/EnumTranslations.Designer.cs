@@ -88,11 +88,11 @@ namespace Resources.Enums {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Excluded from export.
+        ///   Looks up a localized string similar to Excluded from homework.
         /// </summary>
-        public static string Excluded_from_export_problem_group {
+        public static string Excluded_from_homework_problem_group {
             get {
-                return ResourceManager.GetString("Excluded_from_export_problem_group", resourceCulture);
+                return ResourceManager.GetString("Excluded_from_homework_problem_group", resourceCulture);
             }
         }
         

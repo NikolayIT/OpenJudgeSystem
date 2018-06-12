@@ -65,9 +65,8 @@ function initializeGrid(contestId) {
                     { field: 'ProblemGroupType', title: 'Тип група', template: '#: ProblemGroupTypeName #' },
                     { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                     {
-                        title: 'Операции', width: '45%', template: '<div class="text-center">' +
+                        title: 'Операции', width: '40%', template: '<div class="text-center">' +
                         '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;' +
-                        '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
                         '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
                         '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
@@ -137,25 +136,7 @@ function initializeGrid(contestId) {
                 });
             }
 
-            $('.resource-btn').click(function (e) {
-                var target = $(e.target);
-                var tr = target.closest('tr');
-                var grid = $('#problems-grid').data('kendoGrid');
-
-                if (target.data('expanded')) {
-                    grid.collapseRow(tr);
-                    target.removeData('expanded');
-                } else {
-                    grid.expandRow(tr);
-                    target.data('expanded', true);
-                }
-            });
-
             $('.k-header.k-grid-toolbar').addClass('problems-grid-toolbar');
-
-            if ($('#problemId').val()) {
-                $('#resource-btn-' + $('#problemId').val()).click();
-            }
         });
     });
 }

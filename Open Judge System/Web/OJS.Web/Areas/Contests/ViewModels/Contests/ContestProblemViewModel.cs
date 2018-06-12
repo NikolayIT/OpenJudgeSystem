@@ -32,7 +32,7 @@
                     TimeLimit = problem.TimeLimit,
                     FileSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
-                    IsExcludedFromExport = problem.ProblemGroup.Type == ProblemGroupType.ExcludedFromExport,
+                    IsExcludedFromHomework = problem.ProblemGroup.Type == ProblemGroupType.ExcludedFromHomework,
                     CheckerName = problem.Checker.Name,
                     CheckerDescription = problem.Checker.Description,
                     MaximumPoints = problem.MaximumPoints,
@@ -57,7 +57,7 @@
 
         public bool ShowResults { get; set; }
 
-        public bool IsExcludedFromExport { get; set; }
+        public bool IsExcludedFromHomework { get; set; }
 
         public double MemoryLimit
         {

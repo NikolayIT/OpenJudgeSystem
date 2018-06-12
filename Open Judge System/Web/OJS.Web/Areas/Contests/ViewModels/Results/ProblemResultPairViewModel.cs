@@ -46,7 +46,7 @@
             {
                 ProblemId = score.ProblemId,
                 ShowResult = score.Problem.ShowResults,
-                IsExcludedFromExport = score.Problem.ProblemGroup.Type == ProblemGroupType.ExcludedFromExport,
+                IsExcludedFromHomework = score.Problem.ProblemGroup.Type == ProblemGroupType.ExcludedFromHomework,
                 BestSubmission = new BestSubmissionViewModel
                 {
                     Id = score.SubmissionId,
@@ -58,7 +58,7 @@
 
         public bool ShowResult { get; set; }
 
-        public bool IsExcludedFromExport { get; set; }
+        public bool IsExcludedFromHomework { get; set; }
 
         public int MaximumPoints { get; set; }
 

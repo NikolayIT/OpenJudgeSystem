@@ -142,7 +142,7 @@
                         .Where(s =>
                             !s.Problem.IsDeleted &&
                             s.Problem.ProblemGroup.ContestId == contestId.Value &&
-                            s.Problem.ProblemGroup.Type != ProblemGroupType.ExcludedFromExport)
+                            s.Problem.ProblemGroup.Type != ProblemGroupType.ExcludedFromHomework)
                         .Select(p => p.Points)
                         .DefaultIfEmpty(0)
                         .Sum() / contestMaxPoints * 100

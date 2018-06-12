@@ -51,7 +51,7 @@
             {
                 foreach (var problem in Model.Contest.Problems)
                 {
-                    var excludedFromExportClass = problem.IsExcludedFromExport ? "excluded-from-export-tab" : string.Empty;
+                    var excludedFromExportClass = problem.IsExcludedFromHomework ? "excluded-from-homework-tab" : string.Empty;
 
                     tabstrip.Add()
                         .Text(problem.Name)

@@ -22,7 +22,7 @@
         {
             columns.Bound(x => x.Id);
             columns.Bound(x => x.CategoryName);
-            columns.Template(@<text></text>).ClientTemplate("#= makeContestNameLinkToDetailsPage(data) #").Title(GeneralResource.Name);
+            columns.Bound(x => x.Name).ClientTemplate("#= makeContestNameLinkToDetailsPage(data) #");
             columns.Bound(x => x.StartTime).Format(GlobalConstants.DefaultDateTimeFormatString);
             columns.Bound(x => x.EndTime).Format(GlobalConstants.DefaultDateTimeFormatString);
             columns.Bound(x => x.PracticeStartTime).Format(GlobalConstants.DefaultDateTimeFormatString);

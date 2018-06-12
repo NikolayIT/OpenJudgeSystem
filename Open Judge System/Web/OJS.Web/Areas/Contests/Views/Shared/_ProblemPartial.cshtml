@@ -8,14 +8,14 @@
 @model ContestProblemViewModel
 
 @{
-    var excludedFromHomeworkMessage = Model.IsExcludedFromExport
+    var excludedFromHomeworkMessage = Model.IsExcludedFromHomework
         ? $" ({Resource.Not_included_in_final_score})"
         : string.Empty;
 }
 
 <h2>
     @Model.Name
-    <span class="excluded-from-export-disclaimer-message">@excludedFromHomeworkMessage</span>
+    <span class="excluded-from-homework-disclaimer-message">@excludedFromHomeworkMessage</span>
 </h2>
 
 <div class="row">

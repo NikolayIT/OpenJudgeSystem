@@ -83,7 +83,7 @@
             this.GetByIdQuery(id)
                 .Select(c => c.ProblemGroups
                     .Where(pg =>
-                        pg.Type != ProblemGroupType.ExcludedFromExport &&
+                        pg.Type != ProblemGroupType.ExcludedFromHomework &&
                         pg.Problems.Any(p => !p.IsDeleted))
                     .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
                 .FirstOrDefault() ?? default(int);
