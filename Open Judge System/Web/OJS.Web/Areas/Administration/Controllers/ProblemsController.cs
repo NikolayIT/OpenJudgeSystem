@@ -267,7 +267,7 @@
                 {
                     ContestId = contest.Id,
                     OrderBy = newProblem.OrderBy,
-                    Type = this.ConverToValidProblemGroupType(problem.ProblemGroupType)
+                    Type = ProblemGroupsController.GetValidTypeOrNull((ProblemGroupType?)problem.ProblemGroupType)
                 };
             }
 
@@ -358,7 +358,8 @@
             existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
-            existingProblem.ProblemGroup.Type = this.ConverToValidProblemGroupType(problem.ProblemGroupType);
+            existingProblem.ProblemGroup.Type = ProblemGroupsController
+                .GetValidTypeOrNull((ProblemGroupType?)problem.ProblemGroupType);
 
             if (!existingProblem.ProblemGroup.Contest.IsOnline)
             {
@@ -972,20 +973,6 @@
             }
 
             return isValid;
-        }
-
-        private ProblemGroupType? ConverToValidProblemGroupType(int? problemGroupTypeValue)
-        {
-            var problemGroupType = (ProblemGroupType?)problemGroupTypeValue;
-
-            if (problemGroupType.HasValue &&
-                Enum.IsDefined(typeof(ProblemGroupType), problemGroupType) &&
-                problemGroupType != ProblemGroupType.None)
-            {
-                return problemGroupType;
-            }
-
-            return null;
         }
     }
 }

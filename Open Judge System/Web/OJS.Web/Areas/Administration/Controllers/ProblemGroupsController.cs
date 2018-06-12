@@ -1,5 +1,6 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Data.Entity;
     using System.Linq;
@@ -103,21 +104,24 @@
                 return this.GridOperation(request, model);
             }
 
-            model.Id = (int)this.BaseCreate(model.GetEntityModel());
+            var problemGroup = model.GetEntityModel();
+            problemGroup.Type = GetValidTypeOrNull(model.Type);
+
+            model.Id = (int)this.BaseCreate(problemGroup);
             return this.GridOperation(request, model);
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
-            var problemGroup = this.GetByIdAsNoTracking(model.Id);
+            var existingProblemGroup = this.GetByIdAsNoTracking(model.Id);
 
-            if (problemGroup == null || !this.IsModelAndContestValid(model))
+            if (existingProblemGroup == null || !this.IsModelAndContestValid(model))
             {
                 return this.GridOperation(request, model);
             }
 
-            if (problemGroup.OrderBy != model.OrderBy &&
+            if (existingProblemGroup.OrderBy != model.OrderBy &&
                 !this.contestsData.IsOnlineById(model.ContestId))
             {
                 this.ModelState.AddModelError(
@@ -129,7 +133,10 @@
                 return this.GridOperation(request, model);
             }
 
-            this.BaseUpdate(model.GetEntityModel(problemGroup));
+            var newProblemGroup = model.GetEntityModel(existingProblemGroup);
+            newProblemGroup.Type = GetValidTypeOrNull(model.Type);
+
+            this.BaseUpdate(newProblemGroup);
             return this.GridOperation(request, model);
         }
 
@@ -165,6 +172,18 @@
                 .Select(DetailViewModelType.FromProblem);
 
             return this.Json(problems.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        internal static ProblemGroupType? GetValidTypeOrNull(ProblemGroupType? problemGroupType)
+        {
+            if (problemGroupType.HasValue &&
+                Enum.IsDefined(typeof(ProblemGroupType), problemGroupType) &&
+                problemGroupType != default(ProblemGroupType))
+            {
+                return problemGroupType;
+            }
+
+            return null;
         }
 
         private bool IsModelAndContestValid(ViewModelType model)
