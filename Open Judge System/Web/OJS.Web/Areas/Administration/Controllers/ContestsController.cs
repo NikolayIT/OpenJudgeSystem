@@ -108,8 +108,7 @@
         {
             if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ValidateContest(model);
@@ -138,8 +137,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.Data.Contests
@@ -165,8 +163,7 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ValidateContest(model);
@@ -325,8 +322,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData
@@ -350,8 +346,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             if (!this.ModelState.IsValid)
@@ -440,8 +435,7 @@
 
             if (!this.User.IsAdmin())
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData
@@ -467,8 +461,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var result = this.contestsBusiness.TransferParticipantsToPracticeById(model.Id);

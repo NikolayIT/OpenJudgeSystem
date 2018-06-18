@@ -98,6 +98,7 @@
     <Compile Include="Business\Submissions\ArchivedSubmissions\ArchivedSubmissionsBusinessService.cs" />
     <Compile Include="Business\Submissions\ArchivedSubmissions\IArchivedSubmissionsBusinessService.cs" />
     <Compile Include="Business\Submissions\ISubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\Models\ParticipantScoreModel.cs" />
     <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
     <Compile Include="Data\Checkers\CheckersDataService.cs" />
     <Compile Include="Data\Checkers\ICheckersDataService.cs" />
@@ -127,6 +128,8 @@
     <Compile Include="Data\SubmissionTypes\SubmissionTypesDataService.cs" />
     <Compile Include="Data\TestRuns\ITestRunsDataService.cs" />
     <Compile Include="Data\TestRuns\TestRunsDataService.cs" />
+    <Compile Include="Data\Tests\ITestsDataService.cs" />
+    <Compile Include="Data\Tests\TestsDataService.cs" />
     <Compile Include="Data\Users\IUsersDataService.cs" />
     <Compile Include="Data\Users\UsersDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

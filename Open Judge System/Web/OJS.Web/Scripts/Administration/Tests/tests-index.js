@@ -21,7 +21,7 @@ function filterContests() {
     'use strict';
 
     return {
-        id: $('#categories').val()
+        categoryId: $('#categories').val()
     };
 }
 
@@ -30,7 +30,7 @@ function filterProblems() {
     'use strict';
 
     return {
-        id: $('#contests').val()
+        contestId: $('#contests').val()
     };
 }
 
@@ -90,7 +90,7 @@ function populateDropDowns(problemIdAsString) {
         var categoriesData = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: '/Administration/Tests/GetCascadeCategories',
+                    url: '/Administration/LecturersKendoRemoteData/GetAvailableCategories',
                     dataType: 'json'
                 }
             }

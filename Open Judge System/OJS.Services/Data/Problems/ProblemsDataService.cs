@@ -16,6 +16,8 @@
 
         public Problem GetById(int id) => this.problems.GetById(id);
 
+        public IQueryable<Problem> GetAll() => this.problems.All();
+
         public IQueryable<Problem> GetByIdQuery(int id) =>
             this.problems
                 .All()

@@ -37,8 +37,7 @@
                             c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
             if (!userHasAccessToContest)
             {
-                this.TempData.AddDangerMessage("Нямате привилегиите за това действие");
-                return this.RedirectToAction("Index", "Contests");
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contestName = this.Data.Contests.All().Where(x => x.Id == id).Select(c => c.Name).FirstOrDefault();
