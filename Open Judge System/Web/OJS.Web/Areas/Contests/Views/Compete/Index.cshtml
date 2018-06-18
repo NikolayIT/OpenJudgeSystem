@@ -51,9 +51,12 @@
             {
                 foreach (var problem in Model.Contest.Problems)
                 {
+                    var excludedFromExportClass = problem.IsExcludedFromHomework ? "excluded-from-homework-tab" : string.Empty;
+
                     tabstrip.Add()
                         .Text(problem.Name)
-                        .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }));
+                        .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }))
+                        .HtmlAttributes(new { @class = excludedFromExportClass });
                 }
 
                 if (!Model.Contest.Problems.Any())

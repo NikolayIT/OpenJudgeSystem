@@ -40,11 +40,6 @@ function copyFromContest(ev, contestId) {
 
 function onDataBound() {
     CreateExportToExcelButton();
-
-    $('.contest-name-link').css({
-        color: '#003f59',
-        'font-weight': 'bold'
-    });
 }
 
 function resetFormValues() {

@@ -1,8 +1,8 @@
 ﻿namespace OJS.Web.Areas.Contests.ViewModels.Results
 {
     using System.Collections.Generic;
+
     using OJS.Common.Models;
-   
     using OJS.Web.Areas.Contests.ViewModels.Contests;
 
     using X.PagedList;

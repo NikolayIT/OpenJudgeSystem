@@ -38,6 +38,8 @@ function initializeGrid(contestId) {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
+            var contestName = response[0].ContestName;
+            var urlContestName = convertContestnameToUrlName(contestName);
             $('#status').hide();
             $('#problems-grid').html('');
             $('#problems-grid').kendoGrid({
@@ -48,24 +50,23 @@ function initializeGrid(contestId) {
                 toolbar: [{
                     template: '<a href="/Administration/Problems/Create/' + contestId +
                     '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Problems/DeleteAll/' + contestId +
+                    '<a href="/Administration/Problems/DeleteAll/' + contestId +
                     '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
-                    '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
-                    '" class="btn btn-sm btn-primary"><span></span>Изпрати решение/я</a>'
+                    '<a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
+                    '" id="export" class="btn btn-sm btn-primary">Експорт към Excel</a>' +
+                    '<a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
+                    '" class="btn btn-sm btn-primary">Изпрати решение/я</a>' +
+                    '<a href="/Contests/' + contestId + '/' + urlContestName +
+                    '" class="pull-right kendo-grid-link text-bold">' + contestName + '</a>'
                 }],
                 columns: [
-                    { field: 'Id', title: 'Номер' },
-                    { field: 'Name', title: 'Име' },
+                    { field: 'Name', title: 'Име', template: '<a href="/Administration/Problems/Details/#= Id #" class="kendo-grid-link text-bold">#=Name#</a>'},
                     { field: 'ProblemGroupOrderBy', title: 'Група' },
-                    { field: 'ContestName', title: 'Състезание' },
+                    { field: 'ProblemGroupType', title: 'Тип група', template: '#: ProblemGroupTypeName #' },
                     { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                     {
-                        title: 'Операции', width: '50%', template: '<div class="text-center">' +
-                        '<a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;' +
+                        title: 'Операции', width: '40%', template: '<div class="text-center">' +
                         '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;' +
-                        '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
                         '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
                         '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
@@ -135,23 +136,7 @@ function initializeGrid(contestId) {
                 });
             }
 
-            $('.resource-btn').click(function (e) {
-                var target = $(e.target);
-                var tr = target.closest('tr');
-                var grid = $('#problems-grid').data('kendoGrid');
-
-                if (target.data('expanded')) {
-                    grid.collapseRow(tr);
-                    target.removeData('expanded');
-                } else {
-                    grid.expandRow(tr);
-                    target.data('expanded', true);
-                }
-            });
-
-            if ($('#problemId').val()) {
-                $('#resource-btn-' + $('#problemId').val()).click();
-            }
+            $('.k-header.k-grid-toolbar').addClass('problems-grid-toolbar');
         });
     });
 }

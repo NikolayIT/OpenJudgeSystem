@@ -10,6 +10,7 @@
     using Kendo.Mvc.UI;
 
     using OJS.Common;
+    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -18,6 +19,7 @@
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Extensions;
+    using OJS.Web.ViewModels.Common;
 
     using DetailViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemViewModel;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
@@ -53,7 +55,11 @@
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ProblemGroup));
 
-        public ActionResult Index() => this.View();
+        public ActionResult Index()
+        {
+            this.PrepareViewBagData();
+            return this.View();
+        }
 
         [Route("Contest/{contestId:int}")]
         public ActionResult Index(int contestId)
@@ -65,6 +71,7 @@
 
             this.ViewBag.ContestId = contestId;
 
+            this.PrepareViewBagData();
             return this.View();
         }
 
@@ -93,30 +100,39 @@
                 return this.GridOperation(request, model);
             }
 
-            model.Id = (int)this.BaseCreate(model.GetEntityModel());
+            var problemGroup = model.GetEntityModel();
+            problemGroup.Type = model.Type.GetValidTypeOrNull();
+
+            model.Id = (int)this.BaseCreate(problemGroup);
             return this.GridOperation(request, model);
         }
 
         [HttpPost]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, ViewModelType model)
         {
-            if (!this.IsModelAndContestValid(model))
+            var existingProblemGroup = this.GetByIdAsNoTracking(model.Id);
+
+            if (existingProblemGroup == null || !this.IsModelAndContestValid(model))
             {
                 return this.GridOperation(request, model);
             }
 
-            if (!this.contestsData.IsOnlineById(model.ContestId))
+            if (existingProblemGroup.OrderBy != model.OrderBy &&
+                !this.contestsData.IsOnlineById(model.ContestId))
             {
                 this.ModelState.AddModelError(
                     string.Empty,
-                    string.Format(Resource.Can_edit_only_in_online_contest, nameof(ContestType.OnlinePracticalExam)));
+                    string.Format(
+                        Resource.Can_edit_orderby_only_in_online_contest,
+                        ContestType.OnlinePracticalExam.GetDescription()));
 
                 return this.GridOperation(request, model);
             }
 
-            var problemGroup = model.GetEntityModel(this.GetByIdAsNoTracking(model.Id));
+            var newProblemGroup = model.GetEntityModel(existingProblemGroup);
+            newProblemGroup.Type = model.Type.GetValidTypeOrNull();
 
-            this.BaseUpdate(problemGroup);
+            this.BaseUpdate(newProblemGroup);
             return this.GridOperation(request, model);
         }
 
@@ -178,5 +194,8 @@
 
         private ProblemGroup GetByIdAsNoTracking(int id) =>
             this.problemGroupsData.GetByIdQuery(id).AsNoTracking().SingleOrDefault();
+
+        private void PrepareViewBagData() =>
+            this.ViewBag.TypeData = DropdownViewModel.GetEnumValues<ProblemGroupType>();
     }
 }

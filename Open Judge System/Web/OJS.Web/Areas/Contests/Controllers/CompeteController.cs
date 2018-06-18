@@ -560,32 +560,33 @@
             this.ViewBag.IsOfficial = official;
             this.ViewBag.CompeteType = official ? CompeteActionName : PracticeActionName;
 
-            var problem = this.problemsData.GetWithContestById(id);
+            var problem = this.problemsData
+                .GetByIdQuery(id)
+                .Select(ContestProblemViewModel.FromProblem)
+                .FirstOrDefault();
 
             if (problem == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.ContestsGeneral.Problem_not_found);
             }
 
-            this.ValidateContest(problem.ProblemGroup.Contest, official);
+            this.ValidateContest(this.contestsData.GetById(problem.ContestId), official);
 
-            if (!this.Data.Participants.Any(problem.ProblemGroup.ContestId, this.UserProfile.Id, official))
+            if (!this.participantsData
+                .ExistsByContestByUserAndIsOfficial(problem.ContestId, this.UserProfile.Id, official))
             {
-                return this.RedirectToAction("Register", new { id = problem.ProblemGroup.ContestId, official });
+                return this.RedirectToAction("Register", new { id = problem.ContestId, official });
             }
 
             if (official &&
-                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ProblemGroup.ContestId, this.Request.UserHostAddress))
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(problem.ContestId, this.Request.UserHostAddress))
             {
-                return this.RedirectToAction("NewContestIp", new { id = problem.ProblemGroup.ContestId });
+                return this.RedirectToAction("NewContestIp", new { id = problem.ContestId });
             }
 
-            var problemViewModel = new ContestProblemViewModel(problem)
-            {
-                UserHasAdminRights = this.CheckIfUserHasProblemPermissions(problem.Id)
-            };
+            problem.UserHasAdminRights = this.CheckIfUserHasProblemPermissions(id);
 
-            return this.PartialView("_ProblemPartial", problemViewModel);
+            return this.PartialView("_ProblemPartial", problem);
         }
 
         /// <summary>

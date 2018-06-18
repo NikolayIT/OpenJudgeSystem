@@ -4,6 +4,10 @@
 
 @using Resource = Resources.Areas.Administration.Problems.Views.ProblemsIndex
 
+@section Styles{
+    @Styles.Render("~/Content/administration/problems/index")
+}
+
 @{
     ViewBag.Title = Resource.Page_title;
 }

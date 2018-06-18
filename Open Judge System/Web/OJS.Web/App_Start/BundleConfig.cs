@@ -50,7 +50,8 @@
 
             bundles.Add(new ScriptBundle("~/bundles/problems-index").Include(
                 "~/Scripts/Administration/Problems/problems-index.js",
-                "~/Scripts/Administration/Contests/contest-search.js"));
+                "~/Scripts/Administration/Contests/contest-search.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
                 "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
@@ -102,6 +103,9 @@
 
             bundles.Add(new StyleBundle("~/Content/contests/list/index").Include(
                 "~/Content/css/common/loading-mask.css"));
+
+            bundles.Add(new StyleBundle("~/Content/administration/problems/index").Include(
+                "~/Content/css/administration/problems/problems-index.css"));
         }
     }
 }

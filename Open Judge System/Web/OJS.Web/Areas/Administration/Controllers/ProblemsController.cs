@@ -258,7 +258,8 @@
                 newProblem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contest.Id,
-                    OrderBy = newProblem.OrderBy
+                    OrderBy = newProblem.OrderBy,
+                    Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull()
                 };
             }
 
@@ -347,6 +348,7 @@
             existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+            existingProblem.ProblemGroup.Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull();
 
             if (!existingProblem.ProblemGroup.Contest.IsOnline)
             {
@@ -927,6 +929,8 @@
                     .OrderBy(pg => pg.OrderBy)
                     .Select(DropdownViewModel.FromProblemGroup);
             }
+
+            this.ViewBag.ProblemGroupTypeData = DropdownViewModel.GetEnumValues<ProblemGroupType>();
         }
 
         private void AddCheckersToProblemViewModel(ViewModelType problem) =>

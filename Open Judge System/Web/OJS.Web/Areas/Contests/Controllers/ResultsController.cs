@@ -240,7 +240,12 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
             }
 
-            var contestResults = this.GetContestResults(contest, official, true, true);
+            var contestResults = this.GetContestResults(
+                contest,
+                official,
+                isUserAdminOrLecturer: true,
+                isFullResults: false,
+                isExportResults: true);
 
             // Suggested file name in the "Save as" dialog which will be displayed to the end user
             var fileName = string.Format(
@@ -413,66 +418,60 @@
             Contest contest,
             bool official,
             bool isUserAdminOrLecturer,
-            bool isFullResults) =>
-                new ContestResultsViewModel
-                {
-                    Id = contest.Id,
-                    Name = contest.Name,
-                    IsCompete = official,
-                    ContestCanBeCompeted = contest.CanBeCompeted,
-                    ContestCanBePracticed = contest.CanBePracticed,
-                    UserHasContestRights = isUserAdminOrLecturer,
-                    ContestType = contest.Type,
-                    Problems = contest.ProblemGroups
-                        .SelectMany(pg => pg.Problems)
-                        .AsQueryable()
-                        .Where(p => !p.IsDeleted)
-                        .OrderBy(p => p.OrderBy)
-                        .ThenBy(p => p.Name)
-                        .Select(ContestProblemListViewModel.FromProblem),
-                    Results = this.participantsData
-                        .GetAllByContestAndIsOfficial(contest.Id, official)
-                        .Select(par => new ParticipantResultViewModel
-                        {
-                            ParticipantUsername = par.User.UserName,
-                            ParticipantFirstName = par.User.UserSettings.FirstName,
-                            ParticipantLastName = par.User.UserSettings.LastName,
-                            ParticipantProblemIds = par.Problems.Select(p => p.Id),
-                            ProblemResults = par.Scores
-                                .Where(sc => !sc.Problem.IsDeleted && sc.Problem.ProblemGroup.ContestId == contest.Id)
-                                .Select(sc => new ProblemResultPairViewModel
-                                {
-                                    ProblemId = sc.ProblemId,
-                                    ShowResult = sc.Problem.ShowResults,
-                                    MaximumPoints = isFullResults ? sc.Problem.MaximumPoints : default(int),
-                                    BestSubmission = new BestSubmissionViewModel
-                                    {
-                                        Id = sc.SubmissionId,
-                                        Points = sc.Points,
-                                        IsCompiledSuccessfully = isFullResults &&
-                                            sc.Submission != null &&
-                                            sc.Submission.IsCompiledSuccessfully,
-                                        SubmissionType = isFullResults
-                                            ? sc.Submission != null
-                                                ? sc.Submission.SubmissionType.Name
-                                                : null
-                                            : null,
-                                        TestRunsCache = isFullResults
-                                            ? sc.Submission != null
-                                                ? sc.Submission.TestRunsCache
-                                                : null
-                                            : null
-                                    }
-                                })
-                        })
-                        .OrderByDescending(parRes => isUserAdminOrLecturer
-                            ? parRes.ProblemResults.Sum(pr => pr.BestSubmission.Points)
-                            : parRes.ProblemResults.Where(pr => pr.ShowResult).Sum(pr => pr.BestSubmission.Points))
-                        .ThenBy(parResult => parResult.ProblemResults
-                            .OrderByDescending(pr => pr.BestSubmission.Id)
-                            .Select(pr => pr.BestSubmission.Id)
-                            .FirstOrDefault())
-                };
+            bool isFullResults,
+            bool isExportResults = false)
+        {
+            var contestResults = new ContestResultsViewModel
+            {
+                Id = contest.Id,
+                Name = contest.Name,
+                IsCompete = official,
+                ContestCanBeCompeted = contest.CanBeCompeted,
+                ContestCanBePracticed = contest.CanBePracticed,
+                UserHasContestRights = isUserAdminOrLecturer,
+                ContestType = contest.Type,
+                Problems = contest.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .AsQueryable()
+                    .Where(p => !p.IsDeleted)
+                    .OrderBy(p => p.OrderBy)
+                    .ThenBy(p => p.Name)
+                    .Select(ContestProblemListViewModel.FromProblem)
+            };
+
+            var participants = this.participantsData
+                .GetAllByContestAndIsOfficial(contest.Id, official);
+
+            var participantResults = participants
+                .Select(ParticipantResultViewModel.FromParticipantAsSimpleResultByContest(contest.Id))
+                .OrderByDescending(parRes => parRes.ProblemResults
+                    .Where(pr => pr.ShowResult)
+                    .Sum(pr => pr.BestSubmission.Points));
+
+            if (isFullResults)
+            {
+                participantResults = participants
+                    .Select(ParticipantResultViewModel.FromParticipantAsFullResultByContest(contest.Id))
+                    .OrderByDescending(parRes => parRes.ProblemResults
+                        .Sum(pr => pr.BestSubmission.Points));
+            }
+            else if (isExportResults)
+            {
+                participantResults = participants
+                    .Select(ParticipantResultViewModel.FromParticipantAsExportResultByContest(contest.Id))
+                    .OrderByDescending(parRes => parRes.ProblemResults
+                        .Where(pr => pr.ShowResult && !pr.IsExcludedFromHomework)
+                        .Sum(pr => pr.BestSubmission.Points));
+            }
+
+            contestResults.Results = participantResults
+                .ThenBy(parResult => parResult.ProblemResults
+                    .OrderByDescending(pr => pr.BestSubmission.Id)
+                    .Select(pr => pr.BestSubmission.Id)
+                    .FirstOrDefault());
+
+            return contestResults;
+        }
 
         private int CreateResultsSheetHeaderRow(ISheet sheet, ContestResultsViewModel contestResults)
         {
@@ -483,17 +482,17 @@
 
             foreach (var problem in contestResults.Problems)
             {
+                if (problem.IsExcludedFromHomework)
+                {
+                    problem.Name = $"(*){problem.Name}";
+                }
+
                 headerRow.CreateCell(columnNumber++).SetCellValue(problem.Name);
             }
 
-            var totalPointsCellTitle = "Total";
+            var maxPoints = this.contestsData.GetMaxPointsForExportById(contestResults.Id);
 
-            if (this.contestsData.IsOnlineById(contestResults.Id))
-            {
-                var maxPoints = this.contestsData.GetMaxPointsById(contestResults.Id);
-
-                totalPointsCellTitle = $"{totalPointsCellTitle} (Max: {maxPoints})";
-            }
+            var totalPointsCellTitle = $"Total (Max: {maxPoints})";
 
             headerRow.CreateCell(columnNumber++).SetCellValue(totalPointsCellTitle);
 
@@ -524,7 +523,7 @@
                     }
                 }
 
-                row.CreateCell(colNumber).SetCellValue(result.Total);
+                row.CreateCell(colNumber).SetCellValue(result.ExportTotal);
             }
         }
 
