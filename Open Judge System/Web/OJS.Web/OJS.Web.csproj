@@ -2524,6 +2524,7 @@
     <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
+    <Content Include="Scripts\Helpers\kendo-helper.js" />
     <Content Include="Scripts\Helpers\validations.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.bg.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.en-GB.js" />

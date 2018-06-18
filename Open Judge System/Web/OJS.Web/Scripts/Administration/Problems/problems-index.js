@@ -31,6 +31,7 @@ function initializeGrid(contestId) {
     var sendSubmissionsActionName;
 
     $('#status').show();
+    $('#problems-grid').empty();
 
     $.get('/Administration/KendoRemoteData/GetContestCompeteOrPracticeActionName/' + contestId, function (data) {
         sendSubmissionsActionName = data;
@@ -40,8 +41,8 @@ function initializeGrid(contestId) {
         }).then(function () {
             var contestName = response[0].ContestName;
             var urlContestName = convertContestnameToUrlName(contestName);
+            var escapedContestName = escapeSpecialSymbols(contestName);
             $('#status').hide();
-            $('#problems-grid').html('');
             $('#problems-grid').kendoGrid({
                 dataSource: new kendo.data.DataSource({
                     data: response
@@ -57,7 +58,7 @@ function initializeGrid(contestId) {
                     '<a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
                     '" class="btn btn-sm btn-primary">Изпрати решение/я</a>' +
                     '<a href="/Contests/' + contestId + '/' + urlContestName +
-                    '" class="pull-right kendo-grid-link text-bold">' + contestName + '</a>'
+                    '" class="pull-right kendo-grid-link text-bold">' + escapedContestName + '</a>'
                 }],
                 columns: [
                     { field: 'Name', title: 'Име', template: '<a href="/Administration/Problems/Details/#= Id #" class="kendo-grid-link text-bold">#=Name#</a>'},
