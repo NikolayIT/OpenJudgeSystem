@@ -51,7 +51,8 @@
             bundles.Add(new ScriptBundle("~/bundles/problems-index").Include(
                 "~/Scripts/Administration/Problems/problems-index.js",
                 "~/Scripts/Administration/Contests/contest-search.js",
-                "~/Scripts/Administration/Contests/contests-helper.js"));
+                "~/Scripts/Administration/Contests/contests-helper.js",
+                "~/Scripts/Helpers/kendo-helper.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/problem-groups-index").Include(
                 "~/Scripts/Administration/ProblemGroups/problem-groups-index.js",
