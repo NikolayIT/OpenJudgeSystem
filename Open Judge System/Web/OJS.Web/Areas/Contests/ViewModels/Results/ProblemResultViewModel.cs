@@ -26,7 +26,7 @@
             }
         }
 
-        public int SubmissionId { get; set; }
+        public int? SubmissionId { get; set; }
 
         [Display(Name = "Participant", ResourceType = typeof(Resource))]
         public string ParticipantName { get; set; }

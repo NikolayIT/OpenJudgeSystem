@@ -135,8 +135,8 @@
   <data name="Problem_does_not_exist" xml:space="preserve">
     <value>Problem does not exist</value>
   </data>
-  <data name="Tests_addted_to_problem" xml:space="preserve">
-    <value>Tests addted to problem</value>
+  <data name="Tests_added_to_problem" xml:space="preserve">
+    <value>{0} tests added to problem successfully.</value>
   </data>
   <data name="Tests_deleted_successfully" xml:space="preserve">
     <value>Tests deleted successfully.</value>

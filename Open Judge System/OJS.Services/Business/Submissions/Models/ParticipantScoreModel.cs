@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.Models
+﻿namespace OJS.Services.Business.Submissions.Models
 {
     public class ParticipantScoreModel
     {

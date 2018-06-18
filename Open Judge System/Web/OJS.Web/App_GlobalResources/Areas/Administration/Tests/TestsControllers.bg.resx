@@ -135,8 +135,8 @@
   <data name="Problem_does_not_exist" xml:space="preserve">
     <value>Задачата не съществува</value>
   </data>
-  <data name="Tests_addted_to_problem" xml:space="preserve">
-    <value>Тестовете са добавени към задачата</value>
+  <data name="Tests_added_to_problem" xml:space="preserve">
+    <value>{0} тестa са добавени към задачата успешно.</value>
   </data>
   <data name="Tests_deleted_successfully" xml:space="preserve">
     <value>Тестовете бяха изтрити успешно</value>

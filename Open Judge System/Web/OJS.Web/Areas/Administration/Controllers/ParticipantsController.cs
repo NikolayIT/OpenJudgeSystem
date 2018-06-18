@@ -54,8 +54,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(id);
@@ -71,8 +70,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var participants = this.Data.Participants
@@ -90,8 +88,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);

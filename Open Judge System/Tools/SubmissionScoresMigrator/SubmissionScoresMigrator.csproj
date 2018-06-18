@@ -92,6 +92,10 @@
       <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
       <Name>OJS.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />

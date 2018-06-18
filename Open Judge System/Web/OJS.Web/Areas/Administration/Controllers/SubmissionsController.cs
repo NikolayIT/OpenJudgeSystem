@@ -450,8 +450,7 @@
                 (!this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) &&
                 !userOwnsSubmission))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             if (this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) ||

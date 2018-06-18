@@ -122,5 +122,23 @@ namespace Resources.Helpers {
                 return ResourceManager.GetString("Minutes", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to year.
+        /// </summary>
+        public static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to years.
+        /// </summary>
+        public static string Years {
+            get {
+                return ResourceManager.GetString("Years", resourceCulture);
+            }
+        }
     }
 }

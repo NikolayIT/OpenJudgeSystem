@@ -40,6 +40,10 @@
         public IQueryable<ParticipantScore> GetAll() =>
             this.participantScores.All();
 
+        public IQueryable<ParticipantScore> GetAllByProblem(int problemId) =>
+            this.GetAll()
+                .Where(ps => ps.ProblemId == problemId);
+
         public void ResetBySubmission(Submission submission)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)
@@ -128,5 +132,14 @@
             this.participantScores.Update(participantScore);
             this.participantScores.SaveChanges();
         }
+
+        public void RemoveSubmissionIdsBySubmissionIds(IEnumerable<int> submissionIds) =>
+            this.participantScores
+                .Update(
+                    ps => submissionIds.Cast<int?>().Contains(ps.SubmissionId),
+                    ps => new ParticipantScore
+                    {
+                        SubmissionId = null
+                    });
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace OJS.Data.Repositories.Base
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -12,7 +13,7 @@
     public class EfDeletableEntityRepository<T> : EfGenericRepository<T>, IEfDeletableEntityRepository<T>
         where T : class, IDeletableEntity, new()
     {
-        public EfDeletableEntityRepository(IOjsDbContext context)
+        public EfDeletableEntityRepository(DbContext context)
             : base(context)
         {
         }

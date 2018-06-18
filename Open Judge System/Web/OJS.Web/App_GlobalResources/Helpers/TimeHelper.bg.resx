@@ -138,4 +138,10 @@
   <data name="Minutes" xml:space="preserve">
     <value>минути</value>
   </data>
+  <data name="Year" xml:space="preserve">
+    <value>година</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>години</value>
+  </data>
 </root>

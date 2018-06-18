@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Submissions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -24,20 +25,47 @@
                 .ThenByDescending(s => s.Id)
                 .FirstOrDefault();
 
+        public IQueryable<Submission> GetAll() =>
+            this.submissions.All();
+
         public IQueryable<Submission> GetByIdQuery(int id) =>
-            this.submissions.All().Where(s => s.Id == id);
+            this.GetAll()
+                .Where(s => s.Id == id);
 
         public IQueryable<Submission> GetAllByProblem(int problemId) =>
-            this.submissions.All().Where(s => s.ProblemId == problemId);
+            this.GetAll()
+                .Where(s => s.ProblemId == problemId);
 
         public IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId) =>
-            this.GetAllByProblem(problemId).Where(s => s.ParticipantId == participantId);
+            this.GetAllByProblem(problemId)
+                .Where(s => s.ParticipantId == participantId);
+
+        public IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId) =>
+            this.GetAll()
+                .Where(s =>
+                    (s.IsPublic.HasValue && s.IsPublic.Value) ||
+                    s.Problem.ProblemGroup.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                    s.Problem.ProblemGroup.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
+
+        public IQueryable<Submission> GetAllCreatedBeforeDateAndNonBestCreatedBeforeDate(
+            DateTime createdBeforeDate,
+            DateTime nonBestCreatedBeforeDate) =>
+            this.submissions
+                .AllWithDeleted()
+                .Where(s => s.CreatedOn < createdBeforeDate ||
+                    (s.CreatedOn < nonBestCreatedBeforeDate &&
+                        s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
 
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
-            this.GetAllByProblem(problemId).Select(s => s.Id);
+            this.GetAllByProblem(problemId)
+                .Select(s => s.Id);
 
         public void SetAllToUnprocessedByProblem(int problemId) =>
-            this.GetAllByProblem(problemId).Update(s => new Submission{ Processed = false });
+            this.GetAllByProblem(problemId)
+                .Update(s => new Submission
+                {
+                    Processed = false
+                });
 
         public void DeleteByProblem(int problemId) =>
             this.submissions.Delete(s => s.ProblemId == problemId);
@@ -47,5 +75,12 @@
             this.submissions.Update(submission);
             this.submissions.SaveChanges();
         }
+
+        public void RemoveTestRunsCacheByProblem(int problemId) =>
+            this.GetAllByProblem(problemId)
+                .Update(s => new Submission
+                {
+                    TestRunsCache = null
+                });
     }
 }

@@ -75,6 +75,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleInjector, Version=4.0.11.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SimpleInjector.4.0.11\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
@@ -134,6 +137,10 @@
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Data.Archives\OJS.Data.Archives.csproj">
+      <Project>{7D684E33-0AA6-44F8-BCFE-A82B70BD48BC}</Project>
+      <Name>OJS.Data.Archives</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>

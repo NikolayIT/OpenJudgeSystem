@@ -123,6 +123,9 @@
   <data name="Compile_time_error" xml:space="preserve">
     <value>Грешка при компилация</value>
   </data>
+  <data name="Deleted_submissions_info_message" xml:space="preserve">
+    <value>Решения по-стари от {0}, с иключение на най-доброто от всяка задача са изтрити. Всички решения по-стари от {1} са също изтрити.</value>
+  </data>
   <data name="Memory" xml:space="preserve">
     <value>Памет</value>
   </data>
