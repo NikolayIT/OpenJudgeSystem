@@ -38,7 +38,6 @@
             return this.View("AdvancedSubmissions");
         }
 
-        [AjaxOnly]
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetSubmissionsGrid(
             bool notProcessedOnly = false,
