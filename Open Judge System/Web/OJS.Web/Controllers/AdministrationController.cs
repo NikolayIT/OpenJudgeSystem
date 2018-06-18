@@ -6,7 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Web.Mvc;
-
+    using System.Web.Mvc.Expressions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
@@ -15,8 +15,11 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Data;
+    using OJS.Web.Areas.Administration.Controllers;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Infrastructure.Filters.Attributes;
+
+    using AdminResource = Resources.Areas.Administration.AdministrationGeneral;
 
     [LogAccess]
     public abstract class AdministrationController : BaseController
@@ -157,6 +160,14 @@
                 outputStream.ToArray(), // The binary data of the XLS file
                 GlobalConstants.ExcelMimeType, // MIME type of Excel files
                 string.Format("{0}.xls", this.GetType().Name)); // Suggested file name in the "Save as" dialog which will be displayed to the end user
+        }
+
+        protected ActionResult RedirectToContestsAdminPanelWithNoPrivilegesMessage()
+        {
+            this.TempData.AddDangerMessage(AdminResource.No_privileges_message);
+            return this.RedirectToAction<ContestsController>(
+                c => c.Index(),
+                new { area = GlobalConstants.AdministrationAreaName });
         }
     }
 }

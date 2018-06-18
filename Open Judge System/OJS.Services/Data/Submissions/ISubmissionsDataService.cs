@@ -34,5 +34,7 @@
         void DeleteByProblem(int problemId);
 
         void Update(Submission submission);
+
+        void RemoveTestRunsCacheByProblem(int problemId);
     }
 }

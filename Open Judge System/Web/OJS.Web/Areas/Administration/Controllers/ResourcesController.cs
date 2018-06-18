@@ -61,8 +61,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
@@ -108,8 +107,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             if (resource.Type == ProblemResourceType.Link && string.IsNullOrEmpty(resource.RawLink))
@@ -182,8 +180,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(existingResource.ProblemId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             existingResource.AllTypes = EnumConverter.GetSelectListItems<ProblemResourceType>();
@@ -215,8 +212,7 @@
 
                 if (!this.CheckIfUserHasProblemPermissions(existingResource.ProblemId))
                 {
-                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                    return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
                 }
 
                 existingResource.Name = resource.Name;

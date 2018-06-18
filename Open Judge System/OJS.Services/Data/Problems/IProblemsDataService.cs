@@ -13,6 +13,8 @@
 
         Problem GetWithContestById(int id);
 
+        IQueryable<Problem> GetAll();
+
         IQueryable<Problem> GetByIdQuery(int id);
 
         IQueryable<Problem> GetAllByContest(int contestId);

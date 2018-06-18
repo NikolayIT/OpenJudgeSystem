@@ -6,6 +6,7 @@
     using OJS.Data;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
+    using OJS.Services.Data.Problems;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Contests.Controllers;
@@ -16,40 +17,61 @@
     {
         private readonly IUsersDataService usersData;
         private readonly IContestsDataService contestsData;
+        private readonly IProblemsDataService problemsData;
         private readonly IProblemGroupsDataService problemGroupsData;
 
         public KendoRemoteDataController(
             IOjsData data,
             IUsersDataService usersData,
             IContestsDataService contestsData,
+            IProblemsDataService problemsData,
             IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.usersData = usersData;
             this.contestsData = contestsData;
+            this.problemsData = problemsData;
             this.problemGroupsData = problemGroupsData;
         }
 
         [AjaxOnly]
         public JsonResult GetUsersContaining(string userFilter)
         {
-            var users = this.usersData.GetAll().Take(DefaultItemsToTake);
+            var users = this.usersData.GetAll();
 
             if (!string.IsNullOrWhiteSpace(userFilter))
             {
-                users = this.usersData
-                    .GetAll()
-                    .Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()))
-                    .Take(DefaultItemsToTake);
+                users = users.Where(u => u.UserName.ToLower().Contains(userFilter.ToLower()));
             }
 
             var result = users
+                .Take(DefaultItemsToTake)
                 .Select(u => new SelectListItem
                 {
                     Text = u.UserName,
                     Value = u.Id
-                })
-                .ToList();
+                });
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public JsonResult GetProblemsContaining(string text)
+        {
+            var problems = this.problemsData.GetAll();
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                problems = problems.Where(p => p.Name.Contains(text));
+            }
+
+            var result = problems
+                .Take(DefaultItemsToTake)
+                .Select(p => new DropdownViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -94,6 +116,20 @@
                 {
                     Name = pg.OrderBy.ToString(),
                     Id = pg.Id
+                });
+
+            return this.Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public JsonResult GetCascadeProblemsFromContest(int contestId)
+        {
+            var result = this.problemsData
+                .GetAllByContest(contestId)
+                .Select(p => new DropdownViewModel
+                {
+                    Name = p.Name,
+                    Id = p.Id
                 });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);

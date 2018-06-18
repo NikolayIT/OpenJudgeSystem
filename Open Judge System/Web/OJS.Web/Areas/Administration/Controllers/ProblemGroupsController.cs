@@ -66,10 +66,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(
-                    c => c.Index(),
-                    new { area = GlobalConstants.AdministrationAreaName });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.ContestId = contestId;
