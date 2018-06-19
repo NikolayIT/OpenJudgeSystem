@@ -3,9 +3,11 @@
     using System.Linq;
     using System.Web.Mvc;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Services.Business.ExamGroups;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
     using OJS.Web.Areas.Api.Models;
 
@@ -13,13 +15,16 @@
     {
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IHangfireBackgroundJobService backgroundJobs;
+        private readonly IContestsDataService contestsData;
 
         public ExamGroupsController(
             IExamGroupsDataService examGroupsData,
-            IHangfireBackgroundJobService backgroundJobs)
+            IHangfireBackgroundJobService backgroundJobs,
+            IContestsDataService contestsData)
         {
             this.examGroupsData = examGroupsData;
             this.backgroundJobs = backgroundJobs;
+            this.contestsData = contestsData;
         }
 
         public ActionResult AddUsersToExamGroup(UsersExamGroupModel model)
@@ -37,10 +42,17 @@
             if (examGroup == null)
             {
                 examGroupExists = false;
+
+                var contestIsValid = externalExamGroup.JudgeSystemContestId.HasValue &&
+                    this.contestsData
+                        .GetByIdQuery(externalExamGroup.JudgeSystemContestId.Value)
+                        .Any(c => c.Type == ContestType.OnlinePracticalExam);
+
                 examGroup = new ExamGroup
                 {
                     ExternalExamGroupId = externalExamGroup.Id,
-                    ExternalAppId = model.AppId
+                    ExternalAppId = model.AppId,
+                    ContestId = contestIsValid ? externalExamGroup.JudgeSystemContestId : null
                 };
             }
 
