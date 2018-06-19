@@ -43,22 +43,22 @@
             {
                 examGroupExists = false;
 
-                var contestIsValid = externalExamGroup.JudgeSystemContestId.HasValue &&
-                    this.contestsData
-                        .GetByIdQuery(externalExamGroup.JudgeSystemContestId.Value)
-                        .Any(c => c.Type == ContestType.OnlinePracticalExam);
-
                 examGroup = new ExamGroup
                 {
                     ExternalExamGroupId = externalExamGroup.Id,
-                    ExternalAppId = model.AppId,
-                    ContestId = contestIsValid ? externalExamGroup.JudgeSystemContestId : null
+                    ExternalAppId = model.AppId
                 };
             }
+
+            var contestIsValid = externalExamGroup.JudgeSystemContestId.HasValue &&
+                this.contestsData
+                    .GetByIdQuery(externalExamGroup.JudgeSystemContestId.Value)
+                    .Any(c => c.Type == ContestType.OnlinePracticalExam);
 
             var startTime = externalExamGroup.StartTime?.ToString("g") ?? string.Empty;
 
             examGroup.Name = $"{externalExamGroup.ExamName} => {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
+            examGroup.ContestId = contestIsValid ? externalExamGroup.JudgeSystemContestId : null;
 
             if (examGroupExists)
             {
