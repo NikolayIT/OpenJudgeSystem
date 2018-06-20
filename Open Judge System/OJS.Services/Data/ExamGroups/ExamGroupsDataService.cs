@@ -33,7 +33,7 @@
                     eg.ExternalExamGroupId == externalId &&
                     eg.ExternalAppId == appId);
 
-        public int? GetIdByExternalIdAndAppId(int? externalId, string appId) =>
+        public int GetIdByExternalIdAndAppId(int? externalId, string appId) =>
             this.examGroups
                 .All()
                 .Where(eg => eg.ExternalExamGroupId == externalId && eg.ExternalAppId == appId)

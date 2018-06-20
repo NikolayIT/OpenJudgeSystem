@@ -72,10 +72,10 @@
             var examGroupId = this.examGroupsData
                 .GetIdByExternalIdAndAppId(externalExamGroup.Id, model.AppId);
 
-            if (examGroupId.HasValue)
+            if (examGroupId != default(int))
             {
                 this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                    x => x.AddUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+                    x => x.AddUsersByIdAndUserIds(examGroupId, model.UserIds));
             }
 
             return this.Json(true);
@@ -91,10 +91,10 @@
             var examGroupId = this.examGroupsData
                 .GetIdByExternalIdAndAppId(model.ExamGroupInfoModel.Id, model.AppId);
 
-            if (examGroupId.HasValue)
+            if (examGroupId != default(int))
             {
                 this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                    x => x.RemoveUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+                    x => x.RemoveUsersByIdAndUserIds(examGroupId, model.UserIds));
             }
 
             return this.Json(true);
