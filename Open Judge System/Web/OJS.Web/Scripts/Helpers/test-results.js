@@ -56,7 +56,7 @@ function testResult(
         result += '<strong class="text-primary"> Обработва се...</strong>';
     } else if (!isCompiledSuccessfully) {
         result += '<span class="glyphicon glyphicon-remove text-danger" title="Compilation failed"></span>';
-        result += '<strong class="text-danger"> Грешка при компилация</strong>';
+        result += '<strong class="text-danger"> Грешка при компилация</strong>' + '<small> | ' + submissionType + '</small>';
     } else {
         result += '<div><strong class="text-primary"> ' + points +
             ' / ' + problemMaximumPoints + '</strong>' +
