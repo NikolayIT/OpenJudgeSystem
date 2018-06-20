@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Net.Mime;
     using System.Text;
+    using System.Transactions;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Expressions;
@@ -596,9 +597,9 @@
                 return this.RedirectToAction(c => c.Problem(id));
             }
 
-            var addedTestsCount = ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+            int addedTestsCount;
 
-            using (var scope = TransactionsHelper.CreateTransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.RepeatableRead))
             {
                 this.submissionsData.RemoveTestRunsCacheByProblem(problem.Id);
 
@@ -607,6 +608,8 @@
                     this.testRunsData.DeleteByProblem(problem.Id);
                     this.testsData.DeleteByProblem(problem.Id);
                 }
+
+                addedTestsCount = ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
 
                 this.problemsData.Update(problem);
 
