@@ -583,10 +583,7 @@
             return this.File(
                 submission.Content,
                 GlobalConstants.BinaryFileMimeType,
-                string.Format("{0}_{1}.{2}",
-                    submission.Participant.User.UserName,
-                    submission.Problem.Name,
-                    submission.FileExtension));
+                $"{submission.Participant.User.UserName}_{submission.Problem.Name}.{submission.FileExtension}");
         }
 
         private SubmissionType GetSubmissionType(int submissionTypeId)
