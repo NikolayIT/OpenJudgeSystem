@@ -60,7 +60,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents\AgentRequestData.cs" />
+    <Compile Include="Agents\AgentTaskData.cs" />
     <Compile Include="Agents\AgentResponseData.cs" />
     <Compile Include="Agents\TestResult.cs" />
     <Compile Include="CheckerDetails.cs" />
