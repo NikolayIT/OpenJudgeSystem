@@ -457,6 +457,60 @@
                     ExecutionStrategyType = ExecutionStrategyType.PhpProjectWithDbExecutionStrategy,
                     IsSelectedByDefault = false,
                     AllowBinaryFilesUpload = true
+                },
+                new SubmissionType
+                {
+                    Name = "SQL Server prepare DB & run queries",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = "SQL Server run queries & check DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.SqlServerLocalDbRunQueriesAndCheckDatabase,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = "SQL Server run skeleton, run queries & check DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.SqlServerLocalDbRunSkeletonRunQueriesAndCheckDatabase,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = "MySQL prepare DB & run queries",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.MySqlPrepareDatabaseAndRunQueries,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = "MySQL run queries & check DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.MySqlRunQueriesAndCheckDatabase,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
+                },
+                new SubmissionType
+                {
+                    Name = "MySQL run skeleton, run queries & check DB",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.MySqlRunSkeletonRunQueriesAndCheckDatabase,
+                    IsSelectedByDefault = false,
+                    AllowBinaryFilesUpload = false
                 }
             };
 
