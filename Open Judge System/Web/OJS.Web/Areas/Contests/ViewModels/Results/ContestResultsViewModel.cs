@@ -12,7 +12,7 @@
         public int Id { get; set; }
 
         public string Name { get; set; }
-        
+
         public IEnumerable<ContestProblemListViewModel> Problems { get; set; }
 
         public IEnumerable<ParticipantResultViewModel> Results { get; set; }

@@ -367,7 +367,7 @@
                 {
                     participant.IsInvalidated = false;
                 }
-                
+
                 foreach (var participantAnswer in answers)
                 {
                     participant.Answers.Add(participantAnswer);

@@ -90,7 +90,7 @@
                 });
 
         public static IEnumerable<DropdownViewModel> GetEnumValues<T>()
-            where T : struct, IConvertible => 
+            where T : struct, IConvertible =>
                 Enum
                     .GetValues(typeof(T))
                     .Cast<T>()

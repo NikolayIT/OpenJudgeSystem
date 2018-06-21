@@ -19,7 +19,7 @@
 
             var first = result.First();
             var second = result.Last();
-            
+
             this.AssertSubmission(
                 submission: first,
                 submissionId: 10,

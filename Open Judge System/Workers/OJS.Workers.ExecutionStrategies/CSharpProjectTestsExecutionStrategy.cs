@@ -24,7 +24,6 @@
         using System.IO;
         using NUnit.Framework;
 
-
         [SetUpFixture]
         public class SetUpClass
         {
@@ -51,10 +50,10 @@
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
         protected const string VsttPackageName = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
 
-        // Extracts the number of total and passed tests 
+        // Extracts the number of total and passed tests
         protected const string TestResultsRegex =
             @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
-        // Extracts error/failure messages and the class which threw it       
+        // Extracts error/failure messages and the class which threw it
         protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
 
         public CSharpProjectTestsExecutionStrategy(
@@ -116,7 +115,7 @@
             this.SaveSetupFixture(compileDirectory);
 
             this.CorrectProjectReferences(project);
-            
+
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -161,7 +160,7 @@
         }
 
         protected void SaveTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
-        {       
+        {
             var index = 0;
             foreach (var test in tests)
             {

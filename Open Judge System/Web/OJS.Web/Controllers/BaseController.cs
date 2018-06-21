@@ -144,7 +144,7 @@
                     .Any(x =>
                         x.Id == categoryId &&
                         x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id)));
-               
+
         protected bool CheckIfUserOwnsSubmission(int submissionId) =>
             this.UserProfile != null &&
             this.Data.Submissions

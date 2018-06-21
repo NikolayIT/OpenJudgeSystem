@@ -134,7 +134,7 @@
 
                         scope.Complete();
                     }
-                   
+
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -287,7 +287,7 @@
             var submission = this.Data.Submissions
                 .All()
                 .FirstOrDefault(s => s.Id == id);
-            
+
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
@@ -319,8 +319,8 @@
                 this.Data.SaveChanges();
 
                 var isBestSubmission = this.IsBestSubmission(
-                    submissionProblemId, 
-                    submissionParticipantId, 
+                    submissionProblemId,
+                    submissionParticipantId,
                     submission.Id);
 
                 if (isBestSubmission)
@@ -357,7 +357,7 @@
                 this.Data.SaveChanges();
 
                 foreach (GridModelType submission in submissions)
-                {                   
+                {
                     var dbSubmission = this.Data.Submissions.GetById(submission.Id);
 
                     if (!dbSubmission.ParticipantId.HasValue)
@@ -370,7 +370,7 @@
                     var submissionParticipantId = dbSubmission.ParticipantId.Value;
 
                     var isBestSubmission = this.IsBestSubmission(
-                        submissionProblemId, 
+                        submissionProblemId,
                         submissionParticipantId,
                         dbSubmission.Id);
 

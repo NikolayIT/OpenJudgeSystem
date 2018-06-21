@@ -14,7 +14,7 @@
         {
             get
             {
-                return submission => 
+                return submission =>
                     new ProblemResultViewModel
                     {
                         ProblemId = submission.Problem.Id,

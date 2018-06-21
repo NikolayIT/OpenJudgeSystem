@@ -33,7 +33,7 @@
             {
                 participant.ParticipationStartTime = DateTime.Now;
                 participant.ParticipationEndTime = DateTime.Now + contest.Duration;
-                
+
                 if (!isAdmin &&
                     !this.contestsData.IsUserLecturerInByContestAndUser(contest.Id, userId))
                 {
@@ -89,7 +89,7 @@
                         contestStartTimeRangeStart,
                         contestStartTimeRangeEnd)
                     .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) <
-                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));            
+                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));
 
             return participantsInvalidForUpdate;
         }

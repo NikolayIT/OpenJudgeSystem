@@ -21,7 +21,7 @@
         public int Id { get; set; }
 
         public string Name { get; set; }
-        
+
         public bool ShowResults { get; set; }
 
         public bool IsExcludedFromHomework { get; set; }

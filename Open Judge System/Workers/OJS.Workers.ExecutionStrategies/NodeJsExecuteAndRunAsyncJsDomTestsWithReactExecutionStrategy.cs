@@ -120,7 +120,7 @@ fs = undefined;";
 chai.use(sinonChai);
 
 describe('TestDOMScope', function() {{
-    let bgCoderConsole = {{}};   
+    let bgCoderConsole = {{}};
 
     before(function(done) {{
         jsdom.env({{

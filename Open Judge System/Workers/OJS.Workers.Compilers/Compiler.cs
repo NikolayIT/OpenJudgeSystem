@@ -55,7 +55,7 @@
                     return new MsBuildLibraryCompiler(Settings.MsBuildLibraryCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.CPlusPlusZip:
                     return new CPlusPlusZipCompiler(Settings.CPlusPlusZipCompilerProcessExitTimeOutMultiplier);
-                    case CompilerType.DotNetCompiler: 
+                    case CompilerType.DotNetCompiler:
                     return new DotNetCompiler(Settings.DotNetCompilerProcessExitTimeOutMultiplier);
                 default:
                     throw new ArgumentException("Unsupported compiler.");
@@ -63,7 +63,7 @@
         }
 
         public virtual CompileResult Compile(
-            string compilerPath, 
+            string compilerPath,
             string inputFile,
             string additionalArguments)
         {

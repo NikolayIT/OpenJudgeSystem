@@ -101,7 +101,7 @@
                 }
                 else
                 {
-                    // Adds an 1 int (representing the first request) to the cache using the hashValue to a key 
+                    // Adds an 1 int (representing the first request) to the cache using the hashValue to a key
                     // (This sets the expiration that will determine if the Request is valid or not)
                     cache.Add(hashValue, 1, null, DateTime.Now.AddSeconds(this.RestrictInterval), Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
                 }
