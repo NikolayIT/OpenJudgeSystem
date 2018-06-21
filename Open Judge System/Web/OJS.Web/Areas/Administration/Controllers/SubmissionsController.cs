@@ -434,13 +434,13 @@
                     this.TempData.AddDangerMessage(modelStateError.ErrorMessage);
                 }
 
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
             }
 
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
             }
 
             var problemIdIsValid = submission.ProblemId.HasValue;
@@ -501,7 +501,7 @@
             }
 
             this.TempData[GlobalConstants.DangerMessage] = "Решението не може да бъде ретествано в момента";
-            return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+            return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
         }
 
         public JsonResult GetProblems(string text)
