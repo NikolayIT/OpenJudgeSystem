@@ -41,12 +41,8 @@ function initializeGrid(contestId) {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
-            if (contestName) {
-                var urlContestName = convertContestnameToUrlName(contestName);
-                var escapedContestName = escapeSpecialSymbols(contestName);
-            } else {
-                contestName = '';
-            }
+            var urlContestName = convertContestnameToUrlName(contestName);
+            var escapedContestName = escapeSpecialSymbols(contestName);
             
             $('#status').hide();
             $('#problems-grid').kendoGrid({

@@ -103,7 +103,7 @@
                 ? CompeteController.PracticeActionName
                 : CompeteController.CompeteActionName;
 
-            var contestName = contest?.Name;
+            var contestName = contest?.Name ?? string.Empty;
 
             var result = new
             {
