@@ -29,19 +29,25 @@ function initializeGrid(contestId) {
 
     var response;
     var sendSubmissionsActionName;
+    var contestName;
 
     $('#status').show();
     $('#problems-grid').empty();
 
-    $.get('/Administration/KendoRemoteData/GetContestCompeteOrPracticeActionName/' + contestId, function (data) {
-        sendSubmissionsActionName = data;
+    $.get('/Administration/KendoRemoteData/GetContestNameAndCompeteOrPracticeActionName/' + contestId, function (data) {
+        sendSubmissionsActionName = data.actionName;
+        contestName = data.contestName;
     }).then(function() {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
-            var contestName = response[0].ContestName;
-            var urlContestName = convertContestnameToUrlName(contestName);
-            var escapedContestName = escapeSpecialSymbols(contestName);
+            if (contestName) {
+                var urlContestName = convertContestnameToUrlName(contestName);
+                var escapedContestName = escapeSpecialSymbols(contestName);
+            } else {
+                contestName = '';
+            }
+            
             $('#status').hide();
             $('#problems-grid').kendoGrid({
                 dataSource: new kendo.data.DataSource({

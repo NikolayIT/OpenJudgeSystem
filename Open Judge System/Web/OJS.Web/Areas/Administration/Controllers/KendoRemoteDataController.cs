@@ -95,13 +95,21 @@
         }
 
         [AjaxOnly]
-        public JsonResult GetContestCompeteOrPracticeActionName(int id)
+        public JsonResult GetContestNameAndCompeteOrPracticeActionName(int id)
         {
             var contest = this.contestsData.GetById(id);
 
-            var result = contest?.CanBePracticed == true && !contest.IsActive
+            var actionName = contest?.CanBePracticed == true && !contest.IsActive
                 ? CompeteController.PracticeActionName
                 : CompeteController.CompeteActionName;
+
+            var contestName = contest?.Name;
+
+            var result = new
+            {
+                actionName,
+                contestName
+            };
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
