@@ -123,5 +123,17 @@
                 .Any(c =>
                     c.Id == id &&
                     c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
+
+        public void Add(Contest contest)
+        {
+            this.contests.Add(contest);
+            this.contests.SaveChanges();
+        }
+
+        public void Update(Contest contest)
+        {
+            this.contests.Update(contest);
+            this.contests.SaveChanges();
+        }
     }
 }

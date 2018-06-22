@@ -10,8 +10,8 @@
 
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Controllers;
 
     using DatabaseAnswerModelType = OJS.Data.Models.ContestQuestionAnswer;
     using DatabaseModelType = OJS.Data.Models.ContestQuestion;
@@ -19,12 +19,14 @@
 
     public class ContestQuestionsController : AdministrationBaseGridController
     {
+        private readonly IContestsDataService contestsData;
         private int contestId;
 
-        public ContestQuestionsController(IOjsData data)
-            : base(data)
-        {
-        }
+        public ContestQuestionsController(
+            IOjsData data,
+            IContestsDataService contestsData)
+            : base(data) =>
+            this.contestsData = contestsData;
 
         public override IEnumerable GetData()
         {
@@ -57,11 +59,11 @@
         [HttpPost]
         public JsonResult AddQuestionToContest([DataSourceRequest]DataSourceRequest request, ViewModelType model, int id)
         {
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == id);
+            var contest = this.contestsData.GetById(id);
             var question = model.GetEntityModel();
 
             contest.Questions.Add(question);
-            this.Data.SaveChanges();
+            this.contestsData.Update(contest);
 
             this.UpdateAuditInfoValues(model, question);
             model.QuestionId = this.Data.Context.Entry(question).Property(pr => pr.Id).CurrentValue;
@@ -89,8 +91,8 @@
 
         public ActionResult CopyFromAnotherContest(int id)
         {
-            var contests = this.Data.Contests
-                .All()
+            var contests = this.contestsData
+                .GetAll()
                 .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new { Text = c.Name, Value = c.Id });
 
@@ -101,8 +103,8 @@
 
         public void CopyTo(int id, int contestFrom, bool? deleteOld)
         {
-            var copyFromContest = this.Data.Contests.GetById(contestFrom);
-            var copyToContest = this.Data.Contests.GetById(id);
+            var copyFromContest = this.contestsData.GetById(contestFrom);
+            var copyToContest = this.contestsData.GetById(id);
 
             if (deleteOld.HasValue && deleteOld.Value)
             {
@@ -145,7 +147,7 @@
                 contest.Questions.Add(newQuestion);
             }
 
-            this.Data.SaveChanges();
+            this.contestsData.Update(contest);
         }
     }
 }

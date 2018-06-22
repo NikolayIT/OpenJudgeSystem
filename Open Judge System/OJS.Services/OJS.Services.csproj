@@ -108,6 +108,8 @@
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />
     <Compile Include="Data\ExamGroups\IExamGroupsDataService.cs" />
+    <Compile Include="Data\Ips\IIpsDataService.cs" />
+    <Compile Include="Data\Ips\IpsDataService.cs" />
     <Compile Include="Data\Participants\IParticipantsDataService.cs" />
     <Compile Include="Data\Participants\ParticipantsDataService.cs" />
     <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />

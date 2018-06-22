@@ -50,5 +50,9 @@
         bool IsUserParticipantInByContestAndUser(int id, string userId);
 
         bool IsUserInExamGroupByContestAndUser(int id, string userId);
+
+        void Add(Contest contest);
+
+        void Update(Contest contest);
     }
 }
