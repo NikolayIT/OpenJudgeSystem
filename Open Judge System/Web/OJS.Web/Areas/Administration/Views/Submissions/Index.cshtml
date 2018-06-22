@@ -27,7 +27,8 @@
                     dataSource
                         .Read(read =>
                         {
-                            read.Action("Contests", "Submissions")
+                            read
+                                .Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
                                 .Data("additionalComboBoxData");
                         })
                         .ServerFiltering(true);
@@ -55,7 +56,7 @@
     <script>
         function additionalComboBoxData() {
             return {
-                text: $("#contests").data("kendoComboBox").input.val()
+                contestFilter: $("#contests").data("kendoComboBox").input.val()
             }
         }
 

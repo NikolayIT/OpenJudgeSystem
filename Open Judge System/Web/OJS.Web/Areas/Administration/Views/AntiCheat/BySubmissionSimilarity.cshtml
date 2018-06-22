@@ -33,7 +33,11 @@
                   .Placeholder(Resource.Choose_or_enter_contest)
                   .DataValueField("Id")
                   .DataTextField("Name")
-                  .DataSource(dataSource => dataSource.Read(read => read.Action("Contests", "Submissions").Data("onAdditionalData")).ServerFiltering(true))
+                  .DataSource(dataSource => dataSource
+                    .Read(read => read
+                        .Action("GetAvailableContestsContaining", "LecturersKendoRemoteData")
+                        .Data("onAdditionalData"))
+                    .ServerFiltering(true))
                   .HtmlAttributes(new { style = "width: 100%; height: 30px" }))
         </div>
         <div class="col-md-3">
@@ -57,7 +61,7 @@
     <script>
         function onAdditionalData() {
             return {
-                text: $('#ContestId').data('kendoComboBox').text()
+                contestFilter: $('#ContestId').data('kendoComboBox').text()
             };
         }
 

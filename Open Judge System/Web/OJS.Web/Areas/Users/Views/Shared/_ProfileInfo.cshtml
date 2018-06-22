@@ -90,7 +90,9 @@
                     dataSource
                         .Read(read =>
                         {
-                            read.Action("Contests", "Submissions", new { area = "Administration" }).Data("additionalComboBoxData");
+                            read
+                                .Action("GetAvailableContestsContaining", "LecturersKendoRemoteData", new { area = GlobalConstants.AdministrationAreaName })
+                                .Data("additionalComboBoxData");
                         })
                         .ServerFiltering(true);
                 })
@@ -160,7 +162,7 @@
     <script>
         function additionalComboBoxData() {
             return {
-                text: $('#contests').data('kendoComboBox').input.val()
+                contestFilter: $('#contests').data('kendoComboBox').input.val()
             }
         }
 
