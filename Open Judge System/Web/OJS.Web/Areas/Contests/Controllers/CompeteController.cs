@@ -23,6 +23,7 @@
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Ips;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
@@ -50,6 +51,7 @@
         private readonly IProblemsDataService problemsData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
+        private readonly IIpsDataService ipsData;
 
         public CompeteController(
             IOjsData data,
@@ -59,7 +61,8 @@
             IContestsDataService contestsData,
             IProblemsDataService problemsData,
             ISubmissionsDataService submissionsData,
-            ISubmissionsForProcessingDataService submissionsForProcessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData,
+            IIpsDataService ipsData)
             : base(data)
         {
             this.participantsBusiness = participantsBusiness;
@@ -69,6 +72,7 @@
             this.problemsData = problemsData;
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
+            this.ipsData = ipsData;
         }
 
         protected CompeteController(
@@ -179,24 +183,26 @@
                     contest.Duration.HasValue &&
                     !isUserAdminOrLecturerInContest;
 
-                if (shouldShowConfirmation)
+                if (!shouldShowConfirmation)
                 {
-                    return this.View("ConfirmCompete", new OnlineContestConfirmViewModel
-                    {
-                        ContesId = contest.Id,
-                        ContestName = contest.Name,
-                        ContestDuration = contest.Duration.Value,
-                        ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
-                    });
+                    return this.RedirectToAction(c => c.Register(id, official));
                 }
 
-                if (official &&
-                    !this.contestsBusiness.IsContestIpValidByContestAndIp(id, this.Request.UserHostAddress))
+                var confirmViewModel = new OnlineContestConfirmViewModel
                 {
-                    return this.RedirectToAction(c => c.NewContestIp(id));
-                }
+                    ContesId = contest.Id,
+                    ContestName = contest.Name,
+                    ContestDuration = contest.Duration.Value,
+                    ProblemGroupsCount = contest.ProblemGroups.Count(pg => !pg.IsDeleted)
+                };
 
-                return this.RedirectToAction(c => c.Register(id, official));
+                return this.View("ConfirmCompete", confirmViewModel);
+            }
+
+            if (official &&
+                !this.contestsBusiness.IsContestIpValidByContestAndIp(id, this.Request.UserHostAddress))
+            {
+                return this.RedirectToAction(c => c.NewContestIp(id));
             }
 
             var participantViewModel = new ParticipantViewModel(
@@ -793,7 +799,10 @@
                 return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });
             }
 
-            var contest = this.Data.Contests.All().Include(x => x.AllowedIps).Include("AllowedIps.Ip").FirstOrDefault(x => x.Id == model.ContestId);
+            var contest = this.contestsData
+                .GetByIdQuery(model.ContestId)
+                .Include(x => x.AllowedIps.Select(aIp => aIp.Ip))
+                .FirstOrDefault();
 
             this.ValidateContest(contest, true);
 
@@ -806,16 +815,11 @@
             var currentUserIpAddress = this.Request.UserHostAddress;
             if (contest.AllowedIps.All(y => y.Ip.Value != currentUserIpAddress))
             {
-                var ip = this.Data.Ips.All().FirstOrDefault(x => x.Value == currentUserIpAddress);
-                if (ip == null)
-                {
-                    ip = new Ip { Value = currentUserIpAddress };
-                    this.Data.Ips.Add(ip);
-                }
+                var ip = this.ipsData.GetByValue(currentUserIpAddress) ?? new Ip { Value = currentUserIpAddress };
 
                 contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = false });
 
-                this.Data.SaveChanges();
+                this.contestsData.Update(contest);
             }
 
             return this.RedirectToAction(GlobalConstants.Index, new { id = model.ContestId, official = true });

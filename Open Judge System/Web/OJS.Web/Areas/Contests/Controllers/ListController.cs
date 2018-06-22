@@ -151,11 +151,8 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Submission_type_not_found);
             }
 
-            var contests = this.Data.Contests
-                .All()
-                .Where(c => c.IsVisible && c.ProblemGroups
-                    .SelectMany(pg => pg.Problems)
-                    .Any(p => p.SubmissionTypes.Any(s => s.Id == submissionType.Id)))
+            var contests = this.contestsData
+                .GetAllVisibleBySubmissionType(submissionType.Id)
                 .OrderBy(c => c.OrderBy)
                 .Select(ContestViewModel.FromContest);
 

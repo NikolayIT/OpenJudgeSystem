@@ -67,6 +67,12 @@
             this.GetAllVisible()
                 .Where(c => c.CategoryId == categoryId);
 
+        public IQueryable<Contest> GetAllVisibleBySubmissionType(int submissionTypeId) =>
+            this.GetAllVisible()
+                .Where(c => c.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .Any(p => p.SubmissionTypes.Any(s => s.Id == submissionTypeId)));
+
         public IQueryable<Contest> GetAllByLecturer(string lecturerId) =>
             this.GetAll()
                 .Where(c =>
