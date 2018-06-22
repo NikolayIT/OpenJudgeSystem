@@ -45,11 +45,7 @@
 
             var result = contests
                 .OrderByDescending(c => c.CreatedOn)
-                .Select(c => new DropdownViewModel
-                {
-                    Name = c.Name,
-                    Id = c.Id
-                });
+                .Select(DropdownViewModel.FromContest);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -66,11 +62,7 @@
 
             var result = categories
                 .OrderBy(cc => cc.Name)
-                .Select(cc => new DropdownViewModel
-                {
-                    Name = cc.Name,
-                    Id = cc.Id
-                });
+                .Select(DropdownViewModel.FromContestCategory);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -87,11 +79,7 @@
 
             var result = contests
                 .OrderBy(c => c.Name)
-                .Select(c => new DropdownViewModel
-                {
-                    Name = c.Name,
-                    Id = c.Id
-                });
+                .Select(DropdownViewModel.FromContest);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }

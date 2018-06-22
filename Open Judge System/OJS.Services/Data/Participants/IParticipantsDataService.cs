@@ -10,6 +10,8 @@
 
     public interface IParticipantsDataService : IService
     {
+        Participant GetById(int id);
+
         Participant GetByContestByUserAndByIsOfficial(int contestId, string userId, bool isOfficial);
 
         Participant GetWithContestByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);

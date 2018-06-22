@@ -16,8 +16,8 @@
             .ServerFiltering(true)
             .Read(read =>
             {
-                read.Action("AvailableContests", "LecturersInContests", new { area = "Administration" });
-                read.Data(@<text> function () { return { text: $('\\#ContestId').data('kendoComboBox').input.val() }; } </text>);
+                read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData", new { area = "Administration" });
+                read.Data(@<text> function () { return { contestFilter: $('\\#ContestId').data('kendoComboBox').input.val() }; } </text>);
             })
         )
         .HtmlAttributes(new { style = "width: 100%;" })

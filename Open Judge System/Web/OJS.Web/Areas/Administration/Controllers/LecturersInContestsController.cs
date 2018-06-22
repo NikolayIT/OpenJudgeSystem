@@ -7,38 +7,20 @@
     using Kendo.Mvc.UI;
 
     using OJS.Data;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.LecturersInContests;
-    using OJS.Web.ViewModels.Common;
 
     using DatabaseModelType = OJS.Data.Models.LecturerInContest;
 
     public class LecturersInContestsController : AdministrationBaseController
     {
-        private const int MaxContestsToTake = 5;
+        private readonly IContestsDataService contestsData;
 
-        public LecturersInContestsController(IOjsData data)
-            : base(data)
-        {
-        }
-
-        [HttpGet]
-        public ActionResult AvailableContests(string text)
-        {
-            var contests = this.Data.Contests.All();
-
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                contests = contests.Where(x => x.Name.Contains(text));
-            }
-
-            var result = contests
-                .OrderBy(x => x.Name)
-                .Take(MaxContestsToTake)
-                .Select(DropdownViewModel.FromContest);
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
+        public LecturersInContestsController(
+            IOjsData data,
+            IContestsDataService contestsData)
+            : base(data) => this.contestsData = contestsData;
 
         [HttpPost]
         public ActionResult ReadContestsForLecturer([DataSourceRequest]DataSourceRequest request, string lecturerId)
@@ -78,13 +60,7 @@
                 this.Data.LecturersInContests.Add(lecturerInContest);
                 this.Data.SaveChanges();
 
-                var contestName = this.Data.Contests
-                    .All()
-                    .Where(x => x.Id == model.ContestId)
-                    .Select(x => x.Name)
-                    .FirstOrDefault();
-
-                model.ContestName = contestName;
+                model.ContestName = this.contestsData.GetNameById(model.ContestId);
             }
 
             return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
