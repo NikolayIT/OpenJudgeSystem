@@ -12,6 +12,7 @@
     using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Contests.Models;
@@ -20,27 +21,24 @@
 
     public class ContestsExportController : LecturerBaseController
     {
-        public ContestsExportController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly IContestsDataService contestsData;
+
+        public ContestsExportController(
+            IOjsData data,
+            IContestsDataService contestsData)
+            : base(data) => this.contestsData = contestsData;
 
         public ActionResult Solutions(int id, bool compete, SubmissionExportType exportType)
         {
-            var userHasAccessToContest =
-                this.User.IsAdmin() ||
-                this.Data.Contests
-                    .All()
-                    .Any(c =>
-                        c.Id == id &&
-                        (c.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id) ||
-                            c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id)));
+            var userHasAccessToContest = this.User.IsAdmin() ||
+                this.contestsData.IsUserLecturerInByContestAndUser(id, this.UserProfile.Id);
+
             if (!userHasAccessToContest)
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var contestName = this.Data.Contests.All().Where(x => x.Id == id).Select(c => c.Name).FirstOrDefault();
+            var contestName = this.contestsData.GetNameById(id);
             if (string.IsNullOrWhiteSpace(contestName))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Няма такова състезание";
