@@ -10,7 +10,7 @@
 
     public interface IOjsData : IDisposable
     {
-        IContestsRepository Contests { get; }
+        IDeletableEntityRepository<Contest> Contests { get; }
 
         IDeletableEntityRepository<Problem> Problems { get; }
 

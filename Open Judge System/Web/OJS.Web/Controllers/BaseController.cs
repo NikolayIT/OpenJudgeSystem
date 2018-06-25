@@ -14,6 +14,7 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels;
@@ -116,15 +117,10 @@
             };
         }
 
-        protected bool CheckIfUserHasContestPermissions(int contestId) =>
+        protected bool CheckIfUserHasContestPermissions(int contestId, IContestsDataService contestsData) =>
             this.UserProfile != null &&
             (this.User.IsAdmin() ||
-                this.Data.Contests
-                    .All()
-                    .Any(x =>
-                        x.Id == contestId &&
-                        (x.Lecturers.Any(y => y.LecturerId == this.UserProfile.Id) ||
-                        x.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id))));
+                contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id));
 
         protected bool CheckIfUserHasProblemPermissions(int problemId) =>
             this.UserProfile != null &&

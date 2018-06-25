@@ -117,7 +117,7 @@
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
 
-            var isUserAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
+            var isUserAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id, this.contestsData);
 
             page = page ?? 1;
 
@@ -183,7 +183,7 @@
         [Authorize]
         public ActionResult Full(int id, bool official, int? page)
         {
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -228,7 +228,7 @@
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Export(int? id, bool official)
         {
-            if (!id.HasValue || !this.CheckIfUserHasContestPermissions(id.Value))
+            if (!id.HasValue || !this.CheckIfUserHasContestPermissions(id.Value, this.contestsData))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -259,7 +259,7 @@
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult GetParticipantsAveragePoints(int id)
         {
-            if (!this.CheckIfUserHasContestPermissions(id))
+            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -331,7 +331,7 @@
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Stats(int contestId, bool official)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId))
+            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
@@ -406,7 +406,7 @@
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult StatsChart(int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId))
+            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }

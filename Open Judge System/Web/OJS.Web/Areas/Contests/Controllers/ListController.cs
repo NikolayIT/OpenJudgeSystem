@@ -109,7 +109,7 @@
 
             foreach (var contest in contestCategory.Contests)
             {
-                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
+                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id, this.contestsData);
 
                 contest.UserCanCompete = this.contestsBusiness
                     .CanUserCompeteByContestByUserAndIsAdmin(contest.Id, this.UserProfile?.Id, this.User.IsAdmin());

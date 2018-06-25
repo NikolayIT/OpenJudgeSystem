@@ -109,7 +109,6 @@
     <Compile Include="Migrations\DefaultMigrationConfiguration.cs" />
     <Compile Include="Providers\GlimpseConnectionEfSqlBulkInsertProvider.cs" />
     <Compile Include="Providers\Registries\EfBulkInsertGlimpseProviderRegistry.cs" />
-    <Compile Include="Repositories\ContestsRepository.cs" />
     <Compile Include="Repositories\Base\EfDeletableEntityRepository.cs" />
     <Compile Include="Repositories\Base\EfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\IContestsRepository.cs" />
