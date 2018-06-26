@@ -122,8 +122,8 @@
             var contestsData = ObjectFactory.GetInstance<IContestsDataService>();
 
             return this.UserProfile != null &&
-            (this.User.IsAdmin() ||
-                contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id));
+                (this.User.IsAdmin() ||
+                    contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id));
         }
 
         protected bool CheckIfUserHasProblemPermissions(int problemId) =>
