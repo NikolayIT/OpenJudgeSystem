@@ -93,6 +93,7 @@
     <Compile Include="Extensions\ExecutionStrategyTypeExtensions.cs" />
     <Compile Include="Extensions\HttpPostedFileBaseExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\FileHelpers.cs" />
     <Compile Include="Extensions\PlagiarismDetectorTypeExtensions.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Models\SystemRole.cs" />
     <Compile Include="Models\TestRunResultType.cs" />
     <Compile Include="Models\ProblemResourceType.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Resources\Enums\EnumTranslations.bg.Designer.cs">

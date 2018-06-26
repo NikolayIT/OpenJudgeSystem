@@ -9,6 +9,7 @@
 
     using HangfireConfiguration;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
@@ -24,6 +25,7 @@
             FilterConfig.RegisterGlobalFilters(
                 GlobalFilters.Filters,
                 new object[] { new ActionFilterDispatcher(SimpleInjectorConfig.Container.GetAllInstances) });
+            ObjectFactory.InitializeServiceProvider(SimpleInjectorConfig.Container);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);

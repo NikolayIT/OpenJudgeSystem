@@ -117,10 +117,14 @@
             };
         }
 
-        protected bool CheckIfUserHasContestPermissions(int contestId, IContestsDataService contestsData) =>
-            this.UserProfile != null &&
+        protected bool CheckIfUserHasContestPermissions(int contestId)
+        {
+            var contestsData = ObjectFactory.GetInstance<IContestsDataService>();
+
+            return this.UserProfile != null &&
             (this.User.IsAdmin() ||
                 contestsData.IsUserLecturerInByContestAndUser(contestId, this.UserProfile.Id));
+        }
 
         protected bool CheckIfUserHasProblemPermissions(int problemId) =>
             this.UserProfile != null &&

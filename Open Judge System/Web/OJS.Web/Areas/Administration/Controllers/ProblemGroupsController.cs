@@ -64,7 +64,7 @@
         [Route("Contest/{contestId:int}")]
         public ActionResult Index(int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -184,7 +184,7 @@
                 return false;
             }
 
-            if (!this.CheckIfUserHasContestPermissions(model.ContestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
                 this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
             }

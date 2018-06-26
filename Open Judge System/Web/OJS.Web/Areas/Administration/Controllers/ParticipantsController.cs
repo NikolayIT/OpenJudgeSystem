@@ -59,7 +59,7 @@
 
         public ActionResult Contest(int id)
         {
-            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -75,7 +75,7 @@
                 return this.Read(request);
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -93,7 +93,7 @@
         [HttpPost]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
-            if (!this.CheckIfUserHasContestPermissions(model.ContestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -140,7 +140,7 @@
         [HttpGet]
         public FileResult ExportToExcelByContest(DataSourceRequest request, int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
                 throw new UnauthorizedAccessException("No premissions");

@@ -142,7 +142,7 @@
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -167,7 +167,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ContestAdministrationViewModel model)
         {
-            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value, this.contestsData))
+            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -226,7 +226,7 @@
         [HttpPost]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ContestAdministrationViewModel model)
         {
-            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value, this.contestsData))
+            if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
                 this.ModelState.AddModelError(string.Empty, GeneralResource.No_privileges_message);
                 return this.GridOperation(request, model);

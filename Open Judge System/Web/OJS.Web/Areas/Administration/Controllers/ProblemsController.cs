@@ -87,7 +87,7 @@
         [Route("Contest/{contestId:int}")]
         public ActionResult Index(int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -127,7 +127,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -148,7 +148,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, ViewModelType problem)
         {
-            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -451,7 +451,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(id.Value, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -483,7 +483,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult ConfirmDeleteAll(int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -527,7 +527,7 @@
                 return this.RedirectToAction(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(problem.ContestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
@@ -593,7 +593,7 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(problem.ContestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
@@ -617,7 +617,7 @@
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
             }
 
-            if (!this.CheckIfUserHasContestPermissions(model.ContestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(model.ContestId))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.RedirectToAction<ProblemsController>(c => c.Index());
@@ -692,7 +692,7 @@
         [HttpGet]
         public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int contestId)
         {
-            if (!this.CheckIfUserHasContestPermissions(contestId, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 throw new UnauthorizedAccessException("No premissions");
@@ -759,7 +759,7 @@
                 return this.JsonError(GlobalResource.Invalid_contest);
             }
 
-            if (!this.CheckIfUserHasContestPermissions(contestId.Value, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(contestId.Value))
             {
                 return this.JsonError(GeneralResource.No_privileges_message);
             }
@@ -788,7 +788,7 @@
 
         private IEnumerable GetData(int id)
         {
-            if (!this.CheckIfUserHasContestPermissions(id, this.contestsData))
+            if (!this.CheckIfUserHasContestPermissions(id))
             {
                 return new List<ViewModelType>();
             }
