@@ -13,8 +13,6 @@
         [Key]
         public int Id { get; set; }
 
-        public int? OldId { get; set; }
-
         public int ProblemGroupId { get; set; }
 
         public virtual ProblemGroup ProblemGroup { get; set; }

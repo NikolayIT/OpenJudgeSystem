@@ -170,15 +170,6 @@ namespace Resources.Areas.Administration.Users.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form the old system?.
-        /// </summary>
-        public static string Is_ghoust_user {
-            get {
-                return ResourceManager.GetString("Is_ghoust_user", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Job title.
         /// </summary>
         public static string Job_title {

@@ -660,7 +660,6 @@
 
             var problem = new Problem
             {
-                OldId = 0,
                 ProblemGroup = problemGroup,
                 Name = "Problem",
                 MaximumPoints = 100,
