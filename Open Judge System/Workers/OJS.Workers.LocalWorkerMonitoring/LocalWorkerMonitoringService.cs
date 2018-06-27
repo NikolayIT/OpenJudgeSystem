@@ -13,23 +13,24 @@
 
         public LocalWorkerMonitoringService()
         {
-            logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
-            this.localWorkerServiceController = new ServiceController("OJS Local Worker Service");
+            logger = LogManager.GetLogger(Constants.LocalWorkerMonitoringServiceLogName);
+
+            this.localWorkerServiceController = new ServiceController(Constants.LocalWorkerServiceName);
         }
 
         protected override void OnStart(string[] args)
         {
-            logger.Info("LocalWorkerMonitoringService starting...");
-            logger.Info($"LocalWorkerService status is: {this.localWorkerServiceController.Status}");
+            logger.Info($"{nameof(LocalWorkerMonitoringService)} starting...");
+            logger.Info($"{Constants.LocalWorkerServiceName} status is: {this.localWorkerServiceController.Status}");
 
-            logger.Info("LocalWorkerMonitoringService started.");
+            logger.Info($"{nameof(LocalWorkerMonitoringService)} started.");
         }
 
         protected override void OnStop()
         {
-            logger.Info("LocalWorkerMonitoringService stopping...");
+            logger.Info($"{nameof(LocalWorkerMonitoringService)} stopping...");
 
-            logger.Info("LocalWorkerMonitoringService stopped.");
+            logger.Info($"{nameof(LocalWorkerMonitoringService)} stopped.");
         }
     }
 }

@@ -4,6 +4,8 @@
     using System.Configuration.Install;
     using System.ServiceProcess;
 
+    using OJS.Workers.Common;
+
     [RunInstaller(true)]
     public class LocalWorkerServiceInstaller : Installer
     {
@@ -19,8 +21,8 @@
             var serviceInstaller = new ServiceInstaller
             {
                 StartType = ServiceStartMode.Automatic,
-                DisplayName = "OJS Local Worker Service",
-                ServiceName = "OJS Local Worker Service",
+                DisplayName = Constants.LocalWorkerServiceName,
+                ServiceName = Constants.LocalWorkerServiceName,
                 Description =
                     "Evaluates submissions for the Open Judge System and executes processes in a sandboxed environment. Processes are executed on the current machine.",
             };
