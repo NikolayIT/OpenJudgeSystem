@@ -10,8 +10,10 @@
 
     internal class LocalWorkerMonitoringService : ServiceBase
     {
+        private const int IntervalInMilliseconds = 60000;
+
         private static ILog logger;
-        private readonly ServiceController localWorkerServiceController;
+        private ServiceController localWorkerServiceController;
 
         public LocalWorkerMonitoringService()
         {
@@ -22,11 +24,8 @@
 
         protected override void OnStart(string[] args)
         {
-            logger.Info($"{nameof(LocalWorkerMonitoringService)} starting...");
-
-            // Set up a timer to trigger every minute.
-            var timer = new Timer { Interval = 60000 };
-            timer.Elapsed += this.OnTimer;
+            var timer = new Timer { Interval = IntervalInMilliseconds };
+            timer.Elapsed += this.OnTimerElapsed;
             timer.Start();
 
             logger.Info($"{nameof(LocalWorkerMonitoringService)} started.");
@@ -37,27 +36,55 @@
             logger.Info($"{nameof(LocalWorkerMonitoringService)} stopped.");
         }
 
-        private void OnTimer(object sender, ElapsedEventArgs args)
+        private void OnTimerElapsed(object sender, ElapsedEventArgs args)
         {
-            var localWorkerServiceStatus = this.localWorkerServiceController.Status;
+            this.localWorkerServiceController.Close();
+            this.localWorkerServiceController = new ServiceController(Constants.LocalWorkerServiceName);
 
-            if (localWorkerServiceStatus == ServiceControllerStatus.StopPending)
+            switch (this.localWorkerServiceController.Status)
             {
-                logger.Warn($"{Constants.LocalWorkerServiceName} is stopping...");
+                case ServiceControllerStatus.StopPending:
+                    logger.Warn($"{Constants.LocalWorkerServiceName} is stopping...");
+                    logger.Info($"Waiting for the {Constants.LocalWorkerServiceName} to stop...");
+                    this.localWorkerServiceController.WaitForStatus(ServiceControllerStatus.Stopped);
+                    this.TryStartLocalWorkerService();
+                    break;
+                case ServiceControllerStatus.Stopped:
+                    logger.Warn($"{Constants.LocalWorkerServiceName} has stopped.");
+                    this.TryStartLocalWorkerService();
+                    break;
+                case ServiceControllerStatus.ContinuePending:
+                    logger.Warn($"{Constants.LocalWorkerServiceName} is resuming...");
+                    break;
+                case ServiceControllerStatus.Paused:
+                    logger.Warn($"{Constants.LocalWorkerServiceName} has paused.");
+                    break;
+                case ServiceControllerStatus.PausePending:
+                    logger.Warn($"{Constants.LocalWorkerServiceName} is pausing...");
+                    break;
+                case ServiceControllerStatus.StartPending:
+                    logger.Info($"{Constants.LocalWorkerServiceName} is starting...");
+                    break;
+                case ServiceControllerStatus.Running:
+                    break;
+                default:
+                    logger.Error(new ArgumentOutOfRangeException(string.Empty, nameof(ServiceControllerStatus)));
+                    break;
             }
-            else if (localWorkerServiceStatus == ServiceControllerStatus.Stopped)
-            {
-                logger.Warn($"{Constants.LocalWorkerServiceName} has stopped.");
+        }
 
-                try
-                {
-                    this.localWorkerServiceController.Start();
-                    logger.Info($"{Constants.LocalWorkerServiceName} has started successfully.");
-                }
-                catch (Exception ex)
-                {
-                    logger.Error($"Restarting the {Constants.LocalWorkerServiceName} has thrown an exception: {ex.Message}");
-                }
+        private void TryStartLocalWorkerService()
+        {
+            try
+            {
+                this.localWorkerServiceController.Start();
+                logger.Info($"Attempting to start the {Constants.LocalWorkerServiceName}...");
+                this.localWorkerServiceController.WaitForStatus(ServiceControllerStatus.Running);
+                logger.Info($"{Constants.LocalWorkerServiceName} has started successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"Starting the {Constants.LocalWorkerServiceName} has thrown an exception: {ex.Message}");
             }
         }
     }
