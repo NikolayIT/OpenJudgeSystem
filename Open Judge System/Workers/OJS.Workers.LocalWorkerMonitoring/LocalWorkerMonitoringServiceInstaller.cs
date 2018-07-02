@@ -23,7 +23,8 @@
                 StartType = ServiceStartMode.Automatic,
                 DisplayName = Constants.LocalWorkerMonitoringServiceName,
                 ServiceName = Constants.LocalWorkerMonitoringServiceName,
-                Description = $"Monitors the {Constants.LocalWorkerServiceName}"
+                Description =
+                    $"Monitors the {Constants.LocalWorkerServiceName} and restarts it or sends email if not running"
             };
 
             this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });

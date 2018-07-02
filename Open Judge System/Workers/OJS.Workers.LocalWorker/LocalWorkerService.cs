@@ -10,9 +10,9 @@
     using log4net;
 
     using OJS.Common;
+    using OJS.Common.Helpers;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.Helpers;
 
     internal class LocalWorkerService : ServiceBase
     {

@@ -68,7 +68,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -98,6 +100,7 @@
     <Compile Include="Extensions\PlagiarismDetectorTypeExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
+    <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Models\CompilerType.cs" />
     <Compile Include="Models\ContestQuestionType.cs" />
