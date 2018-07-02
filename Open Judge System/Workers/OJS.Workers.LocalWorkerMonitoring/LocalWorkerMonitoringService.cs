@@ -7,6 +7,9 @@
     using log4net;
 
     using OJS.Workers.Common;
+    using OJS.Workers.Common.ServiceInstaller.Models;
+
+    using ServiceInstaller = Common.ServiceInstaller.ServiceInstaller;
 
     internal class LocalWorkerMonitoringService : ServiceBase
     {
@@ -16,6 +19,7 @@
 
         public LocalWorkerMonitoringService() =>
             logger = LogManager.GetLogger(Constants.LocalWorkerMonitoringServiceLogName);
+
 
         protected override void OnStart(string[] args)
         {
@@ -33,53 +37,62 @@
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs args)
         {
-            using (var localWorkerServiceController = new ServiceController(Constants.LocalWorkerServiceName))
+            var waitTimeout = TimeSpan.FromMilliseconds(IntervalInMilliseconds);
+            const string localWorkerServiceName = Constants.LocalWorkerServiceName;
+            var localWorkerState = ServiceInstaller.GetServiceStatus(localWorkerServiceName);
+            switch (localWorkerState)
             {
-                switch (localWorkerServiceController.Status)
-                {
-                    case ServiceControllerStatus.StopPending:
-                        logger.Warn($"{Constants.LocalWorkerServiceName} is stopping...");
-                        logger.Info($"Waiting for the {Constants.LocalWorkerServiceName} to stop...");
-                        localWorkerServiceController.WaitForStatus(ServiceControllerStatus.Stopped);
-                        TryStartService(localWorkerServiceController);
-                        break;
-                    case ServiceControllerStatus.Stopped:
-                        logger.Warn($"{Constants.LocalWorkerServiceName} has stopped.");
-                        TryStartService(localWorkerServiceController);
-                        break;
-                    case ServiceControllerStatus.ContinuePending:
-                        logger.Warn($"{Constants.LocalWorkerServiceName} is resuming...");
-                        break;
-                    case ServiceControllerStatus.Paused:
-                        logger.Warn($"{Constants.LocalWorkerServiceName} has paused.");
-                        break;
-                    case ServiceControllerStatus.PausePending:
-                        logger.Warn($"{Constants.LocalWorkerServiceName} is pausing...");
-                        break;
-                    case ServiceControllerStatus.StartPending:
-                        logger.Info($"{Constants.LocalWorkerServiceName} is starting...");
-                        break;
-                    case ServiceControllerStatus.Running:
-                        break;
-                    default:
-                        logger.Error(new ArgumentOutOfRangeException(string.Empty, nameof(ServiceControllerStatus)));
-                        break;
-                }
-            }
-        }
-
-        private static void TryStartService(ServiceController serviceController)
-        {
-            try
-            {
-                serviceController.Start();
-                logger.Info($"Attempting to start the {Constants.LocalWorkerServiceName}...");
-                serviceController.WaitForStatus(ServiceControllerStatus.Running);
-                logger.Info($"{Constants.LocalWorkerServiceName} has started successfully.");
-            }
-            catch (Exception ex)
-            {
-                logger.Error($"Starting the {Constants.LocalWorkerServiceName} has thrown an exception: {ex.Message}");
+                case ServiceState.Running:
+                    break;
+                case ServiceState.Unknown:
+                    logger.Error($"Unable to retrive the state of the {localWorkerServiceName}.");
+                    break;
+                case ServiceState.NotFound:
+                    logger.Warn($"the {localWorkerServiceName} is not found");
+                    try
+                    {
+                        logger.Info($"Attempting to install and start the {localWorkerServiceName}");
+                        ServiceInstaller.InstallAndStart(
+                            localWorkerServiceName,
+                            localWorkerServiceName,
+                            @"C:\OpenJudgeSystem\Open Judge System\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe");
+                        logger.Info($"{localWorkerServiceName} installed and started successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(
+                            $"An exception was thrown while attempting to install and start the {localWorkerServiceName}", ex);
+                    }
+                    break;
+                case ServiceState.Stopped:
+                    logger.Warn($"the {localWorkerServiceName} is stopped.");
+                    using (var serviceController = new ServiceController(localWorkerServiceName))
+                    {
+                        try
+                        {
+                            logger.Info($"Attempting to start the {localWorkerServiceName}");
+                            serviceController.Start();
+                            serviceController.WaitForStatus(ServiceControllerStatus.Running, waitTimeout);
+                            logger.Info($"{localWorkerServiceName} installed and started successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(
+                                $"An exception was thrown while attempting to start the {localWorkerServiceName}", ex);
+                        }
+                    }
+                    
+                    break;
+                case ServiceState.StartPending:
+                    break;
+                case ServiceState.StopPending:
+                case ServiceState.ContinuePending:
+                case ServiceState.PausePending:
+                case ServiceState.Paused:
+                    goto case ServiceState.Stopped;
+                default:
+                    logger.Error(new ArgumentOutOfRangeException(nameof(localWorkerState), "Invalid service state"));
+                    break;
             }
         }
     }

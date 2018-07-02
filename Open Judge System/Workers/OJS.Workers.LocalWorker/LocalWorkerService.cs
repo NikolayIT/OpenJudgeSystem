@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
@@ -11,6 +12,9 @@
     using OJS.Common;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.ServiceInstaller.Models;
+
+    using ServiceInstaller = OJS.Workers.Common.ServiceInstaller.ServiceInstaller;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -43,6 +47,8 @@
             this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
 
             this.StartThreads(this.threads);
+
+            this.TryStartMonitoringService();
 
             logger.Info("LocalWorkerService started.");
         }
@@ -121,6 +127,41 @@
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
+            }
+        }
+
+        private void TryStartMonitoringService()
+        {
+            Thread.Sleep(10000);
+            const string serviceName = Constants.LocalWorkerMonitoringServiceName;
+            const string servicePath =
+                @"C:\OpenJudgeSystem\Open Judge System\Workers\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
+
+            try
+            {
+                if (ServiceInstaller.ServiceIsInstalled(serviceName))
+                {
+                    var serviceStatus = ServiceInstaller.GetServiceStatus(serviceName);
+                    if (serviceStatus == ServiceState.Running)
+                    {
+                        logger.Info($"{serviceName} is running.");
+                        return;
+                    }
+
+                    logger.Info($"Attempting to start the {serviceName}...");
+                    ServiceInstaller.StartService(serviceName);
+                    logger.Info($"{serviceName} started successfully.");
+                }
+                else
+                {
+                    logger.Info($"Attempting to install and start the {serviceName}...");
+                    ServiceInstaller.InstallAndStart(serviceName, serviceName, servicePath);
+                    logger.Info($"{serviceName} installed and started successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An exception was thrown while attempting to start the {serviceName}", ex);
             }
         }
     }
