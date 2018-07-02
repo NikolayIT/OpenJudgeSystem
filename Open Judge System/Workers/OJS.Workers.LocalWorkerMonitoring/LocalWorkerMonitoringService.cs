@@ -8,6 +8,7 @@
 
     using OJS.Common.Helpers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     internal class LocalWorkerMonitoringService : ServiceBase
     {
@@ -36,8 +37,15 @@
         {
             if (!ServicesHelper.ServiceIsInstalled(Constants.LocalWorkerServiceName))
             {
+                const string localWorkerExePath =
+                    @"..\..\..\..\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
+
                 logger.Warn($"the {Constants.LocalWorkerServiceName} is not found");
-                InstallAndStartLocalWorker();
+                LocalWorkerServicesHelper.TryInstallAndStartService(
+                    Constants.LocalWorkerServiceName,
+                    localWorkerExePath,
+                    logger);
+
                 return;
             }
 
@@ -55,7 +63,7 @@
                     break;
                 case ServiceControllerStatus.Stopped:
                     logger.Warn($"{Constants.LocalWorkerServiceName} is stopped.");
-                    StartLocalWorker();
+                    LocalWorkerServicesHelper.TryStartService(Constants.LocalWorkerServiceName, logger);
                     break;
                 case ServiceControllerStatus.PausePending:
                     logger.Warn($"{Constants.LocalWorkerServiceName} is pausing...");
@@ -69,42 +77,6 @@
                 default:
                     logger.Error(new ArgumentOutOfRangeException(nameof(localWorkerStatus), "Invalid service state"));
                     break;
-            }
-        }
-
-        private static void InstallAndStartLocalWorker()
-        {
-            const string localWorkerExePath =
-                @"..\..\..\..\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
-
-            try
-            {
-                logger.Info($"Attempting to install and start the {Constants.LocalWorkerServiceName}");
-
-                ServicesHelper.InstallAndStart(Constants.LocalWorkerServiceName, localWorkerExePath);
-
-                logger.Info($"{Constants.LocalWorkerServiceName} installed and started successfully.");
-            }
-            catch (Exception ex)
-            {
-                logger.Error(
-                    $"An exception was thrown while attempting to install and start the {Constants.LocalWorkerServiceName}", ex);
-            }
-        }
-
-        private static void StartLocalWorker()
-        {
-            try
-            {
-                logger.Info($"Attempting to start the {Constants.LocalWorkerServiceName}");
-
-                ServicesHelper.StartService(Constants.LocalWorkerServiceName);
-
-                logger.Info($"{Constants.LocalWorkerServiceName} started successfully.");
-            }
-            catch (Exception ex)
-            {
-                logger.Error($"An exception was thrown while attempting to start the {Constants.LocalWorkerServiceName}", ex);
             }
         }
     }

@@ -75,6 +75,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\CSharpPreprocessorHelper.cs" />
     <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
+    <Compile Include="Helpers\LocalWorkerServicesHelper.cs" />
     <Compile Include="ProcessExecutionResult.cs" />
     <Compile Include="ProcessExecutionResultType.cs" />
     <Compile Include="IChecker.cs" />
@@ -93,6 +94,12 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

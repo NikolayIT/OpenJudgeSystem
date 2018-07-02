@@ -7,7 +7,7 @@
 
     public static class ServicesHelper
     {
-        private const int WaitTimeInMilliseconds = 10000;
+        private const int MaxWaitTimeInMilliseconds = 10000;
 
         public static void InstallAndStart(string serviceName, string filePath)
         {
@@ -25,13 +25,14 @@
 
         public static void StartService(string serviceName)
         {
-            var waitTimeOut = TimeSpan.FromMilliseconds(WaitTimeInMilliseconds);
             using (var serviceController = new ServiceController(serviceName))
             {
                 if (serviceController.Status.Equals(ServiceControllerStatus.Running))
                 {
                     return;
                 }
+
+                var waitTimeOut = TimeSpan.FromMilliseconds(MaxWaitTimeInMilliseconds);
 
                 serviceController.Start();
                 serviceController.WaitForStatus(ServiceControllerStatus.Running, waitTimeOut);
