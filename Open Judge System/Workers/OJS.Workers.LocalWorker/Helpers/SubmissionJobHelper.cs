@@ -3,7 +3,7 @@
     using System;
 
     using OJS.Common.Models;
-    using OJS.Workers.Common;
+    using OJS.Workers.Common.AppSettings;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;

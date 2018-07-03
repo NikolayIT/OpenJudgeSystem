@@ -3,7 +3,7 @@
     using NUnit.Framework;
 
     using OJS.Common.Extensions;
-    using OJS.Workers.Common;
+    using OJS.Workers.Common.AppSettings;
 
     [TestFixture]
     public class CSharpCompilerTests

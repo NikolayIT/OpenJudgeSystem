@@ -9,9 +9,13 @@
     {
         private const int MaxWaitTimeInMilliseconds = 10000;
 
-        public static void InstallAndStart(string serviceName, string filePath)
+        public static void InstallService(string serviceName, string exeFilePath)
         {
-            var installer = new AssemblyInstaller(filePath, null) { UseNewContext = true };
+            var installer = new AssemblyInstaller(exeFilePath, null)
+            {
+                UseNewContext = true
+            };
+
             installer.Install(null);
             installer.Commit(null);
 
@@ -19,8 +23,6 @@
             {
                 throw new ArgumentException("Unable to install service.");
             }
-
-            StartService(serviceName);
         }
 
         public static void StartService(string serviceName)
@@ -39,18 +41,23 @@
             }
         }
 
-        public static bool ServiceIsInstalled(string serviceName)
+        public static ServiceControllerStatus? GetServiceStatus(string servicename)
         {
-            var services = ServiceController.GetServices(Environment.MachineName);
-            return services.Any(s => s.ServiceName == serviceName);
-        }
+            if (!ServiceIsInstalled(servicename))
+            {
+                return null;
+            }
 
-        public static ServiceControllerStatus GetServiceStatus(string servicename)
-        {
             using (var serviceController = new ServiceController(servicename))
             {
                 return serviceController.Status;
             }
+        }
+
+        private static bool ServiceIsInstalled(string serviceName)
+        {
+            var services = ServiceController.GetServices(Environment.MachineName);
+            return services.Any(s => s.ServiceName == serviceName);
         }
     }
 }

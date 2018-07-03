@@ -9,6 +9,7 @@
     using OJS.Common;
     using OJS.Common.Models;
     using OJS.Workers.Common;
+    using Settings = OJS.Workers.Common.AppSettings.Settings;
 
     /// <summary>
     /// Defines the base of the work with compilers algorithm and allow the subclasses to implement some of the algorithm parts.

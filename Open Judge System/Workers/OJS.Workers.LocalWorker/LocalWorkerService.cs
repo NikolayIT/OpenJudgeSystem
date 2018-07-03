@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
@@ -12,7 +13,7 @@
     using OJS.Common.Helpers;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.AppSettings;
 
     internal class LocalWorkerService : ServiceBase
     {
@@ -130,26 +131,39 @@
 
         private void TryStartMonitoringService()
         {
-            if (ServicesHelper.ServiceIsInstalled(Constants.LocalWorkerMonitoringServiceName))
+            const string monitoringServiceName = Constants.LocalWorkerMonitoringServiceName;
+
+            try
             {
-                var serviceStatus = ServicesHelper.GetServiceStatus(Constants.LocalWorkerMonitoringServiceName);
+                var serviceStatus = ServicesHelper.GetServiceStatus(monitoringServiceName);
                 if (serviceStatus == ServiceControllerStatus.Running)
                 {
-                    logger.Info($"{Constants.LocalWorkerMonitoringServiceName} is running.");
+                    logger.Info($"{monitoringServiceName} is running.");
                     return;
                 }
 
-                LocalWorkerServicesHelper.TryStartService(Constants.LocalWorkerMonitoringServiceName, logger);
-                return;
+                if (serviceStatus == null)
+                {
+                    const string monitoringServiceExePath =
+                        @"..\..\..\..\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
+
+                    logger.Info($"Attempting to install the {monitoringServiceName}...");
+
+                    ServicesHelper.InstallService(monitoringServiceName, monitoringServiceExePath);
+
+                    logger.Info($"{monitoringServiceName} installed successfully.");
+                }
+
+                logger.Info($"Attempting to start the {monitoringServiceName}...");
+
+                ServicesHelper.StartService(monitoringServiceName);
+
+                logger.Info($"{monitoringServiceName} started successfully.");
             }
-
-            const string monitoringServiceExePath =
-                @"..\..\..\..\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
-
-            LocalWorkerServicesHelper.TryInstallAndStartService(
-                Constants.LocalWorkerMonitoringServiceName,
-                monitoringServiceExePath,
-                logger);
+            catch (Exception ex)
+            {
+                logger.Error($"An exception was thrown while attempting to start the {monitoringServiceName}", ex);
+            }
         }
     }
 }
