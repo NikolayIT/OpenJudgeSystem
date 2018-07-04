@@ -64,7 +64,7 @@
     <Compile Include="Agents\AgentResponseData.cs" />
     <Compile Include="Agents\TestResult.cs" />
     <Compile Include="AppSettings\BaseTimeAndMemorySettings.cs" />
-    <Compile Include="AppSettings\CompilerSettings.cs" />
+    <Compile Include="AppSettings\ExitTimeoutMultiplierSettings.cs" />
     <Compile Include="CheckerDetails.cs" />
     <Compile Include="CheckerResult.cs" />
     <Compile Include="CheckerResultType.cs" />

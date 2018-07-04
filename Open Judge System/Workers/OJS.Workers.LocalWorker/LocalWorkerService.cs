@@ -11,6 +11,7 @@
 
     using OJS.Common;
     using OJS.Common.Helpers;
+    using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
     using OJS.Workers.Common.AppSettings;
@@ -135,26 +136,22 @@
 
             try
             {
-                var serviceStatus = ServicesHelper.GetServiceStatus(monitoringServiceName);
-                if (serviceStatus == ServiceControllerStatus.Running)
+                var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
+                if (serviceState.Equals(ServiceState.Running))
                 {
                     logger.Info($"{monitoringServiceName} is running.");
                     return;
                 }
 
-                if (serviceStatus == null)
+                logger.Info($"Attempting to start the {monitoringServiceName}...");
+
+                if (serviceState.Equals(ServiceState.NotFound))
                 {
                     const string monitoringServiceExePath =
-                        @"..\..\..\..\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
-
-                    logger.Info($"Attempting to install the {monitoringServiceName}...");
+                        @"..\..\..\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
 
                     ServicesHelper.InstallService(monitoringServiceName, monitoringServiceExePath);
-
-                    logger.Info($"{monitoringServiceName} installed successfully.");
                 }
-
-                logger.Info($"Attempting to start the {monitoringServiceName}...");
 
                 ServicesHelper.StartService(monitoringServiceName);
 

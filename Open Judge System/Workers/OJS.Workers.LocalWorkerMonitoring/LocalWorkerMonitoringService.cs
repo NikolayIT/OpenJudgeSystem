@@ -7,6 +7,7 @@
     using log4net;
 
     using OJS.Common.Helpers;
+    using OJS.Common.Models;
     using OJS.Services.Common.Emails;
     using OJS.Workers.Common;
 
@@ -52,49 +53,51 @@
             logger.Info($"{nameof(LocalWorkerMonitoringService)} stopped.");
         }
 
-        private async void OnTimerElapsed(object sender, ElapsedEventArgs args)
+        private void OnTimerElapsed(object sender, ElapsedEventArgs args)
         {
             const string serviceName = Constants.LocalWorkerServiceName;
-            var localWorkerStatus = ServicesHelper.GetServiceStatus(serviceName);
 
             try
             {
-                switch (localWorkerStatus)
+                var localWorkerState = ServicesHelper.GetServiceState(serviceName);
+                switch (localWorkerState)
                 {
-                    case null:
-                        logger.Warn($"{serviceName} is not found");
-                        const string localWorkerExePath =
-                            @"..\..\..\..\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
-                        InstallService(serviceName, localWorkerExePath);
-                        StartService(serviceName);
+                    case ServiceState.NotFound:
+                        logger.Warn($"{serviceName} is not found.");
+                        InstallAndStartLocalWorker();
                         break;
-                    case ServiceControllerStatus.Running:
+                    case ServiceState.Running:
                         this.totalChecksCount = 0;
                         this.failsToStartCount = 0;
                         this.numberOfTotalChecksBeforeSendingEmail = NumberOfTotalChecksBeforeSendingEmail;
                         this.numberOfFailedStartsBeforeSendingEmail = NumberOfFailedStartsBeforeSendingEmail;
                         break;
-                    case ServiceControllerStatus.StartPending:
+                    case ServiceState.StartPending:
                         logger.Info($"{serviceName} is starting...");
                         break;
-                    case ServiceControllerStatus.StopPending:
-                        logger.Warn($"{serviceName} is stopping...");
-                        break;
-                    case ServiceControllerStatus.Stopped:
-                        logger.Warn($"{serviceName} is stopped.");
-                        StartService(serviceName);
-                        break;
-                    case ServiceControllerStatus.PausePending:
-                        logger.Warn($"{serviceName} is pausing...");
-                        break;
-                    case ServiceControllerStatus.Paused:
-                        logger.Warn($"{serviceName} is paused.");
-                        break;
-                    case ServiceControllerStatus.ContinuePending:
+                    case ServiceState.ContinuePending:
                         logger.Warn($"{serviceName} is resuming...");
                         break;
+                    case ServiceState.StopPending:
+                        logger.Warn($"{serviceName} is stopping...");
+                        StartLocalWorker();
+                        break;
+                    case ServiceState.Stopped:
+                        logger.Warn($"{serviceName} is stopped.");
+                        StartLocalWorker();
+                        break;
+                    case ServiceState.PausePending:
+                        logger.Warn($"{serviceName} is pausing...");
+                        StartLocalWorker();
+                        break;
+                    case ServiceState.Paused:
+                        logger.Warn($"{serviceName} is paused.");
+                        StartLocalWorker();
+                        break;
+                    case ServiceState.Unknown:
+                        throw new ArgumentException($"{serviceName} is in unknown state.");
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(localWorkerStatus),"Invalid service status");
+                        throw new ArgumentOutOfRangeException(nameof(localWorkerState));
                 }
             }
             catch (Exception ex)
@@ -111,20 +114,18 @@
                 return;
             }
 
-            var messageTitle = $"{serviceName} cannot keep running";
-            var messageBody = $"{messageTitle}. It has started and stopped more than {this.totalChecksCount} times.";
+            var messageTitle = $"{serviceName} cannot keep Running state";
+            var messageBody = $"{serviceName} has started and stopped consecutively more than {this.totalChecksCount} times.";
 
             if (this.failsToStartCount > this.numberOfFailedStartsBeforeSendingEmail)
             {
                 messageTitle = $"{serviceName} failed to start";
-                messageBody = $"{messageTitle} more than {this.failsToStartCount} times.";
+                messageBody = $"{serviceName} failed to start more than {this.failsToStartCount} times.";
             }
-
-            messageBody += $" The current status of the service is {localWorkerStatus}";
 
             try
             {
-                await this.emailSender.SendEmailAsync(
+                this.emailSender.SendEmail(
                     this.devEmail,
                     messageTitle,
                     messageBody);
@@ -134,26 +135,31 @@
             }
             catch (Exception ex)
             {
-                logger.Error("An exception was thrown while sending email", ex);
+                logger.Error($"An exception was thrown while sending email to {this.devEmail}", ex);
             }
         }
 
-        private static void StartService(string serviceName)
+        private static void StartLocalWorker()
         {
-            logger.Info($"Attempting to start the {serviceName}...");
+            logger.Info($"Attempting to start the {Constants.LocalWorkerServiceName}...");
 
-            ServicesHelper.StartService(serviceName);
+            ServicesHelper.StartService(Constants.LocalWorkerServiceName);
 
-            logger.Info($"{serviceName} started successfully.");
+            logger.Info($"{Constants.LocalWorkerServiceName} started successfully.");
         }
 
-        private static void InstallService(string serviceName, string serviceExePath)
+        private static void InstallAndStartLocalWorker()
         {
-            logger.Info($"Attempting to install the {serviceName}...");
+            const string localWorkerExePath =
+                @"..\..\..\..\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
 
-            ServicesHelper.InstallService(serviceName, serviceExePath);
+            logger.Info($"Attempting to install the {Constants.LocalWorkerServiceName}...");
 
-            logger.Info($"{serviceName} installed successfully.");
+            ServicesHelper.InstallService(Constants.LocalWorkerServiceName, localWorkerExePath);
+
+            logger.Info($"{Constants.LocalWorkerServiceName} installed successfully.");
+
+            StartLocalWorker();
         }
     }
 }

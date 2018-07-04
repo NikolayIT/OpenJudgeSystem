@@ -11,15 +11,25 @@
 
         static Settings() => Logger = LogManager.GetLogger("Settings");
 
+        public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
+
         public static string MavenPath => GetSetting("MavenPath");
 
+        public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
+
+        public static string CSharpDotNetCoreCompilerPath => GetSetting("CSharpDotNetCoreCompilerPath");
+
         public static string DotNetCoreSharedAssembliesPath => GetSetting("DotNetCoreSharedAssembliesPath");
+
+        public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
 
         public static string NUnitConsoleRunnerPath => GetSetting("NUnitConsoleRunnerPath");
 
         public static string MsBuildExecutablePath => GetSetting("MsBuildExecutablePath");
 
         public static string NuGetExecutablePath => GetSetting("NuGetExecutablePath");
+
+        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
 
         public static string JavaExecutablePath => GetSetting("JavaExecutablePath");
 

@@ -24,6 +24,8 @@
             {
                 var monitoringService = container.GetInstance<LocalWorkerMonitoringService>();
 
+                monitoringService.CanStop = false;
+
                 ServiceBase.Run(monitoringService);
             }
         } 

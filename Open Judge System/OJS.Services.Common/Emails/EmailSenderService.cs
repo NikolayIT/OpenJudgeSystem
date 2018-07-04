@@ -28,8 +28,7 @@
             {
                 Credentials = new NetworkCredential(username, password),
                 Port = emailServerPort,
-                Host = emailServerHost,
-                EnableSsl = true
+                Host = emailServerHost
             };
 
             this.senderEmail = senderEmail;

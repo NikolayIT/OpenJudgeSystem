@@ -2,16 +2,6 @@
 {
     public static partial class Settings
     {
-        public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
-
-        public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
-
-        public static string CSharpDotNetCoreCompilerPath => GetSetting("CSharpDotNetCoreCompilerPath");
-
-        public static string CPlusPlusGccCompilerPath => GetSetting("CPlusPlusGccCompilerPath");
-
-        public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
-
         public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
 
         public static int CPlusPlusZipCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusZipCompilerProcessExitTimeOutMultiplier", 1);
