@@ -55,15 +55,15 @@
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs args)
         {
-            const string serviceName = Constants.LocalWorkerServiceName;
+            const string localWorkerName = Constants.LocalWorkerServiceName;
 
             try
             {
-                var localWorkerState = ServicesHelper.GetServiceState(serviceName);
+                var localWorkerState = ServicesHelper.GetServiceState(localWorkerName);
                 switch (localWorkerState)
                 {
                     case ServiceState.NotFound:
-                        logger.Warn($"{serviceName} is not found.");
+                        logger.Warn($"{localWorkerName} is not found.");
                         InstallAndStartLocalWorker();
                         break;
                     case ServiceState.Running:
@@ -73,29 +73,29 @@
                         this.numberOfFailedStartsBeforeSendingEmail = NumberOfFailedStartsBeforeSendingEmail;
                         break;
                     case ServiceState.StartPending:
-                        logger.Info($"{serviceName} is starting...");
+                        logger.Info($"{localWorkerName} is starting...");
                         break;
                     case ServiceState.ContinuePending:
-                        logger.Warn($"{serviceName} is resuming...");
+                        logger.Warn($"{localWorkerName} is resuming...");
                         break;
                     case ServiceState.StopPending:
-                        logger.Warn($"{serviceName} is stopping...");
+                        logger.Warn($"{localWorkerName} is stopping...");
                         StartLocalWorker();
                         break;
                     case ServiceState.Stopped:
-                        logger.Warn($"{serviceName} is stopped.");
+                        logger.Warn($"{localWorkerName} is stopped.");
                         StartLocalWorker();
                         break;
                     case ServiceState.PausePending:
-                        logger.Warn($"{serviceName} is pausing...");
+                        logger.Warn($"{localWorkerName} is pausing...");
                         StartLocalWorker();
                         break;
                     case ServiceState.Paused:
-                        logger.Warn($"{serviceName} is paused.");
+                        logger.Warn($"{localWorkerName} is paused.");
                         StartLocalWorker();
                         break;
                     case ServiceState.Unknown:
-                        throw new ArgumentException($"{serviceName} is in unknown state.");
+                        throw new ArgumentException($"{localWorkerName} is in unknown state.");
                     default:
                         throw new ArgumentOutOfRangeException(nameof(localWorkerState));
                 }
@@ -103,7 +103,7 @@
             catch (Exception ex)
             {
                 this.failsToStartCount++;
-                logger.Error($"An exception was thrown while attempting to start the {serviceName}", ex);
+                logger.Error($"An exception was thrown while attempting to start the {localWorkerName}", ex);
             }
 
             this.totalChecksCount++;
@@ -114,13 +114,13 @@
                 return;
             }
 
-            var messageTitle = $"{serviceName} cannot keep Running state";
-            var messageBody = $"{serviceName} has started and stopped consecutively more than {this.totalChecksCount} times.";
+            var messageTitle = $"{localWorkerName} cannot keep Running state";
+            var messageBody = $"{localWorkerName} has started and stopped consecutively more than {this.totalChecksCount} times.";
 
             if (this.failsToStartCount > this.numberOfFailedStartsBeforeSendingEmail)
             {
-                messageTitle = $"{serviceName} failed to start";
-                messageBody = $"{serviceName} failed to start more than {this.failsToStartCount} times.";
+                messageTitle = $"{localWorkerName} failed to start";
+                messageBody = $"{localWorkerName} failed to start more than {this.failsToStartCount} times.";
             }
 
             try
@@ -151,7 +151,7 @@
         private static void InstallAndStartLocalWorker()
         {
             const string localWorkerExePath =
-                @"..\..\..\..\Workers\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
+                @"..\..\..\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
 
             logger.Info($"Attempting to install the {Constants.LocalWorkerServiceName}...");
 
