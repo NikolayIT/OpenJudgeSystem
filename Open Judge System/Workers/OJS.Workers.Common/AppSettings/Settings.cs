@@ -81,11 +81,14 @@
 
         public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
-        public static string SqlServerLocalDbMasterDbConnectionString => GetSetting("SqlServerLocalDbMasterDbConnectionString");
+        public static string SqlServerLocalDbMasterDbConnectionString =>
+            GetSetting("SqlServerLocalDbMasterDbConnectionString");
 
-        public static string SqlServerLocalDbRestrictedUserId => GetSetting("SqlServerLocalDbRestrictedUserId");
+        public static string SqlServerLocalDbRestrictedUserId =>
+            GetSetting("SqlServerLocalDbRestrictedUserId");
 
-        public static string SqlServerLocalDbRestrictedUserPassword => GetSetting("SqlServerLocalDbRestrictedUserPassword");
+        public static string SqlServerLocalDbRestrictedUserPassword =>
+            GetSetting("SqlServerLocalDbRestrictedUserPassword");
 
         public static string MySqlSysDbConnectionString => GetSetting("MySqlSysDbConnectionString");
 

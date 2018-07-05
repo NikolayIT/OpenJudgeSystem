@@ -25,7 +25,7 @@
 
             if (!ServiceIsInstalled(serviceName))
             {
-                throw new ArgumentException("Unable to install service.");
+                throw new ArgumentException($"Unable to install \"{serviceName}\" service.");
             }
         }
 

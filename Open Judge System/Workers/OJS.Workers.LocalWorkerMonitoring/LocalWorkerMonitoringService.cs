@@ -115,7 +115,8 @@
             }
 
             var messageTitle = $"{localWorkerName} cannot keep Running state";
-            var messageBody = $"{localWorkerName} has started and stopped consecutively more than {this.totalChecksCount} times.";
+            var messageBody =
+                $"{localWorkerName} has started and stopped consecutively more than {this.totalChecksCount} times.";
 
             if (this.failsToStartCount > this.numberOfFailedStartsBeforeSendingEmail)
             {
