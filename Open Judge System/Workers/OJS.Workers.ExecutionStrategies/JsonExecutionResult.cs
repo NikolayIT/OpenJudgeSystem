@@ -55,7 +55,7 @@
                     // By convention the groups of user tests will be separated in describes named "Test 0 ", then "Test 1 " and so forth
                     userTestsCount += currentTitle.ToString().StartsWith("Test 0 ") ? 1 : 0;
 
-                    // The second group (the second zero test) "Test 1 " should be the one holding the correct solution, thus we extract the amount of                    
+                    // The second group (the second zero test) "Test 1 " should be the one holding the correct solution, thus we extract the amount of
                     // correct tests in that group, so that the Execution Strategy has a base for judging the other tests
                     initialPassedTests += currentTitle.ToString().StartsWith("Test 1 ") && entry == null ? 1 : 0;
                     errors.Add(entry);

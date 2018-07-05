@@ -12,7 +12,7 @@
         void Update(ExamGroup examGroup);
 
         ExamGroup GetById(int id);
-        
+
         ExamGroup GetByExternalIdAndAppId(int? externalId, string appId);
 
         int GetIdByExternalIdAndAppId(int? externalId, string appId);

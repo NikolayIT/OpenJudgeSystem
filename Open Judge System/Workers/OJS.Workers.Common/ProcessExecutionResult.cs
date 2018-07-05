@@ -55,6 +55,6 @@
                     ? this.TotalProcessorTime - TimeSpan.FromMilliseconds(baseTimeUsed)
                     : this.TotalProcessorTime;
             }
-        }  
+        }
     }
 }

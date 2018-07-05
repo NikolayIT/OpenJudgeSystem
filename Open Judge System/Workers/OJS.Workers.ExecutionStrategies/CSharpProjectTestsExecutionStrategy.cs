@@ -24,7 +24,6 @@
         using System.IO;
         using NUnit.Framework;
 
-
         [SetUpFixture]
         public class SetUpClass
         {
@@ -44,18 +43,22 @@
         protected const string CsProjFileSearchPattern = "*.csproj";
         protected const string NUnitReference =
             "nunit.framework, Version=3.8.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL";
+
         protected const string EntityFrameworkCoreInMemoryReference =
                 "Microsoft.EntityFrameworkCore.InMemory, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL";
+
         protected const string SystemDataCommonReference =
             "System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL";
+
         protected const string AdditionalExecutionArguments = "--noresult --inprocess";
         protected const string VsttPackageName = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
 
-        // Extracts the number of total and passed tests 
+        // Extracts the number of total and passed tests
         protected const string TestResultsRegex =
             @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
-        // Extracts error/failure messages and the class which threw it       
-        protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*))\r?\n((?:.*)\r?\n(?:.*))";
+
+        // Extracts error/failure messages and the class which threw it
+        protected static readonly string ErrorMessageRegex = @"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*))\r?\n((?:.*)\r?\n(?:.*))";
 
         public CSharpProjectTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -116,7 +119,7 @@
             this.SaveSetupFixture(compileDirectory);
 
             this.CorrectProjectReferences(project);
-            
+
             var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -161,7 +164,7 @@
         }
 
         protected void SaveTestFiles(IEnumerable<TestContext> tests, string compileDirectory)
-        {       
+        {
             var index = 0;
             foreach (var test in tests)
             {
@@ -194,7 +197,7 @@
                 false,
                 true);
 
-            var (totalTestsCount, failedTestsCount) = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
+            var(totalTestsCount, failedTestsCount) = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
 
             if (failedTestsCount != errorsByFiles.Count || totalTestsCount != executionContext.Tests.Count())

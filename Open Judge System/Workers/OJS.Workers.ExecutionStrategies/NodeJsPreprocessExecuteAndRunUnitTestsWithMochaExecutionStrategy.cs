@@ -80,7 +80,7 @@ describe('TestScope', function() {
     };
 
     let result = code.run;
-    let bgCoderConsole = {};   
+    let bgCoderConsole = {};
 
     before(function() {
         Object.keys(console)
@@ -102,7 +102,7 @@ describe('TestScope', function() {
 		let content = '';
         process.stdin.resume();
         process.stdin.on('data', function(buf) { content += buf.toString(); });
-        process.stdin.on('end', function() {    
+        process.stdin.on('end', function() {
             let inputData = content.trim();
 
 	        let testFunc = new Function('result', " + this.TestFuncVariables + @", inputData);

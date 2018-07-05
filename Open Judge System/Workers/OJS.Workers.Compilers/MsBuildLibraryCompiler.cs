@@ -95,7 +95,7 @@
             var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
             var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutInMilliseconds);
- 
+
             outputFile = this.ChangeOutputFileAfterCompilation(outputFile);
 
             if (!File.Exists(outputFile) && !compilerOutput.IsSuccessful)

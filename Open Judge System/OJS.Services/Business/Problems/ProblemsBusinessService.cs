@@ -151,6 +151,7 @@
         {
             if (problemGroupId.HasValue)
             {
+                problem.ProblemGroup = null;
                 problem.ProblemGroupId = problemGroupId.Value;
             }
             else

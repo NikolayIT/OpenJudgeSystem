@@ -205,7 +205,7 @@ class Classes{{
                 arguments,
                 this.WorkingDirectory,
                 true);
- 
+
             if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
             {
                 throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
@@ -240,7 +240,7 @@ class Classes{{
             this.AddTestRunnerTemplate(submissionFilePath);
 
             return submissionFilePath;
-        }   
+        }
 
         protected virtual void AddTestsToUserSubmission(ExecutionContext context, string submissionZipFilePath)
         {

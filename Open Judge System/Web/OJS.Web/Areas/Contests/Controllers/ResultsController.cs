@@ -223,7 +223,7 @@
                 .ToPagedResults(page, resultsInPage);
 
             return this.PartialView("_FullResultsPagedList", contestResults);
-        }   
+        }
 
         [AuthorizeRoles(SystemRole.Administrator, SystemRole.Lecturer)]
         public ActionResult Export(int? id, bool official)

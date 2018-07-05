@@ -1,8 +1,10 @@
 ﻿namespace OJS.Data.Models.Tests
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
+
     using Common.Models;
+
+    using NUnit.Framework;
 
     [TestFixture]
     public class SubmissionTests

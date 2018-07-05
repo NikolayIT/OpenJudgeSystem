@@ -50,7 +50,7 @@
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("Problems")]
     public class ProblemsController : LecturerBaseController
-    { 
+    {
         private readonly IContestsDataService contestsData;
         private readonly ICheckersDataService checkersData;
         private readonly IProblemsDataService problemsData;

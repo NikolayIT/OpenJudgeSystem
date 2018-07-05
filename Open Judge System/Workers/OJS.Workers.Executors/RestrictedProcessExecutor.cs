@@ -93,7 +93,7 @@ namespace OJS.Workers.Executors
                         result.ErrorOutput = x.Result;
                     });
 
-                // Read memory consumption every few milliseconds to determine the peak memory usage of the process               
+                // Read memory consumption every few milliseconds to determine the peak memory usage of the process
                 var memoryTaskCancellationToken = new CancellationTokenSource();
                 var memoryTask = Task.Run(
                     () =>

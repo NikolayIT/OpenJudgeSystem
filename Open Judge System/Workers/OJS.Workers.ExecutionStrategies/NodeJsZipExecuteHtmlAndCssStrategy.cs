@@ -88,7 +88,7 @@
 fs = undefined;";
 
         protected override string JsCodeRequiredModules => base.JsCodeRequiredModules + $@",
-    fs = require('fs'),    
+    fs = require('fs'),
     jsdom = require('{this.JsDomModulePath}'),
     jq = require('{this.JQueryModulePath}'),
     bootstrap = fs.readFileSync('{this.BootstrapModulePath}','utf-8'),
@@ -135,7 +135,7 @@ describe('TestDOMScope', function() {{
                     head.append(style);
                 }});
 
-                links.remove();    
+                links.remove();
 
                 Object.keys(console)
                     .forEach(function (prop) {{

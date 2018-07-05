@@ -285,9 +285,9 @@ class _$SandboxSecurityManager extends SecurityManager {
         }
 
         private CompileResult CompileSourceFiles(
-            CompilerType compilerType, 
+            CompilerType compilerType,
             string compilerPath,
-            string compilerArguments, 
+            string compilerArguments,
             IEnumerable<string> sourceFilesToCompile)
         {
             var compilerResult = new CompileResult(false, null);

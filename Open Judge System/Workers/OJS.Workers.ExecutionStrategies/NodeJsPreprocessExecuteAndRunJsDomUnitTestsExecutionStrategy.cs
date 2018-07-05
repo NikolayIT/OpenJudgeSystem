@@ -74,7 +74,7 @@
         protected override string JsCodePreevaulationCode => @"
 chai.use(sinonChai);
 describe('TestDOMScope', function() {
-    let bgCoderConsole = {};   
+    let bgCoderConsole = {};
     before(function(done) {
         jsdom.env({
             html: '',

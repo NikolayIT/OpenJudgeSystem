@@ -48,7 +48,7 @@
         }
 
         private static readonly IReadOnlyCollection<Func<List<Type>, bool>> tests = new ReadOnlyCollection<Func<List<Type>, bool>>(new List<Func<List<Type>, bool>>
-        { 
+        {
 #allTests#
         });
 

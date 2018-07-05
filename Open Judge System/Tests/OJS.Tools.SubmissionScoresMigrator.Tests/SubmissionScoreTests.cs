@@ -2,8 +2,10 @@
 {
     using System.Linq;
     using Data.Models;
-    using NUnit.Framework;
+
     using global::SubmissionScoresMigrator;
+
+    using NUnit.Framework;
 
     [TestFixture]
     public class SubmissionScoreTests
@@ -19,7 +21,7 @@
 
             var first = result.First();
             var second = result.Last();
-            
+
             this.AssertSubmission(
                 submission: first,
                 submissionId: 10,
