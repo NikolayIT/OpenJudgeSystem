@@ -7,9 +7,9 @@
     public class TestRunFullResultsViewModel
     {
         public bool IsZeroTest { get; set; }
-        
+
         public TestRunResultType ResultType { get; set; }
-        
+
         public static IEnumerable<TestRunFullResultsViewModel> FromCache(string testRunsCache)
         {
             if (string.IsNullOrWhiteSpace(testRunsCache))

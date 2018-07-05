@@ -46,7 +46,9 @@
             ErrorMessage = null,
             ErrorMessageResourceName = "Email_confirmation_required",
             ErrorMessageResourceType = typeof(Resource))]
-        [System.ComponentModel.DataAnnotations.Compare("Email", ErrorMessageResourceName = "Email_confirmation_invalid",
+        [System.ComponentModel.DataAnnotations.Compare(
+            "Email",
+            ErrorMessageResourceName = "Email_confirmation_invalid",
             ErrorMessageResourceType = typeof(Resource))]
         public string EmailConfirmation { get; set; }
     }

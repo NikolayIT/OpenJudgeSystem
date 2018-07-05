@@ -26,7 +26,7 @@
             if (!File.Exists(phpCliExecutablePath))
             {
                 throw new ArgumentException(
-                    $"PHP CLI not found in: {phpCliExecutablePath}", 
+                    $"PHP CLI not found in: {phpCliExecutablePath}",
                     nameof(phpCliExecutablePath));
             }
 
@@ -42,7 +42,7 @@
             // PHP code is not compiled
             result.IsCompiledSuccessfully = true;
 
-            string submissionPath = 
+            string submissionPath =
                 $@"{this.WorkingDirectory}\\{ZippedSubmissionName}{GlobalConstants.ZipFileExtension}";
             File.WriteAllBytes(submissionPath, executionContext.FileContent);
             FileHelpers.UnzipFile(submissionPath, this.WorkingDirectory);
@@ -59,8 +59,8 @@
             this.RequireSuperGlobalsTemplateInUserCode(applicationEntryPointPath);
 
             var checker = Checker.CreateChecker(
-                executionContext.CheckerAssemblyName, 
-                executionContext.CheckerTypeName, 
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
             result.TestResults = new List<TestResult>();
@@ -78,9 +78,9 @@
                     new[] { applicationEntryPointPath });
 
                 var testResult = this.ExecuteAndCheckTest(
-                    test, 
-                    processExecutionResult, 
-                    checker, 
+                    test,
+                    processExecutionResult,
+                    checker,
                     processExecutionResult.ReceivedOutput);
 
                 result.TestResults.Add(testResult);

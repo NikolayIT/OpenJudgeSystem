@@ -145,7 +145,7 @@
     <Compile Include="TestType.cs" />
     <Compile Include="WebConstants.cs" />
     <Compile Include="ZipFileResult.cs" />
-    <Compile Include="ZippedTestManipulator\ParseResult.cs" />
+    <Compile Include="ZippedTestManipulator\TestsParseResult.cs" />
     <Compile Include="ZippedTestManipulator\ZippedTestsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

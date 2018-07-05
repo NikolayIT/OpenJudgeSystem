@@ -54,7 +54,7 @@
             this.participantsData = participantsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
-        }        
+        }
 
         public override IEnumerable GetData()
         {
@@ -451,7 +451,7 @@
             }
 
             this.ViewBag.ReturnUrl = returnUrl;
-            
+
             return this.View(contest);
         }
 
@@ -551,7 +551,7 @@
 
         private void AddProblemGroupsToContest(Contest contest, int problemGroupsCount)
         {
-            for (var i = 0; i < problemGroupsCount; i++)
+            for (var i = 1; i <= problemGroupsCount; i++)
             {
                 contest.ProblemGroups.Add(new ProblemGroup
                 {

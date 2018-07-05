@@ -13,6 +13,7 @@
     {
         // TODO: Add to resource
         private const string InvalidUrlMessage = "Невалиден URL.";
+
         private const string InvalidApiKeyMessage = "Невалиден API ключ.";
         private const string ErrorInConnectingToTheRemoteServerMessage = "Грешка при връзката с отдалечения сървър.";
 
@@ -30,7 +31,7 @@
 
             return InternalGet<TData>(requestData, url, apiKey);
         }
-       
+
         public Task<ExternalDataRetrievalResult<TData>> GetAsync<TData>(object requestData, string url, string apiKey)
         {
             if (string.IsNullOrWhiteSpace(url))

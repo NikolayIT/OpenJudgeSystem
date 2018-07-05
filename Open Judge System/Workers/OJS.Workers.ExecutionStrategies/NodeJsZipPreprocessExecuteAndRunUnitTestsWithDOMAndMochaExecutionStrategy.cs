@@ -174,7 +174,7 @@ function afterBundling() {
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            // Process tests 
+            // Process tests
             result.TestResults = this.ProcessTests(executionContext, executor, checker, codeSavePath);
 
             // Clean up
@@ -224,7 +224,7 @@ function afterBundling() {
 
         protected virtual string PrepareSubmissionFile(byte[] submissionFileContent)
         {
-            var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";           
+            var submissionFilePath = $"{this.WorkingDirectory}\\{SubmissionFileName}";
             File.WriteAllBytes(submissionFilePath, submissionFileContent);
             FileHelpers.ConvertContentToZip(submissionFilePath);
             FileHelpers.RemoveFilesFromZip(submissionFilePath, RemoveMacFolderPattern);

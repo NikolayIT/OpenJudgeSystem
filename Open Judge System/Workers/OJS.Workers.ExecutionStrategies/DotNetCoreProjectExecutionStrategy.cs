@@ -28,7 +28,7 @@
 
             var csProjFilePath = this.GetCsProjFilePath();
 
-            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);         
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
 
             var compilerResult = this.Compile(
                 executionContext.CompilerType,
@@ -43,7 +43,7 @@
                 result.CompilerComment = compilerResult.CompilerComment;
                 return result;
             }
-           
+
             var executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             var checker = Checker.CreateChecker(
                 executionContext.CheckerAssemblyName,

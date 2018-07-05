@@ -21,7 +21,7 @@
                 ContestName = contest.Name,
                 ParticipantsCreatedBeforeDateTime = DateTime.Now,
                 ParticipantsCreatedAfterDateTime = SqlFunctions.DateAdd(
-                    "minute", 
+                    "minute",
                     ((contest.Duration.Value.Hours * 60) + contest.Duration.Value.Minutes + DefaultBufferTimeInMinutes) * -1,
                     DateTime.Now)
             };

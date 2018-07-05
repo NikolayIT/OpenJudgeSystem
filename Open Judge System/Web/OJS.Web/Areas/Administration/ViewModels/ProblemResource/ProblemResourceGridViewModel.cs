@@ -53,7 +53,7 @@
 
         public string TypeName => this.Type.GetDescription();
 
-        public bool IsLinkFromSvn => 
+        public bool IsLinkFromSvn =>
             !string.IsNullOrWhiteSpace(this.RawLink) && this.RawLink.StartsWith(Settings.SvnBaseUrl, StringComparison.OrdinalIgnoreCase);
 
         public string Link

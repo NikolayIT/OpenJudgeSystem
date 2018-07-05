@@ -85,7 +85,7 @@
             foreach (var test in tests)
             {
                 File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
-            
+
                 File.WriteAllText(testedCodePath, test.Input);
 
                 // Compiling

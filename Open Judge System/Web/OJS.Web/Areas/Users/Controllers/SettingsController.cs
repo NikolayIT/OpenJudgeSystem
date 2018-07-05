@@ -36,17 +36,17 @@
         {
             return this.RedirectToAction("ExternalNotify", "Account", new { area = string.Empty });
 
-            if (this.ModelState.IsValid)
-            {
-                var user = this.Data.Users.GetByUsername(this.User.Identity.Name);
-                this.UpdateUserSettings(user.UserSettings, settings);
-                this.Data.SaveChanges();
+            // if (this.ModelState.IsValid)
+            // {
+            //    var user = this.Data.Users.GetByUsername(this.User.Identity.Name);
+            //    this.UpdateUserSettings(user.UserSettings, settings);
+            //    this.Data.SaveChanges();
 
-                this.TempData.Add(GlobalConstants.InfoMessage, Resource.Settings_were_saved);
-                return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
-            }
+            // this.TempData.Add(GlobalConstants.InfoMessage, Resource.Settings_were_saved);
+            //    return this.RedirectToAction(GlobalConstants.Index, new { controller = "Profile", area = "Users" });
+            // }
 
-            return this.View(settings);
+            // return this.View(settings);
         }
 
         private void UpdateUserSettings(UserSettings model, UserSettingsViewModel viewModel)

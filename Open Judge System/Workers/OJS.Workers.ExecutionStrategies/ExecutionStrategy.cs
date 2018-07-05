@@ -162,7 +162,7 @@
         }
 
         protected virtual CompileResult Compile(
-            CompilerType compilerType, 
+            CompilerType compilerType,
             string compilerPath,
             string compilerArguments,
             string submissionFilePath)

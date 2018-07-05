@@ -105,7 +105,7 @@
             {
                 this.participantScores.Delete(participantScore);
             }
-            
+
             this.participantScores.SaveChanges();
         }
 

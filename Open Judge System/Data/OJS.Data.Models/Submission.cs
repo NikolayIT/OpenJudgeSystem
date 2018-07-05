@@ -85,7 +85,7 @@
         /// Cache field for submission test runs representing each test run result as an integer equal to <see cref="OJS.Common.Models.TestRunResultType"/>.
         /// The first integer represent the number of trial tests associated with this submissions.
         /// This field optimized database queries.
-        /// 
+        ///
         /// Example: 300011002 means:
         /// - Three trial tests runs with 0 result (Correct Answer)
         /// - Five normal test runs with:
