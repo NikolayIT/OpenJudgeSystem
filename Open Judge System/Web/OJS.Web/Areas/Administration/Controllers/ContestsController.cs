@@ -551,7 +551,7 @@
 
         private void AddProblemGroupsToContest(Contest contest, int problemGroupsCount)
         {
-            for (var i = 0; i < problemGroupsCount; i++)
+            for (var i = 1; i <= problemGroupsCount; i++)
             {
                 contest.ProblemGroups.Add(new ProblemGroup
                 {
