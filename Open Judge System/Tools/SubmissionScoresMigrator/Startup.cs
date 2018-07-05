@@ -1,10 +1,11 @@
 ﻿namespace SubmissionScoresMigrator
 {
-    using OJS.Data;
-    using OJS.Data.Models;
     using System;
     using System.Data.Entity;
     using System.Linq;
+
+    using OJS.Data;
+    using OJS.Data.Models;
 
     public class Startup
     {

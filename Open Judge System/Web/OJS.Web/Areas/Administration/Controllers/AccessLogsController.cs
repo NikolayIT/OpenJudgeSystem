@@ -6,7 +6,7 @@
 
     using OJS.Data;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    
+
     using ViewModelType = OJS.Web.Areas.Administration.ViewModels.AccessLogs.AccessLogGridViewModel;
 
     public class AccessLogsController : AdministrationBaseGridController

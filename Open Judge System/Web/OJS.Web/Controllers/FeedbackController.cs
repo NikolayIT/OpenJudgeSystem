@@ -50,7 +50,7 @@
                     Name = model.Name,
                     UserId = this.UserProfile.Id
                 };
-                
+
                 this.Data.FeedbackReports.Add(report);
                 this.Data.SaveChanges();
 
@@ -60,7 +60,7 @@
 
             return this.View(model);
         }
-        
+
         [HttpGet]
         public ActionResult Submitted()
         {

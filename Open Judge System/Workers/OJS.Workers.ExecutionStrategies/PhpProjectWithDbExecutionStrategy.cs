@@ -101,7 +101,7 @@
             var applicationEntryPointPath = FileHelpers.FindFileMatchingPattern(
                 this.WorkingDirectory,
                 ApplicationEntryPoint);
-          
+
             var entryPointContent = File.ReadAllText(applicationEntryPointPath);
 
             var testRunnerCode = this.TestRunnerCodeTemplate.Replace("##testRunnerClassName##", TestRunnerClassName);

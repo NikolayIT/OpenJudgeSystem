@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuditInfo.cs" />
-    <Compile Include="CodeFirstConventions\UnicodeAttributeConvention.cs" />
+    <Compile Include="CodeFirstConventions\IsUnicodeAttributeConvention.cs" />
     <Compile Include="DataAnnotations\IsUnicodeAttribute.cs" />
     <Compile Include="DeletableEntity.cs" />
     <Compile Include="IAuditInfo.cs" />

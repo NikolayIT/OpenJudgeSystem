@@ -39,7 +39,7 @@
         [DataType(DataType.Password)]
         [Display(Name = "New_password_confirmation", ResourceType = typeof(Resource))]
         [System.ComponentModel.DataAnnotations.Compare(
-            "NewPassword", 
+            "NewPassword",
             ErrorMessageResourceName = "New_password_confirm_password_not_matching_validation",
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }

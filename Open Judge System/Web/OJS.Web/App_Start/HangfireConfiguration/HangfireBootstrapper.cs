@@ -10,7 +10,7 @@
         private static readonly object LockObject = new object();
 
         private static HangfireBootstrapper instance;
-   
+
         private bool started;
         private BackgroundJobServer backgroundJobServer;
 

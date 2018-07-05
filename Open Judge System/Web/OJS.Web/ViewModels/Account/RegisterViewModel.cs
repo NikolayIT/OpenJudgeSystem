@@ -42,7 +42,9 @@
         [AllowHtml]
         [DataType(DataType.Password)]
         [Display(Name = "Password_confirm", ResourceType = typeof(Resource))]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "Passwords_dont_match",
+        [System.ComponentModel.DataAnnotations.Compare(
+            "Password",
+            ErrorMessageResourceName = "Passwords_dont_match",
             ErrorMessageResourceType = typeof(Resource))]
         public string ConfirmPassword { get; set; }
 

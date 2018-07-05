@@ -204,7 +204,7 @@
 
             this.logger.InfoFormat("Submission №{0} successfully processed", submission.Id);
         }
-        
+
         private void ProcessSubmission(Submission submission)
         {
             // TODO: Check for N+1 queries problem

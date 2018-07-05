@@ -93,7 +93,7 @@
                             .Skip(1)
                             .ForEach(ps => scoresMarkedForDeletion.Add(ps));
                     });
-                        
+
                 if (scoresMarkedForDeletion.Any())
                 {
                     foreach (var participantScoreForDeletion in scoresMarkedForDeletion)

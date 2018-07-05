@@ -17,7 +17,7 @@
         public string Content { get; set; }
 
         public string UserId { get; set; }
-        
+
         public virtual UserProfile User { get; set; }
 
         public bool IsFixed { get; set; }

@@ -84,7 +84,6 @@ process.stdin.on('end', function() {
     console.log(code.f(inputData));
 });
 
-
 var code = {
     f:function solve(content) {
         // !!! User code starts here

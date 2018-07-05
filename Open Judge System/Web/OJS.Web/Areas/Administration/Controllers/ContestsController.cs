@@ -54,7 +54,7 @@
             this.participantsData = participantsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
-        }        
+        }
 
         public override IEnumerable GetData()
         {
@@ -451,7 +451,7 @@
             }
 
             this.ViewBag.ReturnUrl = returnUrl;
-            
+
             return this.View(contest);
         }
 

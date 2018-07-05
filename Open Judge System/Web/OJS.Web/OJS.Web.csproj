@@ -1816,7 +1816,7 @@
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemResourceViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
