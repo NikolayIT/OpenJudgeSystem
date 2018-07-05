@@ -42,6 +42,15 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
@@ -95,6 +104,7 @@
     <Compile Include="DotNetCoreProjectExecutionStrategy.cs" />
     <Compile Include="DotNetCoreProjectTestsExecutionStrategy.cs" />
     <Compile Include="ExecutionStrategy.cs" />
+    <Compile Include="Extensions\CSharpProjectExtensions.cs" />
     <Compile Include="Helpers\DotNetCoreStrategiesHelper.cs" />
     <Compile Include="Helpers\UnitTestStrategiesHelper.cs" />
     <Compile Include="IExecutionStrategy.cs" />

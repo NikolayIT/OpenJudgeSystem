@@ -126,6 +126,9 @@
   <data name="Average_result_by_minutes" xml:space="preserve">
     <value>Среден резултат по минути</value>
   </data>
+  <data name="Compilation_failed" xml:space="preserve">
+    <value>Грешка при компилация</value>
+  </data>
   <data name="Full_results" xml:space="preserve">
     <value>Детайлни резултати</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ShowStatistics" xml:space="preserve">
     <value>Покажи статистики</value>
+  </data>
+  <data name="Submission_deleted" xml:space="preserve">
+    <value>Решението е изтрито</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>{0} участници</value>

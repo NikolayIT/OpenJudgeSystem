@@ -219,4 +219,7 @@
   <data name="User_retest_prompt" xml:space="preserve">
     <value>Due to changes in the input/ouput data for this problem, your submission ({0}/{1}) is outdated.&lt;b&gt; By clicking the button below you have the oppurtunity to resend your solution&lt;/b&gt;. This will lead to re-evaluation of your solution and you will receive feedback for each of the pre-defined pieces of input data (tests). Please keep in mind that it is possible that your solution will evaluate to a different amount of points due to the aformentioned changes in input/output data. Click the "Retest" button to resend your solution for evaluation!</value>
   </data>
+  <data name="Try_submit_again_message_when_no_output" xml:space="preserve">
+    <value>The process executing your submission for this test may not have received the output successfully. Please try to submit again the same solution. If the result does not change, then search the error in the submission itself.</value>
+  </data>
 </root>

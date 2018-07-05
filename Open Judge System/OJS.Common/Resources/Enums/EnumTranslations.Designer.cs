@@ -88,11 +88,11 @@ namespace Resources.Enums {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid.
+        ///   Looks up a localized string similar to Excluded from homework.
         /// </summary>
-        public static string InvalidSubmissionStatus {
+        public static string Excluded_from_homework_problem_group {
             get {
-                return ResourceManager.GetString("InvalidSubmissionStatus", resourceCulture);
+                return ResourceManager.GetString("Excluded_from_homework_problem_group", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace Resources.Enums {
         public static string MultiLineTextBox {
             get {
                 return ResourceManager.GetString("MultiLineTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
@@ -165,15 +174,6 @@ namespace Resources.Enums {
         public static string ProcessedSubmissionStatus {
             get {
                 return ResourceManager.GetString("ProcessedSubmissionStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Processing.
-        /// </summary>
-        public static string ProcessingSubmissionStatus {
-            get {
-                return ResourceManager.GetString("ProcessingSubmissionStatus", resourceCulture);
             }
         }
         

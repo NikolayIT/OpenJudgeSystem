@@ -903,6 +903,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.bg.Designer.cs">
+      <DependentUpon>ProblemGroupAdministration.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.designer.cs">
+      <DependentUpon>ProblemGroupAdministration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.bg.designer.cs">
       <DependentUpon>ProblemGroupsIndex.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -922,6 +932,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProblemsControllers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.designer.cs">
+      <DependentUpon>CopyProblem.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.bg.designer.cs">
+      <DependentUpon>CopyProblem.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.bg.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1729,7 +1749,6 @@
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
-    <Compile Include="Areas\Administration\Models\ParticipantScoreModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AccessLogs\AccessLogGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AntiCheat\SubmissionSimilarityViewModel.cs" />
@@ -1751,9 +1770,10 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\DetailedProblemGroupViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\ProblemGroupAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\CopyProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Problem\DetailedProblemViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Problem\ProblemAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\FeedbackReport\FeedbackReportViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemResource\ProblemResourceViewModel.cs" />
@@ -1775,6 +1795,7 @@
     <Compile Include="Areas\Api\Controllers\ExamGroupsController.cs" />
     <Compile Include="Areas\Api\Controllers\ResultsController.cs" />
     <Compile Include="Areas\Api\Controllers\SubmissionsController.cs" />
+    <Compile Include="Areas\Api\Controllers\UserRelatedEventsReceiverController.cs" />
     <Compile Include="Areas\Api\Models\ErrorMessageViewModel.cs" />
     <Compile Include="Areas\Api\Models\ExamGroupInfoModel.cs" />
     <Compile Include="Areas\Api\Models\UsersExamGroupModel.cs" />
@@ -1795,7 +1816,7 @@
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemMaterialViewModel.cs" />
+    <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemResourceViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemStatsViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemViewModel.cs" />
@@ -1832,8 +1853,10 @@
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
+    <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
@@ -1894,6 +1917,7 @@
     <Content Include="Content\Contests\results-page.css" />
     <Content Include="Content\Contests\submission-page.css" />
     <Content Include="Content\Contests\submission-view-page.css" />
+    <Content Include="Content\css\administration\problems\problems-index.css" />
     <Content Include="Content\css\common\loading-mask.css" />
     <Content Include="Content\css\home\index\home.css" />
     <Content Include="Content\docs.css" />
@@ -2495,8 +2519,12 @@
     <Content Include="Areas\Administration\Views\Shared\_ContestQuestionAnswersGridTemplate.cshtml" />
     <Content Include="App_Code\TimeHelper.cshtml" />
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
+    <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
+    <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
+    <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
+    <Content Include="Scripts\Helpers\kendo-helper.js" />
     <Content Include="Scripts\Helpers\validations.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.bg.js" />
     <Content Include="Scripts\KendoUI\2014.3.1411\cultures\kendo.culture.en-GB.js" />
@@ -2562,6 +2590,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AdministrationGeneral.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\AdministrationGeneral.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2874,6 +2903,16 @@
       <SubType>Designer</SubType>
       <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupAdministration.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\ViewModels\ProblemGroupAdministration.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupAdministration.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ProblemGroups\Views\ProblemGroupsIndex.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemGroupsIndex.designer.cs</LastGenOutput>
@@ -2889,11 +2928,22 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsControllers.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemsControllers.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.Problems</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CopyProblem.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\CopyProblem.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CopyProblem.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Areas.Administration.Problems.ViewModels</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ViewModels\DetailedProblem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -3934,6 +3984,10 @@
       <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Data.Archives\OJS.Data.Archives.csproj">
+      <Project>{7d684e33-0aa6-44f8-bcfe-a82b70bd48bc}</Project>
+      <Name>OJS.Data.Archives</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
       <Name>OJS.Services.Common</Name>
@@ -3958,6 +4012,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

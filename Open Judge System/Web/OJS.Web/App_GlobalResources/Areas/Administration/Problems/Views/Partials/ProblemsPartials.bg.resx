@@ -132,6 +132,9 @@
   <data name="Choose_code_checker" xml:space="preserve">
     <value>Изберете тип проверка на сорс кода на състезателите. Базовите варианти са:</value>
   </data>
+  <data name="Copy_in_new_problem_group" xml:space="preserve">
+    <value>Копирай в нова група от задачи</value>
+  </data>
   <data name="Enter_max_points" xml:space="preserve">
     <value>Въведете максимален брой точки, които състезателят може да получи от задачата</value>
   </data>
@@ -164,6 +167,12 @@
   </data>
   <data name="Precision_checker_description" xml:space="preserve">
     <value>- само за задачи с резултати съдържащи числа с плаваща запетая на всеки нов ред - системата се съобразява само с първите N на брой цифри след плаващата запетая.</value>
+  </data>
+  <data name="Problem_group_type_description" xml:space="preserve">
+    <value>Изберете типа на групата от задачи в която попада задачата</value>
+  </data>
+  <data name="Retest" xml:space="preserve">
+    <value>Ретест</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>

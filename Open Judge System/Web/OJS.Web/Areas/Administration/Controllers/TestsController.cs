@@ -3,14 +3,15 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
     using System.Text;
+    using System.Transactions;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Expressions;
 
     using Ionic.Zip;
 
@@ -19,13 +20,15 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Helpers;
-    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
-    using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Services.Business.Problems;
+    using OJS.Services.Business.Submissions;
+    using OJS.Services.Data.Problems;
+    using OJS.Services.Data.Submissions;
+    using OJS.Services.Data.TestRuns;
+    using OJS.Services.Data.Tests;
     using OJS.Web.Areas.Administration.Controllers.Common;
-    using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Administration.ViewModels.Problem;
     using OJS.Web.Areas.Administration.ViewModels.Test;
     using OJS.Web.Areas.Administration.ViewModels.TestRun;
@@ -33,6 +36,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
 
+    using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
 
     /// <summary>
@@ -40,36 +44,39 @@
     /// </summary>
     public class TestsController : LecturerBaseController
     {
-        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
-        private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IProblemsDataService problemsData;
+        private readonly ISubmissionsDataService submissionsData;
+        private readonly ITestRunsDataService testRunsData;
+        private readonly ITestsDataService testsData;
+        private readonly IProblemsBusinessService problemsBusiness;
+        private readonly ISubmissionsBusinessService submissionsBusiness;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestsController"/> class.
         /// </summary>
-        /// <param name="data">Open Judge System Database context for the control
-        /// ler to work with</param>
-        /// <param name="submissionsForProcessingData">ISubmissionsForProcessingDataService
-        /// for the controller to work with the SubmissionsForProcessing table via a service</param>
-        /// /// <param name="participantScoresData">IParticipantScoresDataService
-        /// for the controller to work with the ParticipantScore table via a service</param>
         public TestsController(
             IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProcessingData,
-            IParticipantScoresDataService participantScoresData)
+            IProblemsDataService problemsData,
+            ISubmissionsDataService submissionsData,
+            ITestRunsDataService testRunsData,
+            ITestsDataService testsData,
+            IProblemsBusinessService problemsBusiness,
+            ISubmissionsBusinessService submissionsBusiness)
             : base(data)
         {
-            this.submissionsForProcessingData = submissionsForProcessingData;
-            this.participantScoresData = participantScoresData;
+            this.problemsData = problemsData;
+            this.submissionsData = submissionsData;
+            this.testRunsData = testRunsData;
+            this.testsData = testsData;
+            this.problemsBusiness = problemsBusiness;
+            this.submissionsBusiness = submissionsBusiness;
         }
 
         /// <summary>
         /// Returns view for the tests administration index page
         /// </summary>
         /// <returns>View for /Administration/Tests/</returns>
-        public ActionResult Index()
-        {
-            return this.View();
-        }
+        public ActionResult Index() => this.View();
 
         /// <summary>
         /// Returns view for the tests administration index page and populates problem, contest, category dropdowns and tests grid if problem id is correct
@@ -80,8 +87,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.ProblemId = id;
@@ -97,38 +103,38 @@
         [HttpGet]
         public ActionResult Create(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
+            var problem = this.problemsData.GetById(id.Value);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             var test = new TestViewModel
             {
                 ProblemId = problem.Id,
                 ProblemName = problem.Name,
-                AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
-                {
-                    Text = v.GetLocalizedDescription(),
-                    Value = ((int)v).ToString(CultureInfo.InvariantCulture)
-                }),
-                OrderBy = this.Data.Tests
-                    .All()
-                    .Where(t => t.ProblemId == problem.Id && !t.IsTrialTest)
+                AllTypes = Enum.GetValues(typeof(TestType))
+                    .Cast<TestType>()
+                    .Select(v => new SelectListItem
+                    {
+                        Text = v.GetLocalizedDescription(),
+                        Value = ((int)v).ToString(CultureInfo.InvariantCulture)
+                    }),
+                OrderBy = this.testsData
+                    .GetAllNonTrialByProblem(problem.Id)
                     .OrderByDescending(t => t.OrderBy)
                     .Select(t => t.OrderBy)
                     .FirstOrDefault() + 1
@@ -147,47 +153,36 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, TestViewModel test)
         {
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
+            if (test == null || !this.ModelState.IsValid)
+            {
+                return this.View(test);
+            }
 
-            if (problem == null)
+            if (!this.problemsData.ExistsById(id))
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            if (test != null && this.ModelState.IsValid)
+            this.testsData.Add(new Test
             {
-                this.Data.Tests.Add(new Test
-                {
-                    InputDataAsString = test.InputFull,
-                    OutputDataAsString = test.OutputFull,
-                    ProblemId = id,
-                    IsTrialTest = test.Type == TestType.Trial,
-                    OrderBy = test.OrderBy,
-                    IsOpenTest = test.Type == TestType.Open
-                });
+                InputDataAsString = test.InputFull,
+                OutputDataAsString = test.OutputFull,
+                ProblemId = id,
+                IsTrialTest = test.Type == TestType.Trial,
+                OrderBy = test.OrderBy,
+                IsOpenTest = test.Type == TestType.Open
+            });
 
-                this.Data.SaveChanges();
+            this.problemsBusiness.RetestById(id);
 
-                using (var scope = TransactionsHelper.CreateTransactionScope())
-                {
-                    this.RetestSubmissions(problem.Id);
-
-                    this.Data.SaveChanges();
-                    scope.Complete();
-                }
-
-                this.TempData.AddInfoMessage(Resource.Test_added_successfully);
-                return this.RedirectToAction("Problem", new { id });
-            }
-
-            return this.View(test);
+            this.TempData.AddInfoMessage(Resource.Test_added_successfully);
+            return this.RedirectToAction(c => c.Problem(id));
         }
 
         /// <summary>
@@ -198,29 +193,30 @@
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var test = this.Data.Tests.All()
-                .Where(t => t.Id == id)
+            var test = this.testsData
+                .GetByIdQuery(id)
                 .Select(TestViewModel.FromTest)
                 .FirstOrDefault();
 
             if (test == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
-
-            test.AllTypes = Enum.GetValues(typeof(TestType)).Cast<TestType>().Select(v => new SelectListItem
-            {
-                Text = v.GetLocalizedDescription(),
-                Value = ((int)v).ToString(CultureInfo.InvariantCulture),
-                Selected = v == test.Type
-            });
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
+
+            test.AllTypes = Enum.GetValues(typeof(TestType))
+                .Cast<TestType>()
+                .Select(tt => new SelectListItem
+                {
+                    Text = tt.GetLocalizedDescription(),
+                    Value = ((int)tt).ToString(CultureInfo.InvariantCulture),
+                    Selected = tt == test.Type
+                });
 
             return this.View(test);
         }
@@ -236,50 +232,47 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, TestViewModel test)
         {
-            if (test != null && this.ModelState.IsValid)
+            if (test == null || !this.ModelState.IsValid)
             {
-                var existingTest = this.Data.Tests.GetById(id);
-
-                if (existingTest == null)
-                {
-                    this.TempData.AddDangerMessage(Resource.Invalid_test);
-                    return this.RedirectToAction("Problem", new { id });
-                }
-
-                if (!this.CheckIfUserHasProblemPermissions(existingTest.ProblemId))
-                {
-                    this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                    return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
-                }
-
-                using (var scope = TransactionsHelper.CreateTransactionScope())
-                {
-                    existingTest.InputData = test.InputData;
-                    existingTest.OutputData = test.OutputData;
-                    existingTest.OrderBy = test.OrderBy;
-                    existingTest.IsTrialTest = test.Type == TestType.Trial;
-                    existingTest.IsOpenTest = test.Type == TestType.Open;
-
-                this.Data.Submissions.Update(
-                    x => x.ProblemId == existingTest.ProblemId && !x.IsDeleted,
-                    x => new Submission { TestRunsCache = null });
-                this.Data.SaveChanges();
-                this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == existingTest.ProblemId);
-
-                    if (test.RetestTask)
-                    {
-                        this.RetestSubmissions(existingTest.ProblemId);
-                    }
-
-                    this.Data.SaveChanges();
-                    scope.Complete();
-                }
-
-                this.TempData.AddInfoMessage(Resource.Test_edited_successfully);
-                return this.RedirectToAction("Problem", new { id = existingTest.ProblemId });
+                return this.View(test);
             }
 
-            return this.View(test);
+            var existingTest = this.testsData.GetById(id);
+
+            if (existingTest == null)
+            {
+                this.TempData.AddDangerMessage(Resource.Invalid_test);
+                return this.RedirectToAction(c => c.Problem(id));
+            }
+
+            if (!this.CheckIfUserHasProblemPermissions(existingTest.ProblemId))
+            {
+                this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
+            }
+
+            using (var scope = TransactionsHelper.CreateTransactionScope())
+            {
+                existingTest.InputData = test.InputData;
+                existingTest.OutputData = test.OutputData;
+                existingTest.OrderBy = test.OrderBy;
+                existingTest.IsTrialTest = test.Type == TestType.Trial;
+                existingTest.IsOpenTest = test.Type == TestType.Open;
+
+                this.testsData.Update(existingTest);
+
+                this.submissionsData.RemoveTestRunsCacheByProblem(existingTest.ProblemId);
+                this.testRunsData.DeleteByProblem(existingTest.ProblemId);
+
+                if (test.RetestTask)
+                {
+                    this.problemsBusiness.RetestById(existingTest.ProblemId);
+                }
+
+                scope.Complete();
+            }
+
+            this.TempData.AddInfoMessage(Resource.Test_edited_successfully);
+            return this.RedirectToAction(c => c.Problem(existingTest.ProblemId));
         }
 
         /// <summary>
@@ -290,27 +283,26 @@
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
-            var test = this.Data.Tests.All()
-                .Where(t => t.Id == id)
+            var test = this.testsData
+                .GetByIdQuery(id.Value)
                 .Select(TestViewModel.FromTest)
                 .FirstOrDefault();
 
             if (test == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(test);
@@ -323,120 +315,38 @@
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful deletion otherwise to /Administration/Test/ with proper error message</returns>
         public ActionResult ConfirmDelete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction<TestsController>(x => x.Index());
+                return this.RedirectToAction(x => x.Index());
             }
 
-            var test = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
+            var test = this.testsData.GetById(id.Value);
 
             if (test == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction<TestsController>(x => x.Index());
+                return this.RedirectToAction(x => x.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                // delete all test runs for the test
-                this.Data.TestRuns.Delete(tr => tr.TestId == id.Value);
-                this.Data.SaveChanges();
+                this.testRunsData.DeleteByTest(id.Value);
 
-                // delete the test
-                this.Data.Tests.Delete(test);
-                this.Data.SaveChanges();
+                this.testsData.Delete(test);
 
-                // recalculate submissions point
-                var problemSubmissions = this.Data.Submissions
-                    .All()
-                    .Include(s => s.TestRuns)
-                    .Include(s => s.TestRuns.Select(tr => tr.Test))
-                    .Where(s => s.ProblemId == test.ProblemId)
-                    .ToList();
-
-                var submissionResults = problemSubmissions
-                    .Select(s => new
-                    {
-                        s.Id,
-                        s.ParticipantId,
-                        CorrectTestRuns = s.TestRuns.Count(t => t.ResultType == TestRunResultType.CorrectAnswer && !t.Test.IsTrialTest),
-                        AllTestRuns = s.TestRuns.Count(t => !t.Test.IsTrialTest),
-                        MaxPoints = s.Problem.MaximumPoints
-                    })
-                    .ToList();
-
-                var problemSubmissionsById = problemSubmissions.ToDictionary(s => s.Id);
-                var topResults = new Dictionary<int, ParticipantScoreModel>();
-
-                foreach (var submissionResult in submissionResults)
-                {
-                    var submission = problemSubmissionsById[submissionResult.Id];
-                    int points = 0;
-                    if (submissionResult.AllTestRuns != 0)
-                    {
-                        points = (submissionResult.CorrectTestRuns * submissionResult.MaxPoints) / submissionResult.AllTestRuns;
-                    }
-
-                    submission.Points = points;
-                    submission.CacheTestRuns();
-
-                    if (submissionResult.ParticipantId.HasValue)
-                    {
-                        var participantId = submissionResult.ParticipantId.Value;
-
-                        if (!topResults.ContainsKey(participantId) || topResults[participantId].Points < points)
-                        {
-                            // score does not exists or have less points than current submission
-                            topResults[participantId] = new ParticipantScoreModel
-                            {
-                                Points = points,
-                                SubmissionId = submission.Id
-                            };
-                        }
-                        else if (topResults[participantId].Points == points)
-                        {
-                            // save score with latest submission
-                            if (topResults[participantId].SubmissionId < submission.Id)
-                            {
-                                topResults[participantId].SubmissionId = submission.Id;
-                            }
-                        }
-                    }
-                }
-
-                this.Data.SaveChanges();
-
-                var participants = topResults.Keys.ToList();
-
-                // find all participant scores for the test's problem
-                var existingScores = this.participantScoresData
-                    .GetAll()
-                    .Where(x => x.ProblemId == test.ProblemId && participants.Contains(x.ParticipantId))
-                    .ToList();
-
-                // replace the scores with updated values
-                foreach (var existingScore in existingScores)
-                {
-                    var topScore = topResults[existingScore.ParticipantId];
-
-                    existingScore.Points = topScore.Points;
-                    existingScore.SubmissionId = topScore.SubmissionId;
-                }
-
-                this.Data.SaveChanges();
+                this.submissionsBusiness.RecalculatePointsByProblem(test.ProblemId);
 
                 scope.Complete();
             }
 
             this.TempData.AddInfoMessage(Resource.Test_deleted_successfully);
-            return this.RedirectToAction("Problem", new { id = test.ProblemId });
+            return this.RedirectToAction(c => c.Problem(test.ProblemId));
         }
 
         /// <summary>
@@ -447,28 +357,31 @@
         [HttpGet]
         public ActionResult DeleteAll(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var problem = this.Data.Problems
-                .All()
-                .Where(pr => pr.Id == id)
-                .Select(pr => new ProblemViewModel { Id = pr.Id, Name = pr.Name, ContestName = pr.ProblemGroup.Contest.Name })
+            var problem = this.problemsData
+                .GetByIdQuery(id.Value)
+                .Select(pr => new ProblemViewModel
+                {
+                    Id = pr.Id,
+                    Name = pr.Name,
+                    ContestName = pr.ProblemGroup.Contest.Name
+                })
                 .FirstOrDefault();
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             return this.View(problem);
@@ -481,42 +394,28 @@
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful deletion otherwise to /Administration/Test/ with proper error message</returns>
         public ActionResult ConfirmDeleteAll(int? id)
         {
-            if (id == null || !this.Data.Problems.All().Any(p => p.Id == id))
+            if (!id.HasValue || !this.problemsData.ExistsById(id.Value))
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction<TestsController>(x => x.Index());
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
-            }
-
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
-
-            if (problem == null)
-            {
-                this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                this.Data.TestRuns.Delete(testRun => testRun.Submission.ProblemId == id);
-                this.Data.SaveChanges();
-                this.Data.Tests.Delete(test => test.ProblemId == id);
-                this.Data.SaveChanges();
-                this.Data.Submissions.Update(
-                    x => x.ProblemId == id && !x.IsDeleted,
-                    x => new Submission { TestRunsCache = null });
-                this.Data.SaveChanges();
+                this.testRunsData.DeleteByProblem(id.Value);
+                this.testsData.DeleteByProblem(id.Value);
+                this.submissionsData.RemoveTestRunsCacheByProblem(id.Value);
 
                 scope.Complete();
             }
 
             this.TempData.AddInfoMessage(Resource.Tests_deleted_successfully);
-            return this.RedirectToAction("Problem", new { id });
+            return this.RedirectToAction(c => c.Problem(id.Value));
         }
 
         /// <summary>
@@ -526,27 +425,26 @@
         /// <returns>View for /Administration/Tests/Details/{id} otherwise redirects to /Administration/Test/ with proper error message</returns>
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
-            var test = this.Data.Tests.All()
-                .Where(t => t.Id == id)
+            var test = this.testsData
+                .GetByIdQuery(id.Value)
                 .Select(TestViewModel.FromTest)
                 .FirstOrDefault();
 
             if (test == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_test);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(test.ProblemId))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(test);
@@ -559,10 +457,10 @@
         /// <returns>Content as html of the test input</returns>
         public ActionResult FullInput(int id)
         {
-            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
-            if (result != null)
+            var test = this.testsData.GetById(id);
+            if (test != null)
             {
-                return this.Content(HttpUtility.HtmlEncode(result.InputDataAsString), "text/html");
+                return this.Content(HttpUtility.HtmlEncode(test.InputDataAsString), "text/html");
             }
 
             return new EmptyResult();
@@ -575,11 +473,11 @@
         /// <returns>Content as html of the test output</returns>
         public ActionResult FullOutput(int id)
         {
-            var result = this.Data.Tests.All().FirstOrDefault(t => t.Id == id);
+            var test = this.testsData.GetById(id);
 
-            if (result != null)
+            if (test != null)
             {
-                return this.Content(HttpUtility.HtmlEncode(result.OutputDataAsString), "text/html");
+                return this.Content(HttpUtility.HtmlEncode(test.OutputDataAsString), "text/html");
             }
 
             return new EmptyResult();
@@ -593,56 +491,12 @@
         public JsonResult GetTestRuns(int id)
         {
             // TODO: Add server side paging and sorting to test runs grid
-            var result = this.Data.TestRuns.All()
-                .Where(tr => tr.TestId == id)
+            var result = this.testRunsData
+                .GetAllByTest(id)
                 .OrderByDescending(tr => tr.Submission.CreatedOn)
                 .Select(TestRunViewModel.FromTestRun);
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
-        /// Returns all available contest categories
-        /// </summary>
-        /// <returns>JSON result of all categores as objects with Id and Name properties</returns>
-        [HttpGet]
-        public JsonResult GetCascadeCategories()
-        {
-            var result = this.Data.ContestCategories.All().Select(cat => new { cat.Id, cat.Name });
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
-        /// Returns all available contests in category by id
-        /// </summary>
-        /// <param name="id">Id of category to get all contests from</param>
-        /// <returns>JSON result of all contests in category as objects with Id and Name properties</returns>
-        [HttpGet]
-        public JsonResult GetCascadeContests(int id)
-        {
-            var contests = this.Data.Contests
-                .All()
-                .Where(con => con.CategoryId == id)
-                .Select(con => new { con.Id, con.Name });
-
-            return this.Json(contests, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
-        /// Returns all available problems in contest by id
-        /// </summary>
-        /// <param name="id">Id of contest to get all problem from</param>
-        /// <returns>JSON result of all problems in contest as objects with Id and Name properties</returns>
-        [HttpGet]
-        public JsonResult GetCascadeProblems(int id)
-        {
-            var problems = this.Data.Problems
-                .All()
-                .Where(pr => pr.ProblemGroup.ContestId == id)
-                .Select(pr => new { pr.Id, pr.Name });
-
-            return this.Json(problems, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -655,33 +509,17 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.Json("No premissions");
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             var contestId = problem.ProblemGroup.ContestId;
 
             var categoryId = problem.ProblemGroup.Contest.CategoryId;
 
             var result = new { Contest = contestId, Category = categoryId };
-
-            return this.Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
-        /// Returns all problems as pair of Id and Name if problem name contains given substring
-        /// </summary>
-        /// <param name="text">Substring which problems should contain in name</param>
-        /// <returns>JSON result of all problems that contain the given substring</returns>
-        [HttpGet]
-        public JsonResult GetSearchedProblems(string text)
-        {
-            var result = this.Data.Problems
-                .All()
-                .Where(pr => pr.Name.ToLower().Contains(text.ToLower()))
-                .Select(pr => new { pr.Id, pr.Name });
 
             return this.Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -701,40 +539,38 @@
         [ValidateAntiForgeryToken]
         public ActionResult Import(string problemId, HttpPostedFileBase file, bool retestTask, bool deleteOldFiles)
         {
-            int id;
-
-            if (!int.TryParse(problemId, out id))
+            if (!int.TryParse(problemId, out var id))
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_problem);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.Json("No premissions");
             }
 
             if (file == null || file.ContentLength == 0)
             {
                 this.TempData.AddDangerMessage(Resource.No_empty_file);
-                return this.RedirectToAction("Problem", new { id });
+                return this.RedirectToAction(c => c.Problem(id));
             }
 
-            var extension = file.FileName.Substring(file.FileName.Length - 4, 4);
+            var extension = Path.GetExtension(file.FileName);
 
             if (extension != ".zip")
             {
                 this.TempData.AddDangerMessage(Resource.Must_be_zip);
-                return this.RedirectToAction("Problem", new { id });
+                return this.RedirectToAction(c => c.Problem(id));
             }
 
             TestsParseResult parsedTests;
@@ -751,43 +587,42 @@
                 catch
                 {
                     this.TempData.AddDangerMessage(Resource.Zip_damaged);
-                    return this.RedirectToAction("Problem", new { id });
-                }
-
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count || parsedTests.Inputs.Count != parsedTests.Outputs.Count)
-                {
-                    this.TempData.AddDangerMessage(Resource.Invalid_tests);
-                    return this.RedirectToAction("Problem", new { id });
+                    return this.RedirectToAction(c => c.Problem(id));
                 }
             }
 
-            using (var scope = TransactionsHelper.CreateTransactionScope())
+            if (!ZippedTestsParser.AreTestsParsedCorrectly(parsedTests))
             {
-                this.Data.Submissions.Update(
-                    x => x.ProblemId == id && !x.IsDeleted,
-                    x => new Submission { TestRunsCache = null });
-                this.Data.SaveChanges();
+                this.TempData.AddDangerMessage(Resource.Invalid_tests);
+                return this.RedirectToAction(c => c.Problem(id));
+            }
+
+            int addedTestsCount;
+
+            using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.RepeatableRead))
+            {
+                this.submissionsData.RemoveTestRunsCacheByProblem(problem.Id);
 
                 if (deleteOldFiles)
                 {
-                    this.Data.TestRuns.Delete(tr => tr.Test.ProblemId == problem.Id);
-                    this.Data.Tests.Delete(t => t.ProblemId == problem.Id);
+                    this.testRunsData.DeleteByProblem(problem.Id);
+                    this.testsData.DeleteByProblem(problem.Id);
                 }
 
-                ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+                addedTestsCount = ZippedTestsParser.AddTestsToProblem(problem, parsedTests);
+
+                this.problemsData.Update(problem);
 
                 if (retestTask)
                 {
-                    this.RetestSubmissions(problem.Id);
+                    this.problemsBusiness.RetestById(problem.Id);
                 }
 
-                this.Data.SaveChanges();
                 scope.Complete();
             }
 
-            this.TempData.AddInfoMessage(Resource.Tests_addted_to_problem);
-
-            return this.RedirectToAction("Problem", new { id });
+            this.TempData.AddInfoMessage(string.Format(Resource.Tests_added_to_problem, addedTestsCount));
+            return this.RedirectToAction(c => c.Problem(id));
         }
 
         /// <summary>
@@ -797,49 +632,49 @@
         /// <returns>Zip file containing all tests in format {task}.{testNum}[.{zeroNum}].{in|out}.txt</returns>
         public ActionResult Export(int id)
         {
-            var problem = this.Data.Problems.All().FirstOrDefault(x => x.Id == id);
+            var problem = this.problemsData.GetById(id);
 
             if (problem == null)
             {
                 this.TempData.AddDangerMessage(Resource.Problem_does_not_exist);
-                return this.RedirectToAction(GlobalConstants.Index);
+                return this.RedirectToAction(c => c.Index());
             }
 
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
+                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
                 return this.Json("No premissions");
             }
 
             var tests = problem.Tests.OrderBy(x => x.OrderBy);
 
-            string zipFileName = $"{problem.Name}_Tests_{DateTime.Now}";
+            var zipFileName = $"{problem.Name}_Tests_{DateTime.Now}";
             var zipFile = new ZipFile(zipFileName);
 
             using (zipFile)
             {
-                int trialTestCounter = 1;
-                int openTestCounter = 1;
-                int testCounter = 1;
+                var trialTestCounter = 1;
+                var openTestCounter = 1;
+                var testCounter = 1;
 
                 foreach (var test in tests)
                 {
                     if (test.IsTrialTest)
                     {
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.in.txt", trialTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.000.{0:D3}.out.txt", trialTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         trialTestCounter++;
                     }
                     else if (test.IsOpenTest)
                     {
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.in.txt", openTestCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.open.{0:D3}.out.txt", openTestCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         openTestCounter++;
                     }
                     else
                     {
-                        zipFile.AddEntry(string.Format("test.{0:D3}.in.txt", testCounter), test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry(string.Format("test.{0:D3}.out.txt", testCounter), test.OutputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.{testCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
+                        zipFile.AddEntry($"test.{testCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         testCounter++;
                     }
                 }
@@ -855,10 +690,8 @@
         }
 
         [HttpGet]
-        public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int id)
-        {
-            return this.ExportToExcel(request, this.GetData(id));
-        }
+        public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int id) =>
+            this.ExportToExcel(request, this.GetData(id));
 
         private IEnumerable GetData(int id)
         {
@@ -867,31 +700,13 @@
                 return new List<TestViewModel>();
             }
 
-            var result = this.Data.Tests
-                .All()
-                .Where(test => test.ProblemId == id)
+            var result = this.testsData
+                .GetAllByProblem(id)
                 .OrderByDescending(test => test.IsTrialTest)
                 .ThenBy(test => test.OrderBy)
                 .Select(TestViewModel.FromTest);
 
             return result;
-        }
-
-        private void RetestSubmissions(int problemId)
-        {
-            this.participantScoresData.DeleteAllByProblem(problemId);
-
-            var submissions = this.Data.Problems
-                .GetById(problemId)
-                .Submissions
-                .Where(s => !s.IsDeleted)
-                .ToList();
-
-            foreach (var submission in submissions)
-            {
-                submission.Processed = false;
-                this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
-            }          
         }
     }
 }

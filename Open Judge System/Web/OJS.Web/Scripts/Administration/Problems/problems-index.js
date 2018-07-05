@@ -15,22 +15,36 @@ function onContestSelect() {
     initializeGrid(contestId);
 }
 
+function onCopySuccess(response, status) {
+    $('#copy-popup-window').data('kendoWindow').close();
+    displayAlertMessage(response, status, $('.main-container'));
+}
+
+function onCopyFailure(response, status) {
+    displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
+}
+
 function initializeGrid(contestId) {
     'use strict';
 
     var response;
     var sendSubmissionsActionName;
+    var contestName;
 
     $('#status').show();
+    $('#problems-grid').empty();
 
-    $.get('/Administration/KendoRemoteData/GetContestCompeteOrPracticeActionName/' + contestId, function (data) {
-        sendSubmissionsActionName = data;
+    $.get('/Administration/KendoRemoteData/GetContestNameAndCompeteOrPracticeActionName/' + contestId, function (data) {
+        sendSubmissionsActionName = data.actionName;
+        contestName = data.contestName;
     }).then(function() {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
+            var urlContestName = convertContestnameToUrlName(contestName);
+            var escapedContestName = escapeSpecialSymbols(contestName);
+            
             $('#status').hide();
-            $('#problems-grid').html('');
             $('#problems-grid').kendoGrid({
                 dataSource: new kendo.data.DataSource({
                     data: response
@@ -39,27 +53,27 @@ function initializeGrid(contestId) {
                 toolbar: [{
                     template: '<a href="/Administration/Problems/Create/' + contestId +
                     '" class="btn btn-sm btn-primary">Добавяне</a>' +
-                    ' <a href="/Administration/Problems/DeleteAll/' + contestId +
+                    '<a href="/Administration/Problems/DeleteAll/' + contestId +
                     '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
-                    ' <a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
-                    '" id="export" class="btn btn-sm btn-primary"><span></span>Експорт към Excel</a>' +
-                    ' <a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
-                    '" class="btn btn-sm btn-primary"><span></span>Изпрати решение/я</a>'
+                    '<a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
+                    '" id="export" class="btn btn-sm btn-primary">Експорт към Excel</a>' +
+                    '<a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
+                    '" class="btn btn-sm btn-primary">Изпрати решение/я</a>' +
+                    '<a href="/Contests/' + contestId + '/' + urlContestName +
+                    '" class="pull-right kendo-grid-link text-bold">' + escapedContestName + '</a>'
                 }],
                 columns: [
-                    { field: 'Id', title: 'Номер' },
-                    { field: 'Name', title: 'Име' },
+                    { field: 'Name', title: 'Име', template: '<a href="/Administration/Problems/Details/#= Id #" class="kendo-grid-link text-bold">#=Name#</a>'},
                     { field: 'ProblemGroupOrderBy', title: 'Група' },
-                    { field: 'ContestName', title: 'Състезание' },
+                    { field: 'ProblemGroupType', title: 'Тип група', template: '#: ProblemGroupTypeName #' },
                     { title: 'Тестове', template: '<div> Пробни: #= TrialTests # </div><div> Състезателни: #= CompeteTests # </div>' },
                     {
-                        title: 'Операции', width: '50%', template: '<div class="text-center">' +
-                        '<a href="/Administration/Problems/Details/#= Id #" class="btn btn-sm btn-primary">Детайли</a>&nbsp;' +
+                        title: 'Операции', width: '40%', template: '<div class="text-center">' +
                         '<a href="/Administration/Tests/Problem/#= Id #" class="btn btn-sm btn-primary">Тестове</a>&nbsp;' +
-                        '<button class="btn btn-sm btn-primary resource-btn" id="resource-btn-#= Id #">Ресурси</button>&nbsp;' +
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
                         '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
-                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a></div>'
+                        '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
+                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
                     }
                 ],
                 detailInit: detailInit
@@ -125,23 +139,7 @@ function initializeGrid(contestId) {
                 });
             }
 
-            $('.resource-btn').click(function (e) {
-                var target = $(e.target);
-                var tr = target.closest('tr');
-                var grid = $('#problems-grid').data('kendoGrid');
-
-                if (target.data('expanded')) {
-                    grid.collapseRow(tr);
-                    target.removeData('expanded');
-                } else {
-                    grid.expandRow(tr);
-                    target.data('expanded', true);
-                }
-            });
-
-            if ($('#problemId').val()) {
-                $('#resource-btn-' + $('#problemId').val()).click();
-            }
+            $('.k-header.k-grid-toolbar').addClass('problems-grid-toolbar');
         });
     });
 }
@@ -157,6 +155,36 @@ function hideTheadFromGrid() {
         populateDropDowns(contestId);
         initializeGrid(contestId);
     });
+}
+
+function prepareCopyWindow(problemId, problemName) {
+    var copyWindowSelector = $('#copy-popup-window');
+    var title = 'Копиране на задача ' + problemName;
+    var url = '/Administration/Problems/CopyPartial/' + problemId;
+
+    var copyPopUp = copyWindowSelector.data('kendoWindow');
+
+    if (typeof copyPopUp == typeof undefined) {
+        (function () {
+            copyWindowSelector.kendoWindow({
+                width: '600px',
+                modal: true,
+                iframe: false,
+                resizable: false,
+                title: title,
+                content: url,
+                visible: false
+            });
+
+            copyPopUp = copyWindowSelector.data('kendoWindow');
+        })();
+    } else {
+        copyPopUp.title(title);
+        copyPopUp.refresh(url);
+    }
+
+    copyPopUp.open();
+    copyPopUp.center();
 }
 
 $(document).ready(function () {

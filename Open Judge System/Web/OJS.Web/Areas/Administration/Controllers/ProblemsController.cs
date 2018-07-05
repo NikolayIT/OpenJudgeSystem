@@ -38,18 +38,19 @@
     using OJS.Web.Areas.Administration.ViewModels.Submission;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
     using OJS.Web.Common;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
-    using OJS.Web.Controllers;
     using OJS.Web.ViewModels.Common;
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
+    using ViewModelType = OJS.Web.Areas.Administration.ViewModels.Problem.ProblemAdministrationViewModel;
 
     [RouteArea(GlobalConstants.AdministrationAreaName, AreaPrefix = GlobalConstants.AdministrationAreaName)]
     [RoutePrefix("Problems")]
     public class ProblemsController : LecturerBaseController
-    { 
+    {
         private readonly IContestsDataService contestsData;
         private readonly ICheckersDataService checkersData;
         private readonly IProblemsDataService problemsData;
@@ -88,10 +89,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(
-                    c => c.Index(),
-                    new { area = GlobalConstants.AdministrationAreaName });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.ContestId = contestId;
@@ -103,8 +101,7 @@
         {
             if (id == null || !this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.problemsData.GetWithProblemGroupById(id.Value);
@@ -132,8 +129,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id.Value);
@@ -150,12 +146,11 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, DetailedProblemViewModel problem)
+        public ActionResult Create(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id);
@@ -258,12 +253,13 @@
                 }
             }
 
-            if (newProblem.ProblemGroupId == null)
+            if (newProblem.ProblemGroupId == default(int))
             {
                 newProblem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contest.Id,
-                    OrderBy = newProblem.OrderBy
+                    OrderBy = newProblem.OrderBy,
+                    Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull()
                 };
             }
 
@@ -284,8 +280,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var selectedProblem = this.PrepareProblemViewModelForEdit(id.Value);
@@ -306,12 +301,11 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, DetailedProblemViewModel problem)
+        public ActionResult Edit(int id, ViewModelType problem)
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var existingProblem = this.problemsData.GetWithProblemGroupById(id);
@@ -354,6 +348,7 @@
             existingProblem.Checker = this.checkersData.GetByName(problem.Checker);
             existingProblem.SolutionSkeleton = problem.SolutionSkeletonData;
             existingProblem.SubmissionTypes.Clear();
+            existingProblem.ProblemGroup.Type = ((ProblemGroupType?)problem.ProblemGroupType).GetValidTypeOrNull();
 
             if (!existingProblem.ProblemGroup.Contest.IsOnline)
             {
@@ -395,8 +390,7 @@
 
             if (!this.CheckIfUserHasProblemPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var selectedProblem = this.problemsData
@@ -425,8 +419,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(problemId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var problem = this.problemsData.GetWithContestById(problemId);
@@ -460,8 +453,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(id.Value))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(id.Value);
@@ -493,8 +485,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(contestId))
             {
-                this.TempData.AddDangerMessage(GlobalResource.Invalid_contest);
-                return this.RedirectToAction(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData.GetById(contestId);
@@ -527,7 +518,7 @@
 
             var problem = this.problemsData
                 .GetByIdQuery(id.Value)
-                .Select(DetailedProblemViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
             if (problem == null)
@@ -538,8 +529,7 @@
 
             if (!this.CheckIfUserHasContestPermissions(problem.ContestId))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.View(problem);
@@ -563,7 +553,7 @@
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
                 this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             var additionalFiles = problem.AdditionalFiles;
@@ -644,8 +634,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
@@ -672,8 +661,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             return this.PartialView("_ResourcesGrid", id);
@@ -684,8 +672,7 @@
         {
             if (!this.CheckIfUserHasProblemPermissions(id))
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction("Index", "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var resources = this.problemResourcesData
@@ -746,17 +733,70 @@
             return this.Content(solutionSkeleton.Decompress());
         }
 
+        [AjaxOnly]
+        public ActionResult CopyPartial(int id) =>
+            this.PartialView("_CopyProblemToAnotherContest", new CopyProblemViewModel(id));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Copy(CopyProblemViewModel problem)
+        {
+            var contestId = problem.ContestId;
+            var problemGroupId = problem.ProblemGroupId;
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.JsonValidation();
+            }
+
+            if (!this.problemsData.ExistsById(problem.Id))
+            {
+                return this.JsonError(GlobalResource.Invalid_problem);
+            }
+
+            if (!contestId.HasValue || !this.contestsData.ExistsById(contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_contest);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(contestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            if (problemGroupId.HasValue &&
+                !this.problemGroupsData.IsFromContestByIdAndContest(problemGroupId.Value, contestId.Value))
+            {
+                return this.JsonError(GlobalResource.Invalid_problem_group);
+            }
+
+            var result = this.problemsBusiness.CopyToContestByIdByContestAndProblemGroup(
+                problem.Id,
+                contestId.Value,
+                problemGroupId);
+
+            if (result.IsError)
+            {
+                return this.JsonError(result.Error);
+            }
+
+            return this.JsonSuccess(string.Format(
+                GlobalResource.Copy_problem_success_message,
+                this.problemsData.GetNameById(problem.Id),
+                this.contestsData.GetNameById(contestId.Value)));
+        }
+
         private IEnumerable GetData(int id)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                return new List<DetailedProblemViewModel>();
+                return new List<ViewModelType>();
             }
 
             var result = this.problemsData
                 .GetAllByContest(id)
                 .OrderBy(x => x.OrderBy)
-                .Select(DetailedProblemViewModel.FromProblem);
+                .Select(ViewModelType.FromProblem);
 
             return result;
         }
@@ -804,8 +844,7 @@
 
                 var parsedTests = ZippedTestsParser.Parse(memory);
 
-                if (parsedTests.ZeroInputs.Count != parsedTests.ZeroOutputs.Count ||
-                    parsedTests.Inputs.Count != parsedTests.Outputs.Count)
+                if (!ZippedTestsParser.AreTestsParsedCorrectly(parsedTests))
                 {
                     throw new ArgumentException(GlobalResource.Invalid_tests);
                 }
@@ -824,15 +863,20 @@
             }
         }
 
-        private DetailedProblemViewModel PrepareProblemViewModelForEdit(int id)
+        private ViewModelType PrepareProblemViewModelForEdit(int id)
         {
             var problemEntity = this.problemsData.GetByIdQuery(id);
 
             var problem = problemEntity
-                .Select(DetailedProblemViewModel.FromProblem)
+                .Select(ViewModelType.FromProblem)
                 .FirstOrDefault();
 
-            var contest = problemEntity.FirstOrDefault().ProblemGroup.Contest;
+            var contest = problemEntity.FirstOrDefault()?.ProblemGroup.Contest;
+
+            if (problem == null || contest == null)
+            {
+                return null;
+            }
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
@@ -842,23 +886,14 @@
             return problem;
         }
 
-        private DetailedProblemViewModel PrepareProblemViewModelForCreate(Contest contest)
+        private ViewModelType PrepareProblemViewModelForCreate(Contest contest)
         {
-            var problemOrder = GlobalConstants.ProblemDefaultOrderBy;
-            var lastProblem = this.problemsData
-                .GetAllByContest(contest.Id)
-                .OrderByDescending(x => x.OrderBy)
-                .FirstOrDefault();
-
-            if (lastProblem != null)
+            var problem = new ViewModelType
             {
-                problemOrder = lastProblem.OrderBy + 1;
-            }
-
-            var problem = new DetailedProblemViewModel();
-            problem.OrderBy = problemOrder;
-            problem.ContestId = contest.Id;
-            problem.ContestName = contest.Name;
+                ContestId = contest.Id,
+                ContestName = contest.Name,
+                OrderBy = this.problemsData.GetNewOrderByContest(contest.Id)
+            };
 
             this.AddCheckersAndProblemGroupsToProblemViewModel(
                 problem,
@@ -874,7 +909,7 @@
         }
 
         private void AddCheckersAndProblemGroupsToProblemViewModel(
-            DetailedProblemViewModel problem,
+            ViewModelType problem,
             int numberOfProblemGroups,
             bool isOnlineContest)
         {
@@ -894,9 +929,11 @@
                     .OrderBy(pg => pg.OrderBy)
                     .Select(DropdownViewModel.FromProblemGroup);
             }
+
+            this.ViewBag.ProblemGroupTypeData = DropdownViewModel.GetEnumValues<ProblemGroupType>();
         }
 
-        private void AddCheckersToProblemViewModel(DetailedProblemViewModel problem) =>
+        private void AddCheckersToProblemViewModel(ViewModelType problem) =>
             problem.AvailableCheckers = this.checkersData
                 .GetAll()
                 .Select(checker => new SelectListItem
@@ -905,7 +942,7 @@
                     Value = checker.Name
                 });
 
-        private bool IsValidProblem(DetailedProblemViewModel model)
+        private bool IsValidProblem(ViewModelType model)
         {
             var isValid = true;
 

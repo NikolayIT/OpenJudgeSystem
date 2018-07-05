@@ -1,4 +1,6 @@
-﻿@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
+﻿@using OJS.Web.Areas.Contests.Controllers
+
+@using Resource = Resources.Areas.Administration.Contests.Views.ContestIndex
 @using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @{
@@ -20,7 +22,7 @@
         {
             columns.Bound(x => x.Id);
             columns.Bound(x => x.CategoryName);
-            columns.Template(@<text></text>).ClientTemplate("#= makeContestNameLinkToDetailsPage(data) #").Title(GeneralResource.Name);
+            columns.Bound(x => x.Name).ClientTemplate("#= makeContestNameLinkToDetailsPage(data) #");
             columns.Bound(x => x.StartTime).Format(GlobalConstants.DefaultDateTimeFormatString);
             columns.Bound(x => x.EndTime).Format(GlobalConstants.DefaultDateTimeFormatString);
             columns.Bound(x => x.PracticeStartTime).Format(GlobalConstants.DefaultDateTimeFormatString);
@@ -29,7 +31,7 @@
             columns.Bound(x => x.CreatedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
             columns.Bound(x => x.ModifiedOn).Format(GlobalConstants.DefaultDateTimeFormatString).Hidden();
             columns.Command(c => c.Custom(Resource.Download_submissions).Click("showDownloadSubmissionsPopup")).Title(Resource.Submissions).Width(200);
-            columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=true'>{Resource.For_compete}</a><br /><a class='k-button' href='{Url.Action("Results", "ContestsExport")}/#=Id#?compete=false'>{Resource.For_practice}</a>").Title(Resource.Ranking).Width(200);
+            columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action<ResultsController>(c => c.Export(null, true))}/#=Id#'>{Resource.For_compete}</a><br /><a class='k-button' href='{Url.Action<ResultsController>(c => c.Export(null, false))}/#=Id#'>{Resource.For_practice}</a>").Title(Resource.Ranking).Width(200);
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='Problems/Contest/#=Id#'>{Resource.Problems}</a><br /><a class='k-button' href='{Url.Action("Contest", "Participants")}/#=Id#'>{Resource.Participants}</a>").Title(Resource.Other);
             columns.Template(@<text></text>).ClientTemplate($"<a class='k-button' href='{Url.Action("Edit", "Contests")}/#=Id#'>{GeneralResource.Edit}</a>").Title(GeneralResource.Change);
             columns.Command(command => command.Destroy().Text(" ")).Width(80).Title(GeneralResource.Delete);

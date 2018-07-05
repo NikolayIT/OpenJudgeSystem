@@ -3,9 +3,11 @@
     using System.Linq;
     using System.Web.Mvc;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Services.Business.ExamGroups;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
     using OJS.Web.Areas.Api.Models;
 
@@ -13,13 +15,16 @@
     {
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IHangfireBackgroundJobService backgroundJobs;
+        private readonly IContestsDataService contestsData;
 
         public ExamGroupsController(
             IExamGroupsDataService examGroupsData,
-            IHangfireBackgroundJobService backgroundJobs)
+            IHangfireBackgroundJobService backgroundJobs,
+            IContestsDataService contestsData)
         {
             this.examGroupsData = examGroupsData;
             this.backgroundJobs = backgroundJobs;
+            this.contestsData = contestsData;
         }
 
         public ActionResult AddUsersToExamGroup(UsersExamGroupModel model)
@@ -37,6 +42,7 @@
             if (examGroup == null)
             {
                 examGroupExists = false;
+
                 examGroup = new ExamGroup
                 {
                     ExternalExamGroupId = externalExamGroup.Id,
@@ -44,9 +50,15 @@
                 };
             }
 
+            var contestIsValid = externalExamGroup.JudgeSystemContestId.HasValue &&
+                this.contestsData
+                    .GetByIdQuery(externalExamGroup.JudgeSystemContestId.Value)
+                    .Any(c => c.Type == ContestType.OnlinePracticalExam);
+
             var startTime = externalExamGroup.StartTime?.ToString("g") ?? string.Empty;
 
             examGroup.Name = $"{externalExamGroup.ExamName} => {externalExamGroup.ExamGroupTrainingLabName} | {startTime}";
+            examGroup.ContestId = contestIsValid ? externalExamGroup.JudgeSystemContestId : null;
 
             if (examGroupExists)
             {
@@ -60,10 +72,10 @@
             var examGroupId = this.examGroupsData
                 .GetIdByExternalIdAndAppId(externalExamGroup.Id, model.AppId);
 
-            if (examGroupId.HasValue)
+            if (examGroupId != default(int))
             {
                 this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                    x => x.AddUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+                    x => x.AddUsersByIdAndUserIds(examGroupId, model.UserIds));
             }
 
             return this.Json(true);
@@ -79,10 +91,10 @@
             var examGroupId = this.examGroupsData
                 .GetIdByExternalIdAndAppId(model.ExamGroupInfoModel.Id, model.AppId);
 
-            if (examGroupId.HasValue)
+            if (examGroupId != default(int))
             {
                 this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                    x => x.RemoveUsersByIdAndUserIds(examGroupId.Value, model.UserIds));
+                    x => x.RemoveUsersByIdAndUserIds(examGroupId, model.UserIds));
             }
 
             return this.Json(true);

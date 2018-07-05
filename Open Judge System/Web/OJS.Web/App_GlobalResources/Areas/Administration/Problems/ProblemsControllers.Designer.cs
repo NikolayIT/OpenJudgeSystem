@@ -70,6 +70,15 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully copied the problem {0} into the contest {1}.
+        /// </summary>
+        public static string Copy_problem_success_message {
+            get {
+                return ResourceManager.GetString("Copy_problem_success_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid contest.
         /// </summary>
         public static string Invalid_contest {
@@ -84,6 +93,15 @@ namespace Resources.Areas.Administration.Problems {
         public static string Invalid_problem {
             get {
                 return ResourceManager.GetString("Invalid_problem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid problem group.
+        /// </summary>
+        public static string Invalid_problem_group {
+            get {
+                return ResourceManager.GetString("Invalid_problem_group", resourceCulture);
             }
         }
         

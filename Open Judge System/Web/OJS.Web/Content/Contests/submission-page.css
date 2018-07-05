@@ -64,3 +64,7 @@
 .problem-result-container .k-grid tr.success td a {
     color: #fff;
 }
+
+.excluded-from-homework-disclaimer-message {
+    font-size: 0.5em;
+}

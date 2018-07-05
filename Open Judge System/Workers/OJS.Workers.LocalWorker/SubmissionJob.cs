@@ -7,10 +7,12 @@
 
     using log4net;
 
-    using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
+    using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Services.Data.TestRuns;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.LocalWorker.Helpers;
 
@@ -20,6 +22,8 @@
 
     public class SubmissionJob : IJob
     {
+        private readonly object sharedLockObject;
+
         private readonly ILog logger;
 
         private readonly ConcurrentQueue<int> submissionsForProcessing;
@@ -28,7 +32,8 @@
 
         public SubmissionJob(
             string name,
-            ConcurrentQueue<int> submissionsForProcessing)
+            ConcurrentQueue<int> submissionsForProcessing,
+            object sharedLockObject)
         {
             this.Name = name;
 
@@ -38,6 +43,7 @@
             this.stopping = false;
 
             this.submissionsForProcessing = submissionsForProcessing;
+            this.sharedLockObject = sharedLockObject;
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -52,10 +58,12 @@
             {
                 using (ThreadScopedLifestyle.BeginScope(container))
                 {
-                    var data = new OjsData();
-                    var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
+                    var testRunsData = container.GetInstance<ITestRunsDataService>();
+                    var submissionsData = container.GetInstance<ISubmissionsDataService>();
+                    var participantsData = container.GetInstance<IParticipantsDataService>();
                     var participantScoresData = container.GetInstance<IParticipantScoresDataService>();
-                
+                    var submissionsForProccessingData = container.GetInstance<ISubmissionsForProcessingDataService>();
+
                     Submission submission = null;
                     SubmissionForProcessing submissionForProcessing = null;
                     bool retrievedSubmissionSuccessfully;
@@ -66,7 +74,7 @@
                             if (this.submissionsForProcessing.IsEmpty)
                             {
                                 var submissions = submissionsForProccessingData
-                                    .GetUnprocessedSubmissions()
+                                    .GetAllUnprocessed()
                                     .OrderBy(x => x.Id)
                                     .Select(x => x.SubmissionId)
                                     .ToList();
@@ -82,14 +90,16 @@
                                 this.logger
                                     .InfoFormat($"Submission №{submissionId} retrieved from data store successfully");
 
-                                submission = data.Submissions.GetById(submissionId);
+                                submission = submissionsData.GetById(submissionId);
 
-                                submissionForProcessing = submissionsForProccessingData
-                                    .GetBySubmissionId(submissionId);
+                                submissionForProcessing = submissionsForProccessingData.GetBySubmission(submissionId);
 
-                                if (submission != null && submissionForProcessing != null && !submission.Processing)
+                                if (submission != null && submissionForProcessing != null)
                                 {
-                                    submissionsForProccessingData.SetToProcessing(submissionForProcessing.Id);
+                                    submissionForProcessing.Processed = false;
+                                    submissionForProcessing.Processing = true;
+
+                                    submissionsForProccessingData.Update(submissionForProcessing);
                                 }
                             }
                         }
@@ -105,8 +115,9 @@
                         this.BeginProcessingSubmission(
                             submission,
                             submissionForProcessing,
-                            data,
-                            submissionsForProccessingData,
+                            testRunsData,
+                            submissionsData,
+                            participantsData,
                             participantScoresData);
                     }
                     else
@@ -127,16 +138,20 @@
         private void BeginProcessingSubmission(
             Submission submission,
             SubmissionForProcessing submissionForProcessing,
-            IOjsData data,
-            ISubmissionsForProcessingDataService submissionsForProccessingData,
+            ITestRunsDataService testRunsData,
+            ISubmissionsDataService submissionsData,
+            IParticipantsDataService participantsData,
             IParticipantScoresDataService participantScoresData)
         {
             submission.ProcessingComment = null;
+
             try
             {
-                data.TestRuns.DeleteBySubmissionId(submission.Id);
+                testRunsData.DeleteBySubmission(submission.Id);
+
                 this.ProcessSubmission(submission);
-                data.SaveChanges();
+
+                submissionsData.Update(submission);
             }
             catch (Exception exception)
             {
@@ -155,11 +170,12 @@
             }
 
             submission.Processed = true;
-            submissionsForProccessingData.SetToProcessed(submissionForProcessing.Id);
+            submissionForProcessing.Processed = true;
+            submissionForProcessing.Processing = false;
 
             try
             {
-                participantScoresData.SaveBySubmission(submission);
+                this.SaveParticipantScore(submission, participantsData, participantScoresData);
             }
             catch (Exception exception)
             {
@@ -179,7 +195,7 @@
 
             try
             {
-                data.SaveChanges();
+                submissionsData.Update(submission);
             }
             catch (Exception exception)
             {
@@ -188,7 +204,7 @@
 
             this.logger.InfoFormat("Submission №{0} successfully processed", submission.Id);
         }
-        
+
         private void ProcessSubmission(Submission submission)
         {
             // TODO: Check for N+1 queries problem
@@ -272,6 +288,60 @@
             else
             {
                 submission.Points = (submission.CorrectTestRunsWithoutTrialTestsCount * submission.Problem.MaximumPoints) / submission.TestsWithoutTrialTestsCount;
+            }
+        }
+
+        private void SaveParticipantScore(
+            Submission submission,
+            IParticipantsDataService participantsData,
+            IParticipantScoresDataService participantScoresData)
+        {
+            if (submission.ParticipantId == null || submission.ProblemId == null)
+            {
+                return;
+            }
+
+            var participant = participantsData
+                .GetByIdQuery(submission.ParticipantId.Value)
+                .Select(p => new
+                {
+                    p.IsOfficial,
+                    p.User.UserName
+                })
+                .FirstOrDefault();
+
+            if (participant == null)
+            {
+                return;
+            }
+
+            ParticipantScore existingScore;
+
+            lock (this.sharedLockObject)
+            {
+                existingScore = participantScoresData.GetByParticipantIdProblemIdAndIsOfficial(
+                    submission.ParticipantId.Value,
+                    submission.ProblemId.Value,
+                    participant.IsOfficial);
+
+                if (existingScore == null)
+                {
+                    participantScoresData.AddBySubmissionByUsernameAndIsOfficial(
+                        submission,
+                        participant.UserName,
+                        participant.IsOfficial);
+
+                    return;
+                }
+            }
+
+            if (submission.Points > existingScore.Points ||
+                submission.Id == existingScore.SubmissionId)
+            {
+                participantScoresData.UpdateBySubmissionAndPoints(
+                    existingScore,
+                    submission.Id,
+                    submission.Points);
             }
         }
     }

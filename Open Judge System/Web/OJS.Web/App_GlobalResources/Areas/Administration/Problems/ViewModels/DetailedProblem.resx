@@ -177,4 +177,7 @@
   <data name="Group_number" xml:space="preserve">
     <value>Problem group</value>
   </data>
+  <data name="Problem_group_type" xml:space="preserve">
+    <value>Problem group type</value>
+  </data>
 </root>

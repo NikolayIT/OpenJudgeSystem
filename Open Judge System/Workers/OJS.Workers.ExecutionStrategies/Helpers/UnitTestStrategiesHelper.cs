@@ -3,9 +3,14 @@
     using System;
     using System.Text.RegularExpressions;
 
+    using OJS.Common;
+
     internal static class UnitTestStrategiesHelper
     {
-        public const string TestedCodeFileName = "TestedCode.cs";
+        public const string TestedCodeFileName = "TestedCode";
+
+        public static readonly string TestedCodeFileNameWithExtension =
+            $"{TestedCodeFileName}{GlobalConstants.CSharpFileExtension}";
 
         /// <summary>
         /// Gets the output message and the count of the original tests passed,

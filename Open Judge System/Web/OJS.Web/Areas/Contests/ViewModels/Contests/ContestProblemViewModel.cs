@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using OJS.Common.Models;
     using OJS.Data.Models;
 
     public class ContestProblemViewModel
@@ -15,31 +16,8 @@
 
         private int? fileSizeLimitInBytes;
 
-        public ContestProblemViewModel(Problem problem)
-        {
-            this.ProblemId = problem.Id;
-            this.Name = problem.Name;
-            this.OrderBy = problem.OrderBy;
-            this.ContestId = problem.ProblemGroup.ContestId;
-            this.ShowResults = problem.ShowResults;
-            this.Resources = problem.Resources.AsQueryable()
-                                                .OrderBy(x => x.OrderBy)
-                                                .Where(x => !x.IsDeleted)
-                                                .Select(ContestProblemResourceViewModel.FromResource);
-            this.TimeLimit = problem.TimeLimit;
-            this.MemoryLimit = problem.MemoryLimit;
-            this.FileSizeLimit = problem.SourceCodeSizeLimit;
-            this.CheckerName = problem.Checker.Name;
-            this.CheckerDescription = problem.Checker.Description;
-            this.MaximumPoints = problem.MaximumPoints;
-        }
+        public ContestProblemViewModel() => this.Resources = new HashSet<ContestProblemResourceViewModel>();
 
-        public ContestProblemViewModel()
-        {
-            this.Resources = new HashSet<ContestProblemResourceViewModel>();
-        }
-
-        // TODO: Constructor and this static property have the same code. Refactor.
         public static Expression<Func<Problem, ContestProblemViewModel>> FromProblem
         {
             get
@@ -54,6 +32,7 @@
                     TimeLimit = problem.TimeLimit,
                     FileSizeLimit = problem.SourceCodeSizeLimit,
                     ShowResults = problem.ShowResults,
+                    IsExcludedFromHomework = problem.ProblemGroup.Type == ProblemGroupType.ExcludedFromHomework,
                     CheckerName = problem.Checker.Name,
                     CheckerDescription = problem.Checker.Description,
                     MaximumPoints = problem.MaximumPoints,
@@ -78,30 +57,20 @@
 
         public bool ShowResults { get; set; }
 
+        public bool IsExcludedFromHomework { get; set; }
+
         public double MemoryLimit
         {
-            get
-            {
-                return (double)this.memoryLimitInBytes / 1024 / 1024;
-            }
+            get => (double)this.memoryLimitInBytes / 1024 / 1024;
 
-            set
-            {
-                this.memoryLimitInBytes = (int)value;
-            }
+            set => this.memoryLimitInBytes = (int)value;
         }
 
         public double TimeLimit
         {
-            get
-            {
-                return this.timeLimitInMs / 1000.00;
-            }
+            get => this.timeLimitInMs / 1000.00;
 
-            set
-            {
-                this.timeLimitInMs = (int)value;
-            }
+            set => this.timeLimitInMs = (int)value;
         }
 
         public double? FileSizeLimit
@@ -116,10 +85,7 @@
                 return (double)this.fileSizeLimitInBytes / 1024;
             }
 
-            set
-            {
-                this.fileSizeLimitInBytes = (int?)value;
-            }
+            set => this.fileSizeLimitInBytes = (int?)value;
         }
 
         public string CheckerName { get; set; }

@@ -138,10 +138,14 @@ class _$SandboxSecurityManager extends SecurityManager {
 
         if (permission instanceof RuntimePermission) {
             if (permission.getName().equals(""createClassLoader"") ||
+                    permission.getName().equals(""getClassLoader"") ||
+                    permission.getName().equals(""accessSystemModules"") ||
                     permission.getName().startsWith(""accessClassInPackage.sun."") ||
+                    permission.getName().equals(""accessDeclaredMembers"") ||
                     permission.getName().equals(""getProtectionDomain"") ||
-                    permission.getName().equals(""accessDeclaredMembers"")) {
-                // Allow createClassLoader, accessClassInPackage.sun, getProtectionDomain and accessDeclaredMembers
+                    permission.getName().equals(""localeServiceProvider"")) {
+                // Allow createClassLoader, getClassLoader, accessClassInPackage.sun,
+                // getProtectionDomain, accessDeclaredMembers and localeServiceProvider
                 return;
             }
         }
@@ -281,9 +285,9 @@ class _$SandboxSecurityManager extends SecurityManager {
         }
 
         private CompileResult CompileSourceFiles(
-            CompilerType compilerType, 
+            CompilerType compilerType,
             string compilerPath,
-            string compilerArguments, 
+            string compilerArguments,
             IEnumerable<string> sourceFilesToCompile)
         {
             var compilerResult = new CompileResult(false, null);

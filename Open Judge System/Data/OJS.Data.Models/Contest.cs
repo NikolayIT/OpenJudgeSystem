@@ -37,7 +37,7 @@
         /// Gets or sets the duration of online contest in which a participant can compete
         /// </summary>
         /// <remarks>
-        /// If duration is null the actual duration is the difference between 
+        /// If duration is null the actual duration is the difference between
         /// start and end time of the contest
         /// </remarks>
         public TimeSpan? Duration { get; set; }
@@ -93,8 +93,6 @@
         public virtual ICollection<LecturerInContest> Lecturers { get; set; } = new HashSet<LecturerInContest>();
 
         public virtual ICollection<ContestQuestion> Questions { get; set; } = new HashSet<ContestQuestion>();
-
-        public virtual ICollection<Problem> Problems { get; set; } = new HashSet<Problem>();
 
         public virtual ICollection<ProblemGroup> ProblemGroups { get; set; } = new HashSet<ProblemGroup>();
 

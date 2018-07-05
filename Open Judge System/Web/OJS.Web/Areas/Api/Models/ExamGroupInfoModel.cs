@@ -6,6 +6,8 @@
     {
         public int Id { get; set; }
 
+        public int? JudgeSystemContestId { get; set; }
+
         public string ExamName { get; set; }
 
         public string ExamGroupTrainingLabName { get; set; }

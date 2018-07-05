@@ -13,10 +13,14 @@
             this.problemResources = problemResources;
 
         public ProblemResource GetById(int id) =>
-            this.problemResources.All().FirstOrDefault(pr => pr.Id == id);
+            this.problemResources
+                .All()
+                .FirstOrDefault(pr => pr.Id == id);
 
         public IQueryable<ProblemResource> GetByProblemQuery(int problemId) =>
-            this.problemResources.All().Where(pr => pr.ProblemId == problemId);
+            this.problemResources
+                .All()
+                .Where(pr => pr.ProblemId == problemId);
 
         public void DeleteById(int id)
         {

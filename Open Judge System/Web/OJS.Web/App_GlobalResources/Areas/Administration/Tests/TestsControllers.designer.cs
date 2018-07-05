@@ -142,11 +142,11 @@ namespace Resources.Areas.Administration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tests addted to problem.
+        ///   Looks up a localized string similar to {0} tests added to problem successfully..
         /// </summary>
-        public static string Tests_addted_to_problem {
+        public static string Tests_added_to_problem {
             get {
-                return ResourceManager.GetString("Tests_addted_to_problem", resourceCulture);
+                return ResourceManager.GetString("Tests_added_to_problem", resourceCulture);
             }
         }
         

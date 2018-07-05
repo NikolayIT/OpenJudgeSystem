@@ -126,16 +126,15 @@
                 {
                     var entity = model.GetEntityModel();
                     entity.Processed = false;
-                    entity.Processing = false;
 
                     using (var scope = TransactionsHelper.CreateTransactionScope())
                     {
                         this.BaseCreate(entity);
-                        this.submissionsForProcessingData.AddOrUpdateBySubmissionId(model.Id.Value);
+                        this.submissionsForProcessingData.AddOrUpdateBySubmission(model.Id.Value);
 
                         scope.Complete();
                     }
-                   
+
                     this.TempData.AddInfoMessage(Resource.Successful_creation_message);
                     return this.RedirectToAction(GlobalConstants.Index);
                 }
@@ -226,9 +225,8 @@
                         using (var scope = TransactionsHelper.CreateTransactionScope())
                         {
                             submission.Processed = false;
-                            submission.Processing = false;
 
-                            this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
+                            this.submissionsForProcessingData.AddOrUpdateBySubmission(submission.Id);
 
                             var submissionIsBestSubmission = this.IsBestSubmission(
                                 submissionProblemId,
@@ -289,7 +287,7 @@
             var submission = this.Data.Submissions
                 .All()
                 .FirstOrDefault(s => s.Id == id);
-            
+
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
@@ -316,13 +314,13 @@
                 this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
 
                 this.Data.Submissions.Delete(id);
-                this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
+                this.submissionsForProcessingData.RemoveBySubmission(submission.Id);
 
                 this.Data.SaveChanges();
 
                 var isBestSubmission = this.IsBestSubmission(
-                    submissionProblemId, 
-                    submissionParticipantId, 
+                    submissionProblemId,
+                    submissionParticipantId,
                     submission.Id);
 
                 if (isBestSubmission)
@@ -353,13 +351,13 @@
                 foreach (GridModelType submission in submissions)
                 {
                     this.Data.Submissions.Delete(submission.Id);
-                    this.submissionsForProcessingData.RemoveBySubmissionId(submission.Id);
+                    this.submissionsForProcessingData.RemoveBySubmission(submission.Id);
                 }
 
                 this.Data.SaveChanges();
 
                 foreach (GridModelType submission in submissions)
-                {                   
+                {
                     var dbSubmission = this.Data.Submissions.GetById(submission.Id);
 
                     if (!dbSubmission.ParticipantId.HasValue)
@@ -372,7 +370,7 @@
                     var submissionParticipantId = dbSubmission.ParticipantId.Value;
 
                     var isBestSubmission = this.IsBestSubmission(
-                        submissionProblemId, 
+                        submissionProblemId,
                         submissionParticipantId,
                         dbSubmission.Id);
 
@@ -436,13 +434,13 @@
                     this.TempData.AddDangerMessage(modelStateError.ErrorMessage);
                 }
 
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
             }
 
             if (submission == null)
             {
                 this.TempData.AddDangerMessage(Resource.Invalid_submission_message);
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
             }
 
             var problemIdIsValid = submission.ProblemId.HasValue;
@@ -452,15 +450,13 @@
                 (!this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) &&
                 !userOwnsSubmission))
             {
-                this.TempData[GlobalConstants.DangerMessage] = "Нямате привилегиите за това действие";
-                return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "Administration" });
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             if (this.CheckIfUserHasProblemPermissions(submission.ProblemId.Value) ||
                 (string.IsNullOrEmpty(submission.TestRunsCache) &&
-                userOwnsSubmission &&
-                submission.Processed &&
-                !submission.Processing))
+                    userOwnsSubmission &&
+                    submission.Processed))
             {
                 if (!submission.ParticipantId.HasValue)
                 {
@@ -480,9 +476,8 @@
                 using (var scope = TransactionsHelper.CreateTransactionScope())
                 {
                     submission.Processed = false;
-                    submission.Processing = false;
 
-                    this.submissionsForProcessingData.AddOrUpdateBySubmissionId(submission.Id);
+                    this.submissionsForProcessingData.AddOrUpdateBySubmission(submission.Id);
 
                     var submissionIsBestSubmission = this.IsBestSubmission(
                         submissionProblemId,
@@ -506,7 +501,7 @@
             }
 
             this.TempData[GlobalConstants.DangerMessage] = "Решението не може да бъде ретествано в момента";
-            return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = "" });
+            return this.RedirectToAction(nameof(ContestsController.Index), "Contests", new { area = string.Empty });
         }
 
         public JsonResult GetProblems(string text)
@@ -588,10 +583,7 @@
             return this.File(
                 submission.Content,
                 GlobalConstants.BinaryFileMimeType,
-                string.Format("{0}_{1}.{2}",
-                    submission.Participant.User.UserName,
-                    submission.Problem.Name,
-                    submission.FileExtension));
+                $"{submission.Participant.User.UserName}_{submission.Problem.Name}.{submission.FileExtension}");
         }
 
         private SubmissionType GetSubmissionType(int submissionTypeId)
@@ -656,7 +648,7 @@
                 return false;
             }
 
-            var submissionForProcessing = this.submissionsForProcessingData.GetBySubmissionId(submission.Id);
+            var submissionForProcessing = this.submissionsForProcessingData.GetBySubmission(submission.Id);
 
             return submissionForProcessing != null && !submissionForProcessing.Processed;
         }

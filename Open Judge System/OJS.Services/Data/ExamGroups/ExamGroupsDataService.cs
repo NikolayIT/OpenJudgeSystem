@@ -29,9 +29,11 @@
         public ExamGroup GetByExternalIdAndAppId(int? externalId, string appId) =>
             this.examGroups
                 .All()
-                .FirstOrDefault(eg => eg.ExternalExamGroupId == externalId && eg.ExternalAppId == appId);
+                .FirstOrDefault(eg =>
+                    eg.ExternalExamGroupId == externalId &&
+                    eg.ExternalAppId == appId);
 
-        public int? GetIdByExternalIdAndAppId(int? externalId, string appId) =>
+        public int GetIdByExternalIdAndAppId(int? externalId, string appId) =>
             this.examGroups
                 .All()
                 .Where(eg => eg.ExternalExamGroupId == externalId && eg.ExternalAppId == appId)
@@ -39,14 +41,18 @@
                 .FirstOrDefault();
 
         public int? GetContestIdById(int id) =>
-            this.GetByIdQuery(id).Select(eg => eg.ContestId).FirstOrDefault();
+            this.GetByIdQuery(id)
+                .Select(eg => eg.ContestId)
+                .FirstOrDefault();
 
         public IQueryable<ExamGroup> GetAll() => this.examGroups.All();
 
         public IQueryable<ExamGroup> GetAllByLecturer(string lecturerId) =>
-            this.GetAll().Where(eg => eg.Contest == null ||
-                (eg.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
-                eg.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId)));
+            this.GetAll()
+                .Where(eg =>
+                    eg.Contest == null ||
+                    (eg.Contest.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                    eg.Contest.Category.Lecturers.Any(l => l.LecturerId == lecturerId)));
 
         public IQueryable<UserProfile> GetUsersByIdQuery(int id) =>
             this.GetByIdQuery(id).SelectMany(eg => eg.Users);

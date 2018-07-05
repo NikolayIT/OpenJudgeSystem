@@ -129,9 +129,6 @@
   <data name="Added_time_to_participants_online" xml:space="preserve">
     <value>Успешно добавихте {0} минути към времената на всички активни участници в състезанието {1}</value>
   </data>
-  <data name="Contest" xml:space="preserve">
-    <value>състезание</value>
-  </data>
   <data name="Contest_added" xml:space="preserve">
     <value>Състезанието беше добавено успешно</value>
   </data>
@@ -168,17 +165,11 @@
   <data name="Participants_transferred" xml:space="preserve">
     <value>Участниците са преместени успешно!</value>
   </data>
-  <data name="Practice" xml:space="preserve">
-    <value>практика</value>
-  </data>
   <data name="Practice_start_date_before_end" xml:space="preserve">
     <value>Началната дата за упражнения не може да бъде след крайната дата за упражнения</value>
   </data>
   <data name="Problem_groups_count_limit" xml:space="preserve">
     <value>Броят на групи проблеми не може да бъде повече от {0}</value>
-  </data>
-  <data name="Report_excel_format" xml:space="preserve">
-    <value>Класиране за {0} {1}.xls</value>
   </data>
   <data name="Report_zip_format" xml:space="preserve">
     <value>{1} решения за {0}.zip</value>

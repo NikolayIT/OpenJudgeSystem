@@ -13,34 +13,24 @@
     using OJS.Common;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
+    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
 
     using Resources.Areas.Administration.Contests.ViewModels;
+
     using Resource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
 
-    public class DetailedProblemViewModel : AdministrationViewModel<Problem>
+    public class ProblemAdministrationViewModel : AdministrationViewModel<Problem>
     {
-        public DetailedProblemViewModel()
-        {
-            this.Name = GlobalConstants.ProblemDefaultName;
-            this.MaximumPoints = GlobalConstants.ProblemDefaultMaximumPoints;
-            this.TimeLimit = GlobalConstants.ProblemDefaultTimeLimit;
-            this.MemoryLimit = GlobalConstants.ProblemDefaultMemoryLimit;
-            this.ShowResults = GlobalConstants.ProblemDefaultShowResults;
-            this.SourceCodeSizeLimit = GlobalConstants.ProblemDefaultSourceLimit;
-            this.ShowDetailedFeedback = GlobalConstants.ProblemDefaultShowDetailedFeedback;
-            this.SubmissionTypes = new List<SubmissionTypeViewModel>();
-        }
-
         [ExcludeFromExcel]
-        public static Expression<Func<Problem, DetailedProblemViewModel>> FromProblem
+        public static Expression<Func<Problem, ProblemAdministrationViewModel>> FromProblem
         {
             get
             {
-                return problem => new DetailedProblemViewModel
+                return problem => new ProblemAdministrationViewModel
                 {
                     Id = problem.Id,
                     Name = problem.Name,
@@ -53,6 +43,7 @@
                     MemoryLimit = problem.MemoryLimit,
                     SelectedSubmissionTypes = problem.SubmissionTypes.AsQueryable().Select(SubmissionTypeViewModel.ViewModel),
                     ShowResults = problem.ShowResults,
+                    ProblemGroupType = (int?)problem.ProblemGroup.Type,
                     ShowDetailedFeedback = problem.ShowDetailedFeedback,
                     SourceCodeSizeLimit = problem.SourceCodeSizeLimit,
                     Checker = problem.Checker.Name,
@@ -81,16 +72,25 @@
             ErrorMessageResourceName = "Name_length",
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultName)]
-        public string Name { get; set; }
-
-        [DatabaseProperty]
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
-        public int ContestId { get; set; }
+        public string Name { get; set; } = GlobalConstants.ProblemDefaultName;
 
         [DatabaseProperty]
         [Display(Name = "Group_number", ResourceType = typeof(Resource))]
         [UIHint("DropDownList")]
-        public int? ProblemGroupId { get; set; }
+        public int ProblemGroupId { get; set; }
+
+        [ExcludeFromExcel]
+        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
+        [UIHint("DropDownListCustom")]
+        public int? ProblemGroupType { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
+        public string ProblemGroupTypeName =>
+            ((ProblemGroupType?)this.ProblemGroupType)?.GetDescription() ?? string.Empty;
+
+        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        public int ContestId { get; set; }
 
         [Display(Name = "Contest", ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
@@ -107,7 +107,7 @@
             ErrorMessageResourceName = "Max_points_required",
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultMaximumPoints)]
-        public short MaximumPoints { get; set; }
+        public short MaximumPoints { get; set; } = GlobalConstants.ProblemDefaultMaximumPoints;
 
         [DatabaseProperty]
         [Display(Name = "Time_limit", ResourceType = typeof(Resource))]
@@ -115,7 +115,7 @@
             ErrorMessageResourceName = "Time_limit_required",
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultTimeLimit)]
-        public int TimeLimit { get; set; }
+        public int TimeLimit { get; set; } = GlobalConstants.ProblemDefaultTimeLimit;
 
         [DatabaseProperty]
         [Display(Name = "Memory_limit", ResourceType = typeof(Resource))]
@@ -123,7 +123,7 @@
             ErrorMessageResourceName = "Memory_limit_required",
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultMemoryLimit)]
-        public int MemoryLimit { get; set; }
+        public int MemoryLimit { get; set; } = GlobalConstants.ProblemDefaultMemoryLimit;
 
         [Display(Name = "Checker", ResourceType = typeof(Resource))]
         public string Checker { get; set; }
@@ -152,21 +152,21 @@
         [DatabaseProperty]
         [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultSourceLimit)]
-        public int? SourceCodeSizeLimit { get; set; }
+        public int? SourceCodeSizeLimit { get; set; } = GlobalConstants.ProblemDefaultSourceLimit;
 
         [DatabaseProperty]
         [Display(Name = "Show_results", ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultShowResults)]
-        public bool ShowResults { get; set; }
+        public bool ShowResults { get; set; } = GlobalConstants.ProblemDefaultShowResults;
 
         [DatabaseProperty]
         [Display(Name = "Show_detailed_feedback", ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultShowDetailedFeedback)]
-        public bool ShowDetailedFeedback { get; set; }
+        public bool ShowDetailedFeedback { get; set; } = GlobalConstants.ProblemDefaultShowDetailedFeedback;
 
         [Display(Name = "Submision_types", ResourceType = typeof(ContestAdministration))]
         [ExcludeFromExcel]
-        public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; }
+        public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; } = new List<SubmissionTypeViewModel>();
 
         [ExcludeFromExcel]
         public IEnumerable<SubmissionTypeViewModel> SelectedSubmissionTypes { get; set; }
@@ -179,15 +179,9 @@
         [UIHint("MultiLineText")]
         public string SolutionSkeleton
         {
-            get
-            {
-                return this.SolutionSkeletonData.Decompress();
-            }
+            get => this.SolutionSkeletonData.Decompress();
 
-            set
-            {
-                this.SolutionSkeletonData = !string.IsNullOrWhiteSpace(value) ? value.Compress() : null;
-            }
+            set => this.SolutionSkeletonData = !string.IsNullOrWhiteSpace(value) ? value.Compress() : null;
         }
 
         [AllowHtml]

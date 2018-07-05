@@ -6,12 +6,16 @@
         return null;
     }
 
-    var nameUrl = contestName
+    var urlName = convertContestnameToUrlName(contestName);
+
+    return "<a class='kendo-grid-link text-bold' href='/Contests/" + contestId + '/' + urlName + "' >" + contestName + "</a>";
+}
+
+function convertContestnameToUrlName(contestName) {
+    return contestName
         .replace('C#', 'CSharp')
         .replace('C++', 'CPlusPlus')
         .replace(/[^0-9a-zA-Z\-]/g, '-')
         .replace(/-{1,}/g, '-')
         .replace(/^-+|-+$/g, '');
-
-    return "<a class='contest-name-link' href='/Contests/" + contestId + '/' + nameUrl + "' >" + contestName + "</a>";
 }

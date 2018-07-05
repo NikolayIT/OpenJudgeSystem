@@ -107,6 +107,15 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy into a new problem group.
+        /// </summary>
+        public static string Copy_in_new_problem_group {
+            get {
+                return ResourceManager.GetString("Copy_in_new_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the max points for the problem.
         /// </summary>
         public static string Enter_max_points {
@@ -202,6 +211,24 @@ namespace Resources.Areas.Administration.Problems.Views.Partials {
         public static string Precision_checker_description {
             get {
                 return ResourceManager.GetString("Precision_checker_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the type for the group of problems in which the problem is.
+        /// </summary>
+        public static string Problem_group_type_description {
+            get {
+                return ResourceManager.GetString("Problem_group_type_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retest.
+        /// </summary>
+        public static string Retest {
+            get {
+                return ResourceManager.GetString("Retest", resourceCulture);
             }
         }
         

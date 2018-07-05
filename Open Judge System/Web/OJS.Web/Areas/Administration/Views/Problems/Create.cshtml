@@ -3,7 +3,7 @@
 @using Resource = Resources.Areas.Administration.Problems.Views.ProblemsCreate;
 @using SharedResource = Resources.Areas.Administration.Problems.Views.Partials.ProblemsPartials;
 
-@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+@model OJS.Web.Areas.Administration.ViewModels.Problem.ProblemAdministrationViewModel
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -175,6 +175,24 @@
                     <div class="editor-field col-xs-3">
                         <span class="glyphicon glyphicon-question-sign text-primary" id="checkers-tooltip"></span>
                         @Html.ValidationMessageFor(m => m.ProblemGroupId)
+                    </div>
+                </div>
+                <br />
+            }
+            else
+            {
+                <div class="row">
+                    <div class="editor-label col-xs-3">
+                        <div class="pull-right">
+                            @Html.LabelFor(m => m.ProblemGroupType)
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        @Html.EditorFor(m => m.ProblemGroupType)
+                    </div>
+                    <div class="editor-field col-xs-3">
+                        <span class="glyphicon glyphicon-question-sign text-primary" title="@SharedResource.Problem_group_type_description" data-tooltip="true"></span>
+                        @Html.ValidationMessageFor(m => m.ProblemGroupType)
                     </div>
                 </div>
                 <br />

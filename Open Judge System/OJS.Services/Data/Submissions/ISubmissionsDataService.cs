@@ -1,5 +1,6 @@
 ﻿namespace OJS.Services.Data.Submissions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -8,7 +9,11 @@
 
     public interface ISubmissionsDataService : IService
     {
+        Submission GetById(int id);
+
         Submission GetBestForParticipantByProblem(int participantId, int problemId);
+
+        IQueryable<Submission> GetAll();
 
         IQueryable<Submission> GetByIdQuery(int id);
 
@@ -16,10 +21,20 @@
 
         IQueryable<Submission> GetAllByProblemAndParticipant(int problemId, int participantId);
 
+        IQueryable<Submission> GetAllFromContestsByLecturer(string lecturerId);
+
+        IQueryable<Submission> GetAllCreatedBeforeDateAndNonBestCreatedBeforeDate(
+            DateTime createdBeforeDate,
+            DateTime nonBestCreatedBeforeDate);
+
         IEnumerable<int> GetIdsByProblem(int problemId);
 
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);
+
+        void Update(Submission submission);
+
+        void RemoveTestRunsCacheByProblem(int problemId);
     }
 }

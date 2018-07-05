@@ -89,11 +89,11 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can edit problem groups only in a contest which is of type {0}..
+        ///   Looks up a localized string similar to You can edit problem groups order only in a contest which is of type {0}..
         /// </summary>
-        public static string Can_edit_only_in_online_contest {
+        public static string Can_edit_orderby_only_in_online_contest {
             get {
-                return ResourceManager.GetString("Can_edit_only_in_online_contest", resourceCulture);
+                return ResourceManager.GetString("Can_edit_orderby_only_in_online_contest", resourceCulture);
             }
         }
         

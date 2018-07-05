@@ -21,7 +21,7 @@
                     source
                         .Read(read =>
                         {
-                            read.Action("GetSearchedProblems", "Tests")
+                            read.Action("GetProblemsContaining", "KendoRemoteData")
                                 .Data("onAdditionalData");
                         })
                         .ServerFiltering(true);
@@ -53,7 +53,7 @@
                     {
                         source.Read(read =>
                         {
-                            read.Action("GetCascadeCategories", "Tests");
+                            read.Action("GetAvailableCategories", "LecturersKendoRemoteData");
                         });
                     }))
             </div>
@@ -73,7 +73,7 @@
                 {
                     source.Read(read =>
                     {
-                        read.Action("GetCascadeContests", "Tests")
+                        read.Action("GetCascadeContestsFromCategory", "LecturersKendoRemoteData")
                             .Data("filterContests");
                     })
                     .ServerFiltering(true);
@@ -97,7 +97,7 @@
                 {
                     source.Read(read =>
                     {
-                        read.Action("GetCascadeProblems", "Tests")
+                        read.Action("GetCascadeProblemsFromContest", "KendoRemoteData")
                             .Data("filterProblems");
                     })
                     .ServerFiltering(true);

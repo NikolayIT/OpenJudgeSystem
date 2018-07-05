@@ -105,6 +105,14 @@ input[type="checkbox"].input-validation-error {
     width: auto;
 }
 
+.kendo-grid-link {
+    color: #003f59;
+}
+
+    .kendo-grid-link:hover {
+        color: #003f59;
+    }
+
 .test-file-dropdown {
     width: 100%;
 }
@@ -168,6 +176,10 @@ input[type="checkbox"].input-validation-error {
 
 .inline-form {
     display: inline;
+}
+
+.text-bold {
+    font-weight: bold;
 }
 
 .logged-user-wrap {

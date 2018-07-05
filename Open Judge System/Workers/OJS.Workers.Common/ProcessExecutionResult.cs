@@ -37,7 +37,9 @@
 
         public void ApplyTimeAndMemoryOffset(int baseTimeUsed, int baseMemoryUsed)
         {
-            this.MemoryUsed = Math.Max(this.MemoryUsed - baseMemoryUsed, baseMemoryUsed);
+            this.MemoryUsed = this.MemoryUsed > baseMemoryUsed
+                ? this.MemoryUsed - baseMemoryUsed
+                : this.MemoryUsed;
 
             // Display the TimeWorked, when the process was killed for being too slow (TotalProcessorTime is still usually under the timeLimit when a process is killed),
             // otherwise display TotalProcessorTime, so that the final result is as close as possible to the actual worker time
@@ -53,6 +55,6 @@
                     ? this.TotalProcessorTime - TimeSpan.FromMilliseconds(baseTimeUsed)
                     : this.TotalProcessorTime;
             }
-        }  
+        }
     }
 }

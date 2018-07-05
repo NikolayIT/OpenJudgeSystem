@@ -116,22 +116,22 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>         
-                <groupId>org.codehaus.mojo</groupId>         
-                <artifactId>build-helper-maven-plugin</artifactId>         
-                <version>1.7</version>         
-                <executions>           
-                    <execution>             
-                        <id>remove-old-artifacts</id>             
-                        <phase>package</phase>             
-                        <goals>               
-                            <goal>remove-project-artifact</goal>             
-                        </goals>            
-                        <configuration>  
-                            <removeAll>true</removeAll><!-- When true, remove all built artifacts including all versions. When false, remove all built artifacts of this project version -->             
-                        </configuration>          
-                    </execution>         
-                </executions>       
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>remove-old-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remove-project-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <removeAll>true</removeAll><!-- When true, remove all built artifacts including all versions. When false, remove all built artifacts of this project version -->
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>";
@@ -174,7 +174,7 @@
 
             var mavenBuildOutput = new Regex(MavenBuildOutputPattern);
             var compilationMatch = mavenBuildOutput.Match(packageExecutionResult.ReceivedOutput);
-            
+
             result.IsCompiledSuccessfully = compilationMatch.Groups[1].Value == "SUCCESS";
 
             if (!result.IsCompiledSuccessfully)

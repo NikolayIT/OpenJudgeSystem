@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -21,7 +20,7 @@
     public class EfGenericRepository<T> : IEfGenericRepository<T>
         where T : class
     {
-        public EfGenericRepository(IOjsDbContext context)
+        public EfGenericRepository(DbContext context)
         {
             if (context == null)
             {
@@ -30,14 +29,11 @@
 
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
-            this.ContextConfiguration = context.DbContext.Configuration;
         }
-
-        public DbContextConfiguration ContextConfiguration { get; }
 
         protected IDbSet<T> DbSet { get; set; }
 
-        protected IOjsDbContext Context { get; set; }
+        protected DbContext Context { get; set; }
 
         public virtual IQueryable<T> All() => this.DbSet.AsQueryable();
 
@@ -56,7 +52,7 @@
             }
         }
 
-        public void Add(IEnumerable<T> entities) => this.Context.DbContext.BulkInsert(entities);
+        public void Add(IEnumerable<T> entities) => this.Context.BulkInsert(entities);
 
         public virtual void Update(T entity)
         {
@@ -179,12 +175,6 @@
                             }
                         });
         }
-
-        public DbContextTransaction BeginTransaction() =>
-            this.Context.DbContext.Database.BeginTransaction();
-
-        public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) =>
-            this.Context.DbContext.Database.BeginTransaction(isolationLevel);
 
         private int GetPrimaryKey(DbEntityEntry entry)
         {

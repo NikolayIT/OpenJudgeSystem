@@ -12,7 +12,7 @@
     const string LoadingMaskContainerId = "simple-results-loading-mask-container";
     const string OnPageChangedEventHandlerName = "OnPageChanged";
     var isOfficial = Model.IsCompete;
-    var results = Model.Results;
+    var results = Model.PagedResults;
 }
 
 <div class="loading-mask-container" id="@ResultsContainerId">
@@ -21,7 +21,7 @@
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserHasContestRights, page, results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",
@@ -51,8 +51,7 @@
                 {
                     if (problem.ShowResults ||
                         (Model.ContestCanBePracticed && !ViewBag.IsOfficial) ||
-                        User.IsAdmin() ||
-                        Model.UserIsLecturerInContest)
+                        Model.UserHasContestRights)
                     {
                         <th class="text-center">
                             @if (displayLink)
@@ -89,10 +88,10 @@
 
                         if (problemResult != null)
                         {
-                            if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                            if (Model.UserHasContestRights && problemResult.BestSubmission.Id.HasValue)
                             {
                                 <td>
-                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points</a>
+                                    <a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id.Value)))">@problemResult.BestSubmission.Points</a>
                                 </td>
                             }
                             else if (problemResult.ShowResult)
@@ -119,7 +118,7 @@
                         }
                     }
 
-                    @if (User.IsAdmin() || Model.UserIsLecturerInContest)
+                    @if (Model.UserHasContestRights)
                     {
                         <td>@participant.AdminTotal</td>
                     }
@@ -144,7 +143,7 @@
         @Html.PagedListPager(
             results,
             page => Url.Action<ResultsController>(
-                c => c.SimplePartial(Model.Id, isOfficial, Model.UserIsLecturerInContest, page, results.PageSize)),
+                c => c.SimplePartial(Model.Id, isOfficial, Model.UserHasContestRights, page, results.PageSize)),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions
             {
                 HttpMethod = "GET",

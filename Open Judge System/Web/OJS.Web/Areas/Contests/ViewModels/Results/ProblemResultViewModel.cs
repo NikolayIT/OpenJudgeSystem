@@ -14,7 +14,7 @@
         {
             get
             {
-                return submission => 
+                return submission =>
                     new ProblemResultViewModel
                     {
                         ProblemId = submission.Problem.Id,
@@ -26,7 +26,7 @@
             }
         }
 
-        public int SubmissionId { get; set; }
+        public int? SubmissionId { get; set; }
 
         [Display(Name = "Participant", ResourceType = typeof(Resource))]
         public string ParticipantName { get; set; }

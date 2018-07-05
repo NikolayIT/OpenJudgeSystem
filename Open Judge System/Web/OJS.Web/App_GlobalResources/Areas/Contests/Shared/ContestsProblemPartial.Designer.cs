@@ -169,6 +169,15 @@ namespace Resources.Areas.Contests.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to not included in final score.
+        /// </summary>
+        public static string Not_included_in_final_score {
+            get {
+                return ResourceManager.GetString("Not_included_in_final_score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not processed yet.
         /// </summary>
         public static string Not_processed {

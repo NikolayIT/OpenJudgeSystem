@@ -179,6 +179,15 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem group type.
+        /// </summary>
+        public static string Problem_group_type {
+            get {
+                return ResourceManager.GetString("Problem_group_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show detailed feedback.
         /// </summary>
         public static string Show_detailed_feedback {

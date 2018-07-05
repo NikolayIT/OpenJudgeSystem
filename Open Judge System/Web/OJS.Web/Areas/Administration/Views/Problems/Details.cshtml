@@ -2,7 +2,7 @@
 
 @using Resource = Resources.Areas.Administration.Problems.Views.ProblemsDetails;
 
-@model OJS.Web.Areas.Administration.ViewModels.Problem.DetailedProblemViewModel
+@model OJS.Web.Areas.Administration.ViewModels.Problem.ProblemAdministrationViewModel
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -87,6 +87,7 @@
     <div class="panel-body bordered-content editor-label">
         @(Model.ShowResults ? Resource.Results_visible : Resource.Results_invisible)
     </div>
+    <br />
     <div class="editor-label">
         @Html.LabelFor(m => m.ShowDetailedFeedback)
     </div>

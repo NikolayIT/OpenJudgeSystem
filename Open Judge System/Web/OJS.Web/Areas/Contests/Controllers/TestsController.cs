@@ -53,9 +53,9 @@
                 .Any(s => s.Id == submissionId && !s.Participant.IsOfficial);
 
             bool shouldDisplayDetailedTestInfo = hasPermissions ||
-                                                 ((testInfo.IsTrialTest || 
+                                                 ((testInfo.IsTrialTest ||
                                                    testInfo.ShowDetailedFeedback ||
-                                                   testInfo.IsOpenTest) && 
+                                                   testInfo.IsOpenTest) &&
                                                    isParticipant) ||
                                                  (testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialParticipant);
 

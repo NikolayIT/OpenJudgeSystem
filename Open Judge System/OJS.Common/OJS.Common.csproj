@@ -42,6 +42,15 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
@@ -69,9 +78,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgeCalculator.cs" />
+    <Compile Include="Calculator.cs" />
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Attributes\LocalizedDisplayFormatAttribute.cs" />
+    <Compile Include="Constants\AppSettingConstants.cs" />
     <Compile Include="DataAnnotations\DatabasePropertyAttribute.cs" />
     <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
@@ -94,6 +104,7 @@
     <Compile Include="Models\ContestType.cs" />
     <Compile Include="Models\ExecutionStrategyType.cs" />
     <Compile Include="Models\PlagiarismDetectorType.cs" />
+    <Compile Include="Models\ProblemGroupType.cs" />
     <Compile Include="Models\SubmissionStatus.cs" />
     <Compile Include="Models\SystemRole.cs" />
     <Compile Include="Models\TestRunResultType.cs" />

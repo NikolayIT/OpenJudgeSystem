@@ -296,6 +296,7 @@ function TabStripManager() {
             }
 
             selectTabWithIndex(hashIndex);
+            markEcludedFromHomeworkTabs();
         }
     }
 
@@ -323,6 +324,12 @@ function TabStripManager() {
 
             $.data(element, 'CodeMirrorInstance', editor);
         }
+    }
+
+    function markEcludedFromHomeworkTabs() {
+        var marker = $('<span class="right-buffer">&#10038;</span>').css('color', '#b88700');
+
+        $('.excluded-from-homework-tab').append(marker);
     }
 
     function onContentLoad() {

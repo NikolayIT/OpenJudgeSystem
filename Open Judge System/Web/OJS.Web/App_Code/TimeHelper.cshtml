@@ -30,3 +30,11 @@
 
     <text>@remainingTimeMessage.ToString()</text>
 }
+
+@helper GetReadableYearsCount(int yearsCount)
+{
+    var yearOrYears = yearsCount != 1 ? Resource.Years : Resource.Year;
+    var message = $"{yearsCount} {yearOrYears}";
+
+    <text>@message</text>
+}

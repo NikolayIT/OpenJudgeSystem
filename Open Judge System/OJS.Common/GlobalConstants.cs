@@ -25,14 +25,11 @@
 
         public const int CityMinLength = 2;
         public const int CityMaxLength = 200;
-        public const string CityRegEx = @"^[a-zA-Zа-яА-Я]+(?:[\s-][a-zA-Zа-яА-Я]+)*$";
 
         public const int CompanyMinLength = 2;
         public const int CompanyMaxLength = 200;
-        public const string CompanyRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!""])*$";
         public const int JobTitleMinLength = 2;
         public const int JobTitleMaxLength = 100;
-        public const string JobTitleRegEx = @"^([a-zA-Zа-яА-Я0-9]|[- @\.#&!])*$";
         public const int FacultyNumberMaxLength = 30;
 
         // TempData dictionary keys
@@ -79,6 +76,11 @@
         public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
 
         public const int DefaultProblemGroupsCountForOnlineContest = 2;
+
+        public const int BatchOperationsChunkSize = 3000;
+
+        public const int BestSubmissionEligibleForArchiveAgeInYears = 2;
+        public const int NonBestSubmissionEligibleForArchiveAgeInYears = 1;
 
         // File extensions
         public const string JavaCompiledFileExtension = ".class";
@@ -142,7 +144,8 @@
 
         // Temp Directory folder paths
         public static readonly string ExecutionStrategiesWorkingDirectoryPath =
-            Path.Combine(Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine),
+            Path.Combine(
+                Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine),
                 ExecutionStrategiesFolderName);
     }
 }

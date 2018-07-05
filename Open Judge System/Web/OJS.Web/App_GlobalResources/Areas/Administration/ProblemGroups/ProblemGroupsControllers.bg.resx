@@ -126,8 +126,8 @@
   <data name="Can_create_only_in_online_contest" xml:space="preserve">
     <value>Може да добавяте групи задачи само в състезание, което е от тип {0}.</value>
   </data>
-  <data name="Can_edit_only_in_online_contest" xml:space="preserve">
-    <value>Може да променяте групи задачи само в състезание, което е от тип {0}.</value>
+  <data name="Can_edit_orderby_only_in_online_contest" xml:space="preserve">
+    <value>Може да променяте подредбата само на групи задачи от състезание, което е от тип {0}.</value>
   </data>
   <data name="Contest_does_not_exist" xml:space="preserve">
     <value>Избраното състезание не съществува</value>

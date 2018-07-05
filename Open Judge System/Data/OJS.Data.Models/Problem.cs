@@ -15,11 +15,7 @@
 
         public int? OldId { get; set; }
 
-        public int ContestId { get; set; }
-
-        public virtual Contest Contest { get; set; }
-
-        public int? ProblemGroupId { get; set; }
+        public int ProblemGroupId { get; set; }
 
         public virtual ProblemGroup ProblemGroup { get; set; }
 
@@ -49,8 +45,6 @@
         public virtual Checker Checker { get; set; }
 
         public int OrderBy { get; set; }
-
-        public short? GroupNumber { get; set; }
 
         /// <summary>
         /// Gets or sets a predefined skeleton for the task

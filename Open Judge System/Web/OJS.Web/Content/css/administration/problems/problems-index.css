@@ -1,0 +1,13 @@
+﻿.problems-grid-toolbar {
+    display: flex;
+    align-items: center;
+}
+
+    .problems-grid-toolbar a {
+        margin-right: 3px;
+    }
+
+    .problems-grid-toolbar a:last-child {
+        margin-left: auto;
+        margin-right: 10px;
+    }

@@ -23,53 +23,75 @@
                 .FirstOrDefault(c => c.Id == id);
 
         public IQueryable<Contest> GetByIdQuery(int id) =>
-            this.GetAll().Where(c => c.Id == id);
+            this.GetAll()
+                .Where(c => c.Id == id);
 
         public IQueryable<Contest> GetAll() => this.contests.All();
 
         public IQueryable<Contest> GetAllActive() =>
-            this.GetAll().Where(c =>
-                c.IsVisible && c.StartTime <= DateTime.Now &&
-                (c.EndTime >= DateTime.Now ||
-                    c.Type == ContestType.OnlinePracticalExam &&
-                    c.Participants.Any(p => p.IsOfficial && p.ParticipationEndTime >= DateTime.Now)));
+            this.GetAll()
+                .Where(c =>
+                    c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    (c.EndTime >= DateTime.Now ||
+                        (c.Type == ContestType.OnlinePracticalExam && c.Participants.Any(p =>
+                            p.IsOfficial &&
+                            p.ParticipationEndTime >= DateTime.Now))));
 
         public IQueryable<Contest> GetAllCompetable() =>
-            this.GetAll().Where(c =>
-                c.IsVisible &&
-                c.StartTime <= DateTime.Now &&
-                c.EndTime.HasValue &&
-                c.EndTime >= DateTime.Now);
+            this.GetAll()
+                .Where(c =>
+                    c.IsVisible &&
+                    c.StartTime <= DateTime.Now &&
+                    c.EndTime.HasValue &&
+                    c.EndTime >= DateTime.Now);
 
         public IQueryable<Contest> GetAllInactive() =>
-            this.GetAll().Where(c =>
-                c.StartTime > DateTime.Now ||
-                (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePracticalExam) ||
+            this.GetAll()
+                .Where(c =>
+                    c.StartTime > DateTime.Now ||
+                    (c.EndTime < DateTime.Now && c.Type != ContestType.OnlinePracticalExam) ||
                     !c.Participants.Any(p => p.ParticipationEndTime < DateTime.Now));
 
         public IQueryable<Contest> GetAllUpcoming() =>
-            this.GetAll().Where(c => c.StartTime > DateTime.Now && c.IsVisible);
+            this.GetAll()
+                .Where(c => c.StartTime > DateTime.Now && c.IsVisible);
 
         public IQueryable<Contest> GetAllPast() =>
-            this.GetAll().Where(c => c.EndTime < DateTime.Now && c.IsVisible);
+            this.GetAll()
+                .Where(c => c.EndTime < DateTime.Now && c.IsVisible);
 
         public IQueryable<Contest> GetAllVisible() => this.GetAll().Where(c => c.IsVisible);
 
         public IQueryable<Contest> GetAllVisibleByCategory(int categoryId) =>
-            this.GetAllVisible().Where(c => c.CategoryId == categoryId);
+            this.GetAllVisible()
+                .Where(c => c.CategoryId == categoryId);
 
-        public IQueryable<Contest> GetAllVisibleByLecturer(string lecturerId) =>
-            this.GetAllVisible().Where(c =>
-                c.Lecturers.Any(l => l.LecturerId == lecturerId) ||
-                c.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
+        public IQueryable<Contest> GetAllByLecturer(string lecturerId) =>
+            this.GetAll()
+                .Where(c =>
+                    c.Lecturers.Any(l => l.LecturerId == lecturerId) ||
+                    c.Category.Lecturers.Any(l => l.LecturerId == lecturerId));
 
         public IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId) =>
-            this.GetAllVisibleByLecturer(lecturerId).Where(c => c.CategoryId == categoryId);
+            this.GetAllByLecturer(lecturerId)
+                .Where(c => c.CategoryId == categoryId);
 
         public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
 
-        public int GetIdById(int id) =>
-            this.GetByIdQuery(id).Select(c => c.Id).SingleOrDefault();
+        public int GetMaxPointsForExportById(int id) =>
+            this.GetByIdQuery(id)
+                .Select(c => c.ProblemGroups
+                    .Where(pg =>
+                        pg.Type != ProblemGroupType.ExcludedFromHomework &&
+                        pg.Problems.Any(p => !p.IsDeleted))
+                    .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
+                .FirstOrDefault() ?? default(int);
+
+        public string GetNameById(int id) =>
+            this.GetByIdQuery(id)
+                .Select(c => c.Name)
+                .FirstOrDefault();
 
         public bool IsActiveById(int id)
         {
@@ -85,14 +107,21 @@
         public bool ExistsById(int id) => this.GetAll().Any(c => c.Id == id);
 
         public bool IsUserLecturerInByContestAndUser(int id, string userId) =>
-            this.GetByIdQuery(id).Any(c => c.Lecturers.Any(l => l.LecturerId == userId) ||
-                c.Category.Lecturers.Any(l => l.LecturerId == userId));
+            this.GetByIdQuery(id)
+                .Any(c =>
+                    c.Lecturers.Any(l => l.LecturerId == userId) ||
+                    c.Category.Lecturers.Any(l => l.LecturerId == userId));
 
         public bool IsUserParticipantInByContestAndUser(int id, string userId) =>
-            this.GetAll().Any(c => c.Id == id && c.Participants.Any(p => p.UserId == userId));
+            this.GetAll()
+                .Any(c =>
+                    c.Id == id &&
+                    c.Participants.Any(p => p.UserId == userId));
 
         public bool IsUserInExamGroupByContestAndUser(int id, string userId) =>
-            this.GetAll().Any(c => c.Id == id &&
-                c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
+            this.GetAll()
+                .Any(c =>
+                    c.Id == id &&
+                    c.ExamGroups.Any(eg => eg.Users.Any(u => u.Id == userId)));
     }
 }

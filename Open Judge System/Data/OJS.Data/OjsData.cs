@@ -32,13 +32,13 @@
 
         public IDeletableEntityRepository<Event> Events => this.GetDeletableEntityRepository<Event>();
 
-        public IDeletableEntityRepository<ContestCategory> ContestCategories => 
+        public IDeletableEntityRepository<ContestCategory> ContestCategories =>
             this.GetDeletableEntityRepository<ContestCategory>();
 
-        public IDeletableEntityRepository<ContestQuestion> ContestQuestions => 
+        public IDeletableEntityRepository<ContestQuestion> ContestQuestions =>
             this.GetDeletableEntityRepository<ContestQuestion>();
 
-        public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers => 
+        public IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers =>
             this.GetDeletableEntityRepository<ContestQuestionAnswer>();
 
         public ISubmissionsRepository Submissions => (SubmissionsRepository)this.GetRepository<Submission>();
@@ -59,12 +59,12 @@
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
-        public IDeletableEntityRepository<FeedbackReport> FeedbackReports => 
+        public IDeletableEntityRepository<FeedbackReport> FeedbackReports =>
             this.GetDeletableEntityRepository<FeedbackReport>();
 
         public IDeletableEntityRepository<Checker> Checkers => this.GetDeletableEntityRepository<Checker>();
 
-        public IDeletableEntityRepository<ProblemResource> Resources => 
+        public IDeletableEntityRepository<ProblemResource> Resources =>
             this.GetDeletableEntityRepository<ProblemResource>();
 
         public IRepository<Setting> Settings => this.GetRepository<Setting>();

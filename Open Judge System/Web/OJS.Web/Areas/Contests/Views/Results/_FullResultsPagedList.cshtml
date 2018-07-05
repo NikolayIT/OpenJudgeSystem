@@ -13,7 +13,7 @@
     const string OnPageChangedEventHandlerName = "OnPageChanged";
     var isOfficialStr = Model.IsCompete ? CompeteController.CompeteActionName : CompeteController.PracticeActionName;
     var isOfficial = Model.IsCompete;
-    var results = Model.Results;
+    var results = Model.PagedResults;
 }
 
 <div class="loading-mask-container" id="@ResultsContainerId">
@@ -64,12 +64,29 @@
                         <td style="white-space: nowrap">
                         @if (problemResult != null)
                         {
-                            <strong><a href="@(Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id)))">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a></strong>
-                            @problemResult.BestSubmission.SubmissionType
-                            <br />
-                            if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                            if (problemResult.BestSubmission.Id.HasValue)
                             {
-                                @:Compilation failed!
+                                var submissionHref = Url.Action<SubmissionsController>(c => c.Details(problemResult.BestSubmission.Id ?? default(int)));
+
+                                <strong>
+                                    <a href="@submissionHref">@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</a>
+                                </strong>
+                            }
+                            else
+                            {
+                                <strong>@problemResult.BestSubmission.Points / @problemResult.MaximumPoints</strong>
+                            }
+
+                            <span>@problemResult.BestSubmission.SubmissionType</span>
+                            <br />
+
+                            if (!problemResult.BestSubmission.Id.HasValue)
+                            {
+                                <span>@Resource.Submission_deleted</span>
+                            }
+                            else if (!problemResult.BestSubmission.IsCompiledSuccessfully)
+                            {
+                                <span>@Resource.Compilation_failed</span>
                             }
 
                             foreach (var testRun in problemResult.BestSubmission.TestRuns)

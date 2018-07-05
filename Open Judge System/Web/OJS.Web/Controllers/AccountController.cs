@@ -102,7 +102,7 @@
         public ActionResult Manage() => this.RedirectToExternalSystemMessage();
 
         /// <summary>
-        /// Informs the user that the registration proccess is 
+        /// Informs the user that the registration proccess is
         /// disabled on this site and he must register from exturnal source
         /// </summary>
         [AllowAnonymous]

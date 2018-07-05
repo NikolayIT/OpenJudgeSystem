@@ -17,6 +17,7 @@
     using OJS.Services.Business.Participants;
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Contests.Models;
@@ -31,12 +32,11 @@
 
     public class ContestsController : LecturerBaseGridController
     {
-        private const int StartTimeDelayInSeconds = 10;
-        private const int LabDurationInSeconds = 30 * 60;
         private const int ProblemGroupsCountLimit = 40;
 
         private readonly IContestsDataService contestsData;
         private readonly IContestCategoriesDataService contestCategoriesData;
+        private readonly IParticipantsDataService participantsData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
@@ -44,15 +44,17 @@
             IOjsData data,
             IContestsDataService contestsData,
             IContestCategoriesDataService contestCategoriesData,
+            IParticipantsDataService participantsData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
         {
             this.contestsData = contestsData;
             this.contestCategoriesData = contestCategoriesData;
+            this.participantsData = participantsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
-        }        
+        }
 
         public override IEnumerable GetData()
         {
@@ -106,8 +108,7 @@
         {
             if (model?.CategoryId == null || !this.CheckIfUserHasContestCategoryPermissions(model.CategoryId.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ValidateContest(model);
@@ -136,8 +137,7 @@
         {
             if (!this.CheckIfUserHasContestPermissions(id))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.Data.Contests
@@ -163,8 +163,7 @@
         {
             if (model.Id == null || !this.CheckIfUserHasContestPermissions(model.Id.Value))
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             this.ValidateContest(model);
@@ -183,7 +182,8 @@
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            contest = model.GetEntityModel(contest);
+            var originalContestPassword = contest.ContestPassword;
+            var originalPracticePassword = contest.PracticePassword;
 
             if (contest.IsOnline &&
                 contest.IsActive &&
@@ -193,6 +193,8 @@
                 this.TempData.AddDangerMessage(Resource.Active_contest_cannot_edit_duration_type);
                 this.RedirectToAction<ContestsController>(c => c.Index());
             }
+
+            contest = model.GetEntityModel(contest);
 
             if (contest.IsOnline && contest.ProblemGroups.Count == 0)
             {
@@ -209,6 +211,8 @@
 
             this.Data.Contests.Update(contest);
             this.Data.SaveChanges();
+
+            this.InvalidateParticipants(originalContestPassword, originalPracticePassword, contest);
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_edited);
             return this.RedirectToAction<ContestsController>(c => c.Index());
@@ -318,8 +322,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData
@@ -343,8 +346,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             if (!this.ModelState.IsValid)
@@ -433,8 +435,7 @@
 
             if (!this.User.IsAdmin())
             {
-                this.TempData[GlobalConstants.DangerMessage] = GeneralResource.No_privileges_message;
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var contest = this.contestsData
@@ -450,7 +451,7 @@
             }
 
             this.ViewBag.ReturnUrl = returnUrl;
-            
+
             return this.View(contest);
         }
 
@@ -460,8 +461,7 @@
         {
             if (!this.User.IsAdmin())
             {
-                this.TempData.AddDangerMessage(GeneralResource.No_privileges_message);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
             var result = this.contestsBusiness.TransferParticipantsToPracticeById(model.Id);
@@ -551,12 +551,30 @@
 
         private void AddProblemGroupsToContest(Contest contest, int problemGroupsCount)
         {
-            for (var i = 0; i < problemGroupsCount; i++)
+            for (var i = 1; i <= problemGroupsCount; i++)
             {
                 contest.ProblemGroups.Add(new ProblemGroup
                 {
                     OrderBy = i
                 });
+            }
+        }
+
+        private void InvalidateParticipants(
+            string orginalContestPassword,
+            string originalPracticePassword,
+            Contest contest)
+        {
+            if (orginalContestPassword != contest.ContestPassword &&
+                !string.IsNullOrWhiteSpace(contest.ContestPassword))
+            {
+                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: true);
+            }
+
+            if (originalPracticePassword != contest.PracticePassword &&
+                !string.IsNullOrWhiteSpace(contest.PracticePassword))
+            {
+                this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: false);
             }
         }
     }
