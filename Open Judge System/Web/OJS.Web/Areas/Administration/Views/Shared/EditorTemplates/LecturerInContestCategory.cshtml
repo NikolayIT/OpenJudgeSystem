@@ -16,12 +16,14 @@
             .ServerFiltering(true)
             .Read(read =>
             {
-                read.Action("AvailableContestCategories", "LecturersInContestCategories", new { area = "Administration" });
-                read.Data(@<text> function () { return { text: $('\\#ContestCategoryId').data('kendoComboBox').input.val() }; } </text>);
-            })
-        )
+                read
+                    .Action("AvailableContestCategories", "LecturersInContestCategories", new { area = "Administration" })
+                    .Data(@<text>
+                        function () { return { text: $('\\#ContestCategoryId').data('kendoComboBox').input.val() }; }
+                        </text>);
+            }))
         .HtmlAttributes(new { style = "width: 100%;" })
     )
+
     @Html.ValidationMessageFor(x => x.ContestCategoryId)
 </div>
-

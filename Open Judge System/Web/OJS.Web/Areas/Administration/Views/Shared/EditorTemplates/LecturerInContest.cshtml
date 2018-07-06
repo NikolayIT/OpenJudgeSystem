@@ -16,11 +16,14 @@
             .ServerFiltering(true)
             .Read(read =>
             {
-                read.Action("GetAvailableContestsContaining", "LecturersKendoRemoteData", new { area = "Administration" });
-                read.Data(@<text> function () { return { contestFilter: $('\\#ContestId').data('kendoComboBox').input.val() }; } </text>);
-            })
-        )
+                read
+                    .Action("GetAvailableContestsContaining", "LecturersKendoRemoteData", new {area = "Administration"})
+                    .Data(@<text>
+                            function () { return { contestFilter: $('\\#ContestId').data('kendoComboBox').input.val() }; }
+                        </text>);
+            }))
         .HtmlAttributes(new { style = "width: 100%;" })
     )
+
     @Html.ValidationMessageFor(x => x.ContestId)
 </div>
