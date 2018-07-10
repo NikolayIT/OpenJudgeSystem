@@ -5,14 +5,20 @@
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Common;
     using OJS.Web.ViewModels.Search;
 
     public class SearchController : BaseController
     {
-        public SearchController(IOjsData data)
+        private readonly IContestsDataService contestsData;
+
+        public SearchController(
+            IOjsData data,
+            IContestsDataService contestsData)
             : base(data)
         {
+            this.contestsData = contestsData;
         }
 
         public ActionResult Index()
@@ -37,12 +43,13 @@
 
                 searchResult.SearchResults.Add(SearchResultType.Problem, problemSearchResults);
 
-                var contestSearchResults = this.Data.Contests.All()
-                                        .Where(x => x.IsVisible && !x.IsDeleted && x.Name.Contains(searchResult.SearchTerm))
-                                        .ToList()
-                                        .AsQueryable()
-                                        .Where(x => x.CanBeCompeted || x.CanBePracticed)
-                                        .Select(SearchResultViewModel.FromContest);
+                var contestSearchResults = this.contestsData
+                    .GetAllVisible()
+                    .Where(x => x.Name.Contains(searchResult.SearchTerm))
+                    .ToList()
+                    .AsQueryable()
+                    .Where(x => x.CanBeCompeted || x.CanBePracticed)
+                    .Select(SearchResultViewModel.FromContest);
 
                 searchResult.SearchResults.Add(SearchResultType.Contest, contestSearchResults);
 

@@ -10,6 +10,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.AntiCheat;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
@@ -25,15 +26,18 @@
 
         private readonly IPlagiarismDetectorFactory plagiarismDetectorFactory;
         private readonly ISimilarityFinder similarityFinder;
+        private readonly IContestsDataService contestsData;
 
         public AntiCheatController(
             IOjsData data,
             IPlagiarismDetectorFactory plagiarismDetectorFactory,
-            ISimilarityFinder similarityFinder)
+            ISimilarityFinder similarityFinder,
+            IContestsDataService contestsData)
             : base(data)
         {
             this.plagiarismDetectorFactory = plagiarismDetectorFactory;
             this.similarityFinder = similarityFinder;
+            this.contestsData = contestsData;
         }
 
         public ActionResult ByIp() => this.View(this.GetContestsListItems());
@@ -173,8 +177,8 @@
 
         private IEnumerable<SelectListItem> GetContestsListItems()
         {
-            var contests = this.Data.Contests
-                .All()
+            var contests = this.contestsData
+                .GetAll()
                 .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new { Text = c.Name, Value = c.Id })
                 .ToList()

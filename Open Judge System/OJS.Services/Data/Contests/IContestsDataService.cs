@@ -29,6 +29,8 @@
 
         IQueryable<Contest> GetAllVisibleByCategory(int categoryId);
 
+        IQueryable<Contest> GetAllVisibleBySubmissionType(int submissionTypeId);
+
         IQueryable<Contest> GetAllByLecturer(string lecturerId);
 
         IQueryable<Contest> GetAllVisibleByCategoryAndLecturer(int categoryId, string lecturerId);
@@ -50,5 +52,9 @@
         bool IsUserParticipantInByContestAndUser(int id, string userId);
 
         bool IsUserInExamGroupByContestAndUser(int id, string userId);
+
+        void Add(Contest contest);
+
+        void Update(Contest contest);
     }
 }
