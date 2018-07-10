@@ -40,11 +40,12 @@
             <Project Sdk=""Microsoft.NET.Sdk"">
                 <PropertyGroup>
                     <OutputType>Exe</OutputType>
-                    <TargetFramework>netcoreapp2.1</TargetFramework>
+                    <TargetFramework>netcoreapp2.0</TargetFramework>
                 </PropertyGroup>
                 <ItemGroup>
                     <PackageReference Include=""NUnitLite"" Version=""3.10.1"" />
                     <PackageReference Include=""Microsoft.EntityFrameworkCore.InMemory"" Version=""2.1.1"" />
+                    <PackageReference Include=""Microsoft.EntityFrameworkCore.Proxies"" Version=""2.1.1"" />
                 </ItemGroup>
                 <ItemGroup>
                     {ProjectReferencesPlaceholder}
