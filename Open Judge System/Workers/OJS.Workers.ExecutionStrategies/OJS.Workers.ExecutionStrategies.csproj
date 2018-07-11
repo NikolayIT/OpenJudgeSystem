@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockchainStrategies\SolidityCompileExecuteAndRunUnitTestsExecutionStrategy.cs" />
     <Compile Include="CPlusPlusCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="CPlusPlusZipFileExecutionStrategy.cs" />
     <Compile Include="CheckOnlyExecutionStrategy.cs" />

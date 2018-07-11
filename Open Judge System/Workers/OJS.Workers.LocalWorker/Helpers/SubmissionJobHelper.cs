@@ -5,6 +5,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
+    using OJS.Workers.ExecutionStrategies.BlockchainStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
 
@@ -266,6 +267,11 @@
                         Settings.PhpCliExecutablePath,
                         Settings.PhpCliBaseTimeUsedInMilliseconds,
                         Settings.PhpCliBaseMemoryUsedInBytes);
+                    break;
+                case ExecutionStrategyType.SolidityCompileExecuteAndRunUnitTestsExecutionStrategy:
+                    executionStrategy = new SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
+                        0,
+                        0);
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
                     executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(
