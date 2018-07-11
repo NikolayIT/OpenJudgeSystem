@@ -15,8 +15,6 @@
         [Key]
         public int Id { get; set; }
 
-        public int? OldId { get; set; }
-
         [MaxLength(GlobalConstants.ContestNameMaxLength)]
         [MinLength(GlobalConstants.ContestNameMinLength)]
         public string Name { get; set; }

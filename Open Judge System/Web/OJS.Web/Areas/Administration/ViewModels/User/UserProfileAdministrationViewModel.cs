@@ -25,7 +25,6 @@
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    IsGhostUser = user.IsGhostUser,
                     FirstName = user.UserSettings.FirstName,
                     LastName = user.UserSettings.LastName,
                     City = user.UserSettings.City,
@@ -62,10 +61,6 @@
             ErrorMessageResourceType = typeof(Resource))]
         [UIHint("SingleLineText")]
         public string Email { get; set; }
-
-        [Display(Name = "Is_ghoust_user", ResourceType = typeof(Resource))]
-        [HiddenInput(DisplayValue = false)]
-        public bool IsGhostUser { get; set; }
 
         [Display(Name = "First_name", ResourceType = typeof(Resource))]
         [StringLength(
