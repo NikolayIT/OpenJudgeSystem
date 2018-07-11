@@ -98,9 +98,11 @@ else
         {
             <h2>@Resource.Compilation_result:</h2>
 
+            const string serverPathsRegexPattern = @"C:\\[^\s:]+\\";
+
             var compilerComment = Model.UserHasAdminPermission
                 ? Model.CompilerComment
-                : Regex.Replace(Model.CompilerComment, @"C:\\[^\s:]+\\", "...\\");
+                : Regex.Replace(Model.CompilerComment, serverPathsRegexPattern, "...\\");
 
             <pre>@compilerComment</pre>
         }
