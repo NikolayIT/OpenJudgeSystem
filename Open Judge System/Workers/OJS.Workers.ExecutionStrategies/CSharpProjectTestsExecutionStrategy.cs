@@ -58,7 +58,8 @@
             @"Test Count: (\d+), Passed: (\d+), Failed: (\d+), Warnings: \d+, Inconclusive: \d+, Skipped: \d+";
 
         // Extracts error/failure messages and the class which threw it
-        protected static readonly string ErrorMessageRegex = $@"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*)){Environment.NewLine}((?:.*){Environment.NewLine}(?:.*))";
+        protected static readonly string ErrorMessageRegex =
+            @"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*))\r?\n((?:.*)\r?\n(?:.*))";
 
         public CSharpProjectTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -197,7 +198,9 @@
                 false,
                 true);
 
-            var(totalTestsCount, failedTestsCount) = this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
+            var(totalTestsCount, failedTestsCount) =
+                this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
+
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
 
             if (failedTestsCount != errorsByFiles.Count || totalTestsCount != executionContext.Tests.Count())
@@ -232,9 +235,9 @@
             foreach (Match error in errors)
             {
                 var failedAssert = error.Groups[1].Value;
-                var cause = error.Groups[4].Value.Replace(Environment.NewLine, string.Empty);
+                var cause = error.Groups[4].Value;
                 var fileName = error.Groups[2].Value;
-                errorsByFiles.Add(fileName, $"{failedAssert} : {cause}");
+                errorsByFiles.Add(fileName, $"{failedAssert} : {cause}".ToSingleLine());
             }
 
             return errorsByFiles;

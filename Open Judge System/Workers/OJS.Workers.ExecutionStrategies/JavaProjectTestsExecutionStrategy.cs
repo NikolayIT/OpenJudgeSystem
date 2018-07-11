@@ -10,6 +10,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaProjectTestsExecutionStrategy : JavaUnitTestsExecutionStrategy
@@ -161,14 +162,12 @@ class Classes{{
                     preprocessArguments,
                     this.WorkingDirectory);
 
-                if (preprocessExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
-                {
-                    throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
-                }
+                JavaStrategiesHelper.ValidateJvmInitialization(preprocessExecutionResult.ReceivedOutput);
 
                 var filesToAdd = preprocessExecutionResult
                     .ReceivedOutput
-                    .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
                 foreach (var file in filesToAdd)
                 {
                     var path = Path.GetDirectoryName(file);
@@ -191,10 +190,13 @@ class Classes{{
                 return result;
             }
 
-            var arguments = new List<string>();
-            arguments.Add(this.ClassPath);
-            arguments.Add(AdditionalExecutionArguments);
-            arguments.Add(JUnitRunnerClassName);
+            var arguments = new List<string>
+            {
+                this.ClassPath,
+                AdditionalExecutionArguments,
+                JUnitRunnerClassName
+            };
+
             arguments.AddRange(this.UserClassNames);
 
             var processExecutionResult = executor.Execute(
@@ -206,10 +208,7 @@ class Classes{{
                 this.WorkingDirectory,
                 true);
 
-            if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
-            {
-                throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
-            }
+            JavaStrategiesHelper.ValidateJvmInitialization(processExecutionResult.ReceivedOutput);
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
             var testIndex = 0;
@@ -287,7 +286,7 @@ class Classes{{
             var line = output.ReadLine();
             while (line != null)
             {
-                int firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
+                var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
                 var fileName = line.Substring(0, firstSpaceIndex);
                 var errorMessage = line.Substring(firstSpaceIndex);
                 errorsByFiles.Add(fileName, errorMessage);
