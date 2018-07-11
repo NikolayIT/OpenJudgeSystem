@@ -12,6 +12,7 @@
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaSpringAndHibernateProjectExecutionStrategy : JavaProjectTestsExecutionStrategy
@@ -214,10 +215,7 @@
                 arguments,
                 this.WorkingDirectory);
 
-                if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
-                {
-                    throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
-                }
+                JavaStrategiesHelper.ValidateJvmInitialization(processExecutionResult.ReceivedOutput);
 
                 if (processExecutionResult.ReceivedOutput.Contains($"Could not find class: {testFile}"))
                 {
@@ -481,7 +479,7 @@
 
             XmlNode rootNode = pomXml.DocumentElement;
 
-            var packageName = rootNode.SelectSingleNode(StartClassNodeXPath, namespaceManager);
+            var packageName = rootNode?.SelectSingleNode(StartClassNodeXPath, namespaceManager);
 
             if (packageName == null)
             {

@@ -12,6 +12,7 @@
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
+    using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
     public class JavaUnitTestsExecutionStrategy : JavaZipFileCompileExecuteAndCheckExecutionStrategy
@@ -26,9 +27,6 @@
         protected const string AdditionalExecutionArguments = "-Dfile.encoding=UTF-8 -Xms16m -Xmx256m";
 
         protected const string TestResultsRegex = @"Total Tests: (\d+) Successful: (\d+) Failed: (\d+)";
-
-        protected const string JvmInsufficientMemoryMessage =
-            "There is insufficient memory for the Java Runtime Environment to continue.";
 
         public JavaUnitTestsExecutionStrategy(
             string javaExecutablePath,
@@ -192,10 +190,12 @@ public class _$TestRunner {{
 
                 fileNames.ForEach(File.Delete);
 
-                var arguments = new List<string>();
-                arguments.Add(classPathWithCompiledFile);
-                arguments.Add(AdditionalExecutionArguments);
-                arguments.Add(JUnitRunnerClassName);
+                var arguments = new List<string>
+                {
+                    classPathWithCompiledFile,
+                    AdditionalExecutionArguments,
+                    JUnitRunnerClassName
+                };
 
                 // Process the submission and check each test
                 var processExecutionResult = executor.Execute(
@@ -207,16 +207,10 @@ public class _$TestRunner {{
                     this.WorkingDirectory,
                     true);
 
-                if (processExecutionResult.ReceivedOutput.Contains(JvmInsufficientMemoryMessage))
-                {
-                    throw new InsufficientMemoryException(JvmInsufficientMemoryMessage);
-                }
+                JavaStrategiesHelper.ValidateJvmInitialization(processExecutionResult.ReceivedOutput);
 
                 // Construct and figure out what the Test results are
-                var totalTests = 0;
-                var passedTests = 0;
-
-                this.ExtractTestResult(processExecutionResult.ReceivedOutput, out passedTests, out totalTests);
+                this.ExtractTestResult(processExecutionResult.ReceivedOutput, out var passedTests, out var totalTests);
 
                 var message = "Test Passed!";
 

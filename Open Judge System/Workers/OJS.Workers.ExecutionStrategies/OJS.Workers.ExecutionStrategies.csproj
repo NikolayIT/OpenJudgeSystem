@@ -106,6 +106,7 @@
     <Compile Include="ExecutionStrategy.cs" />
     <Compile Include="Extensions\CSharpProjectExtensions.cs" />
     <Compile Include="Helpers\DotNetCoreStrategiesHelper.cs" />
+    <Compile Include="Helpers\JavaStrategiesHelper.cs" />
     <Compile Include="Helpers\UnitTestStrategiesHelper.cs" />
     <Compile Include="IExecutionStrategy.cs" />
     <Compile Include="JavaPreprocessCompileExecuteAndCheckExecutionStrategy.cs" />
