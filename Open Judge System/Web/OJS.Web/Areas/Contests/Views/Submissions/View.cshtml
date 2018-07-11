@@ -1,4 +1,6 @@
-﻿@using OJS.Common.Extensions
+﻿@using System.Text.RegularExpressions
+
+@using OJS.Common.Extensions
 @using OJS.Common.Models
 @using OJS.Web.Areas.Contests.Controllers
 
@@ -8,6 +10,8 @@
 @model OJS.Web.Areas.Contests.ViewModels.Submissions.SubmissionDetailsViewModel
 
 @{
+    const string serverPathsRegexPattern = @"C:\\[^\s:]+\\";
+
     var hrefToProblemSubmitPage = $"{Url.Action<CompeteController>(c => c.Index(Model.ContestId, Model.IsContestActive, null))}#{Model.ProblemIndexInContest}";
 
     ViewBag.Title = string.Format(Resource.Title, Model.Id, Model.UserName);
@@ -34,7 +38,7 @@
                     undoDepth: 100,
                     lineWrapping: true,
                     readOnly: true,
-                    autofocus: false,
+                    autofocus: false
                 });
 
                 editor.setSize('100%', '100%');
@@ -92,10 +96,15 @@ else
     {
         <div class="alert alert-danger top-buffer">@Resource.Compile_time_error_occured</div>
 
-        if (Model.UserHasAdminPermission && !string.IsNullOrWhiteSpace(Model.CompilerComment))
+        if (!string.IsNullOrWhiteSpace(Model.CompilerComment))
         {
             <h2>@Resource.Compilation_result:</h2>
-            <pre>@Model.CompilerComment</pre>
+
+            var compilerComment = Model.UserHasAdminPermission
+                ? Model.CompilerComment
+                : Regex.Replace(Model.CompilerComment, serverPathsRegexPattern, "...\\");
+
+            <pre>@compilerComment</pre>
         }
     }
     else if (!Model.ShowResults) // Inform user that compilation is successful when not showing him all the test runs
