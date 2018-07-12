@@ -270,6 +270,7 @@
                     break;
                 case ExecutionStrategyType.SolidityCompileExecuteAndRunUnitTestsExecutionStrategy:
                     executionStrategy = new SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
+                        GetCompilerPath,
                         0,
                         0);
                     break;
@@ -346,6 +347,8 @@
                 case CompilerType.DotNetCompiler:
                 case CompilerType.CSharpDotNetCore:
                     return Settings.DotNetCompilerPath;
+                case CompilerType.SolidityCompiler:
+                    return Settings.SolidityCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
             }
