@@ -215,10 +215,14 @@
 
         private static void ExtractTxtFiles(ZipFile zipFile, TestsParseResult result)
         {
+            bool IsOutputTxtFile(ZipEntry entry) =>
+                entry.FileName.Length > 8 &&
+                entry.FileName.ToLower().Substring(entry.FileName.Length - 8, 8) == ".out.txt";
+
             // bgcoder text files
-            if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 8, 8) == ".out.txt"))
+            if (zipFile.Entries.Any(IsOutputTxtFile))
             {
-                var outOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 8, 8) == ".out.txt").ToList();
+                var outOutputs = zipFile.EntriesSorted.Where(IsOutputTxtFile).ToList();
 
                 foreach (var output in outOutputs)
                 {
@@ -226,35 +230,33 @@
                     {
                         throw new ArgumentException("Невалидно име на входен тест");
                     }
+
+                    var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")).ToList();
+
+                    if (inputFiles.Count > 1)
+                    {
+                        throw new ArgumentException("Невалиден брой входни тестове");
+                    }
+
+                    var input = inputFiles[0];
+
+                    // check zero test
+                    if (input.FileName.Contains(".000.")
+                        && output.FileName.Contains(".000."))
+                    {
+                        result.ZeroInputs.Add(ExtractFileFromStream(input));
+                        result.ZeroOutputs.Add(ExtractFileFromStream(output));
+                    }
+                    else if (input.FileName.Contains(".open.") &&
+                             output.FileName.Contains(".open."))
+                    {
+                        result.OpenInputs.Add(ExtractFileFromStream(input));
+                        result.OpenOutputs.Add(ExtractFileFromStream(output));
+                    }
                     else
                     {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")).ToList();
-
-                        if (inputFiles.Count > 1)
-                        {
-                            throw new ArgumentException("Невалиден брой входни тестове");
-                        }
-
-                        var input = inputFiles[0];
-
-                        // check zero test
-                        if (input.FileName.Contains(".000.")
-                            && output.FileName.Contains(".000."))
-                        {
-                            result.ZeroInputs.Add(ExtractFileFromStream(input));
-                            result.ZeroOutputs.Add(ExtractFileFromStream(output));
-                        }
-                        else if (input.FileName.Contains(".open.")
-                            && output.FileName.Contains(".open."))
-                        {
-                            result.OpenInputs.Add(ExtractFileFromStream(input));
-                            result.OpenOutputs.Add(ExtractFileFromStream(output));
-                        }
-                        else
-                        {
-                            result.Inputs.Add(ExtractFileFromStream(input));
-                            result.Outputs.Add(ExtractFileFromStream(output));
-                        }
+                        result.Inputs.Add(ExtractFileFromStream(input));
+                        result.Outputs.Add(ExtractFileFromStream(output));
                     }
                 }
             }
@@ -296,13 +298,15 @@
 
         private static void ExtractZipFiles(ZipFile zipFile, TestsParseResult result)
         {
+            bool IsInputZipFile(ZipEntry entry) =>
+                entry.FileName.Length > 7 &&
+                entry.FileName.ToLower().Substring(entry.FileName.Length - 7, 7) == ".in.zip";
+
             // Java Unit Testing test files
-            if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip"))
+            if (zipFile.Entries.Any(IsInputZipFile))
             {
                 var tempDir = DirectoryHelpers.CreateTempDirectory();
-                var inputs = zipFile.EntriesSorted
-                    .Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip")
-                    .ToList();
+                var inputs = zipFile.EntriesSorted.Where(IsInputZipFile).ToList();
 
                 foreach (var input in inputs)
                 {

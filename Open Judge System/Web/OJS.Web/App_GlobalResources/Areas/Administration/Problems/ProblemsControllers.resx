@@ -165,4 +165,7 @@
   <data name="Invalid_problem_group" xml:space="preserve">
     <value>Invalid problem group</value>
   </data>
+  <data name="Tests_cannot_be_improrted" xml:space="preserve">
+    <value>The tests cannot be imported: {0}</value>
+  </data>
 </root>

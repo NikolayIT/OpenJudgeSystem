@@ -203,5 +203,14 @@ namespace Resources.Areas.Administration.Problems {
                 return ResourceManager.GetString("Select_one_submission_type", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The tests cannot be imported: {0}.
+        /// </summary>
+        public static string Tests_cannot_be_improrted {
+            get {
+                return ResourceManager.GetString("Tests_cannot_be_improrted", resourceCulture);
+            }
+        }
     }
 }
