@@ -10,6 +10,7 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Data.Models;
+    using OJS.Web.Common.Extensions;
 
     public class ZippedTestsParser
     {
@@ -136,37 +137,28 @@
 
         private static void ExcractInAndSolFiles(ZipFile zipFile, TestsParseResult result)
         {
-            // .in and .sol files
-            var solOutputs = zipFile.EntriesSorted
-                .Where(x => x.FileName.Length > 4 &&
-                    x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol")
-                .ToList();
+            var solOutputs = zipFile.GetZipEntriesByExtensions(GlobalConstants.SolFileExtension);
 
             foreach (var output in solOutputs)
             {
-                var inputFiles = zipFile.Entries
-                    .Where(x => x.FileName
-                        .ToLower()
-                        .Contains(output.FileName
-                            .ToLower()
-                            .Substring(0, output.FileName.Length - 3) + "in"))
-                    .ToList();
+                var input = GetInputByOutputAndExtension(zipFile, output, GlobalConstants.InputFileExtension);
 
-                if (inputFiles.Count == 0)
-                {
-                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
-                }
+                var zeroTestInputSignature = $"00{GlobalConstants.InputFileExtension}";
+                var zeroTestOutputSignature = $"00{GlobalConstants.SolFileExtension}";
 
-                if (inputFiles.Count > 1)
-                {
-                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
-                }
+                var isZeroTest =
+                    input.FileName
+                        .Substring(
+                            input.FileName.Length - zeroTestInputSignature.Length,
+                            zeroTestInputSignature.Length)
+                        .Equals(zeroTestInputSignature, StringComparison.OrdinalIgnoreCase) &&
+                    output.FileName
+                        .Substring(
+                            output.FileName.Length - zeroTestOutputSignature.Length,
+                            zeroTestOutputSignature.Length)
+                        .Equals(zeroTestOutputSignature, StringComparison.OrdinalIgnoreCase);
 
-                var input = inputFiles[0];
-
-                // check zero test
-                if (input.FileName.ToLower().Substring(input.FileName.Length - 5, 5) == "00.in" &&
-                    output.FileName.ToLower().Substring(output.FileName.Length - 6, 6) == "00.sol")
+                if (isZeroTest)
                 {
                     result.ZeroInputs.Add(ExtractFileFromStream(input));
                     result.ZeroOutputs.Add(ExtractFileFromStream(output));
@@ -181,37 +173,27 @@
 
         private static void ExcractInAndOutFiles(ZipFile zipFile, TestsParseResult result)
         {
-            // .in and .out files
-            var outOutputs = zipFile.EntriesSorted
-                .Where(x => x.FileName.Length > 4 &&
-                    x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out")
-                .ToList();
+            var outOutputs = zipFile.GetZipEntriesByExtensions(GlobalConstants.OutputFileExtension);
 
             foreach (var output in outOutputs)
             {
-                var inputFiles = zipFile.Entries
-                    .Where(x => x.FileName
-                        .ToLower()
-                        .Contains(output.FileName
-                            .ToLower()
-                            .Substring(0, output.FileName.Length - 3) + "in"))
-                    .ToList();
+                var input = GetInputByOutputAndExtension(zipFile, output, GlobalConstants.InputFileExtension);
 
-                if (inputFiles.Count == 0)
-                {
-                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
-                }
+                const string zeroTestSignature = "et";
 
-                if (inputFiles.Count > 1)
-                {
-                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
-                }
+                var isZeroTest =
+                    input.FileName
+                        .Substring(
+                            input.FileName.LastIndexOf('_') - zeroTestSignature.Length,
+                            zeroTestSignature.Length)
+                        .Equals(zeroTestSignature, StringComparison.OrdinalIgnoreCase) &&
+                    output.FileName
+                        .Substring(
+                            output.FileName.LastIndexOf('_') - zeroTestSignature.Length,
+                            zeroTestSignature.Length)
+                        .Equals(zeroTestSignature, StringComparison.OrdinalIgnoreCase);
 
-                var input = inputFiles[0];
-
-                // check zero test
-                if (input.FileName.ToLower().Substring(input.FileName.LastIndexOf('_') - 2, 2) == "et" &&
-                    output.FileName.ToLower().Substring(output.FileName.LastIndexOf('_') - 2, 2) == "et")
+                if (isZeroTest)
                 {
                     result.ZeroInputs.Add(ExtractFileFromStream(input));
                     result.ZeroOutputs.Add(ExtractFileFromStream(output));
@@ -226,43 +208,18 @@
 
         private static void ExtractTxtFiles(ZipFile zipFile, TestsParseResult result)
         {
-            // bgcoder text files
-            var outOutputs = zipFile.EntriesSorted
-                .Where(x => x.FileName.Length > 8 &&
-                    x.FileName.ToLower().Substring(x.FileName.Length - 8, 8) == ".out.txt")
-                .ToList();
+            var outOutputs = zipFile.GetZipEntriesByExtensions(WebConstants.TestOutputTxtFileExtension);
 
             foreach (var output in outOutputs)
             {
-                var inputFiles = zipFile.Entries
-                    .Where(x => x.FileName
-                        .ToLower()
-                        .Contains(output.FileName
-                            .ToLower()
-                            .Substring(0, output.FileName.Length - 7) + "in.txt"))
-                    .ToList();
+                var input = GetInputByOutputAndExtension(zipFile, output, WebConstants.TestInputTxtFileExtension);
 
-                if (inputFiles.Count == 0)
-                {
-                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
-                }
-
-                if (inputFiles.Count > 1)
-                {
-                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
-                }
-
-                var input = inputFiles[0];
-
-                // check zero test
-                if (input.FileName.Contains(".000.") &&
-                    output.FileName.Contains(".000."))
+                if (IsStandardZeroTest(input, output))
                 {
                     result.ZeroInputs.Add(ExtractFileFromStream(input));
                     result.ZeroOutputs.Add(ExtractFileFromStream(output));
                 }
-                else if (input.FileName.Contains(".open.") &&
-                    output.FileName.Contains(".open."))
+                else if (IsStandardOpenTest(input, output))
                 {
                     result.OpenInputs.Add(ExtractFileFromStream(input));
                     result.OpenOutputs.Add(ExtractFileFromStream(output));
@@ -278,35 +235,25 @@
         private static void ExtractIoiFiles(ZipFile zipFile, TestsParseResult result)
         {
             // IOI test files
-            if (zipFile.Entries.Any(x => char.IsNumber(x.FileName[x.FileName.ToLower().LastIndexOf('.') + 1])))
+            if (zipFile.Entries.Any(x => char.IsNumber(x.FileName[x.FileName.LastIndexOf('.') + 1])))
             {
+                const string outputFileSignature = "out";
+                const string inputFileSignature = "in";
+
                 var outOutputs = zipFile.EntriesSorted
-                    .Where(x => x.FileName.ToLower().Substring(x.FileName.LastIndexOf('.') - 3, 3) == "out")
+                    .Where(x => x.FileName
+                        .Substring(
+                            x.FileName.LastIndexOf('.') - outputFileSignature.Length,
+                            outputFileSignature.Length)
+                        .Equals(outputFileSignature, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 foreach (var output in outOutputs)
                 {
-                    var inputFiles = zipFile.Entries
-                        .Where(x => x.FileName
-                            .ToLower()
-                            .Contains("in" + output.FileName
-                                .ToLower()
-                                .Substring(output.FileName.ToLower().LastIndexOf('.'))) &&
-                            x.FileName.Substring(x.FileName.LastIndexOf('.')) == output.FileName
-                                .Substring(output.FileName.LastIndexOf('.')))
-                        .ToList();
+                    var inputFileName = inputFileSignature +
+                        output.FileName.Substring(output.FileName.LastIndexOf('.'));
 
-                    if (inputFiles.Count == 0)
-                    {
-                        throw new ArgumentException(InvalidNameForInputTestErrorMessage);
-                    }
-
-                    if (inputFiles.Count > 1)
-                    {
-                        throw new ArgumentException(InvalidInputTestsCountErrorMessage);
-                    }
-
-                    var input = inputFiles[0];
+                    var input = GetUniqueInputByFileName(zipFile, inputFileName);
 
                     result.Inputs.Add(ExtractFileFromStream(input));
                     result.Outputs.Add(ExtractFileFromStream(output));
@@ -317,39 +264,19 @@
         private static void ExtractZipFiles(ZipFile zipFile, TestsParseResult result)
         {
             // Java Unit Testing test files
-            var inputs = zipFile.EntriesSorted
-                .Where(x => x.FileName.Length > 7 &&
-                    x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip")
-                .ToList();
+            var outputs = zipFile.GetZipEntriesByExtensions(WebConstants.TestOutputZipFileExtension).ToList();
 
-            if (!inputs.Any())
+            if (!outputs.Any())
             {
                 return;
             }
 
             var tempDir = DirectoryHelpers.CreateTempDirectory();
 
-            foreach (var input in inputs)
+            foreach (var output in outputs)
             {
-                var outputFiles = zipFile.Entries
-                    .Where(x => x.FileName
-                        .ToLower()
-                        .Contains(input.FileName
-                            .ToLower()
-                            .Substring(0, input.FileName.Length - 6) + "out.zip"))
-                    .ToList();
+                var input = GetInputByOutputAndExtension(zipFile, output, WebConstants.TestInputZipFileExtension);
 
-                if (outputFiles.Count == 0)
-                {
-                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
-                }
-
-                if (outputFiles.Count > 1)
-                {
-                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
-                }
-
-                var output = outputFiles[0];
                 var inputAsText = new StringBuilder();
                 var outputAsText = new StringBuilder();
 
@@ -377,15 +304,12 @@
                 inputFile.Dispose();
                 outputFile.Dispose();
 
-                // check zero test
-                if (input.FileName.Contains(".000.") &&
-                    output.FileName.Contains(".000."))
+                if (IsStandardZeroTest(input, output))
                 {
                     result.ZeroInputs.Add(inputAsText.ToString());
                     result.ZeroOutputs.Add(outputAsText.ToString());
                 }
-                else if (input.FileName.Contains(".open.")
-                    && output.FileName.Contains(".open."))
+                else if (IsStandardOpenTest(input, output))
                 {
                     result.OpenInputs.Add(inputAsText.ToString());
                     result.OpenOutputs.Add(outputAsText.ToString());
@@ -399,5 +323,43 @@
 
             DirectoryHelpers.SafeDeleteDirectory(tempDir, true);
         }
+
+        private static ZipEntry GetInputByOutputAndExtension(
+            ZipFile zipFile,
+            ZipEntry output,
+            string extension)
+        {
+            var fileName = output.FileName
+                .Substring(0, output.FileName.Length - extension.Length - 1) + extension;
+
+            return GetUniqueInputByFileName(zipFile, fileName);
+        }
+
+        private static ZipEntry GetUniqueInputByFileName(ZipFile zipFile, string fileName)
+        {
+            var files = zipFile.Entries
+                .Where(x => x.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (files.Count == 0)
+            {
+                throw new ArgumentException(InvalidNameForInputTestErrorMessage);
+            }
+
+            if (files.Count > 1)
+            {
+                throw new ArgumentException(InvalidInputTestsCountErrorMessage);
+            }
+
+            return files.First();
+        }
+
+        private static bool IsStandardZeroTest(ZipEntry input, ZipEntry output) =>
+            input.FileName.Contains(WebConstants.ZeroTestStandardSignature) &&
+            output.FileName.Contains(WebConstants.ZeroTestStandardSignature);
+
+        private static bool IsStandardOpenTest(ZipEntry input, ZipEntry output) =>
+            input.FileName.Contains(WebConstants.OpenTestStandardSignature) &&
+            output.FileName.Contains(WebConstants.OpenTestStandardSignature);
     }
 }
