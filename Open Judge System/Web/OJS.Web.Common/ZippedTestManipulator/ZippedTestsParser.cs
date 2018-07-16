@@ -13,6 +13,9 @@
 
     public class ZippedTestsParser
     {
+        private const string InvalidNameForInputTestErrorMessage = "Невалидно име на входен тест";
+        private const string InvalidInputTestsCountErrorMessage = "Невалиден брой входни тестове";
+
         public static TestsParseResult Parse(Stream stream)
         {
             var zipFile = ZipFile.Read(stream);
@@ -134,40 +137,44 @@
         private static void ExcractInAndSolFiles(ZipFile zipFile, TestsParseResult result)
         {
             // .in and .sol files
-            if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol"))
+            var solOutputs = zipFile.EntriesSorted
+                .Where(x => x.FileName.Length > 4 &&
+                    x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol")
+                .ToList();
+
+            foreach (var output in solOutputs)
             {
-                var solOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".sol").ToList();
+                var inputFiles = zipFile.Entries
+                    .Where(x => x.FileName
+                        .ToLower()
+                        .Contains(output.FileName
+                            .ToLower()
+                            .Substring(0, output.FileName.Length - 3) + "in"))
+                    .ToList();
 
-                foreach (var output in solOutputs)
+                if (inputFiles.Count == 0)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")))
-                    {
-                        throw new ArgumentException("Невалидно име на входен тест");
-                    }
-                    else
-                    {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")).ToList();
+                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
+                }
 
-                        if (inputFiles.Count > 1)
-                        {
-                            throw new ArgumentException("Невалиден брой входни тестове");
-                        }
+                if (inputFiles.Count > 1)
+                {
+                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
+                }
 
-                        var input = inputFiles[0];
+                var input = inputFiles[0];
 
-                        // check zero test
-                        if (input.FileName.ToLower().Substring(input.FileName.Length - 5, 5) == "00.in"
-                            && output.FileName.ToLower().Substring(output.FileName.Length - 6, 6) == "00.sol")
-                        {
-                            result.ZeroInputs.Add(ExtractFileFromStream(input));
-                            result.ZeroOutputs.Add(ExtractFileFromStream(output));
-                        }
-                        else
-                        {
-                            result.Inputs.Add(ExtractFileFromStream(input));
-                            result.Outputs.Add(ExtractFileFromStream(output));
-                        }
-                    }
+                // check zero test
+                if (input.FileName.ToLower().Substring(input.FileName.Length - 5, 5) == "00.in" &&
+                    output.FileName.ToLower().Substring(output.FileName.Length - 6, 6) == "00.sol")
+                {
+                    result.ZeroInputs.Add(ExtractFileFromStream(input));
+                    result.ZeroOutputs.Add(ExtractFileFromStream(output));
+                }
+                else
+                {
+                    result.Inputs.Add(ExtractFileFromStream(input));
+                    result.Outputs.Add(ExtractFileFromStream(output));
                 }
             }
         }
@@ -175,89 +182,95 @@
         private static void ExcractInAndOutFiles(ZipFile zipFile, TestsParseResult result)
         {
             // .in and .out files
-            if (zipFile.Entries.Any(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out"))
+            var outOutputs = zipFile.EntriesSorted
+                .Where(x => x.FileName.Length > 4 &&
+                    x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out")
+                .ToList();
+
+            foreach (var output in outOutputs)
             {
-                var outOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.Length - 4, 4) == ".out").ToList();
+                var inputFiles = zipFile.Entries
+                    .Where(x => x.FileName
+                        .ToLower()
+                        .Contains(output.FileName
+                            .ToLower()
+                            .Substring(0, output.FileName.Length - 3) + "in"))
+                    .ToList();
 
-                foreach (var output in outOutputs)
+                if (inputFiles.Count == 0)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")))
-                    {
-                        throw new ArgumentException("Невалидно име на входен тест");
-                    }
-                    else
-                    {
-                        var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 3) + "in")).ToList();
+                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
+                }
 
-                        if (inputFiles.Count > 1)
-                        {
-                            throw new ArgumentException("Невалиден брой входни тестове");
-                        }
+                if (inputFiles.Count > 1)
+                {
+                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
+                }
 
-                        var input = inputFiles[0];
+                var input = inputFiles[0];
 
-                        // check zero test
-                        if (input.FileName.ToLower().Substring(input.FileName.LastIndexOf('_') - 2, 2) == "et"
-                            && output.FileName.ToLower().Substring(output.FileName.LastIndexOf('_') - 2, 2) == "et")
-                        {
-                            result.ZeroInputs.Add(ExtractFileFromStream(input));
-                            result.ZeroOutputs.Add(ExtractFileFromStream(output));
-                        }
-                        else
-                        {
-                            result.Inputs.Add(ExtractFileFromStream(input));
-                            result.Outputs.Add(ExtractFileFromStream(output));
-                        }
-                    }
+                // check zero test
+                if (input.FileName.ToLower().Substring(input.FileName.LastIndexOf('_') - 2, 2) == "et" &&
+                    output.FileName.ToLower().Substring(output.FileName.LastIndexOf('_') - 2, 2) == "et")
+                {
+                    result.ZeroInputs.Add(ExtractFileFromStream(input));
+                    result.ZeroOutputs.Add(ExtractFileFromStream(output));
+                }
+                else
+                {
+                    result.Inputs.Add(ExtractFileFromStream(input));
+                    result.Outputs.Add(ExtractFileFromStream(output));
                 }
             }
         }
 
         private static void ExtractTxtFiles(ZipFile zipFile, TestsParseResult result)
         {
-            bool IsOutputTxtFile(ZipEntry entry) =>
-                entry.FileName.Length > 8 &&
-                entry.FileName.ToLower().Substring(entry.FileName.Length - 8, 8) == ".out.txt";
-
             // bgcoder text files
-            if (zipFile.Entries.Any(IsOutputTxtFile))
+            var outOutputs = zipFile.EntriesSorted
+                .Where(x => x.FileName.Length > 8 &&
+                    x.FileName.ToLower().Substring(x.FileName.Length - 8, 8) == ".out.txt")
+                .ToList();
+
+            foreach (var output in outOutputs)
             {
-                var outOutputs = zipFile.EntriesSorted.Where(IsOutputTxtFile).ToList();
+                var inputFiles = zipFile.Entries
+                    .Where(x => x.FileName
+                        .ToLower()
+                        .Contains(output.FileName
+                            .ToLower()
+                            .Substring(0, output.FileName.Length - 7) + "in.txt"))
+                    .ToList();
 
-                foreach (var output in outOutputs)
+                if (inputFiles.Count == 0)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")))
-                    {
-                        throw new ArgumentException("Невалидно име на входен тест");
-                    }
+                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
+                }
 
-                    var inputFiles = zipFile.Entries.Where(x => x.FileName.ToLower().Contains(output.FileName.ToLower().Substring(0, output.FileName.Length - 7) + "in.txt")).ToList();
+                if (inputFiles.Count > 1)
+                {
+                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
+                }
 
-                    if (inputFiles.Count > 1)
-                    {
-                        throw new ArgumentException("Невалиден брой входни тестове");
-                    }
+                var input = inputFiles[0];
 
-                    var input = inputFiles[0];
-
-                    // check zero test
-                    if (input.FileName.Contains(".000.")
-                        && output.FileName.Contains(".000."))
-                    {
-                        result.ZeroInputs.Add(ExtractFileFromStream(input));
-                        result.ZeroOutputs.Add(ExtractFileFromStream(output));
-                    }
-                    else if (input.FileName.Contains(".open.") &&
-                             output.FileName.Contains(".open."))
-                    {
-                        result.OpenInputs.Add(ExtractFileFromStream(input));
-                        result.OpenOutputs.Add(ExtractFileFromStream(output));
-                    }
-                    else
-                    {
-                        result.Inputs.Add(ExtractFileFromStream(input));
-                        result.Outputs.Add(ExtractFileFromStream(output));
-                    }
+                // check zero test
+                if (input.FileName.Contains(".000.") &&
+                    output.FileName.Contains(".000."))
+                {
+                    result.ZeroInputs.Add(ExtractFileFromStream(input));
+                    result.ZeroOutputs.Add(ExtractFileFromStream(output));
+                }
+                else if (input.FileName.Contains(".open.") &&
+                    output.FileName.Contains(".open."))
+                {
+                    result.OpenInputs.Add(ExtractFileFromStream(input));
+                    result.OpenOutputs.Add(ExtractFileFromStream(output));
+                }
+                else
+                {
+                    result.Inputs.Add(ExtractFileFromStream(input));
+                    result.Outputs.Add(ExtractFileFromStream(output));
                 }
             }
         }
@@ -267,25 +280,30 @@
             // IOI test files
             if (zipFile.Entries.Any(x => char.IsNumber(x.FileName[x.FileName.ToLower().LastIndexOf('.') + 1])))
             {
-                var outOutputs = zipFile.EntriesSorted.Where(x => x.FileName.ToLower().Substring(x.FileName.LastIndexOf('.') - 3, 3) == "out").ToList();
+                var outOutputs = zipFile.EntriesSorted
+                    .Where(x => x.FileName.ToLower().Substring(x.FileName.LastIndexOf('.') - 3, 3) == "out")
+                    .ToList();
 
                 foreach (var output in outOutputs)
                 {
-                    if (!zipFile.Entries.Any(x => x.FileName.ToLower().Contains("in" + x.FileName.ToLower().Substring(x.FileName.ToLower().LastIndexOf('.')))))
-                    {
-                        throw new ArgumentException("Невалидно име на входен тест");
-                    }
-
                     var inputFiles = zipFile.Entries
-                        .Where(x => x.FileName.ToLower()
-                            .Contains("in" + output.FileName.ToLower()
-                            .Substring(output.FileName.ToLower().LastIndexOf('.'))) &&
-                            x.FileName.Substring(x.FileName.LastIndexOf('.')) == output.FileName.Substring(output.FileName.LastIndexOf('.')))
+                        .Where(x => x.FileName
+                            .ToLower()
+                            .Contains("in" + output.FileName
+                                .ToLower()
+                                .Substring(output.FileName.ToLower().LastIndexOf('.'))) &&
+                            x.FileName.Substring(x.FileName.LastIndexOf('.')) == output.FileName
+                                .Substring(output.FileName.LastIndexOf('.')))
                         .ToList();
+
+                    if (inputFiles.Count == 0)
+                    {
+                        throw new ArgumentException(InvalidNameForInputTestErrorMessage);
+                    }
 
                     if (inputFiles.Count > 1)
                     {
-                        throw new ArgumentException("Невалиден брой входни тестове");
+                        throw new ArgumentException(InvalidInputTestsCountErrorMessage);
                     }
 
                     var input = inputFiles[0];
@@ -298,91 +316,88 @@
 
         private static void ExtractZipFiles(ZipFile zipFile, TestsParseResult result)
         {
-            bool IsInputZipFile(ZipEntry entry) =>
-                entry.FileName.Length > 7 &&
-                entry.FileName.ToLower().Substring(entry.FileName.Length - 7, 7) == ".in.zip";
-
             // Java Unit Testing test files
-            if (zipFile.Entries.Any(IsInputZipFile))
+            var inputs = zipFile.EntriesSorted
+                .Where(x => x.FileName.Length > 7 &&
+                    x.FileName.ToLower().Substring(x.FileName.Length - 7, 7) == ".in.zip")
+                .ToList();
+
+            if (!inputs.Any())
             {
-                var tempDir = DirectoryHelpers.CreateTempDirectory();
-                var inputs = zipFile.EntriesSorted.Where(IsInputZipFile).ToList();
+                return;
+            }
 
-                foreach (var input in inputs)
+            var tempDir = DirectoryHelpers.CreateTempDirectory();
+
+            foreach (var input in inputs)
+            {
+                var outputFiles = zipFile.Entries
+                    .Where(x => x.FileName
+                        .ToLower()
+                        .Contains(input.FileName
+                            .ToLower()
+                            .Substring(0, input.FileName.Length - 6) + "out.zip"))
+                    .ToList();
+
+                if (outputFiles.Count == 0)
                 {
-                    if (!zipFile.Entries
-                        .Any(x => x.FileName
-                            .ToLower()
-                            .Contains(input.FileName
-                                .ToLower()
-                                .Substring(0, input.FileName.Length - 6) + "out.zip")))
-                    {
-                        throw new ArgumentException("Невалидно име на входен тест");
-                    }
-
-                    var outputFiles = zipFile.Entries
-                        .Where(x => x.FileName
-                            .ToLower()
-                            .Contains(input.FileName
-                                .ToLower()
-                                .Substring(0, input.FileName.Length - 6) + "out.zip"))
-                        .ToList();
-
-                    if (outputFiles.Count > 1)
-                    {
-                        throw new ArgumentException("Невалиден брой входни тестове");
-                    }
-
-                    var output = outputFiles[0];
-                    var inputAsText = new StringBuilder();
-                    var outputAsText = new StringBuilder();
-
-                    input.Extract(tempDir);
-                    output.Extract(tempDir);
-
-                    var inputFile = ZipFile.Read($"{tempDir}\\{input.FileName}");
-                    var outputFile = ZipFile.Read($"{tempDir}\\{output.FileName}");
-
-                    var inputEntries = inputFile.Entries.Where(x => !x.FileName.EndsWith("/"));
-                    var outputEntries = outputFile.Entries.Where(x => !x.FileName.EndsWith("/"));
-
-                    foreach (var entry in inputEntries)
-                    {
-                        inputAsText.Append(GlobalConstants.ClassDelimiter);
-                        inputAsText.AppendLine($"//{entry.FileName}");
-                        inputAsText.AppendLine(ExtractFileFromStream(entry));
-                    }
-
-                    foreach (var entry in outputEntries)
-                    {
-                        outputAsText.AppendLine(ExtractFileFromStream(entry));
-                    }
-
-                    inputFile.Dispose();
-                    outputFile.Dispose();
-
-                    // check zero test
-                    if (input.FileName.Contains(".000.")
-                        && output.FileName.Contains(".000."))
-                    {
-                        result.ZeroInputs.Add(inputAsText.ToString());
-                        result.ZeroOutputs.Add(outputAsText.ToString());
-                    }
-                    else if (input.FileName.Contains(".open.")
-                        && output.FileName.Contains(".open."))
-                    {
-                        result.OpenInputs.Add(inputAsText.ToString());
-                        result.OpenOutputs.Add(outputAsText.ToString());
-                    }
-                    else
-                    {
-                        result.Inputs.Add(inputAsText.ToString());
-                        result.Outputs.Add(outputAsText.ToString());
-                    }
+                    throw new ArgumentException(InvalidNameForInputTestErrorMessage);
                 }
 
-                DirectoryHelpers.SafeDeleteDirectory(tempDir, true);
+                if (outputFiles.Count > 1)
+                {
+                    throw new ArgumentException(InvalidInputTestsCountErrorMessage);
+                }
+
+                var output = outputFiles[0];
+                var inputAsText = new StringBuilder();
+                var outputAsText = new StringBuilder();
+
+                input.Extract(tempDir);
+                output.Extract(tempDir);
+
+                var inputFile = ZipFile.Read($"{tempDir}\\{input.FileName}");
+                var outputFile = ZipFile.Read($"{tempDir}\\{output.FileName}");
+
+                var inputEntries = inputFile.Entries.Where(x => !x.FileName.EndsWith("/"));
+                var outputEntries = outputFile.Entries.Where(x => !x.FileName.EndsWith("/"));
+
+                foreach (var entry in inputEntries)
+                {
+                    inputAsText.Append(GlobalConstants.ClassDelimiter);
+                    inputAsText.AppendLine($"//{entry.FileName}");
+                    inputAsText.AppendLine(ExtractFileFromStream(entry));
+                }
+
+                foreach (var entry in outputEntries)
+                {
+                    outputAsText.AppendLine(ExtractFileFromStream(entry));
+                }
+
+                inputFile.Dispose();
+                outputFile.Dispose();
+
+                // check zero test
+                if (input.FileName.Contains(".000.") &&
+                    output.FileName.Contains(".000."))
+                {
+                    result.ZeroInputs.Add(inputAsText.ToString());
+                    result.ZeroOutputs.Add(outputAsText.ToString());
+                }
+                else if (input.FileName.Contains(".open.")
+                    && output.FileName.Contains(".open."))
+                {
+                    result.OpenInputs.Add(inputAsText.ToString());
+                    result.OpenOutputs.Add(outputAsText.ToString());
+                }
+                else
+                {
+                    result.Inputs.Add(inputAsText.ToString());
+                    result.Outputs.Add(outputAsText.ToString());
+                }
             }
+
+            DirectoryHelpers.SafeDeleteDirectory(tempDir, true);
         }
     }
 }
