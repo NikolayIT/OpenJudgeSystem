@@ -63,8 +63,6 @@
     <Compile Include="Agents\AgentTaskData.cs" />
     <Compile Include="Agents\AgentResponseData.cs" />
     <Compile Include="Agents\TestResult.cs" />
-    <Compile Include="AppSettings\BaseTimeAndMemorySettings.cs" />
-    <Compile Include="AppSettings\ExitTimeoutMultiplierSettings.cs" />
     <Compile Include="CheckerDetails.cs" />
     <Compile Include="CheckerResult.cs" />
     <Compile Include="CheckerResultType.cs" />
@@ -87,8 +85,6 @@
     <Compile Include="Agents\TaskInformation.cs" />
     <Compile Include="Agents\SourceFile.cs" />
     <Compile Include="Agents\Test.cs" />
-    <Compile Include="AppSettings\Settings.cs" />
-    <Compile Include="AppSettings\EmailSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

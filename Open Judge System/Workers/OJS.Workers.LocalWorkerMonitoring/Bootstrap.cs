@@ -1,9 +1,9 @@
 ﻿namespace OJS.Workers.LocalWorkerMonitoring
 {
     using log4net;
+
     using OJS.Services.Common.Emails;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.AppSettings;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;

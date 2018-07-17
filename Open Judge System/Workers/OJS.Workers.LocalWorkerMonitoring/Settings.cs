@@ -1,6 +1,8 @@
-﻿namespace OJS.Workers.Common.AppSettings
+﻿namespace OJS.Workers.LocalWorkerMonitoring
 {
-    public static partial class Settings
+    using static OJS.Common.Helpers.SettingsHelper;
+
+    internal static class Settings
     {
         public static string EmailServerHost => GetSetting("EmailServerHost");
 

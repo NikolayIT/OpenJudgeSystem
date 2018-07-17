@@ -14,7 +14,6 @@
     using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.AppSettings;
 
     internal class LocalWorkerService : ServiceBase
     {

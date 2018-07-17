@@ -5,17 +5,17 @@
     using NUnit.Framework;
 
     using OJS.Common.Extensions;
-    using OJS.Workers.Common.AppSettings;
 
     [TestFixture]
     public class MsBuildCompilerTests
     {
         private const string MsBuildCompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
+        private const int MsBuildCompilerProcessExitTimeOutMultiplier = 2;
 
         [Test]
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedSolution()
         {
-            var compiler = new MsBuildCompiler(Settings.MsBuildCompilerProcessExitTimeOutMultiplier);
+            var compiler = new MsBuildCompiler(MsBuildCompilerProcessExitTimeOutMultiplier);
             var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionFile()), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
@@ -26,7 +26,7 @@
         [Test]
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedProjectInSingleFolder()
         {
-            var compiler = new MsBuildCompiler(Settings.MsBuildCompilerProcessExitTimeOutMultiplier);
+            var compiler = new MsBuildCompiler(MsBuildCompilerProcessExitTimeOutMultiplier);
             var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
