@@ -153,9 +153,6 @@
   <data name="First_name_length" xml:space="preserve">
     <value>The entered name is too long</value>
   </data>
-  <data name="Is_ghoust_user" xml:space="preserve">
-    <value>Form the old system?</value>
-  </data>
   <data name="Job_title" xml:space="preserve">
     <value>Job title</value>
   </data>

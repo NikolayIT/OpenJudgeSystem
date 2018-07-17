@@ -34,8 +34,9 @@
         {
             var validationResults = new HashSet<ValidationResult>();
 
-            var contest = this.data.Contests.GetById(this.ContestId);
-            var contestQuestions = contest.Questions
+            var contestQuestions = this.data.ContestQuestions
+                .All()
+                .Where(cc => cc.ContestId == this.ContestId)
                 .Where(x => !x.IsDeleted)
                 .ToList();
 

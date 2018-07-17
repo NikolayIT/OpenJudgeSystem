@@ -153,9 +153,6 @@
   <data name="First_name_length" xml:space="preserve">
     <value>Въведеното име е твърде дълго</value>
   </data>
-  <data name="Is_ghoust_user" xml:space="preserve">
-    <value>От старата система?</value>
-  </data>
   <data name="Job_title" xml:space="preserve">
     <value>Позиция</value>
   </data>

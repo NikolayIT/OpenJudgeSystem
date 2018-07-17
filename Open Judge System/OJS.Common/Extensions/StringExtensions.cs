@@ -262,5 +262,8 @@
 
             return result.ToString();
         }
+
+        public static string ToSingleLine(this string input) =>
+            Regex.Replace(input, @"\t|\r|\n", string.Empty);
     }
 }

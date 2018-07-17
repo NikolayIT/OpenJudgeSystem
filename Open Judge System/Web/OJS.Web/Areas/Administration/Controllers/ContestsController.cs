@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -17,6 +18,7 @@
     using OJS.Services.Business.Participants;
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Ips;
     using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
@@ -37,6 +39,7 @@
         private readonly IContestsDataService contestsData;
         private readonly IContestCategoriesDataService contestCategoriesData;
         private readonly IParticipantsDataService participantsData;
+        private readonly IIpsDataService ipsData;
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IParticipantsBusinessService participantsBusiness;
 
@@ -45,6 +48,7 @@
             IContestsDataService contestsData,
             IContestCategoriesDataService contestCategoriesData,
             IParticipantsDataService participantsData,
+            IIpsDataService ipsData,
             IContestsBusinessService contestsBusiness,
             IParticipantsBusinessService participantsBusiness)
                 : base(data)
@@ -52,13 +56,14 @@
             this.contestsData = contestsData;
             this.contestCategoriesData = contestCategoriesData;
             this.participantsData = participantsData;
+            this.ipsData = ipsData;
             this.contestsBusiness = contestsBusiness;
             this.participantsBusiness = participantsBusiness;
         }
 
         public override IEnumerable GetData()
         {
-            var allContests = this.Data.Contests.All();
+            var allContests = this.contestsData.GetAll();
 
             if (!this.User.IsAdmin() && this.User.IsLecturer())
             {
@@ -72,7 +77,10 @@
 
         public override object GetById(object id)
         {
-            return this.Data.Contests.All().FirstOrDefault(o => o.Id == (int)id);
+            return this.contestsData
+                .GetAll()
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Id == (int)id);
         }
 
         public ActionResult Index()
@@ -125,8 +133,7 @@
 
             this.AddIpsToContest(contest, model.AllowedIps);
 
-            this.Data.Contests.Add(contest);
-            this.Data.SaveChanges();
+            this.contestsData.Add(contest);
 
             this.TempData.Add(GlobalConstants.InfoMessage, Resource.Contest_added);
             return this.RedirectToAction<ContestsController>(c => c.Index());
@@ -140,9 +147,8 @@
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var contest = this.Data.Contests
-                .All()
-                .Where(con => con.Id == id)
+            var contest = this.contestsData
+                .GetByIdQuery(id)
                 .Select(ContestAdministrationViewModel.ViewModel)
                 .FirstOrDefault();
 
@@ -174,7 +180,7 @@
                 return this.View(model);
             }
 
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.Id);
+            var contest = this.contestsData.GetById(model.Id.Value);
 
             if (contest == null)
             {
@@ -209,8 +215,7 @@
             contest.AllowedIps.Clear();
             this.AddIpsToContest(contest, model.AllowedIps);
 
-            this.Data.Contests.Update(contest);
-            this.Data.SaveChanges();
+            this.contestsData.Update(contest);
 
             this.InvalidateParticipants(originalContestPassword, originalPracticePassword, contest);
 
@@ -537,12 +542,7 @@
                 var ipValues = mergedIps.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var ipValue in ipValues)
                 {
-                    var ip = this.Data.Ips.All().FirstOrDefault(x => x.Value == ipValue);
-                    if (ip == null)
-                    {
-                        ip = new Ip { Value = ipValue };
-                        this.Data.Ips.Add(ip);
-                    }
+                    var ip = this.ipsData.GetByValue(ipValue) ?? new Ip { Value = ipValue };
 
                     contest.AllowedIps.Add(new ContestIp { Ip = ip, IsOriginallyAllowed = true });
                 }

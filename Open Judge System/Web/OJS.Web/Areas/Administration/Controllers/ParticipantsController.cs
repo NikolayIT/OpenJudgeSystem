@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -12,6 +13,9 @@
 
     using OJS.Common;
     using OJS.Data;
+    using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
+    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
 
     using AnswerViewModelType = OJS.Web.Areas.Administration.ViewModels.Participant.ParticipantAnswerViewModel;
@@ -21,34 +25,37 @@
 
     public class ParticipantsController : LecturerBaseGridController
     {
-        public ParticipantsController(IOjsData data)
+        private readonly IContestsDataService contestsData;
+        private readonly IUsersDataService usersData;
+        private readonly IParticipantsDataService participantsData;
+
+        public ParticipantsController(
+            IOjsData data,
+            IContestsDataService contestsData,
+            IUsersDataService usersData,
+            IParticipantsDataService participantsData)
             : base(data)
         {
+            this.contestsData = contestsData;
+            this.usersData = usersData;
+            this.participantsData = participantsData;
         }
 
-        public override IEnumerable GetData()
-        {
-            return this.Data.Participants
-                .All()
+        public override IEnumerable GetData() =>
+            this.participantsData
+                .GetAll()
                 .Select(ViewModelType.ViewModel);
-        }
 
-        public override object GetById(object id)
-        {
-            return this.Data.Participants
-                .All()
-                .FirstOrDefault(o => o.Id == (int)id);
-        }
+        public override object GetById(object id) =>
+            this.participantsData
+                .GetByIdQuery((int)id)
+                .AsNoTracking()
+                .FirstOrDefault();
 
-        public override string GetEntityKeyName()
-        {
-            return this.GetEntityKeyNameByType(typeof(DatabaseModelType));
-        }
+        public override string GetEntityKeyName() =>
+            this.GetEntityKeyNameByType(typeof(DatabaseModelType));
 
-        public ActionResult Index()
-        {
-            return this.View();
-        }
+        public ActionResult Index() => this.View();
 
         public ActionResult Contest(int id)
         {
@@ -91,8 +98,8 @@
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
-            var user = this.Data.Users.All().FirstOrDefault(u => u.Id == model.UserId);
+            var contest = this.contestsData.GetById(model.ContestId);
+            var user = this.usersData.GetById(model.UserId);
 
             if (contest == null || user == null)
             {
@@ -110,8 +117,8 @@
             }
 
             var participant = model.GetEntityModel();
-            participant.Contest = contest;
-            participant.User = user;
+            participant.ContestId = contest.Id;
+            participant.UserId = user.Id;
 
             model.Id = (int)this.BaseCreate(participant);
             model.UserName = user.UserName;
@@ -128,10 +135,7 @@
             return this.GridOperation(request, model);
         }
 
-        public ActionResult RenderGrid(int? id)
-        {
-            return this.PartialView("_Participants", id);
-        }
+        public ActionResult RenderGrid(int? id) => this.PartialView("_Participants", id);
 
         [HttpGet]
         public FileResult ExportToExcelByContest(DataSourceRequest request, int contestId)
@@ -149,7 +153,7 @@
         [HttpPost]
         public JsonResult Answers([DataSourceRequest]DataSourceRequest request, int id)
         {
-            var answers = this.Data.Participants
+            var answers = this.participantsData
                 .GetById(id)
                 .Answers
                 .AsQueryable()

@@ -19,6 +19,8 @@
         public ParticipantsDataService(IEfGenericRepository<Participant> participants) =>
             this.participants = participants;
 
+        public Participant GetById(int id) => this.participants.GetById(id);
+
         public Participant GetByContestByUserAndByIsOfficial(int contestId, string userId, bool isOfficial) =>
             this.GetAll()
                 .FirstOrDefault(p =>

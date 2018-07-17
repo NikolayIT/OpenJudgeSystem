@@ -31,7 +31,6 @@
         protected const int RestrictInterval = 180;
         protected const string TooManyRequestsErrorMessage = "Прекалено много заявки. Моля, опитайте по-късно.";
 
-        private const int MaxContestsToTake = 20;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresBusinessService participantScoresBusiness;
         private readonly IParticipantScoresDataService participantScoresData;
@@ -550,30 +549,6 @@
         {
             this.ViewBag.SubmissionStatusData = DropdownViewModel.GetEnumValues<SubmissionStatus>();
             return this.PartialView("_SubmissionsGrid", id);
-        }
-
-        public JsonResult Contests(string text)
-        {
-            var contestEntities = this.Data.Contests.All();
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                contestEntities = contestEntities.Where(c => c.Name.ToLower().Contains(text.ToLower()));
-            }
-
-            if (!this.User.IsAdmin() && this.User.IsLecturer())
-            {
-                contestEntities = contestEntities.Where(c =>
-                    c.Lecturers.Any(l => l.LecturerId == this.UserProfile.Id) ||
-                    c.Category.Lecturers.Any(cl => cl.LecturerId == this.UserProfile.Id));
-            }
-
-            var contests = contestEntities
-                .OrderByDescending(c => c.CreatedOn)
-                .Take(MaxContestsToTake)
-                .Select(c => new { c.Id, c.Name });
-
-            return this.Json(contests, JsonRequestBehavior.AllowGet);
         }
 
         public FileResult GetSubmissionFile(int submissionId)

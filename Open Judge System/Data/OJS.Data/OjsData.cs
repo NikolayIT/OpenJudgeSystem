@@ -24,7 +24,7 @@
 
         protected OjsData(IOjsDbContext context) => this.context = context;
 
-        public IContestsRepository Contests => (ContestsRepository)this.GetRepository<Contest>();
+        public IDeletableEntityRepository<Contest> Contests => this.GetDeletableEntityRepository<Contest>();
 
         public IDeletableEntityRepository<Problem> Problems => this.GetDeletableEntityRepository<Problem>();
 
@@ -100,11 +100,6 @@
             if (!this.repositories.ContainsKey(typeof(T)))
             {
                 var type = typeof(EfGenericRepository<T>);
-
-                if (typeof(T).IsAssignableFrom(typeof(Contest)))
-                {
-                    type = typeof(ContestsRepository);
-                }
 
                 if (typeof(T).IsAssignableFrom(typeof(Submission)))
                 {

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,14 +28,6 @@
         [IsUnicode(false)]
         [DataType(DataType.EmailAddress)]
         public override string Email { get; set; }
-
-        /// <summary>
-        /// This property is true when the user comes from the old system and is not preregistered in the new system.
-        /// </summary>
-        [DefaultValue(false)]
-        public bool IsGhostUser { get; set; }
-
-        public int? OldId { get; set; }
 
         public UserSettings UserSettings { get; set; } = new UserSettings();
 
