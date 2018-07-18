@@ -241,7 +241,7 @@
 
                 if (errorsByFiles.ContainsKey(fileName))
                 {
-                    errorsByFiles[fileName] += Environment.NewLine + output;
+                    errorsByFiles[fileName] += ". " + output;
                 }
                 else
                 {
