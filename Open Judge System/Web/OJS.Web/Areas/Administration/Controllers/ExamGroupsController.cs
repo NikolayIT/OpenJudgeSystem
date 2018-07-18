@@ -14,6 +14,8 @@
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.ViewModels.ExamGroups;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
@@ -205,6 +207,34 @@
             };
 
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public ActionResult BulkAddUsersPartial(int id) =>
+            this.PartialView("_BulkAddUsersToExamGroup", new BulkAddUsersToExamGroupViewModel(id));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BulkAddUsersToExamGroup(BulkAddUsersToExamGroupViewModel model)
+        {
+            var examGroup = this.examGroupsData.GetById(model.ExamGroupId);
+
+            if (examGroup == null)
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            if (examGroup.ContestId == null)
+            {
+                return this.JsonError(Resource.Cannot_add_users);
+            }
+
+            if (!this.UserHasContestRights(examGroup.ContestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            return this.JsonSuccess("Users added to Exam Group");
         }
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));

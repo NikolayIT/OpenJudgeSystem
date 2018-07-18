@@ -1,0 +1,27 @@
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.ExamGroups
+
+@model BulkAddUsersToExamGroupViewModel
+
+@{
+    ViewBag.Title = "_BulkAddUsersToExamGroup";
+}
+
+<h2>_BulkAddUsersToExamGroup</h2>
+
+@using (Ajax.BeginForm<ExamGroupsController>(
+    c => c.BulkAddUsersToExamGroup((BulkAddUsersToExamGroupViewModel)null),
+    FormMethod.Post,
+    new AjaxOptions
+    {
+        OnSuccess = "onBulkAddUsersSuccess",
+        OnFailure = "onBulkAddUsersFailure"
+    }))
+{
+    @Html.AntiForgeryToken()
+    @Html.TextAreaFor(m => m.UserNamesText, new { rows = 20, cols = 60 })
+    @Html.HiddenFor(m => m.ExamGroupId)
+
+    <hr />
+    <button type="submit" class="btn btn-primary pull-left">Add</button>
+}

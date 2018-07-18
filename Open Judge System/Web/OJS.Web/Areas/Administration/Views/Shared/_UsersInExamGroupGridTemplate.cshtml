@@ -5,6 +5,17 @@
     const string ControllerName = "ExamGroups";
 }
 
+@(Html.Kendo()
+    .Window()
+    .Name("BulkAddUsersPopUpWindow")
+    .Title("Add Multiple users")
+    .Draggable()
+    .Resizable()
+    .Width(600)
+    .Visible(false)
+    .Actions(actions => actions.Close())
+)
+
 <script type="text/x-kendo-template" id="_UsersInExamGroupGridTemplate">
     @(Html
         .Kendo()
@@ -21,6 +32,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
+            toolbar.Custom().Text("Add multiple users").Url("javascript:OpenBulkAddUsersToExamGroupWindow(#=Id#)");
         })
         .Editable(editable =>
         {

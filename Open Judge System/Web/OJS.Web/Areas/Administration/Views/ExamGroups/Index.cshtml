@@ -122,4 +122,26 @@
             cursor: 'default'
         });
     }
+
+    function OpenBulkAddUsersToExamGroupWindow(id) {
+        var bulkAddUsersPopUp = $("#BulkAddUsersPopUpWindow").data("kendoWindow");
+
+        var url = '/Administration/ExamGroups/BulkAddUsersPartial/' + id;
+
+        bulkAddUsersPopUp.refresh(url);
+
+        setTimeout(function () {
+            bulkAddUsersPopUp.center();
+            bulkAddUsersPopUp.open();
+        }, 50);
+    }
+
+    function onBulkAddUsersSuccess(response, status) {
+        $('#BulkAddUsersPopUpWindow').data('kendoWindow').close();
+        displayAlertMessage(response, status, $('.main-container'));
+    }
+
+    function onBulkAddUsersFailure(response, status) {
+        displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
+    }
 </script>
