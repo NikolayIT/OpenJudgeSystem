@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ExamGroupsIndex {
+    public class BulkAddUsersToExamGroups {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExamGroupsIndex() {
+        internal BulkAddUsersToExamGroups() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex" +
-                            "", typeof(ExamGroupsIndex).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ExamGroups.Views.BulkAddUsersToE" +
+                            "xamGroups", typeof(BulkAddUsersToExamGroups).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,47 +62,20 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add user.
+        ///   Looks up a localized string similar to Enter the usernames of the users you want to add, separated by comma (&quot;,&quot;).
         /// </summary>
-        public static string Add_user {
+        public static string Add_users_description {
             get {
-                return ResourceManager.GetString("Add_user", resourceCulture);
+                return ResourceManager.GetString("Add_users_description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add multiple users.
-        /// </summary>
-        public static string Bulk_add_users {
-            get {
-                return ResourceManager.GetString("Bulk_add_users", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You cannot add ot remove users from exam group that does not have a contest.
-        /// </summary>
-        public static string Cannot_manipulate_users {
-            get {
-                return ResourceManager.GetString("Cannot_manipulate_users", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exam groups.
+        ///   Looks up a localized string similar to Add multiple users to exam group.
         /// </summary>
         public static string Page_title {
             get {
                 return ResourceManager.GetString("Page_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to remove this user from the еxam group?.
-        /// </summary>
-        public static string Remove_user_prompt {
-            get {
-                return ResourceManager.GetString("Remove_user_prompt", resourceCulture);
             }
         }
     }

@@ -117,19 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add_user" xml:space="preserve">
-    <value>Add user</value>
-  </data>
-  <data name="Bulk_add_users" xml:space="preserve">
-    <value>Add multiple users</value>
-  </data>
-  <data name="Cannot_manipulate_users" xml:space="preserve">
-    <value>You cannot add ot remove users from exam group that does not have a contest</value>
+  <data name="Add_users_description" xml:space="preserve">
+    <value>Enter the usernames of the users you want to add, separated by comma (",")</value>
   </data>
   <data name="Page_title" xml:space="preserve">
-    <value>Exam groups</value>
-  </data>
-  <data name="Remove_user_prompt" xml:space="preserve">
-    <value>Are you sure you want to remove this user from the еxam group?</value>
+    <value>Add multiple users to exam group</value>
   </data>
 </root>

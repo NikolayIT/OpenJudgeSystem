@@ -32,7 +32,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
-            toolbar.Custom().Text("Add multiple users").Url("javascript:OpenBulkAddUsersToExamGroupWindow(#=Id#)");
+            toolbar.Custom().Text(Resource.Bulk_add_users).Url("javascript:OpenBulkAddUsersToExamGroupWindow(#=Id#)");
         })
         .Editable(editable =>
         {

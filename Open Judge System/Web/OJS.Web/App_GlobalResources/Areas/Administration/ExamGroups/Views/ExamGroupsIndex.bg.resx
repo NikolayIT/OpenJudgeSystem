@@ -120,6 +120,9 @@
   <data name="Add_user" xml:space="preserve">
     <value>Добави потребител</value>
   </data>
+  <data name="Bulk_add_users" xml:space="preserve">
+    <value>Добавяне на множество потребители</value>
+  </data>
   <data name="Cannot_manipulate_users" xml:space="preserve">
     <value>Не може да добавяте или премахвате потребители от група, която няма състезание</value>
   </data>
