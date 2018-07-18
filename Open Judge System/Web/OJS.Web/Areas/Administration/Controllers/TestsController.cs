@@ -250,7 +250,7 @@
                 this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            using (var scope = TransactionsHelper.CreateTransactionScope())
+            using (var scope = TransactionsHelper.CreateTransactionScope(IsolationLevel.RepeatableRead))
             {
                 existingTest.InputData = test.InputData;
                 existingTest.OutputData = test.OutputData;
