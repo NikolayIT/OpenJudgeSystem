@@ -59,7 +59,7 @@
 
         // Extracts error/failure messages and the class which threw it
         protected static readonly string ErrorMessageRegex =
-            @"(\d+\) (?:Failed|Error)\s:\s(.*)\.(.*))\r?\n((?:.*)\r?\n(?:.*))";
+            @"((\d+-\d+\)|\d+\)) (?:Failed|Error)\s:\s(.*)\.(.*))\r?\n((?:.*)\r?\n(?:.*))";
 
         public CSharpProjectTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -235,9 +235,18 @@
             foreach (Match error in errors)
             {
                 var failedAssert = error.Groups[1].Value;
-                var cause = error.Groups[4].Value;
-                var fileName = error.Groups[2].Value;
-                errorsByFiles.Add(fileName, $"{failedAssert} : {cause}".ToSingleLine());
+                var cause = error.Groups[5].Value;
+                var fileName = error.Groups[3].Value;
+                var output = $"{failedAssert} : {cause}".ToSingleLine();
+
+                if (errorsByFiles.ContainsKey(fileName))
+                {
+                    errorsByFiles[fileName] += Environment.NewLine + output;
+                }
+                else
+                {
+                    errorsByFiles.Add(fileName, output);
+                }
             }
 
             return errorsByFiles;
