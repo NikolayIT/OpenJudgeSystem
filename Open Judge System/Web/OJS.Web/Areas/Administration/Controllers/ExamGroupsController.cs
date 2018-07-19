@@ -236,11 +236,11 @@
                 return this.JsonError(GeneralResource.No_privileges_message);
             }
 
-            var userNames = (model.UserNamesText ?? string.Empty)
+            var usernames = (model.UserNamesText ?? string.Empty)
                 .Split(new[] { ",", " ", Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(username => Regex.IsMatch(username, GlobalConstants.UsernameRegEx));
 
-            this.examGroupsBusiness.AddUsersByIdAndUsernames(model.ExamGroupId, userNames);
+            this.examGroupsBusiness.AddUsersByIdAndUsernames(model.ExamGroupId, usernames);
 
             return this.JsonSuccess(Resource.Users_added);
         }

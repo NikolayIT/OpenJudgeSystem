@@ -6,6 +6,7 @@
     using System.Web;
 
     using OJS.Common;
+    using OJS.Data.Models;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Common.HttpRequester;
     using OJS.Services.Common.HttpRequester.Models;
@@ -43,12 +44,7 @@
 
         public void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
         {
-            var examGroup = this.examGroupsData.GetById(id);
-
-            if (examGroup == null)
-            {
-                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
-            }
+            var examGroup = this.GetExamGroup(id);
 
             foreach (var userId in userIds)
             {
@@ -56,12 +52,7 @@
 
                 if (user != null)
                 {
-                    if (user.IsDeleted)
-                    {
-                        user.IsDeleted = false;
-                    }
-
-                    examGroup.Users.Add(user);
+                    AddUserToExamGroup(examGroup, user);
                 }
                 else
                 {
@@ -75,12 +66,7 @@
 
         public void AddUsersByIdAndUsernames(int id, IEnumerable<string> usernames)
         {
-            var examGroup = this.examGroupsData.GetById(id);
-
-            if (examGroup == null)
-            {
-                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
-            }
+            var examGroup = this.GetExamGroup(id);
 
             foreach (var username in usernames)
             {
@@ -88,12 +74,7 @@
 
                 if (user != null)
                 {
-                    if (user.IsDeleted)
-                    {
-                        user.IsDeleted = false;
-                    }
-
-                    examGroup.Users.Add(user);
+                    AddUserToExamGroup(examGroup, user);
                 }
                 else
                 {
@@ -107,12 +88,7 @@
 
         public void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
         {
-            var examGroup = this.examGroupsData.GetById(id);
-
-            if (examGroup == null)
-            {
-                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
-            }
+            var examGroup = this.GetExamGroup(id);
 
             examGroup.Users = examGroup.Users.Where(u => !userIds.Contains(u.Id)).ToList();
 
@@ -124,16 +100,10 @@
 
         public void AddExternalUserByIdAndUsername(int id, string username) =>
             this.AddExternalUser(id, null, username);
-        
 
         private void AddExternalUser(int id, string userId, string username = null)
         {
-            var examGroup = this.examGroupsData.GetById(id);
-
-            if (examGroup == null)
-            {
-                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
-            }
+            var examGroup = this.GetExamGroup(id);
 
             ExternalDataRetrievalResult<ExternalUserInfoModel> response;
 
@@ -171,6 +141,28 @@
             {
                 throw new HttpException(response.ErrorMessage);
             }
+        }
+
+        private ExamGroup GetExamGroup(int examGroupId)
+        {
+            var examGroup = this.examGroupsData.GetById(examGroupId);
+
+            if (examGroup == null)
+            {
+                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
+            }
+
+            return examGroup;
+        }
+
+        private static void AddUserToExamGroup(ExamGroup examGroup, UserProfile user)
+        {
+            if (user.IsDeleted)
+            {
+                user.IsDeleted = false;
+            }
+
+            examGroup.Users.Add(user);
         }
     }
 }
