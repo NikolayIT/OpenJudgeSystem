@@ -15,9 +15,7 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
         {
@@ -32,7 +30,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(GeneralResource.Create);
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
         })
         .Editable(editable =>
         {

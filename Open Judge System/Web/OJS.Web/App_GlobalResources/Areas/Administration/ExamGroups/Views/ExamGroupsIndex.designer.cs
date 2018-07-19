@@ -71,6 +71,15 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the usernames of the users you want to add, separated by comma (&quot;,&quot;).
+        /// </summary>
+        public static string Add_users_description {
+            get {
+                return ResourceManager.GetString("Add_users_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add multiple users.
         /// </summary>
         public static string Bulk_add_users {

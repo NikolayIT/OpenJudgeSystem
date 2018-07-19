@@ -813,16 +813,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\BulkAddUsersToExamGroups.Designer.cs">
-      <DependentUpon>BulkAddUsersToExamGroups.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\BulkAddUsersToExamGroups.bg.Designer.cs">
-      <DependentUpon>BulkAddUsersToExamGroups.bg.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.designer.cs">
       <DependentUpon>ExamGroupsIndex.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2823,16 +2813,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExamGroupAdministration.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.ViewModels</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\BulkAddUsersToExamGroups.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>BulkAddUsersToExamGroups.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\BulkAddUsersToExamGroups.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>BulkAddUsersToExamGroups.bg.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Areas.Administration.ExamGroups.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\ExamGroups\Views\ExamGroupsIndex.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
