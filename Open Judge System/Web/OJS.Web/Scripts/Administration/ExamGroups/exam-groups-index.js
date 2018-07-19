@@ -13,7 +13,7 @@ function onDetailDataBound() {
     var isAddButtonDisabled = detailsGrid.find('.k-grid-add.k-state-disabled').length >= 1;
     if (isAddButtonDisabled) {
         var deleteButtons = $('#' + this.element.attr("id")).find('.k-button.k-grid-delete');
-        disabableKendoButtons(deleteButtons);
+        disableKendoButtons(deleteButtons);
     }
 }
 

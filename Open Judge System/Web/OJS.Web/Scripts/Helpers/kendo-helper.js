@@ -6,7 +6,7 @@ function encodeSpecialSymbols(text) {
     return text.replace('#', '%23');
 }
 
-function disabableKendoButtons(buttons) {
+function disableKendoButtons(buttons) {
     buttons.kendoButton({
         enable: false
     });
