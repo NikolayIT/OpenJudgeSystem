@@ -1,15 +1,19 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Data.Entity;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Web.Mvc;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ExamGroups;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
@@ -28,17 +32,20 @@
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
         private readonly IContestsDataService contestsData;
+        private readonly IExamGroupsBusinessService examGroupsBusiness;
 
         public ExamGroupsController(
             IOjsData data,
             IExamGroupsDataService examGroupsData,
             IUsersDataService usersData,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IExamGroupsBusinessService examGroupsBusiness)
             : base(data)
         {
             this.examGroupsData = examGroupsData;
             this.usersData = usersData;
             this.contestsData = contestsData;
+            this.examGroupsBusiness = examGroupsBusiness;
         }
 
         public ActionResult Index() => this.View();
@@ -217,24 +224,25 @@
         [ValidateAntiForgeryToken]
         public ActionResult BulkAddUsersToExamGroup(BulkAddUsersToExamGroupViewModel model)
         {
-            var examGroup = this.examGroupsData.GetById(model.ExamGroupId);
+            var contestId = this.examGroupsData.GetContestIdById(model.ExamGroupId);
 
-            if (examGroup == null)
-            {
-                return this.JsonError(GeneralResource.No_privileges_message);
-            }
-
-            if (examGroup.ContestId == null)
+            if (!contestId.HasValue)
             {
                 return this.JsonError(Resource.Cannot_add_users);
             }
 
-            if (!this.UserHasContestRights(examGroup.ContestId.Value))
+            if (!this.UserHasContestRights(contestId.Value))
             {
                 return this.JsonError(GeneralResource.No_privileges_message);
             }
 
-            return this.JsonSuccess("Users added to Exam Group");
+            var userNames = (model.UserNamesText ?? string.Empty)
+                .Split(new[] { ",", " ", Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(username => Regex.IsMatch(username, GlobalConstants.UsernameRegEx));
+
+            this.examGroupsBusiness.AddUsersByIdAndUsernames(model.ExamGroupId, userNames);
+
+            return this.JsonSuccess(Resource.Users_added);
         }
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));

@@ -8,6 +8,7 @@
     using OJS.Common;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Common.HttpRequester;
+    using OJS.Services.Common.HttpRequester.Models;
     using OJS.Services.Common.HttpRequester.Models.Users;
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
@@ -72,6 +73,38 @@
             this.examGroupsData.Update(examGroup);
         }
 
+        public void AddUsersByIdAndUsernames(int id, IEnumerable<string> usernames)
+        {
+            var examGroup = this.examGroupsData.GetById(id);
+
+            if (examGroup == null)
+            {
+                throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
+            }
+
+            foreach (var username in usernames)
+            {
+                var user = this.usersData.GetByUsernameIncludingDeleted(username);
+
+                if (user != null)
+                {
+                    if (user.IsDeleted)
+                    {
+                        user.IsDeleted = false;
+                    }
+
+                    examGroup.Users.Add(user);
+                }
+                else
+                {
+                    this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                        x => x.AddExternalUserByIdAndUsername(examGroup.Id, username));
+                }
+            }
+
+            this.examGroupsData.Update(examGroup);
+        }
+
         public void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
         {
             var examGroup = this.examGroupsData.GetById(id);
@@ -86,7 +119,14 @@
             this.examGroupsData.Update(examGroup);
         }
 
-        public void AddExternalUserByIdAndUser(int id, string userId)
+        public void AddExternalUserByIdAndUser(int id, string userId) =>
+            this.AddExternalUser(id, userId);
+
+        public void AddExternalUserByIdAndUsername(int id, string username) =>
+            this.AddExternalUser(id, null, username);
+        
+
+        private void AddExternalUser(int id, string userId, string username = null)
         {
             var examGroup = this.examGroupsData.GetById(id);
 
@@ -95,13 +135,34 @@
                 throw new ArgumentNullException(nameof(examGroup), ExamGroupCannotBeNullMessage);
             }
 
-            var response = this.httpRequester.Get<ExternalUserInfoModel>(
-                new { userId },
-                string.Format(UrlConstants.GetUserInfoByIdApiFormat, this.sulsPlatformBaseUrl),
-                this.apiKey);
+            ExternalDataRetrievalResult<ExternalUserInfoModel> response;
 
-            if (response.IsSuccess && response.Data != null)
+            if (userId != null)
             {
+                response = this.httpRequester.Get<ExternalUserInfoModel>(
+                    new { userId },
+                    string.Format(UrlConstants.GetUserInfoByIdApiFormat, this.sulsPlatformBaseUrl),
+                    this.apiKey);
+            }
+            else if (username != null)
+            {
+                response = this.httpRequester.Get<ExternalUserInfoModel>(
+                    new { username },
+                    string.Format(UrlConstants.GetUserInfoByUsernameApiFormat, this.sulsPlatformBaseUrl),
+                    this.apiKey);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+
+            if (response.IsSuccess)
+            {
+                if (response.Data == null)
+                {
+                    return;
+                }
+
                 var user = response.Data.Entity;
                 examGroup.Users.Add(user);
                 this.examGroupsData.Update(examGroup);

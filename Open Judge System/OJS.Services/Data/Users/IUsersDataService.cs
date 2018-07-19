@@ -11,6 +11,8 @@
 
         UserProfile GetById(string userId);
 
+        UserProfile GetByUsernameIncludingDeleted(string username);
+
         IQueryable<UserProfile> GetAll();
 
         void DeleteById(string id);

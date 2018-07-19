@@ -71,7 +71,7 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the usernames of the users you want to add, separated by comma (&quot;,&quot;).
+        ///   Looks up a localized string similar to Enter the usernames of the users you want to add, separated by comma, space or new line.
         /// </summary>
         public static string Add_users_description {
             get {

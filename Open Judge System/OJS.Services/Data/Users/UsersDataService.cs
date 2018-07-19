@@ -21,6 +21,11 @@
             this.GetAll()
                 .FirstOrDefault(u => u.Id == id);
 
+        public UserProfile GetByUsernameIncludingDeleted(string username) =>
+            this.users
+                .AllWithDeleted()
+                .FirstOrDefault(u => u.UserName == username);
+
         public IQueryable<UserProfile> GetAll() =>
             this.users.All();
 

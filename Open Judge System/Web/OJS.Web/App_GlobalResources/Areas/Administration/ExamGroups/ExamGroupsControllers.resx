@@ -129,4 +129,7 @@
   <data name="Cannot_remove_users" xml:space="preserve">
     <value>You cannot remove users from exam group that is not attached to a contest.</value>
   </data>
+  <data name="Users_added" xml:space="preserve">
+    <value>Users were added successfully to the exam group.</value>
+  </data>
 </root>

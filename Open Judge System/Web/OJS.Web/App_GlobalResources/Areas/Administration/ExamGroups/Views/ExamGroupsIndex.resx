@@ -121,7 +121,7 @@
     <value>Add user</value>
   </data>
   <data name="Add_users_description" xml:space="preserve">
-    <value>Enter the usernames of the users you want to add, separated by comma (",")</value>
+    <value>Enter the usernames of the users you want to add, separated by comma, space or new line</value>
   </data>
   <data name="Bulk_add_users" xml:space="preserve">
     <value>Add multiple users</value>
