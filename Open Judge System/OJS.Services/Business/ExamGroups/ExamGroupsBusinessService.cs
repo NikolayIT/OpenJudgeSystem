@@ -46,44 +46,48 @@
         {
             var examGroup = this.GetExamGroup(id);
 
-            foreach (var userId in userIds)
+            var localUsers = this.usersData
+                .GetAllWithDeleted()
+                .Where(u => userIds.Contains(u.Id));
+
+            var existingUserIds = new HashSet<string>(examGroup.Users.Select(u => u.Id));
+
+            var localUsersToAdd = localUsers.Where(u => !existingUserIds.Contains(u.Id));
+
+            this.AddUsersToExamGroup(examGroup, localUsersToAdd);
+
+            var externalUserIds = userIds.Except(localUsers.Select(u => u.Id)).ToList();
+
+            if (externalUserIds.Any())
             {
-                var user = this.usersData.GetByIdIncludingDeleted(userId);
-
-                if (user != null)
-                {
-                    AddUserToExamGroup(examGroup, user);
-                }
-                else
-                {
-                    this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                        x => x.AddExternalUserByIdAndUser(examGroup.Id, userId));
-                }
+                this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                    x => x.AddExternalUsersByIdAndUserIds(examGroup.Id, externalUserIds));
             }
-
-            this.examGroupsData.Update(examGroup);
         }
 
         public void AddUsersByIdAndUsernames(int id, IEnumerable<string> usernames)
         {
             var examGroup = this.GetExamGroup(id);
 
-            foreach (var username in usernames)
+            var localUsers = this.usersData
+                .GetAllWithDeleted()
+                .Where(u => usernames.Contains(u.UserName));
+
+            var existingUsernames = new HashSet<string>(examGroup.Users.Select(u => u.UserName));
+
+            var localUsersToAdd = localUsers.Where(u => !existingUsernames.Contains(u.UserName));
+
+            this.AddUsersToExamGroup(examGroup, localUsersToAdd);
+
+            var externalUsernames = usernames
+                .Except(localUsers.Select(u => u.UserName), StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (externalUsernames.Any())
             {
-                var user = this.usersData.GetByUsernameIncludingDeleted(username);
-
-                if (user != null)
-                {
-                    AddUserToExamGroup(examGroup, user);
-                }
-                else
-                {
-                    this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
-                        x => x.AddExternalUserByIdAndUsername(examGroup.Id, username));
-                }
+                this.backgroundJobs.AddFireAndForgetJob<IExamGroupsBusinessService>(
+                    x => x.AddExternalUsersByIdAndUsernames(examGroup.Id, externalUsernames));
             }
-
-            this.examGroupsData.Update(examGroup);
         }
 
         public void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
@@ -95,16 +99,28 @@
             this.examGroupsData.Update(examGroup);
         }
 
-        public void AddExternalUserByIdAndUser(int id, string userId) =>
-            this.AddExternalUser(id, userId);
-
-        public void AddExternalUserByIdAndUsername(int id, string username) =>
-            this.AddExternalUser(id, null, username);
-
-        private void AddExternalUser(int id, string userId, string username = null)
+        public void AddExternalUsersByIdAndUserIds(int id, IEnumerable<string> userIds)
         {
             var examGroup = this.GetExamGroup(id);
 
+            foreach (var userId in userIds)
+            {
+                this.AddExternalUser(examGroup, userId);
+            }
+        }
+
+        public void AddExternalUsersByIdAndUsernames(int id, IEnumerable<string> usernames)
+        {
+            var examGroup = this.GetExamGroup(id);
+
+            foreach (var username in usernames)
+            {
+                this.AddExternalUser(examGroup, null, username);
+            }
+        }
+
+        private void AddExternalUser(ExamGroup examGroup, string userId, string username = null)
+        {
             ExternalDataRetrievalResult<ExternalUserInfoModel> response;
 
             if (userId != null)
@@ -155,14 +171,19 @@
             return examGroup;
         }
 
-        private static void AddUserToExamGroup(ExamGroup examGroup, UserProfile user)
+        private void AddUsersToExamGroup(ExamGroup examGroup, IEnumerable<UserProfile> users)
         {
-            if (user.IsDeleted)
+            foreach (var user in users.ToList())
             {
-                user.IsDeleted = false;
+                if (user.IsDeleted)
+                {
+                    user.IsDeleted = false;
+                }
+
+                examGroup.Users.Add(user);
             }
 
-            examGroup.Users.Add(user);
+            this.examGroupsData.Update(examGroup);
         }
     }
 }

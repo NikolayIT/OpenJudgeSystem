@@ -12,22 +12,15 @@
         public UsersDataService(IEfDeletableEntityRepository<UserProfile> users) =>
             this.users = users;
 
-        public UserProfile GetByIdIncludingDeleted(string userId) =>
-            this.users
-                .AllWithDeleted()
-                .FirstOrDefault(u => u.Id == userId);
-
         public UserProfile GetById(string id) =>
             this.GetAll()
                 .FirstOrDefault(u => u.Id == id);
 
-        public UserProfile GetByUsernameIncludingDeleted(string username) =>
-            this.users
-                .AllWithDeleted()
-                .FirstOrDefault(u => u.UserName == username);
-
         public IQueryable<UserProfile> GetAll() =>
             this.users.All();
+
+        public IQueryable<UserProfile> GetAllWithDeleted() =>
+            this.users.AllWithDeleted();
 
         public void DeleteById(string id) =>
             this.users.Delete(u => u.Id == id);

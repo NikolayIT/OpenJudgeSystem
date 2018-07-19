@@ -10,7 +10,7 @@
         {
             this.ExamGroupId = examGroupId;
             this.ExamGroupName = examGroupName;
-        } 
+        }
 
         public string UserNamesText { get; set; }
 
