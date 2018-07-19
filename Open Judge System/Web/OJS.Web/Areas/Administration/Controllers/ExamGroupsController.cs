@@ -210,8 +210,8 @@
         }
 
         [AjaxOnly]
-        public ActionResult BulkAddUsersPartial(int id) =>
-            this.PartialView("_BulkAddUsersToExamGroup", new BulkAddUsersToExamGroupViewModel(id));
+        public ActionResult BulkAddUsersPartial(int id, string name) =>
+            this.PartialView("_BulkAddUsersToExamGroup", new BulkAddUsersToExamGroupViewModel(id, name));
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -69,14 +69,5 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
                 return ResourceManager.GetString("Add_users_description", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add multiple users to exam group.
-        /// </summary>
-        public static string Page_title {
-            get {
-                return ResourceManager.GetString("Page_title", resourceCulture);
-            }
-        }
     }
 }

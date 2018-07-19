@@ -2393,6 +2393,7 @@
     <Content Include="Scripts\Administration\Contests\contest-search.js" />
     <Content Include="Scripts\Administration\Contests\contests-helper.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
+    <Content Include="Scripts\Administration\ExamGroups\exam-groups-index.js" />
     <Content Include="Scripts\Administration\ProblemGroups\problem-groups-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />

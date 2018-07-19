@@ -63,6 +63,10 @@
                 "~/Scripts/Administration/Contests/contests-index.js",
                 "~/Scripts/Administration/Contests/contests-helper.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/exam-groups-index").Include(
+                "~/Scripts/Administration/ExamGroups/exam-groups-index.js",
+                "~/Scripts/Helpers/kendo-helper.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/list-categories").Include(
                 "~/Scripts/Contests/list-categories-page.js"));
         }

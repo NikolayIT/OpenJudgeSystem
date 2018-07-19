@@ -120,7 +120,4 @@
   <data name="Add_users_description" xml:space="preserve">
     <value>Enter the usernames of the users you want to add, separated by comma (",")</value>
   </data>
-  <data name="Page_title" xml:space="preserve">
-    <value>Add multiple users to exam group</value>
-  </data>
 </root>

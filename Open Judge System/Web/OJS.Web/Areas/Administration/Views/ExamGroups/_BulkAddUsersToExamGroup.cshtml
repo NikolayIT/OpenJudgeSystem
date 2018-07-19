@@ -2,11 +2,11 @@
 @using OJS.Web.Areas.Administration.ViewModels.ExamGroups
 
 @using Resource = Resources.Areas.Administration.ExamGroups.Views.BulkAddUsersToExamGroups
-@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
 
 @model BulkAddUsersToExamGroupViewModel
 
-<h3>@Resource.Page_title</h3>
+<h4>@Model.ExamGroupName</h4>
 
 @using (Ajax.BeginForm<ExamGroupsController>(
     c => c.BulkAddUsersToExamGroup((BulkAddUsersToExamGroupViewModel)null),

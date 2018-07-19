@@ -5,10 +5,9 @@
     const string ControllerName = "ExamGroups";
 }
 
-@(Html.Kendo()
-    .Window()
+@(Html.Kendo().Window()
     .Name("BulkAddUsersPopUpWindow")
-    .Title("Add Multiple users")
+    .Title(Resource.Bulk_add_users)
     .Draggable()
     .Resizable()
     .Width(600)
@@ -17,9 +16,7 @@
 )
 
 <script type="text/x-kendo-template" id="_UsersInExamGroupGridTemplate">
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
         .Name("UsersInExamGroup_#=Id#")
         .Columns(columns =>
         {
@@ -32,7 +29,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
-            toolbar.Custom().Text(Resource.Bulk_add_users).Url("javascript:OpenBulkAddUsersToExamGroupWindow(#=Id#)");
+            toolbar.Custom().Text(Resource.Bulk_add_users).Url("javascript:OpenBulkAddUsersWindow(#=Id#, encodeSpecialSymbols('#=Name#'))");
         })
         .Editable(editable =>
         {
@@ -57,5 +54,6 @@
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
         .Events(ev => ev.DataBound("onDetailDataBound"))
-        .ToClientTemplate())
+        .ToClientTemplate()
+    )
 </script>

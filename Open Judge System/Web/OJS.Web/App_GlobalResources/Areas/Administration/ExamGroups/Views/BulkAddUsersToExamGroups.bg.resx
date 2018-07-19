@@ -120,7 +120,4 @@
   <data name="Add_users_description" xml:space="preserve">
     <value>Въведете имената на потребителите, които искате да добавите, разделени със запетая (",")</value>
   </data>
-  <data name="Page_title" xml:space="preserve">
-    <value>Добавяне на множество потребители в група за изпит</value>
-  </data>
 </root>
