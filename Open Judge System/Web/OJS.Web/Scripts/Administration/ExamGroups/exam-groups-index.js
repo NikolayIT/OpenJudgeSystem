@@ -18,15 +18,21 @@ function onDetailDataBound() {
 }
 
 function OpenBulkAddUsersWindow(id, name) {
-    var bulkAddUsersPopUp = $("#BulkAddUsersPopUpWindow").data("kendoWindow");
+    var popUpWindowSelector = $("#BulkAddUsersPopUpWindow");
+    var popUpWindow = popUpWindowSelector.data("kendoWindow");
     var url = '/Administration/ExamGroups/BulkAddUsersPartial/' + id + '?name=' + name;
 
-    bulkAddUsersPopUp.refresh(url);
+    popUpWindow.refresh(url);
 
-    setTimeout(function () {
-        bulkAddUsersPopUp.center();
-        bulkAddUsersPopUp.open();
-    }, 100);
+    popUpWindow.bind('refresh', function() {
+        popUpWindow.center();
+        popUpWindow.open();
+
+        popUpWindowSelector.find('form').one('submit', function () {
+            disableKendoButtons($(this).find('input[type="submit"]'));
+            $('#bulk-add-users-loading-mask').show();
+        });
+    });
 }
 
 function onBulkAddUsersSuccess(response, status) {

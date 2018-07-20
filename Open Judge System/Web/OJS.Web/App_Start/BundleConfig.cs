@@ -111,6 +111,10 @@
 
             bundles.Add(new StyleBundle("~/Content/administration/problems/index").Include(
                 "~/Content/css/administration/problems/problems-index.css"));
+
+            bundles.Add(new StyleBundle("~/Content/administration/examGroups/index").Include(
+                "~/Content/css/administration/administration-styles.css",
+                "~/Content/css/common/loading-mask.css"));
         }
     }
 }

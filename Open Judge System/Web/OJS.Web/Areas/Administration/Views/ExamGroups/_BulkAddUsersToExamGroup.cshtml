@@ -25,5 +25,7 @@
     @Html.HiddenFor(m => m.ExamGroupId)
 
     <hr />
-    <button type="submit" class="k-button pull-right">@GeneralResource.Add</button>
+    <input type="submit" class="k-button pull-right" value="@GeneralResource.Add" />
 }
+
+@Html.Partial("_LoadingMask", "bulk-add-users-loading-mask")
