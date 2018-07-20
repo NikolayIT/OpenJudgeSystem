@@ -17,29 +17,43 @@ function onDetailDataBound() {
     }
 }
 
-function OpenBulkAddUsersWindow(id, name) {
-    var popUpWindowSelector = $("#BulkAddUsersPopUpWindow");
-    var popUpWindow = popUpWindowSelector.data("kendoWindow");
-    var url = '/Administration/ExamGroups/BulkAddUsersPartial/' + id + '?name=' + name;
+var bulkAddUsersManager = new BulkAddUsersManager();
 
-    popUpWindow.refresh(url);
+function BulkAddUsersManager() {
+    var examGroupId;
+    var popUpWindowSelector;
+    var popUpWindow;
+    var formSubmitButton;
 
-    popUpWindow.bind('refresh', function() {
-        popUpWindow.center();
-        popUpWindow.open();
+    function init(id) {
+        examGroupId = id;
+        popUpWindowSelector = $('#BulkAddUsersPopUpWindow_' + examGroupId);
+        popUpWindow = popUpWindowSelector.data('kendoWindow');
+        formSubmitButton = popUpWindowSelector.children('form').find('input[type="submit"]');
 
-        popUpWindowSelector.find('form').one('submit', function () {
-            disableKendoButtons($(this).find('input[type="submit"]'));
+        popUpWindowSelector.children('form').one('submit', function () {
+            disableKendoButtons(formSubmitButton);
             $('#bulk-add-users-loading-mask').show();
         });
-    });
-}
 
-function onBulkAddUsersSuccess(response, status) {
-    $('#BulkAddUsersPopUpWindow').data('kendoWindow').close();
-    displayAlertMessage(response, status, $('.main-container'));
-}
+        popUpWindow.open().center();
+    }
 
-function onBulkAddUsersFailure(response, status) {
-    displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
+    function onBulkAddUsersSuccess(response, status) {
+        popUpWindow.close().refresh();
+        displayAlertMessage(response, status, $('.main-container'));
+        $('#UsersInExamGroup_' + examGroupId).data('kendoGrid').dataSource.fetch();
+    }
+
+    function onBulkAddUsersFailure(response, status) {
+        $('#bulk-add-users-loading-mask').hide();
+        enableKendoButtons(formSubmitButton);
+        displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
+    }
+
+    return {
+        init: init,
+        onFormSuccess: onBulkAddUsersSuccess,
+        onFormFailure: onBulkAddUsersFailure
+    }
 }

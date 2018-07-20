@@ -50,11 +50,7 @@
                 .GetAllWithDeleted()
                 .Where(u => userIds.Contains(u.Id));
 
-            var alreadyAddedUserIds = new HashSet<string>(examGroup.Users.Select(u => u.Id));
-
-            var usersToAdd = users.Where(u => !alreadyAddedUserIds.Contains(u.Id)).ToList();
-
-            this.AddUsersToExamGroup(examGroup, usersToAdd);
+            this.AddUsersToExamGroup(examGroup, users);
 
             var externalUserIds = userIds.Except(users.Select(u => u.Id)).ToList();
 
@@ -73,11 +69,7 @@
                 .GetAllWithDeleted()
                 .Where(u => usernames.Contains(u.UserName));
 
-            var alreadyAddedUsernames = new HashSet<string>(examGroup.Users.Select(u => u.UserName));
-
-            var usersToAdd = users.Where(u => !alreadyAddedUsernames.Contains(u.UserName)).ToList();
-
-            this.AddUsersToExamGroup(examGroup, usersToAdd);
+            this.AddUsersToExamGroup(examGroup, users);
 
             var externalUsernames = usernames
                 .Except(users.Select(u => u.UserName), StringComparer.OrdinalIgnoreCase)
@@ -171,9 +163,13 @@
             return examGroup;
         }
 
-        private void AddUsersToExamGroup(ExamGroup examGroup, IEnumerable<UserProfile> users)
+        private void AddUsersToExamGroup(ExamGroup examGroup, IQueryable<UserProfile> users)
         {
-            foreach (var user in users)
+            var usersToAdd = users
+                .Where(u => u.ExamGroups.All(eg => eg.Id != examGroup.Id))
+                .ToList();
+
+            foreach (var user in usersToAdd)
             {
                 if (user.IsDeleted)
                 {

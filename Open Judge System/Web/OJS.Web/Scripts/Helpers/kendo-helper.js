@@ -16,3 +16,15 @@ function disableKendoButtons(buttons) {
         cursor: 'default'
     });
 }
+
+function enableKendoButtons(buttons) {
+    buttons.removeAttr('disabled'); // Fixes incorrect kendo ui enabling of disabled element
+    buttons.kendoButton({
+        enable: true
+    });
+
+    buttons.css({
+        'pointer-events': 'auto',
+        cursor: 'pointer'
+    });
+}
