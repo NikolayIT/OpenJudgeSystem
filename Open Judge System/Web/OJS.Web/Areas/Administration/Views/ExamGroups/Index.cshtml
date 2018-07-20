@@ -78,14 +78,14 @@
             .text();
 
         if (contestName === '') {
-            var addButton = $(e.detailRow).find('.k-grid-add').last();
-            disableKendoButtons(addButton);
+            var addButtons = $(e.detailRow).find($('.k-grid-bulk-add-users-buton, .k-grid-add'));
+            disableKendoButtons(addButtons);
 
             var message = $(e.detailRow).find('.cannot-add-remove-users');
             if (message.length) {
                 message.show();
             } else {
-                addButton.after('<span class="cannot-add-remove-users">' +
+                addButtons.last().after('<span class="cannot-add-remove-users">' +
                     '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
             }
         }

@@ -46,17 +46,17 @@
         {
             var examGroup = this.GetExamGroup(id);
 
-            var localUsers = this.usersData
+            var users = this.usersData
                 .GetAllWithDeleted()
                 .Where(u => userIds.Contains(u.Id));
 
-            var existingUserIds = new HashSet<string>(examGroup.Users.Select(u => u.Id));
+            var alreadyAddedUserIds = new HashSet<string>(examGroup.Users.Select(u => u.Id));
 
-            var localUsersToAdd = localUsers.Where(u => !existingUserIds.Contains(u.Id));
+            var usersToAdd = users.Where(u => !alreadyAddedUserIds.Contains(u.Id)).ToList();
 
-            this.AddUsersToExamGroup(examGroup, localUsersToAdd);
+            this.AddUsersToExamGroup(examGroup, usersToAdd);
 
-            var externalUserIds = userIds.Except(localUsers.Select(u => u.Id)).ToList();
+            var externalUserIds = userIds.Except(users.Select(u => u.Id)).ToList();
 
             if (externalUserIds.Any())
             {
@@ -69,18 +69,18 @@
         {
             var examGroup = this.GetExamGroup(id);
 
-            var localUsers = this.usersData
+            var users = this.usersData
                 .GetAllWithDeleted()
                 .Where(u => usernames.Contains(u.UserName));
 
-            var existingUsernames = new HashSet<string>(examGroup.Users.Select(u => u.UserName));
+            var alreadyAddedUsernames = new HashSet<string>(examGroup.Users.Select(u => u.UserName));
 
-            var localUsersToAdd = localUsers.Where(u => !existingUsernames.Contains(u.UserName));
+            var usersToAdd = users.Where(u => !alreadyAddedUsernames.Contains(u.UserName)).ToList();
 
-            this.AddUsersToExamGroup(examGroup, localUsersToAdd);
+            this.AddUsersToExamGroup(examGroup, usersToAdd);
 
             var externalUsernames = usernames
-                .Except(localUsers.Select(u => u.UserName), StringComparer.OrdinalIgnoreCase)
+                .Except(users.Select(u => u.UserName), StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             if (externalUsernames.Any())
@@ -173,7 +173,7 @@
 
         private void AddUsersToExamGroup(ExamGroup examGroup, IEnumerable<UserProfile> users)
         {
-            foreach (var user in users.ToList())
+            foreach (var user in users)
             {
                 if (user.IsDeleted)
                 {

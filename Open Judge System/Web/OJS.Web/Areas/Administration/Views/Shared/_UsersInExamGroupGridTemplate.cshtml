@@ -29,7 +29,10 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
-            toolbar.Custom().Text(Resource.Bulk_add_users).Url("javascript:OpenBulkAddUsersWindow(#=Id#, encodeSpecialSymbols('#=Name#'))");
+            toolbar.Custom()
+                .Text(Resource.Bulk_add_users)
+                .Url("javascript:OpenBulkAddUsersWindow(#=Id#, encodeSpecialSymbols('#=Name#'))")
+                .Name("bulk-add-users-buton");
         })
         .Editable(editable =>
         {
