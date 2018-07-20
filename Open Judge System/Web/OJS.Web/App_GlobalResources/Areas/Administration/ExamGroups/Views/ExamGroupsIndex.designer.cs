@@ -89,7 +89,7 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot add ot remove users from exam group that does not have a contest.
+        ///   Looks up a localized string similar to You cannot add or remove users from exam group that does not have a contest.
         /// </summary>
         public static string Cannot_manipulate_users {
             get {
