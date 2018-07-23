@@ -268,7 +268,7 @@
                         Settings.PhpCliBaseTimeUsedInMilliseconds,
                         Settings.PhpCliBaseMemoryUsedInBytes);
                     break;
-                case ExecutionStrategyType.SolidityCompileExecuteAndRunUnitTestsExecutionStrategy:
+                case ExecutionStrategyType.SolidityCompileDeployAndRunUnitTestsExecutionStrategy:
                     executionStrategy = new SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
                         0,

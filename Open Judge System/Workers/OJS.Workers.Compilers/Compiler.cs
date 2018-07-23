@@ -55,8 +55,10 @@
                     return new MsBuildLibraryCompiler(Settings.MsBuildLibraryCompilerProcessExitTimeOutMultiplier);
                 case CompilerType.CPlusPlusZip:
                     return new CPlusPlusZipCompiler(Settings.CPlusPlusZipCompilerProcessExitTimeOutMultiplier);
-                    case CompilerType.DotNetCompiler:
+                case CompilerType.DotNetCompiler:
                     return new DotNetCompiler(Settings.DotNetCompilerProcessExitTimeOutMultiplier);
+                case CompilerType.SolidityCompiler:
+                    return new SolidityCompiler(Settings.SolidityCompilerProcessExitTimeOutMultiplier);
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

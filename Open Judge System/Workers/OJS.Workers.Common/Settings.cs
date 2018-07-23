@@ -161,6 +161,8 @@
 
         public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 1);
 
+        public static int SolidityCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("SolidityCompilerProcessExitTimeOutMultiplier", 1);
+
         private static string GetSetting(string settingName)
         {
             if (ConfigurationManager.AppSettings[settingName] == null)

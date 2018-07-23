@@ -19,6 +19,15 @@
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
+            var result = new ExecutionResult();
+
+            // Compile the file
+            var compilerResult = this.ExecuteCompiling(executionContext, this.GetCompilerPathFunc, result);
+            if (!compilerResult.IsCompiledSuccessfully)
+            {
+                return result;
+            }
+
             IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             throw new NotImplementedException();
         }
