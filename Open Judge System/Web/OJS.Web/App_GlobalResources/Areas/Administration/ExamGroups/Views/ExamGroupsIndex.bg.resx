@@ -127,7 +127,7 @@
     <value>Въведете имената на потребителите, които искате да добавите, разделени със запетая, празно място или нов ред</value>
   </data>
   <data name="Bulk_add_users" xml:space="preserve">
-    <value>Добавяне на множество потребители</value>
+    <value>Добави множество потребители</value>
   </data>
   <data name="Cannot_manipulate_users" xml:space="preserve">
     <value>Не може да добавяте или премахвате потребители от група, която няма състезание</value>

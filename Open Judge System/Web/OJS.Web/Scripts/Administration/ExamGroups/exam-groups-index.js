@@ -29,11 +29,19 @@ function BulkAddUsersManager() {
         popUpWindowSelector = $('#BulkAddUsersPopUpWindow_' + examGroupId);
         popUpWindow = popUpWindowSelector.data('kendoWindow');
 
-        popUpWindowSelector.children('form').one('submit', function () {
+        popUpWindowSelector.children('form').submit(function () {
+            if ($(this).find("textarea").val() === '') {
+                return false;
+            }
+
             $('#bulk-add-users-loading-mask').show();
         });
 
         popUpWindow.open().center();
+
+        $('.kendo-window-cancel-btn').click(function () {
+            popUpWindow.close();
+        });
     }
 
     function onBulkAddUsersSuccess(response, status) {

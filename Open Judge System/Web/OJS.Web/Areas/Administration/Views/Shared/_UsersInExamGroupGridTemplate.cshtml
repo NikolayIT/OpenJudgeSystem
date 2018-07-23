@@ -19,7 +19,10 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
-            toolbar.Custom().Text(Resource.Bulk_add_users).Url("javascript:bulkAddUsersManager.init(#=Id#)").Name("bulk-add-users-buton");
+            toolbar.Custom()
+                .Text("<span class='k-icon k-add'></span>" + Resource.Bulk_add_users)
+                .Url("javascript:bulkAddUsersManager.init(#=Id#)")
+                .Name("bulk-add-users-buton");
         })
         .Editable(editable =>
         {
