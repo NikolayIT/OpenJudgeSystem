@@ -18,7 +18,7 @@ function disableKendoButtons(buttons) {
 }
 
 function enableKendoButtons(buttons) {
-    buttons.removeAttr('disabled'); // Fixes incorrect kendo ui enabling of disabled element
+    buttons.removeAttr('disabled'); // Fixes incorrect Kendo UI enabling of disabled element
     buttons.kendoButton({
         enable: true
     });

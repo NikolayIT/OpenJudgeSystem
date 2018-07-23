@@ -23,16 +23,13 @@ function BulkAddUsersManager() {
     var examGroupId;
     var popUpWindowSelector;
     var popUpWindow;
-    var formSubmitButton;
 
     function init(id) {
         examGroupId = id;
         popUpWindowSelector = $('#BulkAddUsersPopUpWindow_' + examGroupId);
         popUpWindow = popUpWindowSelector.data('kendoWindow');
-        formSubmitButton = popUpWindowSelector.children('form').find('input[type="submit"]');
 
         popUpWindowSelector.children('form').one('submit', function () {
-            disableKendoButtons(formSubmitButton);
             $('#bulk-add-users-loading-mask').show();
         });
 
@@ -47,7 +44,6 @@ function BulkAddUsersManager() {
 
     function onBulkAddUsersFailure(response, status) {
         $('#bulk-add-users-loading-mask').hide();
-        enableKendoButtons(formSubmitButton);
         displayAlertMessage(response.responseJSON.errorMessages, status, $(this).parent());
     }
 
