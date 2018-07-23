@@ -16,7 +16,10 @@
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedSolution()
         {
             var compiler = new MsBuildCompiler(MsBuildCompilerProcessExitTimeOutMultiplier);
-            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionFile()), string.Empty);
+            var result = compiler.Compile(
+                MsBuildCompilerPath,
+                FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionFile()),
+                string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
             Assert.IsFalse(string.IsNullOrWhiteSpace(result.OutputFile), "Output file is null");
@@ -27,7 +30,10 @@
         public void MsBuildCompilerShouldWorkWhenGivenValidZippedProjectInSingleFolder()
         {
             var compiler = new MsBuildCompiler(MsBuildCompilerProcessExitTimeOutMultiplier);
-            var result = compiler.Compile(MsBuildCompilerPath, FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()), string.Empty);
+            var result = compiler.Compile(
+                MsBuildCompilerPath,
+                FileHelpers.SaveByteArrayToTempFile(this.GetSampleSolutionWhereTheProjectIsLocatedInSingleFolder()),
+                string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");
             Assert.IsFalse(string.IsNullOrWhiteSpace(result.OutputFile), "Output file is null");
