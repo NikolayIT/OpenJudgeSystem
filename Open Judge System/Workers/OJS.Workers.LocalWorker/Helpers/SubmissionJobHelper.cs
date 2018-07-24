@@ -269,7 +269,7 @@
                         Settings.PhpCliBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.SolidityCompileDeployAndRunUnitTestsExecutionStrategy:
-                    executionStrategy = new SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
+                    executionStrategy = new SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
                         Settings.GanacheCliExecutablePath,
                         default(int),

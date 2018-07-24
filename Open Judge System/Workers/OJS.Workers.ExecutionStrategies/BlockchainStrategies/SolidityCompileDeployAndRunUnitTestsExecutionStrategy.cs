@@ -9,12 +9,12 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
 
-    public class SolidityCompileExecuteAndRunUnitTestsExecutionStrategy : ExecutionStrategy
+    public class SolidityCompileDeployAndRunUnitTestsExecutionStrategy : ExecutionStrategy
     {
         private const string AbiFileSearchPattern = "*.abi";
         private readonly string ganacheExetuablePath;
 
-        public SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
+        public SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
             string ganacheExetuablePath,
             int baseTimeUsed,
