@@ -271,8 +271,9 @@
                 case ExecutionStrategyType.SolidityCompileDeployAndRunUnitTestsExecutionStrategy:
                     executionStrategy = new SolidityCompileExecuteAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
-                        0,
-                        0);
+                        Settings.GanacheCliExecutablePath,
+                        default(int),
+                        default(int));
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
                     executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(
