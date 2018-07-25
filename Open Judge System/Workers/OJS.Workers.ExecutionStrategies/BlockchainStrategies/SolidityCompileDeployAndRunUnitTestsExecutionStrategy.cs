@@ -1,9 +1,10 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.BlockchainStrategies
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
+    using System.Numerics;
 
+    using Nethereum.Hex.HexTypes;
     using Nethereum.Web3;
 
     using OJS.Common.Extensions;
@@ -13,6 +14,8 @@
     {
         private const string AbiFileSearchPattern = "*.abi";
         private readonly string ganacheExetuablePath;
+
+        private readonly HexBigInteger gas = new HexBigInteger(new BigInteger(5000000m));
 
         public SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -52,20 +55,26 @@
 
             //    process.Start();
 
-                var web3 = new Web3();
+            var web3 = new Web3();
 
-                var privateKey = "0xf1aa80d03be2392ae9b33159d497d9274e4ba5fea27bbc4aa2a38cdbbc4be172";
-                var password = "passowrd";
+            var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
 
-                var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
-                var balance = web3.Eth.GetBalance.SendRequestAsync(senderAddress).GetAwaiter().GetResult();
+            // Deploy the contract
+            var transactionHash = web3.Eth.DeployContract
+                .SendRequestAsync(abi, byteCode, senderAddress, this.gas, "Pesho")
+                .GetAwaiter()
+                .GetResult();
 
-                var unlocked = web3.Personal.UnlockAccount.SendRequestAsync(senderAddress, password, 120).GetAwaiter().GetResult();
+            var receipt = web3.Eth.Transactions.GetTransactionReceipt
+                .SendRequestAsync(transactionHash)
+                .GetAwaiter()
+                .GetResult();
 
-                //// Deploy the contract
-                var deployedContract = web3.Eth.DeployContract.SendRequestAsync(abi, byteCode, senderAddress, int.MaxValue).GetAwaiter().GetResult();
+            var contractAddress = receipt.ContractAddress;
 
-                //IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+            var contract = web3.Eth.GetContract(abi, contractAddress);
+
+            //IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
             //    process.CloseMainWindow();
             //}
@@ -74,7 +83,7 @@
             throw new NotImplementedException();
         }
 
-        private static (string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
+        private static(string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
         {
             var byteCode = File.ReadAllText(compilerResultOutputFile);
 
