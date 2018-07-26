@@ -9,22 +9,28 @@
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
+    using OJS.Workers.Common;
+    using OJS.Workers.ExecutionStrategies;
+    using OJS.Workers.Executors;
 
     public class SolidityCompileDeployAndRunUnitTestsExecutionStrategy : ExecutionStrategy
     {
         private const string AbiFileSearchPattern = "*.abi";
         private readonly string ganacheExetuablePath;
+        private readonly string truffleExecutablePath;
 
         private readonly HexBigInteger gas = new HexBigInteger(new BigInteger(5000000m));
 
         public SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
             string ganacheExetuablePath,
+            string truffleExecutablePath,
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(baseTimeUsed, baseMemoryUsed)
         {
             this.ganacheExetuablePath = ganacheExetuablePath;
+            this.truffleExecutablePath = truffleExecutablePath;
             this.GetCompilerPathFunc = getCompilerPathFunc;
         }
 
@@ -46,40 +52,55 @@
             // Run the EVM
             //using (var process = new Process())
             //{
-            //    process.StartInfo = new ProcessStartInfo(@"C:\Windows\System32\cmd.exe")
+            //    process.StartInfo = new ProcessStartInfo(this.ganacheExetuablePath)
             //    {
-            //        Arguments = "/C " + this.ganacheExetuablePath,
-            //        WindowStyle = ProcessWindowStyle.Hidden,
-            //        UseShellExecute = true
+            //        //Arguments = "-u 0",
+            //        WindowStyle = ProcessWindowStyle.Normal,
+            //        CreateNoWindow = true,
+            //        UseShellExecute = false
             //    };
 
             //    process.Start();
 
-            var web3 = new Web3();
+            //    Thread.Sleep(1500);
 
-            var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
+                //var web3 = new Web3();
 
-            // Deploy the contract
-            var transactionHash = web3.Eth.DeployContract
-                .SendRequestAsync(abi, byteCode, senderAddress, this.gas, "Pesho")
-                .GetAwaiter()
-                .GetResult();
+                //var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
 
-            var receipt = web3.Eth.Transactions.GetTransactionReceipt
-                .SendRequestAsync(transactionHash)
-                .GetAwaiter()
-                .GetResult();
+                //// Deploy the contract
+                //var transactionHash = web3.Eth.DeployContract
+                //    .SendRequestAsync(abi, byteCode, senderAddress, this.gas, "Pesho")
+                //    .GetAwaiter()
+                //    .GetResult();
 
-            var contractAddress = receipt.ContractAddress;
+                //var receipt = web3.Eth.Transactions.GetTransactionReceipt
+                //    .SendRequestAsync(transactionHash)
+                //    .GetAwaiter()
+                //    .GetResult();
 
-            var contract = web3.Eth.GetContract(abi, contractAddress);
+                //var contractAddress = receipt.ContractAddress;
 
-            //IExecutor executor = new RestrictedProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+                //var contract = web3.Eth.GetContract(abi, contractAddress);
 
-            //    process.CloseMainWindow();
+                IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+
+                var processExecutionResult = executor.Execute(
+                    this.truffleExecutablePath,
+                    string.Empty,
+                    executionContext.TimeLimit,
+                    executionContext.MemoryLimit,
+                    new[] { "test" },
+                    this.WorkingDirectory);
+
+                /*Run tests here*/
+
+            //    if (!process.HasExited)
+            //    {
+            //        process.Kill();
+            //    }
             //}
 
-            // Run tests
             throw new NotImplementedException();
         }
 

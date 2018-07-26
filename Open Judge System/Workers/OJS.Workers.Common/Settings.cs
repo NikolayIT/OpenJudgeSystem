@@ -85,6 +85,8 @@
 
         public static string GanacheCliExecutablePath => GetSetting("GanacheCliExecutablePath");
 
+        public static string TruffleCliExecutablePath => GetSetting("TruffleCliExecutablePath");
+
         public static string SqlServerLocalDbMasterDbConnectionString => GetSetting("SqlServerLocalDbMasterDbConnectionString");
 
         public static string SqlServerLocalDbRestrictedUserId => GetSetting("SqlServerLocalDbRestrictedUserId");

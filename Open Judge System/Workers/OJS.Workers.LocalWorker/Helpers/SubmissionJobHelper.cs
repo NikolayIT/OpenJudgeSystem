@@ -272,6 +272,7 @@
                     executionStrategy = new SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
                         Settings.GanacheCliExecutablePath,
+                        Settings.TruffleCliExecutablePath,
                         default(int),
                         default(int));
                     break;
