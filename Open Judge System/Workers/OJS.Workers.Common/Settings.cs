@@ -83,7 +83,7 @@
 
         public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
-        public static string GanacheCliExecutablePath => GetSetting("GanacheCliExecutablePath");
+        public static string GanacheNodeCliPath => GetSetting("GanacheNodeCliPath");
 
         public static string TruffleCliExecutablePath => GetSetting("TruffleCliExecutablePath");
 

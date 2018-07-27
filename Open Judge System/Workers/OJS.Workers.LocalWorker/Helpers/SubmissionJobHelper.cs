@@ -271,7 +271,8 @@
                 case ExecutionStrategyType.SolidityCompileDeployAndRunUnitTestsExecutionStrategy:
                     executionStrategy = new SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
-                        Settings.GanacheCliExecutablePath,
+                        Settings.NodeJsExecutablePath,
+                        Settings.GanacheNodeCliPath,
                         Settings.TruffleCliExecutablePath,
                         default(int),
                         default(int));
