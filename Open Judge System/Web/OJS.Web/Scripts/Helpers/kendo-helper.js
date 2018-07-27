@@ -3,7 +3,11 @@
 }
 
 function encodeSpecialSymbols(text) {
-    return text.replace('#', '%23');
+    return text
+        .replace(/"/g, '%22')
+        .replace(/#/g, '%23')
+        .replace(/&/g, '%26')
+        .replace(/'/g, '%27');
 }
 
 function disableKendoButtons(buttons) {
