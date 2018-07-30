@@ -1,10 +1,9 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.BlockchainStrategies
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Numerics;
-    using System.Threading;
+
     using Nethereum.Hex.HexTypes;
     using Nethereum.Web3;
 
@@ -14,14 +13,13 @@
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
 
-    using ExecutionContext = OJS.Workers.ExecutionStrategies.ExecutionContext;
-
     public class SolidityCompileDeployAndRunUnitTestsExecutionStrategy : ExecutionStrategy
     {
         private const string AbiFileSearchPattern = "*.abi";
         private readonly string nodeJsExecutablePath;
         private readonly string ganacheNodeCliPath;
         private readonly string truffleExecutablePath;
+        private readonly int portNumber;
 
         private readonly HexBigInteger gas = new HexBigInteger(new BigInteger(5000000m));
 
@@ -30,6 +28,7 @@
             string nodeJsExecutablePath,
             string ganacheNodeCliPath,
             string truffleExecutablePath,
+            int portNumber,
             int baseTimeUsed,
             int baseMemoryUsed)
             : base(baseTimeUsed, baseMemoryUsed)
@@ -37,6 +36,7 @@
             this.nodeJsExecutablePath = nodeJsExecutablePath;
             this.ganacheNodeCliPath = ganacheNodeCliPath;
             this.truffleExecutablePath = truffleExecutablePath;
+            this.portNumber = portNumber;
             this.GetCompilerPathFunc = getCompilerPathFunc;
         }
 
@@ -55,22 +55,10 @@
 
             var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
 
-            // Run the EVM
-            using (var process = new Process())
+            // Run in the Ethereum Virtual Machine scope
+            using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheNodeCliPath, this.portNumber))
             {
-                process.StartInfo = new ProcessStartInfo(this.nodeJsExecutablePath)
-                {
-                    Arguments = this.ganacheNodeCliPath,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true,
-                    UseShellExecute = false
-                };
-
-                process.Start();
-
-                Thread.Sleep(1500);
-
-                var web3 = new Web3();
+                var web3 = new Web3($"http://localhost:{this.portNumber}");
 
                 var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
 
@@ -91,20 +79,14 @@
 
                 IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
+                /*Run tests here
                 var processExecutionResult = executor.Execute(
                     this.truffleExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
                     new[] { "test" },
-                    this.WorkingDirectory);
-
-                /*Run tests here*/
-
-                if (!process.HasExited)
-                {
-                    process.Kill();
-                }
+                    this.WorkingDirectory); */
             }
 
             throw new NotImplementedException();

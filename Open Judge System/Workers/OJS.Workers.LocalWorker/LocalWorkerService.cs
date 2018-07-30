@@ -69,10 +69,13 @@
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
+                var portNumber = int.Parse($"5{i}45");
+
                 var job = new SubmissionJob(
                     $"Job №{i}",
                     submissionsForProcessing,
-                    sharedLockObject);
+                    sharedLockObject,
+                    portNumber);
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 

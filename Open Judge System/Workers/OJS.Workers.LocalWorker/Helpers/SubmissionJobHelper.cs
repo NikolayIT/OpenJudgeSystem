@@ -11,7 +11,7 @@
 
     public static class SubmissionJobHelper
     {
-        public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)
+        public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type, int portNumber)
         {
             IExecutionStrategy executionStrategy;
             switch (type)
@@ -274,6 +274,7 @@
                         Settings.NodeJsExecutablePath,
                         Settings.GanacheNodeCliPath,
                         Settings.TruffleCliExecutablePath,
+                        portNumber,
                         default(int),
                         default(int));
                     break;

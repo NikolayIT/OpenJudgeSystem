@@ -23,6 +23,7 @@
     public class SubmissionJob : IJob
     {
         private readonly object sharedLockObject;
+        private readonly int portNumber;
 
         private readonly ILog logger;
 
@@ -33,7 +34,8 @@
         public SubmissionJob(
             string name,
             ConcurrentQueue<int> submissionsForProcessing,
-            object sharedLockObject)
+            object sharedLockObject,
+            int portNumber)
         {
             this.Name = name;
 
@@ -44,6 +46,7 @@
 
             this.submissionsForProcessing = submissionsForProcessing;
             this.sharedLockObject = sharedLockObject;
+            this.portNumber = portNumber;
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -211,7 +214,8 @@
             this.logger.InfoFormat("Work on submission №{0} started.", submission.Id);
 
             var executionStrategy = SubmissionJobHelper.CreateExecutionStrategy(
-                submission.SubmissionType.ExecutionStrategyType);
+                submission.SubmissionType.ExecutionStrategyType,
+                this.portNumber);
 
             var context = new ExecutionContext
             {
