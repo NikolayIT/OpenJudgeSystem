@@ -136,6 +136,7 @@
   <ItemGroup>
     <Compile Include="BlockchainStrategies\GanacheCliScope.cs" />
     <Compile Include="BlockchainStrategies\SolidityCompileDeployAndRunUnitTestsExecutionStrategy.cs" />
+    <Compile Include="BlockchainStrategies\TruffleProjectManager.cs" />
     <Compile Include="CPlusPlusCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="CPlusPlusZipFileExecutionStrategy.cs" />
     <Compile Include="CheckOnlyExecutionStrategy.cs" />

@@ -87,6 +87,8 @@
         public const string ZipFileExtension = ".zip";
         public const string ExecutableFileExtension = ".exe";
         public const string ClassLibraryFileExtension = ".dll";
+        public const string SolidityFileExtension = ".sol";
+        public const string JavaScriptFileExtension = ".js";
 
         // Folder names
         public const string ExecutionStrategiesFolderName = "ExecutionStrategies";

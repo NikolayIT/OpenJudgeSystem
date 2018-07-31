@@ -64,7 +64,12 @@
                     RedirectStandardError = true
                 };
 
-                process.Start();
+                var started = process.Start();
+
+                if (!started)
+                {
+                    throw new Exception("ganache-cli cannot be started");
+                }
 
                 var errorOutputTask = process.StandardError.ReadToEndAsync().ContinueWith(
                     x =>
@@ -79,10 +84,10 @@
                     // ReSharper disable once AccessToDisposedClosure
                     var task = Task.Factory.StartNew(() => process.StandardOutput.ReadLine());
 
-                    var isStarted = task.Wait(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
-                    if (!isStarted)
+                    var canReadLine = task.Wait(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                    if (!canReadLine)
                     {
-                        errorMessage = "ganache-cli is unable to start";
+                        errorMessage = "ganache-cli is unresponsive";
                     }
 
                     var outputLine = task.Result;

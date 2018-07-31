@@ -1,40 +1,54 @@
 ﻿namespace OJS.Workers.Compilers
 {
-    using System.Text;
+    using System;
+    using System.Diagnostics;
+    using System.IO;
 
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common;
 
     public class SolidityCompiler : Compiler
     {
-        private const string BinaryFilePattern = "*.bin";
-
         public SolidityCompiler(int processExitTimeOutMultiplier)
             : base(processExitTimeOutMultiplier)
         {
         }
 
-        public override string ChangeOutputFileAfterCompilation(string outputFile) =>
-            FileHelpers.FindFileMatchingPattern(this.CompilationDirectory, BinaryFilePattern);
-
         public override string BuildCompilerArguments(
             string inputFile,
             string outputFile,
+            string additionalArguments) => $"compile {additionalArguments}";
+
+        public override CompileResult Compile(
+            string compilerPath,
+            string inputFile,
             string additionalArguments)
         {
-            var arguments = new StringBuilder();
+            if (compilerPath == null)
+            {
+                throw new ArgumentNullException(nameof(compilerPath));
+            }
 
-            // Output file argument
-            arguments.Append($"-o \"{this.CompilationDirectory}\" ");
+            if (!File.Exists(compilerPath))
+            {
+                return new CompileResult(false, $"Compiler not found! Searched in: {compilerPath}");
+            }
 
-            arguments.Append("--bin --abi ");
+            var arguments = this.BuildCompilerArguments(inputFile, string.Empty, additionalArguments);
 
-            // Input file argument
-            arguments.Append($"\"{inputFile}\" ");
+            var directoryInfo = new DirectoryInfo(inputFile);
 
-            // Additional compiler arguments
-            arguments.Append(additionalArguments);
+            var processStartInfo = this.SetCompilerProcessStartInfo(compilerPath, directoryInfo, arguments);
 
-            return arguments.ToString().Trim();
+            var compilerOutput = ExecuteCompiler(processStartInfo, this.MaxProcessExitTimeOutInMilliseconds);
+
+            if (!compilerOutput.IsSuccessful)
+            {
+                return new CompileResult(false, $"Compiled file is missing. Compiler output: {compilerOutput.Output}");
+            }
+
+            return string.IsNullOrWhiteSpace(compilerOutput.Output)
+                ? new CompileResult(string.Empty)
+                : new CompileResult(true, compilerOutput.Output, string.Empty);
         }
     }
 }

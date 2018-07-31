@@ -352,7 +352,7 @@
                 case CompilerType.CSharpDotNetCore:
                     return Settings.DotNetCompilerPath;
                 case CompilerType.SolidityCompiler:
-                    return Settings.SolidityCompilerPath;
+                    return Settings.TruffleCliExecutablePath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
             }
