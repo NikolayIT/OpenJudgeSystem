@@ -5,6 +5,7 @@
     using System.IO;
 
     using Newtonsoft.Json;
+
     using OJS.Workers.Executors;
 
     using static OJS.Common.GlobalConstants;
@@ -29,7 +30,10 @@
 
         private readonly string directoryPath;
         private readonly int port;
-        private readonly string compilerPath;
+        private readonly string contractsDirectoryPath;
+        private readonly string testsDirectoryPath;
+        private readonly string migrationsDirectoryPath;
+        private readonly string contractsBuildDirectory;
 
         private readonly string contractBuildTemplate = $@"
         {{
@@ -76,29 +80,18 @@
 
         private readonly string contractDeployTemplate = $@"deployer.deploy({ContractNamePlaceholder});";
 
-        public TruffleProjectManager(string directoryPath, int port, string compilerPath)
+        public TruffleProjectManager(string directoryPath, int port)
         {
             this.directoryPath = directoryPath;
             this.port = port;
-            this.compilerPath = compilerPath;
 
             var(migrationsDir, contractsDir, testsDir, contractsBuildDir) = this.CreateProjectStructure();
 
-            this.MigrationsDirectoryPath = migrationsDir;
-            this.ContractsDirectoryPath = contractsDir;
-            this.TestsDirectoryPath = testsDir;
-            this.ContractsBuildDirectory = contractsBuildDir;
-
-            this.AddMigrationsBuild();
+            this.contractsDirectoryPath = contractsDir;
+            this.testsDirectoryPath = testsDir;
+            this.migrationsDirectoryPath = migrationsDir;
+            this.contractsBuildDirectory = contractsBuildDir;
         }
-
-        private string MigrationsDirectoryPath { get; }
-
-        private string ContractsDirectoryPath { get; }
-
-        private string TestsDirectoryPath { get; }
-
-        private string ContractsBuildDirectory { get; }
 
         private string ConfigFile => $@"
             module.exports = {{
@@ -111,8 +104,64 @@
                 }}
             }};";
 
-        public void ImportTests()
+        public void InitializeMigration(string compilerPath)
         {
+            var executor = new StandardProcessExecutor(0, 0);
+            var migrationsContractPath = Path.Combine(this.contractsDirectoryPath, MigrationsFileName);
+
+            var arguments = new[]
+            {
+                "--optimize",
+                "--abi",
+                "--bin",
+                migrationsContractPath
+            };
+
+            var result = executor.Execute(
+                compilerPath,
+                string.Empty,
+                ProblemDefaultTimeLimit,
+                ProblemDefaultMemoryLimit,
+                arguments);
+
+            if (!string.IsNullOrEmpty(result.ErrorOutput))
+            {
+                throw new Exception($"Compiling {MigrationsFileName} threw an exception: {result.ErrorOutput}");
+            }
+
+            var parts = result.ReceivedOutput.Split(
+                new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            var byteCode = parts[2];
+            var abi = parts[4];
+
+            this.CreateBuildForContract(MigrationsContractName, abi, byteCode);
+        }
+
+        public void ImportJsUnitTests(IEnumerable<TestContext> tests)
+        {
+            var counter = 1;
+            foreach (var test in tests)
+            {
+                var testName = $"Test{counter++}";
+                File.WriteAllText(
+                    Path.Combine(this.testsDirectoryPath, testName + JavaScriptFileExtension),
+                    test.Input);
+            }
+        }
+
+        public string ImportSingleContract(string contractName, string sourceCode)
+        {
+            var contractPath = Path.Combine(this.contractsDirectoryPath, contractName + SolidityFileExtension);
+
+            File.WriteAllText(contractPath, sourceCode);
+
+            File.WriteAllText(
+                Path.Combine(this.migrationsDirectoryPath, ContractsDeployerFileName + JavaScriptFileExtension),
+                this.GetDeployerForContracts(new[] { contractName }));
+
+            return contractPath;
         }
 
         public void CreateBuildForContract(
@@ -130,7 +179,7 @@
                 .Replace(UpdatedAtDatePlaceholder, date);
 
             File.WriteAllText(
-                Path.Combine(this.ContractsBuildDirectory, contractName + JsonFileExtension),
+                Path.Combine(this.contractsBuildDirectory, contractName + JsonFileExtension),
                 buildContent);
         }
 
@@ -171,46 +220,6 @@
                 this.GetDeployerForContracts(new[] { MigrationsContractName }));
 
             return (migrationsDir.FullName, contractsDir.FullName, testsDir.FullName, contractsBuildDir.FullName);
-        }
-
-        private void AddMigrationsBuild()
-        {
-            var executor = new StandardProcessExecutor(0, 0);
-            var migrationsContractPath = Path.Combine(this.ContractsDirectoryPath, MigrationsFileName);
-
-            var arguments = new[]
-            {
-                "--optimize",
-                "--abi",
-                "--bin",
-                migrationsContractPath
-            };
-
-            var result = executor.Execute(
-                this.compilerPath,
-                string.Empty,
-                ProblemDefaultTimeLimit,
-                ProblemDefaultMemoryLimit,
-                arguments);
-
-            if (!string.IsNullOrEmpty(result.ErrorOutput))
-            {
-                throw new Exception($"Compiling {MigrationsFileName} threw an exception: {result.ErrorOutput}");
-            }
-
-            var parts = result.ReceivedOutput.Split(
-                new[] { Environment.NewLine },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            var byteCode = parts[2];
-            var abi = parts[4];
-
-            if (File.Exists(migrationsContractPath))
-            {
-                File.Delete(migrationsContractPath);
-            }
-
-            this.CreateBuildForContract(MigrationsContractName, abi, byteCode);
         }
     }
 }

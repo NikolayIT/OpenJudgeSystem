@@ -13,6 +13,8 @@
         {
         }
 
+        public override bool ShouldDeleteSourceFile => false;
+
         public override string ChangeOutputFileAfterCompilation(string outputFile) =>
             FileHelpers.FindFileMatchingPattern(this.CompilationDirectory, BinaryFilePattern);
 

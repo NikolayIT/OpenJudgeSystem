@@ -8,6 +8,7 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Compilers;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
 
@@ -74,8 +75,22 @@
                 throw new ArgumentException("No valid contract is found");
             }
 
+            var truffleProject = new TruffleProjectManager(this.WorkingDirectory, this.portNumber);
+
+            var contractPath = truffleProject.ImportSingleContract(contractName, executionContext.Code);
+
             // Compile the file
-            var compilerResult = this.ExecuteCompiling(executionContext, this.GetCompilerPathFunc, result);
+            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
+            var compiler = Compiler.CreateCompiler(executionContext.CompilerType);
+
+            var compilerResult = compiler.Compile(
+                compilerPath,
+                contractPath,
+                executionContext.AdditionalCompilerArguments);
+
+            result.CompilerComment = compilerResult.CompilerComment;
+            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
+
             if (!result.IsCompiledSuccessfully)
             {
                 return result;
@@ -83,35 +98,14 @@
 
             var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
 
-            var truffle = new TruffleProjectManager(
-                this.WorkingDirectory,
-                this.portNumber,
-                this.GetCompilerPathFunc(executionContext.CompilerType));
+            truffleProject.InitializeMigration(compilerPath);
 
-            truffle.CreateBuildForContract(contractName, abi, byteCode);
+            truffleProject.CreateBuildForContract(contractName, abi, byteCode);
+            truffleProject.ImportJsUnitTests(executionContext.Tests);
 
             // Run in the Ethereum Virtual Machine scope
             using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheNodeCliPath, this.portNumber))
             {
-                //var web3 = new Web3($"http://localhost:{this.portNumber}");
-
-                //var senderAddress = web3.Eth.Accounts.SendRequestAsync().GetAwaiter().GetResult()[0];
-
-                //// Deploy the contract
-                //var transactionHash = web3.Eth.DeployContract
-                //    .SendRequestAsync(abi, byteCode, senderAddress, this.gas)
-                //    .GetAwaiter()
-                //    .GetResult();
-
-                //var receipt = web3.Eth.Transactions.GetTransactionReceipt
-                //    .SendRequestAsync(transactionHash)
-                //    .GetAwaiter()
-                //    .GetResult();
-
-                //var contractAddress = receipt.ContractAddress;
-
-                //var contract = web3.Eth.GetContract(abi, contractAddress);
-
                 IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
 
                 // Run tests
