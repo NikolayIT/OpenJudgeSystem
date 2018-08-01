@@ -89,6 +89,7 @@
         public const string ClassLibraryFileExtension = ".dll";
         public const string SolidityFileExtension = ".sol";
         public const string JavaScriptFileExtension = ".js";
+        public const string JsonFileExtension = ".json";
 
         // Folder names
         public const string ExecutionStrategiesFolderName = "ExecutionStrategies";

@@ -2,15 +2,12 @@
 {
     using System;
     using System.IO;
-    using System.Numerics;
+    using System.Linq;
     using System.Text.RegularExpressions;
-    using Nethereum.Hex.HexTypes;
-    using Nethereum.Web3;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;
-    using OJS.Workers.Compilers;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
 
@@ -22,8 +19,6 @@
         private readonly string ganacheNodeCliPath;
         private readonly string truffleExecutablePath;
         private readonly int portNumber;
-
-        private readonly HexBigInteger gas = new HexBigInteger(new BigInteger(5000000m));
 
         public SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
@@ -79,24 +74,21 @@
                 throw new ArgumentException("No valid contract is found");
             }
 
-            var truffle = new TruffleProjectManager(this.WorkingDirectory, this.portNumber);
-
-            truffle.CreateContract(contractName, executionContext.Code);
-
             // Compile the file
-            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-            var compilerResult = this.Compile(
-                executionContext.CompilerType,
-                compilerPath,
-                executionContext.AdditionalCompilerArguments,
-                this.WorkingDirectory);
-
-            if (!compilerResult.IsCompiledSuccessfully)
+            var compilerResult = this.ExecuteCompiling(executionContext, this.GetCompilerPathFunc, result);
+            if (!result.IsCompiledSuccessfully)
             {
                 return result;
             }
 
-            //var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
+            var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
+
+            var truffle = new TruffleProjectManager(
+                this.WorkingDirectory,
+                this.portNumber,
+                this.GetCompilerPathFunc(executionContext.CompilerType));
+
+            truffle.CreateBuildForContract(contractName, abi, byteCode);
 
             // Run in the Ethereum Virtual Machine scope
             using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheNodeCliPath, this.portNumber))
@@ -135,25 +127,15 @@
             throw new NotImplementedException();
         }
 
-        protected override CompileResult Compile(
-            CompilerType compilerType,
-            string compilerPath,
-            string compilerArguments,
-            string submissionFilePath)
-        {
-            var compiler = Compiler.CreateCompiler(compilerType);
-            var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
-
-            return compilerResult;
-        }
-
         private static(string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
         {
+            var fileName = Path.GetFileNameWithoutExtension(compilerResultOutputFile);
+
             var byteCode = File.ReadAllText(compilerResultOutputFile);
 
-            var abiFile = FileHelpers.FindFileMatchingPattern(
-                Path.GetDirectoryName(compilerResultOutputFile),
-                AbiFileSearchPattern);
+            var abiFile = FileHelpers
+                .FindAllFilesMatchingPattern(Path.GetDirectoryName(compilerResultOutputFile), AbiFileSearchPattern)
+                .First(f => Path.GetFileNameWithoutExtension(f) == fileName);
 
             var abi = File.ReadAllText(abiFile);
 
